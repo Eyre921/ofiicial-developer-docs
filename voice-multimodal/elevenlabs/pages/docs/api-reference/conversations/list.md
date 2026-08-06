@@ -367,6 +367,33 @@ paths:
               - 'null'
             items:
               type: string
+        - name: guardrail_types
+          in: query
+          description: >-
+            Filter to conversations where a guardrail of any of these types
+            triggered (metadata.triggered_guardrails.guardrail_type). Repeat
+            param to match any of several.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              $ref: '#/components/schemas/GuardrailType'
+        - name: custom_guardrail_names
+          in: query
+          description: >-
+            Filter to conversations where a custom guardrail with any of these
+            names triggered (metadata.triggered_guardrails.guardrail_name). Only
+            custom guardrails carry a name. Repeat param to match any of
+            several.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
         - name: xi-api-key
           in: header
           required: false
@@ -428,6 +455,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms
@@ -460,6 +488,27 @@ components:
         - done
         - failed
       title: V1ConvaiConversationsGetParametersExcludeStatusesSchemaItems
+    GuardrailType:
+      type: string
+      enum:
+        - custom
+        - prompt_injection
+        - self_harm_intent
+        - violence_graphic
+        - sexual
+        - violence
+        - harassment
+        - sexual_minors
+        - self_harm
+        - self_harm_instructions
+        - harassment_threatening
+        - hate
+        - hate_threatening
+        - profanity
+        - religion_or_politics
+        - medical_and_legal
+        - guardrail
+      title: GuardrailType
     ConversationSummaryResponseModelStatus:
       type: string
       enum:

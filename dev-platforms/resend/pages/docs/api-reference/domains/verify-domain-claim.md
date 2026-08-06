@@ -23,7 +23,7 @@ Trigger DNS verification for a domain claim.
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s), then run [Verify Domain](/docs/api-reference/domains/verify-domain) to
   finish setup before sending or receiving email. See [DKIM
-  records](/docs/dashboard/domains/introduction#what-are-dkim-records) for details.
+  records](/docs/dashboard/domains/manage-domains#what-are-dkim-records) for details.
 </Note>
 
 ## Path Parameters

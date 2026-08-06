@@ -27,8 +27,6 @@ We also offer a [fully managed dubbing service](https://elevenlabs.io/elevenstud
   * **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only
 * **Human-verified dubs via ElevenLabs Productions** — For more information, reach out to [productions@elevenlabs.io](mailto:productions@elevenlabs.io).
 
-The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
-
 #### [Products](/docs/eleven-creative/products/dubbing/dubbing-studio)
 
 Edit transcripts and translate videos step by step in Dubbing Studio.
@@ -84,7 +82,8 @@ it. You will not lose credits by doing so.
 
 #### Is Dubbing v2 available via API?
 
-The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
+Yes. See the [Dubbing quickstart](/docs/eleven-api/guides/cookbooks/dubbing) to create your
+first dub with the API.
 
 #### How do I use the legacy V1 dubbing model?
 

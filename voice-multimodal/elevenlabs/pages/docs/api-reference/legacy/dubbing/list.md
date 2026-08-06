@@ -1,18 +1,18 @@
 ---
-title: "List Dubs"
-source: https://elevenlabs.io/docs/api-reference/dubbing/list.md
-path: docs/api-reference/dubbing/list
+title: "List dubs"
+source: https://elevenlabs.io/docs/api-reference/legacy/dubbing/list.md
+path: docs/api-reference/legacy/dubbing/list
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# List Dubs
+# List dubs
 
 GET https://api.elevenlabs.io/v1/dubbing
 
 List the dubs you have access to.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/list
+Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/list
 
 ## OpenAPI Specification
 

@@ -162,6 +162,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -223,7 +224,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: LLM
     LLMReasoningEffort:
       type: string
@@ -1113,6 +1113,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
           description: LanguageDetectionToolConfig variant
@@ -1969,7 +1978,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -2306,7 +2315,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -2406,7 +2415,6 @@ components:
           description: The prompt for the agent
         llm:
           $ref: '#/components/schemas/LLM'
-          default: gemini-2.5-flash
           description: >-
             The LLM to query with the prompt and the chat history. If using data
             residency, the LLM must be supported in the data residency

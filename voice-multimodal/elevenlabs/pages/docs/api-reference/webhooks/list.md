@@ -87,6 +87,7 @@ components:
         - Agent QA Evaluations
         - ConvAI Alerting
         - Flows
+        - Dubbing
       title: WebhookUsageType
     WorkspaceWebhookUsageResponseModel:
       type: object

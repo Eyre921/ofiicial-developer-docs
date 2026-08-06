@@ -1176,6 +1176,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -1376,6 +1377,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms

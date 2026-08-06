@@ -192,6 +192,17 @@ The fastest way to deploy a RedwoodJS project on Netlify is to run `yarn rw setu
 
 For more details, check out the RedwoodJS docs for [deploying to Netlify](https://docs.redwoodjs.com/docs/deploy/netlify).
 
+## SolidStart
+
+Check out our docs overview for using [SolidStart on Netlify](/build/frameworks/framework-setup-guides/solidstart). Typical build settings for SolidStart 2 are as follows:
+
+- **Build command:** `vite build`
+- **Publish directory:** `dist/client`
+
+### Caution - Other SolidStart setups
+
+For SolidStart 1.x, use `vinxi build` as the build command and `dist` as the publish directory. SolidStart 2 projects that build with Nitro rather than the Netlify Vite plugin also publish from `dist`.
+
 ## SvelteKit and Svelte
 
 Check out our docs overview for using [SvelteKit on Netlify](/build/frameworks/framework-setup-guides/sveltekit) or learn more in the [SvelteKit Netlify adapter README](https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify#readme). Typical build settings are as follows.

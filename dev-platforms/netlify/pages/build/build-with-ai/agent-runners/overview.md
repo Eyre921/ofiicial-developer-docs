@@ -54,6 +54,44 @@ Agent Runners support the following AI agents:
    - Claude Code
    - OpenAI Codex 
    - Google Gemini
+   - OpenCode
+
+OpenCode gives you a selection of up-to-date coding models, served in partnership with [OpenRouter](https://openrouter.ai/). Netlify only routes these requests to model providers with a [Zero Data Retention (ZDR)](https://openrouter.ai/docs/guides/features/zdr#zero-data-retention) policy. Under this policy, model providers do not store your prompts or model outputs.
+
+The other three agents run on models from Anthropic, OpenAI, and Google respectively, and are not routed through OpenRouter.
+
+## Choose AI models for your own agent runs
+
+By default, each agent picks its own model and reasoning effort level for every run. 
+
+However, you may want to experiment with different agents or models to find the best balance among output quality, credit usage, and the appeal of generated content or visual designs. You can read more about our recommendations [below](#choosing-the-right-model-for-the-job).
+
+Netlify lets you configure the model each available agent will use, along with the model's reasoning effort level.
+
+These settings apply to subsequent runs on any project you work on, but they do not affect other team members. These are personal preferences available to anyone who can launch an Agent Run, rather than a shared project-level or team-level setting.
+
+![Agent configuration modal showing model and effort options for OpenCode](/images/agent-configuration-modal.png)
+
+To configure your agent settings:
+
+1. From any Agent Runner prompt box, select **agent** to open your agent options and choose **Configure...**. 
+2. Choose the AI agent whose model and effort level you want to configure. Your selections are saved separately for each agent and remain in effect when you switch between agents.
+3. Select the model the agent should run with.
+4. Optionally, choose the reasoning effort the model should use for a run. A higher effort consumes more credits but often leads to better results, especially for complex tasks. You can keep the default **Auto** to let the agent decide per run.
+5. Choose **Save** to apply your changes. 
+
+### Choosing the right model for the job
+
+To help you choose a model, the list of available models also includes a cost estimate. All models available for use with Agent Runners are ranked on a scale of 1-5 (with 5 indicating the highest cost), based on aggregate cost information Netlify has.
+
+More expensive models generally provide better visual fidelity, more creative ideation, and stronger self-verification. Cheaper models may omit features or create nonworking placeholders unless you explicitly request complete implementations.
+
+We recommend more expensive models when you want more creative, complex, or advanced output based on a simple prompt. 
+However, especially on a free plan, a single prompt can use most of your available credits. 
+
+Alternatively, you can choose a cheaper model and then iterate on the results with follow-up prompts to guide the output closer to what you had in mind.
+
+To learn which model you should use, it's often best to try out the same prompt with a few different models, especially when you're in the ideation phase for a new project. You may find that a certain model is ideal for ideation, while a lower-cost model works fine for making smaller iterations. You can also use a higher-cost model to create a comprehensive plan with Ask mode, then switch to Build mode with a lower-cost model to implement it.
 
 ## Agent run modes
 
@@ -100,7 +138,7 @@ Note that failed deploys do not use credits.
 
 ## Use Agent Runners
 
-1. Go to your Netlify project dashboard under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, or OpenAI Codex, enter your prompt and optionally add any additional context. Then choose **Run task**.
+1. Go to your Netlify project dashboard under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, OpenAI Codex, or OpenCode, enter your prompt and optionally add any additional context. Then choose **Run task**.
   ![Build with an AI agent from project overview](/images/build-with-an-ai-agent-from-project-overview.png)
 
 To check out the fuller process of prompting and reviewing agent run results, check out [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners).

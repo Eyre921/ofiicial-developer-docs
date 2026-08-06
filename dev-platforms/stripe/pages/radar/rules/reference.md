@@ -72,7 +72,7 @@ Block rules advise Stripe to always block a payment. If a payment matches the cr
 
 #### Review
 
-You might want to allow certain types of payments but also have the option to examine them more closely. With review rules, you can [place payments in review](https://docs.stripe.com/radar/transaction-reviews.md). This is especially useful for payments that don’t fit common patterns, such as larger payments or payments from a country that you don’t often ship to. Stripe still processes these payments and charges the customer, but you have an additional opportunity to review the order and check for signs of fraud.
+You might want to allow certain types of payments but also have the option to examine them more closely. With review rules, you can [place payments in review](https://docs.stripe.com/radar/transaction-reviews.md). Use this for payments that don’t fit common patterns, such as larger payments or payments from a country that you don’t often ship to. Stripe still processes these payments and charges the customer, but you have an additional opportunity to review the order and check for signs of fraud.
 
 When a particular rule is triggered, Radar takes the prescribed action and discontinues any further rule evaluation.
 

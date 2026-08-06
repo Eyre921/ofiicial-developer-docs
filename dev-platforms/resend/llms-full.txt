@@ -33,6 +33,8 @@ To add a new domain from the Resend Dashboard:
     Choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
 
     You can have multiple subdomains associated with your root domain. But, each one must be configured and verified individually.
+
+    If you add a domain already used by another team, the dashboard will notify you and you can [claim the domain](/docs/dashboard/domains/claim) to transfer it to your team.
   </Step>
 
   <Step title="Choose a region from the list provided.">
@@ -40,7 +42,7 @@ To add a new domain from the Resend Dashboard:
   </Step>
 
   <Step title="(optional) Enter a custom subdomain for the Return-Path address if desired.">
-    Return-Path defaults to `send.example.com`, although you can [provide a custom path](/docs/dashboard/domains/introduction#custom-return-path).
+    Return-Path defaults to `send.example.com`, although you can [provide a custom path](/docs/dashboard/domains/custom-return-path).
   </Step>
 
   <Step title="Update your DNS records with values provided by Resend.">
@@ -66,7 +68,7 @@ To add a new domain from the Resend Dashboard:
   </Step>
 
   <Step title="(optional) Update your domain's Resend configuration options.">
-    After your domain is verified, you may wish to [enable open and click tracking](/docs/dashboard/domains/introduction#configure-open-and-click-tracking) or [enforce Transport Layer Security (TLS)](/docs/dashboard/domains/introduction#configure-enforced-transport-layer-security-tls).
+    After your domain is verified, you may wish to [enable open and click tracking](/docs/dashboard/domains/tracking) or [enforce Transport Layer Security (TLS)](/docs/dashboard/domains/tls).
   </Step>
 </Steps>
 
@@ -620,9 +622,10 @@ Add a new API key to authenticate communications with Resend.
 </ParamField>
 
 <ParamField type="full_access | sending_access">
-  The API key can have full access to Resend's API or be only restricted to send
-  emails. \* `full_access`: Can create, delete, get, and update any resource. \*
-  `sending_access`: Can only send emails.
+  The API key can have full access to Resend's API or be only restricted to send emails.
+
+  * `full_access`: Can create, delete, get, and update any resource.
+  * `sending_access`: Can only send emails.
 </ParamField>
 
 <ResendParamField type="string">
@@ -1411,6 +1414,7 @@ Create a new broadcast to send to your contacts.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "broadcast",
     "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"
   }
   ```
@@ -1543,7 +1547,7 @@ You can retrieve broadcasts created via both this API and the Resend dashboard.
 
 <Info>
   See all available `status` types in [the Broadcasts
-  overview](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses).
+  overview](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses).
 </Info>
 
 <RequestExample>
@@ -1675,7 +1679,7 @@ Retrieve aggregate metrics for a broadcast.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.0
+    npm install resend@6.19.0-preview-headless-dashboard.1
     ```
   </CodeGroup>
 </Warning>
@@ -1878,7 +1882,7 @@ Retrieve the recipients of a broadcast for a given event type.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.0
+    npm install resend@6.19.0-preview-headless-dashboard.1
     ```
   </CodeGroup>
 </Warning>
@@ -2036,7 +2040,7 @@ Retrieve a list of broadcast.
 
 <Info>
   See all available `status` types in [the Broadcasts
-  overview](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses).
+  overview](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses).
 </Info>
 
 <QueryParams type="broadcasts" />
@@ -2490,6 +2494,7 @@ Update a broadcast to send to your contacts.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "broadcast",
     "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"
   }
   ```
@@ -4073,6 +4078,7 @@ Either `id` or `email` must be provided.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "contact_segment",
     "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
     "audienceId": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
     "deleted": true
@@ -5354,6 +5360,7 @@ Either `id` or `email` must be provided.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "contact_topics",
     "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
   }
   ```
@@ -5556,7 +5563,7 @@ Create a domain through the Resend Email API.
   setting values that could undermine credibility (e.g. `testing`), as they may
   be exposed to recipients.
 
-  Learn more about [custom return paths](/docs/dashboard/domains/introduction#custom-return-path).
+  Learn more about [custom return paths](/docs/dashboard/domains/custom-return-path).
 </ResendParamField>
 
 <ResendParamField type="boolean">
@@ -5614,8 +5621,8 @@ Create a domain through the Resend Email API.
 </ParamField>
 
 <Info>
-  See all available `status` types in [the Domains
-  overview](/docs/dashboard/domains/introduction#understand-a-domain-status).
+  See all available [domain `status`
+  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 </Info>
 
 <RequestExample>
@@ -5930,8 +5937,8 @@ Retrieve a single domain for the authenticated user.
 </ResendParamField>
 
 <Info>
-  See all available `status` types in [the Domains
-  overview](/docs/dashboard/domains/introduction#understand-a-domain-status).
+  See all available [domain `status`
+  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 </Info>
 
 <RequestExample>
@@ -6208,8 +6215,8 @@ GET /domains
 Retrieve a list of domains for the authenticated user.
 
 <Info>
-  See all available `status` types in [the Domains
-  overview](/docs/dashboard/domains/introduction#understand-a-domain-status).
+  See all available [domain `status`
+  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 </Info>
 
 <QueryParams type="domains" />
@@ -6577,7 +6584,7 @@ Verify an existing domain.
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s) it returns, then call this endpoint to verify it before sending or
   receiving email. See [DKIM
-  records](/docs/dashboard/domains/introduction#what-are-dkim-records) for details.
+  records](/docs/dashboard/domains/manage-domains#what-are-dkim-records) for details.
 </Note>
 
 ## Path Parameters
@@ -6706,7 +6713,7 @@ Trigger DNS verification for a domain claim.
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s), then run [Verify Domain](/docs/api-reference/domains/verify-domain) to
   finish setup before sending or receiving email. See [DKIM
-  records](/docs/dashboard/domains/introduction#what-are-dkim-records) for details.
+  records](/docs/dashboard/domains/manage-domains#what-are-dkim-records) for details.
 </Note>
 
 ## Path Parameters
@@ -6935,6 +6942,159 @@ Cancel a scheduled email.
   {
     "object": "email",
     "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"
+  }
+  ```
+</ResponseExample>
+
+
+# Retrieve Metrics
+Source: https://resend.com/docs/api-reference/emails/get-metrics
+
+GET /emails/metrics
+Retrieve account-level email metrics.
+
+<Warning>
+  Email metrics are currently in private beta and only available to a
+  limited number of users. APIs might change before it is generally available.
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.1
+    ```
+  </CodeGroup>
+</Warning>
+
+<Note>
+  Metrics are retained according to your plan's data retention window.
+  Requesting a `start_date` older than your retention window returns data
+  clamped to the oldest date your plan retains.
+</Note>
+
+<Note>
+  Responses are cached for up to 15 minutes, so a request for the same range may
+  return slightly stale data within that window.
+</Note>
+
+## Query Parameters
+
+<ParamField type="string">
+  The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
+  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
+  before `end_date`.
+</ParamField>
+
+<ParamField type="string">
+  The end of the date range, as an ISO 8601 date or datetime. Values in the
+  future are clamped to the current time. Defaults to now.
+</ParamField>
+
+<ParamField type="string">
+  The IANA timezone (e.g. `America/New_York`) used to bucket periods when
+  `period` is in `dimensions`.
+</ParamField>
+
+<ParamField type="hourly | daily | weekly">
+  The bucket size used when `period` is in `dimensions`. Accepted but has no
+  effect otherwise.
+</ParamField>
+
+<ParamField type="string[]">
+  Comma-separated list of metrics to include in the response. Defaults to all
+  of the following:
+
+  `received`, `delivered`, `complained`, `suppressed`, `bounced`,
+  `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
+  `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
+  `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`, `click_rate`,
+  `bounce_rate`, `complaint_rate`, `unsubscribe_rate`
+</ParamField>
+
+<ParamField type="string[]">
+  Comma-separated list of dimensions to break the response down by. Combine
+  `period` with `domain` or `email` for a joint breakdown (one row per unique
+  `period` + `domain`/`email` pair). Defaults to `[]`, returning a single
+  `totals` row for the whole range, with no `data`.
+
+  Possible values:
+
+  * `period`: one row per `granularity` period, zero-filled for periods with no
+    activity. Only zero-filled when `period` is the only requested dimension.
+  * `domain`: one row per sending domain. Cannot be combined with `email`.
+  * `email`: one row per email. Cannot be combined with `domain`.
+</ParamField>
+
+<ParamField type="string[]">
+  Comma-separated list of sending domain IDs to restrict the response to.
+  Unrecognized `filter[]` keys are ignored rather than rejected.
+</ParamField>
+
+<ParamField type="string[]">
+  Comma-separated list of email IDs to restrict the response to. Cannot be
+  combined with the `domain` dimension. Unrecognized `filter[]` keys are ignored
+  rather than rejected.
+</ParamField>
+
+<ParamField type="string">
+  What to sort `data` by. Defaults to `date` when `dimensions` includes
+  `period`, or `sent` when `dimensions` is exactly `domain` or exactly `email`.
+
+  Possible values:
+
+  * `date`: chronological order. Requires `dimensions` to include `period`.
+  * Any metric: `received`, `delivered`, `complained`, `suppressed`, `bounced`,
+    `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
+    `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
+    `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`,
+    `click_rate`, `bounce_rate`, `complaint_rate`, `unsubscribe_rate`. Requires
+    `dimensions` to be exactly `domain` or exactly `email`, and must also be
+    included in `metrics`.
+</ParamField>
+
+<ParamField type="asc | desc">
+  The sort direction for `sort_by`. Defaults to `asc` when `dimensions` includes
+  `period`, `desc` otherwise.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/emails/metrics?start_date=2026-07-01&end_date=2026-07-08&metrics=sent,delivered,open_rate&dimensions=period,domain' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "metrics",
+    "start_date": "2026-07-01T00:00:00.000Z",
+    "end_date": "2026-07-08T00:00:00.000Z",
+    "metrics": ["sent", "delivered", "open_rate"],
+    "dimensions": ["period", "domain"],
+    "granularity": "daily",
+    "sort_by": "date",
+    "sort_order": "asc",
+    "totals": {
+      "sent": 1204,
+      "delivered": 1180,
+      "open_rate": 50.0
+    },
+    "data": [
+      {
+        "period": "2026-07-01",
+        "domain_id": "d91cd9bd-1176-4f47-2a4b-fce2d5399cbf",
+        "domain_name": "example.com",
+        "sent": 172,
+        "delivered": 169,
+        "open_rate": 49.7
+      }
+    ]
   }
   ```
 </ResponseExample>
@@ -7533,7 +7693,7 @@ Retrieve a single sent email.
 
 <Info>
   See all available `last_event` types in [the Email Events
-  overview](/docs/dashboard/emails/introduction#understand-email-events).
+  overview](/docs/dashboard/emails/manage-emails#understand-email-events).
 </Info>
 
 <RequestExample>
@@ -11174,6 +11334,119 @@ Retrieve a single segment.
 </ResponseExample>
 
 
+# Retrieve Metrics
+Source: https://resend.com/docs/api-reference/segments/get-segment-metrics
+
+GET /segments/metrics
+Retrieve segment metrics.
+
+<Warning>
+  Segment metrics are currently in private beta and only available to a limited
+  number of users. The response shape might change before GA. [Get in
+  touch](https://resend.com/contact) if you're interested in testing this
+  feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.1
+    ```
+  </CodeGroup>
+</Warning>
+
+Live contact counts for your account, optionally broken down by segment.
+Works across your whole account by default, or scoped to specific segments
+via `filter[segment_id]`.
+
+<Info>
+  `totals` is always the live, current count for your account, or for the
+  segments in `filter[segment_id]`, if provided.
+</Info>
+
+<Info>
+  Responses are cached for up to 15 minutes, so requesting the same range again
+  may return slightly stale data within that window.
+</Info>
+
+## Query Parameters
+
+<ResendParamField type="string[]">
+  Comma-separated list of metrics to include in `totals` and `data`. Defaults to
+  all of the following: `all_contacts`, `subscribers`, `unsubscribers`.
+</ResendParamField>
+
+<ResendParamField type="string[]">
+  Comma-separated list of dimensions to break `data` down by. Defaults to
+  `[]`, returning only `totals` with no `data`.
+
+  Possible values:
+
+  * `segment`: one row per segment, using its current contact counts.
+</ResendParamField>
+
+<ResendParamField type="string[]">
+  Comma-separated list of segment IDs. Narrows `totals` (and `data`, when
+  requested) to just these segments, without double-counting contacts that
+  belong to more than one.
+</ResendParamField>
+
+<ResendParamField type="string">
+  Possible values:
+
+  * `date`: each segment's creation date.
+  * `all_contacts`, `subscribers`, `unsubscribers`: that metric's count for the
+    segment.
+</ResendParamField>
+
+<ResendParamField type="asc | desc">
+  The sort direction for `sort_by`, applied to each segment's creation date.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.segments.metrics({
+    dimensions: ['segment'],
+    metrics: ['all_contacts'],
+  });
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/segments/metrics?dimensions=segment&metrics=all_contacts' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "segments_metrics",
+    "metrics": ["all_contacts"],
+    "dimensions": ["segment"],
+    "sort_by": "date",
+    "sort_order": "desc",
+    "totals": {
+      "all_contacts": 12450
+    },
+    "data": [
+      {
+        "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+        "segment_name": "Registered Users",
+        "all_contacts": 4300
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # List Segment Contacts
 Source: https://resend.com/docs/api-reference/segments/list-segment-contacts
 
@@ -11252,6 +11525,25 @@ Retrieve a list of contacts in a segment.
   resend segments contacts 78261eea-8f8b-4381-83c6-79fa7120f1cf
   ```
 </RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+        "email": "steve.wozniak@gmail.com",
+        "first_name": "Steve",
+        "last_name": "Wozniak",
+        "created_at": "2026-10-06 23:47:56.678+00",
+        "unsubscribed": false
+      }
+    ]
+  }
+  ```
+</ResponseExample>
 
 
 # List Segments
@@ -11933,7 +12225,6 @@ Show all suppressions.
     "has_more": false,
     "data": [
       {
-        "object": "suppression",
         "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
         "email": "steve.wozniak@example.com",
         "origin": "manual",
@@ -11941,7 +12232,6 @@ Show all suppressions.
         "created_at": "2026-10-06 23:47:56.678+00"
       },
       {
-        "object": "suppression",
         "id": "520784e2-887d-4c25-b53c-4ad46ad38100",
         "email": "susan.kare@example.com",
         "origin": "bounce",
@@ -13313,8 +13603,8 @@ Publish a template.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "id": "34a080c9-b17d-4187-ad80-5af20266e535",
-    "object": "template"
+    "object": "template",
+    "id": "34a080c9-b17d-4187-ad80-5af20266e535"
   }
   ```
 </ResponseExample>
@@ -13553,8 +13843,8 @@ Update a template.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "id": "34a080c9-b17d-4187-ad80-5af20266e535",
-    "object": "template"
+    "object": "template",
+    "id": "34a080c9-b17d-4187-ad80-5af20266e535"
   }
   ```
 </ResponseExample>
@@ -23418,68 +23708,126 @@ The filter rule supports the same [operators](/docs/dashboard/automations/condit
 ```
 
 
-# Managing Broadcasts
-Source: https://resend.com/docs/dashboard/broadcasts/introduction
+# Compose and send with the Broadcast editor
+Source: https://resend.com/docs/dashboard/broadcasts/editor
 
-Send marketing emails efficiently without code.
+Learn how to write and send your Broadcasts in the Dashboard editor
 
-Broadcasts allow you to send email blasts to your customers using a no-code editor on Resend, or from our [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
+Resend's no-code Broadcast editor is built into the Dashboard to allow anyone on your team to create and send your bulk marketing emails.
 
-You can use this to send email blasts such as:
+<Info>
+  To create a Broadcast from your application instead, you can [send Broadcasts
+  with the Broadcasts API
+  instead](/docs/dashboard/broadcasts/send-broadcast-with-api).
+</Info>
 
-* Newsletters
-* Product Launches
-* Investor Updates
-* Promotions
-* Changelogs
+## Quickstart
 
-## Sending a Broadcast from Resend
+To create and send a Broadcast using the no-code editor:
 
-Our Broadcasts feature was made to enable your entire team to send email campaigns without having to ask for help from developers.
+<Steps>
+  <Step title="Go to the Broadcasts page in your Resend dashboard." />
 
-### No-Code Editor
+  <Step title="Click `Create Broadcast`." />
+
+  <Step title="Add a `from` name and address.">
+    Choose any username at your [verified domain](/docs/dashboard/domains/introduction) to send your Broadcast from.
+
+    We suggest you choose a `from` name and address that describes the purpose of the email, for example:
+
+    * `My Company Name <company@updates.example.com>`
+    * `My Newsletter <company@newsletter.example.com>`.
+  </Step>
+
+  <Step title="Select the audience you want to send your email to.">
+    Choose a [segment of your contacts](/docs/dashboard/segments/introduction) to receive the email.
+  </Step>
+
+  <Step title="Create a subject for your email." />
+
+  <Step title="Optionally define other email fields.">
+    Resend's Broadcast editor allows you to specify optional fields such as a different Reply-to address, a [topic](/docs/dashboard/topics/introduction), preview text for email clients, and a scheduled time to send.
+  </Step>
+
+  <Step title="Write your email content.">
+    Use `/` commands in the Broadcast editor for UI elements such as headings, lists, and images. You can also [compose your body text in Markdown](#markdown-support).
+  </Step>
+
+  <Step title="Use the sidebar to add custom styles.">
+    When you select an element of your Broadcast, such as text, images, or the entire page, contextual styling menu options show in the page sidebar. [Choose colors, sizes, layouts, and more](#custom-styling) or add your own global CSS styles directly in the editor.
+  </Step>
+
+  <Step title="Add an unsubscribe link.">
+    Use the [Resend unsubscribe footer](#broadcast-unsubscribe-link) to allow your contacts to indicate they no longer want to receive your marketing emails.
+  </Step>
+
+  <Step title="Send yourself a test email.">
+    Click `Test email` and add one or more email addresses to receive your test email and preview how your Broadcast will look in your own email. If applicable, you can add test data for contact properties used in the Broadcast when sending a test email.
+  </Step>
+
+  <Step title="Review your Broadcast.">
+    Click **Review** to prompt Resend's review feature, which checks for for any errors or concerns with your Broadcast and helps you catch common mistakes before sending.
+
+    You may be forced to address some issues before you are allowed to send your email.
+  </Step>
+
+  <Step title="Slide to send.">
+    When there are no errors, the "Slide to send" element will activate. Slide the arrow to confirm that you are ready to send immediately, or at the configured scheduled time.
+
+    Alternatively, exit the editor to leave your Broadcast saved as a draft. It is automatically saved as you compose.
+  </Step>
+</Steps>
+
+## Markdown Support
+
+You can also write your emails using Markdown headings, lists, italic, bold, links, and quotes.
+
+If you copy and paste content from other rich or plain text applications, the editor maintains formatting consistency.
 
 <video />
 
-### Markdown Support
-
-You can also write your emails using Markdown. This works with headings, lists, and quotes. It also works with italic, bold, and links.
-
-If you copy and paste content from applications like Notion, Google Docs, or iA Writer, the editor maintains formatting consistency.
-
-<video />
-
-### Custom Styling
+## Custom Styling
 
 You can customize the look and feel of your email by changing **global styles** such as the background color, link color, and container size, allowing you to create emails aligned with your brand identity.
 
-To do this, click on **Styles** at the top left of the Broadcast editor. You can edit specific images or lines of texts by selecting or highlighting them prior to clicking on **Styles**.
+To do this, click on **Styles** at the top left of the Broadcast editor. You can edit specific images or lines of text by selecting or highlighting them prior to clicking on **Styles**.
 
 <video />
 
-You can also edit individual styles for each component. These include the font size, font weight, letter spacing, line height, and text alignment. You can also set custom properties for each component, such as image alt, button links, and social links.
+You can also edit individual styles for each component, including the font size, font weight, letter spacing, line height, and text alignment. You can also set custom properties for each component, such as image alt, button links, and social links.
 
 <video />
 
-### Personalize your content
+The editor additionally includes a built-in AI editor that can style and edit
+your content, or `@` mention other Broadcasts for design or content inspiration.
 
-When creating broadcasts, you can include dynamic audience data to personalize the email content.
+## Personalize your content
+
+When creating Broadcasts, you can include dynamic audience data to personalize the email content.
+
+Add placeholders for your [contact properties](/docs/dashboard/audiences/properties) using the following notation:
 
 * `{{{contact.first_name|fallback}}}`
 * `{{{contact.last_name|fallback}}}`
 * `{{{contact.email}}}`
-* `{{{RESEND_UNSUBSCRIBE_URL}}}`
 
-When you include the `{{{RESEND_UNSUBSCRIBE_URL}}}` placeholder in the call, Resend includes an unsubscribe link in the email to automatically handle unsubscribe requests.
+## Broadcast unsubscribe link
 
-<Note>
-  Learn how to create a [custom Unsubscribe
-  Page](/docs/dashboard/settings/unsubscribe-page).
-</Note>
+Resend generates a unique link for each recipient and each Broadcast. Use `{{{RESEND_UNSUBSCRIBE_URL}}}` as the link target in your footer to send readers to your unsubscribe page.
 
-### Testing & Sending
+<img alt="Unsubscribe Link" />
 
-Once you're finished writing your email, you can preview it in your personal inbox or send it to your team for feedback.
+When a contact clicks this link, they will be presented with a preference page where they can update their subscription preferences [per topic](/docs/dashboard/topics/introduction) or unsubscribe from all of your emails.
+
+<img alt="Automatic Unsubscribes" />
+
+You can [customize your unsubscribe page with your branding](/docs/dashboard/settings/unsubscribe-page) from your team settings.
+
+<img alt="See Topics on the Unsubscribe Page" />
+
+## Testing & Sending
+
+Once you're finished writing your email, preview it in your personal inbox or send it to your team for feedback.
 
 To do this, click on **Test Email** on the top right of your screen. Enter in the email address you'd like to send your email to, and then click on **Send Test Email** to complete.
 
@@ -23487,76 +23835,114 @@ Once you're ready to send your email to your Audience, click on **Send**, and sl
 
 <video />
 
-**Note**: Test emails do not include any custom Reply-To address that may have been configured. This behavior is limited to test mode and does not affect actual email sends.
+<Info>
+  Test emails do not include any custom Reply-To address. This behavior is
+  limited to test mode and does not affect actual email sends.
+</Info>
 
-## Managing Multiple Broadcasts
+## Cancel a Broadcast
 
-You can perform bulk actions on multiple broadcasts at once to efficiently manage your campaigns.
+You can [cancel a Broadcast](/docs/knowledge-base/how-do-i-cancel-a-broadcast) while it is still sending by clicking on the Broadcast's **Cancel** button in the Dashboard. Canceling stops the send and cancels all queued deliveries, so no further emails go out.
 
-### Bulk Delete Drafts
+This only stops delivery of emails that have not yet been sent. Emails that have already been delivered cannot be recalled.
 
-To delete multiple draft broadcasts:
 
-1. Select the broadcasts you want to delete by clicking the checkboxes next to each broadcast
-2. Click **Delete** in the bottom action bar
-3. Type the broadcast name (for single selection) or `DELETE N BROADCASTS` (for multiple) to confirm
-4. Press **Cmd+Enter** or click **Delete broadcasts** to complete
+# Sending Broadcasts
+Source: https://resend.com/docs/dashboard/broadcasts/introduction
 
-You can also use keyboard shortcuts:
+An introduction to sending bulk marketing emails with Resend.
 
-* **Cmd+A** to select all broadcasts on the current page
-* **Backspace** to open the delete confirmation modal
+## Sending marketing emails
 
-<Note>
-  Only draft broadcasts can be deleted. Sent or queued broadcasts cannot be
-  removed.
-</Note>
+Resend provides all the tools you need to send bulk marketing emails to your Contacts. These are useful for:
 
-### Bulk Cancel Schedules
+* Newsletters
+* Product Launches
+* Investor Updates
+* Promotions
+* Changelogs
 
-To cancel the schedule for multiple scheduled broadcasts:
+Resend's Broadcast features include tools for content creation, contact management, and performance tracking while handling queuing, throttling, and scheduling for you so that you don't have to roll your own infrastructure.
 
-1. Select the scheduled broadcasts you want to cancel
-2. Click **Cancel schedule** in the bottom action bar
-3. Type `CANCEL` to confirm
-4. Press **Cmd+Enter** or click **Cancel schedules** to complete
+<Tip>
+  To send transactional emails, use the
+  [Sending](/docs/dashboard/emails/introduction) feature.
+</Tip>
 
-When you cancel a scheduled broadcast, it returns to draft status and won't be sent at the scheduled time.
+## Broadcast features
 
-<Note>
-  Canceling a broadcast only stops emails that haven't been sent yet. Any emails
-  already delivered cannot be recalled. If a broadcast is mid-send (`queued`),
-  canceling halts delivery to the remaining recipients.
-</Note>
+With Resend's Broadcast features, you can:
 
-### Using Command Palette
+* Compose, schedule, and send marketing emails using a [no-code editor](/docs/dashboard/broadcasts/editor) directly in your Dashboard.
+* Organize your contacts into [segments](/docs/dashboard/segments/introduction) and send bulk emails to only targeted contacts.
+* Categorize your marketing emails by [topics](/docs/dashboard/topics/introduction) to allow recipients to choose which emails to receive.
+* Turn your emails into reusable [templates](/docs/dashboard/templates/introduction).
+* [Track performance metrics](/docs/dashboard/broadcasts/performance-tracking) such as delivery, click, and open rates.
 
-You can also access bulk actions through the command palette (Cmd+K):
+## Quickstart
 
-* **Select all** - Select all broadcasts on the current page
-* **Delete selected** - Delete selected draft broadcasts
-* **Cancel schedule** - Cancel schedules for selected broadcasts
+You can send bulk marketing emails from [a verified domain](/docs/dashboard/domains/introduction) to a [segment](/docs/dashboard/segments/introduction) of your contact list.
 
-## Clone as Template
+<Tip>
+  You can create a draft Broadcast and send a test email to preview your content
+  even before you add any contacts. However, you will need to create a segment
+  before you can send your Broadcast.
+</Tip>
 
-You can turn any sent Broadcast into a [reusable Template](/docs/dashboard/templates/introduction) by clicking the more options button <span><Icon icon="ellipsis" /></span> next to a Broadcast and choosing **Clone as template**.
+<Steps>
+  <Step title="Add contacts.">
+    [Add or import contacts](/docs/dashboard/audiences/contacts#add-contacts)
+    manually or programmatically. You can also upload a `.csv` file of existing
+    contacts.
+  </Step>
 
-Cloning reuses a Broadcast's design and content as a starting point for transactional emails.
+  <Step title="Create a segment and add contacts.">
+    Broadcasts are sent to a [segment](/docs/dashboard/segments/introduction) of your
+    audience.
+  </Step>
 
-## Sending a Broadcast from the Broadcast API
+  <Step title="Write and send your Broadcast.">
+    [Create and send a Broadcast entirely using the no-code
+    editor](/docs/dashboard/broadcasts/editor). Alternatively, you can [use the
+    Broadcast API to build and distribute your
+    Broadcast](/docs/dashboard/broadcasts/send-broadcast-with-api) from your
+    application.
+  </Step>
 
-You can also send your Broadcasts from the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
+  <Step title="Check your performance.">
+    View the details of any sent Broadcast in the [**Broadcasts Dashboard
+    Page**](https://resend.com/broadcasts) to see real-time deliverability
+    metrics, open and click tracking (if enabled), and subscriber actions.
+  </Step>
+</Steps>
 
-The Broadcast API offers 6 endpoints for programmatically creating, updating, and sending broadcasts.
+## Choose your infrastructure
 
-## Understand broadcast statuses
+You can build and send your Broadcasts entirely from the [Resend Dashboard](https://resend.com/broadcasts). This allows all members of your team to create and manage every aspect of your marketing emails.
 
-Here are all the statuses that can be associated with a broadcast:
+To create, send, and manage Broadcasts from your application, you can also use a variety of tools:
 
-* `draft`: The broadcast is a draft. Drafts can be edited, deleted, or scheduled for sending.
-* `scheduled`: The broadcast is scheduled to be sent at a specific time. Scheduled broadcasts can have their schedule canceled, which returns them to draft status and prevents any emails from being sent.
-* `sent`: The broadcast was sent.
-* `queued`: The broadcast is queued for delivery. Canceling a queued broadcast stops delivery to the remaining recipients only. Emails already sent cannot be recalled.
+* [SDK](/docs/sdks): send with an SDK built for your language
+* [Integrations](/docs/integrations): send from a framework or tool you already use
+* [API](/docs/api-reference/emails/send-email): send with raw cURL calls
+* [CLI](/docs/cli#emails): send emails from the terminal
+* [MCP](/docs/mcp-server): send through your agent with MCP
+
+<Info>
+  You can also create [automations](/docs/dashboard/automations/introduction) for
+  repeatable transactional emails like welcoming new subscribers, and Broadcast
+  needs like updating your contact list.
+</Info>
+
+See how to use Resend's Broadcast and contact management features in the [related guides](#related-guides).
+
+## Manage your Broadcasts
+
+You can view and manage your Broadcasts from the [Broadcasts Dashboard page](https://resend.com/broadcasts).
+
+You can also [manage your Broadcasts through the Broadcast API](/docs/api-reference/broadcasts/create-broadcast) which offers endpoints for programmatically creating, updating, and sending Broadcasts. Many of these actions can also be performed with [Resend Broadcast CLI commands](/docs/cli#broadcasts) and [AI building tools](/docs/ai-onboarding). You can also create [automations](/docs/dashboard/automations/introduction) for workflows related to your Broadcasts, such as managing your contact list.
+
+Learn more about [managing your Broadcasts](/docs/dashboard/broadcasts/manage-broadcasts) in the dedicated guide.
 
 ## Export your data
 
@@ -23587,6 +23973,100 @@ All admins on your team can securely access the export for 7 days. Unavailable e
   team can view your exports, but only admins can download the data.
 </Note>
 
+## Related Guides
+
+See how to use Resend's Broadcast features.
+
+<CardGroup>
+  <Card title="No-code editor" icon="pen-line" href="/dashboard/broadcasts/editor" />
+
+  <Card title="Send with API" icon="paper-plane-top" href="/dashboard/broadcasts/send-broadcast-with-api" />
+
+  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/dashboard/broadcasts/manage-broadcasts" />
+
+  <Card title="Contacts" icon="id-card" href="/dashboard/audiences/contacts" />
+
+  <Card title="Segments" icon="chart-pie" href="/dashboard/segments/introduction" />
+
+  <Card title="Topics" icon="hashtag" href="/dashboard/topics/introduction" />
+
+  <Card title="Track performance" icon="chart-column" href="/dashboard/broadcasts/performance-tracking" />
+
+  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/dashboard/audiences/managing-unsubscribe-list" />
+</CardGroup>
+
+
+# Manage Broadcasts
+Source: https://resend.com/docs/dashboard/broadcasts/manage-broadcasts
+
+Learn how to view, update, and delete your Broadcasts.
+
+After you create your first Broadcast, all members of your team can view and manage existing Broadcast details directly in the [**Broadcasts** Dashboard page](https://resend.com/broadcasts). You can also perform bulk actions (cancel, delete) by selecting multiple Broadcasts.
+
+To manage your marketing campaigns directly from your application, you can use the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast) endpoints to list, retrieve, update, and delete your existing Broadcasts.
+
+You can also manage your Broadcasts using [Resend CLI commands](/docs/cli#broadcasts) and [AI building tools](/docs/ai-onboarding).
+
+## View Broadcasts
+
+See the name, [status](#understand-broadcast-statuses), and created date of all your Broadcasts from the Emails Dashboard page. These can also be filtered by status and [audience](/docs/dashboard/segments/introduction).
+
+Select any individual Broadcast to view its details. The view will depend on the status of the email. For example, Broadcasts that have been sent will show deliverability metrics as well as your content as a preview, plain text, and HTML.
+
+Clicking on a draft Broadcast will bring up the Dashboard editor for further editing.
+
+## Understand Broadcast statuses
+
+Here are all the statuses that can be associated with a Broadcast:
+
+* `draft`: The Broadcast is a draft. Drafts can be edited, deleted, or scheduled for sending.
+* `scheduled`: The Broadcast is scheduled to be sent at a specific time. Scheduled Broadcasts can have their schedule canceled, which returns them to draft status and prevents any emails from being sent.
+* `sent`: The Broadcast was sent.
+* `queued`: The Broadcast is queued for delivery. Canceling a queued Broadcast stops delivery to the remaining recipients only. Emails already sent cannot be recalled.
+
+## Edit Broadcasts
+
+You can edit the content and properties of any draft or scheduled Broadcast. Once a Broadcast has been sent, only its name can be updated.
+
+To edit an existing draft or scheduled Broadcast in the Dashboard:
+
+1. Click the name of the Broadcast you want to edit.
+2. Use the Dashboard editor to update any properties or content.
+3. Exit the editor when you have finished editing. Your changes will be automatically saved.
+
+## Cancel scheduled Broadcasts
+
+Canceling a Broadcast only stops emails that haven't been sent yet. Any emails already delivered cannot be recalled. If a Broadcast is mid-send (`queued`), canceling halts delivery to the remaining recipients.
+
+To cancel the schedule for one or more scheduled Broadcasts in the Dashboard:
+
+1. Select the scheduled Broadcast(s) you want to cancel.
+2. Click **Cancel schedule** in the bottom action bar.
+3. Type `CANCEL` to confirm.
+4. Press **Cmd+Enter** or click **Cancel schedules** to complete.
+
+When you cancel a scheduled Broadcast, it returns to draft status and won't be sent at the scheduled time.
+
+## Delete draft Broadcasts
+
+Only draft (including scheduled) Broadcasts can be deleted. Once a Broadcast has been sent or queued, it can't be deleted.
+
+To delete one or more draft Broadcasts in the Dashboard:
+
+1. Select the Broadcast(s) you want to delete by clicking the checkboxes next to each Broadcast.
+2. Click **Delete** in the bottom action bar.
+3. Type the Broadcast name (for single selection) or `DELETE N BROADCASTS` (for multiple) to confirm.
+4. Press **Cmd+Enter** or click **Delete Broadcasts** to complete.
+
+You can also use keyboard shortcuts:
+
+* **Cmd+A** to select all Broadcasts on the current page
+* **Backspace** to open the delete confirmation modal
+
+## API Reference
+
+For complete API documentation, see the [Broadcasts API reference](/docs/api-reference/broadcasts/create-broadcast).
+
 
 # Performance Tracking
 Source: https://resend.com/docs/dashboard/broadcasts/performance-tracking
@@ -23600,6 +24080,512 @@ You can view these insights by clicking on [Broadcast](https://resend.com/broadc
 <video />
 
 Please note, at times, open rates can be inaccurate for a number of reasons due to the way inbox providers handle incoming emails. You can [read more about this here.](https://resend.com/docs/knowledge-base/why-are-my-open-rates-not-accurate)
+
+
+# Compose and send Broadcasts with the API
+Source: https://resend.com/docs/dashboard/broadcasts/send-broadcast-with-api
+
+Send marketing emails using the Broadcasts API.
+
+Resend's [no-code Broadcast editor](/docs/dashboard/broadcasts/editor) allows all members of your team to write and send email campaigns directly in the Resend Dashboard, without having to ask for help from developers.
+
+To programmatically create, update, and send Broadcasts, you can use the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast). There are also API endpoints to list, retrieve, and delete Broadcasts, allowing you to manage your marketing campaigns directly from your application.
+
+## Create Broadcasts
+
+The [`create()` method](/docs/api-reference/broadcasts/create-broadcast) takes the same sending properties that can be set in the Editor composer. This allows developers to also create drafts without sending, schedule sending for a time in the future, [personalize with dynamic content data](/docs/dashboard/broadcasts/editor#personalize-your-content), and more.
+
+Set the `send` property to `true` to send immediately or to schedule the Broadcast, or leave `false` (the default) to create a draft:
+
+<CodeGroup>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  // Create a draft Broadcast
+  const { data, error } = await resend.broadcasts.create({
+    segmentId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    from: 'Acme <onboarding@resend.dev>',
+    subject: 'hello world',
+    html: 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+  });
+
+  // Create and send immediately
+  const { data, error } = await resend.broadcasts.create({
+    segmentId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    from: 'Acme <onboarding@resend.dev>',
+    subject: 'hello world',
+    html: 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+    send: true,
+  });
+
+  // Create and schedule
+  const { data, error } = await resend.broadcasts.create({
+    segmentId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    from: 'Acme <onboarding@resend.dev>',
+    subject: 'hello world',
+    html: 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+    send: true,
+    scheduledAt: 'in 1 hour',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Create a draft Broadcast
+  $resend->broadcasts->create([
+    'segment_id' => '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    'from' => 'Acme <onboarding@resend.dev>',
+    'subject' => 'hello world',
+    'html' => 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+  ]);
+
+  // Create and send immediately
+  $resend->broadcasts->create([
+    'segment_id' => '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    'from' => 'Acme <onboarding@resend.dev>',
+    'subject' => 'hello world',
+    'html' => 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+    'send' => true,
+  ]);
+
+  // Create and schedule
+  $resend->broadcasts->create([
+    'segment_id' => '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+    'from' => 'Acme <onboarding@resend.dev>',
+    'subject' => 'hello world',
+    'html' => 'Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}',
+    'send' => true,
+    'scheduled_at' => 'in 1 hour',
+  ]);
+  ```
+
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  // Create a draft Broadcast
+  params: resend.Broadcasts.CreateParams = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+  }
+  resend.Broadcasts.create(params)
+
+  // Create and send immediately
+  params: resend.Broadcasts.CreateParams = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+  }
+  resend.Broadcasts.create(params)
+
+  // Create and schedule
+  params: resend.Broadcasts.CreateParams = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+    "scheduled_at": "in 1 hour",
+  }
+  resend.Broadcasts.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  // Create a draft Broadcast
+  params = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "hello world",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+  }
+  Resend::Broadcasts.create(params)
+
+  // Create and send immediately
+  params = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+  }
+  Resend::Broadcasts.create(params)
+
+  // Create and schedule
+  params = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+    "scheduled_at": "in 1 hour",
+  }
+  Resend::Broadcasts.create(params)
+
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  // Create a draft Broadcast
+  params := &resend.CreateBroadcastRequest{
+    SegmentId: "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    From:       "Acme <onboarding@resend.dev>",
+    Html:       "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    Subject:    "Hello, world!",
+  }
+  broadcast, _ := client.Broadcasts.Create(params)
+
+  // Create and send immediately
+  params = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+  }
+  broadcast, _ := client.Broadcasts.Create(params)
+
+  // Create and schedule
+  params = {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "Hello, world!",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+    "scheduled_at": "in 1 hour",
+  }
+  broadcast, _ := client.Broadcasts.Create(params)
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::CreateBroadcastOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let segment_id = "78261eea-8f8b-4381-83c6-79fa7120f1cf";
+    let from = "Acme <onboarding@resend.dev>";
+    let subject = "hello world";
+    let html = "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}";
+
+    let opts = CreateBroadcastOptions::new(segment_id, from, subject).with_html(html);
+
+    // Create a draft Broadcast
+    let _broadcast = resend.broadcasts.create(opts.clone()).await?;
+
+    // Create and send immediately
+    let _broadcast = resend
+      .broadcasts
+      .create(opts.clone().with_send(true))
+      .await?;
+
+    // Create and schedule
+    let _broadcast = resend
+      .broadcasts
+      .create(opts.with_send(true).with_scheduled_at("in 1 hour"))
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  // Create a draft Broadcast
+  CreateBroadcastOptions params = CreateBroadcastOptions.builder()
+      .segmentId("78261eea-8f8b-4381-83c6-79fa7120f1cf")
+      .from("Acme <onboarding@resend.dev>")
+      .subject("hello world")
+      .html("Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}")
+      .build();
+  CreateBroadcastResponseSuccess data = resend.broadcasts().create(params);
+
+  // Create and send immediately
+  CreateBroadcastOptions params = CreateBroadcastOptions.builder()
+      .segmentId("78261eea-8f8b-4381-83c6-79fa7120f1cf")
+      .from("Acme <onboarding@resend.dev>")
+      .subject("hello world")
+      .html("Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}")
+      .send(true)
+      .build();
+  CreateBroadcastResponseSuccess data = resend.broadcasts().create(params);
+
+  // Create and schedule
+  CreateBroadcastOptions params = CreateBroadcastOptions.builder()
+      .segmentId("78261eea-8f8b-4381-83c6-79fa7120f1cf")
+      .from("Acme <onboarding@resend.dev>")
+      .subject("hello world")
+      .html("Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}")
+      .send(true)
+      .scheduledAt("in 1 hour")
+      .build();
+  CreateBroadcastResponseSuccess data = resend.broadcasts().create(params);
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  // Create a draft Broadcast
+  var resp = await resend.BroadcastAddAsync(
+      new BroadcastData()
+      {
+          DisplayName = "Example Broadcast",
+          SegmentId = new Guid( "78261eea-8f8b-4381-83c6-79fa7120f1cf" ),
+          From = "Acme <onboarding@resend.dev>",
+          Subject = "Hello, world!",
+          HtmlBody = "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+      }
+  );
+
+  Console.WriteLine( "Broadcast Id={0}", resp.Content );
+
+  // Create and send immediately
+  var resp = await resend.BroadcastAddAsync(
+      new BroadcastData()
+      {
+          DisplayName = "Example Broadcast",
+          SegmentId = new Guid( "78261eea-8f8b-4381-83c6-79fa7120f1cf" ),
+          From = "Acme <onboarding@resend.dev>",
+          Subject = "Hello, world!",
+          HtmlBody = "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+          Send = true,
+      }
+  );
+
+  Console.WriteLine( "Broadcast Id={0}", resp.Content );
+
+  // Create and schedule
+  var resp = await resend.BroadcastAddAsync(
+      new BroadcastData()
+      {
+          DisplayName = "Example Broadcast",
+          SegmentId = new Guid( "78261eea-8f8b-4381-83c6-79fa7120f1cf" ),
+          From = "Acme <onboarding@resend.dev>",
+          Subject = "Hello, world!",
+          HtmlBody = "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+          Send = true,
+          ScheduledAt = DateTime.UtcNow.AddHours( 1 ),
+      }
+  );
+
+  Console.WriteLine( "Broadcast Id={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Create a draft Broadcast
+  curl -X POST 'https://api.resend.com/broadcasts' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'
+  {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "hello world",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}"
+  }'
+
+  # Create and send immediately
+  curl -X POST 'https://api.resend.com/broadcasts' \
+   -H 'Authorization: Bearer re_xxxxxxxxx' \
+   -H 'Content-Type: application/json' \
+   -d $'
+  {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "hello world",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true
+  }'
+
+  # Create and schedule
+  curl -X POST 'https://api.resend.com/broadcasts' \
+   -H 'Authorization: Bearer re_xxxxxxxxx' \
+   -H 'Content-Type: application/json' \
+   -d $'
+  {
+    "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+    "from": "Acme <onboarding@resend.dev>",
+    "subject": "hello world",
+    "html": "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}",
+    "send": true,
+    "scheduled_at": "in 1 hour"
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Create a draft Broadcast
+  resend broadcasts create \
+    --from "Acme <onboarding@resend.dev>" \
+    --subject "hello world" \
+    --segment-id 78261eea-8f8b-4381-83c6-79fa7120f1cf \
+    --html "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}"
+
+  # Create and send immediately
+  resend broadcasts create \
+    --from "Acme <onboarding@resend.dev>" \
+    --subject "hello world" \
+    --segment-id 78261eea-8f8b-4381-83c6-79fa7120f1cf \
+    --html "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}" \
+    --send
+
+  # Create and schedule
+  resend broadcasts create \
+    --from "Acme <onboarding@resend.dev>" \
+    --subject "hello world" \
+    --segment-id 78261eea-8f8b-4381-83c6-79fa7120f1cf \
+    --html "Hi {{{contact.first_name|there}}}, you can unsubscribe here: {{{RESEND_UNSUBSCRIBE_URL}}}" \
+    --send \
+    --scheduled-at "in 1 hour"
+  ```
+</CodeGroup>
+
+## Send Broadcasts
+
+Use the [`send()` method](/docs/api-reference/broadcasts/send-broadcast) to send or schedule an existing API-created Broadcast by ID. Broadcasts created using the Dashboard Broadcast editor cannot be sent with this endpoint.
+
+<CodeGroup>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.broadcasts.send(
+    '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+    {
+      scheduledAt: 'in 1 min',
+    },
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->broadcasts->send('559ac32e-9ef5-46fb-82a1-b76b840c0f7b', [
+    'scheduled_at' => 'in 1 min',
+  ]);
+  ```
+
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Broadcasts.SendParams = {
+    "broadcast_id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+    "scheduled_at": "in 1 min"
+  }
+  resend.Broadcasts.send(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    broadcast_id: "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+    scheduled_at: "in 1 min"
+  }
+  Resend::Broadcasts.send(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	sendParams := &resend.SendBroadcastRequest{
+  		BroadcastId: "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+  		ScheduledAt: "in 1 min",
+  	}
+
+  	client.Broadcasts.Send(sendParams)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::SendBroadcastOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts =
+      SendBroadcastOptions::new("559ac32e-9ef5-46fb-82a1-b76b840c0f7b").with_scheduled_at("in 1 min");
+
+    let _broadcast = resend.broadcasts.send(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  SendBroadcastOptions params = SendBroadcastOptions.builder()
+      .scheduledAt("in 1 min")
+      .build();
+
+  SendBroadcastResponseSuccess data = resend.broadcasts().send(params,
+      "498ee8e4-7aa2-4eb5-9f04-4194848049d1");
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  // Send now
+  await resend.BroadcastSendAsync( new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ) );
+
+  // Send in 5 mins
+  await resend.BroadcastScheduleAsync(
+      new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ),
+      DateTime.UtcNow.AddMinutes( 5 ) );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/send' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "scheduled_at": "in 1 min"
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend broadcasts send 559ac32e-9ef5-46fb-82a1-b76b840c0f7b --scheduled-at "in 1 min"
+  ```
+</CodeGroup>
+
+## Other ways to send
+
+You can also send and manage Broadcasts using [Resend CLI commands](/docs/cli#broadcasts) and [AI building tools](/docs/ai-onboarding).
+
+## API Reference
+
+For complete API documentation, see the [Broadcasts API reference](/docs/api-reference/broadcasts/create-broadcast).
 
 
 # Implementing BIMI
@@ -23738,12 +24724,34 @@ Source: https://resend.com/docs/dashboard/domains/claim
 
 Claim a domain that is already verified by another team.
 
-When you try to add a domain that another team has already verified, Resend
-blocks the creation and tells you the domain can be claimed. Claiming lets you
-prove control of the domain over DNS and transfer it to your team, entirely
-over the API.
+A domain can only be active on one Resend team at a time. When you try to add a domain that has already been verified by another team, Resend will alert you that the domain is already in use.
 
-## How it works
+* **If you own the team where the domain is registered**, delete the domain so you can add it in your desired team.
+
+* **If you do not have access to the team where the domain is registered**, you can prove ownership and [claim the domain](#claim-a-domain) by adding a TXT record to your DNS and then verifying the claim.
+
+## Why This Happens
+
+Common reasons a domain you own may already be registered:
+
+* A team member or contractor added it to a separate Resend team.
+* You are logged into a different Resend team than the one where the domain was originally added.
+
+Before claiming a domain, check with your team members or in your other teams to see if you can locate the verified domain and [transfer it between teams](/docs/dashboard/domains/manage-domains#transfer-a-domain-between-teams) instead.
+
+## Claim a domain
+
+Claim a domain by adding a TXT record to your DNS, or do it in one click via DomainConnect for supported registrars.
+
+This record is provided along with the alert in your Dashboard, or when you [use the Domains API](#using-the-domains-API) and call the [**Claim Domain** API endpoint](/docs/api-reference/domains/claim-domain).
+
+<img alt="Domain claim" />
+
+After adding the TXT record, return to the dashboard and click **I've added the records**.
+
+Resend verifies the domain ownership, releases the domain from the previous team, and shows you the records to add to your DNS for sending or receiving. See the full steps to [add a domain](/docs/add-a-domain).
+
+## Using the Domains API
 
 <Steps>
   <Step title="Start a claim">
@@ -23771,25 +24779,167 @@ over the API.
 
 ## Claim status
 
-| Status       | Meaning                                                 |
-| ------------ | ------------------------------------------------------- |
-| `pending`    | Waiting for DNS verification.                           |
-| `verified`   | DNS proof accepted. The transfer is in progress.        |
-| `completed`  | The domain now belongs to your team.                    |
-| `blocked`    | A safety check blocked the claim. See `blocked_reason`. |
-| `expired`    | The claim window passed before it completed.            |
-| `superseded` | A newer claim replaced this one.                        |
-| `canceled`   | The claim was canceled.                                 |
-| `failed`     | The claim did not complete.                             |
+| Status       | Meaning                                                  |
+| ------------ | -------------------------------------------------------- |
+| `pending`    | Waiting for DNS verification.                            |
+| `verified`   | DNS proof accepted; the transfer is in progress.         |
+| `completed`  | The domain now belongs to your team.                     |
+| `blocked`    | A safety check blocked the claim — see `blocked_reason`. |
+| `expired`    | The claim window passed before it completed.             |
+| `superseded` | A newer claim replaced this one.                         |
+| `canceled`   | The claim was canceled.                                  |
+| `failed`     | The claim could not be completed.                        |
 
 When a claim is `blocked`, `blocked_reason` explains why: `grace_period`,
 `recent_owner_activity`, or `pending_scheduled_emails`.
 
 ## Canceling a claim
 
-Cancel a pending claim by deleting its placeholder domain with
+Cancel a pending claim initiated with the API by deleting its placeholder domain with
 [Delete Domain](/docs/api-reference/domains/delete-domain), using the `domain_id`
 from the `domain_claim` object.
+
+## Support
+
+If you can't locate your domain in another team, and you are unable to successfully claim the domain, contact [Resend support](https://resend.com/help) and share the domain name so the team can help you recover access.
+
+
+# Configure a custom Return Path
+Source: https://resend.com/docs/dashboard/domains/custom-return-path
+
+Learn how to configure a custom Return Path for your verified domain in Resend.
+
+By default, Resend uses the `send` subdomain for the Return-Path address.
+
+You can provide a custom Return-Path address when you [add a new domain in the Dashboard](/docs/add-a-domain) under **Advanced options**, or by setting the optional `custom_return_path` parameter when [creating or updating a domain via the API](/docs/api-reference/domains/create-domain) or with [a domains CLI command](/docs/cli#domains).
+
+<img alt="Custom Return Path" />
+
+For the API, optionally pass the custom return path parameter.
+
+<CodeGroup>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  resend.domains.create({ name: 'example.com', customReturnPath: 'outbound' });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->domains->create([
+    'name' => 'example.com',
+    'custom_return_path' => 'outbound'
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Domains.CreateParams = {
+    "name": "example.com",
+    "custom_return_path": "outbound"
+  }
+
+  resend.Domains.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  params = {
+    name: "example.com",
+    custom_return_path: "outbound"
+  }
+  domain = Resend::Domains.create(params)
+  puts domain
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateDomainRequest{
+  		Name:             "example.com",
+  		CustomReturnPath: "outbound",
+  	}
+
+  	domain, err := client.Domains.Create(params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::CreateDomainOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _domain = resend
+      .domains
+      .add(CreateDomainOptions::new("example.com").with_custom_return_path("outbound"))
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateDomainOptions params = CreateDomainOptions
+                  .builder()
+                  .name("example.com")
+                  .customReturnPath("outbound")
+                  .build();
+
+          CreateDomainResponse domain = resend.domains().create(params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.DomainAddAsync( new DomainAddData {
+     DomainName = "example.com",
+     CustomReturnPath = "outbound"
+  } );
+  Console.WriteLine( "Domain Id={0}", resp.Content.Id );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/domains' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "name": "example.com",
+    "custom_return_path": "outbound"
+  }'
+  ```
+</CodeGroup>
+
+Custom return paths must adhere to the following rules:
+
+* Must be 63 characters or less.
+* Must start with a letter, and end with a letter or number.
+* Must contain only letters, numbers, and hyphens.
+
+Avoid setting values that could undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
 
 
 # Implementing DMARC
@@ -23919,31 +25069,87 @@ An email must pass either SPF or DKIM checks (but not necessarily both) to achie
 </Note>
 
 
-# Managing Domains
+# Verified Domains
 Source: https://resend.com/docs/dashboard/domains/introduction
 
-Visualize all the domains on the Resend Dashboard.
+An introduction to verified domains in Resend.
 
-Resend sends emails using a domain you own (not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
+## Verified domains
 
-<Warning>
-  Domain not verifying? [Try
-  this](/docs/knowledge-base/what-if-my-domain-is-not-verifying).
-</Warning>
+Resend sends emails using a domain you own (i.e., not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send emails with Resend. You can optionally [configure your domain to receive emails](/docs/dashboard/receiving/custom-domains).
 
-## Domain management
+## Domain features
 
-You can view and manage your domains from the [Domains Dashboard](https://resend.com/domains). You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
+When you add a domain, you can choose to:
+
+* Add a [subdomain](#subdomains) instead of your root domain to communicate the kind of emails you send and receive, and for proper reputation segmentation.
+* Enable [open and click tracking](/docs/dashboard/domains/tracking) for your emails.
+* Configure [Enforced Transport Layer Security (TLS)](/docs/dashboard/domains/tls) to ensure that you only send encrypted emails.
+* Set a custom subdomain for the [Return-Path address](/docs/dashboard/domains/custom-return-path).
+* Choose which [geographical region](/docs/dashboard/domains/regions) to send emails from to reach your recipients sooner.
+
+After your domain is verified, you can:
+
+* Send and receive emails [using any email address at your domain](/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend#sender-email-addresses-in-resend) without any extra configuration.
+* Implement [DMARC](/docs/dashboard/domains/dmarc) and [BIMI](/docs/dashboard/domains/bimi) to build trust and improve inbox placement.
+
+## Subdomains
 
 We recommend sending your emails from one or more subdomains (e.g., `updates.example.com`) instead of your root domain to isolate your sending reputation and to clearly communicate your intent to your recipients.
 
-Each individual subdomain must be added and verified independently, and they will each be listed separately in your Dashboard.
+You can [add and verify](/docs/add-a-domain) multiple subdomains of the same domain (e.g. `newsletter.example.com` and `account.example.com`) for different sending purposes.
+
+For example, you can configure your newsletter for open and click tracking while keeping tracking disabled for your important transactional emails such as password resets.
 
 Learn more about [the benefits of sending emails from a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain).
 
+## Domain management
+
+You can view and manage your domains from the [Domains Dashboard page](https://resend.com/domains). The Dashboard allows all members of your team to create, verify, retrieve, update, and delete your domains.
+
+You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
+
+Learn more about [managing your domains](/docs/dashboard/domains/manage-domains).
+
+## Related Guides
+
+See how to use Resend's verified domain features.
+
+<CardGroup>
+  <Card title="Manage domains" icon="gear" href="/dashboard/domains/manage-domains" />
+
+  <Card title="Implement DMARC" icon="key" href="/dashboard/domains/dmarc" />
+
+  <Card title="Enable Tracking" icon="chart-line-up-down" href="/dashboard/domains/tracking" />
+
+  <Card title="Enforced TLS" icon="binary-lock" href="/dashboard/domains/tls" />
+
+  <Card title="Custom return path" icon="code-simple" href="/dashboard/domains/custom-return-path" />
+
+  <Card title="Choose region" icon="globe" href="/dashboard/domains/regions" />
+
+  <Card title="Claim a domain" icon="bell-concierge" href="/dashboard/domains/claim" />
+
+  <Card title="DNS provider guides" icon="book-atlas" href="/knowledge-base/cloudflare" />
+</CardGroup>
+
+
+# Managing Domains
+Source: https://resend.com/docs/dashboard/domains/manage-domains
+
+Learn how to view, update, and delete your verified domains in Resend.
+
+## Domain management
+
+You can view and manage your domains from the [Domains Dashboard page](https://resend.com/domains). You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
+
+All members of your team can create, verify, retrieve, update, and delete your domains.
+
 ## View domain details
 
-The [Domains dashboard](https://resend.com/domains) shows information about your domain name, its verification status, and history.
+The [Domains Dashboard page](https://resend.com/domains) shows information about each domain's name, its verification status, and history. You can also filter your domains list by [status](#understand-a-domain-status) and [region](/docs/dashboard/domains/regions) and perform bulk actions on multiple domains, such as [deleting domains](#delete-a-domain).
+
+You can also [retrieve a single domain](/docs/api-reference/domains/get-domain) or [list all domains](/docs/api-reference/domains/list-domains) via the API or SDKs, or use [CLI commands to view your domains](/docs/cli#domains).
 
 ## Understand a domain status
 
@@ -23964,160 +25170,27 @@ For each domain you have added, you can view the [DKIM](#what-are-dkim-records) 
 <img alt="Domain Details" />
 
 <Info>
-  Need specific help adding your records to a DNS provider? View our [knowledge
-  base DNS Guides](/docs/knowledge-base).
+  Need specific help adding your records to a DNS provider? View our [DNS
+  Guides](/docs/knowledge-base).
 </Info>
 
-## Configure open and click tracking
+## Update domain configuration
 
-Open and click tracking is disabled by default for all domains.
+When viewing an individual domain, you can update its configuration options for [TLS](/docs/dashboard/domains/tls) and [tracking](/docs/dashboard/domains/tracking). You can also [delete your domain](#delete-a-domain) if you no longer want it associated with your Resend team.
 
-You can enable it in the Resend Dashboard under the **Configuration** tab or programmatically.
+## Delete a domain
 
-<img alt="Open and Click Tracking" />
+Delete one or more domains by selecting them in your Domains Dashboard page and use the bulk action bar to delete all selected domains.
 
-Learn more about [open and click tracking](/docs/dashboard/domains/tracking).
+You can also delete a domain with the [Domains API](/docs/api-reference/domains/delete-domain), or with a [domains CLI command](/docs/cli#domains).
 
-## Configure Enforced Transport Layer Security (TLS)
+## Transfer a domain between teams
 
-Resend supports TLS 1.2, TLS 1.1 and TLS 1.0 for TLS connections, but only requires TLS for sending when Enforced TLS is configured.
+A domain can only be active on one Resend team at a time. For example, if someone else has already verified your domain in their own team, you will not be able to add it to yours.
 
-By default, Resend will attempt to make a secure connection, but will fall back to sending messages unencrypted when the receiving server does not support TLS.
+To transfer a domain between teams you or your team members own, you must [delete the domain](#delete-a-domain) from the team where it is verified and [add it as a new domain](/docs/add-a-domain) while logged in to the desired team.
 
-You can configure Enforced TLS in the Resend Dashboard under the **Configuration** tab or programmatically. This means that if the receiving server does not support TLS, your email will not be sent.
-
-Learn more about [Opportunistic TLS vs Enforced TLS](/docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls).
-
-## Custom Return Path
-
-By default, Resend will use the `send` subdomain for the Return-Path address. You can change this by setting the optional `custom_return_path` parameter when [creating a domain](/docs/api-reference/domains/create-domain) via the API or under **Advanced options** in the dashboard.
-
-<img alt="Custom Return Path" />
-
-For the API, optionally pass the custom return path parameter.
-
-<CodeGroup>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-
-  const resend = new Resend('re_xxxxxxxxx');
-
-  resend.domains.create({ name: 'example.com', customReturnPath: 'outbound' });
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
-
-  $resend->domains->create([
-    'name' => 'example.com',
-    'custom_return_path' => 'outbound'
-  ]);
-  ```
-
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
-
-  resend.api_key = "re_xxxxxxxxx"
-
-  params: resend.Domains.CreateParams = {
-    "name": "example.com",
-    "custom_return_path": "outbound"
-  }
-
-  resend.Domains.create(params)
-  ```
-
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  Resend.api_key = ENV["RESEND_API_KEY"]
-
-  params = {
-    name: "example.com",
-    custom_return_path: "outbound"
-  }
-  domain = Resend::Domains.create(params)
-  puts domain
-  ```
-
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
-
-  import "github.com/resend/resend-go/v3"
-
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
-
-  	params := &resend.CreateDomainRequest{
-  		Name:             "example.com",
-  		CustomReturnPath: "outbound",
-  	}
-
-  	domain, err := client.Domains.Create(params)
-  }
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{types::CreateDomainOptions, Resend, Result};
-
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
-
-    let _domain = resend
-      .domains
-      .add(CreateDomainOptions::new("example.com").with_custom_return_path("outbound"))
-      .await?;
-
-    Ok(())
-  }
-  ```
-
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
-
-  public class Main {
-      public static void main(String[] args) {
-          Resend resend = new Resend("re_xxxxxxxxx");
-
-          CreateDomainOptions params = CreateDomainOptions
-                  .builder()
-                  .name("example.com")
-                  .customReturnPath("outbound")
-                  .build();
-
-          CreateDomainResponse domain = resend.domains().create(params);
-      }
-  }
-  ```
-
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
-
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
-
-  var resp = await resend.DomainAddAsync( new DomainAddData {
-     DomainName = "example.com",
-     CustomReturnPath = "outbound"
-  } );
-  Console.WriteLine( "Domain Id={0}", resp.Content.Id );
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X POST 'https://api.resend.com/domains' \
-       -H 'Authorization: Bearer re_xxxxxxxxx' \
-       -H 'Content-Type: application/json' \
-       -d $'{
-    "name": "example.com",
-    "custom_return_path": "outbound"
-  }'
-  ```
-</CodeGroup>
-
-Custom return paths must adhere to the following rules:
-
-* Must be 63 characters or less
-* Must start with a letter, end with a letter or number, and contain only letters, numbers, and hyphens
-
-Avoid setting values that undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
+If you are unable to add a domain you own because it is already associated with a Resend team that you do not control, you can [claim the domain](/docs/dashboard/domains/claim).
 
 ## Export your data
 
@@ -24152,7 +25225,7 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 
 Sender Policy Framework (SPF) is an email authentication standard that includes all the IP addresses authorized to send email on behalf of your domain.
 
-The SPF configuration is made of a TXT DNS record that lists the IP addresses approved by the domain owner. It also includes an MX record that allows the recipient to send bounce and complaint feedback to your domain.
+The SPF configuration is made of a TXT DNS record that lists the IP addresses approved by the domain owner. Resend also generates an MX record that allows the recipient to send bounce and complaint feedback to your domain.
 
 <img alt="SPF Records" />
 
@@ -24163,28 +25236,6 @@ DomainKeys Identified Mail (DKIM) is an email security standard designed to make
 The DKIM configuration is stored as a TXT DNS record that contains a public key used to verify the authenticity of the email.
 
 <img alt="DKIM Records" />
-
-## FAQ
-
-<AccordionGroup>
-  <Accordion title="Does Resend support 2048-bit DKIM keys?">
-    No. Resend does not support 2048-bit DKIM keys. We sign outbound mail with
-    1024-bit DKIM keys, which are RFC-compliant, accepted by major mailbox
-    providers, and satisfy bulk sender requirements. Learn more about [DKIM key
-    length](/docs/knowledge-base/do-i-need-2048-dkim).
-  </Accordion>
-
-  <Accordion title="Where do the logos in the domain preview come from?">
-    While you add or configure a domain, the dashboard displays your brand's
-    logo as a decorative preview. It's illustrative only and does not change how
-    your emails appear in recipients' inboxes. Showing your logo in the inbox
-    requires [BIMI](/docs/dashboard/domains/bimi).
-
-    <a href="https://logo.dev" title="Logo API">
-      Logos are provided by Logo.dev.
-    </a>
-  </Accordion>
-</AccordionGroup>
 
 
 # Choosing a Region
@@ -24242,14 +25293,32 @@ If you'd like to switch the region your domain is set to:
 For more help, please reach out to [Support](https://resend.com/help) for assistance.
 
 
+# Configure Transport Layer Security (TLS)
+Source: https://resend.com/docs/dashboard/domains/tls
+
+Learn how to configure TLS for your verified domain in Resend.
+
+## Configure Enforced Transport Layer Security (TLS)
+
+Resend supports TLS 1.2, TLS 1.1 and TLS 1.0 for TLS connections, but only requires TLS for sending when Enforced TLS is configured.
+
+By default, Resend will attempt to make a secure connection, but will fall back to sending messages unencrypted when the receiving server does not support TLS. This is known as Opportunistic TLS.
+
+You can instead configure Enforced TLS in the Resend Dashboard under the **Configuration** tab or with the [Domains API](/docs/api-reference/domains/create-domain) or with [a domains CLI command](/docs/cli#domains). This means that if the receiving server does not support TLS, your email will not be sent.
+
+Learn more about [Opportunistic TLS vs Enforced TLS](/docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls).
+
+
 # Open and Click Tracking
 Source: https://resend.com/docs/dashboard/domains/tracking
 
 Track open and click rates of your emails.
 
-Open and click tracking is disabled by default for all domains.
+Open and click tracking is disabled by default for all domains. We suggest only tracking open rates for [Broadcasts](/docs/dashboard/broadcasts/introduction) to ensure that inbox providers do not mistakenly identify your [transactional emails](/docs/dashboard/emails/introduction) as marketing emails.
 
-You can enable it manually or programmatically. Once verified, all tracked links in your emails will use your tracking subdomain (e.g., `links.emails.example.com`).
+You can enable tracking in the Resend Dashboard under the **Configuration** tab or programmatically when you create a new domain or update an existing domain.
+
+Once verified, all tracked links in your emails will use your tracking subdomain (e.g., `links.emails.example.com`).
 
 <Tabs>
   <Tab title="Using the dashboard">
@@ -27276,18 +28345,112 @@ After checking if an email with the same idempotency key has already been sent, 
   * `409`: `concurrent_idempotent_requests` - another request with the same idempotency key is in progress. As it isn't finished yet, Resend can't return its original response, but it is safe to retry this request later if needed.
 
 
-# Managing Emails
+# Sending Emails
 Source: https://resend.com/docs/dashboard/emails/introduction
 
-Learn how to view and manage all sent emails on the Resend Dashboard.
+An introduction to sending emails with Resend.
+
+## Sending transactional emails
+
+Resend provides all the tools you need to send [transactional emails](/docs/email-types#send-transactional-emails) from your application. These are useful for:
+
+* order confirmations
+* password reset emails
+* account notifications
+
+<Tip>
+  To send bulk marketing emails, use the
+  [Broadcasts](/docs/dashboard/broadcasts/introduction) feature.
+</Tip>
+
+Once you [verify a domain](/docs/add-a-domain) in your Resend account, you can send from any email address at that domain. You do not need to “create an email address,” “set up a sender identity,” or “add a from-address” before sending.
+
+## Sending Features
+
+With Resend's email sending features, you can:
+
+* Send, retrieve, cancel, and manage individual and transactional email delivery through the [Sending API](/docs/api-reference/emails/send-email) and [SDKs](/docs/sdks), [CLI commands](/docs/cli#emails), [automations](/docs/dashboard/automations/introduction), and [AI building tools](/docs/ai-onboarding).
+* [View and manage all sent emails](/docs/dashboard/emails/manage-emails) in the Emails Dashboard page.
+* Send single or [batch transactional emails](/docs/dashboard/emails/batch-sending).
+* [Schedule emails](/docs/dashboard/emails/schedule-email) to be sent at a future date.
+* Send emails [with attachments](/docs/dashboard/emails/attachments) and [embedded images](/docs/dashboard/emails/embed-inline-images).
+* Include [custom headers](/docs/dashboard/emails/custom-headers) in your emails.
+* Use [idempotency keys](/docs/dashboard/emails/idempotency-keys) to ensure emails are sent only once.
+* Receive tailored [deliverability insights](/docs/dashboard/emails/deliverability-insights) about each email with suggestions for improvement.
+* [View API endpoint logs](/docs/dashboard/logs/introduction) and deliverability metrics for monitoring and troubleshooting.
+
+## Quickstart
+
+Get started with a [quick setup sending example](/docs/introduction#quickstart) for your language or an [AI builder guide](/docs/ai-onboarding#ai-builder-guides) to see how to incorporate Resend into your application.
+
+## Choose your infrastructure
+
+To send transactional emails from your application, you can use a variety of tools:
+
+* [SDK](/docs/sdks): send with an SDK built for your language
+* [Integrations](/docs/integrations): send from a framework or tool you already use
+* [API](/docs/api-reference/emails/send-email): send with raw cURL calls
+* [CLI](/docs/cli#emails): send emails from the terminal
+* [MCP](/docs/mcp-server): send through your agent with MCP (see also [skills](/docs/react-email-skill))
+* [SMTP](/docs/send-with-smtp): send without external dependencies
+
+You can also send emails as part of [automated workflows](/docs/dashboard/automations/introduction) such as abandoned cart reminders, and create [email templates](/docs/dashboard/templates/introduction) for repeatable content.
+
+See how to use additional sending features, including scheduling and attachments, in the [sending email guides](#related-guides).
+
+## Manage your sent emails
+
+After you've sent or scheduled your first email, you'll be able to view and manage your emails in the [Emails Dashboard page](https://resend.com/emails). From here, you can view email details, share a public version, and more. This allows all members of your team to view and manage your sent emails.
+
+You can also manage your emails programmatically using the [Sending API](/docs/api-reference/emails/send-email), [CLI commands](/docs/cli#emails), or the [MCP server](/docs/mcp-server).
+
+Learn more about [managing your sent emails](/docs/dashboard/emails/manage-emails) in the dedicated guide.
+
+## Related Guides
+
+See how to use Resend's sending features.
+
+<CardGroup>
+  <Card title="View and manage sent emails" icon="envelope" href="/dashboard/emails/manage-emails" />
+
+  <Card title="Send test emails" icon="flask-gear" href="/dashboard/emails/send-test-emails" />
+
+  <Card title="Include attachments" icon="file-plus" href="/dashboard/emails/attachments" />
+
+  <Card title="Embed inline images" icon="image" href="/dashboard/emails/embed-inline-images" />
+
+  <Card title="Schedule emails" icon="clock" href="/dashboard/emails/schedule-email" />
+
+  <Card title="Batch sending" icon="envelopes" href="/dashboard/emails/batch-sending" />
+
+  <Card title="Customize headers" icon="rectangle-history-circle-user" href="/dashboard/emails/custom-headers" />
+
+  <Card title="Prevent duplicate emails" icon="key" href="/dashboard/emails/idempotency-keys" />
+
+  <Card title="Add an unsubscribe link" icon="person-from-portal" href="/dashboard/emails/add-unsubscribe-to-transactional-emails" />
+
+  <Card title="Add identifier tags" icon="tags" href="/dashboard/emails/tags" />
+</CardGroup>
+
+
+# View and manage emails
+Source: https://resend.com/docs/dashboard/emails/manage-emails
+
+An introduction to managing your sent emails with Resend.
+
+## Manage your sent emails
+
+After you've sent or scheduled your first email, your emails appear in the [**Emails** Dashboard page](https://resend.com/emails). You can [view email details](#view-email-details), [share a public version](#share-email-link), [view email logs](#see-associated-logs), and more.
+
+You can also manage your scheduled and sent emails using Resend's code tools including the [MCP server](/docs/mcp-server), [API endpoints](/docs/api-reference/emails/send-email) and [CLI commands](/docs/cli#emails) for tasks such as listing, sending, updating, and canceling emails.
 
 ## View email details
 
-See all the metadata associated with an email, including the sender address, recipient address, subject, and more from the [Emails](https://resend.com/emails) page. Select any email to view its details.
+See all the metadata associated with a sent or scheduled email, including the sender address, recipient address, subject, and more from the [**Emails** Dashboard page](https://resend.com/emails). Select any email to view its details.
 
 <img alt="Email Details" />
 
-Each email contains a **Preview**, **Plain Text**, **HTML**, and **Raw** tab to visualize the content of your sent email in its various formats. The Raw tab displays the email data as formatted JSON matching the public API response structure, including headers and other metadata.
+Each email contains a **Preview**, **Plain Text**, and **HTML** version to visualize the content of your sent email in its various formats.
 
 ## Understand email events
 
@@ -27308,23 +28471,23 @@ Here are all the events that can be associated with an email:
 
 ## Share email link
 
-You can share a public link of a sent email. Anyone with the link can visualize the email.
+You can share a public link of a sent email, which is valid for 48 hours. Anyone with the link can view the email.
 
 To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and select **Share email**.
 
 <img alt="Email - Share Link Option" />
 
-Select how long the link will remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
+Copy the URL and share it with your team members.
 
 <img alt="Email - Share Link Modal" />
 
-Copy the URL and share it with your team members. Anyone with the link can visualize the email without authenticating until the link expires.
+Anyone with the link can view the email without authenticating for 48 hours.
 
 <img alt="Email - Share Link Item" />
 
 ## See associated logs
 
-You can check all the logs associated with an email. This will help you troubleshoot any issues with the request itself.
+Check all the logs associated with an email to help you troubleshoot any issues with the request itself.
 
 To view the logs, click on the dropdown menu, and select "View log".
 
@@ -27362,6 +28525,10 @@ All admins on your team can securely access the export for 7 days. Unavailable e
   **Exports**. Select any export to view its details page. All members of your
   team can view your exports, but only admins can download the data.
 </Note>
+
+## API Reference
+
+For complete API documentation, see the [Sending API reference](/docs/api-reference/emails/send-email).
 
 
 # Schedule Email
@@ -35044,7 +36211,7 @@ Integrate Resend with the tools you already use.
   </Card>
 
   <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
-    Send emails from Softr workflows
+    Send emails from Softr apps and workflows
   </Card>
 </CardGroup>
 

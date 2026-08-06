@@ -276,6 +276,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms

@@ -114,7 +114,7 @@ For connections that need to process all pages in a large data source, we recomm
 
 ### Recommendations for performance
 
-Use the `filter_properties` query parameter to filter only the properties of the data source schema you need from the response items. For example:
+Use the `filter_properties` query parameter whenever you don't need every property from every result. This endpoint returns only the properties you list. For example:
 
 ```bash theme={null}
 https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title
@@ -137,7 +137,12 @@ notion.dataSources.query({
 })
 ```
 
-Using `filter_properties` can make a significant improvement to the speed of the API and size of the JSON objects in the results, especially for databases with lots of properties, some of which might be rollups, relations, or formulas. If you need additional properties from each returned page, you can make subsequent calls to the [Retrieve page property item](/changelog/retrieve-page-property-values) or [Retrieve a page](/reference/retrieve-a-page) APIs.
+Using `filter_properties` can speed up the query and reduce its response size, especially for data sources with many properties, formulas, rollups, or relations. Use this endpoint to find pages and return only the properties your list shows. Fetch more data after you select a page:
+
+* Call [Retrieve a page](/reference/retrieve-a-page) with the returned page ID to get more properties from one page. You can also pass `filter_properties` to that endpoint.
+* Call [Retrieve a page property](/reference/retrieve-a-page-property) with the page and property IDs to retrieve one property. Use it when a formula, rollup, or relation contains more than 25 references.
+
+Don't fetch every property for every result unless you need all of them.
 
 If you're still running into long query times with this API, other tips include:
 

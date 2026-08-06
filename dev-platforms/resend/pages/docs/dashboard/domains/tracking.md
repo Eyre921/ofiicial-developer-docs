@@ -6,9 +6,11 @@ path: docs/dashboard/domains/tracking
 
 Track open and click rates of your emails.
 
-Open and click tracking is disabled by default for all domains.
+Open and click tracking is disabled by default for all domains. We suggest only tracking open rates for [Broadcasts](/docs/dashboard/broadcasts/introduction) to ensure that inbox providers do not mistakenly identify your [transactional emails](/docs/dashboard/emails/introduction) as marketing emails.
 
-You can enable it manually or programmatically. Once verified, all tracked links in your emails will use your tracking subdomain (e.g., `links.emails.example.com`).
+You can enable tracking in the Resend Dashboard under the **Configuration** tab or programmatically when you create a new domain or update an existing domain.
+
+Once verified, all tracked links in your emails will use your tracking subdomain (e.g., `links.emails.example.com`).
 
 <Tabs>
   <Tab title="Using the dashboard">

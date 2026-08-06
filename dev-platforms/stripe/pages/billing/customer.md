@@ -18,7 +18,7 @@ The *Customer* (Customer objects represent customers of your business. They let 
 
 ## Manage customers 
 
-Create a customer for every new user or business you want to bill. When creating a new customer, set a [minimum customer profile](https://docs.stripe.com/billing/customer.md#minimum-customer-profile) to help create useful invoices and enable Smart Retries (dunning). After creating and configuring this customer, use it to create a subscription and issue one-off invoices.
+Create a customer for every new user or business you want to bill. When creating a new customer, set a [minimum customer profile](https://docs.stripe.com/billing/customer.md#minimum-customer-profile) when you create invoices and enable Smart Retries (dunning). After creating and configuring this customer, use it to create a subscription and issue one-off invoices.
 
 #### Dashboard
 
@@ -74,11 +74,11 @@ See how to [create a customer](https://docs.stripe.com/api/customers/create.md) 
 
 ## Available properties and uses 
 
-The Customer resource has many useful properties you can set to customize billing. This section explains the properties you can store on the Customer, and the effects of each.
+The Customer resource has many properties you can set to customize billing. This section explains the properties you can store on the Customer, and the effects of each.
 
 ### Customer profile
 
-A basic customer profile is useful for invoice and receipt generation, and can generally act as a lightweight customer relationship management system (CRM) for your application. You can also use [affiliate and referral Stripe apps](https://marketplace.stripe.com/categories/affiliate_and_referrals) to set up and manage referral and affiliate programs with Stripe, get customer information, and automate commission adjustments from the Stripe Dashboard.
+Use a basic customer profile for invoice and receipt generation. It can generally act as a lightweight customer relationship management system (CRM) for your application. You can also use [affiliate and referral Stripe apps](https://marketplace.stripe.com/categories/affiliate_and_referrals) to set up and manage referral and affiliate programs with Stripe, get customer information, and automate commission adjustments from the Stripe Dashboard.
 
 #### Minimal customer profile 
 
@@ -96,7 +96,7 @@ Store the internal customer ID of your application in the [metadata](https://doc
 
 Use the address properties to set an [address](https://docs.stripe.com/api/customers/object.md#customer_object-address) for billing (invoicing, credit notes, and so on), and a [shipping](https://docs.stripe.com/api/customers/object.md#customer_object-shipping) address (for physical goods).
 
-While a shipping address is most relevant to businesses delivering physical goods, a billing address is useful because it displays on invoices, credit notes, and receipts—a common requirement for tax compliance.
+While a shipping address is most relevant to businesses delivering physical goods, use a billing address when you want it to display on invoices, credit notes, and receipts—a common requirement for tax compliance.
 
 #### Email and PDF language localization 
 
@@ -149,7 +149,7 @@ You can continue to update the customer’s details after you create the subscri
 
 ### Send a one-off (manual) invoice to a customer 
 
-Unlike subscription invoices, you manually issue one-off invoices and they don’t follow an automated schedule. This makes them useful for billing one-off orders or work, such as setup and installation fees, consultancy fees, or single orders for physical goods.
+Unlike subscription invoices, you manually issue one-off invoices and they don’t follow an automated schedule. Use them for billing one-off orders or work, such as setup and installation fees, consultancy fees, or single orders for physical goods.
 
 1. [Create the customer](https://docs.stripe.com/billing/customer.md#create-a-customer).
 2. [Create a new draft invoice](https://docs.stripe.com/invoicing/dashboard.md#create-invoice) by adding invoice line items with a description, quantity, unit price, and tax rate.

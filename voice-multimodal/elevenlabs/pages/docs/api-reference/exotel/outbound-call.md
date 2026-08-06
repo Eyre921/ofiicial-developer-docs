@@ -192,6 +192,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -253,7 +254,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: LLM
     KnowledgeBaseDocumentType:
       type: string
@@ -401,6 +401,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms
@@ -572,9 +573,9 @@ components:
 
 ```json
 {
-  "agent_id": "agent_987654321",
-  "agent_phone_number_id": "phone_123456789",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 }
 ```
 
@@ -583,9 +584,9 @@ components:
 ```json
 {
   "success": true,
-  "message": "Outbound call initiated successfully.",
-  "conversation_id": "conv_20240615_001",
-  "callSid": "EXO1234567890abcdef"
+  "message": "string",
+  "conversation_id": "string",
+  "callSid": "string"
 }
 ```
 
@@ -597,9 +598,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.exotel.outboundCall({
-        agentId: "agent_987654321",
-        agentPhoneNumberId: "phone_123456789",
-        toNumber: "+14155552671",
+        agentId: "string",
+        agentPhoneNumberId: "string",
+        toNumber: "string",
     });
 }
 main();
@@ -612,9 +613,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.exotel.outbound_call(
-    agent_id="agent_987654321",
-    agent_phone_number_id="phone_123456789",
-    to_number="+14155552671",
+    agent_id="string",
+    agent_phone_number_id="string",
+    to_number="string",
 )
 
 ```
@@ -633,7 +634,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/exotel/outbound-call"
 
-	payload := strings.NewReader("{\n  \"agent_id\": \"agent_987654321\",\n  \"agent_phone_number_id\": \"phone_123456789\",\n  \"to_number\": \"+14155552671\"\n}")
+	payload := strings.NewReader("{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -661,7 +662,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"agent_id\": \"agent_987654321\",\n  \"agent_phone_number_id\": \"phone_123456789\",\n  \"to_number\": \"+14155552671\"\n}"
+request.body = "{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -673,7 +674,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/exotel/outbound-call")
   .header("Content-Type", "application/json")
-  .body("{\n  \"agent_id\": \"agent_987654321\",\n  \"agent_phone_number_id\": \"phone_123456789\",\n  \"to_number\": \"+14155552671\"\n}")
+  .body("{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}")
   .asString();
 ```
 
@@ -685,9 +686,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/exotel/outbound-call', [
   'body' => '{
-  "agent_id": "agent_987654321",
-  "agent_phone_number_id": "phone_123456789",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -703,7 +704,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/exotel/outbound-call");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"agent_id\": \"agent_987654321\",\n  \"agent_phone_number_id\": \"phone_123456789\",\n  \"to_number\": \"+14155552671\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -712,9 +713,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "agent_id": "agent_987654321",
-  "agent_phone_number_id": "phone_123456789",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

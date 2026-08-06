@@ -277,10 +277,10 @@ Formula property value objects represent the result of evaluating a formula desc
 
 If the `type` of a page property value is `"formula"`, then the property value contains a `"formula"` object with the following fields:
 
-| Field                                             | Type                                              | Description                                                                                                                            | Example value |
-| :------------------------------------------------ | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `boolean` \|\| `date` \|\| `number` \|\| `string` | `boolean` \|\| `date` \|\| `number` \|\| `string` | The value of the result of the formula. The value can’t be updated directly via the API.                                               | 42            |
-| `type`                                            | `string` (enum)                                   | A string indicating the data type of the result of the formula. Possible `type` values are: - `boolean` - `date` - `number` - `string` | `"number"`    |
+| Field                                                                | Type                                                            | Description                                                               | Example value |
+| :------------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------------------ | :------------ |
+| `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `unsupported` | `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `object` | The formula result. You can't update this value through the API.          | 42            |
+| `type`                                                               | `string` (enum)                                                 | The result type: `boolean`, `date`, `number`, `string`, or `unsupported`. | `"number"`    |
 
 #### Example `formula` page property value as returned in a GET page request
 
@@ -302,6 +302,27 @@ If the `type` of a page property value is `"formula"`, then the property value c
 <Info>
   The [Retrieve a page endpoint](/reference/retrieve-a-page) returns a maximum of 25 inline page or person references for a `formula` property. If a `formula` property includes more than 25 references, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `formula` property to get its complete list of references.
 </Info>
+
+#### Unsupported formula
+
+If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported formula page property value theme={null}
+  {
+    "Days until launch": {
+      "id": "CSoE",
+      "type": "formula",
+      "formula": {
+        "type": "unsupported",
+        "unsupported": {}
+      }
+    }
+  }
+  ```
+</CodeGroup>
 
 ### Icon
 
@@ -745,6 +766,28 @@ If the `type` of a page property value is `"rollup"`, then the property value co
       "rollup": {
         "type": "number",
         "number": 2,
+        "function": "count"
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+#### Unsupported rollup
+
+If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported rollup page property value theme={null}
+  {
+    "Number of units": {
+      "id": "hgMz",
+      "type": "rollup",
+      "rollup": {
+        "type": "unsupported",
+        "unsupported": {},
         "function": "count"
       }
     }

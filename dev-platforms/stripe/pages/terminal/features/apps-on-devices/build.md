@@ -510,7 +510,7 @@ startActivity(
 
 ### Bypass the admin PIN
 
-For appearance, language, and bug report screens, the device prompts for the admin PIN by default. You can skip this prompt by adding the `bypass_admin_menu_passcode` extra to the intent. This is useful for low-risk screens where you don’t want staff to enter a PIN every time.
+For appearance, language, and bug report screens, the device prompts for the admin PIN by default. You can skip this prompt by adding the `bypass_admin_menu_passcode` extra to the intent. Use this for low-risk screens where you don’t want staff to enter a PIN every time.
 
 #### Kotlin
 

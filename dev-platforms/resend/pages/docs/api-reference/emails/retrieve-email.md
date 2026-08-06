@@ -15,7 +15,7 @@ Retrieve a single sent email.
 
 <Info>
   See all available `last_event` types in [the Email Events
-  overview](/docs/dashboard/emails/introduction#understand-email-events).
+  overview](/docs/dashboard/emails/manage-emails#understand-email-events).
 </Info>
 
 <RequestExample>

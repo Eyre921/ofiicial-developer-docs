@@ -1,18 +1,18 @@
 ---
-title: "Retrieve A Transcript"
-source: https://elevenlabs.io/docs/api-reference/dubbing/transcripts/get.md
-path: docs/api-reference/dubbing/transcripts/get
+title: "Retrieve a transcript"
+source: https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get.md
+path: docs/api-reference/legacy/dubbing/transcripts/get
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Retrieve A Transcript
+# Retrieve a transcript
 
 GET https://api.elevenlabs.io/v1/dubbing/{dubbing_id}/transcripts/{language_code}/format/{format_type}
 
 Fetch the transcript for one of the languages in a dub.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/transcripts/get
+Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get
 
 ## OpenAPI Specification
 

@@ -24,7 +24,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  Follow these best practices when using GitHub's API.
+  <p>Follow these best practices when using GitHub's API.</p>
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
@@ -32,7 +32,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
-  <p>Follow these best practices to keep your API credentials and tokens secure.</p>
+  Follow these best practices to keep your API credentials and tokens secure.
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 

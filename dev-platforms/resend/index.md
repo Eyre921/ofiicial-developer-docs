@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 314 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 323 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -45,6 +45,7 @@
 - `docs/api-reference/domains/verify-domain` — [Verify Domain](pages/docs/api-reference/domains/verify-domain.md) · [原文](https://resend.com/docs/api-reference/domains/verify-domain)
 - `docs/api-reference/domains/verify-domain-claim` — [Verify Domain Claim](pages/docs/api-reference/domains/verify-domain-claim.md) · [原文](https://resend.com/docs/api-reference/domains/verify-domain-claim)
 - `docs/api-reference/emails/cancel-email` — [Cancel Email](pages/docs/api-reference/emails/cancel-email.md) · [原文](https://resend.com/docs/api-reference/emails/cancel-email)
+- `docs/api-reference/emails/get-metrics` — [Retrieve Metrics](pages/docs/api-reference/emails/get-metrics.md) · [原文](https://resend.com/docs/api-reference/emails/get-metrics)
 - `docs/api-reference/emails/list-email-attachments` — [List Attachments](pages/docs/api-reference/emails/list-email-attachments.md) · [原文](https://resend.com/docs/api-reference/emails/list-email-attachments)
 - `docs/api-reference/emails/list-emails` — [List Sent Emails](pages/docs/api-reference/emails/list-emails.md) · [原文](https://resend.com/docs/api-reference/emails/list-emails)
 - `docs/api-reference/emails/list-received-email-attachments` — [List Attachments](pages/docs/api-reference/emails/list-received-email-attachments.md) · [原文](https://resend.com/docs/api-reference/emails/list-received-email-attachments)
@@ -71,6 +72,7 @@
 - `docs/api-reference/segments/create-segment` — [Create Segment](pages/docs/api-reference/segments/create-segment.md) · [原文](https://resend.com/docs/api-reference/segments/create-segment)
 - `docs/api-reference/segments/delete-segment` — [Delete Segment](pages/docs/api-reference/segments/delete-segment.md) · [原文](https://resend.com/docs/api-reference/segments/delete-segment)
 - `docs/api-reference/segments/get-segment` — [Retrieve Segment](pages/docs/api-reference/segments/get-segment.md) · [原文](https://resend.com/docs/api-reference/segments/get-segment)
+- `docs/api-reference/segments/get-segment-metrics` — [Retrieve Metrics](pages/docs/api-reference/segments/get-segment-metrics.md) · [原文](https://resend.com/docs/api-reference/segments/get-segment-metrics)
 - `docs/api-reference/segments/list-segment-contacts` — [List Segment Contacts](pages/docs/api-reference/segments/list-segment-contacts.md) · [原文](https://resend.com/docs/api-reference/segments/list-segment-contacts)
 - `docs/api-reference/segments/list-segments` — [List Segments](pages/docs/api-reference/segments/list-segments.md) · [原文](https://resend.com/docs/api-reference/segments/list-segments)
 - `docs/api-reference/suppressions/add-batch-suppressions` — [Add Batch Suppressions](pages/docs/api-reference/suppressions/add-batch-suppressions.md) · [原文](https://resend.com/docs/api-reference/suppressions/add-batch-suppressions)
@@ -123,13 +125,19 @@
 - `docs/dashboard/automations/send-email` — [Send Email](pages/docs/dashboard/automations/send-email.md) · [原文](https://resend.com/docs/dashboard/automations/send-email)
 - `docs/dashboard/automations/trigger` — [Trigger](pages/docs/dashboard/automations/trigger.md) · [原文](https://resend.com/docs/dashboard/automations/trigger)
 - `docs/dashboard/automations/wait-for-event` — [Wait for Event](pages/docs/dashboard/automations/wait-for-event.md) · [原文](https://resend.com/docs/dashboard/automations/wait-for-event)
-- `docs/dashboard/broadcasts/introduction` — [Managing Broadcasts](pages/docs/dashboard/broadcasts/introduction.md) · [原文](https://resend.com/docs/dashboard/broadcasts/introduction)
+- `docs/dashboard/broadcasts/editor` — [Compose and send with the Broadcast editor](pages/docs/dashboard/broadcasts/editor.md) · [原文](https://resend.com/docs/dashboard/broadcasts/editor)
+- `docs/dashboard/broadcasts/introduction` — [Sending Broadcasts](pages/docs/dashboard/broadcasts/introduction.md) · [原文](https://resend.com/docs/dashboard/broadcasts/introduction)
+- `docs/dashboard/broadcasts/manage-broadcasts` — [Manage Broadcasts](pages/docs/dashboard/broadcasts/manage-broadcasts.md) · [原文](https://resend.com/docs/dashboard/broadcasts/manage-broadcasts)
 - `docs/dashboard/broadcasts/performance-tracking` — [Performance Tracking](pages/docs/dashboard/broadcasts/performance-tracking.md) · [原文](https://resend.com/docs/dashboard/broadcasts/performance-tracking)
+- `docs/dashboard/broadcasts/send-broadcast-with-api` — [Compose and send Broadcasts with the API](pages/docs/dashboard/broadcasts/send-broadcast-with-api.md) · [原文](https://resend.com/docs/dashboard/broadcasts/send-broadcast-with-api)
 - `docs/dashboard/domains/bimi` — [Implementing BIMI](pages/docs/dashboard/domains/bimi.md) · [原文](https://resend.com/docs/dashboard/domains/bimi)
 - `docs/dashboard/domains/claim` — [Claiming a domain](pages/docs/dashboard/domains/claim.md) · [原文](https://resend.com/docs/dashboard/domains/claim)
+- `docs/dashboard/domains/custom-return-path` — [Configure a custom Return Path](pages/docs/dashboard/domains/custom-return-path.md) · [原文](https://resend.com/docs/dashboard/domains/custom-return-path)
 - `docs/dashboard/domains/dmarc` — [Implementing DMARC](pages/docs/dashboard/domains/dmarc.md) · [原文](https://resend.com/docs/dashboard/domains/dmarc)
-- `docs/dashboard/domains/introduction` — [Managing Domains](pages/docs/dashboard/domains/introduction.md) · [原文](https://resend.com/docs/dashboard/domains/introduction)
+- `docs/dashboard/domains/introduction` — [Verified Domains](pages/docs/dashboard/domains/introduction.md) · [原文](https://resend.com/docs/dashboard/domains/introduction)
+- `docs/dashboard/domains/manage-domains` — [Managing Domains](pages/docs/dashboard/domains/manage-domains.md) · [原文](https://resend.com/docs/dashboard/domains/manage-domains)
 - `docs/dashboard/domains/regions` — [Choosing a Region](pages/docs/dashboard/domains/regions.md) · [原文](https://resend.com/docs/dashboard/domains/regions)
+- `docs/dashboard/domains/tls` — [Configure Transport Layer Security (TLS)](pages/docs/dashboard/domains/tls.md) · [原文](https://resend.com/docs/dashboard/domains/tls)
 - `docs/dashboard/domains/tracking` — [Open and Click Tracking](pages/docs/dashboard/domains/tracking.md) · [原文](https://resend.com/docs/dashboard/domains/tracking)
 - `docs/dashboard/emails/add-unsubscribe-to-transactional-emails` — [Add an unsubscribe link to transactional emails](pages/docs/dashboard/emails/add-unsubscribe-to-transactional-emails.md) · [原文](https://resend.com/docs/dashboard/emails/add-unsubscribe-to-transactional-emails)
 - `docs/dashboard/emails/attachments` — [Attachments](pages/docs/dashboard/emails/attachments.md) · [原文](https://resend.com/docs/dashboard/emails/attachments)
@@ -140,7 +148,8 @@
 - `docs/dashboard/emails/email-suppressions` — [Email Suppressions](pages/docs/dashboard/emails/email-suppressions.md) · [原文](https://resend.com/docs/dashboard/emails/email-suppressions)
 - `docs/dashboard/emails/embed-inline-images` — [Embed Inline Images](pages/docs/dashboard/emails/embed-inline-images.md) · [原文](https://resend.com/docs/dashboard/emails/embed-inline-images)
 - `docs/dashboard/emails/idempotency-keys` — [Idempotency Keys](pages/docs/dashboard/emails/idempotency-keys.md) · [原文](https://resend.com/docs/dashboard/emails/idempotency-keys)
-- `docs/dashboard/emails/introduction` — [Managing Emails](pages/docs/dashboard/emails/introduction.md) · [原文](https://resend.com/docs/dashboard/emails/introduction)
+- `docs/dashboard/emails/introduction` — [Sending Emails](pages/docs/dashboard/emails/introduction.md) · [原文](https://resend.com/docs/dashboard/emails/introduction)
+- `docs/dashboard/emails/manage-emails` — [View and manage emails](pages/docs/dashboard/emails/manage-emails.md) · [原文](https://resend.com/docs/dashboard/emails/manage-emails)
 - `docs/dashboard/emails/schedule-email` — [Schedule Email](pages/docs/dashboard/emails/schedule-email.md) · [原文](https://resend.com/docs/dashboard/emails/schedule-email)
 - `docs/dashboard/emails/send-test-emails` — [Send Test Emails](pages/docs/dashboard/emails/send-test-emails.md) · [原文](https://resend.com/docs/dashboard/emails/send-test-emails)
 - `docs/dashboard/emails/tags` — [Managing Tags](pages/docs/dashboard/emails/tags.md) · [原文](https://resend.com/docs/dashboard/emails/tags)

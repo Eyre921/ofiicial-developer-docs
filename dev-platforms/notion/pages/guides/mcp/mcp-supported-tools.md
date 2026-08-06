@@ -75,6 +75,17 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Remove the icon from this page"
   </Accordion>
 
+  <Accordion title="Convert a page to a skill">
+    `notion-convert-page-to-skill`
+
+    Marks a Notion page as an AI skill. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
+
+    **Example prompts:**
+
+    * "Convert this page into a skill: `https://www.notion.so/example-page-url`"
+    * "Make our engineering guidelines page available as an AI skill"
+  </Accordion>
+
   <Accordion title="Move pages">
     `notion-move-pages`
 

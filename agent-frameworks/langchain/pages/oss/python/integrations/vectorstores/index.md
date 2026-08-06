@@ -613,6 +613,36 @@ vector_store.similarity_search(
     ```
   </Accordion>
 
+  <Accordion title="Google AlloyDB">
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -qU langchain-google-alloydb-pg
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add langchain-google-alloydb-pg
+      ```
+    </CodeGroup>
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBVectorStore
+
+    engine = AlloyDBEngine.from_instance(
+        project_id="my-project",
+        region="us-central1",
+        cluster="my-cluster",
+        instance="my-instance",
+        database="my-database",
+    )
+
+    vector_store = AlloyDBVectorStore.create_sync(
+        engine=engine,
+        table_name="my_vectors",
+        embedding_service=embeddings
+    )
+    ```
+  </Accordion>
+
   <Accordion title="Milvus">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -863,25 +893,54 @@ vector_store.similarity_search(
     )
     ```
   </Accordion>
+
+  <Accordion title="Weaviate">
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -qU langchain-weaviate
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add langchain-weaviate
+      ```
+    </CodeGroup>
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import weaviate
+    from langchain_weaviate import WeaviateVectorStore
+
+    # Assumes a local Weaviate instance on http://localhost:8080 with gRPC on 50051.
+    # See the Weaviate guide for other deployment options (Weaviate Cloud, Docker, etc.).
+    weaviate_client = weaviate.connect_to_local()
+
+    vector_store = WeaviateVectorStore(
+        client=weaviate_client,
+        index_name="langchain_example",
+        text_key="text",
+        embedding=embeddings,
+    )
+    ```
+  </Accordion>
 </AccordionGroup>
 
 <div>
-  | Vectorstore                                                                                               | Delete by ID   | Filtering      | Search by Vector | Search with score | Async          | Passes Standard Tests | Multi Tenancy  | IDs in add Documents | Downloads                                                                                                         |
-  | :-------------------------------------------------------------------------------------------------------- | :------------- | :------------- | :--------------- | :---------------- | :------------- | :-------------------- | :------------- | :------------------- | :---------------------------------------------------------------------------------------------------------------- |
-  | [`ValkeyVectorStore`](/oss/python/integrations/vectorstores/valkey)                                       | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>            |
-  | [`DatabricksVectorSearch`](/oss/python/integrations/vectorstores/databricks_vector_search)                | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span>     |
-  | [`PineconeVectorStore`](/oss/python/integrations/vectorstores/pinecone)                                   | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>❌</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-pinecone/">  <img alt="Downloads per month" /></a></span>       |
-  | [`MongoDBAtlasVectorSearch`](/oss/python/integrations/vectorstores/mongodb_atlas)                         | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-mongodb/">  <img alt="Downloads per month" /></a></span>        |
-  | [`QdrantVectorStore`](/oss/python/integrations/vectorstores/qdrant)                                       | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-qdrant/">  <img alt="Downloads per month" /></a></span>         |
-  | [`AzureCosmosDBMongoVCoreVectorStore`](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>       |
-  | [`Milvus`](/oss/python/integrations/vectorstores/milvus)                                                  | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-milvus/">  <img alt="Downloads per month" /></a></span>         |
-  | [`ElasticsearchStore`](/oss/python/integrations/vectorstores/elasticsearch)                               | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-elasticsearch/">  <img alt="Downloads per month" /></a></span>  |
-  | [`Weaviate`](/oss/python/integrations/vectorstores/weaviate)                                              | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-weaviate/">  <img alt="Downloads per month" /></a></span>       |
-  | [`AstraDBVectorStore`](/oss/python/integrations/vectorstores/astradb)                                     | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-astradb/">  <img alt="Downloads per month" /></a></span>        |
-  | [`Oracle AI Database`](/oss/python/integrations/vectorstores/oracle)                                      | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>       |
-  | [`RedisVectorStore`](/oss/python/integrations/vectorstores/redis)                                         | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-redis/">  <img alt="Downloads per month" /></a></span>          |
-  | [`AzureCosmosDBNoSqlVectorStore`](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql)           | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-azure-cosmosdb/">  <img alt="Downloads per month" /></a></span> |
-  | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory)                                  | <span>✅</span> | <span>✅</span> | <span>❌</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span>N/A</span>                                                                                                  |
+  | Vectorstore                                                                                               | Delete by ID   | Filtering      | Search by Vector | Search with score | Async          | Passes Standard Tests | Multi Tenancy  | IDs in add Documents | Downloads                                                                                                            |
+  | :-------------------------------------------------------------------------------------------------------- | :------------- | :------------- | :--------------- | :---------------- | :------------- | :-------------------- | :------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------- |
+  | [`ValkeyVectorStore`](/oss/python/integrations/vectorstores/valkey)                                       | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>               |
+  | [`DatabricksVectorSearch`](/oss/python/integrations/vectorstores/databricks_vector_search)                | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span>        |
+  | [`PineconeVectorStore`](/oss/python/integrations/vectorstores/pinecone)                                   | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>❌</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-pinecone/">  <img alt="Downloads per month" /></a></span>          |
+  | [`MongoDBAtlasVectorSearch`](/oss/python/integrations/vectorstores/mongodb_atlas)                         | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-mongodb/">  <img alt="Downloads per month" /></a></span>           |
+  | [`QdrantVectorStore`](/oss/python/integrations/vectorstores/qdrant)                                       | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-qdrant/">  <img alt="Downloads per month" /></a></span>            |
+  | [`AzureCosmosDBMongoVCoreVectorStore`](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>          |
+  | [`Milvus`](/oss/python/integrations/vectorstores/milvus)                                                  | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-milvus/">  <img alt="Downloads per month" /></a></span>            |
+  | [`ElasticsearchStore`](/oss/python/integrations/vectorstores/elasticsearch)                               | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-elasticsearch/">  <img alt="Downloads per month" /></a></span>     |
+  | [`Weaviate`](/oss/python/integrations/vectorstores/weaviate)                                              | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-weaviate/">  <img alt="Downloads per month" /></a></span>          |
+  | [`AstraDBVectorStore`](/oss/python/integrations/vectorstores/astradb)                                     | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-astradb/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Oracle AI Database`](/oss/python/integrations/vectorstores/oracle)                                      | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>          |
+  | [`RedisVectorStore`](/oss/python/integrations/vectorstores/redis)                                         | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-redis/">  <img alt="Downloads per month" /></a></span>             |
+  | [`AzureCosmosDBNoSqlVectorStore`](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql)           | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-azure-cosmosdb/">  <img alt="Downloads per month" /></a></span>    |
+  | [`Google AlloyDB`](/oss/python/integrations/vectorstores/google_alloydb)                                  | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/">  <img alt="Downloads per month" /></a></span> |
+  | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory)                                  | <span>✅</span> | <span>✅</span> | <span>❌</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span>N/A</span>                                                                                                     |
 </div>
 
 ## All vector stores
@@ -911,7 +970,7 @@ vector_store.similarity_search(
   | [`Oracle AI Database`](/oss/python/integrations/vectorstores/oracle)                                                                        | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>✅</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>                 |
   | [`RedisVectorStore`](/oss/python/integrations/vectorstores/redis)                                                                           | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-redis/">  <img alt="Downloads per month" /></a></span>                    |
   | [`AzureCosmosDBNoSqlVectorStore`](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql)                                             | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>❌</span> | <span>✅</span>        | <span>✅</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-azure-cosmosdb/">  <img alt="Downloads per month" /></a></span>           |
-  | [`Google alloydb for postgresql`](/oss/python/integrations/vectorstores/google_alloydb)                                                     | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/">  <img alt="Downloads per month" /></a></span>        |
+  | [`Google AlloyDB`](/oss/python/integrations/vectorstores/google_alloydb)                                                                    | <span>✅</span> | <span>✅</span> | <span>✅</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/">  <img alt="Downloads per month" /></a></span>        |
   | [`Sap hana cloud vector engine`](/oss/python/integrations/vectorstores/sap_hanavector)                                                      | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-hana/">  <img alt="Downloads per month" /></a></span>                     |
   | [`Google firestore`](/oss/python/integrations/vectorstores/google_firestore)                                                                | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-google-firestore/">  <img alt="Downloads per month" /></a></span>         |
   | [`Google spanner`](/oss/python/integrations/vectorstores/google_spanner)                                                                    | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-google-spanner/">  <img alt="Downloads per month" /></a></span>           |
@@ -942,6 +1001,7 @@ vector_store.similarity_search(
   | [`PixeltableVectorStore`](https://docs.pixeltable.com/overview/pixeltable)                                                                  | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-pixeltable/">  <img alt="Downloads per month" /></a></span>               |
   | [`Kinetica vectorstore`](https://github.com/kineticadb/langchain-kinetica)                                                                  | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Moorcheh`](https://www.moorcheh.ai/)                                                                                                      | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-moorcheh/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`FalkorDBVector`](https://docs.falkordb.com/genai-tools/langchain.html)                                                                    | <span />       | <span>✅</span> | <span>✅</span>   | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-falkordb/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Activeloop Deep lake`](https://docs.deeplake.ai/)                                                                                         | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-deeplake/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Gel`](https://github.com/geldata/langchain-gel)                                                                                           | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-gel/">  <img alt="Downloads per month" /></a></span>                      |
   | [`Vectara`](https://docs.vectara.com/)                                                                                                      | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-vectara/">  <img alt="Downloads per month" /></a></span>                  |

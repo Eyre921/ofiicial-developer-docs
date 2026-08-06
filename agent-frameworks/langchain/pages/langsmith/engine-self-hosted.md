@@ -4,15 +4,15 @@ source: https://docs.langchain.com/langsmith/engine-self-hosted
 path: langsmith/engine-self-hosted
 ---
 
-How LangSmith Engine runs in a self-hosted deployment, how it reaches managed inference over a private link, and what that means for your data.
+How LangSmith Engine runs in a self-hosted deployment, what it depends on outside your environment, and how it handles your data.
 
-<Note>
-  Engine for self-hosted is coming soon!
-</Note>
+<Info>
+  Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact your account team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
+</Info>
 
 LangSmith Engine is an agent within LangSmith that monitors your production traces, clusters them into issues, diagnoses each issue against your source code, proposes a fix as a PR, and identifies ground truth evals to add to your datasets. For a product overview, see [Engine](/langsmith/engine-overview).
 
-This page explains how Engine runs in a self-hosted deployment, how it reaches managed inference, and what that means for your data.
+This page explains how Engine runs in a self-hosted deployment, what it depends on outside your environment, and what that means for your data. To install it, see [Enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine). To connect it to your source code, create and configure your own GitHub App as described in [Connect Engine to GitHub](/langsmith/engine-github).
 
 Engine works with three kinds of data:
 
@@ -20,36 +20,73 @@ Engine works with three kinds of data:
 * **Traces:** runtime data from your agents, which can include user messages, tool outputs, and PII.
 * **Model:** the LLM calls Engine makes to run diagnosis, generate fixes, and write evaluators.
 
-In a self-hosted deployment, Engine's orchestration runs inside your VPC as part of LangSmith: reading traces, reading code, and running its detect, fix, and verify loop. The models it calls are the exception. Rather than run them locally, Engine reaches a LangChain-managed, zero data retention (ZDR) inference service over a private network connection. Traces are the sensitive data type, and the architecture below keeps trace data on private networks inside your cloud service provider (CSP).
+In a self-hosted deployment, Engine's orchestration runs inside your VPC as part of LangSmith: reading traces, reading code, and running its detect, fix, and verify loop. It cannot run entirely there, however. Engine depends on LangSmith Intelligence (LSI), a LangChain-managed zero data retention (ZDR) service, and sends LSI the content it needs to do its work.
 
-## How inference works
+## Availability by cloud and region
 
-Engine's inference is delivered through a LangChain-managed service, LangSmith Intelligence. The service is fully isolated from LangSmith and does not trace, store, or persist any customer data.
+Engine depends on LSI coverage. That coverage is expanding, so availability varies by cloud and region:
+
+| Cloud | Region | Status    |
+| ----- | ------ | --------- |
+| AWS   | US     | Available |
+| GCP   | US     | Available |
+| AWS   | EU     | Planned   |
+| Azure | US     | Planned   |
+
+Contact your account team to confirm coverage for your region and for current timing. The Azure section below describes future availability, not a deployment you can enable today.
+
+## How it works
+
+LSI is the LangChain-managed service that powers Engine.
 
 The flow:
 
-* Your self-hosted deployment connects to LangSmith Intelligence over a private link (PrivateLink on AWS and Azure, Private Service Connect on GCP).
-* LangSmith Intelligence runs models hosted within your cloud provider's environment (Bedrock, Vertex, or Foundry), so no data leaves your CSP.
-* The service records only request metadata for billing, plus telemetry needed to keep the service reliable.
+* Your self-hosted Engine sends an HTTPS request to the LSI gateway for its cloud, listed in the per-cloud sections below.
+* Engine authenticates with a short-lived license JWT obtained during LangSmith license verification. You do not provide separate model-provider credentials.
+* LSI validates the JWT and routes the request to the model provider over private networking inside LangChain's environment.
+* LSI returns the response to your self-hosted Engine.
 
-Each inference request carries the trace content, code, and intermediate outputs the model needs to reason. The request is processed by a model running inside your cloud provider and is never stored. No copy of your data is persisted outside your CSP.
+Each request carries the trace content, code, and intermediate outputs Engine needs to do its work. LSI and the model provider process that content to serve the request. LSI does not persist prompt or completion bodies.
 
-### AWS
+Your cluster must allow outbound HTTPS to that gateway. This documentation does not assume that the connection from your environment to LSI uses AWS PrivateLink. If your security policy requires private connectivity, contact your account team to confirm availability and setup before enabling Engine.
+
+If the connection to LSI is unavailable, Engine fails closed. There is no in-cluster model and no secondary provider to fall back on, so the affected run ends with an error rather than degrading to lower-quality output. The rest of your LangSmith deployment is unaffected, and Engine tries again on its next scheduled scan.
+
+## What LangSmith Intelligence retains
+
+LSI does not persist prompt or completion bodies. It retains the following metadata for usage attribution and billing:
+
+* Account, workspace, and project identifiers used to attribute usage.
+* Model and token-usage metadata used for billing.
+
+For model-provider retention and training commitments, see [Engine security](/langsmith/engine-security).
+
+### AWS (available in US)
+
+The gateway host is `beacon.aws.langchain.com`. LSI routes requests to AWS Bedrock in LangChain's AWS environment.
 
 <Frame>
-  <img alt="Architecture diagram showing a self-hosted LangSmith deployment on AWS connecting to LangSmith Intelligence over PrivateLink, with inference served by Bedrock inside the customer's account" />
+  <img alt="Architecture diagram. Your VPC contains the LangSmith UI, an NLB, an EKS cluster running LangSmith services, and storage on S3, RDS, and ElastiCache. LangChain's cloud contains billing, a monitoring stack, and LangSmith Intelligence, which sends model inference requests to Bedrock. The two environments are connected by a private link." />
 </Frame>
 
-### GCP
+### GCP (available in US)
+
+The gateway host is `beacon.langchain.com`. LSI routes requests to Vertex in LangChain's GCP environment.
+
+<Note>
+  That is the same host self-hosted LangSmith already uses for license verification and billing telemetry, so a GCP deployment adds a path rather than a new egress destination. See [Configure egress](/langsmith/self-host-egress).
+</Note>
 
 <Frame>
-  <img alt="Architecture diagram showing a self-hosted LangSmith deployment on GCP connecting to LangSmith Intelligence over Private Service Connect, with inference served by Vertex inside the customer's project" />
+  <img alt="Architecture diagram showing a self-hosted LangSmith deployment in your GCP project connecting to LangSmith Intelligence in LangChain's cloud, which sends model inference requests to Vertex" />
 </Frame>
 
-### Azure
+### Azure (planned)
+
+Self-hosted Engine support on Azure is planned. Contact your account team for current timing. The diagram below shows the intended architecture.
 
 <Frame>
-  <img alt="Architecture diagram showing a self-hosted LangSmith deployment on Azure connecting to LangSmith Intelligence over PrivateLink, with inference served by Foundry inside the customer's environment" />
+  <img alt="Architecture diagram showing a self-hosted LangSmith deployment in your Azure environment connecting to LangSmith Intelligence in LangChain's cloud, which sends model inference requests to Foundry" />
 </Frame>
 
 ## Model selection and quality
@@ -60,15 +97,17 @@ Managed inference makes that possible. Because Engine always runs the model Lang
 
 ## What this means for your data
 
-In a self-hosted deployment, Engine adds two data-locality guarantees on top of the controls common to every deployment:
+In a self-hosted deployment, Engine separates data handling between your environment and LangChain's:
 
-* **Private networks only:** all data transit happens over private link, never the public internet.
-* **In-CSP:** models run inside your CSP, so data never leaves it.
+* **Your environment:** Engine orchestration and LangSmith-stored traces remain in your self-hosted deployment.
+* **LangChain's environment:** Content Engine sends is processed by LSI and the model provider. LSI retains the billing metadata listed above, but it does not persist prompt or completion bodies.
 
 Engine's deployment-independent data handling, including zero data retention with every model provider and no use of customer data to train or fine-tune models, is described in [Engine security](/langsmith/engine-security).
 
 ## See also
 
+* [Enable Engine on self-hosted](/langsmith/deploy-self-hosted-full-platform#enable-engine)
+* [Connect Engine to GitHub](/langsmith/engine-github)
 * [Engine](/langsmith/engine-overview)
 * [Configure Engine](/langsmith/engine)
 * [Engine security](/langsmith/engine-security)

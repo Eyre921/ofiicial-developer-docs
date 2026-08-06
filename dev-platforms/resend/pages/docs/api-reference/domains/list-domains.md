@@ -8,8 +8,8 @@ GET /domains
 Retrieve a list of domains for the authenticated user.
 
 <Info>
-  See all available `status` types in [the Domains
-  overview](/docs/dashboard/domains/introduction#understand-a-domain-status).
+  See all available [domain `status`
+  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 </Info>
 
 <QueryParams type="domains" />

@@ -372,13 +372,10 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
-- [CLI](#cli-docs-concepts-cli-mdx)
-- [Frequently asked questions](#frequently-asked-questions-docs-concepts-faq-mdx)
 - [Deployment](#deployment-docs-deployment-mdx)
 - [Select The EU Region for EU Data Residency](#select-the-eu-region-for-eu-data-residency-docs-pre-recorded-audio-guides-how-to-use-the-eu-endpoint-mdx)
 - [Identifying speakers in audio recordings](#identifying-speakers-in-audio-recordings-docs-pre-recorded-audio-guides-identifying-speakers-in-audio-recordings-mdx)
 - [Streaming v2 (Legacy)](#streaming-v2-legacy-docs-pre-recorded-audio-legacy-streaming-mdx)
-- [Self-Hosted Async Transcription](#self-hosted-async-transcription-docs-pre-recorded-audio-self-hosted-async-mdx)
 - [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
@@ -1929,7 +1926,32 @@ Y Combinator companies qualify for special pricing — [contact sales](https://w
 
 ## AWS Marketplace
 
-AssemblyAI is available on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-j45hta6jdej7c). Purchasing through the AWS Marketplace lets you consolidate billing with your existing AWS account and apply your spend toward any AWS committed-use agreements. For details, [contact sales](https://www.assemblyai.com/contact/sales) or ask your AWS account team.
+AssemblyAI is available on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-n24l7xlhzr4o6). Purchasing there lets you consolidate billing with your existing AWS account and apply your spend toward AWS committed-use agreements.
+
+Marketplace changes billing only. Your usage still runs on the AssemblyAI cloud API. Endpoints, API keys, and code are unchanged, and there is nothing to migrate in your integration.
+
+### Subscribing
+
+1. Subscribe through the [listing](https://aws.amazon.com/marketplace/pp/prodview-n24l7xlhzr4o6). New subscriptions include a 90-day trial with \$50 in usage credits, then enroll automatically in pay-as-you-go.
+2. Complete the fulfillment step, which links your AWS entitlement to a single AssemblyAI workspace.
+
+  **The entitlement attaches to one workspace**
+
+  If your organization has more than one AssemblyAI account, the entitlement links to whichever workspace completes the fulfillment step. Accounts are never merged, so billing will not follow usage on a different account.
+
+  Before subscribing, decide which workspace should be the billed one and make sure the person subscribing on the AWS side signs in to that workspace during fulfillment. See [Migrating existing accounts to multi-user](/account-management#migrating-existing-accounts-to-multi-user).
+
+### If your plan still shows Free after subscribing
+
+1. Check the subscription start date in your AWS console. A future-dated subscription means the entitlement is not effective yet, and re-running the fulfillment link will not change your plan.
+2. Confirm which workspace the entitlement resolved to. Your AWS account team can confirm whether the entitlement was issued and where it was mapped.
+3. To avoid being blocked in the meantime, add a card under **Workspace** > **Settings** > **Billing**. This converts the workspace to pay-as-you-go immediately, your existing credits are retained and drawn down first, and billing consolidates back to AWS once the entitlement lands.
+
+### Discounted rates
+
+The listing self-serves at list pricing. For volume-based rates, [contact sales](https://www.assemblyai.com/contact/sales) to request a private offer, which you accept through AWS.
+
+  Marketplace billing is tied to an offer with a term. When the offer expires, a new one must be accepted to keep billing running through AWS.
 
 ## Billing and customer usage tracking
 
@@ -2045,7 +2067,7 @@ Each pipeline above is a starting point. Here are common ways to build on them:
 - **Add structured output** — Use [Structured Outputs](/llm-gateway/structured-outputs) to constrain LLM responses to a JSON schema for easier downstream processing.
 - **Add PII redaction** — Enable [PII Redaction](/guardrails/redact-pii-from-transcripts) to automatically mask sensitive information before it reaches the LLM.
 - **Use Speaker Identification** — Replace generic speaker labels with real names using [Speaker Identification](/speech-understanding/speaker-identification).
-- **Add Translation** — Translate transcripts into 20+ languages using [Translation](/speech-understanding/translation).
+- **Add Translation** — Translate transcripts into 86 languages using [Translation](/speech-understanding/translation).
 - **Use webhooks** — Replace polling with [webhooks](/pre-recorded-audio/webhooks) for production workloads so your server gets notified when transcription completes.
 
 ## Next steps
@@ -3723,7 +3745,7 @@ For post-call analysis, AssemblyAI supports:
 - Sentiment analysis for meeting tone assessment
 - Entity detection for extracting key information
 - Speaker identification to map generic labels to actual names/roles
-- Translation between 99+ languages
+- Translation between 86 languages
 
 ### Real-Time Streaming
 
@@ -4561,7 +4583,7 @@ For complete API details, see our [Speaker Identification documentation](/speech
 
 ## How Do I Translate Between Languages in Meetings?
 
-AssemblyAI supports translation between 99+ languages, enabling you to transcribe meetings in one language and translate to another.
+AssemblyAI supports translation between 86 languages, enabling you to transcribe meetings in one language and translate to another.
 
 ### When to Use Translation
 
@@ -4649,7 +4671,7 @@ for utterance in transcript["utterances"]:
 
 ### Supported Language Pairs
 
-AssemblyAI supports translation between **99+ languages**, including:
+AssemblyAI supports translation between **86 languages**, including:
 
 **Popular combinations:**
 
@@ -6482,7 +6504,7 @@ For post-call analytics, AssemblyAI supports:
 - Sentiment analysis for customer satisfaction tracking
 - Entity detection for extracting names, account numbers, and products
 - Speaker identification to map generic labels to agent and customer names
-- Translation between 100+ languages
+- Translation between 86 languages
 
 **Guardrails**:
 
@@ -21957,7 +21979,7 @@ For post-call analysis, AssemblyAI supports:
 - Sentiment analysis for meeting tone assessment
 - Entity detection for extracting key information
 - Speaker identification to map generic labels to actual names/roles
-- Translation between 99+ languages
+- Translation between 86 languages
 
 ### Real-Time Streaming
 
@@ -22795,7 +22817,7 @@ For complete API details, see our [Speaker Identification documentation](/speech
 
 ## How Do I Translate Between Languages in Meetings?
 
-AssemblyAI supports translation between 99+ languages, enabling you to transcribe meetings in one language and translate to another.
+AssemblyAI supports translation between 86 languages, enabling you to transcribe meetings in one language and translate to another.
 
 ### When to Use Translation
 
@@ -22883,7 +22905,7 @@ for utterance in transcript["utterances"]:
 
 ### Supported Language Pairs
 
-AssemblyAI supports translation between **99+ languages**, including:
+AssemblyAI supports translation between **86 languages**, including:
 
 **Popular combinations:**
 
@@ -23455,7 +23477,7 @@ For post-call analytics, AssemblyAI supports:
 - Sentiment analysis for customer satisfaction tracking
 - Entity detection for extracting names, account numbers, and products
 - Speaker identification to map generic labels to agent and customer names
-- Translation between 100+ languages
+- Translation between 86 languages
 
 **Guardrails**:
 
@@ -35810,8 +35832,8 @@ Self-hosted streaming ships as **two separate stacks**. Each stack serves one mo
 
 | Stack | Model(s) served | Compose file | Best for |
 |-------|-----------------|--------------|----------|
-| **Universal Streaming** | Universal Streaming English + Multilingual | [`docker-compose.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/docker-compose.yml) | English and multilingual transcription workloads, telephony, captioning |
-| **Universal-3.5 Pro Streaming** | Universal-3.5 Pro | [`docker-compose.u3pro.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/docker-compose.u3pro.yml) | Voice agents — short utterances, low end-of-turn latency, continuous partials |
+| **Universal Streaming** | Universal Streaming English + Multilingual | [`streaming/docker-compose.english-multilang.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/docker-compose.english-multilang.yml) | English and multilingual transcription workloads, telephony, captioning |
+| **Universal-3.5 Pro Streaming** | Universal-3.5 Pro | [`streaming/docker-compose.universal-3-5-pro.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/docker-compose.universal-3-5-pro.yml) | Voice agents — short utterances, low end-of-turn latency, continuous partials |
 
 For product capabilities and accuracy details, see the [Universal Streaming](/streaming) and [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) overview pages.
 
@@ -35890,7 +35912,7 @@ Universal Streaming ASR containers take roughly **2 minutes** to become ready an
 
 ## Running a test client
 
-The [repo](https://github.com/AssemblyAI/streaming-self-hosting-stack) ships an example Python client under [`streaming_example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/tree/main/streaming_example) that streams a pre-recorded WAV file to the WebSocket endpoint. It supports all three speech models via the `--speech-model` flag:
+The [repo](https://github.com/AssemblyAI/streaming-self-hosting-stack) ships an example Python client under [`streaming/example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/tree/main/streaming/example) that streams a pre-recorded WAV file to the WebSocket endpoint. It supports all three speech models via the `--speech-model` flag:
 
 - `universal-streaming-english` — Universal Streaming, English
 - `universal-streaming-multilingual` — Universal Streaming, multilingual
@@ -40929,7 +40951,7 @@ For post-call analysis, AssemblyAI supports:
 - Sentiment analysis for meeting tone assessment
 - Entity detection for extracting key information
 - Speaker identification to map generic labels to actual names/roles
-- Translation between 99+ languages
+- Translation between 86 languages
 
 ### Real-Time Streaming
 
@@ -41767,7 +41789,7 @@ For complete API details, see our [Speaker Identification documentation](/speech
 
 ## How Do I Translate Between Languages in Meetings?
 
-AssemblyAI supports translation between 99+ languages, enabling you to transcribe meetings in one language and translate to another.
+AssemblyAI supports translation between 86 languages, enabling you to transcribe meetings in one language and translate to another.
 
 ### When to Use Translation
 
@@ -41855,7 +41877,7 @@ for utterance in transcript["utterances"]:
 
 ### Supported Language Pairs
 
-AssemblyAI supports translation between **99+ languages**, including:
+AssemblyAI supports translation between **86 languages**, including:
 
 **Popular combinations:**
 
@@ -43030,7 +43052,7 @@ For post-call analytics, AssemblyAI supports:
 - Sentiment analysis for customer satisfaction tracking
 - Entity detection for extracting names, account numbers, and products
 - Speaker identification to map generic labels to agent and customer names
-- Translation between 100+ languages
+- Translation between 86 languages
 
 **Guardrails**:
 
@@ -62864,7 +62886,7 @@ Description: Translate your transcripts from one language to another
 
 ## Overview
 
-The Translation feature automatically converts your transcribed audio content from one language to another, enabling you to reach global audiences without manual translation work. You can translate transcripts into over 100 languages with a single API request.
+The Translation feature automatically converts your transcribed audio content from one language to another, enabling you to reach global audiences without manual translation work. You can translate transcripts into 86 languages with a single API request.
 
 **Key capabilities:**
 
@@ -81289,237 +81311,6 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ---
 
-<a id="cli-docs-concepts-cli-mdx"></a>
-
-# CLI
-
-URL: https://www.assemblyai.com/docs/concepts/cli
-Source: docs/concepts/cli.mdx
-Navigation: Additional pages
-Description: Get up and running with AssemblyAI's CLI
-
-The AssemblyAI CLI lets you interact with the AssemblyAI production-ready AI models with a single command. With the CLI, you can transcribe and understand audio files, generate subtitles, and perform a variety of other tasks right from your Terminal.
-
-You can also learn the content on this page from [Summarize any video using only ONE command!](https://www.youtube.com/watch?v=4K9jCFhRwlc) on [AssemblyAI's YouTube channel](https://www.youtube.com/@AssemblyAI).
-
-## Installing the CLI
-
-The AssemblyAI CLI supports Windows, macOS, and Linux. You can get the CLI via the [Homebrew](https://brew.sh/) package manager or install it directly, depending on your platform.
-
-  
-  
-
-```bash
-brew tap assemblyai/assemblyai
-brew install assemblyai
-```
-
-  
-  
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/AssemblyAI/assemblyai-cli/main/install.sh)"
-```
-
-  
-  
-
-```bash
-# Installing using Scoop
-scoop bucket add assemblyai https://github.com/assemblyai/scoop-assemblyai.git
-scoop install assemblyai
-
-# Or via PowerShell as an administrator
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-irm https://raw.githubusercontent.com/AssemblyAI/assemblyai-cli/main/install.ps1 | iex
-New-Alias -Name assemblyai -Value $Env:Programfiles/AssemblyAI/assemblyai.exe
-```
-
-  
-  
-
-## Getting started
-
-### Set up your API key
-
-Before you can use the AssemblyAI CLI, you'll need to obtain an API key by <a href="https://www.assemblyai.com/dashboard/signup" target="_blank">signing up</a> to AssemblyAI. You can then set it up by running the following command:
-
-```bash
-assemblyai config YOUR_API_KEY
-```
-
-### Transcribe an audio file
-
-To transcribe an audio file, use the `transcribe` command, followed by the path to your audio file or YouTube video link. For example, if your audio file is located in the `~/audio` directory, you would run the following command:
-
-**Note**: The CLI accepts YouTube links, but the API does not work with YouTube links! When working with the API, you need to provide a local file or a URL that points to a publicly accessible audio/video file. For example, files in an S3 bucket, on your server, etc.
-
-```bash
-assemblyai transcribe ~/audio/my_audio_file.mp3
-```
-
-### Using a video link
-
-The AssemblyAI CLI accepts YouTube video links as input and can process videos of up to 4 hours.
-
-```bash
-assemblyai transcribe "https://www.youtube.com/watch?v=UdgRUCVUts0"
-```
-
-## Advanced
-
-In addition to its basic functionality, the AssemblyAI CLI offers several advanced flags that allow you to explore different AI models and customize the transcription result. These flags can be used to control the formatting, timing, and other aspects of the output.
-
-Some of the available flags include `--summarization` and `--dual_channel`, which can be used to generate a single abstractive summary of entire file, and to transcribe audio from both the left and right channels of a stereo recording, respectively.
-
-To see the full list of available flags, use the `--help` argument.
-
-```bash
-assemblyai transcribe --help
-```
-
-You can learn more about the commands and flags at [the AssemblyAI CLI documentation on GitHub](https://github.com/assemblyai/assemblyai-cli).
-
-We recommend that you experiment with them to find the models that work best for your needs.
-
-## Troubleshooting
-
-If you experience any issues when using the AssemblyAI CLI, we encourage you to consult the [GitHub repository](https://github.com/assemblyai/assemblyai-cli), reporting problems you encounter by creating a [new issue](https://github.com/AssemblyAI/assemblyai-cli/issues/new/choose) in there.
-
-Make sure to review the existing issues in the repository to ensure that your problem hasn't already been reported or resolved. Please include as much detail as possible, such as the exact command you ran, the error message you received, and any relevant logs.
-
-You can also follow us on Twitter at [@AssemblyAI](https://twitter.com/assemblyai) or check our [changelog](https://www.assemblyai.com/changelog) to stay up to date on the latest releases.
-
----
-
-<a id="frequently-asked-questions-docs-concepts-faq-mdx"></a>
-
-# Frequently asked questions
-
-URL: https://www.assemblyai.com/docs/concepts/faq
-Source: docs/concepts/faq.mdx
-Navigation: Additional pages
-Description: AssemblyAI API Frequently Asked Questions
-
-**Need more help?**
-
-  Check out our [Knowledge Base](https://support.assemblyai.com/) for additional
-  questions and answers.
-
-  
-The AssemblyAI API supports most common audio and video file formats. We recommend that you submit your audio in its native format without additional transcoding or file conversion. Transcoding or converting it to another format can sometimes result in a loss of quality, especially if you're converting compressed formats like `.mp3`. The AssemblyAI API converts all files to 16khz uncompressed audio as part of our transcription pipeline.
-
-Note that when you upload a video to our API, the audio will be extracted from it and processed independently, so the list of supported video formats isn't exhaustive. If you need support for a format that isn't listed below, please contact our team at [support@assemblyai.com](mailto:support@assemblyai.com).
-
-    <br />
-
-| Supported audio file types | Supported video file types    |
-| -------------------------- | ----------------------------- |
-| `.3ga`                     | `.webm`                       |
-| `.8svx`                    | `.mts, .m2ts, .ts`            |
-| `.aac`                     | `.mov`                        |
-| `.ac3`                     | `.mp2`                        |
-| `.aif`                     | `.mp4, .m4p (with DRM), .m4v` |
-| `.aiff`                    | `.mxf`                        |
-| `.alac`                    |                               |
-| `.amr`                     |                               |
-| `.ape`                     |                               |
-| `.au`                      |                               |
-| `.dss`                     |                               |
-| `.flac`                    |                               |
-| `.flv`                     |                               |
-| `.m4a`                     |                               |
-| `.m4b`                     |                               |
-| `.m4p`                     |                               |
-| `.m4r`                     |                               |
-| `.mp3`                     |                               |
-| `.mpga`                    |                               |
-| `.ogg, .oga, .mogg`        |                               |
-| `.opus`                    |                               |
-| `.qcp`                     |                               |
-| `.tta`                     |                               |
-| `.voc`                     |                               |
-| `.wav`                     |                               |
-| `.wma`                     |                               |
-| `.wv`                      |                               |
-
-  
-Currently, the maximum file size that can be submitted to the `/v2/transcript` endpoint for transcription is **5GB**, and the maximum duration is **10** hours.
-
-The maximum file size for a local file uploaded to the API via the `/v2/upload` endpoint is **2.2GB**.
-
-  
-
-  
-Processing times for our asynchronous transcription API are based on the duration of the submitted audio and models enabled in the request but the vast majority of files sent to our API will complete in **under 45 seconds**, and with a Real-Time-Factor (RTF) as low as .008x.
-
-To put an RTF of .008x into perspective, this means you can convert a:
-
-- 1h3min (75MB) meeting in 35 seconds
-- 3h15min (191MB) podcast in 133 seconds
-- 8h21min (464MB) video course in 300 seconds
-
-Files submitted for Streaming Speech-to-Text receive a response within a few hundred milliseconds.
-
-  Yes - you can use the base URL for EU at `api.eu.assemblyai.com` for the
-  `/v2/transcript` path. Check out the [endpoint configuration
-  examples](/pre-recorded-audio/select-the-region) in your
-  preferred programming language. Note: The base URL for EU is currently only
-  available for Async transcription.
-
-  
-The response for a completed request includes `start` and `end` keys. These keys are timestamp values for when a given word, phrase, or sentence starts and ends. These values are in milliseconds and are accurate to within about 400 milliseconds.
-
-  
-
-  
-The **Custom Vocabulary** feature allows you to submit a list of words or phrases to boost the likelihood that the model predicts those words. This is intended to help with words or terms that might be under-represented in the training data.
-
-The **Custom Spelling** feature allows you to control how words are spelled or formatted in the transcript text. It works like a find and replace feature — anytime you would see X in the API output, it'll be replaced with Y.
-
-  
-
-Files submitted to our API are encrypted in transit, and all submitted audio or video data is deleted from our servers as soon as the transcription has completed. Transcoded versions of the submitted files are created during the transcription process and are stored for three days for troubleshooting and debugging purposes. After three days, these files are automatically deleted.
-
-If you upload a local file but don't transcribe it, we delete it after 24 hours. The corresponding `upload_url` will no longer be valid.
-
-You can also [delete the transcript](/api-reference/transcripts/delete) itself at any time.
-
-  
-
-  
-Completed transcripts are stored in our database, encrypted at rest, so that we can serve it to you and your application. By default, transcripts are retained for **30 days and are then automatically deleted**. You can shorten this window by setting a [time-to-live (TTL)](/data-controls#set-a-time-to-live-for-audio-and-transcripts) on the Data Controls page in the dashboard.
-
-To permanently delete the transcription from our database at any time, you can [make a `DELETE` request to the API](/api-reference/transcripts/delete).
-
-  
-
-You can retrieve a list of all transcripts that you have created by [making a `GET` request to the API](/api-reference/transcripts/list).
-
-AssemblyAI’s [Universal-3.5 Pro](/pre-recorded-audio/select-the-speech-model) is our most robust and accurate offering, houses our most powerful models, and has the broadest range of capabilities.
-
-AssemblyAI’s [Universal-2](/pre-recorded-audio/select-the-speech-model) is an offering that gives product and development teams access to Speech AI at a cost-effective price point across 99 languages.
-
-If you plan to send a large amount of audio or video content through our API, please reach out to [support@assemblyai.com](mailto:support@assemblyai.com) to see if you qualify for a volume discount.
-
-  
-Any time you make a request to the API, you should receive a JSON response. If you don't receive the expected output, the JSON contains an `error` key with a message value describing the error.
-
-You can also can reach out to our support team any time by sending an email to [support@assemblyai.com](mailto:support@assemblyai.com). When reaching out, please include a detailed description of any issues you're experiencing as well as transcript IDs for affected requests, if possible.
-
-  
-
-  
-In the field of automatic speech recognition (ASR), custom models are rarely more accurate than the best general models ([learn more about one measure of accuracy, Word Error Rate, here](https://www.assemblyai.com/blog/word-error-rate/)). This is because general models are trained on huge datasets, and are constantly maintained and updated using the latest deep learning research.
-
-For example, at AssemblyAI, we train large deep neural networks on over 600,000 hours of speech data. This training data is a mix of many different types of audio (broadcast TV recordings, phone calls, Zoom meetings, videos, etc.), accents, and speakers. This massive amount of diverse training data helps our ASR models to generalize extremely well across all types of audio/data, speakers, recording quality, and accents when converting Speech-to-Text in the real world.
-
-Custom models usually come into the mix when dealing with audio data that have unique characteristics unseen by a general model. However, because large, accurate general models see most types of audio data during training, there aren't many “unique characteristics” that would trip up a general model - or that a custom model could even learn.
-
-To learn more about this and related topics, see the [AssemblyAI blog](https://www.assemblyai.com/blog/do-i-need-a-custom-speech-recognition-model/).
-
----
-
 <a id="deployment-docs-deployment-mdx"></a>
 
 # Deployment
@@ -82518,225 +82309,6 @@ To learn about using Streaming Speech-to-Text, see the following resources:
 - [GitHub: Cookbook examples](https://github.com/AssemblyAI/cookbook/tree/master/streaming-stt)
 - [GitHub: Use Express.js for Streaming Speech-to-Text](https://github.com/AssemblyAI/realtime-transcription-browser-js-example)
 - [Streaming API reference](/streaming/api-spec/streaming-websocket)
-
----
-
-<a id="self-hosted-async-transcription-docs-pre-recorded-audio-self-hosted-async-mdx"></a>
-
-# Self-Hosted Async Transcription
-
-URL: https://www.assemblyai.com/docs/pre-recorded-audio/self-hosted-async
-Source: docs/pre-recorded-audio/self-hosted-async.mdx
-Navigation: Additional pages
-Description: Deploy AssemblyAI's async transcription solution within your own infrastructure
-
-The **AssemblyAI Self-Hosted Async Solution** provides a secure transcription solution that can be deployed within your own infrastructure. This solution is designed for partners who need complete control over their data and infrastructure while maintaining high-quality speech-to-text capabilities.
-
-## Core principle
-
-- **Complete data isolation**: No audio data, transcript data, or personally identifiable information (PII) will ever be sent to AssemblyAI servers. Only usage metadata and licensing information is transmitted.
-
-## System requirements
-
-### Hardware requirements
-
-- **CPU**: 28 cores minimum
-- **RAM**: 128 GB minimum
-- **GPU**: NVIDIA GPU with CUDA Compute Capability 7.0 or higher is required
-
-**Compatible GPU models**: T4, V100, A40, A100, L100
-
-  Older GPUs such as M10, K80, and GPUs based on Maxwell or Kepler architecture
-  are NOT compatible with this solution.
-
-### Software requirements
-
-- **Operating System**: Linux
-- **Container Runtime**: Docker required
-- **AWS Account**: Required for pulling container images from our ECR registry
-
-## Prerequisites
-
-- Active enterprise contract with AssemblyAI
-- AWS account credentials for container registry access
-- Linux environment with Docker installed
-- NVIDIA Container Toolkit for GPU support
-
-## Setup and deployment
-
-### 1. Docker runtime with GPU support
-
-**1.1** Verify NVIDIA drivers are installed:
-
-```bash
-nvidia-smi
-```
-
-**1.2** Install NVIDIA Container Toolkit:
-
-Follow the [NVIDIA Container Toolkit installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to set up GPU support for Docker.
-
-**1.3** Verify the Docker runtime has GPU access:
-
-```bash
-docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
-```
-
-### 2. Obtain credentials
-
-**AWS ECR Access**: AssemblyAI will manually provision AWS account credentials for your team to pull container images from our private Amazon ECR registry. Contact your AssemblyAI representative to obtain these credentials.
-
-### 3. AWS ECR authentication
-
-Authenticate with AWS ECR using the provided credentials:
-
-```bash
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 344839248844.dkr.ecr.us-west-2.amazonaws.com
-```
-
-### 4. Pull the Docker image
-
-Pull the self-hosted ML container image:
-
-```bash
-docker pull 344839248844.dkr.ecr.us-west-2.amazonaws.com/self-hosted-ml-prod:release-v0.6
-```
-
-### 5. Obtain license file
-
-AssemblyAI will provide a license file (`license.jwt`) that is required to run the container. The license file contains:
-
-- Expiration date
-- Usage limits
-- Customer identification
-
-  The license file provided for testing is valid for 30 days. For production
-  deployments, contact AssemblyAI to obtain a production license.
-
-### 6. Run the container
-
-Start the self-hosted ML container with GPU support:
-
-```bash
-docker run --gpus all -p 8000:8000 \
-  -e NVIDIA_DRIVER_CAPABILITIES=all \
-  -v /absolute/local/path/to/license.jwt:/app/license.jwt \
-  344839248844.dkr.ecr.us-west-2.amazonaws.com/self-hosted-ml-prod:release-v0.6
-```
-
-**Parameters explained**:
-
-- `--gpus all`: Enables GPU access for the container
-- `-p 8000:8000`: Maps port 8000 from the container to the host
-- `-e NVIDIA_DRIVER_CAPABILITIES=all`: Enables all NVIDIA driver capabilities
-- `-v /absolute/local/path/to/license.jwt:/app/license.jwt`: Mounts the license file into the container
-
-  Replace `/absolute/local/path/to/license.jwt` with the actual absolute path to
-  your license file on the host system.
-
-## Using the API
-
-Once the container is running, you can interact with it using HTTP requests.
-
-### Check container health
-
-Verify that the container is ready to accept requests:
-
-```bash
-curl "http://localhost:8000/health"
-```
-
-A successful response indicates the container is ready to process transcription requests.
-
-### Transcribe an audio file
-
-Submit an audio file for transcription:
-
-```bash
-curl -X POST "http://localhost:8000/predict" \
-  -F "file=@/path/to/file.mp3" \
-  -F 'payload={"language": "en"}'
-```
-
-**Parameters**:
-
-- `file`: The audio file to transcribe (supports common audio formats like MP3, WAV, M4A, etc.)
-- `payload`: JSON object containing transcription parameters
-  - `language`: Language code for the audio (e.g., `"en"` for English)
-
-**Example response**:
-
-```json
-{
-  "text": "This is the transcribed text from your audio file.",
-  "words": [
-    {
-      "text": "This",
-      "start": 0,
-      "end": 200,
-      "confidence": 0.98
-    }
-  ]
-}
-```
-
-## Supported languages
-
-The self-hosted async solution supports multiple languages. Specify the language code in the `payload` parameter when making transcription requests.
-
-Common language codes:
-
-- `en`: English
-- `es`: Spanish
-- `fr`: French
-- `de`: German
-- `it`: Italian
-- `pt`: Portuguese
-- `nl`: Dutch
-
-For a complete list of supported languages, contact your AssemblyAI representative.
-
-## Troubleshooting
-
-### Container fails to start
-
-**Issue**: Container exits immediately after starting.
-
-**Solution**: Verify that:
-
-1. The license file path is correct and the file exists
-2. The license file is not expired
-3. GPU drivers are properly installed (`nvidia-smi` should work)
-4. NVIDIA Container Toolkit is installed
-
-### Health check fails
-
-**Issue**: The `/health` endpoint returns an error or times out.
-
-**Solution**:
-
-1. Wait a few moments for the container to fully initialize
-2. Check container logs: `docker logs <container_id>`
-3. Verify GPU access: Ensure the container can access the GPU
-
-### Transcription request fails
-
-**Issue**: The `/predict` endpoint returns an error.
-
-**Solution**:
-
-1. Verify the audio file format is supported
-2. Check that the `language` parameter is valid
-3. Ensure the file path in the curl command is correct
-4. Review container logs for detailed error messages
-
-## Support
-
-For technical support or questions about the self-hosted async solution, contact your AssemblyAI representative or reach out to the AssemblyAI support team.
-
-## Simplified installation
-
-AssemblyAI is working on packaging solutions and installation scripts to simplify the deployment process for customers. For the latest information on simplified installation options, contact your AssemblyAI representative.
 
 ---
 

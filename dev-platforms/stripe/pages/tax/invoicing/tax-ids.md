@@ -72,9 +72,9 @@ Set default account tax ID in the Dashboard
 
 A default account tax ID in the Dashboard
 
-## Display tax IDs on invoices 
+## Display account tax IDs on invoices 
 
-Stripe uses the following priority when determining which tax IDs appear on an invoice:
+Stripe uses the following priority when determining which of your account tax IDs appear on an invoice:
 
 1. **Manual override**: Tax IDs explicitly set using `account_tax_ids` on the invoice, subscription, payment link, or checkout session.
 2. **Automatic tax ID display**: If [enabled](https://docs.stripe.com/tax/invoicing/tax-ids.md#auto-tax-ids), Stripe resolves the appropriate tax IDs based on the invoice’s taxable location.

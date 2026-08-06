@@ -46,7 +46,7 @@ Enable [`TodoListMiddleware`](https://reference.langchain.com/javascript/langcha
   import { todoListMiddleware } from "langchain";
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     middleware: [todoListMiddleware()],
   });
   ```

@@ -19,7 +19,7 @@ The LEDs on top of the reader show the current status.
 
 ### LED icon meanings
 
-Use this table to understand what the icons in the subsequent tables indicate.
+Use this table to understand what the icons in the following tables indicate.
 
 | Icon | Meaning |
 | --- | --- |
@@ -41,7 +41,7 @@ When the Stripe Reader M2 is on, you can press and release the power button once
 
 ### Connectivity and reader status
 
-When you connect to the Stripe Reader M2, you can check the LEDs for the reader status.
+When you connect to the Stripe Reader M2, check the LEDs for the reader status.
 
 | LEDs | Meaning |
 | --- | --- |

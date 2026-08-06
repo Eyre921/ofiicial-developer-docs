@@ -1,19 +1,19 @@
 ---
-title: "Dub a video or audio file"
-source: https://elevenlabs.io/docs/api-reference/dubbing/create.md
-path: docs/api-reference/dubbing/create
+title: "Dub a video or an audio file"
+source: https://elevenlabs.io/docs/api-reference/legacy/dubbing/create.md
+path: docs/api-reference/legacy/dubbing/create
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Dub a video or audio file
+# Dub a video or an audio file
 
 POST https://api.elevenlabs.io/v1/dubbing
 Content-Type: multipart/form-data
 
 Dubs a provided audio or video file into given language.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/create
+Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/create
 
 ## OpenAPI Specification
 

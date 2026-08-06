@@ -76,7 +76,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     </tbody>
   </table>
 
-  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
+  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
 </Note>
 
 <Info>
@@ -299,7 +299,7 @@ export OPENAI_API_KEY=<your-openai-api-key>
     </tbody>
   </table>
 
-  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
+  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
 </Note>
 
 <Info>

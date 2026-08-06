@@ -79,3 +79,22 @@ Retrieve a list of contacts in a segment.
   resend segments contacts 78261eea-8f8b-4381-83c6-79fa7120f1cf
   ```
 </RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+        "email": "steve.wozniak@gmail.com",
+        "first_name": "Steve",
+        "last_name": "Wozniak",
+        "created_at": "2026-10-06 23:47:56.678+00",
+        "unsubscribed": false
+      }
+    ]
+  }
+  ```
+</ResponseExample>

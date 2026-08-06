@@ -29,7 +29,7 @@ To trigger a payout of these funds, use the [Payouts API](https://docs.stripe.co
 
 > *Escrow* has a precise legal definition, and Stripe doesn’t provide escrow services or support escrow accounts. However, you can control payout timing through manual payouts, which allow you to delay payouts to certain accounts. When using manual payouts, you must pay out funds within the time frame for the business’s country.
 > 
-> Delayed payouts can be useful when a delivery is delayed or when there’s a possibility of a refund.
+> Use delayed payouts when a delivery is delayed or when you think you have a possibility of a refund.
 
 ## Regular payouts
 

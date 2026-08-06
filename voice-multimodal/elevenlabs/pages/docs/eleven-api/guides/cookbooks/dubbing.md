@@ -8,7 +8,9 @@ path: docs/eleven-api/guides/cookbooks/dubbing
 
 # Dubbing quickstart
 
-This guide will show you how to dub an audio file across languages. In this example we'll dub an audio file from English to Spanish.
+This guide shows you how to dub a media file into another language with the Dubbing API. In this example you create a dubbing project from an English audio file and generate a Spanish dub.
+
+A dubbing project has two parts: a **project**, which holds one source of media and its transcript, and one or more **language targets**, each producing a dubbed output in a single language. You create a project, wait for its source to be transcribed, add a language, then download the finished dub.
 
 ## Using the Dubbing API
 
@@ -36,95 +38,122 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
-To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
-and/or [ffmpeg](https://ffmpeg.org/).
+The Python example uses the `requests` library to download the dubbed audio. Install it
+with `pip install requests`.
 
 #### Make the API request
 
-Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
+Create a new file named `example.py` or `example.mts`, depending on your language of choice, and add the following code:
 
 ```python maxLines=0
 # example.py
 import os
+import time
+import requests
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
-from elevenlabs.play import play
-import requests
-from io import BytesIO
-import time
 
 load_dotenv()
 
 elevenlabs = ElevenLabs(
-  api_key=os.getenv("ELEVENLABS_API_KEY"),
+    api_key=os.getenv("ELEVENLABS_API_KEY"),
 )
 
-target_lang = "es"  # Spanish
-
-audio_url = (
-    "https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3"
-)
-response = requests.get(audio_url)
-
-audio_data = BytesIO(response.content)
-audio_data.name = "audio.mp3"
-
-# Start dubbing
-dubbed = elevenlabs.dubbing.create(
-    file=audio_data, target_lang=target_lang
+# 1. Create a project from a source URL
+project = elevenlabs.dubbing.project.create(
+    source_url="https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3",
+    source_language="en",
+    reference="Quickstart dub",
 )
 
+# 2. Wait for the source media to be transcribed
 while True:
-    status = elevenlabs.dubbing.get(dubbed.dubbing_id).status
-    if status == "dubbed":
-        dubbed_file = elevenlabs.dubbing.audio.get(dubbed.dubbing_id, target_lang)
-        play(dubbed_file)
+    project = elevenlabs.dubbing.project.get(project.project_id)
+    if project.status == "ready":
         break
-    else:
-        print("Audio is still being dubbed...")
-        time.sleep(5)
+    if project.status == "failed":
+        raise RuntimeError("Project preparation failed")
+    print("Preparing project...")
+    time.sleep(5)
+
+# 3. Add a Spanish language target
+language = elevenlabs.dubbing.project.language.create(
+    project.project_id,
+    target_language="es",
+)
+
+# 4. Wait for the dub to finish generating
+while True:
+    language = elevenlabs.dubbing.project.language.get(
+        project.project_id, language.language_id
+    )
+    if language.status == "completed":
+        break
+    if language.status == "failed":
+        raise RuntimeError("Dub generation failed")
+    print("Generating dub...")
+    time.sleep(5)
+
+# 5. Download the dubbed audio from the signed URL
+audio = requests.get(language.outputs.lossless_audio)
+with open("dubbed.wav", "wb") as f:
+    f.write(audio.content)
+
+print("Saved dubbed audio to dubbed.wav")
 ```
 
 ```typescript maxLines=0
 // example.mts
-import { ElevenLabsClient, play } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import { writeFile } from "fs/promises";
 import "dotenv/config";
 
 const elevenlabs = new ElevenLabsClient();
 
-const targetLang = "es"; // spanish
-const sourceAudio = await fetch(
-  "https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3"
-);
-const audioBlob = new Blob([await sourceAudio.arrayBuffer()], {
-  type: "audio/mp3",
+// 1. Create a project from a source URL
+let project = await elevenlabs.dubbing.project.create({
+  sourceUrl:
+    "https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3",
+  sourceLanguage: "en",
+  reference: "Quickstart dub",
 });
 
-// Start dubbing
-const dubbed = await elevenlabs.dubbing.create({
-  file: audioBlob,
-  targetLang: targetLang,
-});
-
+// 2. Wait for the source media to be transcribed
 while (true) {
-  const { status } = await elevenlabs.dubbing.get(
-    dubbed.dubbingId
-  );
-  if (status === "dubbed") {
-    const dubbedFile = await elevenlabs.dubbing.audio.get(
-      dubbed.dubbingId,
-      targetLang
-    );
-    await play(dubbedFile);
-    break;
-  } else {
-    console.log("Audio is still being dubbed...");
-  }
-
-  // Wait 5 seconds between checks
+  project = await elevenlabs.dubbing.project.get(project.projectId);
+  if (project.status === "ready") break;
+  if (project.status === "failed") throw new Error("Project preparation failed");
+  console.log("Preparing project...");
   await new Promise((resolve) => setTimeout(resolve, 5000));
 }
+
+// 3. Add a Spanish language target
+let language = await elevenlabs.dubbing.project.language.create(project.projectId, {
+  targetLanguage: "es",
+});
+
+// 4. Wait for the dub to finish generating
+while (true) {
+  language = await elevenlabs.dubbing.project.language.get(
+    project.projectId,
+    language.languageId
+  );
+  if (language.status === "completed") break;
+  if (language.status === "failed") throw new Error("Dub generation failed");
+  console.log("Generating dub...");
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+}
+
+// 5. Download the dubbed audio from the signed URL
+const response = await fetch(language.outputs!.losslessAudio!);
+const buffer = Buffer.from(await response.arrayBuffer());
+await writeFile("dubbed.wav", buffer);
+
+console.log("Saved dubbed audio to dubbed.wav");
 ```
+
+The download URL in `outputs.lossless_audio` is signed and expires about an hour after it
+is issued. Fetch the language again to get a fresh URL if it has expired.
 
 #### Execute the code
 
@@ -136,18 +165,22 @@ python example.py
 npx tsx example.mts
 ```
 
-You should hear the dubbed audio file playing through your speakers.
+The dubbed audio is saved to `dubbed.wav` in your working directory.
+
+Enterprise workspaces can review and correct the source transcript before adding a language, which
+produces more accurate translations. See [Refine and regenerate a
+dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
 
 ## Next steps
 
-#### [Dubbing overview](/docs/overview/capabilities/dubbing)
+#### [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate)
 
-Learn about supported languages, formats, and dubbing capabilities
+Edit the source transcript and translations, then regenerate the dub
 
-#### [Browse voices](https://elevenlabs.io/app/voice-library)
+#### [Dub into multiple languages](/docs/eleven-api/guides/how-to/dubbing/multiple-languages)
 
-Explore voices available for use in dubbed content
+Add several target languages to a single project
 
-#### [API reference](/docs/api-reference/dubbing/create)
+#### [API reference](/docs/api-reference/dubbing/create-project)
 
 Explore all Dubbing API parameters and response formats

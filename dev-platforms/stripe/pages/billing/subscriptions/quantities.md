@@ -229,7 +229,7 @@ With this subscription, usage can be reported per email and you can bill the cus
 
 ## Multiple subscriptions
 
-You can simultaneously create multiple subscriptions for a single customer. This capability is useful when you want to make it possible for your customers to subscribe to multiple products with separate service periods. Each subscription has its own separate billing period, invoice, and charge, even if the underlying prices have the same billing period.
+You can simultaneously create multiple subscriptions for a single customer. Use this capability when you want to make it possible for your customers to subscribe to multiple products with separate service periods. Each subscription has its own separate billing period, invoice, and charge, even if the underlying prices have the same billing period.
 
 > If you create multiple subscriptions with the same price, each subscription is independent, including payments and billing periods. If that’s not what you want, create a single subscription using [multiple quantities](https://docs.stripe.com/billing/subscriptions/quantities.md#setting-quantities) instead.
 

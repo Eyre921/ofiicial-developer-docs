@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 395 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -438,6 +438,7 @@
 - `tools-sdks/firectl/commands/version` — [firectl version](pages/tools-sdks/firectl/commands/version.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/version)
 - `tools-sdks/firectl/commands/whoami` — [firectl whoami](pages/tools-sdks/firectl/commands/whoami.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/whoami)
 - `tools-sdks/firectl/firectl` — [Getting started](pages/tools-sdks/firectl/firectl.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/firectl)
+- `tools-sdks/nim-compatibility` — [NIM compatibility](pages/tools-sdks/nim-compatibility.md) · [原文](https://docs.fireworks.ai/tools-sdks/nim-compatibility)
 - `tools-sdks/openai-compatibility` — [OpenAI compatibility](pages/tools-sdks/openai-compatibility.md) · [原文](https://docs.fireworks.ai/tools-sdks/openai-compatibility)
 - `tools-sdks/python-sdk` — [Python SDK](pages/tools-sdks/python-sdk.md) · [原文](https://docs.fireworks.ai/tools-sdks/python-sdk)
 

@@ -61,7 +61,7 @@ If you want to create a new project with an AI agent, check out our [Agent Runne
 
 To start an agent run to make changes to your project, follow these steps:
 
-1. Go to your Netlify project dashboard. Under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, or OpenAI Codex.
+1. Go to your Netlify project dashboard. Under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, OpenAI Codex, or OpenCode. To set the model and reasoning effort the agent runs with, choose **Configure...** in the same dropdown. For details, see [Agent configuration](/build/build-with-ai/agent-runners/overview/#agent-configuration).
   ![Empty prompt field on Project overview page](/images/build-with-an-ai-agent-from-project-overview.png)
 2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. 
 3. Select a mode from the mode dropdown. To make changes, use the default **Build** mode so your agent can make code or file changes. To get answers or make plans without changing your project, use  **Ask** mode. For details, see [Agent run modes](#agent-run-modes).

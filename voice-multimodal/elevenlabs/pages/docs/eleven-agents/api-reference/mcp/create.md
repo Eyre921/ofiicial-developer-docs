@@ -185,6 +185,17 @@ components:
         - $ref: '#/components/schemas/type_:ConvAiDynamicVariable'
         - $ref: '#/components/schemas/type_:ConvAiEnvVarLocator'
       title: McpServerConfigInputRequestHeadersValue
+    type_:McpServerConfigInputRequestMetaValue:
+      oneOf:
+        - type: string
+        - type: integer
+        - type: number
+          format: double
+        - type: boolean
+        - $ref: '#/components/schemas/type_:ConvAiSecretLocator'
+        - $ref: '#/components/schemas/type_:ConvAiDynamicVariable'
+        - $ref: '#/components/schemas/type_:ConvAiEnvVarLocator'
+      title: McpServerConfigInputRequestMetaValue
     type_:AuthConnectionLocator:
       type: object
       properties:
@@ -557,6 +568,14 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/type_:McpServerConfigInputRequestHeadersValue'
           description: The headers included in the request
+        request_meta:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/type_:McpServerConfigInputRequestMetaValue'
+          description: >-
+            Entries sent in the MCP `_meta` field of tools/call requests. Values
+            may be JSON scalars, or references to a workspace secret, dynamic
+            variable, or environment variable resolved per call.
         auth_connection:
           $ref: '#/components/schemas/type_:McpServerConfigInputAuthConnection'
           description: >-
@@ -662,6 +681,17 @@ components:
         - $ref: '#/components/schemas/type_:ConvAiDynamicVariable'
         - $ref: '#/components/schemas/type_:ConvAiEnvVarLocator'
       title: McpServerConfigOutputRequestHeadersValue
+    type_:McpServerConfigOutputRequestMetaValue:
+      oneOf:
+        - type: string
+        - type: integer
+        - type: number
+          format: double
+        - type: boolean
+        - $ref: '#/components/schemas/type_:ConvAiSecretLocator'
+        - $ref: '#/components/schemas/type_:ConvAiDynamicVariable'
+        - $ref: '#/components/schemas/type_:ConvAiEnvVarLocator'
+      title: McpServerConfigOutputRequestMetaValue
     type_:McpServerConfigOutputAuthConnection:
       oneOf:
         - $ref: '#/components/schemas/type_:AuthConnectionLocator'
@@ -851,6 +881,14 @@ components:
             $ref: >-
               #/components/schemas/type_:McpServerConfigOutputRequestHeadersValue
           description: The headers included in the request
+        request_meta:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/type_:McpServerConfigOutputRequestMetaValue'
+          description: >-
+            Entries sent in the MCP `_meta` field of tools/call requests. Values
+            may be JSON scalars, or references to a workspace secret, dynamic
+            variable, or environment variable resolved per call.
         auth_connection:
           $ref: '#/components/schemas/type_:McpServerConfigOutputAuthConnection'
           description: >-
@@ -1159,6 +1197,9 @@ components:
       "secret_id": "secret_id"
     },
     "request_headers": {
+      "key": "value"
+    },
+    "request_meta": {
       "key": "value"
     },
     "auth_connection": {

@@ -11895,6 +11895,17 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Remove the icon from this page"
   </Accordion>
 
+  <Accordion title="Convert a page to a skill">
+    `notion-convert-page-to-skill`
+
+    Marks a Notion page as an AI skill. Pass the page's full Notion URL. The page must be in the connected workspace, and you must have permission to edit it.
+
+    **Example prompts:**
+
+    * "Convert this page into a skill: `https://www.notion.so/example-page-url`"
+    * "Make our engineering guidelines page available as an AI skill"
+  </Accordion>
+
   <Accordion title="Move pages">
     `notion-move-pages`
 
@@ -16379,6 +16390,16 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="August 5, 2026">
+  ### `unsupported` formula and rollup property values
+
+  The API can now return formula and rollup [page property values](/reference/page-property-values) and [property item values](/reference/property-item-object) with `type` set to `"unsupported"` and an empty `unsupported` object. This happens when a value depends on too many related pages or nested formulas and rollups. The response doesn't include a partial value. Treat the property as unavailable. Rollups still include the `function` field. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+  ### JavaScript SDK 5.24.0
+
+  We released [`@notionhq/client` v5.24.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.24.0). It adds `client.blocks.meetingNotes.create()` for [creating a meeting note](/reference/create-meeting-note), typed `unsupported` formula and rollup values, and `APIErrorCode.InvalidBeta` for handling `invalid_beta` responses.
+</Update>
 
 <Update label="August 3, 2026">
   ### Notion MCP supports MCP protocol version 2026-07-28
@@ -21718,10 +21739,10 @@ Formula property value objects represent the result of evaluating a formula desc
 
 If the `type` of a page property value is `"formula"`, then the property value contains a `"formula"` object with the following fields:
 
-| Field                                             | Type                                              | Description                                                                                                                            | Example value |
-| :------------------------------------------------ | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `boolean` \|\| `date` \|\| `number` \|\| `string` | `boolean` \|\| `date` \|\| `number` \|\| `string` | The value of the result of the formula. The value can’t be updated directly via the API.                                               | 42            |
-| `type`                                            | `string` (enum)                                   | A string indicating the data type of the result of the formula. Possible `type` values are: - `boolean` - `date` - `number` - `string` | `"number"`    |
+| Field                                                                | Type                                                            | Description                                                               | Example value |
+| :------------------------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------------------------------------------ | :------------ |
+| `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `unsupported` | `boolean` \|\| `date` \|\| `number` \|\| `string` \|\| `object` | The formula result. You can't update this value through the API.          | 42            |
+| `type`                                                               | `string` (enum)                                                 | The result type: `boolean`, `date`, `number`, `string`, or `unsupported`. | `"number"`    |
 
 #### Example `formula` page property value as returned in a GET page request
 
@@ -21743,6 +21764,27 @@ If the `type` of a page property value is `"formula"`, then the property value c
 <Info>
   The [Retrieve a page endpoint](/reference/retrieve-a-page) returns a maximum of 25 inline page or person references for a `formula` property. If a `formula` property includes more than 25 references, then you can use the [Retrieve a page property item endpoint](/reference/retrieve-a-page-property) for the specific `formula` property to get its complete list of references.
 </Info>
+
+#### Unsupported formula
+
+If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported formula page property value theme={null}
+  {
+    "Days until launch": {
+      "id": "CSoE",
+      "type": "formula",
+      "formula": {
+        "type": "unsupported",
+        "unsupported": {}
+      }
+    }
+  }
+  ```
+</CodeGroup>
 
 ### Icon
 
@@ -22186,6 +22228,28 @@ If the `type` of a page property value is `"rollup"`, then the property value co
       "rollup": {
         "type": "number",
         "number": 2,
+        "function": "count"
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+#### Unsupported rollup
+
+If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported rollup page property value theme={null}
+  {
+    "Number of units": {
+      "id": "hgMz",
+      "type": "rollup",
+      "rollup": {
+        "type": "unsupported",
+        "unsupported": {},
         "function": "count"
       }
     }
@@ -24306,9 +24370,9 @@ Date property value objects contain the following data within the `date` propert
 
 Formula property value objects represent the result of evaluating a formula described in the [database's properties](/reference/property-object). These objects contain a `type` key and a key corresponding with the value of `type`. The value is an object containing type-specific data. The type-specific data are described in the sections below.
 
-| Property | Type            | Description                                                                                            |
-| :------- | :-------------- | :----------------------------------------------------------------------------------------------------- |
-| `type`   | `string` (enum) | The type of the formula result. Possible values are `"string"`, `"number"`, `"boolean"`, and `"date"`. |
+| Property | Type            | Description                                                               |
+| :------- | :-------------- | :------------------------------------------------------------------------ |
+| `type`   | `string` (enum) | The result type: `string`, `number`, `boolean`, `date`, or `unsupported`. |
 
 ### String formula
 
@@ -24336,6 +24400,28 @@ Date formula property values contain an optional [date property value](#date) wi
       "formula": {
         "type": "number",
         "number": 1234
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+### Unsupported formula
+
+If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported formula property value theme={null}
+  {
+    "Formula": {
+      "object": "property_item",
+      "id": "KpQq",
+      "type": "formula",
+      "formula": {
+        "type": "unsupported",
+        "unsupported": {}
       }
     }
   }
@@ -24439,6 +24525,43 @@ Rollups with an aggregation with more than one page of aggregated results will r
           "type": "incomplete",
           "incomplete": {}
         }
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+### Unsupported rollup
+
+If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported rollup property value theme={null}
+  {
+    "object": "list",
+    "results": [
+      {
+        "object": "property_item",
+        "id": "vYdV",
+        "type": "relation",
+        "relation": {
+          "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"
+        }
+      }
+    ],
+    "next_cursor": null,
+    "has_more": false,
+    "type": "property_item",
+    "property_item": {
+      "id": "y}~p",
+      "next_url": null,
+      "type": "rollup",
+      "rollup": {
+        "function": "sum",
+        "type": "unsupported",
+        "unsupported": {}
       }
     }
   }
@@ -25754,7 +25877,7 @@ For connections that need to process all pages in a large data source, we recomm
 
 ### Recommendations for performance
 
-Use the `filter_properties` query parameter to filter only the properties of the data source schema you need from the response items. For example:
+Use the `filter_properties` query parameter whenever you don't need every property from every result. This endpoint returns only the properties you list. For example:
 
 ```bash theme={null}
 https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title
@@ -25777,7 +25900,12 @@ notion.dataSources.query({
 })
 ```
 
-Using `filter_properties` can make a significant improvement to the speed of the API and size of the JSON objects in the results, especially for databases with lots of properties, some of which might be rollups, relations, or formulas. If you need additional properties from each returned page, you can make subsequent calls to the [Retrieve page property item](/changelog/retrieve-page-property-values) or [Retrieve a page](/reference/retrieve-a-page) APIs.
+Using `filter_properties` can speed up the query and reduce its response size, especially for data sources with many properties, formulas, rollups, or relations. Use this endpoint to find pages and return only the properties your list shows. Fetch more data after you select a page:
+
+* Call [Retrieve a page](/reference/retrieve-a-page) with the returned page ID to get more properties from one page. You can also pass `filter_properties` to that endpoint.
+* Call [Retrieve a page property](/reference/retrieve-a-page-property) with the page and property IDs to retrieve one property. Use it when a formula, rollup, or relation contains more than 25 references.
+
+Don't fetch every property for every result unless you need all of them.
 
 If you're still running into long query times with this API, other tips include:
 

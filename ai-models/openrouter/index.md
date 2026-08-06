@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 311 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 312 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -8,6 +8,7 @@
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
 - `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
 - `docs/agent-sdk/call-model/async-tools` — [Async Tools](pages/docs/agent-sdk/call-model/async-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/async-tools.md)
+- `docs/agent-sdk/call-model/doom-loop-detection` — [Doom-Loop Detection](pages/docs/agent-sdk/call-model/doom-loop-detection.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/doom-loop-detection.md)
 - `docs/agent-sdk/call-model/dynamic-parameters` — [Dynamic Parameters](pages/docs/agent-sdk/call-model/dynamic-parameters.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/dynamic-parameters.md)
 - `docs/agent-sdk/call-model/examples/skills-loader` — [Skills Loader](pages/docs/agent-sdk/call-model/examples/skills-loader.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader.md)
 - `docs/agent-sdk/call-model/examples/weather-tool` — [Weather Tool](pages/docs/agent-sdk/call-model/examples/weather-tool.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/weather-tool.md)

@@ -113,8 +113,8 @@ Publish a template.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "id": "34a080c9-b17d-4187-ad80-5af20266e535",
-    "object": "template"
+    "object": "template",
+    "id": "34a080c9-b17d-4187-ad80-5af20266e535"
   }
   ```
 </ResponseExample>

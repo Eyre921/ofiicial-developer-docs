@@ -439,6 +439,7 @@ Create a new broadcast to send to your contacts.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "broadcast",
     "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"
   }
   ```

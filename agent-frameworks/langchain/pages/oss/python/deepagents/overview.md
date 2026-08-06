@@ -426,7 +426,7 @@ Pass [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/age
   from langchain.agents.middleware import TodoListMiddleware
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[TodoListMiddleware()],
   )
   ```

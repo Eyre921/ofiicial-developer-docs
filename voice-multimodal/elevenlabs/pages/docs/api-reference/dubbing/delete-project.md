@@ -1,18 +1,18 @@
 ---
-title: "Get dubbed audio"
-source: https://elevenlabs.io/docs/api-reference/dubbing/audio/get.md
-path: docs/api-reference/dubbing/audio/get
+title: "Delete project"
+source: https://elevenlabs.io/docs/api-reference/dubbing/delete-project.md
+path: docs/api-reference/dubbing/delete-project
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Get dubbed audio
+# Delete project
 
-GET https://api.elevenlabs.io/v1/dubbing/{dubbing_id}/audio/{language_code}
+DELETE https://api.elevenlabs.io/v1/dubbing/project/{project_id}
 
-Returns dub as a streamed MP3 or MP4 file. If this dub has been edited using Dubbing Studio you need to use the resource render endpoint as this endpoint only returns the original automatic dub result.
+Delete a project and its language targets.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/audio/get
+Reference: https://elevenlabs.io/docs/api-reference/dubbing/delete-project
 
 ## OpenAPI Specification
 
@@ -22,26 +22,17 @@ info:
   title: api
   version: 1.0.0
 paths:
-  /v1/dubbing/{dubbing_id}/audio/{language_code}:
-    get:
-      operationId: get
-      summary: Get dubbed audio
-      description: >-
-        Returns dub as a streamed MP3 or MP4 file. If this dub has been edited
-        using Dubbing Studio you need to use the resource render endpoint as
-        this endpoint only returns the original automatic dub result.
+  /v1/dubbing/project/{project_id}:
+    delete:
+      operationId: delete
+      summary: Delete Dubbing Project
+      description: Delete a project and its language targets.
       tags:
-        - audio
+        - project
       parameters:
-        - name: dubbing_id
+        - name: project_id
           in: path
-          description: ID of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_code
-          in: path
-          description: ID of the language.
+          description: Identifier of the dubbing project to delete.
           required: true
           schema:
             type: string
@@ -51,13 +42,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: The dubbed audio or video file
+        '204':
+          description: Successful Response
           content:
-            application/octet-stream:
+            application/json:
               schema:
-                type: string
-                format: binary
+                type: object
+                properties: {}
         '422':
           description: Validation Error
           content:
@@ -120,7 +111,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.audio.get("dubbing_id", "language_code");
+    await client.dubbing.project.delete("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3");
 }
 main();
 
@@ -131,9 +122,8 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.dubbing.audio.get(
-    dubbing_id="dubbing_id",
-    language_code="language_code",
+client.dubbing.project.delete(
+    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
 )
 
 ```
@@ -149,9 +139,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code"
+	url := "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, _ := http.NewRequest("DELETE", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -168,12 +158,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code")
+url = URI("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
-request = Net::HTTP::Get.new(url)
+request = Net::HTTP::Delete.new(url)
 
 response = http.request(request)
 puts response.read_body
@@ -183,7 +173,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code")
+HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3")
   .asString();
 ```
 
@@ -193,7 +183,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3');
 
 echo $response->getBody();
 ```
@@ -201,18 +191,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code");
-var request = new RestRequest(Method.GET);
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3");
+var request = new RestRequest(Method.DELETE);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id/audio/language_code")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
-request.httpMethod = "GET"
+request.httpMethod = "DELETE"
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

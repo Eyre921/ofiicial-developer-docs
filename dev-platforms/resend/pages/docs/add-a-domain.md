@@ -36,6 +36,8 @@ To add a new domain from the Resend Dashboard:
     Choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
 
     You can have multiple subdomains associated with your root domain. But, each one must be configured and verified individually.
+
+    If you add a domain already used by another team, the dashboard will notify you and you can [claim the domain](/docs/dashboard/domains/claim) to transfer it to your team.
   </Step>
 
   <Step title="Choose a region from the list provided.">
@@ -43,7 +45,7 @@ To add a new domain from the Resend Dashboard:
   </Step>
 
   <Step title="(optional) Enter a custom subdomain for the Return-Path address if desired.">
-    Return-Path defaults to `send.example.com`, although you can [provide a custom path](/docs/dashboard/domains/introduction#custom-return-path).
+    Return-Path defaults to `send.example.com`, although you can [provide a custom path](/docs/dashboard/domains/custom-return-path).
   </Step>
 
   <Step title="Update your DNS records with values provided by Resend.">
@@ -69,7 +71,7 @@ To add a new domain from the Resend Dashboard:
   </Step>
 
   <Step title="(optional) Update your domain's Resend configuration options.">
-    After your domain is verified, you may wish to [enable open and click tracking](/docs/dashboard/domains/introduction#configure-open-and-click-tracking) or [enforce Transport Layer Security (TLS)](/docs/dashboard/domains/introduction#configure-enforced-transport-layer-security-tls).
+    After your domain is verified, you may wish to [enable open and click tracking](/docs/dashboard/domains/tracking) or [enforce Transport Layer Security (TLS)](/docs/dashboard/domains/tls).
   </Step>
 </Steps>
 

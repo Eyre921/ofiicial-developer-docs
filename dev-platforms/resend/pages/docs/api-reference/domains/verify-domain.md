@@ -24,7 +24,7 @@ Verify an existing domain.
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s) it returns, then call this endpoint to verify it before sending or
   receiving email. See [DKIM
-  records](/docs/dashboard/domains/introduction#what-are-dkim-records) for details.
+  records](/docs/dashboard/domains/manage-domains#what-are-dkim-records) for details.
 </Note>
 
 ## Path Parameters

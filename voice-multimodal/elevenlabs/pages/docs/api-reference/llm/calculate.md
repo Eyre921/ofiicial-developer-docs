@@ -124,6 +124,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -185,7 +186,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: LLM
     LLMUsageCalculatorLLMResponseModel:
       type: object
@@ -261,7 +261,7 @@ components:
 {
   "llm_prices": [
     {
-      "llm": "gemini-2.5-flash",
+      "llm": "gpt-4o-mini",
       "price_per_minute": 1.1
     }
   ]

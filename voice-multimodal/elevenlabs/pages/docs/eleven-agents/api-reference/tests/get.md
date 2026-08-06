@@ -1256,6 +1256,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms
@@ -1524,6 +1525,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -1585,7 +1587,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: Llm
     type_conversationalAi/tests:TestsGetResponse:
       oneOf:
@@ -1762,12 +1763,10 @@ components:
                 effect for tools that are mocked (see tool_mock_config).
             evaluation_model:
               $ref: '#/components/schemas/type_:Llm'
-              description: >-
-                LLM model to use for evaluating simulation results. Defaults to
-                Claude Sonnet 4.6.
+              description: LLM model to use for evaluating simulation results.
             simulated_user_model:
               $ref: '#/components/schemas/type_:Llm'
-              description: LLM model for the simulated user. Defaults to Claude Sonnet 4.6.
+              description: LLM model for the simulated user.
             id:
               type: string
             name:

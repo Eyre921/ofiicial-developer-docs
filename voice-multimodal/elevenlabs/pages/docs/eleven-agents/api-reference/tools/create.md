@@ -897,6 +897,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
         - type: object
@@ -1430,7 +1439,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -1860,6 +1869,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
         - type: object
@@ -2291,7 +2309,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false

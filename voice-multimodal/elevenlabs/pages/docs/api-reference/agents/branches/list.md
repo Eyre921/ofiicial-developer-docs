@@ -50,6 +50,17 @@ paths:
           schema:
             type: integer
             default: 100
+        - name: include_commit_status
+          in: query
+          description: >-
+            Whether to compute how far each branch has diverged from main
+            (commits_ahead/commits_behind). This walks the version DAG of every
+            branch, so it is slow on agents with long histories and is off by
+            default, leaving those fields null.
+          required: false
+          schema:
+            type: boolean
+            default: false
         - name: xi-api-key
           in: header
           required: false
@@ -229,6 +240,28 @@ components:
           type: integer
           default: 0
           description: Number of calls in the last 7 days
+        commits_ahead:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            Number of commits on this branch not yet on main, relative to their
+            common ancestor. Null if it could not be computed (e.g. no common
+            ancestor, or the branch history exceeds the comparison budget).
+        commits_behind:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            Number of commits on main not yet incorporated into this branch,
+            relative to their common ancestor. Null if it could not be computed
+            (e.g. no common ancestor, or the branch history exceeds the
+            comparison budget).
+        merged_into_branch_id:
+          type:
+            - string
+            - 'null'
+          description: ID of the branch this branch's tip version was merged into, if any
       required:
         - id
         - name
@@ -286,25 +319,19 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "results": [
     {
-      "id": "branch_9f8d7c6b5a4e3d2c1b0a",
-      "name": "Feature Update - Chat Enhancements",
-      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "description": "Branch for testing new chat UI and response improvements",
-      "created_at": 1688006400,
-      "last_committed_at": 1688592000,
-      "is_archived": false,
+      "id": "string",
+      "name": "string",
+      "agent_id": "string",
+      "description": "string",
+      "created_at": 1,
+      "last_committed_at": 1,
+      "is_archived": true,
       "protection_status": "writer_perms_required",
       "access_info": {
         "is_creator": true,
@@ -313,10 +340,13 @@ components:
         "role": "admin",
         "access_source": "creator"
       },
-      "current_live_percentage": 25.5,
-      "parent_branch_id": "branch_1234567890abcdef",
-      "draft_exists": true,
-      "calls_7d": 134
+      "current_live_percentage": 0,
+      "parent_branch_id": "string",
+      "draft_exists": false,
+      "calls_7d": 0,
+      "commits_ahead": 1,
+      "commits_behind": 1,
+      "merged_into_branch_id": "string"
     }
   ],
   "meta": {
@@ -356,7 +386,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -365,11 +394,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -392,8 +417,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -404,8 +427,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -415,12 +436,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/branches');
 
 echo $response->getBody();
 ```
@@ -430,25 +446,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/branches");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/branches")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

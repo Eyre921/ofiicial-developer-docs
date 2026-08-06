@@ -997,6 +997,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | AT981904300000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_at | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | AT601904300000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_at | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | AT981904300002222227 | pm_sepaDebit_insufficientFunds_at | The payment fails with an `insufficient_funds` failure code. |
+| AT271904300000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| AT511904300000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### BE
 
@@ -1010,6 +1012,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | BE90510000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_be | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | BE52510000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_be | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | BE90510002222227 | pm_sepaDebit_insufficientFunds_be | The payment fails with an `insufficient_funds` failure code. |
+| BE19510000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| BE43510000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### HR
 
@@ -1023,6 +1027,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | HR7424020060000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_hr | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | HR3624020060000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_hr | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | HR7424020060002222227 | pm_sepaDebit_insufficientFunds_hr | The payment fails with an `insufficient_funds` failure code. |
+| HR0324020060000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| HR2724020060000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### EE
 
@@ -1036,6 +1042,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | EE672200000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ee | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | EE292200000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ee | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | EE672200000002222227 | pm_sepaDebit_insufficientFunds_ee | The payment fails with an `insufficient_funds` failure code. |
+| EE932200000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| EE202200000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### FI
 
@@ -1049,6 +1057,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | FI6712345600343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_fi | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | FI2912345600121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_fi | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | FI6712345602222227 | pm_sepaDebit_insufficientFunds_fi | The payment fails with an `insufficient_funds` failure code. |
+| FI9312345600055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| FI2012345600066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### FR
 
@@ -1062,6 +1072,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | FR9720041010050000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_fr | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | FR5920041010050000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_fr | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | FR9720041010050000002222227 | pm_sepaDebit_insufficientFunds_fr | The payment fails with an `insufficient_funds` failure code. |
+| FR2620041010050000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| FR5020041010050000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### DE
 
@@ -1075,6 +1087,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | DE65370400440000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_de | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | DE27370400440000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_de | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | DE65370400440002222227 | pm_sepaDebit_insufficientFunds_de | The payment fails with an `insufficient_funds` failure code. |
+| DE91370400440000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| DE18370400440000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### GI
 
@@ -1088,6 +1102,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | GI14NWBK000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_gi | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | GI73NWBK000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_gi | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | GI14NWBK000000002222227 | pm_sepaDebit_insufficientFunds_gi | The payment fails with an `insufficient_funds` failure code. |
+| GI40NWBK000000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| GI64NWBK000000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### IE
 
@@ -1101,6 +1117,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | IE10AIBK93115200343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ie | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | IE69AIBK93115200121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ie | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | IE10AIBK93115202222227 | pm_sepaDebit_insufficientFunds_ie | The payment fails with an `insufficient_funds` failure code. |
+| IE36AIBK93115200055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| IE60AIBK93115200066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### LI
 
@@ -1114,6 +1132,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LI2408800000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_li | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LI8308800000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_li | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | LI2408800000002222227 | pm_sepaDebit_insufficientFunds_li | The payment fails with an `insufficient_funds` failure code. |
+| LI5008800000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| LI7408800000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### LT
 
@@ -1127,6 +1147,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LT591000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_lt | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LT211000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_lt | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | LT591000000002222227 | pm_sepaDebit_insufficientFunds_lt | The payment fails with an `insufficient_funds` failure code. |
+| LT851000000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| LT121000000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### LU
 
@@ -1140,6 +1162,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LU900010000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_lu | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LU520010000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_lu | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | LU900010000002222227 | pm_sepaDebit_insufficientFunds_lu | The payment fails with an `insufficient_funds` failure code. |
+| LU190010000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| LU430010000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### NL
 
@@ -1153,6 +1177,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | NL27RABO0000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_nl | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | NL86RABO0000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_nl | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | NL27RABO0002222227 | pm_sepaDebit_insufficientFunds_nl | The payment fails with an `insufficient_funds` failure code. |
+| NL53RABO0000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| NL77RABO0000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### NO
 
@@ -1166,6 +1192,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | NO0586010343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_no | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | NO6486010121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_no | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | NO0586012222227 | pm_sepaDebit_insufficientFunds_no | The payment fails with an `insufficient_funds` failure code. |
+| NO3186010055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| NO5586010066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### PT
 
@@ -1179,6 +1207,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | PT05000201230000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_pt | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | PT64000201230000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_pt | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | PT05000201230000002222227 | pm_sepaDebit_insufficientFunds_pt | The payment fails with an `insufficient_funds` failure code. |
+| PT31000201230000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| PT55000201230000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### ES
 
@@ -1192,6 +1222,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | ES1700120345000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_es | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | ES7600120345000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_es | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | ES1700120345000002222227 | pm_sepaDebit_insufficientFunds_es | The payment fails with an `insufficient_funds` failure code. |
+| ES4300120345000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| ES6700120345000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### SE
 
@@ -1205,6 +1237,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | SE2850000000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_se | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | SE8750000000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_se | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | SE2850000000000002222227 | pm_sepaDebit_insufficientFunds_se | The payment fails with an `insufficient_funds` failure code. |
+| SE5450000000000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| SE7850000000000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### CH
 
@@ -1218,6 +1252,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | CH1800762000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ch | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | CH7700762000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ch | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | CH1800762000002222227 | pm_sepaDebit_insufficientFunds_ch | The payment fails with an `insufficient_funds` failure code. |
+| CH4400762000000055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| CH6800762000000066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 ### GB
 
@@ -1231,6 +1267,8 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | GB70WEST12345600343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_gb | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | GB32WEST12345600121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_gb | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
 | GB70WEST12345602222227 | pm_sepaDebit_insufficientFunds_gb | The payment fails with an `insufficient_funds` failure code. |
+| GB96WEST12345600055555 |  | Payment method creation fails with a `sepa_debit_bank_not_supported` error because the bank doesn't support SEPA Direct Debit. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
+| GB23WEST12345600066666 |  | Payment method creation fails with a `sepa_debit_debits_not_supported` error because the bank account doesn't support being debited. Applies to SetupIntents and PaymentIntents that include inline IBAN data. |
 
 #### BACS Direct Debit
 

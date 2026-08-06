@@ -342,6 +342,7 @@ Either `id` or `email` must be provided.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "contact_topics",
     "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
   }
   ```

@@ -244,6 +244,8 @@ Routers and proxies give you access to models from multiple providers through a 
 
 Certain model providers offer endpoints that are compatible with OpenAI's (legacy) [Chat Completions API](https://platform.openai.com/docs/guides/completions). In such case, you can use [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) with a custom `base_url` to connect to these endpoints. Note that features built on top of the Chat Completions API may not be fully supported by `ChatOpenAI`; in such cases, consider using a provider-specific class if available.
 
+[Auxen](https://auxen.ai) hosts dedicated per-customer LLM endpoints with an OpenAI-compatible Chat Completions API. Use `ChatOpenAI` with a custom base URL and per-instance API key.
+
 ## All chat models
 
 <div>
@@ -272,8 +274,10 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
   | [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai)                    | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span>     |
   | [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity)                    | <span>✅</span> | <span>❌</span>                                   | <span>✅</span>                                                                 | <span>❌</span>                                                | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span>      |
   | [`ChatSCX`](https://scx.ai/)                                                        | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain">  <img alt="Downloads per month" /></a></span>          |
+  | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider)                | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span><a href="https://www.npmjs.com/package/@bitkaio/langchain-kserve">  <img alt="Downloads per month" /></a></span>  |
   | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake)                       | <span />       | <span />                                         | <span />                                                                       | <span />                                                      | <span>N/A</span>                                                                                                        |
   | [`FuturMix`](https://futurmix.ai/)                                                  | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span>N/A</span>                                                                                                        |
+  | [`Auxen`](https://auxen.ai)                                                         | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>❌</span>                                                | <span>N/A</span>                                                                                                        |
 </div>
 
 <Info>

@@ -6,7 +6,7 @@ path: tools-sdks/openai-compatibility
 
 You can use the [OpenAI Python client library](https://github.com/openai/openai-python) to interact with Fireworks. This makes migration of existing applications already using OpenAI particularly easy.
 
-For Anthropic SDK support, see [Anthropic compatibility](/tools-sdks/anthropic-compatibility).
+For Anthropic SDK support, see [Anthropic compatibility](/tools-sdks/anthropic-compatibility). For NVIDIA NIM / vLLM request fields such as `chat_template_kwargs`, see [NIM compatibility](/tools-sdks/nim-compatibility).
 
 ## Specify endpoint and API key
 

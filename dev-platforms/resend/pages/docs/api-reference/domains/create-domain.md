@@ -25,7 +25,7 @@ Create a domain through the Resend Email API.
   setting values that could undermine credibility (e.g. `testing`), as they may
   be exposed to recipients.
 
-  Learn more about [custom return paths](/docs/dashboard/domains/introduction#custom-return-path).
+  Learn more about [custom return paths](/docs/dashboard/domains/custom-return-path).
 </ResendParamField>
 
 <ResendParamField type="boolean">
@@ -83,8 +83,8 @@ Create a domain through the Resend Email API.
 </ParamField>
 
 <Info>
-  See all available `status` types in [the Domains
-  overview](/docs/dashboard/domains/introduction#understand-a-domain-status).
+  See all available [domain `status`
+  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 </Info>
 
 <RequestExample>

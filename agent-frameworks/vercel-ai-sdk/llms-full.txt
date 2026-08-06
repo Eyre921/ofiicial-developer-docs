@@ -117261,7 +117261,7 @@ The available lifecycle callbacks are:
 - **`onStart`**: Called once when the `generateText` operation begins, before any LLM calls. Receives model info, messages, settings, and `runtimeContext`.
 - **`onStepStart`**: Called before each step (LLM call). Receives the step number, model, messages being sent, tools, and prior steps.
 - **`onLanguageModelCallStart`**: Called immediately before the provider model call begins. Useful when you want to observe the model invocation separately from later tool execution.
-- **`onLanguageModelCallEnd`**: Called after the model response has been normalized and parsed, but before any client-side tool execution begins. Receives the model-call content parts, usage, and finish reason.
+- **`onLanguageModelCallEnd`**: Called after the model response has been normalized and parsed, but before any client-side tool execution begins. Receives the model-call content parts, usage, finish reason, and provider metadata.
 - **`onToolExecutionStart`**: Called right before a tool's `execute` function runs. Receives the tool call object, messages, and `toolContext`.
 - **`onToolExecutionEnd`**: Called right after a tool's `execute` function completes or errors. Receives the tool call object, `toolExecutionMs`, and a `toolOutput` discriminated union (`type: 'tool-result'` with `output`, or `type: 'tool-error'` with `error`).
 - **`onStepEnd`**: Called after each step finishes. Includes `stepNumber` (zero-based index of the completed step).
@@ -117491,7 +117491,7 @@ The available lifecycle callbacks are:
 - **`onStart`**: Called once when the `streamText` operation begins, before any LLM calls. Receives model info, messages, settings, and `runtimeContext`.
 - **`onStepStart`**: Called before each step (LLM call). Receives the step number, model, messages being sent, tools, and prior steps.
 - **`onLanguageModelCallStart`**: Called immediately before the provider model call begins. Useful when you want to observe the model invocation separately from later tool execution.
-- **`onLanguageModelCallEnd`**: Called after the model response has been normalized and parsed, but before any client-side tool execution begins. Receives the model-call content parts, usage, and finish reason.
+- **`onLanguageModelCallEnd`**: Called after the model response has been normalized and parsed, but before any client-side tool execution begins. Receives the model-call content parts, usage, finish reason, and provider metadata.
 - **`onToolExecutionStart`**: Called right before a tool's `execute` function runs. Receives the tool call object, messages, and `toolContext`.
 - **`onToolExecutionEnd`**: Called right after a tool's `execute` function completes or errors. Receives the tool call object, `toolExecutionMs`, and a `toolOutput` discriminated union (`type: 'tool-result'` with `output`, or `type: 'tool-error'` with `error`).
 - **`onStepEnd`**: Called after each step finishes. Receives the finish reason, usage, and other step details.
@@ -126209,7 +126209,7 @@ export function myIntegration(): Telemetry {
       name: 'onLanguageModelCallEnd',
       type: '(event: LanguageModelCallEndEvent) => void | PromiseLike<void>',
       description:
-        'Called after the model response has been normalized and parsed, but before any client-side tool execution begins.',
+        'Called after the model response has been normalized and parsed, but before any client-side tool execution begins. Includes provider-specific metadata when available.',
     },
     {
       name: 'onToolExecutionStart',
@@ -126481,7 +126481,7 @@ registerTelemetry(
 The available options are:
 
 - `usage`: detailed usage attributes that are not covered by GenAI usage attributes, such as uncached input tokens and output text/reasoning token details.
-- `providerMetadata`: `ai.response.providerMetadata`.
+- `providerMetadata`: `ai.response.providerMetadata` on operation, step, and model-call spans.
 - `embedding`: embedding inputs and outputs.
 - `reranking`: rerank input documents and ranking output.
 - `runtimeContext`: `ai.settings.context.*`.
@@ -126983,7 +126983,13 @@ const result = streamText({
   model: __MODEL__,
   prompt: 'Explain partial prerendering in two paragraphs.',
 
-  onLanguageModelCallEnd({ callId, modelId, usage, performance }) {
+  onLanguageModelCallEnd({
+    callId,
+    modelId,
+    usage,
+    performance,
+    providerMetadata,
+  }) {
     metrics.histogram('ai.model.response_time_ms', performance.responseTimeMs, {
       callId,
       modelId,
@@ -126993,6 +126999,11 @@ const result = streamText({
       output: performance.outputTokensPerSecond,
       total: performance.effectiveTotalTokensPerSecond,
       tokens: usage.totalTokens,
+    });
+
+    logger.info('ai.model.provider_metadata', {
+      callId,
+      providerMetadata,
     });
   },
 });
@@ -127560,6 +127571,12 @@ Called after the provider response has been normalized and parsed, before local 
       name: 'responseId',
       type: 'string',
       description: 'Provider-returned response ID for this model call.',
+    },
+    {
+      name: 'providerMetadata',
+      type: 'ProviderMetadata | undefined',
+      description:
+        'Provider-specific metadata for this model call, when returned by the provider.',
     },
     {
       name: 'performance',
@@ -138016,6 +138033,29 @@ if (generationId) {
 }
 ```
 
+You can also capture the generation ID for every completed model call with
+`onLanguageModelCallEnd`. The callback runs before client-side tools execute,
+so the metadata remains available even if the operation is later aborted while
+a tool is running:
+
+```ts
+import { gateway, generateText } from 'ai';
+
+await generateText({
+  model: gateway('anthropic/claude-sonnet-4'),
+  prompt: 'Explain quantum entanglement briefly',
+  onLanguageModelCallEnd({ providerMetadata }) {
+    const generationId = providerMetadata?.gateway?.generationId as
+      | string
+      | undefined;
+
+    if (generationId) {
+      console.log(`Completed Gateway generation: ${generationId}`);
+    }
+  },
+});
+```
+
 The `getGenerationInfo()` method accepts:
 
 - **id** _string_ - The generation ID to look up (format: `gen_<ulid>`, required)
@@ -142100,6 +142140,44 @@ The metadata includes the following fields:
 - **itemId** _string_ — The ID of the compaction item in the Responses API
 - **encryptedContent** _string_ (optional) — The encrypted compaction state. This is automatically sent back to the API when the message is included in subsequent requests.
 
+### Text Batches
+
+<Note type="warning">
+  Text batch APIs are experimental and may change in future releases.
+</Note>
+
+The OpenAI provider supports the [Batch API](https://developers.openai.com/api/docs/guides/batch) for text generation.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import {
+  experimental_startTextBatch as startTextBatch,
+  experimental_getBatchResults as getBatchResults,
+  experimental_getBatchStatus as getBatchStatus,
+} from 'ai';
+
+const model = openai('gpt-4.1-nano');
+
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'france', prompt: 'What is the capital of France?' },
+    { id: 'germany', prompt: 'What is the capital of Germany?' },
+  ],
+});
+
+// Persist `batch` and check its status later, or poll for status updates.
+const { status } = await getBatchStatus({ model, batch });
+
+if (status !== 'pending') {
+  for await (const result of getBatchResults({ model, batch })) {
+    console.log(result);
+  }
+}
+```
+
+Starting a batch returns a serializable reference that can be persisted and used to retrieve the batch results later, or poll for status updates.
+
 ### Chat Models
 
 You can create models that call the [OpenAI chat API](https://platform.openai.com/docs/api-reference/chat) using the `.chat()` factory method.
@@ -144560,6 +144638,57 @@ The following optional provider options are available for Anthropic models:
 
   Optional. Metadata to include with the request. See the [Anthropic API documentation](https://platform.claude.com/docs/en/api/messages/create) for details.
   - `userId` _string_ - An external identifier for the end-user. Should be a UUID, hash, or other opaque identifier. Must not contain PII.
+
+### Text Batches
+
+<Note type="warning">
+  Text batch support is experimental and the API may change in patch releases.
+</Note>
+
+Anthropic language models support asynchronous text generation through the
+[Message Batches API](https://platform.claude.com/docs/en/build-with-claude/batch-processing).
+Use the experimental text batch APIs to start a batch, poll its status, and
+stream its results:
+
+<Note>
+  Anthropic Message Batches do not support the `speed` option. Explicit
+  `anthropicBeta` values must be configured when starting the batch rather than
+  on an individual request.
+</Note>
+
+```ts
+import { anthropic } from '@ai-sdk/anthropic';
+import {
+  experimental_getBatchResults as getBatchResults,
+  experimental_getBatchStatus as getBatchStatus,
+  experimental_startTextBatch as startTextBatch,
+} from 'ai';
+import { setTimeout } from 'node:timers/promises';
+
+const model = anthropic('claude-haiku-4-5');
+
+const batch = await startTextBatch({
+  model,
+  requests: [
+    { id: 'first', prompt: 'What is the capital of France?' },
+    { id: 'second', prompt: 'What is the capital of Germany?' },
+  ],
+});
+
+let status = batch.status;
+while (status === 'pending') {
+  await setTimeout(60_000);
+  ({ status } = await getBatchStatus({ model, batch }));
+}
+
+for await (const item of getBatchResults({ model, batch })) {
+  if (item.status === 'succeeded') {
+    console.log(item.id, item.text);
+  } else {
+    console.error(item.id, item.error);
+  }
+}
+```
 
 ### Structured Outputs and Tool Input Streaming
 

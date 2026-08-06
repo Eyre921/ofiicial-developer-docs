@@ -365,6 +365,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -426,7 +427,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: LLM
     KnowledgeBaseDocumentType:
       type: string
@@ -574,6 +574,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms
@@ -725,20 +726,20 @@ components:
 
 ```json
 {
-  "whatsapp_phone_number_id": "1234567890",
-  "whatsapp_user_id": "9876543210",
-  "template_name": "order_update",
-  "template_language_code": "en_US",
+  "whatsapp_phone_number_id": "string",
+  "whatsapp_user_id": "string",
+  "template_name": "string",
+  "template_language_code": "string",
   "template_params": [
     {
       "parameters": [
         {
-          "text": "Your order #12345 has been shipped and will arrive soon."
+          "text": "string"
         }
       ]
     }
   ],
-  "agent_id": "agent_001"
+  "agent_id": "string"
 }
 ```
 
@@ -746,7 +747,7 @@ components:
 
 ```json
 {
-  "conversation_id": "conv_abc123xyz789"
+  "conversation_id": "string"
 }
 ```
 
@@ -758,12 +759,12 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.whatsapp.outboundMessage({
-        whatsappPhoneNumberId: "1234567890",
-        whatsappUserId: "9876543210",
-        templateName: "order_update",
-        templateLanguageCode: "en_US",
+        whatsappPhoneNumberId: "string",
+        whatsappUserId: "string",
+        templateName: "string",
+        templateLanguageCode: "string",
         templateParams: [],
-        agentId: "agent_001",
+        agentId: "string",
     });
 }
 main();
@@ -776,12 +777,12 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.whatsapp.outbound_message(
-    whatsapp_phone_number_id="1234567890",
-    whatsapp_user_id="9876543210",
-    template_name="order_update",
-    template_language_code="en_US",
+    whatsapp_phone_number_id="string",
+    whatsapp_user_id="string",
+    template_name="string",
+    template_language_code="string",
     template_params=[],
-    agent_id="agent_001",
+    agent_id="string",
 )
 
 ```
@@ -800,7 +801,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message"
 
-	payload := strings.NewReader("{\n  \"whatsapp_phone_number_id\": \"1234567890\",\n  \"whatsapp_user_id\": \"9876543210\",\n  \"template_name\": \"order_update\",\n  \"template_language_code\": \"en_US\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"Your order #12345 has been shipped and will arrive soon.\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"agent_001\"\n}")
+	payload := strings.NewReader("{\n  \"whatsapp_phone_number_id\": \"string\",\n  \"whatsapp_user_id\": \"string\",\n  \"template_name\": \"string\",\n  \"template_language_code\": \"string\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -828,7 +829,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"whatsapp_phone_number_id\": \"1234567890\",\n  \"whatsapp_user_id\": \"9876543210\",\n  \"template_name\": \"order_update\",\n  \"template_language_code\": \"en_US\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"Your order #12345 has been shipped and will arrive soon.\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"agent_001\"\n}"
+request.body = "{\n  \"whatsapp_phone_number_id\": \"string\",\n  \"whatsapp_user_id\": \"string\",\n  \"template_name\": \"string\",\n  \"template_language_code\": \"string\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -840,7 +841,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message")
   .header("Content-Type", "application/json")
-  .body("{\n  \"whatsapp_phone_number_id\": \"1234567890\",\n  \"whatsapp_user_id\": \"9876543210\",\n  \"template_name\": \"order_update\",\n  \"template_language_code\": \"en_US\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"Your order #12345 has been shipped and will arrive soon.\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"agent_001\"\n}")
+  .body("{\n  \"whatsapp_phone_number_id\": \"string\",\n  \"whatsapp_user_id\": \"string\",\n  \"template_name\": \"string\",\n  \"template_language_code\": \"string\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"string\"\n}")
   .asString();
 ```
 
@@ -852,20 +853,20 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message', [
   'body' => '{
-  "whatsapp_phone_number_id": "1234567890",
-  "whatsapp_user_id": "9876543210",
-  "template_name": "order_update",
-  "template_language_code": "en_US",
+  "whatsapp_phone_number_id": "string",
+  "whatsapp_user_id": "string",
+  "template_name": "string",
+  "template_language_code": "string",
   "template_params": [
     {
       "parameters": [
         {
-          "text": "Your order #12345 has been shipped and will arrive soon."
+          "text": "string"
         }
       ]
     }
   ],
-  "agent_id": "agent_001"
+  "agent_id": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -881,7 +882,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"whatsapp_phone_number_id\": \"1234567890\",\n  \"whatsapp_user_id\": \"9876543210\",\n  \"template_name\": \"order_update\",\n  \"template_language_code\": \"en_US\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"Your order #12345 has been shipped and will arrive soon.\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"agent_001\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"whatsapp_phone_number_id\": \"string\",\n  \"whatsapp_user_id\": \"string\",\n  \"template_name\": \"string\",\n  \"template_language_code\": \"string\",\n  \"template_params\": [\n    {\n      \"parameters\": [\n        {\n          \"text\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"agent_id\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -890,12 +891,12 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "whatsapp_phone_number_id": "1234567890",
-  "whatsapp_user_id": "9876543210",
-  "template_name": "order_update",
-  "template_language_code": "en_US",
-  "template_params": [["parameters": [["text": "Your order #12345 has been shipped and will arrive soon."]]]],
-  "agent_id": "agent_001"
+  "whatsapp_phone_number_id": "string",
+  "whatsapp_user_id": "string",
+  "template_name": "string",
+  "template_language_code": "string",
+  "template_params": [["parameters": [["text": "string"]]]],
+  "agent_id": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

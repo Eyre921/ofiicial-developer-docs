@@ -110,7 +110,7 @@ Integrate Resend with the tools you already use.
   </Card>
 
   <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
-    Send emails from Softr workflows
+    Send emails from Softr apps and workflows
   </Card>
 </CardGroup>
 

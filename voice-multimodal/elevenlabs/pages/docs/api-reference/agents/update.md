@@ -763,6 +763,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -824,7 +825,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: LLM
     KnowledgeBaseDocumentType:
       type: string
@@ -1928,6 +1928,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
           description: LanguageDetectionToolConfig variant
@@ -2748,7 +2757,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -3085,7 +3094,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -3185,7 +3194,6 @@ components:
           description: The prompt for the agent
         llm:
           $ref: '#/components/schemas/LLM'
-          default: gemini-2.5-flash
           description: >-
             The LLM to query with the prompt and the chat history. If using data
             residency, the LLM must be supported in the data residency
@@ -5061,6 +5069,79 @@ components:
       type: object
       properties: {}
       title: SentimentAnalysisSettings
+    AlertingMonitorConfig:
+      type: object
+      properties:
+        threshold:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: Failure rate threshold at which this monitor can notify.
+        auto_resolve_after_inactive_minutes:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            How many minutes an alert can stay inactive before it is
+            auto-resolved.
+      title: AlertingMonitorConfig
+    AlertingWebhookNotifier:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - webhook
+          default: webhook
+        webhook_id:
+          type: string
+          description: >-
+            ID of the workspace webhook to deliver alert lifecycle notifications
+            to.
+      required:
+        - webhook_id
+      title: AlertingWebhookNotifier
+    AlertingSettings:
+      type: object
+      properties:
+        monitor_configs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AlertingMonitorConfig'
+          description: Alerting configuration keyed by monitor name.
+        auto_resolve_after_inactive_minutes:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            How many minutes an alert can stay inactive before it is
+            auto-resolved. Unset values fall through to the next layer.
+        notifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingWebhookNotifier'
+          description: >-
+            Delivery channels for alert lifecycle notifications. Stacked and
+            deduped by webhook_id with other layers.
+      description: >-
+        Alerting configuration used at both per-agent and per-workspace level.
+
+
+        All fields are optional overrides; the cascade resolver fills in
+        defaults
+
+        when they are unset. Notifiers stack and dedupe (by webhook_id) across
+        the
+
+        workspace and agent layers rather than overriding each other.
+
+
+        Cascade order for per-monitor threshold and auto-resolve: agent →
+        workspace →
+
+        system default.
+      title: AlertingSettings
     AgentPlatformSettingsRequestModel:
       type: object
       properties:
@@ -5140,7 +5221,6 @@ components:
           description: The trust context in which the agent operates.
         analysis_llm:
           $ref: '#/components/schemas/LLM'
-          default: gemini-2.5-flash
           description: >-
             Default LLM model for post-call analysis (evaluation and data
             collection)
@@ -5150,6 +5230,11 @@ components:
         sentiment_analysis:
           $ref: '#/components/schemas/SentimentAnalysisSettings'
           description: Per-agent post-call sentiment analysis configuration
+        alerting:
+          oneOf:
+            - $ref: '#/components/schemas/AlertingSettings'
+            - type: 'null'
+          description: Agent-level alerting configuration overriding workspace settings.
       title: AgentPlatformSettingsRequestModel
     LlmLiteralJsonSchemaPropertyType0:
       type: string
@@ -6284,7 +6369,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -6621,7 +6706,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -7908,6 +7993,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
           description: LanguageDetectionToolConfig variant
@@ -8411,7 +8505,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -8756,7 +8850,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -8856,7 +8950,6 @@ components:
           description: The prompt for the agent
         llm:
           $ref: '#/components/schemas/LLM'
-          default: gemini-2.5-flash
           description: >-
             The LLM to query with the prompt and the chat history. If using data
             residency, the LLM must be supported in the data residency
@@ -9604,6 +9697,43 @@ components:
           $ref: '#/components/schemas/ConversationHistoryRedactionConfig'
           description: Config for PII redaction in the conversation history
       title: PrivacyConfig-Output
+    AlertingWebhookNotifierResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - webhook
+          default: webhook
+        webhook_id:
+          type: string
+      required:
+        - webhook_id
+      title: AlertingWebhookNotifierResponse
+    AlertingSettingsResponse:
+      type: object
+      properties:
+        monitor_configs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AlertingMonitorConfig'
+        auto_resolve_after_inactive_minutes:
+          type:
+            - integer
+            - 'null'
+        notifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingWebhookNotifierResponse'
+      description: >-
+        Customer-facing view of alerting settings. Unlike
+        AdminAlertingSettingsResponse,
+
+        it has no internal_notifiers field: those are ElevenLabs-internal
+        delivery
+
+        channels whose URLs must never be returned outside the admin API.
+      title: AlertingSettingsResponse
     SafetyResponseModel:
       type: object
       properties:
@@ -9696,7 +9826,6 @@ components:
           description: The trust context in which the agent operates.
         analysis_llm:
           $ref: '#/components/schemas/LLM'
-          default: gemini-2.5-flash
           description: >-
             Default LLM model for post-call analysis (evaluation and data
             collection)
@@ -9706,6 +9835,11 @@ components:
         sentiment_analysis:
           $ref: '#/components/schemas/SentimentAnalysisSettings'
           description: Per-agent post-call sentiment analysis configuration
+        alerting:
+          oneOf:
+            - $ref: '#/components/schemas/AlertingSettingsResponse'
+            - type: 'null'
+          description: Agent-level alerting configuration overriding workspace settings.
         safety:
           $ref: '#/components/schemas/SafetyResponseModel'
       title: AgentPlatformSettingsResponseModel
@@ -10854,7 +10988,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -11199,7 +11333,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false

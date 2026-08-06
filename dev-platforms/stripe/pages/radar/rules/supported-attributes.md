@@ -170,6 +170,7 @@ The **email\_domain** and **is\_disposable\_email** attributes use the email add
 | **currency** | *Case-insensitive string* | usd | The 3-digit currency code representing the currency in which the customer paid for the transaction. |
 | **destination** | *Case-sensitive string* | acct_19KCB9AlaaEw6AgR | For Connect users creating [destination charges](https://docs.stripe.com/connect/destination-charges.md), the destination account on whose behalf the charge is made. |
 | **is\_checkout** | *Boolean* | true | Identifies if the payment is processed through [Checkout](https://docs.stripe.com/payments/checkout.md). (This attribute only applies to payments processed through the current version of [Checkout](https://docs.stripe.com/payments/checkout.md) and doesn’t capture payments through legacy Checkout.) |
+| **is\_free\_trial\_transaction** | *Boolean* | true | Identifies if Stripe determines that the transaction is from a free trial, primarily for transactions created through Checkout or Billing. |
 | **is\_off\_session** | *Boolean* | true | Indicates when a Stripe Billing payment isn’t triggered by direct user action, or when the off_session flag is set at PaymentIntent confirmation. |
 | **is\_recurring** | *Boolean* | true | Identifies if the payment is recurring, for example, from subscriptions. |
 | **is\_setup\_intent** | *Boolean* | true | Identifies if the transaction is a SetupIntent. |

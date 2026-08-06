@@ -109,6 +109,12 @@ components:
         - opus_48000_128
         - opus_48000_192
       title: AllowedOutputFormats
+    SFXModelId:
+      type: string
+      enum:
+        - eleven_text_to_sound_v2
+      default: eleven_text_to_sound_v2
+      title: SFXModelId
     Body_Sound_Generation_v1_sound_generation_post:
       type: object
       properties:
@@ -141,7 +147,7 @@ components:
             more closely while also making generations less variable. Must be a
             value between 0 and 1. Defaults to 0.3.
         model_id:
-          type: string
+          $ref: '#/components/schemas/SFXModelId'
           default: eleven_text_to_sound_v2
           description: The model ID to use for the sound generation.
       required:

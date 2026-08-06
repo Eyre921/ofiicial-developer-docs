@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 5, 2026">
+  ### `unsupported` formula and rollup property values
+
+  The API can now return formula and rollup [page property values](/reference/page-property-values) and [property item values](/reference/property-item-object) with `type` set to `"unsupported"` and an empty `unsupported` object. This happens when a value depends on too many related pages or nested formulas and rollups. The response doesn't include a partial value. Treat the property as unavailable. Rollups still include the `function` field. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+  ### JavaScript SDK 5.24.0
+
+  We released [`@notionhq/client` v5.24.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.24.0). It adds `client.blocks.meetingNotes.create()` for [creating a meeting note](/reference/create-meeting-note), typed `unsupported` formula and rollup values, and `APIErrorCode.InvalidBeta` for handling `invalid_beta` responses.
+</Update>
+
 <Update label="August 3, 2026">
   ### Notion MCP supports MCP protocol version 2026-07-28
 

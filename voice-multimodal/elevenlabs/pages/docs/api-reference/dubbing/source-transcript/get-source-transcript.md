@@ -1,18 +1,18 @@
 ---
-title: "Get dubbing"
-source: https://elevenlabs.io/docs/api-reference/dubbing/get.md
-path: docs/api-reference/dubbing/get
+title: "Get source transcript"
+source: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript.md
+path: docs/api-reference/dubbing/source-transcript/get-source-transcript
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Get dubbing
+# Get source transcript
 
-GET https://api.elevenlabs.io/v1/dubbing/{dubbing_id}
+GET https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript
 
-Returns metadata about a dubbing project, including whether it's still in progress or not
+The project's source transcript, as editable segments.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/get
+Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript
 
 ## OpenAPI Specification
 
@@ -22,19 +22,17 @@ info:
   title: api
   version: 1.0.0
 paths:
-  /v1/dubbing/{dubbing_id}:
+  /v1/dubbing/project/{project_id}/transcript:
     get:
       operationId: get
-      summary: Get dubbing
-      description: >-
-        Returns metadata about a dubbing project, including whether it's still
-        in progress or not
+      summary: Get Dubbing Transcript
+      description: The project's source transcript, as editable segments.
       tags:
-        - dubbing
+        - transcript
       parameters:
-        - name: dubbing_id
+        - name: project_id
           in: path
-          description: ID of the dubbing project.
+          description: Identifier of the dubbing project.
           required: true
           schema:
             type: string
@@ -49,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DubbingMetadataResponse'
+                $ref: '#/components/schemas/DubbingSourceTranscriptResponse'
         '422':
           description: Validation Error
           content:
@@ -69,72 +67,61 @@ servers:
     description: Production Singapore
 components:
   schemas:
-    DubbingMediaMetadata:
+    DubbingTranscriptSegment:
       type: object
       properties:
-        content_type:
+        id:
           type: string
-          description: The content type of the media.
-        duration:
+          description: Stable identifier of the segment.
+        text:
+          type: string
+          description: The transcribed text of the segment.
+        speaker_id:
+          type: string
+          description: Identifier of the segment's speaker.
+        start_s:
           type: number
           format: double
-          description: The duration of the media in seconds.
+          description: Start time of the segment, in seconds.
+        end_s:
+          type: number
+          format: double
+          description: End time of the segment, in seconds.
+        external_id:
+          type:
+            - string
+            - 'null'
+          description: >-
+            The caller-supplied external id for this segment, if one was
+            provided.
       required:
-        - content_type
-        - duration
-      title: DubbingMediaMetadata
-    DubbingMetadataResponse:
+        - id
+        - text
+        - speaker_id
+        - start_s
+        - end_s
+      description: One segment of a source transcript.
+      title: DubbingTranscriptSegment
+    DubbingSourceTranscriptResponse:
       type: object
       properties:
-        dubbing_id:
-          type: string
-          description: The ID of the dubbing project.
-        name:
-          type: string
-          description: The name of the dubbing project.
-        status:
-          type: string
-          description: The state this dub is in.
-        source_language:
+        language:
           type:
             - string
             - 'null'
-          description: >-
-            Once dubbing has completed, the ISO-639-1 code of the original
-            media's source language.
-        target_languages:
+          description: BCP-47 language tag of the source transcript (null if unknown).
+        segments:
           type: array
           items:
-            type: string
-          description: The ISO-639-1 code of the languages this media has been dubbed into.
-        editable:
-          type: boolean
-          default: false
-          description: Whether this dubbing project is editable in Dubbing Studio.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp this dub was created.
-        media_metadata:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingMediaMetadata'
-            - type: 'null'
-          description: >-
-            Metadata, such as the length in seconds and content type, of the
-            dubbed content.
-        error:
-          type:
-            - string
-            - 'null'
-          description: Error message indicate, if this dub has failed, what happened.
+            $ref: '#/components/schemas/DubbingTranscriptSegment'
+          description: The source segments, in playback order.
+        revision:
+          type: integer
+          description: The project's source-transcript revision at read time.
       required:
-        - dubbing_id
-        - name
-        - status
-        - source_language
-        - target_languages
-        - created_at
-      title: DubbingMetadataResponse
+        - segments
+        - revision
+      title: DubbingSourceTranscriptResponse
     ValidationErrorLocItems:
       oneOf:
         - type: string
@@ -175,21 +162,17 @@ components:
 
 ```json
 {
-  "dubbing_id": "21m00Tcm4TlvDq8ikWAM",
-  "name": "My Dubbing Project",
-  "status": "dubbed",
-  "source_language": "en",
-  "target_languages": [
-    "es",
-    "fr",
-    "de"
+  "segments": [
+    {
+      "id": "0199a3f0-1c2d-7abc-8def-0123456789ab",
+      "text": "Welcome to our product demo.",
+      "speaker_id": "default_speaker",
+      "start_s": 0,
+      "end_s": 2.5
+    }
   ],
-  "created_at": "2025-07-15T14:49:41.149000",
-  "editable": true,
-  "media_metadata": {
-    "content_type": "video/mp4",
-    "duration": 127.5
-  }
+  "revision": 3,
+  "language": "en"
 }
 ```
 
@@ -200,7 +183,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.get("dubbing_id");
+    await client.dubbing.project.transcript.get("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3");
 }
 main();
 
@@ -211,8 +194,8 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.dubbing.get(
-    dubbing_id="dubbing_id",
+client.dubbing.project.transcript.get(
+    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
 )
 
 ```
@@ -228,7 +211,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id"
+	url := "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -247,7 +230,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id")
+url = URI("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -262,7 +245,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/dubbing_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript")
   .asString();
 ```
 
@@ -272,7 +255,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript');
 
 echo $response->getBody();
 ```
@@ -280,7 +263,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -288,7 +271,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

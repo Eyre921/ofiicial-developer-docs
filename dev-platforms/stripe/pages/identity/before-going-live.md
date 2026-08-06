@@ -16,7 +16,7 @@ As you complete each item and check it off, the state of each checkbox is stored
       Review the [supported use cases](https://docs.stripe.com/identity/use-cases.md) and [terms of service](https://stripe.com/identity/legal) to make sure that your business can use Stripe Identity.
 
 - [ ] Setup branding
-      The verification experience shows your company name, logo, and color. Make sure to configure the [branding settings](https://dashboard.stripe.com/settings/branding?tab=identity) for your account before going live.
+      The verification flow shows your company name, logo, and color. Make sure to configure the [branding settings](https://dashboard.stripe.com/settings/branding?tab=identity) for your account before going live.
 
 - [ ] Understand pricing & billing
       [Stripe Identity](https://stripe.com/pricing#identity) pricing is usage-based and charges apply for each *completed* verification. Make sure you understand how these charges appear on your invoice and how they interact with other Stripe products. See [Billing for Stripe Identity](https://support.stripe.com/questions/billing-for-stripe-identity) for a detailed breakdown of costs and billing descriptors.

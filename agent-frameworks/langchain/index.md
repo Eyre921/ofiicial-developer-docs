@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1522 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1527 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -226,7 +226,7 @@
 - `langsmith/deploy-nuxt` — [Deploy with Nuxt](pages/langsmith/deploy-nuxt.md) · [原文](https://docs.langchain.com/langsmith/deploy-nuxt)
 - `langsmith/deploy-other-frameworks` — [Deploy other frameworks](pages/langsmith/deploy-other-frameworks.md) · [原文](https://docs.langchain.com/langsmith/deploy-other-frameworks)
 - `langsmith/deploy-reference-overview` — [Reference](pages/langsmith/deploy-reference-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-reference-overview)
-- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment, Fleet, Insights, Chat, and Sandboxes](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
+- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment, Fleet, Insights, Chat, Sandboxes, and Engine](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
 - `langsmith/deploy-to-cloud` — [Deploy on Cloud](pages/langsmith/deploy-to-cloud.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud)
@@ -242,6 +242,7 @@
 - `langsmith/encryption` — [Add encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
 - `langsmith/endpoint-deprecation` — [API and SDK deprecation policy](pages/langsmith/endpoint-deprecation.md) · [原文](https://docs.langchain.com/langsmith/endpoint-deprecation)
 - `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
+- `langsmith/engine-github` — [Connect LangSmith Engine to GitHub](pages/langsmith/engine-github.md) · [原文](https://docs.langchain.com/langsmith/engine-github)
 - `langsmith/engine-issue-categories` — [LangSmith Engine issue categories](pages/langsmith/engine-issue-categories.md) · [原文](https://docs.langchain.com/langsmith/engine-issue-categories)
 - `langsmith/engine-overview` — [LangSmith Engine](pages/langsmith/engine-overview.md) · [原文](https://docs.langchain.com/langsmith/engine-overview)
 - `langsmith/engine-security` — [LangSmith Engine security](pages/langsmith/engine-security.md) · [原文](https://docs.langchain.com/langsmith/engine-security)
@@ -520,10 +521,13 @@
 - `langsmith/skills` — [LangSmith skills](pages/langsmith/skills.md) · [原文](https://docs.langchain.com/langsmith/skills)
 - `langsmith/smith-api-ref` — [LangSmith API reference](pages/langsmith/smith-api-ref.md) · [原文](https://docs.langchain.com/langsmith/smith-api-ref)
 - `langsmith/smith-api/access_policies/attach-access-policies-to-a-role` — [Attach access policies to a role](pages/langsmith/smith-api/access_policies/attach-access-policies-to-a-role.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/attach-access-policies-to-a-role)
+- `langsmith/smith-api/access_policies/attach-access-policies-to-a-role-1` — [Attach access policies to a role](pages/langsmith/smith-api/access_policies/attach-access-policies-to-a-role-1.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/attach-access-policies-to-a-role-1)
 - `langsmith/smith-api/access_policies/create-an-access-policy` — [Create an access policy](pages/langsmith/smith-api/access_policies/create-an-access-policy.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/create-an-access-policy)
 - `langsmith/smith-api/access_policies/delete-an-access-policy` — [Delete an access policy](pages/langsmith/smith-api/access_policies/delete-an-access-policy.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/delete-an-access-policy)
+- `langsmith/smith-api/access_policies/detach-access-policies-from-a-role` — [Detach access policies from a role](pages/langsmith/smith-api/access_policies/detach-access-policies-from-a-role.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/detach-access-policies-from-a-role)
 - `langsmith/smith-api/access_policies/get-an-access-policy` — [Get an access policy](pages/langsmith/smith-api/access_policies/get-an-access-policy.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/get-an-access-policy)
 - `langsmith/smith-api/access_policies/list-access-policies` — [List access policies](pages/langsmith/smith-api/access_policies/list-access-policies.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/list-access-policies)
+- `langsmith/smith-api/access_policies/update-an-access-policy` — [Update an access policy](pages/langsmith/smith-api/access_policies/update-an-access-policy.md) · [原文](https://docs.langchain.com/langsmith/smith-api/access_policies/update-an-access-policy)
 - `langsmith/smith-api/ace/execute` — [Execute](pages/langsmith/smith-api/ace/execute.md) · [原文](https://docs.langchain.com/langsmith/smith-api/ace/execute)
 - `langsmith/smith-api/alert_rules/create-an-alert-rule` — [Create an alert rule](pages/langsmith/smith-api/alert_rules/create-an-alert-rule.md) · [原文](https://docs.langchain.com/langsmith/smith-api/alert_rules/create-an-alert-rule)
 - `langsmith/smith-api/alert_rules/delete-an-alert-rule` — [Delete an alert rule](pages/langsmith/smith-api/alert_rules/delete-an-alert-rule.md) · [原文](https://docs.langchain.com/langsmith/smith-api/alert_rules/delete-an-alert-rule)
@@ -1401,6 +1405,7 @@
 - `oss/python/integrations/checkpointers/index` — [Checkpointer integrations](pages/oss/python/integrations/checkpointers/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/checkpointers/index)
 - `oss/python/integrations/document_loaders/index` — [Document loader integrations](pages/oss/python/integrations/document_loaders/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/document_loaders/index)
 - `oss/python/integrations/embeddings/index` — [Embedding model integrations](pages/oss/python/integrations/embeddings/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/embeddings/index)
+- `oss/python/integrations/long-term-memory/index` — [Store integrations](pages/oss/python/integrations/long-term-memory/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/long-term-memory/index)
 - `oss/python/integrations/middleware/index` — [Middleware integrations](pages/oss/python/integrations/middleware/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/middleware/index)
 - `oss/python/integrations/providers/all_providers` — [All LangChain Python integration providers](pages/oss/python/integrations/providers/all_providers.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/all_providers)
 - `oss/python/integrations/providers/anthropic` — [Anthropic (Claude) integrations](pages/oss/python/integrations/providers/anthropic.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/anthropic)

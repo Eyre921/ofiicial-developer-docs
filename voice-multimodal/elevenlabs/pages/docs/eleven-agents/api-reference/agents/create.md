@@ -712,6 +712,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -773,7 +774,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: Llm
     type_:KnowledgeBaseDocumentType:
       type: string
@@ -1753,6 +1753,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
         - type: object
@@ -2462,7 +2471,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -2781,7 +2790,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -4494,6 +4503,72 @@ components:
       type: object
       properties: {}
       title: SentimentAnalysisSettings
+    type_:AlertingMonitorConfig:
+      type: object
+      properties:
+        threshold:
+          type: number
+          format: double
+          description: Failure rate threshold at which this monitor can notify.
+        auto_resolve_after_inactive_minutes:
+          type: integer
+          description: >-
+            How many minutes an alert can stay inactive before it is
+            auto-resolved.
+      title: AlertingMonitorConfig
+    type_:AlertingWebhookNotifier:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - webhook
+        webhook_id:
+          type: string
+          description: >-
+            ID of the workspace webhook to deliver alert lifecycle notifications
+            to.
+      required:
+        - webhook_id
+      title: AlertingWebhookNotifier
+    type_:AlertingSettings:
+      type: object
+      properties:
+        monitor_configs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/type_:AlertingMonitorConfig'
+          description: Alerting configuration keyed by monitor name.
+        auto_resolve_after_inactive_minutes:
+          type: integer
+          description: >-
+            How many minutes an alert can stay inactive before it is
+            auto-resolved. Unset values fall through to the next layer.
+        notifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:AlertingWebhookNotifier'
+          description: >-
+            Delivery channels for alert lifecycle notifications. Stacked and
+            deduped by webhook_id with other layers.
+      description: >-
+        Alerting configuration used at both per-agent and per-workspace level.
+
+
+        All fields are optional overrides; the cascade resolver fills in
+        defaults
+
+        when they are unset. Notifiers stack and dedupe (by webhook_id) across
+        the
+
+        workspace and agent layers rather than overriding each other.
+
+
+        Cascade order for per-monitor threshold and auto-resolve: agent →
+        workspace →
+
+        system default.
+      title: AlertingSettings
     type_:AgentPlatformSettingsRequestModel:
       type: object
       properties:
@@ -4576,6 +4651,9 @@ components:
         sentiment_analysis:
           $ref: '#/components/schemas/type_:SentimentAnalysisSettings'
           description: Per-agent post-call sentiment analysis configuration
+        alerting:
+          $ref: '#/components/schemas/type_:AlertingSettings'
+          description: Agent-level alerting configuration overriding workspace settings.
       title: AgentPlatformSettingsRequestModel
     type_:LlmLiteralJsonSchemaPropertyType:
       oneOf:
@@ -5752,6 +5830,15 @@ components:
               enum:
                 - language_detection
               description: 'Discriminator value: language_detection'
+            only_at_conversation_start:
+              type: boolean
+              default: false
+              description: >-
+                If no language switch happens in the first 2 user turns, later
+                attempts fail and the conversation stays in the current
+                language. If the language switches during those turns, later
+                switching stays available. Enable to reduce the possibility of
+                false switching.
           required:
             - system_tool_type
         - type: object
@@ -6166,7 +6253,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false
@@ -6474,7 +6561,7 @@ components:
               default: 20
               description: >-
                 The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 120 seconds (inclusive).
+                complete. Must be between 5 and 300 seconds (inclusive).
             disable_interruptions:
               type: boolean
               default: false

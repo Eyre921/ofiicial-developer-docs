@@ -17,7 +17,7 @@ You can retrieve broadcasts created via both this API and the Resend dashboard.
 
 <Info>
   See all available `status` types in [the Broadcasts
-  overview](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses).
+  overview](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses).
 </Info>
 
 <RequestExample>

@@ -1,14 +1,14 @@
 ---
-title: "Managing Broadcasts"
+title: "Sending Broadcasts"
 source: https://resend.com/docs/dashboard/broadcasts/introduction
 path: docs/dashboard/broadcasts/introduction
 ---
 
-Send marketing emails efficiently without code.
+An introduction to sending bulk marketing emails with Resend.
 
-Broadcasts allow you to send email blasts to your customers using a no-code editor on Resend, or from our [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
+## Sending marketing emails
 
-You can use this to send email blasts such as:
+Resend provides all the tools you need to send bulk marketing emails to your Contacts. These are useful for:
 
 * Newsletters
 * Product Launches
@@ -16,130 +16,87 @@ You can use this to send email blasts such as:
 * Promotions
 * Changelogs
 
-## Sending a Broadcast from Resend
+Resend's Broadcast features include tools for content creation, contact management, and performance tracking while handling queuing, throttling, and scheduling for you so that you don't have to roll your own infrastructure.
 
-Our Broadcasts feature was made to enable your entire team to send email campaigns without having to ask for help from developers.
+<Tip>
+  To send transactional emails, use the
+  [Sending](/docs/dashboard/emails/introduction) feature.
+</Tip>
 
-### No-Code Editor
+## Broadcast features
 
-<video />
+With Resend's Broadcast features, you can:
 
-### Markdown Support
+* Compose, schedule, and send marketing emails using a [no-code editor](/docs/dashboard/broadcasts/editor) directly in your Dashboard.
+* Organize your contacts into [segments](/docs/dashboard/segments/introduction) and send bulk emails to only targeted contacts.
+* Categorize your marketing emails by [topics](/docs/dashboard/topics/introduction) to allow recipients to choose which emails to receive.
+* Turn your emails into reusable [templates](/docs/dashboard/templates/introduction).
+* [Track performance metrics](/docs/dashboard/broadcasts/performance-tracking) such as delivery, click, and open rates.
 
-You can also write your emails using Markdown. This works with headings, lists, and quotes. It also works with italic, bold, and links.
+## Quickstart
 
-If you copy and paste content from applications like Notion, Google Docs, or iA Writer, the editor maintains formatting consistency.
+You can send bulk marketing emails from [a verified domain](/docs/dashboard/domains/introduction) to a [segment](/docs/dashboard/segments/introduction) of your contact list.
 
-<video />
+<Tip>
+  You can create a draft Broadcast and send a test email to preview your content
+  even before you add any contacts. However, you will need to create a segment
+  before you can send your Broadcast.
+</Tip>
 
-### Custom Styling
+<Steps>
+  <Step title="Add contacts.">
+    [Add or import contacts](/docs/dashboard/audiences/contacts#add-contacts)
+    manually or programmatically. You can also upload a `.csv` file of existing
+    contacts.
+  </Step>
 
-You can customize the look and feel of your email by changing **global styles** such as the background color, link color, and container size, allowing you to create emails aligned with your brand identity.
+  <Step title="Create a segment and add contacts.">
+    Broadcasts are sent to a [segment](/docs/dashboard/segments/introduction) of your
+    audience.
+  </Step>
 
-To do this, click on **Styles** at the top left of the Broadcast editor. You can edit specific images or lines of texts by selecting or highlighting them prior to clicking on **Styles**.
+  <Step title="Write and send your Broadcast.">
+    [Create and send a Broadcast entirely using the no-code
+    editor](/docs/dashboard/broadcasts/editor). Alternatively, you can [use the
+    Broadcast API to build and distribute your
+    Broadcast](/docs/dashboard/broadcasts/send-broadcast-with-api) from your
+    application.
+  </Step>
 
-<video />
+  <Step title="Check your performance.">
+    View the details of any sent Broadcast in the [**Broadcasts Dashboard
+    Page**](https://resend.com/broadcasts) to see real-time deliverability
+    metrics, open and click tracking (if enabled), and subscriber actions.
+  </Step>
+</Steps>
 
-You can also edit individual styles for each component. These include the font size, font weight, letter spacing, line height, and text alignment. You can also set custom properties for each component, such as image alt, button links, and social links.
+## Choose your infrastructure
 
-<video />
+You can build and send your Broadcasts entirely from the [Resend Dashboard](https://resend.com/broadcasts). This allows all members of your team to create and manage every aspect of your marketing emails.
 
-### Personalize your content
+To create, send, and manage Broadcasts from your application, you can also use a variety of tools:
 
-When creating broadcasts, you can include dynamic audience data to personalize the email content.
+* [SDK](/docs/sdks): send with an SDK built for your language
+* [Integrations](/docs/integrations): send from a framework or tool you already use
+* [API](/docs/api-reference/emails/send-email): send with raw cURL calls
+* [CLI](/docs/cli#emails): send emails from the terminal
+* [MCP](/docs/mcp-server): send through your agent with MCP
 
-* `{{{contact.first_name|fallback}}}`
-* `{{{contact.last_name|fallback}}}`
-* `{{{contact.email}}}`
-* `{{{RESEND_UNSUBSCRIBE_URL}}}`
+<Info>
+  You can also create [automations](/docs/dashboard/automations/introduction) for
+  repeatable transactional emails like welcoming new subscribers, and Broadcast
+  needs like updating your contact list.
+</Info>
 
-When you include the `{{{RESEND_UNSUBSCRIBE_URL}}}` placeholder in the call, Resend includes an unsubscribe link in the email to automatically handle unsubscribe requests.
+See how to use Resend's Broadcast and contact management features in the [related guides](#related-guides).
 
-<Note>
-  Learn how to create a [custom Unsubscribe
-  Page](/docs/dashboard/settings/unsubscribe-page).
-</Note>
+## Manage your Broadcasts
 
-### Testing & Sending
+You can view and manage your Broadcasts from the [Broadcasts Dashboard page](https://resend.com/broadcasts).
 
-Once you're finished writing your email, you can preview it in your personal inbox or send it to your team for feedback.
+You can also [manage your Broadcasts through the Broadcast API](/docs/api-reference/broadcasts/create-broadcast) which offers endpoints for programmatically creating, updating, and sending Broadcasts. Many of these actions can also be performed with [Resend Broadcast CLI commands](/docs/cli#broadcasts) and [AI building tools](/docs/ai-onboarding). You can also create [automations](/docs/dashboard/automations/introduction) for workflows related to your Broadcasts, such as managing your contact list.
 
-To do this, click on **Test Email** on the top right of your screen. Enter in the email address you'd like to send your email to, and then click on **Send Test Email** to complete.
-
-Once you're ready to send your email to your Audience, click on **Send**, and slide to confirm.
-
-<video />
-
-**Note**: Test emails do not include any custom Reply-To address that may have been configured. This behavior is limited to test mode and does not affect actual email sends.
-
-## Managing Multiple Broadcasts
-
-You can perform bulk actions on multiple broadcasts at once to efficiently manage your campaigns.
-
-### Bulk Delete Drafts
-
-To delete multiple draft broadcasts:
-
-1. Select the broadcasts you want to delete by clicking the checkboxes next to each broadcast
-2. Click **Delete** in the bottom action bar
-3. Type the broadcast name (for single selection) or `DELETE N BROADCASTS` (for multiple) to confirm
-4. Press **Cmd+Enter** or click **Delete broadcasts** to complete
-
-You can also use keyboard shortcuts:
-
-* **Cmd+A** to select all broadcasts on the current page
-* **Backspace** to open the delete confirmation modal
-
-<Note>
-  Only draft broadcasts can be deleted. Sent or queued broadcasts cannot be
-  removed.
-</Note>
-
-### Bulk Cancel Schedules
-
-To cancel the schedule for multiple scheduled broadcasts:
-
-1. Select the scheduled broadcasts you want to cancel
-2. Click **Cancel schedule** in the bottom action bar
-3. Type `CANCEL` to confirm
-4. Press **Cmd+Enter** or click **Cancel schedules** to complete
-
-When you cancel a scheduled broadcast, it returns to draft status and won't be sent at the scheduled time.
-
-<Note>
-  Canceling a broadcast only stops emails that haven't been sent yet. Any emails
-  already delivered cannot be recalled. If a broadcast is mid-send (`queued`),
-  canceling halts delivery to the remaining recipients.
-</Note>
-
-### Using Command Palette
-
-You can also access bulk actions through the command palette (Cmd+K):
-
-* **Select all** - Select all broadcasts on the current page
-* **Delete selected** - Delete selected draft broadcasts
-* **Cancel schedule** - Cancel schedules for selected broadcasts
-
-## Clone as Template
-
-You can turn any sent Broadcast into a [reusable Template](/docs/dashboard/templates/introduction) by clicking the more options button <span><Icon icon="ellipsis" /></span> next to a Broadcast and choosing **Clone as template**.
-
-Cloning reuses a Broadcast's design and content as a starting point for transactional emails.
-
-## Sending a Broadcast from the Broadcast API
-
-You can also send your Broadcasts from the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
-
-The Broadcast API offers 6 endpoints for programmatically creating, updating, and sending broadcasts.
-
-## Understand broadcast statuses
-
-Here are all the statuses that can be associated with a broadcast:
-
-* `draft`: The broadcast is a draft. Drafts can be edited, deleted, or scheduled for sending.
-* `scheduled`: The broadcast is scheduled to be sent at a specific time. Scheduled broadcasts can have their schedule canceled, which returns them to draft status and prevents any emails from being sent.
-* `sent`: The broadcast was sent.
-* `queued`: The broadcast is queued for delivery. Canceling a queued broadcast stops delivery to the remaining recipients only. Emails already sent cannot be recalled.
+Learn more about [managing your Broadcasts](/docs/dashboard/broadcasts/manage-broadcasts) in the dedicated guide.
 
 ## Export your data
 
@@ -169,3 +126,25 @@ All admins on your team can securely access the export for 7 days. Unavailable e
   **Exports**. Select any export to view its details page. All members of your
   team can view your exports, but only admins can download the data.
 </Note>
+
+## Related Guides
+
+See how to use Resend's Broadcast features.
+
+<CardGroup>
+  <Card title="No-code editor" icon="pen-line" href="/dashboard/broadcasts/editor" />
+
+  <Card title="Send with API" icon="paper-plane-top" href="/dashboard/broadcasts/send-broadcast-with-api" />
+
+  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/dashboard/broadcasts/manage-broadcasts" />
+
+  <Card title="Contacts" icon="id-card" href="/dashboard/audiences/contacts" />
+
+  <Card title="Segments" icon="chart-pie" href="/dashboard/segments/introduction" />
+
+  <Card title="Topics" icon="hashtag" href="/dashboard/topics/introduction" />
+
+  <Card title="Track performance" icon="chart-column" href="/dashboard/broadcasts/performance-tracking" />
+
+  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/dashboard/audiences/managing-unsubscribe-list" />
+</CardGroup>

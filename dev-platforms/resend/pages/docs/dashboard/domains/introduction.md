@@ -1,269 +1,66 @@
 ---
-title: "Managing Domains"
+title: "Verified Domains"
 source: https://resend.com/docs/dashboard/domains/introduction
 path: docs/dashboard/domains/introduction
 ---
 
-Visualize all the domains on the Resend Dashboard.
+An introduction to verified domains in Resend.
 
-Resend sends emails using a domain you own (not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
+## Verified domains
 
-<Warning>
-  Domain not verifying? [Try
-  this](/docs/knowledge-base/what-if-my-domain-is-not-verifying).
-</Warning>
+Resend sends emails using a domain you own (i.e., not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send emails with Resend. You can optionally [configure your domain to receive emails](/docs/dashboard/receiving/custom-domains).
 
-## Domain management
+## Domain features
 
-You can view and manage your domains from the [Domains Dashboard](https://resend.com/domains). You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
+When you add a domain, you can choose to:
+
+* Add a [subdomain](#subdomains) instead of your root domain to communicate the kind of emails you send and receive, and for proper reputation segmentation.
+* Enable [open and click tracking](/docs/dashboard/domains/tracking) for your emails.
+* Configure [Enforced Transport Layer Security (TLS)](/docs/dashboard/domains/tls) to ensure that you only send encrypted emails.
+* Set a custom subdomain for the [Return-Path address](/docs/dashboard/domains/custom-return-path).
+* Choose which [geographical region](/docs/dashboard/domains/regions) to send emails from to reach your recipients sooner.
+
+After your domain is verified, you can:
+
+* Send and receive emails [using any email address at your domain](/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend#sender-email-addresses-in-resend) without any extra configuration.
+* Implement [DMARC](/docs/dashboard/domains/dmarc) and [BIMI](/docs/dashboard/domains/bimi) to build trust and improve inbox placement.
+
+## Subdomains
 
 We recommend sending your emails from one or more subdomains (e.g., `updates.example.com`) instead of your root domain to isolate your sending reputation and to clearly communicate your intent to your recipients.
 
-Each individual subdomain must be added and verified independently, and they will each be listed separately in your Dashboard.
+You can [add and verify](/docs/add-a-domain) multiple subdomains of the same domain (e.g. `newsletter.example.com` and `account.example.com`) for different sending purposes.
+
+For example, you can configure your newsletter for open and click tracking while keeping tracking disabled for your important transactional emails such as password resets.
 
 Learn more about [the benefits of sending emails from a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain).
 
-## View domain details
+## Domain management
 
-The [Domains dashboard](https://resend.com/domains) shows information about your domain name, its verification status, and history.
+You can view and manage your domains from the [Domains Dashboard page](https://resend.com/domains). The Dashboard allows all members of your team to create, verify, retrieve, update, and delete your domains.
 
-## Understand a domain status
+You can also manage your sending and receiving domains using the [API](/docs/api-reference/domains/create-domain), the [CLI](/docs/cli#domains), or the [MCP server](/docs/mcp-server).
 
-Domains can have different statuses, including:
+Learn more about [managing your domains](/docs/dashboard/domains/manage-domains).
 
-* `not_started`: You've added a domain to Resend, but you haven't clicked on `Verify DNS Records` yet.
-* `pending`: Resend is still trying to verify the domain.
-* `verified`: Your domain is successfully verified for sending in Resend.
-* `partially_verified`: One capability (send or receive) is verified while the other is still pending verification.
-* `partially_failed`: The domain is verified but one of the features (send or receive) is not verified.
-* `failed`: Resend was unable to detect the DNS records within 72 hours.
-* `temporary_failure`: For a previously verified domain, Resend will periodically check for the DNS record required for verification. If at some point, Resend is unable to detect the record, the status would change to "Temporary Failure". Resend will recheck for the DNS record for 72 hours, and if it's unable to detect the record, the domain status would change to "Failure". If it's able to detect the record, the domain status would change to "Verified".
+## Related Guides
 
-## View DNS records
+See how to use Resend's verified domain features.
 
-For each domain you have added, you can view the [DKIM](#what-are-dkim-records) and [SPF](#what-are-spf-records) configurations generated by Resend, as well as [DMARC protocol parameters](/docs/dashboard/domains/dmarc) under the **Records** tab.
+<CardGroup>
+  <Card title="Manage domains" icon="gear" href="/dashboard/domains/manage-domains" />
 
-<img alt="Domain Details" />
+  <Card title="Implement DMARC" icon="key" href="/dashboard/domains/dmarc" />
 
-<Info>
-  Need specific help adding your records to a DNS provider? View our [knowledge
-  base DNS Guides](/docs/knowledge-base).
-</Info>
+  <Card title="Enable Tracking" icon="chart-line-up-down" href="/dashboard/domains/tracking" />
 
-## Configure open and click tracking
+  <Card title="Enforced TLS" icon="binary-lock" href="/dashboard/domains/tls" />
 
-Open and click tracking is disabled by default for all domains.
+  <Card title="Custom return path" icon="code-simple" href="/dashboard/domains/custom-return-path" />
 
-You can enable it in the Resend Dashboard under the **Configuration** tab or programmatically.
+  <Card title="Choose region" icon="globe" href="/dashboard/domains/regions" />
 
-<img alt="Open and Click Tracking" />
+  <Card title="Claim a domain" icon="bell-concierge" href="/dashboard/domains/claim" />
 
-Learn more about [open and click tracking](/docs/dashboard/domains/tracking).
-
-## Configure Enforced Transport Layer Security (TLS)
-
-Resend supports TLS 1.2, TLS 1.1 and TLS 1.0 for TLS connections, but only requires TLS for sending when Enforced TLS is configured.
-
-By default, Resend will attempt to make a secure connection, but will fall back to sending messages unencrypted when the receiving server does not support TLS.
-
-You can configure Enforced TLS in the Resend Dashboard under the **Configuration** tab or programmatically. This means that if the receiving server does not support TLS, your email will not be sent.
-
-Learn more about [Opportunistic TLS vs Enforced TLS](/docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls).
-
-## Custom Return Path
-
-By default, Resend will use the `send` subdomain for the Return-Path address. You can change this by setting the optional `custom_return_path` parameter when [creating a domain](/docs/api-reference/domains/create-domain) via the API or under **Advanced options** in the dashboard.
-
-<img alt="Custom Return Path" />
-
-For the API, optionally pass the custom return path parameter.
-
-<CodeGroup>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-
-  const resend = new Resend('re_xxxxxxxxx');
-
-  resend.domains.create({ name: 'example.com', customReturnPath: 'outbound' });
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
-
-  $resend->domains->create([
-    'name' => 'example.com',
-    'custom_return_path' => 'outbound'
-  ]);
-  ```
-
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
-
-  resend.api_key = "re_xxxxxxxxx"
-
-  params: resend.Domains.CreateParams = {
-    "name": "example.com",
-    "custom_return_path": "outbound"
-  }
-
-  resend.Domains.create(params)
-  ```
-
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  Resend.api_key = ENV["RESEND_API_KEY"]
-
-  params = {
-    name: "example.com",
-    custom_return_path: "outbound"
-  }
-  domain = Resend::Domains.create(params)
-  puts domain
-  ```
-
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
-
-  import "github.com/resend/resend-go/v3"
-
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
-
-  	params := &resend.CreateDomainRequest{
-  		Name:             "example.com",
-  		CustomReturnPath: "outbound",
-  	}
-
-  	domain, err := client.Domains.Create(params)
-  }
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{types::CreateDomainOptions, Resend, Result};
-
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
-
-    let _domain = resend
-      .domains
-      .add(CreateDomainOptions::new("example.com").with_custom_return_path("outbound"))
-      .await?;
-
-    Ok(())
-  }
-  ```
-
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.*;
-
-  public class Main {
-      public static void main(String[] args) {
-          Resend resend = new Resend("re_xxxxxxxxx");
-
-          CreateDomainOptions params = CreateDomainOptions
-                  .builder()
-                  .name("example.com")
-                  .customReturnPath("outbound")
-                  .build();
-
-          CreateDomainResponse domain = resend.domains().create(params);
-      }
-  }
-  ```
-
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
-
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
-
-  var resp = await resend.DomainAddAsync( new DomainAddData {
-     DomainName = "example.com",
-     CustomReturnPath = "outbound"
-  } );
-  Console.WriteLine( "Domain Id={0}", resp.Content.Id );
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X POST 'https://api.resend.com/domains' \
-       -H 'Authorization: Bearer re_xxxxxxxxx' \
-       -H 'Content-Type: application/json' \
-       -d $'{
-    "name": "example.com",
-    "custom_return_path": "outbound"
-  }'
-  ```
-</CodeGroup>
-
-Custom return paths must adhere to the following rules:
-
-* Must be 63 characters or less
-* Must start with a letter, end with a letter or number, and contain only letters, numbers, and hyphens
-
-Avoid setting values that undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
-
-## Export your data
-
-Admins can download your data in CSV format for the following resources:
-
-* Emails
-* Broadcasts
-* Contacts
-* Segments
-* Domains
-* Logs
-* API keys
-
-<Info>Currently, exports are limited to admin users of your team.</Info>
-
-To start, apply filters to your data and click on the "Export" button. Confirm your filters before exporting your data.
-
-<video />
-
-If your exported data includes 1,000 items or less, the export will download immediately. For larger exports, you'll receive an email with a link to download your data.
-
-All admins on your team can securely access the export for 7 days. Unavailable exports are marked as "Expired."
-
-<Note>
-  All exports your team creates are listed in the
-  [Exports](https://resend.com/exports) page under **Settings** > **Team** >
-  **Exports**. Select any export to view its details page. All members of your
-  team can view your exports, but only admins can download the data.
-</Note>
-
-## What are SPF records
-
-Sender Policy Framework (SPF) is an email authentication standard that includes all the IP addresses authorized to send email on behalf of your domain.
-
-The SPF configuration is made of a TXT DNS record that lists the IP addresses approved by the domain owner. It also includes an MX record that allows the recipient to send bounce and complaint feedback to your domain.
-
-<img alt="SPF Records" />
-
-## What are DKIM records
-
-DomainKeys Identified Mail (DKIM) is an email security standard designed to make sure that an email that claims to come from a specific domain was authorized by the owner of that domain.
-
-The DKIM configuration is stored as a TXT DNS record that contains a public key used to verify the authenticity of the email.
-
-<img alt="DKIM Records" />
-
-## FAQ
-
-<AccordionGroup>
-  <Accordion title="Does Resend support 2048-bit DKIM keys?">
-    No. Resend does not support 2048-bit DKIM keys. We sign outbound mail with
-    1024-bit DKIM keys, which are RFC-compliant, accepted by major mailbox
-    providers, and satisfy bulk sender requirements. Learn more about [DKIM key
-    length](/docs/knowledge-base/do-i-need-2048-dkim).
-  </Accordion>
-
-  <Accordion title="Where do the logos in the domain preview come from?">
-    While you add or configure a domain, the dashboard displays your brand's
-    logo as a decorative preview. It's illustrative only and does not change how
-    your emails appear in recipients' inboxes. Showing your logo in the inbox
-    requires [BIMI](/docs/dashboard/domains/bimi).
-
-    <a href="https://logo.dev" title="Logo API">
-      Logos are provided by Logo.dev.
-    </a>
-  </Accordion>
-</AccordionGroup>
+  <Card title="DNS provider guides" icon="book-atlas" href="/knowledge-base/cloudflare" />
+</CardGroup>

@@ -1,89 +1,89 @@
 ---
-title: "Managing Emails"
+title: "Sending Emails"
 source: https://resend.com/docs/dashboard/emails/introduction
 path: docs/dashboard/emails/introduction
 ---
 
-Learn how to view and manage all sent emails on the Resend Dashboard.
+An introduction to sending emails with Resend.
 
-## View email details
+## Sending transactional emails
 
-See all the metadata associated with an email, including the sender address, recipient address, subject, and more from the [Emails](https://resend.com/emails) page. Select any email to view its details.
+Resend provides all the tools you need to send [transactional emails](/docs/email-types#send-transactional-emails) from your application. These are useful for:
 
-<img alt="Email Details" />
+* order confirmations
+* password reset emails
+* account notifications
 
-Each email contains a **Preview**, **Plain Text**, **HTML**, and **Raw** tab to visualize the content of your sent email in its various formats. The Raw tab displays the email data as formatted JSON matching the public API response structure, including headers and other metadata.
+<Tip>
+  To send bulk marketing emails, use the
+  [Broadcasts](/docs/dashboard/broadcasts/introduction) feature.
+</Tip>
 
-## Understand email events
+Once you [verify a domain](/docs/add-a-domain) in your Resend account, you can send from any email address at that domain. You do not need to “create an email address,” “set up a sender identity,” or “add a from-address” before sending.
 
-Here are all the events that can be associated with an email:
+## Sending Features
 
-* `bounced` - The recipient's mail server rejected the email. ([Learn more about bounced emails](/docs/dashboard/emails/email-bounces))
-* `canceled` - The scheduled email was canceled (by user).
-* `clicked` - The recipient clicked on a link in the email.
-* `complained` - The email was successfully delivered to the recipient's mail server, but the recipient marked it as spam.
-* `delivered` - Resend successfully delivered the email to the recipient's mail server.
-* `delivery_delayed` - The email couldn't be delivered to the recipient's mail server because a temporary issue occurred. Delivery delays can occur, for example, when the recipient's inbox is full, or when the receiving email server experiences a transient issue.
-* `failed` - The email failed to be sent.
-* `opened` - The recipient opened the email. ([Open rates are not always accurate](/docs/knowledge-base/why-are-my-open-rates-not-accurate))
-* `queued` - The email created from Broadcasts or Batches is queued for delivery.
-* `scheduled` - The email is scheduled for delivery.
-* `sent` - The email was sent successfully.
-* `suppressed` - The email was not sent because the recipient is on the suppression list. ([Learn more about the suppression list](/docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list))
+With Resend's email sending features, you can:
 
-## Share email link
+* Send, retrieve, cancel, and manage individual and transactional email delivery through the [Sending API](/docs/api-reference/emails/send-email) and [SDKs](/docs/sdks), [CLI commands](/docs/cli#emails), [automations](/docs/dashboard/automations/introduction), and [AI building tools](/docs/ai-onboarding).
+* [View and manage all sent emails](/docs/dashboard/emails/manage-emails) in the Emails Dashboard page.
+* Send single or [batch transactional emails](/docs/dashboard/emails/batch-sending).
+* [Schedule emails](/docs/dashboard/emails/schedule-email) to be sent at a future date.
+* Send emails [with attachments](/docs/dashboard/emails/attachments) and [embedded images](/docs/dashboard/emails/embed-inline-images).
+* Include [custom headers](/docs/dashboard/emails/custom-headers) in your emails.
+* Use [idempotency keys](/docs/dashboard/emails/idempotency-keys) to ensure emails are sent only once.
+* Receive tailored [deliverability insights](/docs/dashboard/emails/deliverability-insights) about each email with suggestions for improvement.
+* [View API endpoint logs](/docs/dashboard/logs/introduction) and deliverability metrics for monitoring and troubleshooting.
 
-You can share a public link of a sent email. Anyone with the link can visualize the email.
+## Quickstart
 
-To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and select **Share email**.
+Get started with a [quick setup sending example](/docs/introduction#quickstart) for your language or an [AI builder guide](/docs/ai-onboarding#ai-builder-guides) to see how to incorporate Resend into your application.
 
-<img alt="Email - Share Link Option" />
+## Choose your infrastructure
 
-Select how long the link will remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
+To send transactional emails from your application, you can use a variety of tools:
 
-<img alt="Email - Share Link Modal" />
+* [SDK](/docs/sdks): send with an SDK built for your language
+* [Integrations](/docs/integrations): send from a framework or tool you already use
+* [API](/docs/api-reference/emails/send-email): send with raw cURL calls
+* [CLI](/docs/cli#emails): send emails from the terminal
+* [MCP](/docs/mcp-server): send through your agent with MCP (see also [skills](/docs/react-email-skill))
+* [SMTP](/docs/send-with-smtp): send without external dependencies
 
-Copy the URL and share it with your team members. Anyone with the link can visualize the email without authenticating until the link expires.
+You can also send emails as part of [automated workflows](/docs/dashboard/automations/introduction) such as abandoned cart reminders, and create [email templates](/docs/dashboard/templates/introduction) for repeatable content.
 
-<img alt="Email - Share Link Item" />
+See how to use additional sending features, including scheduling and attachments, in the [sending email guides](#related-guides).
 
-## See associated logs
+## Manage your sent emails
 
-You can check all the logs associated with an email. This will help you troubleshoot any issues with the request itself.
+After you've sent or scheduled your first email, you'll be able to view and manage your emails in the [Emails Dashboard page](https://resend.com/emails). From here, you can view email details, share a public version, and more. This allows all members of your team to view and manage your sent emails.
 
-To view the logs, click on the dropdown menu, and select "View log".
+You can also manage your emails programmatically using the [Sending API](/docs/api-reference/emails/send-email), [CLI commands](/docs/cli#emails), or the [MCP server](/docs/mcp-server).
 
-<img alt="Email - View Logs Option" />
+Learn more about [managing your sent emails](/docs/dashboard/emails/manage-emails) in the dedicated guide.
 
-This will take you to logs, where you can see all the logs associated with the email.
+## Related Guides
 
-<img alt="Email - View Logs Item" />
+See how to use Resend's sending features.
 
-## Export your data
+<CardGroup>
+  <Card title="View and manage sent emails" icon="envelope" href="/dashboard/emails/manage-emails" />
 
-Admins can download your data in CSV format for the following resources:
+  <Card title="Send test emails" icon="flask-gear" href="/dashboard/emails/send-test-emails" />
 
-* Emails
-* Broadcasts
-* Contacts
-* Segments
-* Domains
-* Logs
-* API keys
+  <Card title="Include attachments" icon="file-plus" href="/dashboard/emails/attachments" />
 
-<Info>Currently, exports are limited to admin users of your team.</Info>
+  <Card title="Embed inline images" icon="image" href="/dashboard/emails/embed-inline-images" />
 
-To start, apply filters to your data and click on the "Export" button. Confirm your filters before exporting your data.
+  <Card title="Schedule emails" icon="clock" href="/dashboard/emails/schedule-email" />
 
-<video />
+  <Card title="Batch sending" icon="envelopes" href="/dashboard/emails/batch-sending" />
 
-If your exported data includes 1,000 items or less, the export will download immediately. For larger exports, you'll receive an email with a link to download your data.
+  <Card title="Customize headers" icon="rectangle-history-circle-user" href="/dashboard/emails/custom-headers" />
 
-All admins on your team can securely access the export for 7 days. Unavailable exports are marked as "Expired."
+  <Card title="Prevent duplicate emails" icon="key" href="/dashboard/emails/idempotency-keys" />
 
-<Note>
-  All exports your team creates are listed in the
-  [Exports](https://resend.com/exports) page under **Settings** > **Team** >
-  **Exports**. Select any export to view its details page. All members of your
-  team can view your exports, but only admins can download the data.
-</Note>
+  <Card title="Add an unsubscribe link" icon="person-from-portal" href="/dashboard/emails/add-unsubscribe-to-transactional-emails" />
+
+  <Card title="Add identifier tags" icon="tags" href="/dashboard/emails/tags" />
+</CardGroup>

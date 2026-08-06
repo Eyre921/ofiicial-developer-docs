@@ -259,9 +259,9 @@ Date property value objects contain the following data within the `date` propert
 
 Formula property value objects represent the result of evaluating a formula described in the [database's properties](/reference/property-object). These objects contain a `type` key and a key corresponding with the value of `type`. The value is an object containing type-specific data. The type-specific data are described in the sections below.
 
-| Property | Type            | Description                                                                                            |
-| :------- | :-------------- | :----------------------------------------------------------------------------------------------------- |
-| `type`   | `string` (enum) | The type of the formula result. Possible values are `"string"`, `"number"`, `"boolean"`, and `"date"`. |
+| Property | Type            | Description                                                               |
+| :------- | :-------------- | :------------------------------------------------------------------------ |
+| `type`   | `string` (enum) | The result type: `string`, `number`, `boolean`, `date`, or `unsupported`. |
 
 ### String formula
 
@@ -289,6 +289,28 @@ Date formula property values contain an optional [date property value](#date) wi
       "formula": {
         "type": "number",
         "number": 1234
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+### Unsupported formula
+
+If the API can't calculate a formula because it depends on too many related pages or nested formulas and rollups, `formula.type` is set to `"unsupported"` and `formula.unsupported` is an empty object. The response doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported formula property value theme={null}
+  {
+    "Formula": {
+      "object": "property_item",
+      "id": "KpQq",
+      "type": "formula",
+      "formula": {
+        "type": "unsupported",
+        "unsupported": {}
       }
     }
   }
@@ -392,6 +414,43 @@ Rollups with an aggregation with more than one page of aggregated results will r
           "type": "incomplete",
           "incomplete": {}
         }
+      }
+    }
+  }
+  ```
+</CodeGroup>
+
+### Unsupported rollup
+
+If the API can't calculate a rollup because it depends on too many related pages or nested formulas and rollups, `rollup.type` is set to `"unsupported"` and `rollup.unsupported` is an empty object. The response includes the `function` field, but it doesn't include a partial value. Treat the property as unavailable. To make the value available, reduce the number of related pages or simplify the nested formulas and rollups.
+
+If the page came from a data source query, see [Recommendations for performance](/reference/query-a-data-source#recommendations-for-performance) to request fewer properties and fetch details only for the results you need.
+
+<CodeGroup>
+  ```json Unsupported rollup property value theme={null}
+  {
+    "object": "list",
+    "results": [
+      {
+        "object": "property_item",
+        "id": "vYdV",
+        "type": "relation",
+        "relation": {
+          "id": "535c3fb2-95e6-4b37-a696-036e5eac5cf6"
+        }
+      }
+    ],
+    "next_cursor": null,
+    "has_more": false,
+    "type": "property_item",
+    "property_item": {
+      "id": "y}~p",
+      "next_url": null,
+      "type": "rollup",
+      "rollup": {
+        "function": "sum",
+        "type": "unsupported",
+        "unsupported": {}
       }
     }
   }

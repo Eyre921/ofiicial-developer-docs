@@ -219,6 +219,7 @@ Either `id` or `email` must be provided.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
+    "object": "contact_segment",
     "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
     "audienceId": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
     "deleted": true

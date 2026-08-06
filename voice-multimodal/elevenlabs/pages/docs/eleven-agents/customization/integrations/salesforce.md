@@ -539,6 +539,19 @@ After setting up your External Client App and connecting the integration, test i
 2. **Record creation**: Have your agent create a new lead or contact.
 3. **Data retrieval**: Verify your agent can retrieve detailed customer information.
 
+## Case comment trigger: email replies for Email-to-Case
+
+If you've enabled the **Salesforce Case Comment** trigger (agent auto-response to Service Cloud Cases), replies to Cases with at least one inbound email are sent back to the customer as a real, threaded email — not just an internal Case Comment. This is based on whether the Case has an inbound email, not on the Case's **Origin** picklist value, so it still works correctly if your org uses a customized Origin value like "Email - Returns" rather than the literal "Email". Cases with no inbound email continue to be posted as a public Case Comment, unchanged. Any addresses CC'd on the customer's original email are automatically CC'd on the reply as well, matching how a human agent's "Reply All" would behave — except for your org's Email-to-Case routing address(es), which are deliberately excluded from CC so the reply doesn't get re-ingested by Email-to-Case and re-trigger the agent on its own message.
+
+Sending email replies requires some additional setup beyond what's needed for Case Comments alone:
+
+* The **Run As** user's Profile or Permission Set must have the **Send Email** system permission enabled (`Setup` > `Users` > `Profiles`, under System Permissions), in addition to the **API Enabled** permission already required for the integration.
+* Your org's **Email Deliverability** setting (`Setup` > `Email` > `Deliverability`) must allow external email — Sandboxes default this to a restricted setting, which silently blocks outbound email.
+* If you want replies to come from a support alias rather than the Run As user's own mailbox, set the **Org-Wide Email Address Id** field on the trigger to the Id of an **Organization-Wide Email Address** (`Setup` > `Organization-Wide Addresses` > click the address > copy the Id from the URL). Leave it blank to send from the Run As user's own address.
+* Set the **Email-to-Case Routing Address(es)** field on the trigger to your org's Email-to-Case address(es) (comma separated if more than one, `Setup` > `Email-to-Case`). Without this, the integration falls back to guessing the routing address from the customer's email (its `To` address), which misses cases where your routing address was only CC'd rather than the primary recipient — CC'ing it back on a reply in that situation would re-trigger the agent on its own message.
+
+If a customer's org doesn't have these configured, an email send failure falls back to posting a public Case Comment, so a reply is never silently dropped — but the customer won't receive it by email until the above is set up.
+
 ## Security considerations
 
 * Use HTTPS endpoints for all API calls.

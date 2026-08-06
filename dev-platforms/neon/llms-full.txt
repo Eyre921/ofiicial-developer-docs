@@ -21,7 +21,7 @@ The Anthropic Messages endpoint exposes the [Anthropic Messages API](https://doc
 
 **Note:** The Anthropic SDK appends `/v1/messages` to the base URL automatically. Set the base URL to `/anthropic` (without `/v1`).
 
-This endpoint is also reachable at the longer `/ai-gateway/anthropic/v1/messages` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/anthropic/v1/messages` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full list of aliases.
 
 ## Setup
 
@@ -335,10 +335,13 @@ Append the dialect path for the endpoint you need:
 ```
 NEON_AI_GATEWAY_BASE_URL + /v1            → chat completions (all providers)
 NEON_AI_GATEWAY_BASE_URL + /openai/v1     → OpenAI Responses API
-NEON_AI_GATEWAY_BASE_URL + /v1/gemini     → Gemini generateContent API
+NEON_AI_GATEWAY_BASE_URL + /anthropic     → Anthropic Messages API
+NEON_AI_GATEWAY_BASE_URL + /gemini        → Gemini generateContent API
 ```
 
-Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/anthropic/v1` for Anthropic Messages, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated, but the shorter paths are what the docs and SDKs use. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
+The Anthropic and Gemini values are SDK base URLs: the Anthropic SDK appends `/v1/messages` and google-genai appends `/v1beta/models/...`, so don't add those segments yourself. Calling either endpoint directly takes the full path, `/anthropic/v1/messages` or `/gemini/v1beta/models/<model>:<action>`.
+
+Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/anthropic/v1` for Anthropic Messages, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated, but the shorter paths are what the docs and SDKs use. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full mapping.
 
 To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
 
@@ -436,7 +439,7 @@ The chat completions endpoint is the recommended way to use Neon AI Gateway. It'
 
 **Base URL:** `https://<branch-host>/v1`
 
-This endpoint is also reachable at the longer `/ai-gateway/mlflow/v1/chat/completions` path. Both behave identically and neither is deprecated. See [Shorter /v1 paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/mlflow/v1/chat/completions` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full list of aliases.
 
 If you're using an OpenRouter-compatible client that asks for a base URL, set it to `https://<branch-host>/v1` and call `/chat/completions`.
 
@@ -652,11 +655,11 @@ The Gemini endpoint exposes the [Google Gemini API](https://ai.google.dev/api/ge
 
 **Supported actions:** `:generateContent` and `:streamGenerateContent`
 
-**Endpoint pattern:** `https://<branch-host>/v1/gemini/v1beta/models/<model>:<action>`
+**Endpoint pattern:** `https://<branch-host>/gemini/v1beta/models/<model>:<action>`
 
 **Note:** Only `generateContent` and `streamGenerateContent` are supported. Requests to other actions (such as `countTokens`) return `404 unsupported gemini action`.
 
-This endpoint is also reachable at the longer `/ai-gateway/gemini/v1beta/models/<model>:<action>` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/gemini/v1beta/models/<model>:<action>` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full list of aliases.
 
 ## Setup
 
@@ -692,7 +695,7 @@ import { GoogleGenAI } from '@google/genai';
 const client = new GoogleGenAI({
   apiKey: 'placeholder',
   httpOptions: {
-    baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1/gemini`,
+    baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/gemini`,
     headers: {
       Authorization: `Bearer ${process.env.NEON_AI_GATEWAY_TOKEN}`,
     },
@@ -717,7 +720,7 @@ import os
 client = genai.Client(
     api_key='placeholder',
     http_options=types.HttpOptions(
-        base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1/gemini",
+        base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/gemini",
         headers={'Authorization': f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"},
     ),
 )
@@ -734,7 +737,7 @@ print(response.text)
 
 ```bash
 curl -X POST \
-  "$NEON_AI_GATEWAY_BASE_URL/v1/gemini/v1beta/models/gemini-3-flash:generateContent" \
+  "$NEON_AI_GATEWAY_BASE_URL/gemini/v1beta/models/gemini-3-flash:generateContent" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -772,12 +775,12 @@ for chunk in client.models.generate_content_stream(
 The gateway uses the model ID and action directly in the URL path. The `google-genai` SDK constructs this automatically from the base URL and model parameter:
 
 ```
-base_url: https://<branch-host>/v1/gemini
+base_url: https://<branch-host>/gemini
 model:    gemini-3-flash
 action:   generateContent or streamGenerateContent
 
-→ https://<branch-host>/v1/gemini/v1beta/models/gemini-3-flash:generateContent
-→ https://<branch-host>/v1/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
+→ https://<branch-host>/gemini/v1beta/models/gemini-3-flash:generateContent
+→ https://<branch-host>/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
 ```
 
 When calling the REST API directly, the model ID and action must appear in the path as shown above.
@@ -1200,7 +1203,7 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 | OpenAI (most models)                       | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                        |
 | OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)    | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions                  |
 | Anthropic Claude                           | `/v1/chat/completions` | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching |
-| Google Gemini                              | `/v1/chat/completions` | Use `/v1/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK             |
+| Google Gemini                              | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK                |
 | Google Gemma 3 12B                         | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                               |
 | Meta, Alibaba, Zhipu AI, Thinking Machines | `/v1/chat/completions` | Chat completions only                                                                        |
 
@@ -1215,18 +1218,20 @@ const text = typeof content === 'string'
   : content.find((block) => block.type === 'text')?.text ?? '';
 ```
 
-## Shorter /v1 paths
+## Shorter paths
 
-Each inference dialect is reachable at two equivalent paths: a shorter top-level path (recommended, and what most examples and the `@neon/ai-sdk-provider` use) and a longer `/ai-gateway/<dialect>/v1` path. Both forms behave identically, using the same branch host, bearer token, request body, response body, model routing, rate limits, and quota, and **neither is deprecated**. The longer `/ai-gateway/...` paths keep working indefinitely. Note that the shorter form isn't a uniform `/v1/<dialect>` rule: chat completions is a bare `/v1/...`, Gemini keeps a `gemini` segment, and OpenAI Responses uses an `/openai/v1/...` prefix instead of a bare `/v1/`.
+Each inference dialect is reachable at two equivalent paths: a shorter top-level path (recommended, and what most examples and the `@neon/ai-sdk-provider` use) and a longer `/ai-gateway/<dialect>/v1` path. Both forms behave identically, using the same branch host, bearer token, request body, response body, model routing, rate limits, and quota, and **neither is deprecated**. The longer `/ai-gateway/...` paths keep working indefinitely.
+
+The shorter form isn't a uniform `/v1/<dialect>` rule. The unified chat completions endpoint is a bare `/v1/chat/completions`, matching the OpenAI and OpenRouter convention. The native dialects are prefixed by provider instead, and each keeps its own upstream version segment so the path matches what that provider's SDK expects: `/openai/v1/...`, `/anthropic/v1/...`, and `/gemini/v1beta/...`.
 
 Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
 
-| Shorter path                                            | Equivalent to                                              |
-| ------------------------------------------------------- | ---------------------------------------------------------- |
-| `POST /v1/chat/completions`                             | `/ai-gateway/mlflow/v1/chat/completions`                   |
-| `POST /openai/v1/responses`                             | `/ai-gateway/openai/v1/responses`                          |
-| `POST /anthropic/v1/messages`                           | `/ai-gateway/anthropic/v1/messages`                        |
-| `POST /v1/gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
+| Shorter path                                         | Equivalent to                                              |
+| ---------------------------------------------------- | ---------------------------------------------------------- |
+| `POST /v1/chat/completions`                          | `/ai-gateway/mlflow/v1/chat/completions`                   |
+| `POST /openai/v1/responses`                          | `/ai-gateway/openai/v1/responses`                          |
+| `POST /anthropic/v1/messages`                        | `/ai-gateway/anthropic/v1/messages`                        |
+| `POST /gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
 
 ### List available models
 
@@ -2915,7 +2920,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-1-flash-lite:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-1-flash-lite:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -3027,7 +3032,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-1-pro:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-1-pro:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -3139,7 +3144,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-5-flash:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-5-flash:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -3251,7 +3256,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-flash:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-flash:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -8605,7 +8610,7 @@ The OpenAI Responses endpoint exposes the [OpenAI Responses API](https://platfor
 
 **Base URL:** `https://<branch-host>/openai/v1`
 
-This endpoint is also reachable at the longer `/ai-gateway/openai/v1/responses` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/openai/v1/responses` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full list of aliases.
 
 If you're using an OpenAI-compatible client that accepts a base URL, set it to either `https://<branch-host>/openai/v1` or `https://<branch-host>/ai-gateway/openai/v1`. The request and response shapes are the standard OpenAI Responses API shape.
 
@@ -8814,7 +8819,7 @@ Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets 
 - **Standard SDKs, one URL change.** OpenAI SDK and google-genai both work out of the box.
 - **AI follows your branches.** Each branch has its own gateway endpoint. If you use Neon branches for preview deployments, AI requests from a feature branch are scoped to that branch. It's the same isolation your database already gets.
 - **Streaming support.** Server-sent events work on all endpoints with no extra configuration.
-- **Shorter, OpenRouter-style paths.** Chat completions and Gemini are reachable at a shorter top-level `/v1/...` path; OpenAI Responses has its own shorter alias (`/openai/v1/...`). `GET /v1/models` lists the catalog. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths).
+- **Shorter, OpenRouter-style paths.** Every dialect has a short top-level path: `/v1/chat/completions` for chat completions, and a provider-prefixed path for the native dialects (`/openai/v1/...`, `/anthropic/v1/...`, `/gemini/v1beta/...`). `GET /v1/models` lists the catalog. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths).
 
 ## Pricing
 
@@ -8897,7 +8902,7 @@ The model exists in the catalog but doesn't work with the endpoint you're callin
 **Fix:** Check which endpoint the model requires:
 
 - OpenAI codex models on `/v1/chat/completions` → use `/openai/v1/responses`
-- Google models on `/openai/v1/responses` → use `/v1/gemini/v1beta/...` or `/v1/chat/completions`
+- Google models on `/openai/v1/responses` → use `/gemini/v1beta/...` or `/v1/chat/completions`
 
 See [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
@@ -15676,7 +15681,7 @@ Call `refreshUser()` after successful `updateUser()` calls to ensure your UI dis
 
 --- [Document source](https://neon.com/docs/auth/guides/webhooks.md) ---
 
-> Summary: Managed Better Auth webhooks send HTTP POST requests to your server when authentication events occur, letting you replace the built-in email provider with custom delivery channels (SMS, WhatsApp, custom email) and intercept user signups before they are written to the database. Use this page when you need to override OTP or magic link delivery, block signups by domain, or sync new users to external systems. Webhooks support events including send.otp, send.magic_link, user.before_create, user.created, and phone_number.verified, use EdDSA Ed25519 detached JWS signatures for verification, and retry blocking events within a global timeout.
+> Summary: Managed Better Auth webhooks send HTTP POST requests to your server when authentication events occur, letting you replace the built-in email provider with custom delivery channels (SMS, WhatsApp, custom email) and intercept user signups before they are written to the database. Use this page when you need to override OTP or magic link delivery, block signups by domain, or sync new users to external systems. Webhooks support events including send.otp, send.magic_link, user.before_create, user.created, organization.invitation.created, organization.invitation.accepted, and phone_number.verified, use EdDSA Ed25519 detached JWS signatures for verification, and retry blocking events within a global timeout.
 
 # Webhooks
 
@@ -15696,13 +15701,15 @@ For a step-by-step Next.js walkthrough that implements signature verification, c
 
 ## Supported events
 
-| Event                   | Type         | Trigger                                          | Use case                                                                  |
-| ----------------------- | ------------ | ------------------------------------------------ | ------------------------------------------------------------------------- |
-| `send.otp`              | Blocking     | OTP code needs delivery                          | Custom OTP delivery via SMS or email service                              |
-| `send.magic_link`       | Blocking     | Magic link needs delivery                        | Custom link delivery via any channel                                      |
-| `user.before_create`    | Blocking     | User attempts to sign up (before database write) | Signup validation, allowlists, user data enrichment                       |
-| `user.created`          | Non-blocking | User created in the database                     | Sync to CRM, analytics, post-signup workflows                             |
-| `phone_number.verified` | Non-blocking | User successfully verified a phone number        | Post-verification workflows for phone OTP sign-in or phone number linking |
+| Event                              | Type         | Trigger                                                        | Use case                                                                  |
+| ---------------------------------- | ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `send.otp`                         | Blocking     | OTP code needs delivery                                        | Custom OTP delivery via SMS or email service                              |
+| `send.magic_link`                  | Blocking     | Magic link needs delivery                                      | Custom link delivery via any channel                                      |
+| `user.before_create`               | Blocking     | User attempts to sign up (before database write)               | Signup validation, allowlists, user data enrichment                       |
+| `user.created`                     | Non-blocking | User created in the database                                   | Sync to CRM, analytics, post-signup workflows                             |
+| `phone_number.verified`            | Non-blocking | User successfully verified a phone number                      | Post-verification workflows for phone OTP sign-in or phone number linking |
+| `organization.invitation.created`  | Non-blocking | An organization invitation is created                          | Custom invitation emails, audit logging, sync with external systems       |
+| `organization.invitation.accepted` | Non-blocking | A user accepts an organization invitation and becomes a member | Provision resources, update permissions, post-acceptance workflows        |
 
 **Blocking** events pause the auth flow until your server responds (or the timeout expires). **Non-blocking** events are fire-and-forget; failures do not affect the user.
 
@@ -15719,12 +15726,12 @@ GET /projects/{project_id}/branches/{branch_id}/auth/webhooks
 
 Both endpoints use the following fields:
 
-| Field             | Type               | Description                                                                                                                                                                                   |
-| ----------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `enabled`         | boolean (required) | Enable or disable webhook delivery                                                                                                                                                            |
-| `webhook_url`     | string             | HTTPS endpoint to receive webhook POST requests                                                                                                                                               |
-| `enabled_events`  | string\[]          | Event types to subscribe to: `send.otp`, `send.magic_link`, `user.before_create`, `user.created`, `phone_number.verified`                                                                     |
-| `timeout_seconds` | integer (1-10)     | Per-attempt timeout in seconds. Default: 5. Total delivery time across all attempts is capped at 15 seconds. See [Retry behavior](https://neon.com/docs/auth/guides/webhooks#retry-behavior). |
+| Field             | Type               | Description                                                                                                                                                                                      |
+| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `enabled`         | boolean (required) | Enable or disable webhook delivery                                                                                                                                                               |
+| `webhook_url`     | string             | HTTPS endpoint to receive webhook POST requests                                                                                                                                                  |
+| `enabled_events`  | string\[]          | Event types to subscribe to: `send.otp`, `send.magic_link`, `user.before_create`, `user.created`, `phone_number.verified`, `organization.invitation.created`, `organization.invitation.accepted` |
+| `timeout_seconds` | integer (1-10)     | Per-attempt timeout in seconds. Default: 5. Total delivery time across all attempts is capped at 15 seconds. See [Retry behavior](https://neon.com/docs/auth/guides/webhooks#retry-behavior).    |
 
 ### Webhook URL requirements
 
@@ -15751,7 +15758,7 @@ curl -X PUT "https://console.neon.tech/api/v2/projects/{project_id}/branches/{br
   -d '{
     "enabled": true,
     "webhook_url": "https://your-app.com/webhooks/neon-auth",
-    "enabled_events": ["send.otp", "send.magic_link", "user.before_create", "user.created", "phone_number.verified"],
+    "enabled_events": ["send.otp", "send.magic_link", "user.before_create", "user.created", "phone_number.verified", "organization.invitation.created", "organization.invitation.accepted"],
     "timeout_seconds": 5
   }'
 ```
@@ -15774,7 +15781,9 @@ Both endpoints return the configuration in the same format:
     "send.magic_link",
     "user.before_create",
     "user.created",
-    "phone_number.verified"
+    "phone_number.verified",
+    "organization.invitation.created",
+    "organization.invitation.accepted"
   ],
   "timeout_seconds": 5
 }
@@ -15873,6 +15882,38 @@ Fires non-blocking after a user successfully verifies a phone number via the [Ph
 | `is_phone_update` | boolean | Reserved for future use; currently always `false`                                 |
 | `ip_address`      | string  | Requester's IP address                                                            |
 | `user_agent`      | string  | Requester's user agent                                                            |
+
+### `organization.invitation.created` event data
+
+Fires non-blocking when an organization invitation is created, via the [Organization plugin](https://neon.com/docs/auth/guides/plugins/organization).
+
+The top-level `user` object contains the **inviter**, not the invitee. Because the inviter isn't the subject of the event, this object is limited to `id`, `name`, and `email` rather than the full user allowlist described above. The same reduced object is repeated at `event_data.inviter` for convenience. The invitee's email is available in `event_data.invitee_email`.
+
+| Field               | Type         | Description                                                   |
+| ------------------- | ------------ | ------------------------------------------------------------- |
+| `invitation_id`     | string       | Unique ID of the invitation                                   |
+| `organization_id`   | string       | ID of the organization the invitation is for                  |
+| `organization_name` | string       | Name of the organization                                      |
+| `organization_slug` | string       | Slug of the organization                                      |
+| `invitee_email`     | string       | Email address of the invited user                             |
+| `role`              | string       | Role assigned to the invitee                                  |
+| `expires_at`        | ISO datetime | Invitation expiry time                                        |
+| `inviter`           | object       | `id`, `name`, and `email` of the user who sent the invitation |
+| `invitee`           | object       | `email` of the invited user                                   |
+
+### `organization.invitation.accepted` event data
+
+Fires non-blocking after a user accepts an organization invitation and becomes a member, via the [Organization plugin](https://neon.com/docs/auth/guides/plugins/organization). The `user` object contains the full user context for the person who accepted the invitation. `event_data.invitee` repeats the same person as a reduced `id`, `name`, `email` object.
+
+| Field               | Type   | Description                                                       |
+| ------------------- | ------ | ----------------------------------------------------------------- |
+| `invitation_id`     | string | Unique ID of the invitation                                       |
+| `organization_id`   | string | ID of the organization the user joined                            |
+| `organization_name` | string | Name of the organization                                          |
+| `organization_slug` | string | Slug of the organization                                          |
+| `role`              | string | Role assigned to the new member                                   |
+| `member_id`         | string | ID of the new organization membership record                      |
+| `invitee`           | object | `id`, `name`, and `email` of the user who accepted the invitation |
 
 ## Signature verification
 
@@ -20190,7 +20231,7 @@ neon branches list --project-id solitary-leaf-288182
 └────────────────────────┴──────────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
-Branch names include text labels that indicate status: `[default]` marks the project's default branch, `[protected]` marks a protected branch, and `[current]` marks the branch pinned in your local `.neon` context file.
+Branch names include text labels that indicate status: `[default]` marks the project's default branch, `[protected]` marks a protected branch, `[anon]` marks an anonymized branch, and `[current]` marks the branch pinned in your local `.neon` context file.
 
 List branches with `--output json`, which returns more information than the `table` format:
 
@@ -89006,6 +89047,8 @@ To configure Neon Private Networking, perform the following steps:
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-04bac3120b20929cd`
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-05554c35009a5eccb`
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-05a252e6836f01cfd`
+     - `com.amazonaws.vpce.eu-central-1.vpce-svc-05a5b03b56954593a`
+     - `com.amazonaws.vpce.eu-central-1.vpce-svc-0fef417ecf84ed325`
    - **eu-west-2**: Create entries, one for each of the following:
      - `com.amazonaws.vpce.eu-west-2.vpce-svc-0375428488d22c05b`
      - `com.amazonaws.vpce.eu-west-2.vpce-svc-0c6fedbe99fced2cd`
@@ -111090,7 +111133,7 @@ If you are unsure of your project's region, see [Check which region your project
 | `aws-us-east-1`      | 100.26.142.14, 100.30.82.73, 100.51.56.234, 13.219.161.141, 18.211.255.174, 18.215.104.21, 23.23.0.232, 3.213.105.99, 3.220.225.247, 3.222.32.110, 3.93.203.54, 32.193.167.21, 34.199.194.48, 34.202.217.219, 34.224.137.41, 34.233.170.231, 34.235.208.71, 34.239.66.10, 35.168.244.148, 44.195.6.75, 44.206.76.236, 44.209.63.35, 44.212.197.226, 52.203.31.78, 52.205.172.123, 52.205.179.214, 52.4.26.44, 52.6.163.215, 52.70.189.141, 52.73.235.120, 54.156.66.192, 54.160.39.37, 54.173.116.247, 54.197.227.141, 54.205.208.153, 54.86.178.17, 54.88.155.118, 98.88.203.121, 98.88.212.99 |
 | `aws-us-east-2`      | 13.58.218.179, 16.58.110.124, 16.58.110.255, 16.58.110.55, 16.59.254.197, 16.59.67.63, 18.116.233.216, 18.117.23.33, 18.117.39.4, 18.118.172.16, 18.119.21.3, 18.217.181.229, 18.218.224.116, 18.220.57.29, 18.224.238.162, 3.128.125.142, 3.128.6.252, 3.129.145.179, 3.132.126.158, 3.133.42.168, 3.139.195.115, 3.139.7.20, 3.143.189.83, 3.150.57.42, 3.151.209.139, 3.151.57.14, 3.16.227.37, 52.14.237.223, 52.15.124.181, 52.15.165.218, 52.15.50.22                                                                                                                                     |
 | `aws-us-west-2`      | 34.213.87.149, 35.164.221.218, 35.83.202.11, 44.235.241.217, 44.236.56.140, 52.32.22.241, 52.37.48.254, 52.40.99.9, 54.186.210.201, 54.213.57.47                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `aws-eu-central-1`   | 18.156.24.144, 18.158.63.175, 18.194.181.241, 18.198.137.195, 3.123.76.138, 3.125.234.79, 3.125.57.42, 3.66.63.165, 52.58.17.95, 54.93.82.216, 63.181.53.159, 63.184.85.228                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `aws-eu-central-1`   | 18.156.24.144, 18.157.202.178, 18.158.63.175, 18.184.82.97, 18.192.200.167, 18.194.181.241, 18.198.137.195, 3.123.76.138, 3.124.82.159, 3.125.214.237, 3.125.234.79, 3.125.57.42, 3.126.104.76, 3.127.13.64, 3.66.63.165, 3.74.218.49, 3.79.211.200, 52.58.17.95, 54.93.82.216, 63.176.236.186, 63.181.212.169, 63.181.53.159, 63.182.111.227, 63.184.85.228                                                                                                                                                                                                                                    |
 | `aws-eu-west-2`      | 16.60.68.174, 18.133.205.39, 18.134.194.79, 3.10.42.8, 35.178.12.220, 52.56.191.86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `aws-ap-southeast-1` | 13.251.199.154, 18.142.42.169, 3.1.149.186, 3.1.239.32, 47.131.90.115, 52.76.51.78, 54.254.50.26, 54.254.92.70, 54.255.161.23                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `aws-ap-southeast-2` | 13.237.134.148, 13.55.152.144, 54.153.185.87                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |

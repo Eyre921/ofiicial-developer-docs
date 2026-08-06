@@ -65,6 +65,8 @@ for choice in completion.choices:
 
 You can control the reasoning token length using either the `reasoning_effort` parameter or the Anthropic-compatible `thinking` parameter.
 
+Coming from NVIDIA NIM or vLLM? Fields like `chat_template_kwargs.enable_thinking` are mapped onto `reasoning_effort` automatically. See [NIM compatibility](/tools-sdks/nim-compatibility).
+
 #### Using `reasoning_effort`
 
 The [`reasoning_effort`](/api-reference/post-chatcompletions) parameter accepts string values like `"low"`, `"medium"`, or `"high"`:

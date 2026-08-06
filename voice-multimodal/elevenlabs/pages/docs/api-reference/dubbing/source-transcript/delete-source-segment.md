@@ -1,18 +1,18 @@
 ---
-title: "Delete dubbing"
-source: https://elevenlabs.io/docs/api-reference/dubbing/delete.md
-path: docs/api-reference/dubbing/delete
+title: "Delete source segment"
+source: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment.md
+path: docs/api-reference/dubbing/source-transcript/delete-source-segment
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Delete dubbing
+# Delete source segment
 
-DELETE https://api.elevenlabs.io/v1/dubbing/{dubbing_id}
+DELETE https://api.elevenlabs.io/v1/dubbing/project/{project_id}/transcript/segment/{segment_id}
 
-Deletes a dubbing project.
+Enterprise only. Remove a source segment from the transcript.
 
-Reference: https://elevenlabs.io/docs/api-reference/dubbing/delete
+Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment
 
 ## OpenAPI Specification
 
@@ -22,17 +22,23 @@ info:
   title: api
   version: 1.0.0
 paths:
-  /v1/dubbing/{dubbing_id}:
+  /v1/dubbing/project/{project_id}/transcript/segment/{segment_id}:
     delete:
-      operationId: delete
-      summary: Delete dubbing
-      description: Deletes a dubbing project.
+      operationId: delete_segment
+      summary: Delete Dubbing Transcript Segment
+      description: Enterprise only. Remove a source segment from the transcript.
       tags:
-        - dubbing
+        - transcript
       parameters:
-        - name: dubbing_id
+        - name: project_id
           in: path
-          description: ID of the dubbing project.
+          description: Identifier of the dubbing project.
+          required: true
+          schema:
+            type: string
+        - name: segment_id
+          in: path
+          description: Identifier of the segment to remove.
           required: true
           schema:
             type: string
@@ -47,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteDubbingResponseModel'
+                $ref: '#/components/schemas/DubbingTranscriptRevisionResponse'
         '422':
           description: Validation Error
           content:
@@ -67,18 +73,18 @@ servers:
     description: Production Singapore
 components:
   schemas:
-    DeleteDubbingResponseModel:
+    DubbingTranscriptRevisionResponse:
       type: object
       properties:
-        status:
-          type: string
-          description: >-
-            The status of the dubbing project. If the request was successful,
-            the status will be 'ok'. Otherwise an error message with status 500
-            will be returned.
+        revision:
+          type: integer
+          description: The project's source-transcript revision after this edit.
       required:
-        - status
-      title: DeleteDubbingResponseModel
+        - revision
+      description: >-
+        The new revision after a source edit that returns no segment (e.g. a
+        delete).
+      title: DubbingTranscriptRevisionResponse
     ValidationErrorLocItems:
       oneOf:
         - type: string
@@ -119,7 +125,7 @@ components:
 
 ```json
 {
-  "status": "ok"
+  "revision": 6
 }
 ```
 
@@ -130,7 +136,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.delete("dubbing_id");
+    await client.dubbing.project.transcript.deleteSegment("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "0199a3f0-1c2d-7abc-8def-0123456789ab");
 }
 main();
 
@@ -141,8 +147,9 @@ from elevenlabs import ElevenLabs
 
 client = ElevenLabs()
 
-client.dubbing.delete(
-    dubbing_id="dubbing_id",
+client.dubbing.project.transcript.delete_segment(
+    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
+    segment_id="0199a3f0-1c2d-7abc-8def-0123456789ab",
 )
 
 ```
@@ -158,7 +165,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/dubbing/dubbing_id"
+	url := "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab"
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 
@@ -177,7 +184,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/dubbing/dubbing_id")
+url = URI("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -192,7 +199,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/dubbing/dubbing_id")
+HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab")
   .asString();
 ```
 
@@ -202,7 +209,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/dubbing/dubbing_id');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab');
 
 echo $response->getBody();
 ```
@@ -210,7 +217,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/dubbing_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab");
 var request = new RestRequest(Method.DELETE);
 IRestResponse response = client.Execute(request);
 ```
@@ -218,7 +225,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/dubbing_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"

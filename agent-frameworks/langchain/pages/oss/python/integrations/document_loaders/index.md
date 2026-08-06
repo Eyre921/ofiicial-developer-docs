@@ -19,8 +19,8 @@ All document loaders implement the [`BaseLoader`](https://reference.langchain.co
 
 Each document loader may define its own parameters, but they share a common API:
 
-* `load()` – Loads all documents at once.
-* `lazy_load()` – Streams documents lazily, useful for large datasets.
+* `load()`: Loads all documents at once.
+* `lazy_load()`: Streams documents lazily, useful for large datasets.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_docling.loader import DoclingLoader
@@ -43,9 +43,10 @@ for document in loader.lazy_load():
 
 The below document loaders allow you to load data from commonly used productivity tools.
 
-| Document Loader                                                  | API reference                                                            |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [AgentMail](https://github.com/agentmail-to/langchain-agentmail) | [`AgentMailLoader`](https://github.com/agentmail-to/langchain-agentmail) |
+| Document Loader                                                                | API reference                                                                   |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| [AgentMail](https://github.com/agentmail-to/langchain-agentmail)               | [`AgentMailLoader`](https://github.com/agentmail-to/langchain-agentmail)        |
+| [Google Classroom](/oss/python/integrations/document_loaders/google_classroom) | [`GoogleClassroomLoader`](https://pypi.org/project/langchain-google-classroom/) |
 
 ### Webpages
 
@@ -56,6 +57,7 @@ The below document loaders allow you to load webpages.
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) | Uses Unstructured to load and parse web pages                                                                        | Package     |
 | [Apify Dataset](https://docs.apify.com/platform/storage/dataset)            | Load documents from Apify datasets                                                                                   | API         |
 | [Docling](/oss/python/integrations/document_loaders/docling)                | Uses Docling to load and parse web pages                                                                             | Package     |
+| [Firecrawl](https://docs.firecrawl.dev)                                     | Turns websites into clean, LLM-ready data via scrape/crawl/map/extract/search                                        | API         |
 | [Hyperbrowser](https://docs.hyperbrowser.ai)                                | Platform for running and scaling headless browsers, can be used to scrape/crawl any site                             | API         |
 | [OpeddFeedLoader](https://opedd.com/for-ai-agents)                          | Load a licensed Opedd content catalog as Documents with licensing provenance                                         | API         |
 | [ProxyHatLoader](https://docs.proxyhat.com)                                 | Load web pages through ProxyHat residential proxies as Documents                                                     | API         |
@@ -134,6 +136,7 @@ The below document loaders allow you to load data from common data formats.
   | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents)                                                         | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span>                    |
   | [`SpidraLoader`](https://docs.spidra.io)                                                                     | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span>                   |
   | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis)         | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
+  | [`ReplyLayerLoader`](https://replylayer.ai/docs/guides/langchain)                                            | <span><a href="https://pypi.org/project/langchain-replylayer/">  <img alt="Downloads per month" /></a></span>               |
   | [`HyperbrowserLoader`](https://www.hyperbrowser.ai/docs/home)                                                | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>             |
   | [`Google bigtable`](/oss/python/integrations/document_loaders/google_bigtable)                               | <span><a href="https://pypi.org/project/langchain-google-bigtable/">  <img alt="Downloads per month" /></a></span>          |
   | [`CrwLoader`](https://fastcrw.com)                                                                           | <span><a href="https://pypi.org/project/langchain-crw/">  <img alt="Downloads per month" /></a></span>                      |
@@ -142,17 +145,20 @@ The below document loaders allow you to load data from common data formats.
   | [`langchain_box`](https://developer.box.com/)                                                                | <span><a href="https://pypi.org/project/langchain-box/">  <img alt="Downloads per month" /></a></span>                      |
   | [`CVFileLoader`](https://cvfile.org)                                                                         | <span><a href="https://pypi.org/project/langchain-cvfile/">  <img alt="Downloads per month" /></a></span>                   |
   | [`SecureLangChainLoader`](https://github.com/arsbr/Veritensor)                                               | <span><a href="https://pypi.org/project/veritensor/">  <img alt="Downloads per month" /></a></span>                         |
+  | [`Google Classroom`](/oss/python/integrations/document_loaders/google_classroom)                             | <span><a href="https://pypi.org/project/langchain-google-classroom/">  <img alt="Downloads per month" /></a></span>         |
   | [`Google cloud SQL for mysql`](/oss/python/integrations/document_loaders/google_cloud_sql_mysql)             | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/">  <img alt="Downloads per month" /></a></span>   |
   | [`AgentQLLoader`](https://docs.agentql.com/home)                                                             | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span>                  |
   | [`Kinetica document loader`](https://github.com/kineticadb/langchain-kinetica)                               | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Undatasio`](https://undatas.io)                                                                            | <span><a href="https://pypi.org/project/langchain-undatasio/">  <img alt="Downloads per month" /></a></span>                |
   | [`Google firestore in datastore mode`](/oss/python/integrations/document_loaders/google_datastore)           | <span><a href="https://pypi.org/project/langchain-google-datastore/">  <img alt="Downloads per month" /></a></span>         |
+  | [`FirecrawlLoader`](https://docs.firecrawl.dev)                                                              | <span><a href="https://pypi.org/project/langchain-firecrawl/">  <img alt="Downloads per month" /></a></span>                |
   | [`PdfmuseLoader`](https://github.com/casperkwok/pdfmuse)                                                     | <span><a href="https://pypi.org/project/langchain-pdfmuse/">  <img alt="Downloads per month" /></a></span>                  |
   | [`PlasmateSOMLLoader`](https://docs.plasmate.app/integration-langchain)                                      | <span><a href="https://pypi.org/project/langchain-plasmate/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Soniox`](https://soniox.com/docs/stt/concepts/supported-languages)                                         | <span><a href="https://pypi.org/project/langchain-soniox/">  <img alt="Downloads per month" /></a></span>                   |
   | [`AirbyteLoader`](https://docs.airbyte.com/integrations/)                                                    | <span><a href="https://pypi.org/project/langchain-airbyte/">  <img alt="Downloads per month" /></a></span>                  |
   | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql)        | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span>   |
   | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail)                                           | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>                |
+  | [`AnakinLoader`](https://anakin.io/docs/documentation)                                                       | <span><a href="https://pypi.org/project/langchain-anakin/">  <img alt="Downloads per month" /></a></span>                   |
   | [`OxidizePdfLoader`](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)                | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/">  <img alt="Downloads per month" /></a></span>              |
   | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/)    | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span>          |
   | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale)                           | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span>           |

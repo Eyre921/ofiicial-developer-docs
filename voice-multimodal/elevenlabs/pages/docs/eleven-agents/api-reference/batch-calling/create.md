@@ -206,6 +206,7 @@ components:
         - gemini-3.1-flash-lite-preview
         - gemini-3.1-flash-lite
         - gemini-3.5-flash
+        - gemini-3.5-flash-lite
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8
@@ -267,7 +268,6 @@ components:
         - gpt-3.5-turbo-1106
         - watt-tool-8b
         - watt-tool-70b
-      default: gemini-2.5-flash
       title: Llm
     type_:KnowledgeBaseDocumentType:
       type: string
@@ -386,6 +386,7 @@ components:
         - twilio
         - exotel
         - genesys
+        - audiocodes
         - swift_sdk
         - whatsapp
         - twilio_sms
@@ -609,8 +610,8 @@ components:
 
 ```json
 {
-  "call_name": "Customer Satisfaction Survey",
-  "agent_id": "agent_987654321",
+  "call_name": "call_name",
+  "agent_id": "agent_id",
   "recipients": [
     {}
   ]
@@ -621,34 +622,34 @@ components:
 
 ```json
 {
-  "id": "batchcall_1234567890abcdef",
-  "name": "Customer Satisfaction Survey",
-  "agent_id": "agent_987654321",
-  "created_at_unix": 1711929600,
-  "scheduled_time_unix": 1712016000,
-  "total_calls_dispatched": 150,
-  "total_calls_scheduled": 200,
-  "total_calls_finished": 140,
-  "last_updated_at_unix": 1712023200,
+  "id": "id",
+  "name": "name",
+  "agent_id": "agent_id",
+  "created_at_unix": 1,
+  "scheduled_time_unix": 1,
+  "total_calls_dispatched": 1,
+  "total_calls_scheduled": 1,
+  "total_calls_finished": 1,
+  "last_updated_at_unix": 1,
   "status": "pending",
-  "retry_count": 0,
+  "retry_count": 1,
   "telephony_call_config": {
-    "ringing_timeout_secs": 60,
+    "ringing_timeout_secs": 1,
     "twilio_call_recording_enabled": true
   },
-  "agent_name": "Support Agent Alpha",
-  "phone_number_id": "phone_abc123xyz789",
+  "agent_name": "agent_name",
+  "phone_number_id": "phone_number_id",
   "phone_provider": "twilio",
   "whatsapp_params": {
-    "whatsapp_call_permission_request_template_name": "permission_request_template_01",
-    "whatsapp_call_permission_request_template_language_code": "en_US",
-    "whatsapp_phone_number_id": "wa_phone_456def789abc"
+    "whatsapp_call_permission_request_template_name": "whatsapp_call_permission_request_template_name",
+    "whatsapp_call_permission_request_template_language_code": "whatsapp_call_permission_request_template_language_code",
+    "whatsapp_phone_number_id": "whatsapp_phone_number_id"
   },
-  "branch_id": "branch_nyc_001",
-  "environment": "production",
-  "timezone": "America/New_York",
-  "target_concurrency_limit": 50,
-  "branch_name": "New York City Branch"
+  "branch_id": "branch_id",
+  "environment": "environment",
+  "timezone": "timezone",
+  "target_concurrency_limit": 1,
+  "branch_name": "branch_name"
 }
 ```
 
@@ -660,8 +661,8 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.batchCalls.create({
-        callName: "Customer Satisfaction Survey",
-        agentId: "agent_987654321",
+        callName: "call_name",
+        agentId: "agent_id",
         recipients: [
             {},
         ],
@@ -677,8 +678,8 @@ from elevenlabs import ElevenLabs, OutboundCallRecipient
 client = ElevenLabs()
 
 client.conversational_ai.batch_calls.create(
-    call_name="Customer Satisfaction Survey",
-    agent_id="agent_987654321",
+    call_name="call_name",
+    agent_id="agent_id",
     recipients=[
         OutboundCallRecipient()
     ],
@@ -700,7 +701,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/submit"
 
-	payload := strings.NewReader("{\n  \"call_name\": \"Customer Satisfaction Survey\",\n  \"agent_id\": \"agent_987654321\",\n  \"recipients\": [\n    {}\n  ]\n}")
+	payload := strings.NewReader("{\n  \"call_name\": \"call_name\",\n  \"agent_id\": \"agent_id\",\n  \"recipients\": [\n    {}\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -728,7 +729,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"call_name\": \"Customer Satisfaction Survey\",\n  \"agent_id\": \"agent_987654321\",\n  \"recipients\": [\n    {}\n  ]\n}"
+request.body = "{\n  \"call_name\": \"call_name\",\n  \"agent_id\": \"agent_id\",\n  \"recipients\": [\n    {}\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -740,7 +741,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/batch-calling/submit")
   .header("Content-Type", "application/json")
-  .body("{\n  \"call_name\": \"Customer Satisfaction Survey\",\n  \"agent_id\": \"agent_987654321\",\n  \"recipients\": [\n    {}\n  ]\n}")
+  .body("{\n  \"call_name\": \"call_name\",\n  \"agent_id\": \"agent_id\",\n  \"recipients\": [\n    {}\n  ]\n}")
   .asString();
 ```
 
@@ -752,8 +753,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/submit', [
   'body' => '{
-  "call_name": "Customer Satisfaction Survey",
-  "agent_id": "agent_987654321",
+  "call_name": "call_name",
+  "agent_id": "agent_id",
   "recipients": [
     {}
   ]
@@ -772,7 +773,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/submit");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"call_name\": \"Customer Satisfaction Survey\",\n  \"agent_id\": \"agent_987654321\",\n  \"recipients\": [\n    {}\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"call_name\": \"call_name\",\n  \"agent_id\": \"agent_id\",\n  \"recipients\": [\n    {}\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -781,8 +782,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "call_name": "Customer Satisfaction Survey",
-  "agent_id": "agent_987654321",
+  "call_name": "call_name",
+  "agent_id": "agent_id",
   "recipients": [[]]
 ] as [String : Any]
 
