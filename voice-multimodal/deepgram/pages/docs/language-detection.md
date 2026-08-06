@@ -151,7 +151,7 @@ Language Detection is not currently supported for streaming. If you need to hand
 
 These models can transcribe speech containing multiple languages within the same audio stream without requiring explicit language detection, making them ideal for streaming applications where language detection functionality is needed.
 
-***
+---
 
 What's Next
 

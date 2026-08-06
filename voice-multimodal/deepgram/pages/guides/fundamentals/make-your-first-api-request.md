@@ -105,7 +105,7 @@ Continue on to one of our **Getting Started Guides** where you will find languag
 * [Audio Intelligence](/docs/audio-intelligence)
 * [Text Intelligence](/docs/text-intelligence)
 
-***
+---
 
 What's Next
 

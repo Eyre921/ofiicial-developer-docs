@@ -168,4 +168,4 @@ In this part of the response, notice:
 * the replacement word `Key` retains the same `start` value as the original word `kpis`.
 * the replacement words have different `end` values than the original word `kpis`. This is because we replaced one word with three words, so the total time was divided roughly evenly between the words. If we were replacing one word with one word, the start and end times would be the same.
 
-***
+---

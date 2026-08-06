@@ -19,7 +19,7 @@ This document explains:
 * How to identify and troubleshoot the issue (including AWS, GCP, and Azure specifics)
 * What changes to consider in your environment to eliminate these failures
 
-***
+---
 
 ## What is NAT Port Exhaustion?
 
@@ -56,7 +56,7 @@ Once the NAT runs out of usable (public IP, port) combinations to a destination:
 
 In other words: the symptoms appear as connectivity problems *with* Deepgram, but the failure point is actually within the NAT layer that sits in front of your workloads.
 
-***
+---
 
 ## Why Real-Time Speech Workloads Stress NAT
 
@@ -76,7 +76,7 @@ When combined with a small NAT IP/port pool or long TCP idle timers, this create
 
 That's the essence of NAT port exhaustion.
 
-***
+---
 
 ## How to Recognize NAT Port Exhaustion
 
@@ -110,7 +110,7 @@ On the network side (in pcaps and NAT logs), you may observe:
 
 These are exactly the patterns cloud NAT troubleshooting guides call out as red flags.
 
-***
+---
 
 ## Provider-Specific Considerations
 
@@ -167,7 +167,7 @@ For Cloud Run:
     * Adequate min-ports per instance
     * Appropriate TCP idle timers
 
-***
+---
 
 ### Microsoft Azure
 
@@ -209,7 +209,7 @@ On Azure, we recommend:
        * Balanced distribution across IPs
        * Healthy port utilization without rapid reuse for the same destination
 
-***
+---
 
 ### Amazon Web Services (AWS)
 
@@ -237,7 +237,7 @@ VPC Flow Logs record the actual packet flows and let you confirm that failing co
 * **Filter on the affected source IPs and destination port 443** around known failure timestamps. Look for SYN packets with no corresponding response, which is consistent with port allocation failure.
 * **Treat a missing flow log entry at a failure timestamp as corroborating, not contradictory.** A port allocation failure can drop the connection before it is ever logged, so the absence of a record at the exact moment of a reported failure is itself expected and consistent with exhaustion.
 
-***
+---
 
 ## Why This Typically Lives in the Customer Network, Not Deepgram
 
@@ -266,7 +266,7 @@ That said, we take these reports seriously. We can:
 
 But the core controls that eliminate NAT port exhaustion (ports, IP pool size, NAT timers, retry patterns) are within your control and located in your environment.
 
-***
+---
 
 ## Recommended Mitigations
 
@@ -316,7 +316,7 @@ We recommend the following for any environment using NAT to reach Deepgram:
   * Explicitly closes WebSocket/TCP connections when calls end or retries occur
   * Uses backoff strategies instead of immediate infinite retry loops
 
-***
+---
 
 ## How Deepgram Can Help
 

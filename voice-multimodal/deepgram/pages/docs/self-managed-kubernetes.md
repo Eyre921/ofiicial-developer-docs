@@ -269,7 +269,7 @@ You should receive a JSON response with the transcript and associated metadata. 
 
 Your Deepgram services are accessible within your cluster via the `deepgram-api-external` Service that was created by the Helm Chart.
 
-***
+---
 
 What’s Next
 

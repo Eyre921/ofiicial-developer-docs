@@ -9944,7 +9944,7 @@ In the next chapter, we'll learn how to build the app's first screen.
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: August 06, 2026
 title: Build a screen
 description: In this tutorial, learn how to use components such as React Native's Pressable and Expo Image to build a screen.
 ---
@@ -10164,7 +10164,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    paddingTop: 28,
   },
   footerContainer: {
     flex: 1 / 3,

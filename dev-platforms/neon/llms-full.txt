@@ -3,6 +3,234 @@
 > Neon is the backend for apps and agents. Services include Neon Postgres, Neon Auth, Data API, Neon Functions, Object Storage, and AI Gateway. Every service is agent-ready: instant, branchable, and serverless. Neon Postgres includes autoscaling, instant restore, and scale-to-zero, and is fully compatible with any language, framework, or ORM that supports Postgres.
 > This file contains the full Neon documentation. For a table of contents, see https://neon.com/docs/llms.txt
 
+--- [Document source](https://neon.com/docs/ai-gateway/anthropic-messages.md) ---
+
+> Summary: The Anthropic Messages endpoint lets you use the Anthropic SDK with Neon AI Gateway by changing only the base URL. Supports streaming, prompt caching, and extended thinking on Claude models.
+
+# Anthropic Messages API
+
+Use the Anthropic SDK with Neon AI Gateway
+
+**Note: Beta**
+
+The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
+
+The Anthropic Messages endpoint exposes the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages) through Neon AI Gateway. Use it when you need extended thinking or prompt caching, which require the native Anthropic SDK. For standard completions, the [chat completions](https://neon.com/docs/ai-gateway/chat-completions) endpoint works with all Anthropic models and doesn't require the Anthropic SDK.
+
+**Base URL:** `https://<branch-host>/anthropic`
+
+**Note:** The Anthropic SDK appends `/v1/messages` to the base URL automatically. Set the base URL to `/anthropic` (without `/v1`).
+
+This endpoint is also reachable at the longer `/ai-gateway/anthropic/v1/messages` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+
+## Setup
+
+Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
+```
+
+## Supported models
+
+This endpoint accepts Anthropic models only. See the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models) for the full list. Supported models:
+
+- `claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`
+- `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`
+- `claude-sonnet-4-6`, `claude-sonnet-4-5`
+- `claude-haiku-4-5`
+
+Sending a non-Anthropic model ID returns `400 model "<model-id>" is not available on the anthropic_messages endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you need to call multiple providers from the same code.
+
+## Basic request
+
+**TypeScript (Anthropic SDK)**
+
+```typescript
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  authToken: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/anthropic`,
+});
+
+const message = await client.messages.create({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 1024,
+  messages: [{ role: 'user', content: 'What is Neon?' }],
+});
+
+console.log(message.content[0].text);
+```
+
+**Python (Anthropic SDK)**
+
+```python
+import anthropic
+import os
+
+client = anthropic.Anthropic(
+    auth_token=os.environ['NEON_AI_GATEWAY_TOKEN'],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/anthropic",
+)
+
+message = client.messages.create(
+    model='claude-sonnet-4-6',
+    max_tokens=1024,
+    messages=[{'role': 'user', 'content': 'What is Neon?'}],
+)
+
+print(message.content[0].text)
+```
+
+**cURL**
+
+```bash
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/anthropic/v1/messages" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "What is Neon?"}]
+  }'
+```
+
+## Streaming
+
+Streaming works the same as with the Anthropic SDK directly. Use `client.messages.stream()` or pass `"stream": true` in a cURL request. The only change from standard usage is `base_url`.
+
+## Prompt caching
+
+The gateway forwards the `cache_control` field to Anthropic unchanged. Prompt caching works exactly as described in the [Anthropic prompt caching docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching).
+
+**TypeScript (Anthropic SDK)**
+
+```typescript
+const message = await client.messages.create({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 1024,
+  system: [
+    { type: 'text', text: 'You are a helpful assistant.' },
+    {
+      type: 'text',
+      text: longDocumentContent,
+      cache_control: { type: 'ephemeral' },
+    },
+  ],
+  messages: [{ role: 'user', content: 'Summarize the key points.' }],
+});
+
+console.log(message.usage);
+// { input_tokens: 50, output_tokens: 200,
+//   cache_creation_input_tokens: 10000, cache_read_input_tokens: 0 }
+```
+
+**Python (Anthropic SDK)**
+
+```python
+message = client.messages.create(
+    model='claude-sonnet-4-6',
+    max_tokens=1024,
+    system=[
+        {'type': 'text', 'text': 'You are a helpful assistant.'},
+        {
+            'type': 'text',
+            'text': long_document_content,
+            'cache_control': {'type': 'ephemeral'},
+        },
+    ],
+    messages=[{'role': 'user', 'content': 'Summarize the key points.'}],
+)
+
+print(message.usage)
+# input_tokens=50, output_tokens=200,
+# cache_creation_input_tokens=10000, cache_read_input_tokens=0
+```
+
+## Extended thinking
+
+The gateway forwards the `thinking` parameter to Anthropic unchanged. Set `budget_tokens` to control how many tokens Claude can use for thinking. `max_tokens` must be greater than `budget_tokens`.
+
+**Important:**
+
+The Claude 5 models — `claude-opus-5`, `claude-sonnet-5`, and `claude-fable-5` — do not accept `thinking.type: "enabled"`. They return `400` with:
+
+```
+"thinking.type.enabled" is not supported for this model.
+Use "thinking.type.adaptive" and "output_config.effort" to control thinking.
+```
+
+Use `thinking: { type: 'adaptive' }` with `output_config: { effort: 'low' | 'medium' | 'high' | 'xhigh' | 'max' }` instead. `claude-fable-5` also rejects `thinking.type: "disabled"` — it always thinks adaptively.
+
+The Claude 4.x models accept the `enabled` + `budget_tokens` form shown below.
+
+**TypeScript (Anthropic SDK)**
+
+```typescript
+const message = await client.messages.create({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 16000,
+  thinking: {
+    type: 'enabled',
+    budget_tokens: 10000,
+  },
+  messages: [{ role: 'user', content: 'Design a database schema for a multi-tenant SaaS app.' }],
+});
+
+for (const block of message.content) {
+  if (block.type === 'thinking') {
+    console.log('Thinking:', block.thinking);
+  } else if (block.type === 'text') {
+    console.log(block.text);
+  }
+}
+```
+
+**Python (Anthropic SDK)**
+
+```python
+message = client.messages.create(
+    model='claude-sonnet-4-6',
+    max_tokens=16000,
+    thinking={
+        'type': 'enabled',
+        'budget_tokens': 10000,
+    },
+    messages=[{'role': 'user', 'content': 'Design a database schema for a multi-tenant SaaS app.'}],
+)
+
+for block in message.content:
+    if block.type == 'thinking':
+        print('Thinking:', block.thinking)
+    elif block.type == 'text':
+        print(block.text)
+```
+
+## Forwarded headers
+
+The gateway forwards these request headers to the upstream provider:
+`Accept`, `Anthropic-Beta`, `Anthropic-Version`, `Content-Type`, `User-Agent`.
+
+All other headers are stripped. The `Authorization` header is replaced with the workspace credential before forwarding. Your `NEON_AI_GATEWAY_TOKEN` is never sent to Anthropic directly.
+
+## Error handling
+
+| Status            | Message                                                                  | Cause                                     |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------- |
+| `400 Bad Request` | `unknown model "<model-id>"`                                             | Model ID not in the catalog               |
+| `400 Bad Request` | `model "<model-id>" is not available on the anthropic_messages endpoint` | Non-Anthropic model sent to this endpoint |
+
+For authentication, quota, and upstream errors, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
+
+## Next steps
+
+- [Models](https://neon.com/docs/ai-gateway/models): full model catalog
+- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): use any model including Anthropic via the unified endpoint
+- [Authentication](https://neon.com/docs/ai-gateway/authentication): credential scopes and branch binding
+
 --- [Document source](https://neon.com/docs/ai-gateway/authentication.md) ---
 
 > Summary: AI Gateway uses Neon bearer credentials with the ai_gateway:invoke scope. Credentials are scoped to a branch and its descendants, so a credential created on your main branch works in all preview branches. No provider API keys are required.
@@ -110,7 +338,7 @@ NEON_AI_GATEWAY_BASE_URL + /openai/v1     → OpenAI Responses API
 NEON_AI_GATEWAY_BASE_URL + /v1/gemini     → Gemini generateContent API
 ```
 
-Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
+Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/anthropic/v1` for Anthropic Messages, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated, but the shorter paths are what the docs and SDKs use. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
 
 To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
 
@@ -424,11 +652,11 @@ The Gemini endpoint exposes the [Google Gemini API](https://ai.google.dev/api/ge
 
 **Supported actions:** `:generateContent` and `:streamGenerateContent`
 
-**Endpoint pattern:** `https://<branch-host>/ai-gateway/gemini/v1beta/models/<model>:<action>`
+**Endpoint pattern:** `https://<branch-host>/v1/gemini/v1beta/models/<model>:<action>`
 
 **Note:** Only `generateContent` and `streamGenerateContent` are supported. Requests to other actions (such as `countTokens`) return `404 unsupported gemini action`.
 
-This endpoint also has a shorter alias with no `/ai-gateway` prefix: `https://<branch-host>/v1/gemini/v1beta/models/<model>:<action>`. Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/gemini/v1beta/models/<model>:<action>` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
 
 ## Setup
 
@@ -464,7 +692,7 @@ import { GoogleGenAI } from '@google/genai';
 const client = new GoogleGenAI({
   apiKey: 'placeholder',
   httpOptions: {
-    baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini`,
+    baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1/gemini`,
     headers: {
       Authorization: `Bearer ${process.env.NEON_AI_GATEWAY_TOKEN}`,
     },
@@ -489,7 +717,7 @@ import os
 client = genai.Client(
     api_key='placeholder',
     http_options=types.HttpOptions(
-        base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/gemini",
+        base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1/gemini",
         headers={'Authorization': f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"},
     ),
 )
@@ -506,7 +734,7 @@ print(response.text)
 
 ```bash
 curl -X POST \
-  "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent" \
+  "$NEON_AI_GATEWAY_BASE_URL/v1/gemini/v1beta/models/gemini-3-flash:generateContent" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -544,12 +772,12 @@ for chunk in client.models.generate_content_stream(
 The gateway uses the model ID and action directly in the URL path. The `google-genai` SDK constructs this automatically from the base URL and model parameter:
 
 ```
-base_url: https://<branch-host>/ai-gateway/gemini
+base_url: https://<branch-host>/v1/gemini
 model:    gemini-3-flash
 action:   generateContent or streamGenerateContent
 
-→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent
-→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
+→ https://<branch-host>/v1/gemini/v1beta/models/gemini-3-flash:generateContent
+→ https://<branch-host>/v1/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
 ```
 
 When calling the REST API directly, the model ID and action must appear in the path as shown above.
@@ -838,10 +1066,31 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 ### Text models
 
+#### Anthropic
+
+| Model                                                                                      | Model ID            | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                             | License     |
+| ------------------------------------------------------------------------------------------ | ------------------- | ---------------- | ------- | --------- | -------- | --------- | ------------------------------------- | ----------- |
+| [Claude Opus 5](https://neon.com/docs/ai-gateway/models/claude-opus-5.md)                  | `claude-opus-5`     | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Sonnet 5](https://neon.com/docs/ai-gateway/models/claude-sonnet-5.md)              | `claude-sonnet-5`   | text, image, pdf | 1M      | Yes       | $2       | $10       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Fable 5](https://neon.com/docs/ai-gateway/models/claude-fable-5.md)                | `claude-fable-5`    | text, image, pdf | 1M      | Yes       | $10      | $50       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Opus 4.8](https://neon.com/docs/ai-gateway/models/claude-opus-4-8.md)              | `claude-opus-4-8`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Opus 4.7](https://neon.com/docs/ai-gateway/models/claude-opus-4-7.md)              | `claude-opus-4-7`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Sonnet 4.6](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-6.md)          | `claude-sonnet-4-6` | text, image, pdf | 1M      | Yes       | $3       | $15       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Opus 4.6](https://neon.com/docs/ai-gateway/models/claude-opus-4-6.md)              | `claude-opus-4-6`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Opus 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-opus-4-5.md)     | `claude-opus-4-5`   | text, image, pdf | 200K    | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Haiku 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-haiku-4-5.md)   | `claude-haiku-4-5`  | text, image, pdf | 200K    | Yes       | $1       | $5        | chat/completions · anthropic/messages | Proprietary |
+| [Claude Sonnet 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-5.md) | `claude-sonnet-4-5` | text, image, pdf | 200K    | Yes       | $3       | $15       | chat/completions · anthropic/messages | Proprietary |
+| [Claude Opus 4.1 (latest)](https://neon.com/docs/ai-gateway/models/claude-opus-4-1.md)     | `claude-opus-4-1`   | text, image, pdf | 200K    | Yes       | $15      | $75       | chat/completions · anthropic/messages | Proprietary |
+
 #### OpenAI
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License      |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ------------ |
+| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $1       | $6        | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.5](https://neon.com/docs/ai-gateway/models/gpt-5-5.md)             | `gpt-5-5`       | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.5 Pro](https://neon.com/docs/ai-gateway/models/gpt-5-5-pro.md)     | `gpt-5-5-pro`   | text, image, pdf | 1.1M    | Yes       | —        | —         | openai/responses                    | Proprietary  |
 | [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.4 nano](https://neon.com/docs/ai-gateway/models/gpt-5-4-nano.md)   | `gpt-5-4-nano`  | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary  |
 | [GPT-5.4](https://neon.com/docs/ai-gateway/models/gpt-5-4.md)             | `gpt-5-4`       | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary  |
@@ -879,6 +1128,18 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 | [Qwen3.5 122B-A10B](https://neon.com/docs/ai-gateway/models/qwen35-122b-a10b.md)                      | `qwen35-122b-a10b`            | text   | 262K    | Yes       | $0.22    | $2.20     | chat/completions | Open weights |
 | [Qwen3-Next 80B-A3B Instruct](https://neon.com/docs/ai-gateway/models/qwen3-next-80b-a3b-instruct.md) | `qwen3-next-80b-a3b-instruct` | text   | 131K    | —         | $0.15    | $1.20     | chat/completions | Open weights |
 
+#### Zhipu AI
+
+| Model                                                         | Model ID  | Inputs | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
+| ------------------------------------------------------------- | --------- | ------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
+| [GLM-5.2](https://neon.com/docs/ai-gateway/models/glm-5-2.md) | `glm-5-2` | text   | 1M      | Yes       | $1.40    | $4.40     | chat/completions | Open weights |
+
+#### Thinking Machines
+
+| Model                                                         | Model ID  | Inputs             | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
+| ------------------------------------------------------------- | --------- | ------------------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
+| [Inkling](https://neon.com/docs/ai-gateway/models/inkling.md) | `inkling` | text, image, audio | 1M      | Yes       | —        | —         | chat/completions | Open weights |
+
 Select a linked model for code examples matched to its measured AI Gateway capabilities.
 
 ### Image models
@@ -889,6 +1150,11 @@ These models support image generation through the Responses API (base URL `/open
 
 | Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
 | ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
+| [GPT-5.6 Luna](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md)   | `gpt-5-6-luna`  | text, image, pdf | 1.1M    | Yes       | $1       | $6        | chat/completions · openai/responses | Proprietary |
+| [GPT-5.6 Sol](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md)     | `gpt-5-6-sol`   | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.6 Terra](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) | `gpt-5-6-terra` | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.5](https://neon.com/docs/ai-gateway/models/gpt-5-5.md)             | `gpt-5-5`       | text, image, pdf | 1.1M    | Yes       | $5       | $30       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.5 Pro](https://neon.com/docs/ai-gateway/models/gpt-5-5-pro.md)     | `gpt-5-5-pro`   | text, image, pdf | 1.1M    | Yes       | —        | —         | openai/responses                    | Proprietary |
 | [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary |
 | [GPT-5.4 nano](https://neon.com/docs/ai-gateway/models/gpt-5-4-nano.md)   | `gpt-5-4-nano`  | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary |
 | [GPT-5.4](https://neon.com/docs/ai-gateway/models/gpt-5-4.md)             | `gpt-5-4`       | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary |
@@ -929,13 +1195,14 @@ Most models work with the [Chat completions](https://neon.com/docs/ai-gateway/ch
 
 All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GATEWAY_BASE_URL`).
 
-| Provider                  | Recommended endpoint   | Notes                                                                                    |
-| ------------------------- | ---------------------- | ---------------------------------------------------------------------------------------- |
-| OpenAI (most models)      | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                    |
-| OpenAI (codex variants)   | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions              |
-| Google Gemini             | `/v1/chat/completions` | Use `/ai-gateway/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
-| Google Gemma 3 12B        | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                           |
-| Meta, Databricks, Alibaba | `/v1/chat/completions` | Chat completions only                                                                    |
+| Provider                                   | Recommended endpoint   | Notes                                                                                        |
+| ------------------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------- |
+| OpenAI (most models)                       | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                        |
+| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)    | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions                  |
+| Anthropic Claude                           | `/v1/chat/completions` | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching |
+| Google Gemini                              | `/v1/chat/completions` | Use `/v1/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK             |
+| Google Gemma 3 12B                         | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                               |
+| Meta, Alibaba, Zhipu AI, Thinking Machines | `/v1/chat/completions` | Chat completions only                                                                        |
 
 **Warning: Content shape varies by model**
 
@@ -958,6 +1225,7 @@ Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-g
 | ------------------------------------------------------- | ---------------------------------------------------------- |
 | `POST /v1/chat/completions`                             | `/ai-gateway/mlflow/v1/chat/completions`                   |
 | `POST /openai/v1/responses`                             | `/ai-gateway/openai/v1/responses`                          |
+| `POST /anthropic/v1/messages`                           | `/ai-gateway/anthropic/v1/messages`                        |
 | `POST /v1/gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
 
 ### List available models
@@ -996,6 +1264,1598 @@ Models are hosted by Databricks and served through Neon AI Gateway. You are resp
 | Google Gemini | [Google Cloud Acceptable Use Policy](https://cloud.google.com/terms/aup) · [Google Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) |
 | Google Gemma  | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · [Gemma Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy)                                          |
 | Meta          | Terms differ by Llama version. See the Notes column in the [Meta models table](https://neon.com/docs/ai-gateway/models#meta).                                                       |
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5.md) ---
+
+# Claude Fable 5
+
+## About
+
+Neon AI Gateway provides Claude Fable 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-fable-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("claude-fable-5"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-fable-5",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-fable-5
+
+## Provider
+
+Anthropic provides Claude Fable 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jun 2026
+
+## Input /M
+
+$10
+
+## Output /M
+
+$50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-haiku-4-5.md) ---
+
+# Claude Haiku 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Haiku 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-haiku-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-haiku-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-haiku-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-haiku-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-haiku-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-haiku-4-5
+
+## Provider
+
+Anthropic provides Claude Haiku 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Oct 2025
+
+## Input /M
+
+$1
+
+## Output /M
+
+$5
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-1.md) ---
+
+# Claude Opus 4.1 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.1 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-1"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-1",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-1",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-1",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-1",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-1
+
+## Provider
+
+Anthropic provides Claude Opus 4.1 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$15
+
+## Output /M
+
+$75
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-5.md) ---
+
+# Claude Opus 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-5
+
+## Provider
+
+Anthropic provides Claude Opus 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Nov 2025
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-6.md) ---
+
+# Claude Opus 4.6
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.6 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-6"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-6",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-6",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-6",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-6",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-6
+
+## Provider
+
+Anthropic provides Claude Opus 4.6. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-7.md) ---
+
+# Claude Opus 4.7
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.7 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-7"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-7",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-7",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-7",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-7",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-7
+
+## Provider
+
+Anthropic provides Claude Opus 4.7. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Apr 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-8.md) ---
+
+# Claude Opus 4.8
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.8 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-8"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-8",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-8",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-8",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-8",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-8
+
+## Provider
+
+Anthropic provides Claude Opus 4.8. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+May 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-5.md) ---
+
+# Claude Opus 5
+
+## About
+
+Neon AI Gateway provides Claude Opus 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("claude-opus-5"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-5",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-5
+
+## Provider
+
+Anthropic provides Claude Opus 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-5.md) ---
+
+# Claude Sonnet 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-sonnet-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-sonnet-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-sonnet-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-4-5
+
+## Provider
+
+Anthropic provides Claude Sonnet 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Sep 2025
+
+## Input /M
+
+$3
+
+## Output /M
+
+$15
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-6.md) ---
+
+# Claude Sonnet 4.6
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 4.6 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-4-6"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-sonnet-4-6",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-sonnet-4-6",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-4-6
+
+## Provider
+
+Anthropic provides Claude Sonnet 4.6. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$3
+
+## Output /M
+
+$15
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-5.md) ---
+
+# Claude Sonnet 5
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("claude-sonnet-5"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-5",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-5
+
+## Provider
+
+Anthropic provides Claude Sonnet 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jun 2026
+
+## Input /M
+
+$2
+
+## Output /M
+
+$10
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-1-flash-lite.md) ---
 
@@ -1055,7 +2915,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-1-flash-lite:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-1-flash-lite:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1167,7 +3027,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-1-pro:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-1-pro:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1279,7 +3139,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-5-flash:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-5-flash:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1391,7 +3251,7 @@ console.log(text);
 #### cURL
 
 ```bash
-curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent" \
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/gemini/v1beta/models/gemini-3-flash:generateContent" \
   -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1601,6 +3461,163 @@ $0.15
 ## Output /M
 
 $0.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/glm-5-2.md) ---
+
+# GLM-5.2
+
+## About
+
+Neon AI Gateway provides GLM-5.2 by Zhipu AI. The model supports text inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("glm-5-2"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/glm-5-2",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "glm-5-2",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="glm-5-2",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-5-2",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+glm-5-2
+
+## Provider
+
+Zhipu AI provides GLM-5.2. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+1M
+
+## Released
+
+Jun 2026
+
+## Input /M
+
+$1.40
+
+## Output /M
+
+$4.40
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-1.md) ---
 
@@ -3253,6 +5270,1382 @@ $2.50
 
 $15
 
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-5-pro.md) ---
+
+# GPT-5.5 Pro
+
+## About
+
+Neon AI Gateway provides GPT-5.5 Pro by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-5-pro"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gpt-5-5-pro"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const response = await client.responses.create({
+  model: "gpt-5-5-pro",
+  input: "Explain Serverless Postgres.",
+});
+console.log(response.output_text);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+response = client.responses.create(
+    model="gpt-5-5-pro",
+    input="Explain Serverless Postgres.",
+)
+print(response.output_text)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/openai/v1/responses" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-5-pro",
+    "input": "Explain Serverless Postgres."
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-5-pro"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-5-pro",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-5-pro",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-5-pro",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-5-pro
+
+## Provider
+
+OpenAI provides GPT-5.5 Pro. Access the model through the Neon AI Gateway using openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Apr 2026
+
+## Input /M
+
+—
+
+## Output /M
+
+—
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-5.md) ---
+
+# GPT-5.5
+
+## About
+
+Neon AI Gateway provides GPT-5.5 by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-5"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-5",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-5",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-5",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-5
+
+## Provider
+
+OpenAI provides GPT-5.5. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Apr 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$30
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-6-luna.md) ---
+
+# GPT-5.6 Luna
+
+## About
+
+Neon AI Gateway provides GPT-5.6 Luna by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-6-luna"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-6-luna",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-6-luna",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-6-luna",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-6-luna",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-6-luna"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-6-luna",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-6-luna",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-6-luna",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-6-luna
+
+## Provider
+
+OpenAI provides GPT-5.6 Luna. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+$1
+
+## Output /M
+
+$6
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-6-sol.md) ---
+
+# GPT-5.6 Sol
+
+## About
+
+Neon AI Gateway provides GPT-5.6 Sol by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-6-sol"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-6-sol",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-6-sol",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-6-sol",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-6-sol",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-6-sol"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-6-sol",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-6-sol",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-6-sol",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-6-sol
+
+## Provider
+
+OpenAI provides GPT-5.6 Sol. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$30
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-6-terra.md) ---
+
+# GPT-5.6 Terra
+
+## About
+
+Neon AI Gateway provides GPT-5.6 Terra by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-6-terra"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-6-terra",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-6-terra",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-6-terra",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-6-terra",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-6-terra"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-6-terra",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-6-terra",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-6-terra",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-6-terra
+
+## Provider
+
+OpenAI provides GPT-5.6 Terra. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+$2.50
+
+## Output /M
+
+$15
+
 --- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md) ---
 
 # GPT-5 Mini
@@ -4300,6 +7693,163 @@ $0.05
 
 $0.20
 
+--- [Document source](https://neon.com/docs/ai-gateway/models/inkling.md) ---
+
+# Inkling
+
+## About
+
+Neon AI Gateway provides Inkling by Thinking Machines. The model supports text, image, audio inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("inkling"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/inkling",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "inkling",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="inkling",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "inkling",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+inkling
+
+## Provider
+
+Thinking Machines provides Inkling. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text, image, audio
+
+## Context
+
+1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+—
+
+## Output /M
+
+—
+
 --- [Document source](https://neon.com/docs/ai-gateway/models/llama-4-maverick.md) ---
 
 # Llama 4 Maverick 17B Instruct
@@ -5076,6 +8626,11 @@ This endpoint accepts OpenAI models only:
 
 | Model ID        | Notes                  |
 | --------------- | ---------------------- |
+| `gpt-5-6-sol`   |                        |
+| `gpt-5-6-terra` |                        |
+| `gpt-5-6-luna`  |                        |
+| `gpt-5-5`       |                        |
+| `gpt-5-5-pro`   | Requires this endpoint |
 | `gpt-5-4`       |                        |
 | `gpt-5-4-mini`  |                        |
 | `gpt-5-4-nano`  |                        |

@@ -192,7 +192,7 @@ When the file is finished processing, you'll receive the following response:
 
 To learn more about when to use Deepgram's Diarization or Multichannel feature, see [When to Use the Multichannel and Diarization Features](/docs/multichannel-vs-diarization).
 
-***
+---
 
 What's Next
 

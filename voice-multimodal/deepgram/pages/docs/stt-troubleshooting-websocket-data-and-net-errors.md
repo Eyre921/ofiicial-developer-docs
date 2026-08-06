@@ -148,4 +148,4 @@ Below are the most common WebSocket Close frame status codes and their descripti
 * Unlike `NET-0001`, [KeepAlive](/docs/audio-keep-alive) messages *do* reset this timeout, so send periodic `KeepAlive` messages during expected gaps in audio.
 * Be sure to send a [Close Stream](/docs/close-stream) message when done instead of letting the stream time out.
 
-***
+---

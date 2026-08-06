@@ -373,7 +373,7 @@ Fallback providers do not need to use the same `provider.type`. You can mix prov
 }
 ```
 
-***
+---
 
 ## What's Next
 

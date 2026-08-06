@@ -272,6 +272,7 @@ Expert LoRA is available on these models:
 * Qwen3 MoE: `Qwen/Qwen3-30B-A3B-Base`, `Qwen/Qwen3-30B-A3B`, `Qwen/Qwen3-30B-A3B-Instruct-2507`, `Qwen/Qwen3-235B-A22B`, `Qwen/Qwen3-235B-A22B-Instruct-2507`, `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
 * Qwen3-Next: `Qwen/Qwen3-Next-80B-A3B-Instruct`, `Qwen/Qwen3-Next-80B-A3B-Thinking`.
 * GLM-4: `zai-org/GLM-4.6`, `zai-org/GLM-4.7`.
+* DeepSeek: `deepseek-ai/DeepSeek-V3.1`.
 
 Every expert-LoRA job produces a LoRA adapter served on top of the base model. Unlike a standard LoRA, an expert-LoRA adapter is never merged into a full set of weights, so deploy it as an adapter on any of the models above. See [adapter upload](/docs/dedicated-endpoints/adapter).
 

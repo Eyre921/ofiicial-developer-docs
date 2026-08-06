@@ -17897,6 +17897,70 @@ Or, declare the URL scheme manually in your `Info.plist` file.
   </plist>
 ```
 
+### Handling the incoming URL
+
+Once the OS opens your app via the redirect URL, pass that URL to `supabase.auth.handle(_:)` to complete the sign-in.
+
+#### SwiftUI
+
+Use the `onOpenURL` view modifier on your root view:
+
+```swift
+SomeView()
+  .onOpenURL { url in
+    supabase.auth.handle(url)
+  }
+```
+
+#### UIKit: App delegate
+
+Forward the URL from `application(_:open:options:)`, and from `didFinishLaunchingWithOptions` if the app was launched cold via the link:
+
+```swift
+func application(
+  _ application: UIApplication,
+  didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+) -> Bool {
+  if let url = launchOptions?[.url] as? URL {
+    supabase.auth.handle(url)
+  }
+
+  return true
+}
+
+func application(
+  _ app: UIApplication,
+  open url: URL,
+  options: [UIApplication.OpenURLOptionsKey: Any]
+) -> Bool {
+  supabase.auth.handle(url)
+  return true
+}
+```
+
+#### UIKit: Scene delegate
+
+Forward the URL from `SceneDelegate.swift`, handling both a cold launch (via `scene(_:willConnectTo:options:)`) and a URL received while the scene is already running (via `scene(_:openURLContexts:)`):
+
+```swift
+func scene(
+  _ scene: UIScene,
+  willConnectTo session: UISceneSession,
+  options connectionOptions: UIScene.ConnectionOptions
+) {
+  for context in connectionOptions.urlContexts {
+    supabase.auth.handle(context.url)
+  }
+}
+
+func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+  guard let url = URLContexts.first?.url else { return }
+  supabase.auth.handle(url)
+}
+```
+
+`handle(_:)` is a convenience wrapper that calls `session(from:)` and logs any error. See the [Auth API reference](https://supabase.com/docs/reference/swift/auth-api) for details, or call `session(from:)` directly if you need the returned `Session` or want control over error handling.
+
 ### Universal links
 
 For a better user experience, you can use **Universal Links** instead of custom URL schemes. Universal Links allow your app to open directly from web links without showing a browser redirect prompt.
@@ -61604,7 +61668,8 @@ struct Shift: Codable {
   let userId: Int
   let attendanceStatus: String?
 
-  let scans: [Scan]
+  let startScan: Scan
+  let endScan: Scan
 
   struct Scan: Codable {
     let id: Int
@@ -61622,6 +61687,8 @@ struct Shift: Codable {
     case id
     case userId = "user_id"
     case attendanceStatus = "attendance_status"
+    case startScan = "start_scan"
+    case endScan = "end_scan"
   }
 }
 
@@ -61635,11 +61702,11 @@ let shifts: [Shift] = try await supabase
         user_id,
         badge_scan_time
       ),
-     scans: scan_id_end (
+      end_scan:scans!scan_id_end (
         id,
         user_id,
         badge_scan_time
-     )
+      )
     """
   )
   .execute()

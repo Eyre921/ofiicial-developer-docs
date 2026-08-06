@@ -183,7 +183,7 @@ When backing up a Deepgram installation, you should back up all Infrastructure-a
 
 We highly recommend backing up your entire environment state, if possible. If you are using Docker/Podman, this can be done with a VM snapshot. If you are using Kubernetes, you may consider a cluster backup tool, such as [Velero](https://velero.io/).
 
-***
+---
 
 What’s Next
 

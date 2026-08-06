@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  Get started with your GitHub account.
+  <p>Get started with your GitHub account.</p>
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -24,7 +24,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
+  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
@@ -44,7 +44,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 
-  You can see a history of your contributions on your profile.
+  <p>You can see a history of your contributions on your profile.</p>
 
 ## Links
 

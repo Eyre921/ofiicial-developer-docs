@@ -84,4 +84,4 @@ Below is a comparison table summarizing the main differences between the two fea
 | Can specify a key in a key-value pair                     | ❌         | ✅              |
 | Can specify a value in a key-value pair                   | ✅         | ✅              |
 
-***
+---

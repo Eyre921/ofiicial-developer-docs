@@ -18,7 +18,7 @@ The Deepgram [Voice Agent API](/docs/voice-agent) integrates with Genesys Cloud 
 
 The Voice Agent API bundles speech-to-text, LLM reasoning, and text-to-speech into a single pipeline, delivering approximately 425 ms round-trip latency.
 
-***
+---
 
 ## How it works
 
@@ -28,7 +28,7 @@ The Voice Agent API bundles speech-to-text, LLM reasoning, and text-to-speech in
 4. The agent responds with synthesized voice
 5. The caller can interrupt naturally with barge-in support
 
-***
+---
 
 ## Before you begin
 
@@ -40,7 +40,7 @@ You will need:
 
 Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
 
-***
+---
 
 ## Step 1: Create an Audio Connector in Genesys
 
@@ -51,7 +51,7 @@ Before you can use Deepgram, you'll need to [create a Deepgram account](https://
 5. Add your Deepgram API key under **Credentials**
 6. Activate the integration
 
-***
+---
 
 ## Step 2: Add the connector to your Architect flow
 
@@ -62,7 +62,7 @@ Before you can use Deepgram, you'll need to [create a Deepgram account](https://
 
 This action hands the call to the Deepgram Voice Agent.
 
-***
+---
 
 ## Step 3: Configure your AI agent
 
@@ -107,13 +107,13 @@ To allow the Voice Agent to end the call, add an `end_conversation` function to 
 }
 ```
 
-***
+---
 
 ## Step 4: Set up middleware server (self-hosted only)
 
 If you use a self-hosted setup, deploy a middleware server to connect Genesys with the Deepgram Voice Agent. Contact your Deepgram account executive for access and setup instructions.
 
-***
+---
 
 ## Customization options
 
@@ -126,7 +126,7 @@ You can adjust your agent's behavior using these configuration fields:
 | Greeting              | `greeting`             |
 | Knowledge / abilities | `think.functions`      |
 
-***
+---
 
 ## Additional resources
 

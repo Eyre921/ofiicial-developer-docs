@@ -146,7 +146,7 @@ Within the [Deepgram Console](https://console.deepgram.com) you can view usage r
 | Lost    | The resolution for this request was never logged. You won't be charged for this request. | Contact [Support](/support) for assistance.                    |
 | Error   | This request had an error.                                                               | Retry the request.                                             |
 
-***
+---
 
 ## Retrieve Per-Request Pricing
 

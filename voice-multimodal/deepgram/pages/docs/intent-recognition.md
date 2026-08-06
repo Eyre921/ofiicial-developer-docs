@@ -101,7 +101,7 @@ The response object values for `intents` are:
 * `intent`: The name of the intent detected by the model. This will always be in the form of a verb.
 * `confidence_score`: a floating point from 0 to 1 representing the models confidence in this prediction.
 
-***
+---
 
 ### API Warning Response
 

@@ -93212,7 +93212,7 @@ channels:
 
       - **Stored agent.** Send `{ "agent_id": "<id>" }` as the only field in `session`
         to bind to a reusable agent created via the
-        [Agents REST API](/api-reference/voice-agent-api/create-agent). The stored
+        [Agents REST API](https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-agent). The stored
         `system_prompt`, `greeting`, `tools`, `input`, and `output` are applied
         server-side.
       - **Inline configuration.** Omit `agent_id` and send `system_prompt`, `greeting`,
@@ -93220,9 +93220,9 @@ channels:
         agents.
 
       The two modes are mutually exclusive. See
-      [Deploy your agent](/voice-agents/voice-agent-api/deploy) and
-      [Inline session configuration](/voice-agents/voice-agent-api/session-configuration)
-      for details, or jump to the [Voice Agent API overview](/voice-agents/voice-agent-api)
+      [Deploy your agent](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/deploy) and
+      [Inline session configuration](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/session-configuration)
+      for details, or jump to the [Voice Agent API overview](https://www.assemblyai.com/docs/voice-agents/voice-agent-api)
       for the full event flow and a runnable quickstart.
     servers:
       - $ref: "#/servers/production"
@@ -93232,9 +93232,9 @@ channels:
           Pass your API key as a Bearer token in the `Authorization` header on the
           WebSocket upgrade request. For browser apps (which can't set custom headers
           on WebSockets), generate a
-          [temporary token](/api-reference/voice-agent-api/generate-voice-agent-token)
+          [temporary token](https://www.assemblyai.com/docs/api-reference/voice-agent-api/generate-voice-agent-token)
           and pass it via the `token` query parameter instead. See
-          [Browser integration](/voice-agents/voice-agent-api/browser-integration).
+          [Browser integration](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/browser-integration).
         location: $message.header#/Authorization
         examples:
           - Bearer YOUR_ASSEMBLYAI_API_KEY
@@ -93242,7 +93242,7 @@ channels:
       token:
         description: >-
           Temporary authentication token for client-side connections. Generate one with
-          [`GET /v1/token`](/api-reference/voice-agent-api/generate-voice-agent-token)
+          [`GET /v1/token`](https://www.assemblyai.com/docs/api-reference/voice-agent-api/generate-voice-agent-token)
           on your server and pass it here so you don't expose your permanent API key in
           the browser. Each token is one-time use.
         location: $message.payload#/token
@@ -93301,7 +93301,7 @@ operations:
       - **Bind to a stored agent** by sending `{ "agent_id": "<id>" }` as the only field in
         `session`. The agent's stored `system_prompt`, `greeting`, `tools`, `input`, and
         `output` are loaded server-side. Create stored agents with
-        [`POST /v1/agents`](/api-reference/voice-agent-api/create-agent).
+        [`POST /v1/agents`](https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-agent).
       - **Configure inline** by sending any combination of `system_prompt`, `greeting`,
         `tools`, `input`, and `output` (omit `agent_id`).
 
@@ -93343,7 +93343,7 @@ operations:
       - $ref: "#/channels/voiceAgent/messages/inputAudio"
     description: |
       Stream a chunk of user audio to the agent. Only send `input.audio` after `session.ready`.
-      See [Audio format](/voice-agents/voice-agent-api/audio-format) for the expected
+      See [Audio format](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/audio-format) for the expected
       encoding (base64-encoded, mono). Supports `audio/pcm` (24 kHz), `audio/pcmu` (8 kHz), and `audio/pcma` (8 kHz).
 
   sendToolResult:
@@ -93355,7 +93355,7 @@ operations:
     description: |
       Return a tool result to the agent. Send this inside your `reply.done` handler — not
       immediately on `tool.call`. See
-      [Tool calling](/voice-agents/voice-agent-api/tools/overview).
+      [Tool calling](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview).
 
   sendReplyCreate:
     action: send
@@ -93367,7 +93367,7 @@ operations:
       Ask the agent to generate a reply right now, optionally with one-shot
       `instructions`. Primary use case: deliver status updates while a `hold`-mode
       tool call is in flight. See
-      [Tool calling — hold mode](/voice-agents/voice-agent-api/tools/overview#hold).
+      [Tool calling — hold mode](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview#hold).
 
   receiveSessionReady:
     action: receive
@@ -93453,7 +93453,7 @@ operations:
       - $ref: "#/channels/voiceAgent/messages/replyAudio"
     description: |
       A chunk of the agent's spoken response (base64 PCM16). Decode and play immediately.
-      See [Audio format](/voice-agents/voice-agent-api/audio-format#playing-output-audio)
+      See [Audio format](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/audio-format#playing-output-audio)
       for playback guidance.
 
   receiveTranscriptAgent:
@@ -93772,7 +93772,7 @@ components:
 
         - **Bind to a stored agent.** Send `agent_id` (and only `agent_id`) in your first
           `session.update` to load a reusable agent created via the
-          [Agents REST API](/api-reference/voice-agent-api/create-agent). The agent's
+          [Agents REST API](https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-agent). The agent's
           stored `system_prompt`, `greeting`, `tools`, `input`, and `output` are
           applied server-side.
         - **Configure inline.** Omit `agent_id` and send any combination of
@@ -93780,14 +93780,14 @@ components:
 
         `agent_id` is mutually exclusive with the inline fields — sending both in the
         same `session.update` is rejected. See
-        [Deploy your agent](/voice-agents/voice-agent-api/deploy) for details.
+        [Deploy your agent](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/deploy) for details.
       required: []
       properties:
         agent_id:
           type: string
           description: |
             ID of a stored agent (from
-            [`POST /v1/agents`](/api-reference/voice-agent-api/create-agent))
+            [`POST /v1/agents`](https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-agent))
             to bind this session to. When set, the agent's stored configuration is
             applied and you must not send `system_prompt`, `greeting`, `tools`,
             `input`, or `output` in the same `session.update`. Can only be set in
@@ -93811,7 +93811,7 @@ components:
           $ref: "#/components/schemas/SessionOutputConfig"
         tools:
           type: array
-          description: Tool definitions. See [Tool calling](/voice-agents/voice-agent-api/tools/overview).
+          description: Tool definitions. See [Tool calling](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview).
           items:
             $ref: "#/components/schemas/ToolDefinition"
 
@@ -93826,7 +93826,7 @@ components:
           type: array
           items:
             type: string
-          description: List of rare or domain-specific terms to boost in transcription (e.g. names, brands, jargon). See [Key terms](/voice-agents/voice-agent-api/session-configuration#key-terms).
+          description: List of rare or domain-specific terms to boost in transcription (e.g. names, brands, jargon). See [Key terms](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/session-configuration#key-terms).
         turn_detection:
           $ref: "#/components/schemas/TurnDetection"
 
@@ -93837,7 +93837,7 @@ components:
       properties:
         voice:
           type: string
-          description: Voice used for the agent's speech. See [Voices](/voice-agents/voice-agent-api/voices).
+          description: Voice used for the agent's speech. See [Voices](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/voices).
           default: anna
           examples:
             - anna
@@ -93853,7 +93853,7 @@ components:
 
     AudioFormat:
       type: object
-      description: Audio format configuration. The encoding determines the sample rate. See [Audio format](/voice-agents/voice-agent-api/audio-format).
+      description: Audio format configuration. The encoding determines the sample rate. See [Audio format](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/audio-format).
       required: []
       properties:
         encoding:
@@ -93908,7 +93908,7 @@ components:
             during the hold. When `tool.result` arrives, the agent gives a brief,
             direct delivery of the result. Use for long-running tools (transfers,
             escalations, async jobs). See
-            [Tool calling — execution modes](/voice-agents/voice-agent-api/tools/overview#execution-modes).
+            [Tool calling — execution modes](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview#execution-modes).
         timeout_seconds:
           type: number
           format: float
@@ -94030,7 +94030,7 @@ components:
             Optional one-shot instructions the agent uses to compose this reply.
             Does not modify `system_prompt`. Useful for status updates during a
             `hold`-mode tool call. See
-            [Tool calling — execution modes](/voice-agents/voice-agent-api/tools/overview#execution-modes).
+            [Tool calling — execution modes](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview#execution-modes).
       required:
         - type
 
@@ -94105,7 +94105,7 @@ components:
             - immutable_field
             - invalid_config
           description: |
-            Machine-readable error code. See [error codes](/voice-agents/voice-agent-api/events-reference#sessionerror)
+            Machine-readable error code. See [error codes](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/events-reference#sessionerror)
             for the full table grouped by lifecycle stage.
         message:
           type: string

@@ -98,4 +98,4 @@ In this example, the `Sec-WebSocket-Protocol` header specifies two subprotocols:
 
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-***
+---

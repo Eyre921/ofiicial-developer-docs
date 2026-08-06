@@ -157,4 +157,4 @@ In this part of the response, notice:
 * the results contain the `start` and `end` times for each place in the audio where the model heard the word.
 * after the first three hits, there's a steep decline in the model's confidence that it heard the requested word, and none of these hits do in fact correspond to the requested word.
 
-***
+---

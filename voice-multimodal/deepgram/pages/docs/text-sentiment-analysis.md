@@ -141,7 +141,7 @@ The `sentiment` values added to objects are:
 * `sentiment`: The sentiment of the associated text (`positive` | `negative` | `neutral`).
 * `sentiment_score`: A floating point value between -1 and 1 representing the sentiment of the associated span of text, with -1 being the most negative sentiment, and 1 being the most positive sentiment.
 
-***
+---
 
 ### Response Properties
 

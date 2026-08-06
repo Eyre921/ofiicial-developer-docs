@@ -70,7 +70,7 @@ Back in **Admin > Integrations**, flip the switch to activate the integration. M
 
 Follow [the Genesys docs](https://help.mypurecloud.com/articles/configure-voice-transcription/) to select where your newly configured transcription engine will be used.
 
-***
+---
 
 What’s Next
 

@@ -152,14 +152,20 @@ Allows PaymentMethods to be created from the Elements instance using [stripe.cre
 
 **NOTE:** The Express Checkout Element doesn't support [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md) with [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) or [Klarna](https://docs.stripe.com/payments/klarna.md). Use [stripe.createConfirmationToken](https://docs.stripe.com/js/confirmation_tokens/create_confirmation_token.md) instead. Card installments are also unsupported and either blocks showing the plan selection UI, or raises an error for manual enablement using `paymentMethodOptions`.
     - `customPaymentMethods`
-      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
-An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) or [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 The custom payment methods must be registered in the [Stripe Dashboard](https://dashboard.stripe.com/settings/custom_payment_methods).
       - `id`
         The ID of the [custom payment method type](https://dashboard.stripe.com/settings/custom_payment_methods), prefixed with `cpmt_`.
       - `options`
-        A set of options to configure the custom payment method with.
+        A set of options that configure the custom payment method. `options` and `payment` are mutually exclusive.
+        - `type`
+          The form type of the custom payment method.
+        - `subtitle`
+          A subtitle contains additional information about the custom payment method.
+      - `payment`
+        A set of options that configure the custom payment method in the [Payment Element](https://docs.stripe.com/payments/payment-element.md). This is an alias of `options`. `payment` and `options` are mutually exclusive.
         - `type`
           The form type of the custom payment method.
         - `subtitle`
@@ -645,14 +651,20 @@ Allows PaymentMethods to be created from the Elements instance using [stripe.cre
 
 The list of payment method types to exclude from use with this payment.
     - `customPaymentMethods`
-      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
-An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) or [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 The custom payment methods must be registered in the [Stripe Dashboard](https://dashboard.stripe.com/settings/custom_payment_methods).
       - `id`
         The ID of the [custom payment method type](https://dashboard.stripe.com/settings/custom_payment_methods), prefixed with `cpmt_`.
       - `options`
-        A set of options to configure the custom payment method with.
+        A set of options that configure the custom payment method. `options` and `payment` are mutually exclusive.
+        - `type`
+          The form type of the custom payment method.
+        - `subtitle`
+          A subtitle contains additional information about the custom payment method.
+      - `payment`
+        A set of options that configure the custom payment method in the [Payment Element](https://docs.stripe.com/payments/payment-element.md). This is an alias of `options`. `payment` and `options` are mutually exclusive.
         - `type`
           The form type of the custom payment method.
         - `subtitle`
@@ -1056,14 +1068,20 @@ The client_secret returned from create a [CustomerSession](https://docs.stripe.c
 
 The list of payment method types to exclude from use with this payment.
     - `customPaymentMethods`
-      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
-An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) or [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 The custom payment methods must be registered in the [Stripe Dashboard](https://dashboard.stripe.com/settings/custom_payment_methods).
       - `id`
         The ID of the [custom payment method type](https://dashboard.stripe.com/settings/custom_payment_methods), prefixed with `cpmt_`.
       - `options`
-        A set of options to configure the custom payment method with.
+        A set of options that configure the custom payment method. `options` and `payment` are mutually exclusive.
+        - `type`
+          The form type of the custom payment method.
+        - `subtitle`
+          A subtitle contains additional information about the custom payment method.
+      - `payment`
+        A set of options that configure the custom payment method in the [Payment Element](https://docs.stripe.com/payments/payment-element.md). This is an alias of `options`. `payment` and `options` are mutually exclusive.
         - `type`
           The form type of the custom payment method.
         - `subtitle`
@@ -2195,6 +2213,8 @@ Triggered when there is a change to which buttons are available in the Express C
       The type of element the event is fired from.
     - `paymentMethods`
       Describes which buttons render in the Element. Returns `undefined` if no buttons will render. Payment methods are returned in alphabetical order. Each value is an object with an `available` boolean field.
+
+If you configured [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) with an `expressCheckout` object, their IDs (prefixed with `cpmt_`) also appear as keys in this object.
       - `amazonPay`
         - `available`
       - `applePay`
@@ -8259,14 +8279,20 @@ Allows PaymentMethods to be created from the Elements instance using [stripe.cre
 
 **NOTE:** The Express Checkout Element doesn't support [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md) with [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) or [Klarna](https://docs.stripe.com/payments/klarna.md). Use [stripe.createConfirmationToken](https://docs.stripe.com/js/confirmation_tokens/create_confirmation_token.md) instead. Card installments are also unsupported and either blocks showing the plan selection UI, or raises an error for manual enablement using `paymentMethodOptions`.
     - `customPaymentMethods`
-      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
-An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) or [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 The custom payment methods must be registered in the [Stripe Dashboard](https://dashboard.stripe.com/settings/custom_payment_methods).
       - `id`
         The ID of the [custom payment method type](https://dashboard.stripe.com/settings/custom_payment_methods), prefixed with `cpmt_`.
       - `options`
-        A set of options to configure the custom payment method with.
+        A set of options that configure the custom payment method. `options` and `payment` are mutually exclusive.
+        - `type`
+          The form type of the custom payment method.
+        - `subtitle`
+          A subtitle contains additional information about the custom payment method.
+      - `payment`
+        A set of options that configure the custom payment method in the [Payment Element](https://docs.stripe.com/payments/payment-element.md). This is an alias of `options`. `payment` and `options` are mutually exclusive.
         - `type`
           The form type of the custom payment method.
         - `subtitle`
@@ -8762,14 +8788,20 @@ Allows PaymentMethods to be created from the Elements instance using [stripe.cre
 
 The list of payment method types to exclude from use with this payment.
     - `customPaymentMethods`
-      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
-An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+An array of [custom payment methods](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to display in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) or [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 The custom payment methods must be registered in the [Stripe Dashboard](https://dashboard.stripe.com/settings/custom_payment_methods).
       - `id`
         The ID of the [custom payment method type](https://dashboard.stripe.com/settings/custom_payment_methods), prefixed with `cpmt_`.
       - `options`
-        A set of options to configure the custom payment method with.
+        A set of options that configure the custom payment method. `options` and `payment` are mutually exclusive.
+        - `type`
+          The form type of the custom payment method.
+        - `subtitle`
+          A subtitle contains additional information about the custom payment method.
+      - `payment`
+        A set of options that configure the custom payment method in the [Payment Element](https://docs.stripe.com/payments/payment-element.md). This is an alias of `options`. `payment` and `options` are mutually exclusive.
         - `type`
           The form type of the custom payment method.
         - `subtitle`

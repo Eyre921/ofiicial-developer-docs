@@ -56,4 +56,4 @@ See [Batch vs Streaming: Which Should I Use?](/docs/flux-tts/batch-vs-streaming)
 * [Voices and Languages](/docs/flux-tts/voices)
 * [Media Output Settings](/docs/tts-media-output-settings)
 
-***
+---

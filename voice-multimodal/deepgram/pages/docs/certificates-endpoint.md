@@ -127,7 +127,7 @@ Expose this port in your Docker Compose or Kubernetes configuration to query `/v
 
 The `/v1/certificates` endpoint is available in release `260319` and later on all self-hosted container images.
 
-***
+---
 
 ## What's Next
 

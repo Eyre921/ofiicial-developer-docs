@@ -209,4 +209,4 @@ function setupRealtimeTranscription(socket, room) {
 
 When analyzing results, understand that real-time streaming returns a series of interim transcripts followed by a final transcript. To learn more about real-time streaming, see [Getting Started with Streaming Audio](/docs/live-streaming-audio). To learn more about interim and final transcripts, see [Interim Results](/docs/interim-results).
 
-***
+---

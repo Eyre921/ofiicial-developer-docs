@@ -120,7 +120,7 @@ import ssl
 * We will use `sys` to provides access to some variables and functions used or maintained by the Python interpreter.
 * We will use `ssl`(optional) to create secure encrypted connections between client and server.
 
-***
+---
 
 The next block of code `sts_connect`defines a function that establishes a WebSocket connection to Deepgram's agent service.
 
@@ -152,7 +152,7 @@ Let's break it down:
 * Uses Deepgram's token-based authentication
 * Requires replacing "YOUR\_DEEPGRAM\_API\_KEY" with an actual Deepgram API key
 
-***
+---
 
 The next block of code, `twilio_handler` does several things:
 
@@ -340,4 +340,4 @@ if __name__ == "__main__":
     sys.exit(main() or 0)
 ```
 
-***
+---

@@ -12,7 +12,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  <p>Brand new to GitHub? Learn the basics here.</p>
+  Brand new to GitHub? Learn the basics here.
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  An overview of GitHub's pricing plans.
+  <p>An overview of GitHub's pricing plans.</p>
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
@@ -40,7 +40,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
+  You can find ways to contribute to open source projects on GitHub that are relevant to you.
 
 ## Links
 

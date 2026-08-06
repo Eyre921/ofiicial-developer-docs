@@ -98,4 +98,4 @@ The JSON message sent when the start of speech is detected looks similar to this
 
 The timestamp doesn't always match the start time of the first word in the next transcript because the systems for transcribing and timing words work independently of the speech detection system.
 
-***
+---

@@ -77,7 +77,7 @@ If you are on a Windows machine, alternatives to `ssh` include PuTTY and the AWS
 
 3. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the Enter key on your keyboard. This message should only appear the first time you are connected to the instance.
 
-***
+---
 
 What’s Next
 

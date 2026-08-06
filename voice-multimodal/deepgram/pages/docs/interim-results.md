@@ -182,4 +182,4 @@ In this response, we see that:
 
 For a more detailed example of using Interim results refer to [Using Interim Results Tips & Tricks](/docs/using-interim-results).
 
-***
+---

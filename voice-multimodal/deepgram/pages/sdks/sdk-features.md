@@ -184,7 +184,7 @@ For more details on sending inference requests to a self-hosted deploment, see t
 | ---------------------------------------------------------- | ------------- | ------ | -------------------------------------------- |
 | [Token-Based Authentication](/reference/auth/tokens/grant) | N/A           | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 
-***
+---
 
 What's Next
 

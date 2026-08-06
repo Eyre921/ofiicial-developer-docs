@@ -1301,7 +1301,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/pull-requests/reference/pull-requests
 /en/pull-requests/reference/stacked-pull-requests
 /en/pull-requests/reference/stacked-prs-cli-commands
-/en/pull-requests/reference/stacked-pull-requests-rest-and-graphql-apis
+/en/pull-requests/reference/stacked-pull-requests-apis-and-webhooks
 /en/pull-requests/reference/branches
 /en/pull-requests/reference/forks
 /en/pull-requests/reference/commits
@@ -2023,6 +2023,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/copilot-cli-reference/acp-server
 /en/copilot/reference/copilot-cli-reference/cli-config-dir-reference
 /en/copilot/reference/github-copilot-app-reference
+/en/copilot/reference/github-copilot-app-reference/repository-configuration
 /en/copilot/reference/github-copilot-app-reference/slash-commands
 /en/copilot/reference/github-copilot-app-reference/built-in-skills
 /en/copilot/reference/custom-agents-configuration

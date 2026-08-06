@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 322 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -17,7 +17,7 @@
 - `docs/agent-integrations` — [Agent integrations](pages/docs/agent-integrations.md) · [原文](https://docs.together.ai/docs/agent-integrations)
 - `docs/agent-skills` — [Coding agent setup](pages/docs/agent-skills.md) · [原文](https://docs.together.ai/docs/agent-skills)
 - `docs/agno` — [Agno](pages/docs/agno.md) · [原文](https://docs.together.ai/docs/agno)
-- `docs/ai-evaluations` — [Overview](pages/docs/ai-evaluations.md) · [原文](https://docs.together.ai/docs/ai-evaluations)
+- `docs/ai-evaluations` — [Evaluations](pages/docs/ai-evaluations.md) · [原文](https://docs.together.ai/docs/ai-evaluations)
 - `docs/ai-search-engine` — [Build an AI search engine](pages/docs/ai-search-engine.md) · [原文](https://docs.together.ai/docs/ai-search-engine)
 - `docs/ai-tutor` — [Build an interactive AI tutor with Llama 3.1](pages/docs/ai-tutor.md) · [原文](https://docs.together.ai/docs/ai-tutor)
 - `docs/api-keys-authentication` — [Authentication](pages/docs/api-keys-authentication.md) · [原文](https://docs.together.ai/docs/api-keys-authentication)
@@ -62,6 +62,7 @@
 - `docs/deprecations` — [Deprecations](pages/docs/deprecations.md) · [原文](https://docs.together.ai/docs/deprecations)
 - `docs/dspy` — [DSPy](pages/docs/dspy.md) · [原文](https://docs.together.ai/docs/dspy)
 - `docs/error-codes` — [Error codes](pages/docs/error-codes.md) · [原文](https://docs.together.ai/docs/error-codes)
+- `docs/evaluations-reference` — [Parameters and result formats](pages/docs/evaluations-reference.md) · [原文](https://docs.together.ai/docs/evaluations-reference)
 - `docs/evaluations-supported-models` — [Supported models](pages/docs/evaluations-supported-models.md) · [原文](https://docs.together.ai/docs/evaluations-supported-models)
 - `docs/fine-tuning/byom` — [Bring your own model](pages/docs/fine-tuning/byom.md) · [原文](https://docs.together.ai/docs/fine-tuning/byom)
 - `docs/fine-tuning/data-preparation` — [Data preparation](pages/docs/fine-tuning/data-preparation.md) · [原文](https://docs.together.ai/docs/fine-tuning/data-preparation)
@@ -165,6 +166,7 @@
 - `docs/quickstart-retrieval-augmented-generation-rag` — [Retrieval-augmented generation (RAG) quickstart](pages/docs/quickstart-retrieval-augmented-generation-rag.md) · [原文](https://docs.together.ai/docs/quickstart-retrieval-augmented-generation-rag)
 - `docs/quickstart-using-hugging-face-inference` — [Hugging Face Inference quickstart](pages/docs/quickstart-using-hugging-face-inference.md) · [原文](https://docs.together.ai/docs/quickstart-using-hugging-face-inference)
 - `docs/roles-permissions` — [Roles & permissions (RBAC)](pages/docs/roles-permissions.md) · [原文](https://docs.together.ai/docs/roles-permissions)
+- `docs/run-an-evaluation` — [Run an evaluation](pages/docs/run-an-evaluation.md) · [原文](https://docs.together.ai/docs/run-an-evaluation)
 - `docs/seedance2.0-quickstart` — [Seedance 2.0 quickstart](pages/docs/seedance2.0-quickstart.md) · [原文](https://docs.together.ai/docs/seedance2.0-quickstart)
 - `docs/sequential-agent-workflow` — [Sequential workflow](pages/docs/sequential-agent-workflow.md) · [原文](https://docs.together.ai/docs/sequential-agent-workflow)
 - `docs/serverless/models` — [Available models](pages/docs/serverless/models.md) · [原文](https://docs.together.ai/docs/serverless/models)

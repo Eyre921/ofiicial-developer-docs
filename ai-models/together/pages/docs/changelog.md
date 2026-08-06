@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 5, 2026">
+  ## Expert LoRA for DeepSeek-V3.1
+
+  LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.
+
+  See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers) for how to enable it.
+</Update>
+
 <Update label="August 3, 2026">
   ## New serverless models
 
@@ -364,7 +372,7 @@ path: docs/changelog
 
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset (a base64 image data URL, or a list of them) and the images are attached to the model and judge requests alongside the text prompt.
 
-  See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+  See [Prepare a dataset](/docs/run-an-evaluation#prepare-a-dataset) for details.
 
   ## GPU cluster GPU count breakdown
 
@@ -753,7 +761,7 @@ path: docs/changelog
 
   ## Evaluations: single-pass compare mode
 
-  The `compare` evaluator now accepts a `disable_position_bias_correction` parameter. By default, the judge runs each comparison twice (A→B then B→A) and reconciles verdicts to cancel position bias. Setting `disable_position_bias_correction` to `true` runs a single pass, cutting judge cost and latency in half. See [AI evaluations](/docs/ai-evaluations) for details.
+  The `compare` evaluator now accepts a `disable_position_bias_correction` parameter. By default, the judge runs each comparison twice (A→B then B→A) and reconciles verdicts to cancel position bias. Setting `disable_position_bias_correction` to `true` runs a single pass, cutting judge cost and latency in half. See the [evaluations reference](/docs/evaluations-reference#evaluation-type-parameters) for details.
 
   ## Billing documentation updates
 

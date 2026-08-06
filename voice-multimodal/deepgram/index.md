@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 368 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -10,7 +10,6 @@
 - `asyncapi.yaml` — [AsyncAPI YAML](pages/asyncapi.yaml.md) · [原文](https://developers.deepgram.com/asyncapi.yaml)
 - `home` — [Welcome to Deepgram's Docs!](pages/home.md) · [原文](https://developers.deepgram.com/home.md)
 - `openapi.json` — [OpenAPI JSON](pages/openapi.json.md) · [原文](https://developers.deepgram.com/openapi.json)
-- `openapi.yaml` — [OpenAPI YAML](pages/openapi.yaml.md) · [原文](https://developers.deepgram.com/openapi.yaml)
 - `support` — [Support](pages/support.md) · [原文](https://developers.deepgram.com/support.md)
 
 ## developer-tools
@@ -119,13 +118,11 @@
 - `docs/flux/quickstart` — [Getting Started with Flux](pages/docs/flux/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux/quickstart.md)
 - `docs/flux/state` — [Understanding the Flux State Machine](pages/docs/flux/state.md) · [原文](https://developers.deepgram.com/docs/flux/state.md)
 - `docs/flux/voice-agent-eager-eot` — [Optimize Voice Agent Latency with Eager End of Turn](pages/docs/flux/voice-agent-eager-eot.md) · [原文](https://developers.deepgram.com/docs/flux/voice-agent-eager-eot.md)
-- `docs/gcp-docker-podman` — [Google Cloud Platform](pages/docs/gcp-docker-podman.md) · [原文](https://developers.deepgram.com/docs/gcp-docker-podman.md)
 - `docs/gcp-k8s` — [Google Cloud Platform](pages/docs/gcp-k8s.md) · [原文](https://developers.deepgram.com/docs/gcp-k8s.md)
 - `docs/generating-and-saving-transcripts-from-the-terminal` — [Generating and Saving Transcripts From the Terminal](pages/docs/generating-and-saving-transcripts-from-the-terminal.md) · [原文](https://developers.deepgram.com/docs/generating-and-saving-transcripts-from-the-terminal.md)
 - `docs/genesys-and-deepgram-voice-agent` — [Genesys Cloud CX and Deepgram Voice Agent](pages/docs/genesys-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/genesys-and-deepgram-voice-agent.md)
 - `docs/genesys-deepgram` — [Genesys and Deepgram](pages/docs/genesys-deepgram.md) · [原文](https://developers.deepgram.com/docs/genesys-deepgram.md)
 - `docs/getting-started-with-the-streaming-test-suite` — [Live Streaming Starter Kit](pages/docs/getting-started-with-the-streaming-test-suite.md) · [原文](https://developers.deepgram.com/docs/getting-started-with-the-streaming-test-suite.md)
-- `docs/handling-audio-issues-in-text-to-speech` — [Handling Audio Issues in Text To Speech](pages/docs/handling-audio-issues-in-text-to-speech.md) · [原文](https://developers.deepgram.com/docs/handling-audio-issues-in-text-to-speech.md)
 - `docs/health-checks-sagemaker` — [Health Checks & Automatic Recovery](pages/docs/health-checks-sagemaker.md) · [原文](https://developers.deepgram.com/docs/health-checks-sagemaker.md)
 - `docs/improving-aura-2-formatting` — [Formatting Text for Aura-2](pages/docs/improving-aura-2-formatting.md) · [原文](https://developers.deepgram.com/docs/improving-aura-2-formatting.md)
 - `docs/inbound-telephony-agent` — [Build an Inbound Telephony Agent](pages/docs/inbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/inbound-telephony-agent.md)
@@ -161,7 +158,6 @@
 - `docs/models-languages-overview` — [Models & Languages Overview](pages/docs/models-languages-overview.md) · [原文](https://developers.deepgram.com/docs/models-languages-overview.md)
 - `docs/multi-agent-architecture` — [Build a Multi-Agent Architecture](pages/docs/multi-agent-architecture.md) · [原文](https://developers.deepgram.com/docs/multi-agent-architecture.md)
 - `docs/multichannel` — [Multichannel](pages/docs/multichannel.md) · [原文](https://developers.deepgram.com/docs/multichannel.md)
-- `docs/multichannel-vs-diarization` — [When To Use Multichannel and Diarization](pages/docs/multichannel-vs-diarization.md) · [原文](https://developers.deepgram.com/docs/multichannel-vs-diarization.md)
 - `docs/multilingual-code-switching` — [Multilingual Codeswitching](pages/docs/multilingual-code-switching.md) · [原文](https://developers.deepgram.com/docs/multilingual-code-switching.md)
 - `docs/multilingual-voice-agent` — [Multilingual Voice Agents](pages/docs/multilingual-voice-agent.md) · [原文](https://developers.deepgram.com/docs/multilingual-voice-agent.md)
 - `docs/networking` — [Networking](pages/docs/networking.md) · [原文](https://developers.deepgram.com/docs/networking.md)
@@ -202,7 +198,6 @@
 - `docs/smart-format` — [Smart Formatting](pages/docs/smart-format.md) · [原文](https://developers.deepgram.com/docs/smart-format.md)
 - `docs/speech-started` — [Speech Started](pages/docs/speech-started.md) · [原文](https://developers.deepgram.com/docs/speech-started.md)
 - `docs/streaming-text-to-speech` — [Getting Started](pages/docs/streaming-text-to-speech.md) · [原文](https://developers.deepgram.com/docs/streaming-text-to-speech.md)
-- `docs/streaming-the-audio-output` — [Audio Output Streaming](pages/docs/streaming-the-audio-output.md) · [原文](https://developers.deepgram.com/docs/streaming-the-audio-output.md)
 - `docs/stt-intelligence-feature-overview` — [Feature Overview](pages/docs/stt-intelligence-feature-overview.md) · [原文](https://developers.deepgram.com/docs/stt-intelligence-feature-overview.md)
 - `docs/stt-pre-recorded-feature-overview` — [Feature Overview](pages/docs/stt-pre-recorded-feature-overview.md) · [原文](https://developers.deepgram.com/docs/stt-pre-recorded-feature-overview.md)
 - `docs/stt-pre-recorded-template-apps` — [Template Apps](pages/docs/stt-pre-recorded-template-apps.md) · [原文](https://developers.deepgram.com/docs/stt-pre-recorded-template-apps.md)
@@ -228,7 +223,6 @@
 - `docs/text-to-speech` — [Getting Started](pages/docs/text-to-speech.md) · [原文](https://developers.deepgram.com/docs/text-to-speech.md)
 - `docs/text-to-speech-latency` — [Text to Speech Latency](pages/docs/text-to-speech-latency.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-latency.md)
 - `docs/text-to-speech-prompting` — [Text to Speech Prompting](pages/docs/text-to-speech-prompting.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-prompting.md)
-- `docs/text-topic-detection` — [Topic Detection](pages/docs/text-topic-detection.md) · [原文](https://developers.deepgram.com/docs/text-topic-detection.md)
 - `docs/the-deepgram-model-improvement-partnership-program` — [Model Improvement Partnership Program](pages/docs/the-deepgram-model-improvement-partnership-program.md) · [原文](https://developers.deepgram.com/docs/the-deepgram-model-improvement-partnership-program.md)
 - `docs/topic-detection` — [Topic Detection](pages/docs/topic-detection.md) · [原文](https://developers.deepgram.com/docs/topic-detection.md)
 - `docs/transcribe-meetings-in-realtime` — [Transcribe Meetings in Realtime](pages/docs/transcribe-meetings-in-realtime.md) · [原文](https://developers.deepgram.com/docs/transcribe-meetings-in-realtime.md)
@@ -367,10 +361,8 @@
 - `reference/self-hosted/distribution-credentials/create` — [Create a Project Self-Hosted Distribution Credential](pages/reference/self-hosted/distribution-credentials/create.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/create.md)
 - `reference/self-hosted/distribution-credentials/delete` — [Delete a Project Self-Hosted Distribution Credential](pages/reference/self-hosted/distribution-credentials/delete.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/delete.md)
 - `reference/self-hosted/distribution-credentials/get` — [Get a Project Self-Hosted Distribution Credential](pages/reference/self-hosted/distribution-credentials/get.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/get.md)
-- `reference/self-hosted/distribution-credentials/list` — [List Project Self-Hosted Distribution Credentials](pages/reference/self-hosted/distribution-credentials/list.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/list.md)
 - `reference/speak/v-2/audio/generate` — [Flux Text to Speech (batch)](pages/reference/speak/v-2/audio/generate.md) · [原文](https://developers.deepgram.com/reference/speak/v-2/audio/generate.md)
 - `reference/speech-to-text/listen-flux` — [Turn-based Audio (Flux)](pages/reference/speech-to-text/listen-flux.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-flux.md)
-- `reference/speech-to-text/listen-pre-recorded` — [Pre-Recorded Audio](pages/reference/speech-to-text/listen-pre-recorded.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-pre-recorded.md)
 - `reference/speech-to-text/listen-streaming` — [Live Audio](pages/reference/speech-to-text/listen-streaming.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-streaming.md)
 - `reference/text-intelligence/analyze-text` — [Analyze Text](pages/reference/text-intelligence/analyze-text.md) · [原文](https://developers.deepgram.com/reference/text-intelligence/analyze-text.md)
 - `reference/text-to-speech/speak-flux` — [Turn-based Speech (Flux)](pages/reference/text-to-speech/speak-flux.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-flux.md)

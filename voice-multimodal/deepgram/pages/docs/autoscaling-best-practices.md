@@ -208,7 +208,7 @@ Scaling your Deepgram deployment to handle your production traffic in an efficie
 
 If you have further questions about how to effectively benchmark your self-hosted deployment, or scale effectively, please contact your Deepgram Account Representative or [Support](https://deepgram.com/contact-us/).
 
-***
+---
 
 What’s Next
 

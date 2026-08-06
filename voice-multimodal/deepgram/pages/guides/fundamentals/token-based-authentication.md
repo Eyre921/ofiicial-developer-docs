@@ -130,7 +130,7 @@ Yes. The Deepgram SDKs support token-based authentication. Please refer to the [
 
 Yes! The temporary tokens generated have the same accessor as the API key used to generate them.
 
-***
+---
 
 What's Next
 

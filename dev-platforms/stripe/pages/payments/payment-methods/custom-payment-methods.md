@@ -67,13 +67,19 @@ curl https://api.stripe.com/v1/payment_methods \
 
 | Payment method | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Custom payment methods | ✓ Supported | ✓ Supported 1 | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Custom payment methods | ✓ Supported | ✓ Supported 1 | - Unsupported | ✓ Supported | ✓ Supported 2 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 
 1 Not supported when using [manual approval](https://docs.stripe.com/payments/custom/manual-approval.md) (`approval_method=manual`).
+
+2 In private preview.
 
 ### Payment Element 
 
 The Payment Element can display custom payment methods so you can provide your customers with unified checkout. See [Custom payment methods in Payment Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md) to learn more.
+
+### Express Checkout Element 
+
+The Express Checkout Element can display custom payment method buttons alongside wallets, such as Apple Pay and Google Pay. To learn more, see [Custom payment methods in Express Checkout Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md#cpm-express-checkout-element).
 
 ### Subscription Billing 
 
