@@ -240,15 +240,15 @@ For more information, see [Specify product tax codes and tax behavior](https://d
 
 When you create a refund for an Invoice payment, Stripe Tax automatically reduces your tax liability.
 
-Alternatively, you can issue [Credit Notes](https://docs.stripe.com/api/credit_notes/object.md) to track tax liability decreases and provide records to your customers.
+You can issue [Credit Notes](https://docs.stripe.com/api/credit_notes/object.md) to track tax liability decreases and provide records to your customers.
 
 #### Refund invoice amount
 
-To refund an amount associated with an invoice total, create a Credit Note and a Refund.
+To refund the total amount of an invoice, create a `Credit Note` that automatically generates a `Refund`, or create a `Refund` first, then reference it when you create the `Credit Note`.
 
-#### Credit Note with automatic Refund
+#### Automatic Refund
 
-Create a Credit Note and a [Refund](https://docs.stripe.com/api/refunds/object.md) together by calling [create Credit Note](https://docs.stripe.com/api/credit_notes/create.md) and providing a `refund_amount` value.
+[Create a credit note](https://docs.stripe.com/api/credit_notes/create.md) specifying the `refund_amount` value to automatically generate a [Refund](https://docs.stripe.com/api/refunds/object.md).
 
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
@@ -257,7 +257,7 @@ curl https://api.stripe.com/v1/credit_notes \
   -d refund_amount=1000
 ```
 
-#### Credit Note with manual Refund
+#### Manual Refund
 
 [Create a Refund](https://docs.stripe.com/api/refunds/create.md), then include its ID when you create a [Credit Note](https://docs.stripe.com/api/credit_notes/object.md). In this case, don’t include a `refund_amount` value.
 
@@ -273,7 +273,7 @@ Stripe Tax automatically distributes the total refund amount between taxes and t
 
 #### Refund invoice line item amount
 
-If you want to refund an amount associated with an invoice line item, first calculate the [total](https://docs.stripe.com/api/credit_notes/object.md#credit_note_object-total) and [total_excluding_tax](https://docs.stripe.com/api/credit_notes/object.md#credit_note_object-total_excluding_tax) amounts by calling [preview Credit Note](https://docs.stripe.com/api/credit_notes/preview.md).
+To refund only one or more line items from an invoice, first [preview the credit note](https://docs.stripe.com/api/credit_notes/preview.md) to collect the [total](https://docs.stripe.com/api/credit_notes/object.md#credit_note_object-total) and [total_excluding_tax](https://docs.stripe.com/api/credit_notes/object.md#credit_note_object-total_excluding_tax) amounts.
 
 ```curl
 curl -G https://api.stripe.com/v1/credit_notes/preview \
@@ -284,11 +284,11 @@ curl -G https://api.stripe.com/v1/credit_notes/preview \
   -d "lines[0][amount]=1000"
 ```
 
-Then, create a [Credit Note](https://docs.stripe.com/api/credit_notes/object.md) and a [Refund](https://docs.stripe.com/api/refunds/object.md).
+Create a `Credit Note` that automatically generates a `Refund`, or create a `Refund` first, then reference it when you create the `Credit Note`.
 
-#### Credit Note with automatic Refund
+#### Automatic Refund
 
-Create a Credit Note and a [Refund](https://docs.stripe.com/api/refunds/object.md) together by calling [create Credit Note](https://docs.stripe.com/api/credit_notes/create.md) and providing a `refund_amount` value.
+[Create a credit note](https://docs.stripe.com/api/credit_notes/create.md) specifying the `refund_amount` value and the relevant line items to automatically generate a [Refund](https://docs.stripe.com/api/refunds/object.md).
 
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
@@ -300,7 +300,7 @@ curl https://api.stripe.com/v1/credit_notes \
   -d "lines[0][amount]=1000"
 ```
 
-#### Credit Note with manual Refund
+#### Manual Refund
 
 [Create a Refund](https://docs.stripe.com/api/refunds/create.md) using the `total` calculated by the Credit Note preview, then include its ID when you create a [Credit Note](https://docs.stripe.com/api/credit_notes/object.md). In this case, don’t include a `refund_amount` value.
 
@@ -328,4 +328,5 @@ See [Using webhooks with subscriptions](https://docs.stripe.com/billing/subscrip
 - [Update existing subscriptions](https://docs.stripe.com/tax/subscriptions/update.md)
 - [Use Stripe Tax with Connect](https://docs.stripe.com/tax/connect.md)
 - [Calculate tax in your custom checkout flow](https://docs.stripe.com/tax/standalone-tax-api.md)
+- [Refunds and credit notes on invoices](https://docs.stripe.com/tax/invoicing/refunds.md)
 

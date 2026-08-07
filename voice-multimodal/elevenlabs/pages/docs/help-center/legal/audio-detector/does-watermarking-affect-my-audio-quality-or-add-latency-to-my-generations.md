@@ -8,6 +8,6 @@ path: docs/help-center/legal/audio-detector/does-watermarking-affect-my-audio-qu
 
 # Does watermarking affect my audio quality or add latency to my generations?
 
-No on both counts. Our evaluations have found no audible quality degradation, and we carefully engineered our SynthID integration to add zero latency in nearly all cases. You will not notice any change in generation speed or output quality.
+No on both counts. Our evaluations have found no audible quality degradation, and we carefully engineered our watermarking to add zero latency in nearly all cases. You will not notice any change in generation speed or output quality.
 
-For more information, see [What is SynthID, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-synth-id-and-why-is-eleven-labs-using-it)
+For more information, see [What is watermarking, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-watermarking-and-why-is-eleven-labs-using-it)

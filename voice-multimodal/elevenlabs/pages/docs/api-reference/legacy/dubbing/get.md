@@ -14,162 +14,39 @@ Returns metadata about a dubbing project, including whether it's still in progre
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/{dubbing_id}:
-    get:
-      operationId: get
-      summary: Get dubbing
-      description: >-
-        Returns metadata about a dubbing project, including whether it's still
-        in progress or not
-      tags:
-        - dubbing
-      parameters:
-        - name: dubbing_id
-          in: path
-          description: ID of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingMetadataResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingMediaMetadata:
-      type: object
-      properties:
-        content_type:
-          type: string
-          description: The content type of the media.
-        duration:
-          type: number
-          format: double
-          description: The duration of the media in seconds.
-      required:
-        - content_type
-        - duration
-      title: DubbingMediaMetadata
-    DubbingMetadataResponse:
-      type: object
-      properties:
-        dubbing_id:
-          type: string
-          description: The ID of the dubbing project.
-        name:
-          type: string
-          description: The name of the dubbing project.
-        status:
-          type: string
-          description: The state this dub is in.
-        source_language:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Once dubbing has completed, the ISO-639-1 code of the original
-            media's source language.
-        target_languages:
-          type: array
-          items:
-            type: string
-          description: The ISO-639-1 code of the languages this media has been dubbed into.
-        editable:
-          type: boolean
-          default: false
-          description: Whether this dubbing project is editable in Dubbing Studio.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp this dub was created.
-        media_metadata:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingMediaMetadata'
-            - type: 'null'
-          description: >-
-            Metadata, such as the length in seconds and content type, of the
-            dubbed content.
-        error:
-          type:
-            - string
-            - 'null'
-          description: Error message indicate, if this dub has failed, what happened.
-      required:
-        - dubbing_id
-        - name
-        - status
-        - source_language
-        - target_languages
-        - created_at
-      title: DubbingMetadataResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `dubbing_id` (string, required) — ID of the dubbing project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `dubbing_id` (string, required) — The ID of the dubbing project.
+- `name` (string, required) — The name of the dubbing project.
+- `status` (string, required) — The state this dub is in.
+- `source_language` (string, required, nullable) — Once dubbing has completed, the ISO-639-1 code of the original media's source language.
+- `target_languages` (list of string, required) — The ISO-639-1 code of the languages this media has been dubbed into.
+- `created_at` (string, required) — Timestamp this dub was created.
+- `editable` (boolean, optional, default: false) — Whether this dubbing project is editable in Dubbing Studio.
+- `media_metadata` (object, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
+  - `content_type` (string, required) — The content type of the media.
+  - `duration` (double, required) — The duration of the media in seconds.
+- `error` (string, optional, nullable) — Error message indicate, if this dub has failed, what happened.
 
 ## Examples
-
-
 
 **Response**
 

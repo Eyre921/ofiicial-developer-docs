@@ -14,135 +14,30 @@ Gets a list of all members of the workspace, including locked members. Service a
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/members/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/members:
-    get:
-      operationId: list
-      summary: Get Workspace Members
-      description: >-
-        Gets a list of all members of the workspace, including locked members.
-        Service accounts are excluded. Requires the workspace_members_read
-        permission.
-      tags:
-        - members
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WorkspaceMemberResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SeatType:
-      type: string
-      enum:
-        - workspace_admin
-        - workspace_member
-        - workspace_lite_member
-      description: Seat types for workspace members.
-      title: SeatType
-    WorkspaceMemberResponseModel:
-      type: object
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the workspace member.
-        email:
-          type: string
-          description: The email address of the workspace member.
-        first_name:
-          type:
-            - string
-            - 'null'
-          description: The first name of the workspace member, if available.
-        seat_type:
-          oneOf:
-            - $ref: '#/components/schemas/SeatType'
-            - type: 'null'
-          description: The seat type (role) of the workspace member.
-        is_owner:
-          type: boolean
-          description: Whether the member is the workspace owner.
-        is_locked:
-          type: boolean
-          description: Whether the member's account is locked in this workspace.
-      required:
-        - user_id
-        - email
-        - first_name
-        - seat_type
-        - is_owner
-        - is_locked
-      description: Public workspace member fields exposed via GET /v1/workspace/members.
-      title: WorkspaceMemberResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Response
+
+### 200
+
+Successful Response
+
+- `list of object`
+  - `user_id` (string, required) — The user ID of the workspace member.
+  - `email` (string, required) — The email address of the workspace member.
+  - `first_name` (string, required, nullable) — The first name of the workspace member, if available.
+  - `seat_type` (enum, required, nullable) — The seat type (role) of the workspace member.
+    - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+  - `is_owner` (boolean, required) — Whether the member is the workspace owner.
+  - `is_locked` (boolean, required) — Whether the member's account is locked in this workspace.
 
 ## Examples
-
-
 
 **Request**
 

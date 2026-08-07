@@ -10,6 +10,6 @@ path: docs/help-center/legal/audio-detector/how-can-i-check-whether-a-piece-of-a
 
 Signed-in users can use the free [ElevenLabs Audio Detector.](https://elevenlabs.io/app/audio-detector) To access this tool, open your account profile menu in the top right corner of the website, and select <strong>ElevenLabs Audio Detector</strong>.
 
-Upload an audio file and the tool will tell you whether it contains an ElevenLabs SynthID watermark or has a positive identification from our existing <a href="https://elevenlabs.io/ai-speech-classifier">AI Speech Classifier</a>. For now, Google's SynthID Verification tools (ie. Gemini, Search, Gemini in Chrome) cannot yet detect audio containing ElevenLabs SynthID watermarks.
+Upload an audio file and the tool will tell you whether it contains an ElevenLabs watermark or has a positive identification from our existing <a href="https://elevenlabs.io/ai-speech-classifier">AI Speech Classifier</a>.
 
-For more information, see [What is SynthID, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-synth-id-and-why-is-eleven-labs-using-it)
+For more information, see [What is watermarking, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-watermarking-and-why-is-eleven-labs-using-it)

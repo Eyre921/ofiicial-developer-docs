@@ -14,106 +14,29 @@ Deletes a dubbing project.
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/{dubbing_id}:
-    delete:
-      operationId: delete
-      summary: Delete dubbing
-      description: Deletes a dubbing project.
-      tags:
-        - dubbing
-      parameters:
-        - name: dubbing_id
-          in: path
-          description: ID of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteDubbingResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DeleteDubbingResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the dubbing project. If the request was successful,
-            the status will be 'ok'. Otherwise an error message with status 500
-            will be returned.
-      required:
-        - status
-      title: DeleteDubbingResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `dubbing_id` (string, required) — ID of the dubbing project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the dubbing project. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Response**
 

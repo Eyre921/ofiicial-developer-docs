@@ -17,140 +17,37 @@ Generates an invite for a specific project
 
 Reference: https://developers.deepgram.com/reference/manage/invites/create
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/invites:
-    post:
-      operationId: create
-      summary: Create a Project Invite
-      description: Generates an invite for a specific project
-      tags:
-        - invites
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The invite was successfully generated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateProjectInviteV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: email to invite to the project
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateProjectInviteV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    CreateProjectInviteV1Request:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email address of the invitee
-        scope:
-          type: string
-          description: The scope of the invitee
-      required:
-        - email
-        - scope
-      description: Request body for creating a project invite
-      title: CreateProjectInviteV1Request
-    CreateProjectInviteV1Response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: confirmation message
-      title: CreateProjectInviteV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Body (application/json)
+
+- `email` (string, required) — The email address of the invitee
+- `scope` (string, required) — The scope of the invitee
+
+## Response
+
+### 200
+
+The invite was successfully generated
+
+- `message` (string, optional) — confirmation message
 
 ## Examples
-
-
 
 **Request**
 
 ```json
 {
-  "email": "string",
-  "scope": "string"
+  "email": "jane.doe@example.com",
+  "scope": "read:transcripts write:projects"
 }
 ```
 
@@ -158,7 +55,7 @@ components:
 
 ```json
 {
-  "message": "string"
+  "message": "Invite successfully generated and sent to jane.doe@example.com"
 }
 ```
 
@@ -170,8 +67,8 @@ import requests
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites"
 
 payload = {
-    "email": "string",
-    "scope": "string"
+    "email": "jane.doe@example.com",
+    "scope": "read:transcripts write:projects"
 }
 headers = {
     "Authorization": "Token <apiKey>",
@@ -188,7 +85,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/i
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"email":"string","scope":"string"}'
+  body: '{"email":"jane.doe@example.com","scope":"read:transcripts write:projects"}'
 };
 
 try {
@@ -214,7 +111,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites"
 
-	payload := strings.NewReader("{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -244,7 +141,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}"
+request.body = "{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -257,7 +154,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}")
+  .body("{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}")
   .asString();
 ```
 
@@ -269,8 +166,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites', [
   'body' => '{
-  "email": "string",
-  "scope": "string"
+  "email": "jane.doe@example.com",
+  "scope": "read:transcripts write:projects"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -288,7 +185,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -300,8 +197,8 @@ let headers = [
   "Content-Type": "application/json"
 ]
 let parameters = [
-  "email": "string",
-  "scope": "string"
+  "email": "jane.doe@example.com",
+  "scope": "read:transcripts write:projects"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

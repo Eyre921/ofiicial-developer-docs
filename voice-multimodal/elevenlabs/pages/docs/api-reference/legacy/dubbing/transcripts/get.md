@@ -14,223 +14,51 @@ Fetch the transcript for one of the languages in a dub.
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/{dubbing_id}/transcripts/{language_code}/format/{format_type}:
-    get:
-      operationId: get
-      summary: Retrieve A Transcript
-      description: Fetch the transcript for one of the languages in a dub.
-      tags:
-        - transcripts
-      parameters:
-        - name: dubbing_id
-          in: path
-          description: ID of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_code
-          in: path
-          description: >-
-            ISO-693 language code to retrieve the transcript for. Use 'source'
-            to fetch the transcript of the original media.
-          required: true
-          schema:
-            type: string
-        - name: format_type
-          in: path
-          description: >-
-            Format to return transcript in. For subtitles use either 'srt' or
-            'webvtt', and for a full transcript use 'json'. The 'json' format is
-            not yet supported for Dubbing Studio.
-          required: true
-          schema:
-            $ref: >-
-              #/components/schemas/V1DubbingDubbingIdTranscriptsLanguageCodeFormatFormatTypeGetParametersFormatType
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingTranscriptsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1DubbingDubbingIdTranscriptsLanguageCodeFormatFormatTypeGetParametersFormatType:
-      type: string
-      enum:
-        - srt
-        - webvtt
-        - json
-      description: >-
-        Format to return transcript in. For subtitles use either 'srt' or
-        'webvtt', and for a full transcript use 'json'. The 'json' format is not
-        yet supported for Dubbing Studio.
-      title: >-
-        V1DubbingDubbingIdTranscriptsLanguageCodeFormatFormatTypeGetParametersFormatType
-    DubbingTranscriptsResponseModelTranscriptFormat:
-      type: string
-      enum:
-        - srt
-        - webvtt
-        - json
-      title: DubbingTranscriptsResponseModelTranscriptFormat
-    DubbingTranscriptCharacter:
-      type: object
-      properties:
-        text:
-          type: string
-          default: ''
-        start_s:
-          type: number
-          format: double
-          default: 0
-        end_s:
-          type: number
-          format: double
-          default: 0
-      title: DubbingTranscriptCharacter
-    DubbingTranscriptWord:
-      type: object
-      properties:
-        text:
-          type: string
-          default: ''
-        word_type:
-          type: string
-          default: unknown
-        start_s:
-          type: number
-          format: double
-          default: 0
-        end_s:
-          type: number
-          format: double
-          default: 0
-        characters:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingTranscriptCharacter'
-      title: DubbingTranscriptWord
-    DubbingTranscriptUtterance:
-      type: object
-      properties:
-        text:
-          type: string
-          default: ''
-        speaker_id:
-          type: string
-          default: unknown
-        start_s:
-          type: number
-          format: double
-          default: 0
-        end_s:
-          type: number
-          format: double
-          default: 0
-        words:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingTranscriptWord'
-      title: DubbingTranscriptUtterance
-    DubbingTranscript:
-      type: object
-      properties:
-        language:
-          type: string
-        utterances:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingTranscriptUtterance'
-      required:
-        - language
-        - utterances
-      title: DubbingTranscript
-    DubbingTranscriptsResponseModel:
-      type: object
-      properties:
-        transcript_format:
-          $ref: '#/components/schemas/DubbingTranscriptsResponseModelTranscriptFormat'
-        srt:
-          type:
-            - string
-            - 'null'
-        webvtt:
-          type:
-            - string
-            - 'null'
-        json:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingTranscript'
-            - type: 'null'
-      required:
-        - transcript_format
-      title: DubbingTranscriptsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `dubbing_id` (string, required) — ID of the dubbing project.
+- `language_code` (string, required) — ISO-693 language code to retrieve the transcript for. Use 'source' to fetch the transcript of the original media.
+- `format_type` (enum, required) — Format to return transcript in. For subtitles use either 'srt' or 'webvtt', and for a full transcript use 'json'. The 'json' format is not yet supported for Dubbing Studio.
+  - Allowed values: `srt`, `webvtt`, `json`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `transcript_format` (enum, required)
+  - Allowed values: `srt`, `webvtt`, `json`
+- `srt` (string, optional, nullable)
+- `webvtt` (string, optional, nullable)
+- `json` (object, optional, nullable)
+  - `language` (string, required)
+  - `utterances` (list of object, required)
+    - `text` (string, optional, default: )
+    - `speaker_id` (string, optional, default: unknown)
+    - `start_s` (double, optional, default: 0)
+    - `end_s` (double, optional, default: 0)
+    - `words` (list of object, optional)
+      - `text` (string, optional, default: )
+      - `word_type` (string, optional, default: unknown)
+      - `start_s` (double, optional, default: 0)
+      - `end_s` (double, optional, default: 0)
+      - `characters` (list of object, optional)
+        - `text` (string, optional, default: )
+        - `start_s` (double, optional, default: 0)
+        - `end_s` (double, optional, default: 0)
 
 ## Examples
-
-
 
 **Response**
 

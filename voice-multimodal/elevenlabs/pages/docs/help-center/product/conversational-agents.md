@@ -8,6 +8,6 @@ path: docs/help-center/product/conversational-agents
 
 # Conversational Agents
 
-#### [ElevenLabs Agents (formerly Conversational AI)](/help-center/product/conversational-agents/eleven-labs-agents-formerly-conversational-ai)
+#### [ElevenLabs Agents (formerly Conversational AI)](/docs/help-center/product/conversational-agents/eleven-labs-agents-formerly-conversational-ai)
 
 Build and deploy conversational AI agents with voice capabilities

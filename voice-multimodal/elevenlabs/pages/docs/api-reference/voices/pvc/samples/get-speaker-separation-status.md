@@ -14,180 +14,40 @@ Retrieve the status of the speaker separation process and the list of detected s
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/get-speaker-separation-status
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/samples/{sample_id}/speakers:
-    get:
-      operationId: get
-      summary: Retrieve Speaker Separation Status
-      description: >-
-        Retrieve the status of the speaker separation process and the list of
-        detected speakers if complete.
-      tags:
-        - speakers
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: sample_id
-          in: path
-          description: Sample ID to be used
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpeakerSeparationResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SpeakerSeparationResponseModelStatus:
-      type: string
-      enum:
-        - not_started
-        - pending
-        - completed
-        - failed
-      description: The status of the speaker separation.
-      title: SpeakerSeparationResponseModelStatus
-    UtteranceResponseModel:
-      type: object
-      properties:
-        start:
-          type: number
-          format: double
-          description: The start time of the utterance in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the utterance in seconds.
-      required:
-        - start
-        - end
-      title: UtteranceResponseModel
-    SpeakerResponseModel:
-      type: object
-      properties:
-        speaker_id:
-          type: string
-          description: The ID of the speaker.
-        duration_secs:
-          type: number
-          format: double
-          description: The duration of the speaker segment in seconds.
-        utterances:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/UtteranceResponseModel'
-          description: The utterances of the speaker.
-      required:
-        - speaker_id
-        - duration_secs
-      title: SpeakerResponseModel
-    SpeakerSeparationResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-        sample_id:
-          type: string
-          description: The ID of the sample.
-        status:
-          $ref: '#/components/schemas/SpeakerSeparationResponseModelStatus'
-          description: The status of the speaker separation.
-        speakers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/SpeakerResponseModel'
-          description: The speakers of the sample.
-        selected_speaker_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: The IDs of the selected speakers.
-      required:
-        - voice_id
-        - sample_id
-        - status
-      title: SpeakerSeparationResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+- `sample_id` (string, required) — Sample ID to be used
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voice_id` (string, required) — The ID of the voice.
+- `sample_id` (string, required) — The ID of the sample.
+- `status` (enum, required) — The status of the speaker separation.
+  - Allowed values: `not_started`, `pending`, `completed`, `failed`
+- `speakers` (map from string to object, optional, nullable) — The speakers of the sample.
+  - `speaker_id` (string, required) — The ID of the speaker.
+  - `duration_secs` (double, required) — The duration of the speaker segment in seconds.
+  - `utterances` (list of object, optional, nullable) — The utterances of the speaker.
+    - `start` (double, required) — The start time of the utterance in seconds.
+    - `end` (double, required) — The end time of the utterance in seconds.
+- `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
 
 ## Examples
-
-
 
 **Response**
 

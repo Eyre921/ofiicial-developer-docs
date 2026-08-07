@@ -14,134 +14,39 @@ Get a WhatsApp account
 
 Reference: https://elevenlabs.io/docs/api-reference/whats-app/accounts/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/whatsapp-accounts/{phone_number_id}:
-    get:
-      operationId: get
-      summary: Get Whatsapp Account
-      description: Get a WhatsApp account
-      tags:
-        - whatsappAccounts
-      parameters:
-        - name: phone_number_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetWhatsAppAccountResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    GetWhatsAppAccountResponse:
-      type: object
-      properties:
-        business_account_id:
-          type: string
-        phone_number_id:
-          type: string
-        business_account_name:
-          type: string
-        phone_number_name:
-          type: string
-        phone_number:
-          type: string
-        assigned_agent_id:
-          type:
-            - string
-            - 'null'
-        enable_messaging:
-          type: boolean
-          default: true
-        enable_audio_message_response:
-          type: boolean
-          default: true
-        enable_typing_indicator:
-          type: boolean
-          default: true
-        assigned_agent_name:
-          type:
-            - string
-            - 'null'
-        is_token_expired:
-          type: boolean
-          default: false
-      required:
-        - business_account_id
-        - phone_number_id
-        - business_account_name
-        - phone_number_name
-        - phone_number
-        - assigned_agent_name
-      title: GetWhatsAppAccountResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `phone_number_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `business_account_id` (string, required)
+- `phone_number_id` (string, required)
+- `business_account_name` (string, required)
+- `phone_number_name` (string, required)
+- `phone_number` (string, required)
+- `assigned_agent_name` (string, required, nullable)
+- `assigned_agent_id` (string, optional, nullable)
+- `enable_messaging` (boolean, optional, default: true)
+- `enable_audio_message_response` (boolean, optional, default: true)
+- `enable_typing_indicator` (boolean, optional, default: true)
+- `is_token_expired` (boolean, optional, default: false)
 
 ## Examples
-
-
 
 **Response**
 

@@ -26,6 +26,7 @@
 
 ## Docs
 
+- [Welcome to Cohere](https://docs.cohere.com/docs/welcome.md): Find the right Cohere product: the Platform for direct API access, Model Vault for dedicated deployments, or North for a ready-made agentic AI solution.
 - [An Overview of The Cohere Platform](https://docs.cohere.com/docs/the-cohere-platform.md): Cohere offers world-class Large Language Models (LLMs) like Command, Rerank, and Embed. These help developers and enterprises build LLM-powered applications.
 - [Installation](https://docs.cohere.com/docs/get-started-installation.md): A guide for installing the Cohere SDK, supported in 4 different languages – Python, TypeScript, Java, and Go.
 - [Creating a client](https://docs.cohere.com/docs/create-client.md): A guide for creating Cohere API client using Cohere SDK, supported in 4 different languages – Python, TypeScript, Java, and Go.
@@ -36,6 +37,28 @@
 - [Reranking](https://docs.cohere.com/docs/reranking-quickstart.md): A quickstart guide for performing reranking with Cohere's Reranking models (v1 API).
 - [An Overview of the Developer Playground](https://docs.cohere.com/docs/playground-overview.md): The Cohere Playground is a powerful visual interface for testing Cohere's generation and embedding language models without coding.
 - [Frequently Asked Questions About Cohere](https://docs.cohere.com/docs/cohere-faqs.md): Cohere is a powerful platform for using Large Language Models (LLMs). This page covers FAQs related to functionality, pricing, troubleshooting, and more.
+- [Model Vault Overview](https://docs.cohere.com/docs/model-vault.md): Model Vault is a Cohere-managed, single-tenant environment for deploying and serving Cohere models. Every vault is either Standard or Encrypted.
+- [Quickstart](https://docs.cohere.com/docs/model-vault/quickstart.md): Create your first vault from the Model Vault app and make an inference request in a few minutes.
+- [Model Vault Home Page](https://docs.cohere.com/docs/model-vault/vault-home.md): Find and manage all of your vaults (Standard and Encrypted) from one place on the Model Vault home page.
+- [Creating a Vault](https://docs.cohere.com/docs/model-vault/creating-a-vault.md): Create a new vault, choose Standard or Encrypted, and select a model, performance tier, and replicas.
+- [Managing Vaults](https://docs.cohere.com/docs/model-vault/managing-vaults.md): View vault details and edit, pause, resume, or delete models from the Model Vault app.
+- [Monitoring](https://docs.cohere.com/docs/model-vault/monitoring.md): Monitor latency, queuing, and GPU utilization for any vault with the Grafana dashboard.
+- [Standard Vault Overview](https://docs.cohere.com/docs/model-vault/standard.md): Standard Vault is Cohere's managed, single-tenant inference environment with dedicated infrastructure and no confidential-computing layer.
+- [Supported Models](https://docs.cohere.com/docs/model-vault/standard/supported-models.md): Cohere models and GPUs available in a Standard Vault.
+- [Calling a Standard Vault over the API](https://docs.cohere.com/docs/model-vault/standard/api-access.md): Call a Standard Vault with the Cohere SDK, raw HTTP, or an OpenAI-compatible client by pointing requests at your vault endpoint URL.
+- [Standard Vault Pricing](https://docs.cohere.com/docs/model-vault/standard/pricing.md): Standard Vault pricing models (Fixed and Flex) and per-model performance tiers and rates.
+- [Encrypted Vault Overview](https://docs.cohere.com/docs/model-vault/encrypted.md): Encrypted Vaults add confidential computing to Model Vault, so prompts and responses stay protected end to end with verifiable attestation.
+- [Supported Models](https://docs.cohere.com/docs/model-vault/encrypted/supported-models.md): Which Cohere models are available in Model Vault Encrypted, the supported confidential-computing GPUs, and the isolating architecture.
+- [Calling an Encrypted Vault over the API](https://docs.cohere.com/docs/model-vault/encrypted/api-usage.md): Call an Encrypted Vault through the Cohere OHTTP proxy that verifies the TEE and encrypts end to end before any data is sent.
+- [Confidential Computing Primer](https://docs.cohere.com/docs/model-vault/encrypted/confidential-computing.md): A primer on the trusted execution environments and GPU confidential computing that power Model Vault Encrypted.
+- [Security Model](https://docs.cohere.com/docs/model-vault/encrypted/security-model.md): The trust boundary and threat model for Model Vault Encrypted: who can and cannot access your data.
+- [Remote Attestation](https://docs.cohere.com/docs/model-vault/encrypted/attestation.md): How remote attestation and the Passport model with Intel Trust Authority prove which code is running inside a Model Vault Encrypted deployment.
+- [Verifying Your Deployment](https://docs.cohere.com/docs/model-vault/encrypted/verifying-deployment.md): How to verify a Model Vault Encrypted deployment: automatic client-side checks and the attestation details you can inspect in the Model Vault app.
+- [Encryption & Key Management](https://docs.cohere.com/docs/model-vault/encrypted/encryption-key-management.md): How Model Vault Encrypted protects data in transit, at rest, and in use, and how encryption keys and Zero Data Retention are handled.
+- [Compliance](https://docs.cohere.com/docs/model-vault/encrypted/compliance.md): How Model Vault Encrypted supports compliance requirements such as GDPR, HIPAA, and SOC 2 through hardware-enforced confidentiality and verifiable attestation.
+- [Model Vault Encrypted Pricing](https://docs.cohere.com/docs/model-vault/encrypted/pricing.md): Pricing for Model Vault Encrypted, Cohere's confidential-computing inference environment.
+- [Frequently Asked Questions About Model Vault Encrypted](https://docs.cohere.com/docs/model-vault/encrypted/faq.md): Answers to common questions about Model Vault Encrypted: data privacy, attestation and verification, the trust boundary, keys, compliance, and performance.
+- [Model Vault with North](https://docs.cohere.com/docs/model-vault/model-vault-with-north.md): Run the North application in your environment and route model inference to your vault endpoints.
 - [An Overview of Cohere's Models](https://docs.cohere.com/docs/models.md): Cohere has a variety of models that cover many different use cases. If you need more customization, you can train a model to tune it to your specific use case.
 - [Cohere's Command A+ Model](https://docs.cohere.com/docs/command-a-plus.md): Command A+ is a Mixture of Experts (MoE) model with 25B active and 218B total parameters, excelling in agentic, reasoning, vision, and multilingual tasks.
 - [Command A](https://docs.cohere.com/docs/command-a.md): Command A is a performant mode good at tool use, RAG, agents, and multilingual use cases. It has 111 billion parameters and a 256k context length.

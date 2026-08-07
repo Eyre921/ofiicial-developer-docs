@@ -74,7 +74,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: subpackage_listen/v2.listen.v2-publish
+      operationId: listen-v-2-publish
       summary: Server messages
       message:
         oneOf:
@@ -89,7 +89,7 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_listen/v2.listen.v2-server-4-ListenV2FatalError
     subscribe:
-      operationId: subpackage_listen/v2.listen.v2-subscribe
+      operationId: listen-v-2-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -327,8 +327,8 @@ components:
           type: string
           description: The individual punctuated, properly-cased word from the transcript
         confidence:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Confidence that this word was transcribed correctly
         start:
           type: number
@@ -384,12 +384,12 @@ components:
           type: integer
           description: The index of the current turn
         audio_window_start:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Start time in seconds of the audio range that was transcribed
         audio_window_end:
-          type: string
-          title: float
+          type: number
+          format: double
           description: End time in seconds of the audio range that was transcribed
         transcript:
           type: string
@@ -401,8 +401,8 @@ components:
               #/components/schemas/ChannelsListenV2MessagesListenV2TurnInfoWordsItems
           description: The words in the `transcript`
         end_of_turn_confidence:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Confidence that no more speech is coming in this turn
         languages:
           type: array

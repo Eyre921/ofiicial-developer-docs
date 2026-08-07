@@ -15,694 +15,199 @@ Update the source file of a file document. The document name, content, and metad
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/update-file
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/{documentation_id}/update-file:
-    patch:
-      operationId: update_file
-      summary: Update File Document
-      description: >-
-        Update the source file of a file document. The document name, content,
-        and metadata are updated to reflect the new file. Any manual content
-        edits will be overwritten.
-      tags:
-        - document
-      parameters:
-        - name: documentation_id
-          in: path
-          description: >-
-            The id of a document from the knowledge base. This is returned on
-            document addition.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/conversational_ai_knowledge_base_document_update_file_Response_200
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    Documentation that the agent will have access to in order to
-                    interact with users.
-              required:
-                - file
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    KnowledgeBaseDocumentMetadataResponseModel:
-      type: object
-      properties:
-        created_at_unix_secs:
-          type: integer
-        last_updated_at_unix_secs:
-          type: integer
-        size_bytes:
-          type: integer
-      required:
-        - created_at_unix_secs
-        - last_updated_at_unix_secs
-        - size_bytes
-      title: KnowledgeBaseDocumentMetadataResponseModel
-    DocumentUsageModeEnum:
-      type: string
-      enum:
-        - prompt
-        - auto
-      default: auto
-      title: DocumentUsageModeEnum
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    KnowledgeBaseFolderPathSegmentResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type:
-            - string
-            - 'null'
-      required:
-        - id
-        - name
-      title: KnowledgeBaseFolderPathSegmentResponseModel
-    ContentFormat:
-      type: string
-      enum:
-        - html
-        - markdown
-      default: html
-      description: >-
-        Canonical representation of a knowledge base document's stored content.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
+## Request
 
-        HTML is the legacy default; documents created before this field existed
-        are
+### Path parameters
 
-        interpreted as HTML.
-      title: ContentFormat
-    AutoSyncInfo:
-      type: object
-      properties:
-        minimum_frequency_days:
-          type: integer
-          default: 7
-          description: Maximum number of days between automatic syncs
-        auto_remove:
-          type: boolean
-          default: false
-          description: Whether to remove the document if the URL becomes unavailable
-        consec_failures:
-          type: integer
-          default: 0
-          description: Number of consecutive sync failures
-        next_refresh_by:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Unix timestamp for the next scheduled sync or None (in case of
-            folders)
-      title: AutoSyncInfo
-    ExternalSyncProvider:
-      type: string
-      enum:
-        - google_drive
-      title: ExternalSyncProvider
-    ExternalFileSyncInfo:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ExternalSyncProvider'
-          description: Provider identifier
-        source_entity_id:
-          type: string
-          description: Entity ID in the external system
-        integration_connection_id:
-          type: string
-          description: Integration connection instance ID
-        source_parent_entity_id:
-          type: string
-          description: Folder ID in the external system this file was synced from
-        source_mime_type:
-          type: string
-          description: Original MIME type in the external system
-        source_modified_time:
-          type: string
-          format: date-time
-          description: Last modified time from the external system
-        root_folder_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            KB folder ID of the sync root, used to query all entities under a
-            sync tree
-      required:
-        - type
-        - source_entity_id
-        - integration_connection_id
-        - source_parent_entity_id
-        - source_mime_type
-        - source_modified_time
-      description: Tracks the link back to the original file in an external source.
-      title: ExternalFileSyncInfo
-    CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
-    FileRefreshStatus:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/CrawlStatus'
-          default: queued
-        enqueued_at:
-          type:
-            - integer
-            - 'null'
-        started_at:
-          type:
-            - integer
-            - 'null'
-        completed_at:
-          type:
-            - integer
-            - 'null'
-        last_synced_at:
-          type:
-            - integer
-            - 'null'
-        error_message:
-          type:
-            - string
-            - 'null'
-      description: In-flight/last refresh state for an externally-synced KB file.
-      title: FileRefreshStatus
-    ExternalFolderSyncInfo:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ExternalSyncProvider'
-          description: Provider identifier
-        source_entity_id:
-          type: string
-          description: Entity ID in the external system
-        integration_connection_id:
-          type: string
-          description: Integration connection instance ID
-        root_folder_id:
-          type:
-            - string
-            - 'null'
-          description: KB folder ID of the sync root. None means this folder is the root.
-        sync_cursor:
-          type:
-            - string
-            - 'null'
-          description: Opaque cursor for incremental sync, interpreted by the provider
-        last_sync_at:
-          type:
-            - integer
-            - 'null'
-          description: Unix timestamp of last completed sync
-      required:
-        - type
-        - source_entity_id
-        - integration_connection_id
-      description: Metadata for a KB folder that mirrors an external source folder.
-      title: ExternalFolderSyncInfo
-    ExternalSyncJobTrigger:
-      type: string
-      enum:
-        - on_demand
-        - on_connect
-        - auto
-      title: ExternalSyncJobTrigger
-    ExternalSyncJobType:
-      type: string
-      enum:
-        - full
-        - incremental
-      title: ExternalSyncJobType
-    KbExternalSyncJob:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ExternalSyncProvider'
-        folder_id:
-          type: string
-        integration_connection_id:
-          type: string
-        triggered_by:
-          $ref: '#/components/schemas/ExternalSyncJobTrigger'
-        status:
-          $ref: '#/components/schemas/CrawlStatus'
-          default: queued
-        sync_type:
-          oneOf:
-            - $ref: '#/components/schemas/ExternalSyncJobType'
-            - type: 'null'
-        items_identified:
-          type: integer
-          default: 0
-        items_processed:
-          type: integer
-          default: 0
-        error_message:
-          type:
-            - string
-            - 'null'
-        started_at:
-          type:
-            - integer
-            - 'null'
-        completed_at:
-          type:
-            - integer
-            - 'null'
-        updated_at:
-          type: integer
-        id:
-          type: string
-        created_at:
-          type: integer
-      required:
-        - type
-        - folder_id
-        - integration_connection_id
-        - triggered_by
-        - updated_at
-        - id
-        - created_at
-      title: KbExternalSyncJob
-    conversational_ai_knowledge_base_document_update_file_Response_200:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - url
-              description: 'Discriminator value: url'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            url:
-              type: string
-            extracted_inner_html:
-              type: string
-            content_format:
-              $ref: '#/components/schemas/ContentFormat'
-              default: html
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - url
-            - extracted_inner_html
-          description: GetKnowledgeBaseURLResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - file
-              description: 'Discriminator value: file'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            extracted_inner_html:
-              type: string
-            content_format:
-              $ref: '#/components/schemas/ContentFormat'
-              default: html
-            filename:
-              type: string
-            external_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/ExternalFileSyncInfo'
-                - type: 'null'
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-            refresh_status:
-              oneOf:
-                - $ref: '#/components/schemas/FileRefreshStatus'
-                - type: 'null'
-              description: >-
-                In-flight or last refresh state for an externally-synced file.
-                Used by clients to render sync progress and disable re-sync
-                while a refresh is queued or processing.
-            is_frozen:
-              type: boolean
-              default: false
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - extracted_inner_html
-            - filename
-          description: GetKnowledgeBaseFileResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - text
-              description: 'Discriminator value: text'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            extracted_inner_html:
-              type: string
-            content_format:
-              $ref: '#/components/schemas/ContentFormat'
-              default: html
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - extracted_inner_html
-          description: GetKnowledgeBaseTextResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - folder
-              description: 'Discriminator value: folder'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            children_count:
-              type: integer
-            document_count:
-              type: integer
-              description: >-
-                Number of non-folder documents anywhere in this folder's subtree
-                (recursive). Counting stops past 1000;
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-            external_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/ExternalFolderSyncInfo'
-                - type: 'null'
-            is_frozen:
-              type: boolean
-              default: false
-            active_sync_job:
-              oneOf:
-                - $ref: '#/components/schemas/KbExternalSyncJob'
-                - type: 'null'
-              description: >-
-                Most recent (in-flight or terminal) external sync job for this
-                folder, if any. Used by clients to render sync progress.
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - children_count
-            - document_count
-          description: GetKnowledgeBaseFolderResponseModel variant
-      discriminator:
-        propertyName: type
-      title: conversational_ai_knowledge_base_document_update_file_Response_200
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `documentation_id` (string, required) — The id of a document from the knowledge base. This is returned on document addition.
 
-```
+### Body (multipart/form-data)
+
+- `file` (file, required) — Documentation that the agent will have access to in order to interact with users.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `object`
+  - `type`: `url` (GetKnowledgeBaseURLResponseModel)
+    - `access_info` (object, required)
+      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+      - `creator_name` (string, required) — Name of the agent's creator
+      - `creator_email` (string, required) — Email of the agent's creator
+      - `role` (enum, required) — The role of the user making the request
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `extracted_inner_html` (string, required)
+    - `id` (string, required)
+    - `metadata` (object, required)
+      - `created_at_unix_secs` (integer, required)
+      - `last_updated_at_unix_secs` (integer, required)
+      - `size_bytes` (integer, required)
+    - `name` (string, required)
+    - `supported_usages` (list of enum, required)
+      - Allowed values: `prompt`, `auto`
+    - `url` (string, required)
+    - `auto_sync_info` (object, optional, nullable)
+      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+    - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
+      - Allowed values: `html`, `markdown`
+    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+      - `id` (string, required)
+      - `name` (string, required, nullable)
+  - `type`: `file` (GetKnowledgeBaseFileResponseModel)
+    - `access_info` (object, required)
+      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+      - `creator_name` (string, required) — Name of the agent's creator
+      - `creator_email` (string, required) — Email of the agent's creator
+      - `role` (enum, required) — The role of the user making the request
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `extracted_inner_html` (string, required)
+    - `filename` (string, required)
+    - `id` (string, required)
+    - `metadata` (object, required)
+      - `created_at_unix_secs` (integer, required)
+      - `last_updated_at_unix_secs` (integer, required)
+      - `size_bytes` (integer, required)
+    - `name` (string, required)
+    - `supported_usages` (list of enum, required)
+      - Allowed values: `prompt`, `auto`
+    - `auto_sync_info` (object, optional, nullable)
+      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+    - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
+      - Allowed values: `html`, `markdown`
+    - `external_sync_info` (object, optional, nullable) — Tracks the link back to the original file in an external source.
+      - `type` (enum, required) — Provider identifier
+        - Allowed values: `google_drive`
+      - `source_entity_id` (string, required) — Entity ID in the external system
+      - `integration_connection_id` (string, required) — Integration connection instance ID
+      - `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
+      - `source_mime_type` (string, required) — Original MIME type in the external system
+      - `source_modified_time` (string, required) — Last modified time from the external system
+      - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root, used to query all entities under a sync tree
+    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+      - `id` (string, required)
+      - `name` (string, required, nullable)
+    - `is_frozen` (boolean, optional, default: false)
+    - `refresh_status` (object, optional, nullable) — In-flight or last refresh state for an externally-synced file. Used by clients to render sync progress and disable re-sync while a refresh is queued or processing.
+      - `status` (enum, optional, default: queued)
+        - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+      - `enqueued_at` (integer, optional, nullable)
+      - `started_at` (integer, optional, nullable)
+      - `completed_at` (integer, optional, nullable)
+      - `last_synced_at` (integer, optional, nullable)
+      - `error_message` (string, optional, nullable)
+  - `type`: `text` (GetKnowledgeBaseTextResponseModel)
+    - `access_info` (object, required)
+      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+      - `creator_name` (string, required) — Name of the agent's creator
+      - `creator_email` (string, required) — Email of the agent's creator
+      - `role` (enum, required) — The role of the user making the request
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `extracted_inner_html` (string, required)
+    - `id` (string, required)
+    - `metadata` (object, required)
+      - `created_at_unix_secs` (integer, required)
+      - `last_updated_at_unix_secs` (integer, required)
+      - `size_bytes` (integer, required)
+    - `name` (string, required)
+    - `supported_usages` (list of enum, required)
+      - Allowed values: `prompt`, `auto`
+    - `content_format` (enum, optional, default: html) — Canonical representation of a knowledge base document's stored content. HTML is the legacy default; documents created before this field existed are interpreted as HTML.
+      - Allowed values: `html`, `markdown`
+    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+      - `id` (string, required)
+      - `name` (string, required, nullable)
+  - `type`: `folder` (GetKnowledgeBaseFolderResponseModel)
+    - `access_info` (object, required)
+      - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+      - `creator_name` (string, required) — Name of the agent's creator
+      - `creator_email` (string, required) — Email of the agent's creator
+      - `role` (enum, required) — The role of the user making the request
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+        - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+      - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+        - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+    - `children_count` (integer, required)
+    - `document_count` (integer, required) — Number of non-folder documents anywhere in this folder's subtree (recursive). Counting stops past 1000;
+    - `id` (string, required)
+    - `metadata` (object, required)
+      - `created_at_unix_secs` (integer, required)
+      - `last_updated_at_unix_secs` (integer, required)
+      - `size_bytes` (integer, required)
+    - `name` (string, required)
+    - `supported_usages` (list of enum, required)
+      - Allowed values: `prompt`, `auto`
+    - `active_sync_job` (object, optional, nullable) — Most recent (in-flight or terminal) external sync job for this folder, if any. Used by clients to render sync progress.
+      - `type` (enum, required)
+        - Allowed values: `google_drive`
+      - `folder_id` (string, required)
+      - `integration_connection_id` (string, required)
+      - `triggered_by` (enum, required)
+        - Allowed values: `on_demand`, `on_connect`, `auto`
+      - `updated_at` (integer, required)
+      - `id` (string, required)
+      - `created_at` (integer, required)
+      - `status` (enum, optional, default: queued)
+        - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+      - `sync_type` (enum, optional, nullable)
+        - Allowed values: `full`, `incremental`
+      - `items_identified` (integer, optional, default: 0)
+      - `items_processed` (integer, optional, default: 0)
+      - `error_message` (string, optional, nullable)
+      - `started_at` (integer, optional, nullable)
+      - `completed_at` (integer, optional, nullable)
+    - `auto_sync_info` (object, optional, nullable)
+      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+      - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+      - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+    - `external_sync_info` (object, optional, nullable) — Metadata for a KB folder that mirrors an external source folder.
+      - `type` (enum, required) — Provider identifier
+        - Allowed values: `google_drive`
+      - `source_entity_id` (string, required) — Entity ID in the external system
+      - `integration_connection_id` (string, required) — Integration connection instance ID
+      - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root. None means this folder is the root.
+      - `sync_cursor` (string, optional, nullable) — Opaque cursor for incremental sync, interpreted by the provider
+      - `last_sync_at` (integer, optional, nullable) — Unix timestamp of last completed sync
+    - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+    - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+      - `id` (string, required)
+      - `name` (string, required, nullable)
+    - `is_frozen` (boolean, optional, default: false)
 
 ## Examples
-
-
 
 **Request**
 

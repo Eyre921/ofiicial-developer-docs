@@ -15,148 +15,38 @@ Create a new procedure for the agent on a branch.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures:
-    post:
-      operationId: create
-      summary: Create Procedure
-      description: Create a new procedure for the agent on a branch.
-      tags:
-        - procedures
-      parameters:
-        - name: agent_id
-          in: path
-          description: Agent ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: branch_id
-          in: path
-          description: Branch ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateProcedureResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/CreateProcedureRequestModel'
-                - type: 'null'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ProcedureType:
-      type: string
-      enum:
-        - free_form
-        - deterministic
-      default: free_form
-      title: ProcedureType
-    CreateProcedureRequestModel:
-      type: object
-      properties:
-        name:
-          type: string
-          default: ''
-          description: Procedure name
-        content:
-          type: string
-          default: ''
-          description: Initial procedure content
-        type:
-          $ref: '#/components/schemas/ProcedureType'
-          default: free_form
-          description: Procedure type
-        trigger:
-          type:
-            - string
-            - 'null'
-          description: >-
-            When the agent should use this procedure. Empty string means this is
-            a sub-procedure that should only start when another procedure
-            references it. If omitted or null, the trigger is derived from the
-            content instead. Also accepts `description` as an alias.
-      title: CreateProcedureRequestModel
-    CreateProcedureResponseModel:
-      type: object
-      properties:
-        procedure_id:
-          type: string
-          description: ID of the created procedure
-      required:
-        - procedure_id
-      title: CreateProcedureResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — Agent ID to get the procedure draft from
+- `branch_id` (string, required) — Branch ID to get the procedure draft from
+
+### Body (application/json)
+
+- `name` (string, optional, default: ) — Procedure name
+- `content` (string, optional, default: ) — Initial procedure content
+- `type` (enum, optional, default: free_form) — Procedure type
+  - Allowed values: `free_form`, `deterministic`
+- `trigger` (string, optional, nullable) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it. If omitted or null, the trigger is derived from the content instead. Also accepts `description` as an alias.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `procedure_id` (string, required) — ID of the created procedure
 
 ## Examples
-
-
 
 **Request**
 

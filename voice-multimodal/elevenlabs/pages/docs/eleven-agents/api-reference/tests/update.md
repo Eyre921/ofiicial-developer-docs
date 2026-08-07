@@ -15,2872 +15,2579 @@ Updates an agent response test by ID.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agent-testing/{test_id}:
-    put:
-      operationId: update
-      summary: Update Agent Response Test
-      description: Updates an agent response test by ID.
-      tags:
-        - tests
-      parameters:
-        - name: test_id
-          in: path
-          description: The id of a chat response test. This is returned on test creation.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_conversationalAi/tests:TestsUpdateResponse
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        description: Agent test to update
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/type_conversationalAi/tests:TestsUpdateRequestBody
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ConversationHistoryTranscriptCommonModelInputRole:
-      type: string
-      enum:
-        - user
-        - agent
-      title: ConversationHistoryTranscriptCommonModelInputRole
-    type_:AgentMetadata:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        branch_id:
-          type: string
-        workflow_node_id:
-          type: string
-        version_id:
-          type: string
-      required:
-        - agent_id
-      title: AgentMetadata
-    type_:ConversationHistoryMultivoiceMessagePartModel:
-      type: object
-      properties:
-        text:
-          type: string
-        voice_label:
-          type: string
-        time_in_call_secs:
-          type: integer
-      required:
-        - text
-      description: Represents a single voice part of a multi-voice message.
-      title: ConversationHistoryMultivoiceMessagePartModel
-    type_:ConversationHistoryMultivoiceMessageModel:
-      type: object
-      properties:
-        parts:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryMultivoiceMessagePartModel
-      required:
-        - parts
-      description: Represents a message from a multi-voice agent.
-      title: ConversationHistoryMultivoiceMessageModel
-    type_:ToolType:
-      type: string
-      enum:
-        - system
-        - webhook
-        - client
-        - mcp
-        - workflow
-        - api_integration_webhook
-        - api_integration_mcp
-        - smb
-      title: ToolType
-    type_:ConversationHistoryTranscriptToolCallWebhookDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - webhook
-        method:
-          type: string
-        url:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        path_params:
-          type: object
-          additionalProperties:
-            type: string
-        query_params:
-          type: object
-          additionalProperties:
-            type: string
-        body:
-          type: string
-      required:
-        - method
-        - url
-      title: ConversationHistoryTranscriptToolCallWebhookDetails
-    type_:ConversationHistoryTranscriptToolCallCommonModelInputToolDetails:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            integration_id:
-              type: string
-              default: ''
-            credential_id:
-              type: string
-              default: ''
-            integration_connection_id:
-              type: string
-              default: ''
-            webhook_details:
-              $ref: >-
-                #/components/schemas/type_:ConversationHistoryTranscriptToolCallWebhookDetails
-          required:
-            - type
-            - webhook_details
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            parameters:
-              type: string
-          required:
-            - type
-            - parameters
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-            mcp_server_id:
-              type: string
-            mcp_server_name:
-              type: string
-            integration_type:
-              type: string
-            parameters:
-              type: object
-              additionalProperties:
-                type: string
-            approval_policy:
-              type: string
-            requires_approval:
-              type: boolean
-              default: false
-            mcp_tool_name:
-              type: string
-              default: ''
-            mcp_tool_description:
-              type: string
-              default: ''
-          required:
-            - type
-            - mcp_server_id
-            - mcp_server_name
-            - integration_type
-            - approval_policy
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-            method:
-              type: string
-            url:
-              type: string
-            headers:
-              type: object
-              additionalProperties:
-                type: string
-            path_params:
-              type: object
-              additionalProperties:
-                type: string
-            query_params:
-              type: object
-              additionalProperties:
-                type: string
-            body:
-              type: string
-          required:
-            - type
-            - method
-            - url
-      discriminator:
-        propertyName: type
-      title: ConversationHistoryTranscriptToolCallCommonModelInputToolDetails
-    type_:ConversationHistoryTranscriptToolCallCommonModelInput:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/type_:ToolType'
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        params_as_json:
-          type: string
-        tool_has_been_called:
-          type: boolean
-        tool_details:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelInputToolDetails
-      required:
-        - request_id
-        - tool_name
-        - params_as_json
-        - tool_has_been_called
-      title: ConversationHistoryTranscriptToolCallCommonModelInput
-    type_:DynamicVariableUpdateCommonModel:
-      type: object
-      properties:
-        variable_name:
-          type: string
-        old_value:
-          type: string
-        new_value:
-          type: string
-        updated_at:
-          type: number
-          format: double
-        tool_name:
-          type: string
-        tool_request_id:
-          type: string
-      required:
-        - variable_name
-        - new_value
-        - updated_at
-        - tool_name
-        - tool_request_id
-      description: Tracks a dynamic variable update that occurred during tool execution.
-      title: DynamicVariableUpdateCommonModel
-    type_:ConversationHistoryTranscriptOtherToolsResultCommonModelType:
-      type: string
-      enum:
-        - client
-        - webhook
-        - mcp
-        - code
-      title: ConversationHistoryTranscriptOtherToolsResultCommonModelType
-    type_:ConversationHistoryTranscriptOtherToolsResultCommonModel:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptOtherToolsResultCommonModelType
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-      title: ConversationHistoryTranscriptOtherToolsResultCommonModel
-    type_:KnowledgeBaseRagToolStatus:
-      type: string
-      enum:
-        - success
-        - no_documents
-        - no_results
-      default: success
-      title: KnowledgeBaseRagToolStatus
-    type_:KnowledgeBaseRagChunkModel:
-      type: object
-      properties:
-        chunk_id:
-          type: string
-        document_id:
-          type: string
-        content:
-          type: string
-      required:
-        - chunk_id
-        - document_id
-        - content
-      title: KnowledgeBaseRagChunkModel
-    type_:KnowledgeBaseToolStatus:
-      type: string
-      enum:
-        - success
-        - no_matching_documents
-        - no_results
-      default: success
-      title: KnowledgeBaseToolStatus
-    type_:TransferToAgentToolResultSuccessModelInputBranchInfo:
-      oneOf:
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - defaulting_to_main
-              description: 'Discriminator value: defaulting_to_main'
-            branch_id:
-              type: string
-          required:
-            - branch_reason
-            - branch_id
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - traffic_split
-              description: 'Discriminator value: traffic_split'
-            branch_id:
-              type: string
-            traffic_percentage:
-              type: number
-              format: double
-          required:
-            - branch_reason
-            - branch_id
-            - traffic_percentage
-      discriminator:
-        propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelInputBranchInfo
-    type_:ConversationHistoryTranscriptSystemToolResultCommonModelInputResult:
-      oneOf:
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - dummy
-              description: 'Discriminator value: dummy'
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - end_call_success
-              description: 'Discriminator value: end_call_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-            message:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_rag_success
-              description: 'Discriminator value: knowledge_base_rag_success'
-            status:
-              $ref: '#/components/schemas/type_:KnowledgeBaseRagToolStatus'
-            chunk_count:
-              type: integer
-              default: 0
-              description: Number of relevant chunks retrieved
-            message:
-              type: string
-              default: Referenced knowledge base.
-              description: Human-readable status for the LLM about the search results
-            chunks:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:KnowledgeBaseRagChunkModel'
-              description: >-
-                Retrieved chunks; populated only in the
-                rag-result-in-tool-result mode
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_success
-              description: 'Discriminator value: knowledge_base_success'
-            status:
-              $ref: '#/components/schemas/type_:KnowledgeBaseToolStatus'
-            chunk_count:
-              type: integer
-              default: 0
-            message:
-              type: string
-              default: Referenced knowledge base.
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - language_detection_success
-              description: 'Discriminator value: language_detection_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-            language:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_error
-              description: 'Discriminator value: play_dtmf_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-            details:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_success
-              description: 'Discriminator value: play_dtmf_success'
-            status:
-              type: string
-              enum:
-                - success
-            dtmf_tones:
-              type: string
-            reason:
-              type: string
-          required:
-            - result_type
-            - dtmf_tones
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - skip_turn_success
-              description: 'Discriminator value: skip_turn_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - testing_tool_result
-              description: 'Discriminator value: testing_tool_result'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-              default: Skipping tool call in test mode
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_error
-              description: 'Discriminator value: transfer_to_agent_error'
-            status:
-              type: string
-              enum:
-                - error
-            from_agent:
-              type: string
-            error:
-              type: string
-          required:
-            - result_type
-            - from_agent
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_success
-              description: 'Discriminator value: transfer_to_agent_success'
-            status:
-              type: string
-              enum:
-                - success
-            from_agent:
-              type: string
-            to_agent:
-              type: string
-            to_node:
-              type: string
-            condition:
-              type: string
-            delay_ms:
-              type: integer
-              default: 0
-            transfer_message:
-              type: string
-            enable_transferred_agent_first_message:
-              type: boolean
-              default: false
-            branch_info:
-              $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelInputBranchInfo
-            preserve_client_tts_overrides:
-              type: boolean
-              default: false
-          required:
-            - result_type
-            - from_agent
-            - to_agent
-            - condition
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_error
-              description: 'Discriminator value: transfer_to_number_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-            details:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_exotel_success
-              description: 'Discriminator value: transfer_to_number_exotel_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            agent_message:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_sip_success
-              description: 'Discriminator value: transfer_to_number_sip_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_twilio_success
-              description: 'Discriminator value: transfer_to_number_twilio_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            client_message:
-              type: string
-            agent_message:
-              type: string
-            conference_name:
-              type: string
-            post_dial_digits:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-            - agent_message
-            - conference_name
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - voicemail_detection_success
-              description: 'Discriminator value: voicemail_detection_success'
-            status:
-              type: string
-              enum:
-                - success
-            voicemail_message:
-              type: string
-            reason:
-              type: string
-          required:
-            - result_type
-      discriminator:
-        propertyName: result_type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModelInputResult
-    type_:ConversationHistoryTranscriptSystemToolResultCommonModelInput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - system
-        result:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelInputResult
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModelInput
-    type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - api_integration_webhook
-        integration_id:
-          type: string
-          default: ''
-        credential_id:
-          type: string
-          default: ''
-        integration_connection_id:
-          type: string
-          default: ''
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: >-
-        ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
-    type_:WorkflowToolNestedToolsStepModelInputResultsItem:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelInput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
-      title: WorkflowToolNestedToolsStepModelInputResultsItem
-    type_:WorkflowToolResponseModelInputStepsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - edge
-              description: 'Discriminator value: edge'
-            step_latency_secs:
-              type: number
-              format: double
-            edge_id:
-              type: string
-            target_node_id:
-              type: string
-          required:
-            - type
-            - step_latency_secs
-            - edge_id
-            - target_node_id
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - max_iterations_exceeded
-              description: 'Discriminator value: max_iterations_exceeded'
-            step_latency_secs:
-              type: number
-              format: double
-            max_iterations:
-              type: integer
-          required:
-            - type
-            - step_latency_secs
-            - max_iterations
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - nested_tools
-              description: 'Discriminator value: nested_tools'
-            step_latency_secs:
-              type: number
-              format: double
-            node_id:
-              type: string
-            requests:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelInput
-            results:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:WorkflowToolNestedToolsStepModelInputResultsItem
-            is_successful:
-              type: boolean
-          required:
-            - type
-            - step_latency_secs
-            - node_id
-            - requests
-            - results
-            - is_successful
-      discriminator:
-        propertyName: type
-      title: WorkflowToolResponseModelInputStepsItem
-    type_:WorkflowToolResponseModelInput:
-      type: object
-      properties:
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:WorkflowToolResponseModelInputStepsItem'
-      description: A common model for workflow tool responses.
-      title: WorkflowToolResponseModelInput
-    type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - workflow
-        result:
-          $ref: '#/components/schemas/type_:WorkflowToolResponseModelInput'
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
-    type_:ConversationHistoryTranscriptCommonModelInputToolResultsItem:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelInput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
-      title: ConversationHistoryTranscriptCommonModelInputToolResultsItem
-    type_:UserFeedbackScore:
-      type: string
-      enum:
-        - like
-        - dislike
-      title: UserFeedbackScore
-    type_:UserFeedback:
-      type: object
-      properties:
-        score:
-          $ref: '#/components/schemas/type_:UserFeedbackScore'
-        time_in_call_secs:
-          type: integer
-      required:
-        - score
-        - time_in_call_secs
-      title: UserFeedback
-    type_:MetricRecord:
-      type: object
-      properties:
-        elapsed_time:
-          type: number
-          format: double
-      required:
-        - elapsed_time
-      title: MetricRecord
-    type_:ConversationTurnMetrics:
-      type: object
-      properties:
-        metrics:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/type_:MetricRecord'
-        convai_asr_provider:
-          type: string
-        convai_tts_model:
-          type: string
-        convai_tts_cascade:
-          type: string
-      title: ConversationTurnMetrics
-    type_:RagChunkMetadata:
-      type: object
-      properties:
-        document_id:
-          type: string
-        chunk_id:
-          type: string
-        vector_distance:
-          type: number
-          format: double
-      required:
-        - document_id
-        - chunk_id
-        - vector_distance
-      title: RagChunkMetadata
-    type_:EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    type_:RagRetrievalInfo:
-      type: object
-      properties:
-        chunks:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:RagChunkMetadata'
-        embedding_model:
-          $ref: '#/components/schemas/type_:EmbeddingModelEnum'
-        retrieval_query:
-          type: string
-        rag_latency_secs:
-          type: number
-          format: double
-        used_chunk_ids:
-          type: array
-          items:
-            type: string
-      required:
-        - chunks
-        - embedding_model
-        - retrieval_query
-        - rag_latency_secs
-      title: RagRetrievalInfo
-    type_:LlmTokensCategoryUsage:
-      type: object
-      properties:
-        tokens:
-          type: integer
-          default: 0
-        price:
-          type: number
-          format: double
-          default: 0
-      title: LlmTokensCategoryUsage
-    type_:LlmInputOutputTokensUsage:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/type_:LlmTokensCategoryUsage'
-        input_cache_read:
-          $ref: '#/components/schemas/type_:LlmTokensCategoryUsage'
-        input_cache_write:
-          $ref: '#/components/schemas/type_:LlmTokensCategoryUsage'
-        output_total:
-          $ref: '#/components/schemas/type_:LlmTokensCategoryUsage'
-      title: LlmInputOutputTokensUsage
-    type_:LlmUsageInput:
-      type: object
-      properties:
-        model_usage:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/type_:LlmInputOutputTokensUsage'
-      title: LlmUsageInput
-    type_:ConversationReasoningModel:
-      type: object
-      properties:
-        summary:
-          type: string
-        provider_redact:
-          type: boolean
-          default: false
-      title: ConversationReasoningModel
-    type_:ChatSourceMedium:
-      type: string
-      enum:
-        - audio
-        - text
-        - image
-        - file
-      title: ChatSourceMedium
-    type_:GuardrailType:
-      type: string
-      enum:
-        - custom
-        - prompt_injection
-        - self_harm_intent
-        - violence_graphic
-        - sexual
-        - violence
-        - harassment
-        - sexual_minors
-        - self_harm
-        - self_harm_instructions
-        - harassment_threatening
-        - hate
-        - hate_threatening
-        - profanity
-        - religion_or_politics
-        - medical_and_legal
-        - guardrail
-      title: GuardrailType
-    type_:TriggeredGuardrailCommonModel:
-      type: object
-      properties:
-        guardrail_type:
-          $ref: '#/components/schemas/type_:GuardrailType'
-        guardrail_name:
-          type: string
-      required:
-        - guardrail_type
-      title: TriggeredGuardrailCommonModel
-    type_:ConversationHistoryTranscriptCommonModelInput:
-      type: object
-      properties:
-        role:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInputRole
-        agent_metadata:
-          $ref: '#/components/schemas/type_:AgentMetadata'
-        message:
-          type: string
-        multivoice_message:
-          $ref: '#/components/schemas/type_:ConversationHistoryMultivoiceMessageModel'
-        tool_calls:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelInput
-        tool_results:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInputToolResultsItem
-        feedback:
-          $ref: '#/components/schemas/type_:UserFeedback'
-        llm_override:
-          type: string
-        time_in_call_secs:
-          type: integer
-        conversation_turn_metrics:
-          $ref: '#/components/schemas/type_:ConversationTurnMetrics'
-        rag_retrieval_info:
-          $ref: '#/components/schemas/type_:RagRetrievalInfo'
-        llm_usage:
-          $ref: '#/components/schemas/type_:LlmUsageInput'
-        interrupted:
-          type: boolean
-          default: false
-        ignored_as_backchannel:
-          type: boolean
-          default: false
-        original_message:
-          type: string
-        reasoning:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ConversationReasoningModel'
-        source_medium:
-          $ref: '#/components/schemas/type_:ChatSourceMedium'
-        source_event_id:
-          type: integer
-        used_static_kb_document_ids:
-          type: array
-          items:
-            type: string
-        user_identifier:
-          type: string
-        id:
-          type: string
-        triggered_guardrails:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:TriggeredGuardrailCommonModel'
-      required:
-        - role
-        - time_in_call_secs
-      title: ConversationHistoryTranscriptCommonModelInput
-    type_:TestFromConversationMetadataInput:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-        agent_id:
-          type: string
-        branch_id:
-          type: string
-        workflow_node_id:
-          type: string
-        original_agent_reply:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInput
-          default: []
-      required:
-        - conversation_id
-        - agent_id
-      title: TestFromConversationMetadataInput
-    type_:ConversationInitiationSource:
-      type: string
-      enum:
-        - unknown
-        - android_sdk
-        - node_js_sdk
-        - react_native_sdk
-        - react_sdk
-        - js_sdk
-        - python_sdk
-        - widget
-        - sip_trunk
-        - twilio
-        - exotel
-        - genesys
-        - audiocodes
-        - swift_sdk
-        - whatsapp
-        - twilio_sms
-        - flutter_sdk
-        - zendesk_integration
-        - slack_integration
-        - telegram_integration
-        - intercom_integration
-        - freshdesk_integration
-        - salesforce_integration
-        - template_preview
-        - genesys_bot_connector
-        - subagent_tool
-      default: unknown
-      description: Enum representing the possible sources for conversation initiation.
-      title: ConversationInitiationSource
-    type_:AgentSuccessfulResponseExample:
-      type: object
-      properties:
-        response:
-          type: string
-        type:
-          type: string
-          enum:
-            - success
-      required:
-        - response
-        - type
-      title: AgentSuccessfulResponseExample
-    type_:AgentFailureResponseExample:
-      type: object
-      properties:
-        response:
-          type: string
-        type:
-          type: string
-          enum:
-            - failure
-      required:
-        - response
-        - type
-      title: AgentFailureResponseExample
-    type_:UnitTestToolCallParameterEval:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - anything
-              description: 'Discriminator value: anything'
-          required:
-            - type
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - exact
-              description: 'Discriminator value: exact'
-            expected_value:
-              type: string
-              description: The exact string value that the parameter must match.
-          required:
-            - type
-            - expected_value
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            description:
-              type: string
-              description: A description of the evaluation strategy to use for the test.
-          required:
-            - type
-            - description
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - regex
-              description: 'Discriminator value: regex'
-            pattern:
-              type: string
-              description: A regex pattern to match the agent's response against.
-          required:
-            - type
-            - pattern
-      discriminator:
-        propertyName: type
-      title: UnitTestToolCallParameterEval
-    type_:UnitTestToolCallParameter:
-      type: object
-      properties:
-        eval:
-          $ref: '#/components/schemas/type_:UnitTestToolCallParameterEval'
-        path:
-          type: string
-      required:
-        - eval
-        - path
-      title: UnitTestToolCallParameter
-    type_:ReferencedToolCommonModelType:
-      type: string
-      enum:
-        - system
-        - webhook
-        - client
-        - workflow
-        - api_integration_webhook
-        - mcp
-        - code
-      description: The type of the tool
-      title: ReferencedToolCommonModelType
-    type_:ReferencedToolCommonModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the tool
-        type:
-          $ref: '#/components/schemas/type_:ReferencedToolCommonModelType'
-          description: The type of the tool
-      required:
-        - id
-        - type
-      description: Reference to a tool for unit test evaluation.
-      title: ReferencedToolCommonModel
-    type_:UnitTestWorkflowNodeTransitionEvaluationNodeId:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - node_id
-        agent_id:
-          type: string
-          description: The ID of the agent whose workflow contains the target node.
-        target_node_id:
-          type: string
-          description: The ID of the workflow node that the agent should transition to.
-      required:
-        - agent_id
-        - target_node_id
-      title: UnitTestWorkflowNodeTransitionEvaluationNodeId
-    type_:UnitTestToolCallEvaluationModelInput:
-      type: object
-      properties:
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
-          description: >-
-            Parameters to evaluate for the agent's tool call. If empty, the tool
-            call parameters are not evaluated.
-        referenced_tool:
-          $ref: '#/components/schemas/type_:ReferencedToolCommonModel'
-          description: The tool to evaluate a call against.
-        verify_absence:
-          type: boolean
-          default: false
-          description: Whether to verify that the tool was NOT called.
-        workflow_node_transition:
-          $ref: >-
-            #/components/schemas/type_:UnitTestWorkflowNodeTransitionEvaluationNodeId
-          description: >-
-            Configuration for testing workflow node transitions. When set, the
-            test will verify the agent transitions to the specified workflow
-            node.
-      title: UnitTestToolCallEvaluationModelInput
-    type_:MockingStrategy:
-      type: string
-      enum:
-        - all
-        - selected
-        - none
-      default: none
-      title: MockingStrategy
-    type_:MockNoMatchBehavior:
-      type: string
-      enum:
-        - call_real_tool
-        - raise_error
-      default: raise_error
-      title: MockNoMatchBehavior
-    type_:SimulationToolMockBehaviorConfig:
-      type: object
-      properties:
-        mocking_strategy:
-          $ref: '#/components/schemas/type_:MockingStrategy'
-          description: >-
-            Which tools to mock: 'all' mocks every mockable tool, 'selected'
-            mocks only those in mocked_tool_names/mocked_tool_ids, 'none'
-            disables mocking.
-        fallback_strategy:
-          $ref: '#/components/schemas/type_:MockNoMatchBehavior'
-          description: Behavior when no mock matches a tool call.
-        mocked_tool_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            Tool IDs to mock. Resolved to tool names before being passed to the
-            orchestrator.
-      description: >-
-        Simulation/preview-side config: tools are identified by IDs, resolved to
-        names at runtime.
-      title: SimulationToolMockBehaviorConfig
-    type_:ToolResponseMockConfigInput:
-      type: object
-      properties:
-        parameter_conditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
-          description: If the list is empty, the mock will always activate.
-        mock_result:
-          type: string
-          description: The return value the LLM sees when this mock is active.
-        is_error:
-          type: boolean
-          default: false
-          description: >-
-            If true, the mock result is surfaced to the LLM as a tool error
-            rather than a successful result.
-      required:
-        - mock_result
-      title: ToolResponseMockConfigInput
-    type_:Llm:
-      type: string
-      enum:
-        - gpt-4o-mini
-        - gpt-4o
-        - gpt-4
-        - gpt-4-turbo
-        - gpt-4.1
-        - gpt-4.1-mini
-        - gpt-4.1-nano
-        - gpt-5
-        - gpt-5.1
-        - gpt-5.2
-        - gpt-5.2-chat-latest
-        - gpt-5.4
-        - gpt-5.4-mini
-        - gpt-5.4-nano
-        - gpt-5.5
-        - gpt-5.6-sol
-        - gpt-5.6-terra
-        - gpt-5.6-luna
-        - gpt-5-mini
-        - gpt-5-nano
-        - gpt-3.5-turbo
-        - gemini-1.5-pro
-        - gemini-1.5-flash
-        - gemini-2.0-flash
-        - gemini-2.0-flash-lite
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3-pro-preview
-        - gemini-3-flash-preview
-        - gemini-3.1-pro-preview
-        - gemini-3.1-flash-lite-preview
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - gemini-3.5-flash-lite
-        - claude-sonnet-4-5
-        - claude-opus-4-7
-        - claude-opus-4-8
-        - claude-sonnet-4-6
-        - claude-sonnet-5
-        - claude-sonnet-4
-        - claude-haiku-4-5
-        - claude-3-7-sonnet
-        - claude-3-5-sonnet
-        - claude-3-5-sonnet-v1
-        - claude-3-haiku
-        - grok-beta
-        - custom-llm
-        - qwen3-4b
-        - qwen3-30b-a3b
-        - qwen36-35b-a3b
-        - qwen35-397b-a17b
-        - gpt-oss-20b
-        - gpt-oss-120b
-        - glm-45-air-fp8
-        - gemini-2.5-flash-preview-09-2025
-        - gemini-2.5-flash-lite-preview-09-2025
-        - gemini-2.5-flash-preview-05-20
-        - gemini-2.5-flash-preview-04-17
-        - gemini-2.5-flash-lite-preview-06-17
-        - gemini-2.0-flash-lite-001
-        - gemini-2.0-flash-001
-        - gemini-1.5-flash-002
-        - gemini-1.5-flash-001
-        - gemini-1.5-pro-002
-        - gemini-1.5-pro-001
-        - claude-sonnet-4@20250514
-        - claude-sonnet-4-5@20250929
-        - claude-haiku-4-5@20251001
-        - claude-3-7-sonnet@20250219
-        - claude-3-5-sonnet@20240620
-        - claude-3-5-sonnet-v2@20241022
-        - claude-3-haiku@20240307
-        - gpt-5-2025-08-07
-        - gpt-5.1-2025-11-13
-        - gpt-5.2-2025-12-11
-        - gpt-5.4-2026-03-05
-        - gpt-5.4-mini-2026-03-17
-        - gpt-5.4-nano-2026-03-17
-        - gpt-5.5-2026-04-23
-        - gpt-5-mini-2025-08-07
-        - gpt-5-nano-2025-08-07
-        - gpt-4.1-2025-04-14
-        - gpt-4.1-mini-2025-04-14
-        - gpt-4.1-nano-2025-04-14
-        - gpt-4o-mini-2024-07-18
-        - gpt-4o-2024-11-20
-        - gpt-4o-2024-08-06
-        - gpt-4o-2024-05-13
-        - gpt-4-0613
-        - gpt-4-0314
-        - gpt-4-turbo-2024-04-09
-        - gpt-3.5-turbo-0125
-        - gpt-3.5-turbo-1106
-        - watt-tool-8b
-        - watt-tool-70b
-      title: Llm
-    type_conversationalAi/tests:TestsUpdateRequestBody:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataInput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            success_condition:
-              type: string
-              default: ''
-              description: >-
-                A prompt that evaluates whether the agent's response is
-                successful. Should return True or False.
-            success_examples:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:AgentSuccessfulResponseExample'
-              description: >-
-                Non-empty list of example responses that should be considered
-                successful
-            failure_examples:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:AgentFailureResponseExample'
-              description: >-
-                Non-empty list of example responses that should be considered
-                failures
-            name:
-              type: string
-            parent_folder_id:
-              type: string
-              description: >-
-                The ID of the parent folder. If not provided, the test will be
-                moved to the root level.
-          required:
-            - type
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - tool
-              description: 'Discriminator value: tool'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataInput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            tool_call_parameters:
-              $ref: '#/components/schemas/type_:UnitTestToolCallEvaluationModelInput'
-              description: >-
-                How to evaluate the agent's tool call (if any). If empty, the
-                tool call is not evaluated.
-            check_any_tool_matches:
-              type: boolean
-              description: >-
-                If set to True this test will pass if any tool call returned by
-                the LLM matches the criteria. Otherwise it will fail if more
-                than one tool is returned by the agent.
-            name:
-              type: string
-            parent_folder_id:
-              type: string
-              description: >-
-                The ID of the parent folder. If not provided, the test will be
-                moved to the root level.
-          required:
-            - type
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - simulation
-              description: 'Discriminator value: simulation'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataInput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelInput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            success_condition:
-              type: string
-              description: >-
-                Deprecated legacy single success criterion. Use
-                success_conditions instead. At least one of success_condition or
-                success_conditions is required.
-            success_conditions:
-              type: array
-              items:
-                type: string
-              description: >-
-                List of prompts that evaluate whether the simulation was
-                successful. If provided, all criteria are evaluated and merged
-                into a final result. Capped at the maximum number of evaluation
-                criteria.
-            simulation_scenario:
-              type: string
-              default: ''
-              description: >-
-                Description of the simulation scenario and user persona for
-                simulation tests.
-            simulation_max_turns:
-              type: integer
-              default: 5
-              description: Maximum number of conversation turns for simulation tests.
-            simulation_environment:
-              type: string
-              description: >-
-                The environment to use when running this simulation test. If not
-                provided, defaults to 'production'.
-            tool_mock_config:
-              $ref: '#/components/schemas/type_:SimulationToolMockBehaviorConfig'
-              description: Configuration for which tools to mock and fallback behavior.
-            tool_mock_overrides:
-              type: object
-              additionalProperties:
-                type: array
-                items:
-                  $ref: '#/components/schemas/type_:ToolResponseMockConfigInput'
-              description: >-
-                Test-specific response mocks, keyed by tool ID. Applied ahead of
-                the tool's shared mocks and only within this test. Only take
-                effect for tools that are mocked (see tool_mock_config).
-            evaluation_model:
-              $ref: '#/components/schemas/type_:Llm'
-              description: LLM model to use for evaluating simulation results.
-            simulated_user_model:
-              $ref: '#/components/schemas/type_:Llm'
-              description: LLM model for the simulated user.
-            name:
-              type: string
-            parent_folder_id:
-              type: string
-              description: >-
-                The ID of the parent folder. If not provided, the test will be
-                moved to the root level.
-          required:
-            - type
-            - name
-      discriminator:
-        propertyName: type
-      description: Agent test to update
-      title: TestsUpdateRequestBody
-    type_:ConversationHistoryTranscriptCommonModelOutputRole:
-      type: string
-      enum:
-        - user
-        - agent
-      title: ConversationHistoryTranscriptCommonModelOutputRole
-    type_:ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            integration_id:
-              type: string
-              default: ''
-            credential_id:
-              type: string
-              default: ''
-            integration_connection_id:
-              type: string
-              default: ''
-            webhook_details:
-              $ref: >-
-                #/components/schemas/type_:ConversationHistoryTranscriptToolCallWebhookDetails
-          required:
-            - type
-            - integration_id
-            - credential_id
-            - integration_connection_id
-            - webhook_details
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            parameters:
-              type: string
-          required:
-            - type
-            - parameters
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-            mcp_server_id:
-              type: string
-            mcp_server_name:
-              type: string
-            integration_type:
-              type: string
-            parameters:
-              type: object
-              additionalProperties:
-                type: string
-            approval_policy:
-              type: string
-            requires_approval:
-              type: boolean
-              default: false
-            mcp_tool_name:
-              type: string
-              default: ''
-            mcp_tool_description:
-              type: string
-              default: ''
-          required:
-            - type
-            - mcp_server_id
-            - mcp_server_name
-            - integration_type
-            - approval_policy
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-            method:
-              type: string
-            url:
-              type: string
-            headers:
-              type: object
-              additionalProperties:
-                type: string
-            path_params:
-              type: object
-              additionalProperties:
-                type: string
-            query_params:
-              type: object
-              additionalProperties:
-                type: string
-            body:
-              type: string
-          required:
-            - type
-            - method
-            - url
-      discriminator:
-        propertyName: type
-      title: ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails
-    type_:ConversationHistoryTranscriptToolCallCommonModelOutput:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/type_:ToolType'
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        params_as_json:
-          type: string
-        tool_has_been_called:
-          type: boolean
-        tool_details:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails
-      required:
-        - request_id
-        - tool_name
-        - params_as_json
-        - tool_has_been_called
-      title: ConversationHistoryTranscriptToolCallCommonModelOutput
-    type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
-      oneOf:
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - defaulting_to_main
-              description: 'Discriminator value: defaulting_to_main'
-            branch_id:
-              type: string
-          required:
-            - branch_reason
-            - branch_id
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - traffic_split
-              description: 'Discriminator value: traffic_split'
-            branch_id:
-              type: string
-            traffic_percentage:
-              type: number
-              format: double
-          required:
-            - branch_reason
-            - branch_id
-            - traffic_percentage
-      discriminator:
-        propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
-    type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
-      oneOf:
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - dummy
-              description: 'Discriminator value: dummy'
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - end_call_success
-              description: 'Discriminator value: end_call_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-            message:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_rag_success
-              description: 'Discriminator value: knowledge_base_rag_success'
-            status:
-              $ref: '#/components/schemas/type_:KnowledgeBaseRagToolStatus'
-            chunk_count:
-              type: integer
-              default: 0
-              description: Number of relevant chunks retrieved
-            message:
-              type: string
-              default: Referenced knowledge base.
-              description: Human-readable status for the LLM about the search results
-            chunks:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:KnowledgeBaseRagChunkModel'
-              description: >-
-                Retrieved chunks; populated only in the
-                rag-result-in-tool-result mode
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_success
-              description: 'Discriminator value: knowledge_base_success'
-            status:
-              $ref: '#/components/schemas/type_:KnowledgeBaseToolStatus'
-            chunk_count:
-              type: integer
-              default: 0
-            message:
-              type: string
-              default: Referenced knowledge base.
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - language_detection_success
-              description: 'Discriminator value: language_detection_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-            language:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_error
-              description: 'Discriminator value: play_dtmf_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-            details:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_success
-              description: 'Discriminator value: play_dtmf_success'
-            status:
-              type: string
-              enum:
-                - success
-            dtmf_tones:
-              type: string
-            reason:
-              type: string
-          required:
-            - result_type
-            - dtmf_tones
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - skip_turn_success
-              description: 'Discriminator value: skip_turn_success'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - testing_tool_result
-              description: 'Discriminator value: testing_tool_result'
-            status:
-              type: string
-              enum:
-                - success
-            reason:
-              type: string
-              default: Skipping tool call in test mode
-          required:
-            - result_type
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_error
-              description: 'Discriminator value: transfer_to_agent_error'
-            status:
-              type: string
-              enum:
-                - error
-            from_agent:
-              type: string
-            error:
-              type: string
-          required:
-            - result_type
-            - from_agent
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_success
-              description: 'Discriminator value: transfer_to_agent_success'
-            status:
-              type: string
-              enum:
-                - success
-            from_agent:
-              type: string
-            to_agent:
-              type: string
-            to_node:
-              type: string
-            condition:
-              type: string
-            delay_ms:
-              type: integer
-              default: 0
-            transfer_message:
-              type: string
-            enable_transferred_agent_first_message:
-              type: boolean
-              default: false
-            branch_info:
-              $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelOutputBranchInfo
-            preserve_client_tts_overrides:
-              type: boolean
-              default: false
-          required:
-            - result_type
-            - from_agent
-            - to_agent
-            - condition
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_error
-              description: 'Discriminator value: transfer_to_number_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-            details:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_exotel_success
-              description: 'Discriminator value: transfer_to_number_exotel_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            agent_message:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_sip_success
-              description: 'Discriminator value: transfer_to_number_sip_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_twilio_success
-              description: 'Discriminator value: transfer_to_number_twilio_success'
-            status:
-              type: string
-              enum:
-                - success
-            transfer_number:
-              type: string
-            reason:
-              type: string
-            client_message:
-              type: string
-            agent_message:
-              type: string
-            conference_name:
-              type: string
-            post_dial_digits:
-              type: string
-            note:
-              type: string
-          required:
-            - result_type
-            - transfer_number
-            - agent_message
-            - conference_name
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - voicemail_detection_success
-              description: 'Discriminator value: voicemail_detection_success'
-            status:
-              type: string
-              enum:
-                - success
-            voicemail_message:
-              type: string
-            reason:
-              type: string
-          required:
-            - result_type
-      discriminator:
-        propertyName: result_type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult
-    type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - system
-        result:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModelOutput
-    type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - api_integration_webhook
-        integration_id:
-          type: string
-          default: ''
-        credential_id:
-          type: string
-          default: ''
-        integration_connection_id:
-          type: string
-          default: ''
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - is_blocked
-        - tool_has_been_called
-        - tool_latency_secs
-        - error_type
-        - raw_error_message
-        - dynamic_variable_updates
-        - type
-        - integration_id
-        - credential_id
-        - integration_connection_id
-      title: >-
-        ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
-    type_:WorkflowToolNestedToolsStepModelOutputResultsItem:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
-      title: WorkflowToolNestedToolsStepModelOutputResultsItem
-    type_:WorkflowToolResponseModelOutputStepsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - edge
-              description: 'Discriminator value: edge'
-            step_latency_secs:
-              type: number
-              format: double
-            edge_id:
-              type: string
-            target_node_id:
-              type: string
-          required:
-            - type
-            - step_latency_secs
-            - edge_id
-            - target_node_id
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - max_iterations_exceeded
-              description: 'Discriminator value: max_iterations_exceeded'
-            step_latency_secs:
-              type: number
-              format: double
-            max_iterations:
-              type: integer
-          required:
-            - type
-            - step_latency_secs
-            - max_iterations
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - nested_tools
-              description: 'Discriminator value: nested_tools'
-            step_latency_secs:
-              type: number
-              format: double
-            node_id:
-              type: string
-            requests:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelOutput
-            results:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:WorkflowToolNestedToolsStepModelOutputResultsItem
-            is_successful:
-              type: boolean
-          required:
-            - type
-            - step_latency_secs
-            - node_id
-            - requests
-            - results
-            - is_successful
-      discriminator:
-        propertyName: type
-      title: WorkflowToolResponseModelOutputStepsItem
-    type_:WorkflowToolResponseModelOutput:
-      type: object
-      properties:
-        steps:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:WorkflowToolResponseModelOutputStepsItem
-      description: A common model for workflow tool responses.
-      title: WorkflowToolResponseModelOutput
-    type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - workflow
-        result:
-          $ref: '#/components/schemas/type_:WorkflowToolResponseModelOutput'
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
-    type_:ConversationHistoryTranscriptCommonModelOutputToolResultsItem:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
-        - $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
-      title: ConversationHistoryTranscriptCommonModelOutputToolResultsItem
-    type_:LlmUsageOutput:
-      type: object
-      properties:
-        model_usage:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/type_:LlmInputOutputTokensUsage'
-      title: LlmUsageOutput
-    type_:ConversationHistoryTranscriptCommonModelOutput:
-      type: object
-      properties:
-        role:
-          $ref: >-
-            #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutputRole
-        agent_metadata:
-          $ref: '#/components/schemas/type_:AgentMetadata'
-        message:
-          type: string
-        multivoice_message:
-          $ref: '#/components/schemas/type_:ConversationHistoryMultivoiceMessageModel'
-        tool_calls:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptToolCallCommonModelOutput
-        tool_results:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutputToolResultsItem
-        feedback:
-          $ref: '#/components/schemas/type_:UserFeedback'
-        llm_override:
-          type: string
-        time_in_call_secs:
-          type: integer
-        conversation_turn_metrics:
-          $ref: '#/components/schemas/type_:ConversationTurnMetrics'
-        rag_retrieval_info:
-          $ref: '#/components/schemas/type_:RagRetrievalInfo'
-        llm_usage:
-          $ref: '#/components/schemas/type_:LlmUsageOutput'
-        interrupted:
-          type: boolean
-          default: false
-        ignored_as_backchannel:
-          type: boolean
-          default: false
-        original_message:
-          type: string
-        reasoning:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ConversationReasoningModel'
-        source_medium:
-          $ref: '#/components/schemas/type_:ChatSourceMedium'
-        source_event_id:
-          type: integer
-        used_static_kb_document_ids:
-          type: array
-          items:
-            type: string
-        user_identifier:
-          type: string
-        id:
-          type: string
-        triggered_guardrails:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:TriggeredGuardrailCommonModel'
-      required:
-        - role
-        - time_in_call_secs
-      title: ConversationHistoryTranscriptCommonModelOutput
-    type_:TestFromConversationMetadataOutput:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-        agent_id:
-          type: string
-        branch_id:
-          type: string
-        workflow_node_id:
-          type: string
-        original_agent_reply:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutput
-          default: []
-      required:
-        - conversation_id
-        - agent_id
-      title: TestFromConversationMetadataOutput
-    type_:UnitTestToolCallEvaluationModelOutput:
-      type: object
-      properties:
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
-          description: >-
-            Parameters to evaluate for the agent's tool call. If empty, the tool
-            call parameters are not evaluated.
-        referenced_tool:
-          $ref: '#/components/schemas/type_:ReferencedToolCommonModel'
-          description: The tool to evaluate a call against.
-        verify_absence:
-          type: boolean
-          default: false
-          description: Whether to verify that the tool was NOT called.
-        workflow_node_transition:
-          $ref: >-
-            #/components/schemas/type_:UnitTestWorkflowNodeTransitionEvaluationNodeId
-          description: >-
-            Configuration for testing workflow node transitions. When set, the
-            test will verify the agent transitions to the specified workflow
-            node.
-      title: UnitTestToolCallEvaluationModelOutput
-    type_:ToolResponseMockConfigOutput:
-      type: object
-      properties:
-        parameter_conditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
-          description: If the list is empty, the mock will always activate.
-        mock_result:
-          type: string
-          description: The return value the LLM sees when this mock is active.
-        is_error:
-          type: boolean
-          default: false
-          description: >-
-            If true, the mock result is surfaced to the LLM as a tool error
-            rather than a successful result.
-      required:
-        - mock_result
-      title: ToolResponseMockConfigOutput
-    type_conversationalAi/tests:TestsUpdateResponse:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataOutput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            success_condition:
-              type: string
-              default: ''
-              description: >-
-                A prompt that evaluates whether the agent's response is
-                successful. Should return True or False.
-            success_examples:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:AgentSuccessfulResponseExample'
-              description: >-
-                Non-empty list of example responses that should be considered
-                successful
-            failure_examples:
-              type: array
-              items:
-                $ref: '#/components/schemas/type_:AgentFailureResponseExample'
-              description: >-
-                Non-empty list of example responses that should be considered
-                failures
-            id:
-              type: string
-            name:
-              type: string
-          required:
-            - type
-            - id
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - tool
-              description: 'Discriminator value: tool'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataOutput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            tool_call_parameters:
-              $ref: '#/components/schemas/type_:UnitTestToolCallEvaluationModelOutput'
-              description: >-
-                How to evaluate the agent's tool call (if any). If empty, the
-                tool call is not evaluated.
-            check_any_tool_matches:
-              type: boolean
-              description: >-
-                If set to True this test will pass if any tool call returned by
-                the LLM matches the criteria. Otherwise it will fail if more
-                than one tool is returned by the agent.
-            id:
-              type: string
-            name:
-              type: string
-          required:
-            - type
-            - id
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - simulation
-              description: 'Discriminator value: simulation'
-            from_conversation_metadata:
-              $ref: '#/components/schemas/type_:TestFromConversationMetadataOutput'
-              description: >-
-                Metadata of a conversation this test was created from (if
-                applicable).
-            dynamic_variables:
-              type: object
-              additionalProperties:
-                description: Any type
-              description: Dynamic variables to replace in the agent config during testing
-            chat_history:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/type_:ConversationHistoryTranscriptCommonModelOutput
-            conversation_initiation_source:
-              $ref: '#/components/schemas/type_:ConversationInitiationSource'
-              description: >-
-                Simulate the test as if the conversation originated from this
-                channel.
-            success_condition:
-              type: string
-              description: >-
-                Deprecated legacy single success criterion. Use
-                success_conditions instead. At least one of success_condition or
-                success_conditions is required.
-            success_conditions:
-              type: array
-              items:
-                type: string
-              description: >-
-                List of prompts that evaluate whether the simulation was
-                successful. If provided, all criteria are evaluated and merged
-                into a final result. Capped at the maximum number of evaluation
-                criteria.
-            simulation_scenario:
-              type: string
-              default: ''
-              description: >-
-                Description of the simulation scenario and user persona for
-                simulation tests.
-            simulation_max_turns:
-              type: integer
-              default: 5
-              description: Maximum number of conversation turns for simulation tests.
-            simulation_environment:
-              type: string
-              description: >-
-                The environment to use when running this simulation test. If not
-                provided, defaults to 'production'.
-            tool_mock_config:
-              $ref: '#/components/schemas/type_:SimulationToolMockBehaviorConfig'
-              description: Configuration for which tools to mock and fallback behavior.
-            tool_mock_overrides:
-              type: object
-              additionalProperties:
-                type: array
-                items:
-                  $ref: '#/components/schemas/type_:ToolResponseMockConfigOutput'
-              description: >-
-                Test-specific response mocks, keyed by tool ID. Applied ahead of
-                the tool's shared mocks and only within this test. Only take
-                effect for tools that are mocked (see tool_mock_config).
-            evaluation_model:
-              $ref: '#/components/schemas/type_:Llm'
-              description: LLM model to use for evaluating simulation results.
-            simulated_user_model:
-              $ref: '#/components/schemas/type_:Llm'
-              description: LLM model for the simulated user.
-            id:
-              type: string
-            name:
-              type: string
-          required:
-            - type
-            - id
-            - name
-      discriminator:
-        propertyName: type
-      title: TestsUpdateResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `test_id` (string, required) — The id of a chat response test. This is returned on test creation.
+
+### Body (application/json)
+
+- `object`
+  - `type`: `llm`
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `webhook_details` (object, required)
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+            - `integration_id` (string, optional, default: )
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("api_integration_webhook", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `integration_id` (string, optional, default: )
+          - `credential_id` (string, optional, default: )
+          - `integration_connection_id` (string, optional, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `failure_examples` (list of object, optional) — Non-empty list of example responses that should be considered failures
+      - `response` (string, required)
+      - `type` ("failure", required)
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `webhook_details` (object, required)
+              - `credential_id` (string, optional, default: )
+              - `integration_connection_id` (string, optional, default: )
+              - `integration_id` (string, optional, default: )
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("api_integration_webhook", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `integration_id` (string, optional, default: )
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `parent_folder_id` (string, optional) — The ID of the parent folder. If not provided, the test will be moved to the root level.
+    - `success_condition` (string, optional, default: ) — A prompt that evaluates whether the agent's response is successful. Should return True or False.
+    - `success_examples` (list of object, optional) — Non-empty list of example responses that should be considered successful
+      - `response` (string, required)
+      - `type` ("success", required)
+  - `type`: `tool`
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `webhook_details` (object, required)
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+            - `integration_id` (string, optional, default: )
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("api_integration_webhook", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `integration_id` (string, optional, default: )
+          - `credential_id` (string, optional, default: )
+          - `integration_connection_id` (string, optional, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `check_any_tool_matches` (boolean, optional) — If set to True this test will pass if any tool call returned by the LLM matches the criteria. Otherwise it will fail if more than one tool is returned by the agent.
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `webhook_details` (object, required)
+              - `credential_id` (string, optional, default: )
+              - `integration_connection_id` (string, optional, default: )
+              - `integration_id` (string, optional, default: )
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("api_integration_webhook", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `integration_id` (string, optional, default: )
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `parent_folder_id` (string, optional) — The ID of the parent folder. If not provided, the test will be moved to the root level.
+    - `tool_call_parameters` (object, optional) — How to evaluate the agent's tool call (if any). If empty, the tool call is not evaluated.
+      - `parameters` (list of object, optional) — Parameters to evaluate for the agent's tool call. If empty, the tool call parameters are not evaluated.
+        - `eval` (object, required)
+          - `type`: `anything`
+          - `type`: `exact`
+            - `expected_value` (string, required) — The exact string value that the parameter must match.
+          - `type`: `llm`
+            - `description` (string, required) — A description of the evaluation strategy to use for the test.
+          - `type`: `regex`
+            - `pattern` (string, required) — A regex pattern to match the agent's response against.
+        - `path` (string, required)
+      - `referenced_tool` (object, optional) — The tool to evaluate a call against.
+        - `id` (string, required) — The ID of the tool
+        - `type` (enum, required) — The type of the tool
+          - Allowed values: `system`, `webhook`, `client`, `workflow`, `api_integration_webhook`, `mcp`, `code`
+      - `verify_absence` (boolean, optional, default: false) — Whether to verify that the tool was NOT called.
+      - `workflow_node_transition` (object, optional) — Configuration for testing workflow node transitions. When set, the test will verify the agent transitions to the specified workflow node.
+        - `agent_id` (string, required) — The ID of the agent whose workflow contains the target node.
+        - `target_node_id` (string, required) — The ID of the workflow node that the agent should transition to.
+        - `type` ("node_id", optional)
+  - `type`: `simulation`
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `webhook_details` (object, required)
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+            - `integration_id` (string, optional, default: )
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("api_integration_webhook", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `integration_id` (string, optional, default: )
+          - `credential_id` (string, optional, default: )
+          - `integration_connection_id` (string, optional, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Input
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `evaluation_model` (enum, optional) — LLM model to use for evaluating simulation results.
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `webhook_details` (object, required)
+              - `credential_id` (string, optional, default: )
+              - `integration_connection_id` (string, optional, default: )
+              - `integration_id` (string, optional, default: )
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("api_integration_webhook", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `integration_id` (string, optional, default: )
+            - `credential_id` (string, optional, default: )
+            - `integration_connection_id` (string, optional, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Input
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `parent_folder_id` (string, optional) — The ID of the parent folder. If not provided, the test will be moved to the root level.
+    - `simulated_user_model` (enum, optional) — LLM model for the simulated user.
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+    - `simulation_environment` (string, optional) — The environment to use when running this simulation test. If not provided, defaults to 'production'.
+    - `simulation_max_turns` (integer, optional, default: 5) — Maximum number of conversation turns for simulation tests.
+    - `simulation_scenario` (string, optional, default: ) — Description of the simulation scenario and user persona for simulation tests.
+    - `success_conditions` (list of string, optional) — List of prompts that evaluate whether the simulation was successful. If provided, all criteria are evaluated and merged into a final result. Capped at the maximum number of evaluation criteria.
+    - `tool_mock_config` (object, optional) — Configuration for which tools to mock and fallback behavior.
+      - `mocking_strategy` (enum, optional, default: none) — Which tools to mock: 'all' mocks every mockable tool, 'selected' mocks only those in mocked_tool_names/mocked_tool_ids, 'none' disables mocking.
+        - Allowed values: `all`, `selected`, `none`
+      - `fallback_strategy` (enum, optional, default: raise_error) — Behavior when no mock matches a tool call.
+        - Allowed values: `call_real_tool`, `raise_error`
+      - `mocked_tool_ids` (list of string, optional) — Tool IDs to mock. Resolved to tool names before being passed to the orchestrator.
+    - `tool_mock_overrides` (map from string to list of object, optional) — Test-specific response mocks, keyed by tool ID. Applied ahead of the tool's shared mocks and only within this test. Only take effect for tools that are mocked (see tool_mock_config).
+      - `mock_result` (string, required) — The return value the LLM sees when this mock is active.
+      - `parameter_conditions` (list of object, optional) — If the list is empty, the mock will always activate.
+        - `eval` (object, required)
+          - `type`: `anything`
+          - `type`: `exact`
+            - `expected_value` (string, required) — The exact string value that the parameter must match.
+          - `type`: `llm`
+            - `description` (string, required) — A description of the evaluation strategy to use for the test.
+          - `type`: `regex`
+            - `pattern` (string, required) — A regex pattern to match the agent's response against.
+        - `path` (string, required)
+      - `is_error` (boolean, optional, default: false) — If true, the mock result is surfaced to the LLM as a tool error rather than a successful result.
+    - `success_condition` (string, optional, deprecated) — Deprecated legacy single success criterion. Use success_conditions instead. At least one of success_condition or success_conditions is required.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `object`
+  - `type`: `llm`
+    - `id` (string, required)
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+            - `integration_id` (string, required, default: )
+            - `webhook_details` (object, required)
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `is_blocked` (boolean, required, default: false)
+          - `tool_has_been_called` (boolean, required)
+          - `tool_latency_secs` (double, required, default: 0)
+          - `error_type` (string, required, default: )
+          - `raw_error_message` (string, required, default: )
+          - `dynamic_variable_updates` (list of object, required)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` ("api_integration_webhook", required)
+          - `integration_id` (string, required, default: )
+          - `credential_id` (string, required, default: )
+          - `integration_connection_id` (string, required, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `failure_examples` (list of object, optional) — Non-empty list of example responses that should be considered failures
+      - `response` (string, required)
+      - `type` ("failure", required)
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `credential_id` (string, required, default: )
+              - `integration_connection_id` (string, required, default: )
+              - `integration_id` (string, required, default: )
+              - `webhook_details` (object, required)
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `is_blocked` (boolean, required, default: false)
+            - `tool_has_been_called` (boolean, required)
+            - `tool_latency_secs` (double, required, default: 0)
+            - `error_type` (string, required, default: )
+            - `raw_error_message` (string, required, default: )
+            - `dynamic_variable_updates` (list of object, required)
+            - `type` ("api_integration_webhook", required)
+            - `integration_id` (string, required, default: )
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `success_condition` (string, optional, default: ) — A prompt that evaluates whether the agent's response is successful. Should return True or False.
+    - `success_examples` (list of object, optional) — Non-empty list of example responses that should be considered successful
+      - `response` (string, required)
+      - `type` ("success", required)
+  - `type`: `tool`
+    - `id` (string, required)
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+            - `integration_id` (string, required, default: )
+            - `webhook_details` (object, required)
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `is_blocked` (boolean, required, default: false)
+          - `tool_has_been_called` (boolean, required)
+          - `tool_latency_secs` (double, required, default: 0)
+          - `error_type` (string, required, default: )
+          - `raw_error_message` (string, required, default: )
+          - `dynamic_variable_updates` (list of object, required)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` ("api_integration_webhook", required)
+          - `integration_id` (string, required, default: )
+          - `credential_id` (string, required, default: )
+          - `integration_connection_id` (string, required, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `check_any_tool_matches` (boolean, optional) — If set to True this test will pass if any tool call returned by the LLM matches the criteria. Otherwise it will fail if more than one tool is returned by the agent.
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `credential_id` (string, required, default: )
+              - `integration_connection_id` (string, required, default: )
+              - `integration_id` (string, required, default: )
+              - `webhook_details` (object, required)
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `is_blocked` (boolean, required, default: false)
+            - `tool_has_been_called` (boolean, required)
+            - `tool_latency_secs` (double, required, default: 0)
+            - `error_type` (string, required, default: )
+            - `raw_error_message` (string, required, default: )
+            - `dynamic_variable_updates` (list of object, required)
+            - `type` ("api_integration_webhook", required)
+            - `integration_id` (string, required, default: )
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `tool_call_parameters` (object, optional) — How to evaluate the agent's tool call (if any). If empty, the tool call is not evaluated.
+      - `parameters` (list of object, optional) — Parameters to evaluate for the agent's tool call. If empty, the tool call parameters are not evaluated.
+        - `eval` (object, required)
+          - `type`: `anything`
+          - `type`: `exact`
+            - `expected_value` (string, required) — The exact string value that the parameter must match.
+          - `type`: `llm`
+            - `description` (string, required) — A description of the evaluation strategy to use for the test.
+          - `type`: `regex`
+            - `pattern` (string, required) — A regex pattern to match the agent's response against.
+        - `path` (string, required)
+      - `referenced_tool` (object, optional) — The tool to evaluate a call against.
+        - `id` (string, required) — The ID of the tool
+        - `type` (enum, required) — The type of the tool
+          - Allowed values: `system`, `webhook`, `client`, `workflow`, `api_integration_webhook`, `mcp`, `code`
+      - `verify_absence` (boolean, optional, default: false) — Whether to verify that the tool was NOT called.
+      - `workflow_node_transition` (object, optional) — Configuration for testing workflow node transitions. When set, the test will verify the agent transitions to the specified workflow node.
+        - `agent_id` (string, required) — The ID of the agent whose workflow contains the target node.
+        - `target_node_id` (string, required) — The ID of the workflow node that the agent should transition to.
+        - `type` ("node_id", optional)
+  - `type`: `simulation`
+    - `id` (string, required)
+    - `name` (string, required)
+    - `chat_history` (list of object, optional)
+      - `role` (enum, required)
+        - Allowed values: `user`, `agent`
+      - `time_in_call_secs` (integer, required)
+      - `agent_metadata` (object, optional)
+        - `agent_id` (string, required)
+        - `branch_id` (string, optional)
+        - `workflow_node_id` (string, optional)
+        - `version_id` (string, optional)
+      - `message` (string, optional)
+      - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+        - `parts` (list of object, required)
+          - `text` (string, required)
+          - `voice_label` (string, optional)
+          - `time_in_call_secs` (integer, optional)
+      - `tool_calls` (list of object, optional)
+        - `request_id` (string, required)
+        - `tool_name` (string, required)
+        - `params_as_json` (string, required)
+        - `tool_has_been_called` (boolean, required)
+        - `type` (enum, optional)
+          - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+        - `tool_details` (object, optional)
+          - `type`: `api_integration_webhook`
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+            - `integration_id` (string, required, default: )
+            - `webhook_details` (object, required)
+          - `type`: `client`
+            - `parameters` (string, required)
+          - `type`: `mcp`
+            - `approval_policy` (string, required)
+            - `integration_type` (string, required)
+            - `mcp_server_id` (string, required)
+            - `mcp_server_name` (string, required)
+            - `mcp_tool_description` (string, optional, default: )
+            - `mcp_tool_name` (string, optional, default: )
+            - `parameters` (map from string to string, optional)
+            - `requires_approval` (boolean, optional, default: false)
+          - `type`: `webhook`
+            - `method` (string, required)
+            - `url` (string, required)
+            - `body` (string, optional)
+            - `headers` (map from string to string, optional)
+            - `path_params` (map from string to string, optional)
+            - `query_params` (map from string to string, optional)
+      - `tool_results` (list of object or object or object or object, optional)
+        - Conversation History Transcript Other Tools Result Common Model
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` (enum, optional)
+            - Allowed values: `client`, `webhook`, `mcp`, `code`
+        - Conversation History Transcript System Tool Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("system", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional)
+            - `result_type`: `dummy`
+            - `result_type`: `end_call_success`
+              - `message` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `knowledge_base_rag_success`
+              - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+              - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+              - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+              - `status` (enum, optional, default: success)
+            - `result_type`: `knowledge_base_success`
+              - `chunk_count` (integer, optional, default: 0)
+              - `message` (string, optional, default: Referenced knowledge base.)
+              - `status` (enum, optional, default: success)
+            - `result_type`: `language_detection_success`
+              - `language` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `play_dtmf_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `play_dtmf_success`
+              - `dtmf_tones` (string, required)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `skip_turn_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `testing_tool_result`
+              - `reason` (string, optional, default: Skipping tool call in test mode)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_agent_error`
+              - `error` (string, required)
+              - `from_agent` (string, required)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_agent_success`
+              - `condition` (string, required)
+              - `from_agent` (string, required)
+              - `to_agent` (string, required)
+              - `branch_info` (object, optional)
+              - `delay_ms` (integer, optional, default: 0)
+              - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+              - `preserve_client_tts_overrides` (boolean, optional, default: false)
+              - `status` ("success", optional)
+              - `to_node` (string, optional)
+              - `transfer_message` (string, optional)
+            - `result_type`: `transfer_to_number_error`
+              - `error` (string, required)
+              - `details` (string, optional)
+              - `status` ("error", optional)
+            - `result_type`: `transfer_to_number_exotel_success`
+              - `transfer_number` (string, required)
+              - `agent_message` (string, optional)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_sip_success`
+              - `transfer_number` (string, required)
+              - `note` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `transfer_to_number_twilio_success`
+              - `agent_message` (string, required)
+              - `conference_name` (string, required)
+              - `transfer_number` (string, required)
+              - `client_message` (string, optional)
+              - `note` (string, optional)
+              - `post_dial_digits` (string, optional)
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+            - `result_type`: `voicemail_detection_success`
+              - `reason` (string, optional)
+              - `status` ("success", optional)
+              - `voicemail_message` (string, optional)
+        - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `is_blocked` (boolean, required, default: false)
+          - `tool_has_been_called` (boolean, required)
+          - `tool_latency_secs` (double, required, default: 0)
+          - `error_type` (string, required, default: )
+          - `raw_error_message` (string, required, default: )
+          - `dynamic_variable_updates` (list of object, required)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `type` ("api_integration_webhook", required)
+          - `integration_id` (string, required, default: )
+          - `credential_id` (string, required, default: )
+          - `integration_connection_id` (string, required, default: )
+        - Conversation History Transcript Workflow Tools Result Common Model Output
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `result_value` (string, required)
+          - `is_error` (boolean, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` ("workflow", required)
+          - `is_blocked` (boolean, optional, default: false)
+          - `tool_latency_secs` (double, optional, default: 0)
+          - `error_type` (string, optional, default: )
+          - `raw_error_message` (string, optional, default: )
+          - `dynamic_variable_updates` (list of object, optional)
+            - `variable_name` (string, required)
+            - `new_value` (string, required)
+            - `updated_at` (double, required)
+            - `tool_name` (string, required)
+            - `tool_request_id` (string, required)
+            - `old_value` (string, optional)
+          - `result` (object, optional) — A common model for workflow tool responses.
+            - `steps` (list of object, optional)
+      - `feedback` (object, optional)
+        - `score` (enum, required)
+          - Allowed values: `like`, `dislike`
+        - `time_in_call_secs` (integer, required)
+      - `llm_override` (string, optional)
+      - `conversation_turn_metrics` (object, optional)
+        - `metrics` (map from string to object, optional)
+          - `elapsed_time` (double, required)
+        - `convai_asr_provider` (string, optional)
+        - `convai_tts_model` (string, optional)
+        - `convai_tts_cascade` (string, optional)
+      - `rag_retrieval_info` (object, optional)
+        - `chunks` (list of object, required)
+          - `document_id` (string, required)
+          - `chunk_id` (string, required)
+          - `vector_distance` (double, required)
+        - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `retrieval_query` (string, required)
+        - `rag_latency_secs` (double, required)
+        - `used_chunk_ids` (list of string, optional)
+      - `llm_usage` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `interrupted` (boolean, optional, default: false)
+      - `ignored_as_backchannel` (boolean, optional, default: false)
+      - `original_message` (string, optional)
+      - `reasoning` (list of object, optional)
+        - `summary` (string, optional)
+        - `provider_redact` (boolean, optional, default: false)
+      - `source_medium` (enum, optional)
+        - Allowed values: `audio`, `text`, `image`, `file`
+      - `source_event_id` (integer, optional)
+      - `used_static_kb_document_ids` (list of string, optional)
+      - `user_identifier` (string, optional)
+      - `id` (string, optional)
+      - `triggered_guardrails` (list of object, optional)
+        - `guardrail_type` (enum, required)
+          - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+        - `guardrail_name` (string, optional)
+    - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+    - `evaluation_model` (enum, optional) — LLM model to use for evaluating simulation results.
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+    - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
+      - `conversation_id` (string, required)
+      - `agent_id` (string, required)
+      - `branch_id` (string, optional)
+      - `workflow_node_id` (string, optional)
+      - `original_agent_reply` (list of object, optional, default: [])
+        - `role` (enum, required)
+          - Allowed values: `user`, `agent`
+        - `time_in_call_secs` (integer, required)
+        - `agent_metadata` (object, optional)
+          - `agent_id` (string, required)
+          - `branch_id` (string, optional)
+          - `workflow_node_id` (string, optional)
+          - `version_id` (string, optional)
+        - `message` (string, optional)
+        - `multivoice_message` (object, optional) — Represents a message from a multi-voice agent.
+          - `parts` (list of object, required)
+            - `text` (string, required)
+            - `voice_label` (string, optional)
+            - `time_in_call_secs` (integer, optional)
+        - `tool_calls` (list of object, optional)
+          - `request_id` (string, required)
+          - `tool_name` (string, required)
+          - `params_as_json` (string, required)
+          - `tool_has_been_called` (boolean, required)
+          - `type` (enum, optional)
+            - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+          - `tool_details` (object, optional)
+            - `type`: `api_integration_webhook`
+              - `credential_id` (string, required, default: )
+              - `integration_connection_id` (string, required, default: )
+              - `integration_id` (string, required, default: )
+              - `webhook_details` (object, required)
+            - `type`: `client`
+              - `parameters` (string, required)
+            - `type`: `mcp`
+              - `approval_policy` (string, required)
+              - `integration_type` (string, required)
+              - `mcp_server_id` (string, required)
+              - `mcp_server_name` (string, required)
+              - `mcp_tool_description` (string, optional, default: )
+              - `mcp_tool_name` (string, optional, default: )
+              - `parameters` (map from string to string, optional)
+              - `requires_approval` (boolean, optional, default: false)
+            - `type`: `webhook`
+              - `method` (string, required)
+              - `url` (string, required)
+              - `body` (string, optional)
+              - `headers` (map from string to string, optional)
+              - `path_params` (map from string to string, optional)
+              - `query_params` (map from string to string, optional)
+        - `tool_results` (list of object or object or object or object, optional)
+          - Conversation History Transcript Other Tools Result Common Model
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `type` (enum, optional)
+          - Conversation History Transcript System Tool Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("system", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional)
+          - Conversation History Transcript API Integration Webhook Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `is_blocked` (boolean, required, default: false)
+            - `tool_has_been_called` (boolean, required)
+            - `tool_latency_secs` (double, required, default: 0)
+            - `error_type` (string, required, default: )
+            - `raw_error_message` (string, required, default: )
+            - `dynamic_variable_updates` (list of object, required)
+            - `type` ("api_integration_webhook", required)
+            - `integration_id` (string, required, default: )
+            - `credential_id` (string, required, default: )
+            - `integration_connection_id` (string, required, default: )
+          - Conversation History Transcript Workflow Tools Result Common Model Output
+            - `request_id` (string, required)
+            - `tool_name` (string, required)
+            - `result_value` (string, required)
+            - `is_error` (boolean, required)
+            - `tool_has_been_called` (boolean, required)
+            - `type` ("workflow", required)
+            - `is_blocked` (boolean, optional, default: false)
+            - `tool_latency_secs` (double, optional, default: 0)
+            - `error_type` (string, optional, default: )
+            - `raw_error_message` (string, optional, default: )
+            - `dynamic_variable_updates` (list of object, optional)
+            - `result` (object, optional) — A common model for workflow tool responses.
+        - `feedback` (object, optional)
+          - `score` (enum, required)
+            - Allowed values: `like`, `dislike`
+          - `time_in_call_secs` (integer, required)
+        - `llm_override` (string, optional)
+        - `conversation_turn_metrics` (object, optional)
+          - `metrics` (map from string to object, optional)
+            - `elapsed_time` (double, required)
+          - `convai_asr_provider` (string, optional)
+          - `convai_tts_model` (string, optional)
+          - `convai_tts_cascade` (string, optional)
+        - `rag_retrieval_info` (object, optional)
+          - `chunks` (list of object, required)
+            - `document_id` (string, required)
+            - `chunk_id` (string, required)
+            - `vector_distance` (double, required)
+          - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+            - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+          - `retrieval_query` (string, required)
+          - `rag_latency_secs` (double, required)
+          - `used_chunk_ids` (list of string, optional)
+        - `llm_usage` (object, optional)
+          - `model_usage` (map from string to object, optional)
+            - `input` (object, optional)
+            - `input_cache_read` (object, optional)
+            - `input_cache_write` (object, optional)
+            - `output_total` (object, optional)
+        - `interrupted` (boolean, optional, default: false)
+        - `ignored_as_backchannel` (boolean, optional, default: false)
+        - `original_message` (string, optional)
+        - `reasoning` (list of object, optional)
+          - `summary` (string, optional)
+          - `provider_redact` (boolean, optional, default: false)
+        - `source_medium` (enum, optional)
+          - Allowed values: `audio`, `text`, `image`, `file`
+        - `source_event_id` (integer, optional)
+        - `used_static_kb_document_ids` (list of string, optional)
+        - `user_identifier` (string, optional)
+        - `id` (string, optional)
+        - `triggered_guardrails` (list of object, optional)
+          - `guardrail_type` (enum, required)
+            - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+          - `guardrail_name` (string, optional)
+    - `simulated_user_model` (enum, optional) — LLM model for the simulated user.
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+    - `simulation_environment` (string, optional) — The environment to use when running this simulation test. If not provided, defaults to 'production'.
+    - `simulation_max_turns` (integer, optional, default: 5) — Maximum number of conversation turns for simulation tests.
+    - `simulation_scenario` (string, optional, default: ) — Description of the simulation scenario and user persona for simulation tests.
+    - `success_conditions` (list of string, optional) — List of prompts that evaluate whether the simulation was successful. If provided, all criteria are evaluated and merged into a final result. Capped at the maximum number of evaluation criteria.
+    - `tool_mock_config` (object, optional) — Configuration for which tools to mock and fallback behavior.
+      - `mocking_strategy` (enum, optional, default: none) — Which tools to mock: 'all' mocks every mockable tool, 'selected' mocks only those in mocked_tool_names/mocked_tool_ids, 'none' disables mocking.
+        - Allowed values: `all`, `selected`, `none`
+      - `fallback_strategy` (enum, optional, default: raise_error) — Behavior when no mock matches a tool call.
+        - Allowed values: `call_real_tool`, `raise_error`
+      - `mocked_tool_ids` (list of string, optional) — Tool IDs to mock. Resolved to tool names before being passed to the orchestrator.
+    - `tool_mock_overrides` (map from string to list of object, optional) — Test-specific response mocks, keyed by tool ID. Applied ahead of the tool's shared mocks and only within this test. Only take effect for tools that are mocked (see tool_mock_config).
+      - `mock_result` (string, required) — The return value the LLM sees when this mock is active.
+      - `parameter_conditions` (list of object, optional) — If the list is empty, the mock will always activate.
+        - `eval` (object, required)
+          - `type`: `anything`
+          - `type`: `exact`
+            - `expected_value` (string, required) — The exact string value that the parameter must match.
+          - `type`: `llm`
+            - `description` (string, required) — A description of the evaluation strategy to use for the test.
+          - `type`: `regex`
+            - `pattern` (string, required) — A regex pattern to match the agent's response against.
+        - `path` (string, required)
+      - `is_error` (boolean, optional, default: false) — If true, the mock result is surfaced to the LLM as a tool error rather than a successful result.
+    - `success_condition` (string, optional, deprecated) — Deprecated legacy single success criterion. Use success_conditions instead. At least one of success_condition or success_conditions is required.
 
 ## Examples
 

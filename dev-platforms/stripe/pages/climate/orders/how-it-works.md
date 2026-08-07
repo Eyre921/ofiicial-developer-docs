@@ -55,6 +55,8 @@ Because the carbon removal industry is in its early stages, it’s likely that s
 > - **Delays**. You’ll have the option of receiving a full refund or waiting for the tons to be delivered.
 - **Individual supplier failures**. We’ll try to substitute your order with another similar supplier in the Frontier portfolio. Substituted carbon removal units might vary by pathway, geography, and price. If you don’t want a substitute, you can cancel the order and receive a full refund.
 
+Delays and failures don’t apply to *spot purchases* (Carbon removal that has already been verified and delivered to Stripe and is retired to you within 30 days of purchase), which have guaranteed inventory available.
+
 ## Manage deliveries
 
 When Frontier receives the verified carbon removal from the supplier, the carbon removal units are retired on an independent third party registry. All deliveries are third party verified.
@@ -64,7 +66,7 @@ At the time of delivery, Frontier shares a delivery certificate and important de
 
 When possible, Frontier retires the carbon removal units on your behalf (or on behalf of your *beneficiary* (The beneficiary is the entity that can claim to have removed carbon from the atmosphere)). If we can’t name the buyer on the third party registry, we’ll retire orders in Frontier’s name.
 
-After delivery of your order, you can use your *carbon removal units* (Carbon removal units represent amounts of carbon that has been removed from the atmosphere and retired on behalf of the buyer) for net zero¹ or carbon neutrality claims.² You can’t make these claims prior to delivery.
+After delivery of your order, you can use your *carbon removal units* (Carbon removal units represent amounts of carbon that has been removed from the atmosphere and retired on behalf of the buyer) for net zero¹ or carbon neutrality claims.² You can’t make these claims before delivery. *Spot purchases* (Carbon removal that has already been verified and delivered to Stripe and is retired to you within 30 days of purchase) are delivered to you within 30 days.
 
 ## Get started
 

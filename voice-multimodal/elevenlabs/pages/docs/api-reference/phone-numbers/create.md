@@ -15,443 +15,89 @@ Import Phone Number from provider configuration (Twilio, Exotel, or SIP trunk)
 
 Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/phone-numbers:
-    post:
-      operationId: create
-      summary: Import Phone Number
-      description: >-
-        Import Phone Number from provider configuration (Twilio, Exotel, or SIP
-        trunk)
-      tags:
-        - phoneNumbers
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreatePhoneNumberResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/conversational_ai_phone_numbers_create_Request
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    TwilioRegionId:
-      type: string
-      enum:
-        - us1
-        - ie1
-        - au1
-      description: Valid Twilio region IDs.
-      title: TwilioRegionId
-    TwilioEdgeLocation:
-      type: string
-      enum:
-        - ashburn
-        - dublin
-        - frankfurt
-        - sao-paulo
-        - singapore
-        - sydney
-        - tokyo
-        - umatilla
-        - roaming
-      description: Valid Twilio edge locations.
-      title: TwilioEdgeLocation
-    RegionConfigRequest:
-      type: object
-      properties:
-        region_id:
-          $ref: '#/components/schemas/TwilioRegionId'
-          description: Region ID
-        token:
-          type: string
-          description: Auth Token for this region
-        edge_location:
-          $ref: '#/components/schemas/TwilioEdgeLocation'
-          description: Edge location for this region
-      required:
-        - region_id
-        - token
-        - edge_location
-      title: RegionConfigRequest
-    CreateTwilioPhoneNumberRequest:
-      type: object
-      properties:
-        phone_number:
-          type: string
-          description: Phone number
-        label:
-          type: string
-          description: Label for the phone number
-        supports_inbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports inbound calls
-        supports_outbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports outbound calls
-        provider:
-          type: string
-          enum:
-            - twilio
-          default: twilio
-        agent_id:
-          type:
-            - string
-            - 'null'
-          description: Agent ID to assign the phone number to
-        sid:
-          type: string
-          description: Twilio Account SID
-        token:
-          type: string
-          description: Twilio Auth Token
-        region_config:
-          oneOf:
-            - $ref: '#/components/schemas/RegionConfigRequest'
-            - type: 'null'
-          description: Twilio Additional Region Configuration
-        enable_sms:
-          type: boolean
-          default: true
-          description: >-
-            Route inbound SMS to ElevenLabs. On by default; set to false to skip
-            SMS configuration for numbers that don't support it.
-      required:
-        - phone_number
-        - label
-        - sid
-        - token
-      title: CreateTwilioPhoneNumberRequest
-    ExotelApiSubdomain:
-      type: string
-      enum:
-        - api.in.exotel.com
-        - api.exotel.com
-      title: ExotelApiSubdomain
-    CreateExotelPhoneNumberRequest:
-      type: object
-      properties:
-        phone_number:
-          type: string
-          description: Phone number
-        label:
-          type: string
-          description: Label for the phone number
-        supports_inbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports inbound calls
-        supports_outbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports outbound calls
-        provider:
-          type: string
-          enum:
-            - exotel
-          default: exotel
-        agent_id:
-          type:
-            - string
-            - 'null'
-          description: Agent ID to assign the phone number to
-        account_sid:
-          type: string
-          description: Exotel Account SID
-        api_key:
-          type: string
-          description: Exotel API Key
-        api_token:
-          type: string
-          description: Exotel API Token
-        api_subdomain:
-          $ref: '#/components/schemas/ExotelApiSubdomain'
-          description: Exotel region-specific API host
-        app_id:
-          type: string
-          description: Exotel applet identifier used in Calls/connect
-        applet_url:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Optional full applet URL override. Defaults to Exotel start_voice
-            URL derived from account SID and app ID.
-      required:
-        - phone_number
-        - label
-        - account_sid
-        - api_key
-        - api_token
-        - api_subdomain
-        - app_id
-      title: CreateExotelPhoneNumberRequest
-    SIPMediaEncryptionEnum:
-      type: string
-      enum:
-        - disabled
-        - allowed
-        - required
-      default: allowed
-      title: SIPMediaEncryptionEnum
-    SIPTrunkCredentialsRequestModel:
-      type: object
-      properties:
-        username:
-          type: string
-          description: SIP trunk username
-        password:
-          type:
-            - string
-            - 'null'
-          description: SIP trunk password - if not specified, then remain unchanged
-      required:
-        - username
-      title: SIPTrunkCredentialsRequestModel
-    InboundSIPTrunkConfigRequestModel:
-      type: object
-      properties:
-        allowed_addresses:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            List of IP addresses that are allowed to use the trunk. Each item in
-            the list can be an individual IP address or a Classless Inter-Domain
-            Routing notation representing a CIDR block.
-        allowed_numbers:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of phone numbers that are allowed to use the trunk.
-        media_encryption:
-          $ref: '#/components/schemas/SIPMediaEncryptionEnum'
-          default: allowed
-          description: Whether or not to encrypt media (data layer).
-        credentials:
-          oneOf:
-            - $ref: '#/components/schemas/SIPTrunkCredentialsRequestModel'
-            - type: 'null'
-          description: Optional digest authentication credentials (username/password).
-        remote_domains:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Domains of remote SIP servers used to validate TLS certificates.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-      title: InboundSIPTrunkConfigRequestModel
-    SIPTrunkTransportEnum:
-      type: string
-      enum:
-        - auto
-        - udp
-        - tcp
-        - tls
-      default: auto
-      title: SIPTrunkTransportEnum
-    MediaCodec:
-      type: string
-      enum:
-        - G722/8000
-        - PCMU/8000
-        - PCMA/8000
-      title: MediaCodec
-    OutboundSIPTrunkConfigRequestModel:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Hostname or IP the SIP INVITE is sent to.
-        transport:
-          $ref: '#/components/schemas/SIPTrunkTransportEnum'
-          default: auto
-          description: Protocol to use for SIP transport (signalling layer).
-        media_encryption:
-          $ref: '#/components/schemas/SIPMediaEncryptionEnum'
-          default: allowed
-          description: Whether or not to encrypt media (data layer).
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            SIP X-* headers for INVITE request. These headers are sent as-is and
-            may help identify this call.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-        credentials:
-          oneOf:
-            - $ref: '#/components/schemas/SIPTrunkCredentialsRequestModel'
-            - type: 'null'
-          description: >-
-            Optional digest authentication credentials (username/password). If
-            not provided, ACL authentication is assumed.
-        enabled_codecs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MediaCodec'
-          description: >-
-            Media codecs that should be offered in the SDP for outbound calls.
-            If empty, all supported codecs are offered.
-      required:
-        - address
-      title: OutboundSIPTrunkConfigRequestModel
-    CreateSIPTrunkPhoneNumberRequestV2:
-      type: object
-      properties:
-        phone_number:
-          type: string
-          description: Phone number
-        label:
-          type: string
-          description: Label for the phone number
-        supports_inbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports inbound calls
-        supports_outbound:
-          type: boolean
-          default: true
-          description: >-
-            This field is deprecated and will be removed in the future. Whether
-            this phone number supports outbound calls
-        provider:
-          type: string
-          enum:
-            - sip_trunk
-          default: sip_trunk
-        agent_id:
-          type:
-            - string
-            - 'null'
-          description: Agent ID to assign the phone number to
-        inbound_trunk_config:
-          oneOf:
-            - $ref: '#/components/schemas/InboundSIPTrunkConfigRequestModel'
-            - type: 'null'
-        outbound_trunk_config:
-          oneOf:
-            - $ref: '#/components/schemas/OutboundSIPTrunkConfigRequestModel'
-            - type: 'null'
-      required:
-        - phone_number
-        - label
-      title: CreateSIPTrunkPhoneNumberRequestV2
-    conversational_ai_phone_numbers_create_Request:
-      oneOf:
-        - $ref: '#/components/schemas/CreateTwilioPhoneNumberRequest'
-        - $ref: '#/components/schemas/CreateExotelPhoneNumberRequest'
-        - $ref: '#/components/schemas/CreateSIPTrunkPhoneNumberRequestV2'
-      description: Create Phone Request Information
-      title: conversational_ai_phone_numbers_create_Request
-    CreatePhoneNumberResponseModel:
-      type: object
-      properties:
-        phone_number_id:
-          type: string
-          description: Phone entity ID
-      required:
-        - phone_number_id
-      title: CreatePhoneNumberResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `object or object or object`
+  - CreateTwilioPhoneNumberRequest
+    - `phone_number` (string, required) — Phone number
+    - `label` (string, required) — Label for the phone number
+    - `sid` (string, required) — Twilio Account SID
+    - `token` (string, required) — Twilio Auth Token
+    - `provider` ("twilio", optional, default: twilio)
+    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+    - `region_config` (object, optional, nullable) — Twilio Additional Region Configuration
+      - `region_id` (enum, required) — Region ID
+        - Allowed values: `us1`, `ie1`, `au1`
+      - `token` (string, required) — Auth Token for this region
+      - `edge_location` (enum, required) — Edge location for this region
+        - Allowed values: `ashburn`, `dublin`, `frankfurt`, `sao-paulo`, `singapore`, `sydney`, `tokyo`, `umatilla`, `roaming`
+    - `enable_sms` (boolean, optional, default: true) — Route inbound SMS to ElevenLabs. On by default; set to false to skip SMS configuration for numbers that don't support it.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - CreateExotelPhoneNumberRequest
+    - `phone_number` (string, required) — Phone number
+    - `label` (string, required) — Label for the phone number
+    - `account_sid` (string, required) — Exotel Account SID
+    - `api_key` (string, required) — Exotel API Key
+    - `api_token` (string, required) — Exotel API Token
+    - `api_subdomain` (enum, required) — Exotel region-specific API host
+      - Allowed values: `api.in.exotel.com`, `api.exotel.com`
+    - `app_id` (string, required) — Exotel applet identifier used in Calls/connect
+    - `provider` ("exotel", optional, default: exotel)
+    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+    - `applet_url` (string, optional, nullable) — Optional full applet URL override. Defaults to Exotel start_voice URL derived from account SID and app ID.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - CreateSIPTrunkPhoneNumberRequestV2
+    - `phone_number` (string, required) — Phone number
+    - `label` (string, required) — Label for the phone number
+    - `provider` ("sip_trunk", optional, default: sip_trunk)
+    - `agent_id` (string, optional, nullable) — Agent ID to assign the phone number to
+    - `inbound_trunk_config` (object, optional, nullable)
+      - `allowed_addresses` (list of string, optional, nullable) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
+      - `allowed_numbers` (list of string, optional, nullable) — List of phone numbers that are allowed to use the trunk.
+      - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `credentials` (object, optional, nullable) — Optional digest authentication credentials (username/password).
+        - `username` (string, required) — SIP trunk username
+        - `password` (string, optional, nullable) — SIP trunk password - if not specified, then remain unchanged
+      - `remote_domains` (list of string, optional, nullable) — Domains of remote SIP servers used to validate TLS certificates.
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+    - `outbound_trunk_config` (object, optional, nullable)
+      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to.
+      - `transport` (enum, optional, default: auto) — Protocol to use for SIP transport (signalling layer).
+        - Allowed values: `auto`, `udp`, `tcp`, `tls`
+      - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `headers` (map from string to string, optional) — SIP X-* headers for INVITE request. These headers are sent as-is and may help identify this call.
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+      - `credentials` (object, optional, nullable) — Optional digest authentication credentials (username/password). If not provided, ACL authentication is assumed.
+        - `username` (string, required) — SIP trunk username
+        - `password` (string, optional, nullable) — SIP trunk password - if not specified, then remain unchanged
+      - `enabled_codecs` (list of enum, optional) — Media codecs that should be offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+
+## Response
+
+### 200
+
+Successful Response
+
+- `phone_number_id` (string, required) — Phone entity ID
 
 ## Examples
-
-
 
 **Request**
 

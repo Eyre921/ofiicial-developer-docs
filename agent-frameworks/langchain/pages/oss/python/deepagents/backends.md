@@ -27,6 +27,10 @@ This page explains how to:
   We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 </Tip>
 
+<Tip>
+  To generate a durable repository wiki that agents can read through filesystem tools, see [OpenWiki](/oss/openwiki/overview).
+</Tip>
+
 ## Quickstart
 
 Here are a few prebuilt filesystem backends that you can quickly use with your deep agent:

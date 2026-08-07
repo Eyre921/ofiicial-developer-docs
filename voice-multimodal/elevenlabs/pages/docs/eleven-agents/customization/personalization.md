@@ -53,6 +53,9 @@ The `conversation_initiation_client_data` object defines what can be customized 
     },
     "conversation": {
       "text_only": false
+    },
+    "asr": {
+      "keywords": ["Acme Corp", "Contoso"]
     }
   },
   "custom_llm_extra_body": {

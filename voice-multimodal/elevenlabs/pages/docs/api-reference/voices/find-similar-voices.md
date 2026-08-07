@@ -15,333 +15,72 @@ Returns a list of shared voices similar to the provided audio sample. If neither
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/find-similar-voices
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/similar-voices:
-    post:
-      operationId: find_similar_voices
-      summary: List similar voices
-      description: >-
-        Returns a list of shared voices similar to the provided audio sample. If
-        neither similarity_threshold nor top_k is provided, we will apply
-        default values.
-      tags:
-        - voices
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetLibraryVoicesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                audio_file:
-                  type: string
-                  format: binary
-                similarity_threshold:
-                  type:
-                    - number
-                    - 'null'
-                  format: double
-                  description: >-
-                    Threshold for voice similarity between provided sample and
-                    library voices. Values range from 0 to 2. The smaller the
-                    value the more similar voices will be returned.
-                top_k:
-                  type:
-                    - integer
-                    - 'null'
-                  description: >-
-                    Number of most similar voices to return. If
-                    similarity_threshold is provided, less than this number of
-                    voices may be returned. Values range from 1 to 100.
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    LibraryVoiceResponseModelCategory:
-      type: string
-      enum:
-        - generated
-        - cloned
-        - premade
-        - professional
-        - famous
-        - high_quality
-      description: The category of the voice.
-      title: LibraryVoiceResponseModelCategory
-    VerifiedVoiceLanguageResponseModel:
-      type: object
-      properties:
-        language:
-          type: string
-          description: The language of the voice.
-        model_id:
-          type: string
-          description: The voice's model ID.
-        accent:
-          type:
-            - string
-            - 'null'
-          description: The voice's accent, if applicable.
-        locale:
-          type:
-            - string
-            - 'null'
-          description: The voice's locale, if applicable.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The voice's preview URL, if applicable.
-      required:
-        - language
-        - model_id
-      title: VerifiedVoiceLanguageResponseModel
-    LibraryVoiceResponseModel:
-      type: object
-      properties:
-        public_owner_id:
-          type: string
-          description: The public owner id of the voice.
-        voice_id:
-          type: string
-          description: The id of the voice.
-        date_unix:
-          type: integer
-          description: The date the voice was added to the library in Unix time.
-        name:
-          type: string
-          description: The name of the voice.
-        accent:
-          type: string
-          description: The accent of the voice.
-        gender:
-          type: string
-          description: The gender of the voice.
-        age:
-          type: string
-          description: The age of the voice.
-        descriptive:
-          type: string
-          description: The descriptive of the voice.
-        use_case:
-          type: string
-          description: The use case of the voice.
-        category:
-          $ref: '#/components/schemas/LibraryVoiceResponseModelCategory'
-          description: The category of the voice.
-        language:
-          type:
-            - string
-            - 'null'
-          description: The language of the voice.
-        locale:
-          type:
-            - string
-            - 'null'
-          description: The locale of the voice.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the voice.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The preview URL of the voice.
-        usage_character_count_1y:
-          type: integer
-          description: The usage character count of the voice in the last year.
-        usage_character_count_7d:
-          type: integer
-          description: The usage character count of the voice in the last 7 days.
-        play_api_usage_character_count_1y:
-          type: integer
-          description: The play API usage character count of the voice in the last year.
-        cloned_by_count:
-          type: integer
-          description: The number of times the voice has been cloned.
-        rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate multiplier of the voice.
-        fiat_rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate of the voice in USD per 1000 credits. null if default
-        free_users_allowed:
-          type: boolean
-          description: Whether free users are allowed to use the voice.
-        live_moderation_enabled:
-          type: boolean
-          description: Whether live moderation is enabled for the voice.
-        featured:
-          type: boolean
-          description: Whether the voice is featured.
-        verified_languages:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VerifiedVoiceLanguageResponseModel'
-          description: The verified languages of the voice.
-        notice_period:
-          type:
-            - integer
-            - 'null'
-          description: The notice period of the voice.
-        instagram_username:
-          type:
-            - string
-            - 'null'
-          description: The Instagram username of the voice.
-        twitter_username:
-          type:
-            - string
-            - 'null'
-          description: The Twitter username of the voice.
-        youtube_username:
-          type:
-            - string
-            - 'null'
-          description: The YouTube username of the voice.
-        tiktok_username:
-          type:
-            - string
-            - 'null'
-          description: The TikTok username of the voice.
-        image_url:
-          type:
-            - string
-            - 'null'
-          description: The image URL of the voice.
-        is_added_by_user:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the voice was added by the user.
-        is_bookmarked:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether the voice is bookmarked by the current user. Only relevant
-            when is_added_by_user is True.
-      required:
-        - public_owner_id
-        - voice_id
-        - date_unix
-        - name
-        - accent
-        - gender
-        - age
-        - descriptive
-        - use_case
-        - category
-        - usage_character_count_1y
-        - usage_character_count_7d
-        - play_api_usage_character_count_1y
-        - cloned_by_count
-        - free_users_allowed
-        - live_moderation_enabled
-        - featured
-      title: LibraryVoiceResponseModel
-    GetLibraryVoicesResponseModel:
-      type: object
-      properties:
-        voices:
-          type: array
-          items:
-            $ref: '#/components/schemas/LibraryVoiceResponseModel'
-          description: The list of shared voices
-        has_more:
-          type: boolean
-          description: Whether there are more shared voices in subsequent pages.
-        total_count:
-          type: integer
-          default: 0
-          description: The total number of shared voices matching the query.
-        last_sort_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - voices
-        - has_more
-      title: GetLibraryVoicesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `audio_file` (file, optional)
+- `similarity_threshold` (double, optional) — Threshold for voice similarity between provided sample and library voices. Values range from 0 to 2. The smaller the value the more similar voices will be returned.
+- `top_k` (integer, optional) — Number of most similar voices to return. If similarity_threshold is provided, less than this number of voices may be returned. Values range from 1 to 100.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voices` (list of object, required) — The list of shared voices
+  - `public_owner_id` (string, required) — The public owner id of the voice.
+  - `voice_id` (string, required) — The id of the voice.
+  - `date_unix` (integer, required) — The date the voice was added to the library in Unix time.
+  - `name` (string, required) — The name of the voice.
+  - `accent` (string, required) — The accent of the voice.
+  - `gender` (string, required) — The gender of the voice.
+  - `age` (string, required) — The age of the voice.
+  - `descriptive` (string, required) — The descriptive of the voice.
+  - `use_case` (string, required) — The use case of the voice.
+  - `category` (enum, required) — The category of the voice.
+    - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+  - `usage_character_count_1y` (integer, required) — The usage character count of the voice in the last year.
+  - `usage_character_count_7d` (integer, required) — The usage character count of the voice in the last 7 days.
+  - `play_api_usage_character_count_1y` (integer, required) — The play API usage character count of the voice in the last year.
+  - `cloned_by_count` (integer, required) — The number of times the voice has been cloned.
+  - `free_users_allowed` (boolean, required) — Whether free users are allowed to use the voice.
+  - `live_moderation_enabled` (boolean, required) — Whether live moderation is enabled for the voice.
+  - `featured` (boolean, required) — Whether the voice is featured.
+  - `language` (string, optional, nullable) — The language of the voice.
+  - `locale` (string, optional, nullable) — The locale of the voice.
+  - `description` (string, optional, nullable) — The description of the voice.
+  - `preview_url` (string, optional, nullable) — The preview URL of the voice.
+  - `rate` (double, optional, nullable) — The rate multiplier of the voice.
+  - `fiat_rate` (double, optional, nullable) — The rate of the voice in USD per 1000 credits. null if default
+  - `verified_languages` (list of object, optional, nullable) — The verified languages of the voice.
+    - `language` (string, required) — The language of the voice.
+    - `model_id` (string, required) — The voice's model ID.
+    - `accent` (string, optional, nullable) — The voice's accent, if applicable.
+    - `locale` (string, optional, nullable) — The voice's locale, if applicable.
+    - `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+  - `notice_period` (integer, optional, nullable) — The notice period of the voice.
+  - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
+  - `twitter_username` (string, optional, nullable) — The Twitter username of the voice.
+  - `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
+  - `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
+  - `image_url` (string, optional, nullable) — The image URL of the voice.
+  - `is_added_by_user` (boolean, optional, nullable) — Whether the voice was added by the user.
+  - `is_bookmarked` (boolean, optional, nullable) — Whether the voice is bookmarked by the current user. Only relevant when is_added_by_user is True.
+- `has_more` (boolean, required) — Whether there are more shared voices in subsequent pages.
+- `total_count` (integer, optional, default: 0) — The total number of shared voices matching the query.
+- `last_sort_id` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Request**
 

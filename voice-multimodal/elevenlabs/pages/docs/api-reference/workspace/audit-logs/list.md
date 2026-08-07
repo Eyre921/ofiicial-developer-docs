@@ -14,552 +14,83 @@ Returns the audit log for the workspace. Requires enterprise tier and the audit_
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/audit-logs/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/audit-logs:
-    get:
-      operationId: list
-      summary: Get Workspace Audit Logs
-      description: >-
-        Returns the audit log for the workspace. Requires enterprise tier and
-        the audit_log_read permission.
-      tags:
-        - auditLogs
-      parameters:
-        - name: limit
-          in: query
-          description: Maximum number of entries per page
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: cursor
-          in: query
-          description: Cursor for the next page (from previous response)
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: time_from_unix_ms
-          in: query
-          description: Only include entries at or after this time (ms since epoch)
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: time_to_unix_ms
-          in: query
-          description: Only include entries at or before this time (ms since epoch)
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: actor_uid
-          in: query
-          description: Filter by actor user ID
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: class_name
-          in: query
-          description: Filter by OCSF event class name (e.g. Account Change)
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: activity_name
-          in: query
-          description: Filter by audit activity name (e.g. Subscription Creation)
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceAuditLogsPageResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AccountChangeActivityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
-        - '8'
-        - '9'
-        - '10'
-        - '11'
-        - '12'
-        - '99'
-      description: |-
-        OCSF Activity IDs for Account Change [3001] events.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        Spec: https://schema.ocsf.io/1.6.0/classes/account_change
-      title: AccountChangeActivityId
-    AuthenticationActivityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
-        - '99'
-      description: |-
-        OCSF Activity IDs for Authentication [3002] events.
+## Request
 
-        Spec: https://schema.ocsf.io/1.6.0/classes/authentication
-      title: AuthenticationActivityId
-    EntityManagementActivityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
-        - '8'
-        - '9'
-        - '10'
-        - '11'
-        - '12'
-        - '13'
-        - '99'
-      description: |-
-        OCSF Activity IDs for Entity Management [3004] events.
+### Query parameters
 
-        Spec: https://schema.ocsf.io/1.6.0/classes/entity_management
-      title: EntityManagementActivityId
-    UserAccessManagementActivityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '99'
-      description: |-
-        OCSF Activity IDs for User Access Management [3005] events.
+- `limit` (integer, optional, default: 50) — Maximum number of entries per page
+- `cursor` (string, optional, nullable) — Cursor for the next page (from previous response)
+- `time_from_unix_ms` (integer, optional, nullable) — Only include entries at or after this time (ms since epoch)
+- `time_to_unix_ms` (integer, optional, nullable) — Only include entries at or before this time (ms since epoch)
+- `actor_uid` (string, optional, nullable) — Filter by actor user ID
+- `class_name` (string, optional, nullable) — Filter by OCSF event class name (e.g. Account Change)
+- `activity_name` (string, optional, nullable) — Filter by audit activity name (e.g. Subscription Creation)
 
-        Spec: https://schema.ocsf.io/1.6.0/classes/user_access_management
-      title: UserAccessManagementActivityId
-    GroupManagementActivityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '7'
-        - '8'
-        - '9'
-        - '99'
-      description: |-
-        OCSF Activity IDs for Group Management [3006] events.
+## Response
 
-        Spec: https://schema.ocsf.io/1.6.0/classes/group_management
-      title: GroupManagementActivityId
-    WorkspaceAuditLogEntryResponseActivityId:
-      oneOf:
-        - $ref: '#/components/schemas/AccountChangeActivityId'
-        - $ref: '#/components/schemas/AuthenticationActivityId'
-        - $ref: '#/components/schemas/EntityManagementActivityId'
-        - $ref: '#/components/schemas/UserAccessManagementActivityId'
-        - $ref: '#/components/schemas/GroupManagementActivityId'
-      description: Activity ID
-      title: WorkspaceAuditLogEntryResponseActivityId
-    SeverityId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '5'
-        - '6'
-        - '99'
-      description: |-
-        OCSF Severity levels.
+### 200
 
-        Spec: https://schema.ocsf.io/1.6.0/objects/severity_id
-      title: SeverityId
-    StatusId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '99'
-      description: |-
-        OCSF Status levels.
+Successful Response
 
-        Spec: https://schema.ocsf.io/1.6.0/objects/status_id
-      title: StatusId
-    UserTypeId:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-        - '99'
-      description: |-
-        OCSF User type IDs.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/user
-      title: UserTypeId
-    UserModel:
-      type: object
-      properties:
-        name:
-          type:
-            - string
-            - 'null'
-          description: Username
-        uid:
-          type:
-            - string
-            - 'null'
-          description: Unique user identifier
-        type_id:
-          $ref: '#/components/schemas/UserTypeId'
-          description: Account type identifier
-        type:
-          type:
-            - string
-            - 'null'
-          description: Account type description
-        email_addr:
-          type:
-            - string
-            - 'null'
-          description: User email address
-        full_name:
-          type:
-            - string
-            - 'null'
-          description: Full name of the user
-        domain:
-          type:
-            - string
-            - 'null'
-          description: User's domain
-      description: |-
-        OCSF User object.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/user
-      title: UserModel
-    ActorModel:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/UserModel'
-          description: User who performed the action
-        app_name:
-          type:
-            - string
-            - 'null'
-          description: Client application or service name
-        app_uid:
-          type:
-            - string
-            - 'null'
-          description: Client application unique identifier
-        session:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: Session information
-      required:
-        - user
-      description: |-
-        OCSF Actor object - describes the entity that performed the action.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/actor
-      title: ActorModel
-    DeviceModel:
-      type: object
-      properties:
-        ip:
-          type:
-            - string
-            - 'null'
-          description: IP address
-        hostname:
-          type:
-            - string
-            - 'null'
-          description: Device hostname
-        type_id:
-          type: integer
-          default: 99
-          description: Device type ID (99 = Unknown)
-      description: |-
-        Device information.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/device
-      title: DeviceModel
-    UrlModel:
-      type: object
-      properties:
-        url_string:
-          type:
-            - string
-            - 'null'
-          description: Full URL string
-        scheme:
-          type:
-            - string
-            - 'null'
-          description: URL scheme (e.g., https)
-        hostname:
-          type:
-            - string
-            - 'null'
-          description: URL hostname
-        port:
-          type:
-            - integer
-            - 'null'
-          description: URL port
-        path:
-          type:
-            - string
-            - 'null'
-          description: URL path
-        query_string:
-          type:
-            - string
-            - 'null'
-          description: URL query string
-      description: |-
-        OCSF URL object.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/url
-      title: UrlModel
-    HttpRequestModel:
-      type: object
-      properties:
-        http_method:
-          type: string
-          description: HTTP method (GET, POST, etc.)
-        url:
-          $ref: '#/components/schemas/UrlModel'
-          description: Request URL object
-        user_agent:
-          type:
-            - string
-            - 'null'
-          description: User agent string
-        x_forwarded_for:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: X-Forwarded-For header as a list
-      required:
-        - http_method
-        - url
-      description: |-
-        HTTP request details.
-
-        Spec: https://schema.ocsf.io/1.6.0/objects/http_request
-      title: HttpRequestModel
-    WorkspaceAuditLogEntryResponse:
-      type: object
-      properties:
-        metadata:
-          type: object
-          additionalProperties:
-            description: Any type
-          description: Event metadata
-        time:
-          type: integer
-          description: Event time in milliseconds since epoch
-        activity_id:
-          $ref: '#/components/schemas/WorkspaceAuditLogEntryResponseActivityId'
-          description: Activity ID
-        activity_name:
-          type: string
-          description: Activity name
-        category_name:
-          type: string
-          default: Identity & Access Management
-          description: Event category
-        category_uid:
-          type: integer
-          default: 3
-          description: Category UID for IAM
-        class_name:
-          type: string
-          default: ''
-          description: Event class name
-        class_uid:
-          type: integer
-          default: 0
-          description: Event class UID
-        severity_id:
-          $ref: '#/components/schemas/SeverityId'
-          description: Severity level
-        status_id:
-          $ref: '#/components/schemas/StatusId'
-          description: Status of the action
-        actor:
-          $ref: '#/components/schemas/ActorModel'
-          description: Actor performing the action
-        device:
-          oneOf:
-            - $ref: '#/components/schemas/DeviceModel'
-            - type: 'null'
-          description: Device information
-        http_request:
-          oneOf:
-            - $ref: '#/components/schemas/HttpRequestModel'
-            - type: 'null'
-          description: HTTP request details
-        message:
-          type: string
-          description: Human-readable event description
-        unmapped:
-          type: object
-          additionalProperties:
-            description: Any type
-          description: Attributes not mapped to OCSF
-        id:
-          type: string
-          description: Firestore document ID
-        time_dt:
-          type: string
-          description: Event time in human-readable RFC 3339 format, derived from 'time'.
-        type_uid:
-          type: integer
-          description: OCSF type_uid is class_uid * 100 + activity_id.
-        type_name:
-          type: string
-          description: OCSF type_name combines class_name and activity_name.
-      required:
-        - activity_id
-        - activity_name
-        - status_id
-        - actor
-        - message
-        - id
-        - time_dt
-        - type_uid
-        - type_name
-      description: Audit log entry with Firestore document ID for API responses.
-      title: WorkspaceAuditLogEntryResponse
-    WorkspaceAuditLogsPageResponse:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkspaceAuditLogEntryResponse'
-        has_more:
-          type: boolean
-        next_cursor:
-          type:
-            - string
-            - 'null'
-      required:
-        - entries
-        - has_more
-        - next_cursor
-      description: Paginated workspace audit log response.
-      title: WorkspaceAuditLogsPageResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-
-```
+- `entries` (list of object, required)
+  - `activity_id` (enum or enum or enum or enum or enum, required) — Activity ID
+  - `activity_name` (string, required) — Activity name
+  - `status_id` (enum, required) — Status of the action
+    - Allowed values: `0`, `1`, `2`, `99`
+  - `actor` (object, required) — Actor performing the action
+    - `user` (object, required) — User who performed the action
+      - `name` (string, optional, nullable) — Username
+      - `uid` (string, optional, nullable) — Unique user identifier
+      - `type_id` (enum, optional) — Account type identifier
+        - Allowed values: `0`, `1`, `2`, `3`, `4`, `99`
+      - `type` (string, optional, nullable) — Account type description
+      - `email_addr` (string, optional, nullable) — User email address
+      - `full_name` (string, optional, nullable) — Full name of the user
+      - `domain` (string, optional, nullable) — User's domain
+    - `app_name` (string, optional, nullable) — Client application or service name
+    - `app_uid` (string, optional, nullable) — Client application unique identifier
+    - `session` (map from string to any, optional, nullable) — Session information
+  - `message` (string, required) — Human-readable event description
+  - `id` (string, required) — Firestore document ID
+  - `time_dt` (string, required) — Event time in human-readable RFC 3339 format, derived from 'time'.
+  - `type_uid` (integer, required) — OCSF type_uid is class_uid * 100 + activity_id.
+  - `type_name` (string, required) — OCSF type_name combines class_name and activity_name.
+  - `metadata` (map from string to any, optional) — Event metadata
+  - `time` (integer, optional) — Event time in milliseconds since epoch
+  - `category_name` (string, optional, default: Identity & Access Management) — Event category
+  - `category_uid` (integer, optional, default: 3) — Category UID for IAM
+  - `class_name` (string, optional, default: ) — Event class name
+  - `class_uid` (integer, optional, default: 0) — Event class UID
+  - `severity_id` (enum, optional) — Severity level
+    - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `99`
+  - `device` (object, optional, nullable) — Device information
+    - `ip` (string, optional, nullable) — IP address
+    - `hostname` (string, optional, nullable) — Device hostname
+    - `type_id` (integer, optional, default: 99) — Device type ID (99 = Unknown)
+  - `http_request` (object, optional, nullable) — HTTP request details
+    - `http_method` (string, required) — HTTP method (GET, POST, etc.)
+    - `url` (object, required) — Request URL object
+      - `url_string` (string, optional, nullable) — Full URL string
+      - `scheme` (string, optional, nullable) — URL scheme (e.g., https)
+      - `hostname` (string, optional, nullable) — URL hostname
+      - `port` (integer, optional, nullable) — URL port
+      - `path` (string, optional, nullable) — URL path
+      - `query_string` (string, optional, nullable) — URL query string
+    - `user_agent` (string, optional, nullable) — User agent string
+    - `x_forwarded_for` (list of string, optional, nullable) — X-Forwarded-For header as a list
+  - `unmapped` (map from string to any, optional) — Attributes not mapped to OCSF
+- `has_more` (boolean, required)
+- `next_cursor` (string, required, nullable)
 
 ## Examples
-
-
 
 **Request**
 

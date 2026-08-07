@@ -15,120 +15,33 @@ Create a new conversation tag for the workspace.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/tags:
-    post:
-      operationId: create
-      summary: Create Conversation Tag
-      description: Create a new conversation tag for the workspace.
-      tags:
-        - tags
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ConversationTagResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: Display title of the tag.
-                description:
-                  type: string
-                  description: Optional free-text description.
-              required:
-                - title
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ConversationTagResponseModel:
-      type: object
-      properties:
-        tag_id:
-          type: string
-        workspace_id:
-          type: string
-        owner_user_id:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        created_at_unix_secs:
-          type: integer
-      required:
-        - tag_id
-        - workspace_id
-        - owner_user_id
-        - title
-        - created_at_unix_secs
-      title: ConversationTagResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `title` (string, required) — Display title of the tag.
+- `description` (string, optional) — Optional free-text description.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `tag_id` (string, required)
+- `workspace_id` (string, required)
+- `owner_user_id` (string, required)
+- `title` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `description` (string, optional)
 
 ## Examples
 

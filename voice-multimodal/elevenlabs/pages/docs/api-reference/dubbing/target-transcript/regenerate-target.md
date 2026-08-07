@@ -14,139 +14,33 @@ Enterprise only. Re-dub a target from its edited transcript, re-synthesizing onl
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/language/{language_id}/transcript/regenerate:
-    post:
-      operationId: regenerate
-      summary: Regenerate Dubbing Target
-      description: >-
-        Enterprise only. Re-dub a target from its edited transcript,
-        re-synthesizing only the edited regions (charged like a generation).
-        Conflicts when the target has no edits to apply -- nothing is dispatched
-        and nothing is charged.
-      tags:
-        - transcript
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_id
-          in: path
-          description: Identifier of the language target.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '202':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingRegenerateResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingRegenerateResponse:
-      type: object
-      properties:
-        regenerated_segment_ids:
-          type: array
-          items:
-            type: string
-          description: 'The segments this re-dub re-synthesizes: those with edits to apply.'
-        regenerated_seconds:
-          type: number
-          format: double
-          description: >-
-            Seconds of audio this re-dub covers -- the edited regions only,
-            never the whole target. `charged_seconds` is the part of it that was
-            billed.
-        charged_seconds:
-          type: number
-          format: double
-          description: >-
-            Seconds actually billed, after the free-regeneration allowance. Zero
-            when the re-dub cost nothing -- the allowance covered all of it, or
-            the project's included generation did.
-        free_regeneration_seconds_remaining:
-          type: number
-          format: double
-          description: >-
-            Free-regeneration seconds left for this language target after this
-            re-dub. The allowance is the source's own duration.
-      required:
-        - regenerated_segment_ids
-        - regenerated_seconds
-        - charged_seconds
-        - free_regeneration_seconds_remaining
-      description: 'The accepted re-dub: what it covers and what it cost.'
-      title: DubbingRegenerateResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project.
+- `language_id` (string, required) — Identifier of the language target.
+
+## Response
+
+### 202
+
+Successful Response
+
+- `regenerated_segment_ids` (list of string, required) — The segments this re-dub re-synthesizes: those with edits to apply.
+- `regenerated_seconds` (double, required) — Seconds of audio this re-dub covers -- the edited regions only, never the whole target. `charged_seconds` is the part of it that was billed.
+- `charged_seconds` (double, required) — Seconds actually billed, after the free-regeneration allowance. Zero when the re-dub cost nothing -- the allowance covered all of it, or the project's included generation did.
+- `free_regeneration_seconds_remaining` (double, required) — Free-regeneration seconds left for this language target after this re-dub. The allowance is the source's own duration.
 
 ## Examples
-
-
 
 **Response**
 

@@ -26,7 +26,7 @@ You receive an event anytime the status of your order changes.
 
 ### [climate.order.delivered](https://docs.stripe.com/api/events/types.md#event_types-climate.order.delivered)
 
-When Frontier delivers your order, Stripe sends the [climate.order.delivered](https://docs.stripe.com/api/events/types.md#event_types-climate.order.delivered) event. This event confirms that Frontier has received carbon removal from the supplier, verified the delivery, and retired the carbon removal units on behalf of you or your designated beneficiary.
+When Frontier delivers your order, Stripe sends the [climate.order.delivered](https://docs.stripe.com/api/events/types.md#event_types-climate.order.delivered) event, which confirms that Frontier received carbon removal from the supplier, verified the delivery, and retired the carbon removal units on behalf of you or your designated beneficiary. This is sent within 30 days of your order for *spot purchases* (Carbon removal that has already been verified and delivered to Stripe and is retired to you within 30 days of purchase).
 
 ### [climate.order.delayed](https://docs.stripe.com/api/events/types.md#event_types-climate.order.delayed)
 

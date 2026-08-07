@@ -15,184 +15,40 @@ Creates a new pronunciation dictionary from a lexicon .PLS file
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/create-from-file
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries/add-from-file:
-    post:
-      operationId: create_from_file
-      summary: Create a pronunciation dictionary from a file
-      description: Creates a new pronunciation dictionary from a lexicon .PLS file
-      tags:
-        - pronunciationDictionaries
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddPronunciationDictionaryResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: >-
-                    The name of the pronunciation dictionary, used for
-                    identification only.
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    A lexicon .pls file which we will use to initialize the
-                    project with.
-                description:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    A description of the pronunciation dictionary, used for
-                    identification only.
-                workspace_access:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1PronunciationDictionariesAddFromFilePostRequestBodyContentMultipartFormDataSchemaWorkspaceAccess
-                    - type: 'null'
-                  description: >-
-                    Should be one of 'admin', 'editor' or 'viewer'. If not
-                    provided, defaults to no access.
-              required:
-                - name
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1PronunciationDictionariesAddFromFilePostRequestBodyContentMultipartFormDataSchemaWorkspaceAccess:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        Should be one of 'admin', 'editor' or 'viewer'. If not provided,
-        defaults to no access.
-      title: >-
-        V1PronunciationDictionariesAddFromFilePostRequestBodyContentMultipartFormDataSchemaWorkspaceAccess
-    AddPronunciationDictionaryResponseModelPermissionOnResource:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The permission on the resource of the pronunciation dictionary.
-      title: AddPronunciationDictionaryResponseModelPermissionOnResource
-    AddPronunciationDictionaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the created pronunciation dictionary.
-        name:
-          type: string
-          description: The name of the created pronunciation dictionary.
-        created_by:
-          type: string
-          description: The user ID of the creator of the pronunciation dictionary.
-        creation_time_unix:
-          type: integer
-          description: The creation time of the pronunciation dictionary in Unix timestamp.
-        version_id:
-          type: string
-          description: The ID of the created pronunciation dictionary version.
-        version_rules_num:
-          type: integer
-          description: The number of rules in the version of the pronunciation dictionary.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the pronunciation dictionary.
-        permission_on_resource:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/AddPronunciationDictionaryResponseModelPermissionOnResource
-            - type: 'null'
-          description: The permission on the resource of the pronunciation dictionary.
-      required:
-        - id
-        - name
-        - created_by
-        - creation_time_unix
-        - version_id
-        - version_rules_num
-        - permission_on_resource
-      title: AddPronunciationDictionaryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `name` (string, required) — The name of the pronunciation dictionary, used for identification only.
+- `file` (file, optional) — A lexicon .pls file which we will use to initialize the project with.
+- `description` (string, optional) — A description of the pronunciation dictionary, used for identification only.
+- `workspace_access` (enum, optional) — Should be one of 'admin', 'editor' or 'viewer'. If not provided, defaults to no access.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required) — The ID of the created pronunciation dictionary.
+- `name` (string, required) — The name of the created pronunciation dictionary.
+- `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
+- `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
+- `version_id` (string, required) — The ID of the created pronunciation dictionary version.
+- `version_rules_num` (integer, required) — The number of rules in the version of the pronunciation dictionary.
+- `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `description` (string, optional, nullable) — The description of the pronunciation dictionary.
 
 ## Examples
-
-
 
 **Request**
 

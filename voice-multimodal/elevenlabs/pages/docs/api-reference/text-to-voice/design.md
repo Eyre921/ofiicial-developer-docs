@@ -15,293 +15,54 @@ Design a voice via a prompt. This method returns a list of voice previews. Each 
 
 Reference: https://elevenlabs.io/docs/api-reference/text-to-voice/design
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/text-to-voice/design:
-    post:
-      operationId: design
-      summary: Design A Voice.
-      description: >-
-        Design a voice via a prompt. This method returns a list of voice
-        previews. Each preview has a generated_voice_id and a sample of the
-        voice as base64 encoded mp3 audio. To create a voice use the
-        generated_voice_id of the preferred preview with the /v1/text-to-voice
-        endpoint.
-      tags:
-        - textToVoice
-      parameters:
-        - name: output_format
-          in: query
-          description: >-
-            Output format of the generated audio. Formatted as
-            codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at
-            32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate
-            requires you to be subscribed to Creator tier or above. PCM with
-            44.1kHz sample rate requires you to be subscribed to Pro tier or
-            above. Note that the μ-law format (sometimes written mu-law, often
-            approximated as u-law) is commonly used for Twilio audio inputs.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AllowedOutputFormats'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoicePreviewsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VoiceDesignRequestModel'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AllowedOutputFormats:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_24000_48
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_32000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-        - alaw_8000
-        - opus_48000_32
-        - opus_48000_64
-        - opus_48000_96
-        - opus_48000_128
-        - opus_48000_192
-      title: AllowedOutputFormats
-    VoiceDesignRequestModelModelId:
-      type: string
-      enum:
-        - eleven_multilingual_ttv_v2
-        - eleven_ttv_v3
-      default: eleven_multilingual_ttv_v2
-      description: >-
-        Model to use for the voice generation. Possible values:
-        eleven_multilingual_ttv_v2, eleven_ttv_v3.
-      title: VoiceDesignRequestModelModelId
-    VoiceDesignRequestModel:
-      type: object
-      properties:
-        voice_description:
-          type: string
-          description: Description to use for the created voice.
-        model_id:
-          $ref: '#/components/schemas/VoiceDesignRequestModelModelId'
-          default: eleven_multilingual_ttv_v2
-          description: >-
-            Model to use for the voice generation. Possible values:
-            eleven_multilingual_ttv_v2, eleven_ttv_v3.
-        text:
-          type:
-            - string
-            - 'null'
-          description: Text to generate, text length has to be between 100 and 1000.
-        auto_generate_text:
-          type: boolean
-          default: false
-          description: >-
-            Whether to automatically generate a text suitable for the voice
-            description.
-        loudness:
-          type: number
-          format: double
-          default: 0.5
-          description: >-
-            Controls the volume level of the generated voice. -1 is quietest, 1
-            is loudest, 0 corresponds to roughly -24 LUFS.
-        seed:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Random number that controls the voice generation. Same seed with
-            same inputs produces same voice.
-        guidance_scale:
-          type: number
-          format: double
-          default: 5
-          description: >-
-            Controls how closely the AI follows the prompt. Lower numbers give
-            the AI more freedom to be creative, while higher numbers force it to
-            stick more to the prompt. High numbers can cause voice to sound
-            artificial or robotic. We recommend to use longer, more detailed
-            prompts at lower Guidance Scale.
-        stream_previews:
-          type: boolean
-          default: false
-          description: >-
-            Determines whether the Text to Voice previews should be included in
-            the response. If true, only the generated IDs will be returned which
-            can then be streamed via the
-            /v1/text-to-voice/:generated_voice_id/stream endpoint.
-        should_enhance:
-          type: boolean
-          default: false
-          description: >-
-            Whether to enhance the voice description using AI to add more detail
-            and improve voice generation quality. When enabled, the system will
-            automatically expand simple prompts into more detailed voice
-            descriptions. Defaults to False
-        remixing_session_id:
-          type:
-            - string
-            - 'null'
-          description: The remixing session id.
-        remixing_session_iteration_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The id of the remixing session iteration where these generations
-            should be attached to. If not provided, a new iteration will be
-            created.
-        quality:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Higher quality results in better voice output but less variety.
-        reference_audio_base64:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Reference audio to use for the voice generation. The audio should be
-            base64 encoded. Only supported when using the  eleven_ttv_v3 model.
-        prompt_strength:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            Controls the balance of prompt versus reference audio when
-            generating voice samples. 0 means almost no prompt influence, 1
-            means almost no reference audio influence. Only supported when using
-            the eleven_ttv_v3 model.
-      required:
-        - voice_description
-      title: VoiceDesignRequestModel
-    VoicePreviewResponseModel:
-      type: object
-      properties:
-        audio_base_64:
-          type: string
-          description: The base64 encoded audio of the preview.
-        generated_voice_id:
-          type: string
-          description: >-
-            The ID of the generated voice. Use it to create a voice from the
-            preview.
-        media_type:
-          type: string
-          description: The media type of the preview.
-        duration_secs:
-          type: number
-          format: double
-          description: The duration of the preview in seconds.
-        language:
-          type:
-            - string
-            - 'null'
-          description: The language of the preview.
-      required:
-        - audio_base_64
-        - generated_voice_id
-        - media_type
-        - duration_secs
-        - language
-      title: VoicePreviewResponseModel
-    VoicePreviewsResponseModel:
-      type: object
-      properties:
-        previews:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoicePreviewResponseModel'
-          description: The previews of the generated voices.
-        text:
-          type: string
-          description: The text used to preview the voices.
-      required:
-        - previews
-        - text
-      title: VoicePreviewsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `output_format` (enum, optional) — Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
+  - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`, `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_32000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`, `alaw_8000`, `opus_48000_32`, `opus_48000_64`, `opus_48000_96`, `opus_48000_128`, `opus_48000_192`
+
+### Body (application/json)
+
+- `voice_description` (string, required) — Description to use for the created voice.
+- `model_id` (enum, optional, default: eleven_multilingual_ttv_v2) — Model to use for the voice generation. Possible values: eleven_multilingual_ttv_v2, eleven_ttv_v3.
+  - Allowed values: `eleven_multilingual_ttv_v2`, `eleven_ttv_v3`
+- `text` (string, optional, nullable) — Text to generate, text length has to be between 100 and 1000.
+- `auto_generate_text` (boolean, optional, default: false) — Whether to automatically generate a text suitable for the voice description.
+- `loudness` (double, optional, default: 0.5) — Controls the volume level of the generated voice. -1 is quietest, 1 is loudest, 0 corresponds to roughly -24 LUFS.
+- `seed` (integer, optional, nullable) — Random number that controls the voice generation. Same seed with same inputs produces same voice.
+- `guidance_scale` (double, optional, default: 5) — Controls how closely the AI follows the prompt. Lower numbers give the AI more freedom to be creative, while higher numbers force it to stick more to the prompt. High numbers can cause voice to sound artificial or robotic. We recommend to use longer, more detailed prompts at lower Guidance Scale.
+- `stream_previews` (boolean, optional, default: false) — Determines whether the Text to Voice previews should be included in the response. If true, only the generated IDs will be returned which can then be streamed via the /v1/text-to-voice/:generated_voice_id/stream endpoint.
+- `should_enhance` (boolean, optional, default: false) — Whether to enhance the voice description using AI to add more detail and improve voice generation quality. When enabled, the system will automatically expand simple prompts into more detailed voice descriptions. Defaults to False
+- `remixing_session_id` (string, optional, nullable) — The remixing session id.
+- `remixing_session_iteration_id` (string, optional, nullable) — The id of the remixing session iteration where these generations should be attached to. If not provided, a new iteration will be created.
+- `quality` (double, optional, nullable) — Higher quality results in better voice output but less variety.
+- `reference_audio_base64` (string, optional, nullable) — Reference audio to use for the voice generation. The audio should be base64 encoded. Only supported when using the eleven_ttv_v3 model.
+- `prompt_strength` (double, optional, nullable) — Controls the balance of prompt versus reference audio when generating voice samples. 0 means almost no prompt influence, 1 means almost no reference audio influence. Only supported when using the eleven_ttv_v3 model.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `previews` (list of object, required) — The previews of the generated voices.
+  - `audio_base_64` (string, required) — The base64 encoded audio of the preview.
+  - `generated_voice_id` (string, required) — The ID of the generated voice. Use it to create a voice from the preview.
+  - `media_type` (string, required) — The media type of the preview.
+  - `duration_secs` (double, required) — The duration of the preview in seconds.
+  - `language` (string, required, nullable) — The language of the preview.
+- `text` (string, required) — The text used to preview the voices.
 
 ## Examples
-
-
 
 **Request**
 

@@ -15,160 +15,36 @@ Create a set of pronunciation dictionaries acting on a project. This will automa
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/create-pronunciation-dictionaries
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/pronunciation-dictionaries:
-    post:
-      operationId: create
-      summary: Create Pronunciation Dictionaries
-      description: >-
-        Create a set of pronunciation dictionaries acting on a project. This
-        will automatically mark text within this project as requiring
-        reconverting where the new dictionary would apply or the old one no
-        longer does.
-      tags:
-        - pronunciationDictionaries
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/CreatePronunciationDictionaryResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Create_Pronunciation_Dictionaries_v1_studio_projects__project_id__pronunciation_dictionaries_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    PronunciationDictionaryVersionLocatorDBModel:
-      type: object
-      properties:
-        pronunciation_dictionary_id:
-          type: string
-        version_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - pronunciation_dictionary_id
-        - version_id
-      title: PronunciationDictionaryVersionLocatorDBModel
-    Body_Create_Pronunciation_Dictionaries_v1_studio_projects__project_id__pronunciation_dictionaries_post:
-      type: object
-      properties:
-        pronunciation_dictionary_locators:
-          type: array
-          items:
-            $ref: '#/components/schemas/PronunciationDictionaryVersionLocatorDBModel'
-          description: >-
-            A list of pronunciation dictionary locators
-            (pronunciation_dictionary_id, version_id) encoded as a list of JSON
-            strings for pronunciation dictionaries to be applied to the text. A
-            list of json encoded strings is required as adding projects may
-            occur through formData as opposed to jsonBody. To specify multiple
-            dictionaries use multiple --form lines in your curl, such as --form
-            'pronunciation_dictionary_locators="{\"pronunciation_dictionary_id\":\"Vmd4Zor6fplcA7WrINey\",\"version_id\":\"hRPaxjlTdR7wFMhV4w0b\"}"'
-            --form
-            'pronunciation_dictionary_locators="{\"pronunciation_dictionary_id\":\"JzWtcGQMJ6bnlWwyMo7e\",\"version_id\":\"lbmwxiLu4q6txYxgdZqn\"}"'.
-        invalidate_affected_text:
-          type: boolean
-          default: true
-          description: >-
-            This will automatically mark text in this project for reconversion
-            when the new dictionary applies or the old one no longer does.
-      required:
-        - pronunciation_dictionary_locators
-      title: >-
-        Body_Create_Pronunciation_Dictionaries_v1_studio_projects__project_id__pronunciation_dictionaries_post
-    CreatePronunciationDictionaryResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the create pronunciation dictionary request. If the
-            request was successful, the status will be 'ok'. Otherwise an error
-            message with status 500 will be returned.
-      required:
-        - status
-      title: CreatePronunciationDictionaryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+
+### Body (application/json)
+
+- `pronunciation_dictionary_locators` (list of object, required) — A list of pronunciation dictionary locators (pronunciation\_dictionary\_id, version\_id) encoded as a list of JSON strings for pronunciation dictionaries to be applied to the text. A list of json encoded strings is required as adding projects may occur through formData as opposed to jsonBody. To specify multiple dictionaries use multiple --form lines in your curl, such as --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"Vmd4Zor6fplcA7WrINey","version\_id":"hRPaxjlTdR7wFMhV4w0b"}"' --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"JzWtcGQMJ6bnlWwyMo7e","version\_id":"lbmwxiLu4q6txYxgdZqn"}"'.
+  - `pronunciation_dictionary_id` (string, required)
+  - `version_id` (string, required, nullable)
+- `invalidate_affected_text` (boolean, optional, default: true) — This will automatically mark text in this project for reconversion when the new dictionary applies or the old one no longer does.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the create pronunciation dictionary request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

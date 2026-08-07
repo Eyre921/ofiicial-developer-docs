@@ -14,140 +14,34 @@ Gets the list of available accents in the shared voice library.
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/accents/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/accents:
-    get:
-      operationId: get
-      summary: Get Voice Accents
-      description: Gets the list of available accents in the shared voice library.
-      tags:
-        - accents
-      parameters:
-        - name: language
-          in: query
-          description: If provided, only accents for this language code are returned.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: model_id
-          in: query
-          description: >-
-            If provided, returns the accents available for this model. Defaults
-            to the most complete accent list when omitted.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetVoiceAccentsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    VoiceAccentResponseModel:
-      type: object
-      properties:
-        accent:
-          type: string
-          description: >-
-            The accent value used for filtering shared voices via the `accent`
-            query parameter on `GET /v1/shared-voices`.
-        language:
-          type: string
-          description: The language code this accent belongs to, e.g. `en`.
-        code:
-          type: string
-          description: The full accent code, e.g. `en-american`.
-        name:
-          type: string
-          description: The human-readable accent name, e.g. `American`.
-      required:
-        - accent
-        - language
-        - code
-        - name
-      title: VoiceAccentResponseModel
-    GetVoiceAccentsResponseModel:
-      type: object
-      properties:
-        accents:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoiceAccentResponseModel'
-          description: A list of available voice accents.
-      required:
-        - accents
-      title: GetVoiceAccentsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `language` (string, optional, nullable) — If provided, only accents for this language code are returned.
+- `model_id` (string, optional, nullable) — If provided, returns the accents available for this model. Defaults to the most complete accent list when omitted.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `accents` (list of object, required) — A list of available voice accents.
+  - `accent` (string, required) — The accent value used for filtering shared voices via the `accent` query parameter on `GET /v1/shared-voices`.
+  - `language` (string, required) — The language code this accent belongs to, e.g. `en`.
+  - `code` (string, required) — The full accent code, e.g. `en-american`.
+  - `name` (string, required) — The human-readable accent name, e.g. `American`.
 
 ## Examples
-
-
 
 **Response**
 

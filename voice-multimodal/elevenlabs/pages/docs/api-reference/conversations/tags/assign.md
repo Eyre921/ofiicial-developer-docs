@@ -15,114 +15,31 @@ Assign one or more conversation tags to a conversation. Tags that are already as
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/tags/assign
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversations/{conversation_id}/tags:
-    post:
-      operationId: assign
-      summary: Assign Conversation Tags
-      description: >-
-        Assign one or more conversation tags to a conversation. Tags that are
-        already assigned are ignored. Tags must belong to the same workspace.
-      tags:
-        - tags
-      parameters:
-        - name: conversation_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AssignConversationTagsRequestModel'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AssignConversationTagsRequestModel:
-      type: object
-      properties:
-        tag_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            Tag IDs to add to the conversation. Re-assigning an existing tag is
-            a no-op.
-      required:
-        - tag_ids
-      title: AssignConversationTagsRequestModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `conversation_id` (string, required)
+
+### Body (application/json)
+
+- `tag_ids` (list of string, required) — Tag IDs to add to the conversation. Re-assigning an existing tag is a no-op.
+
+## Response
+
+### 204
+
+Successful Response
 
 ## Examples
-
-
 
 **Request**
 

@@ -15,928 +15,134 @@ Transcribe an audio or video file. If webhook is set to true, the request will b
 
 Reference: https://elevenlabs.io/docs/api-reference/speech-to-text/convert
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/speech-to-text:
-    post:
-      operationId: convert
-      summary: Create transcript
-      description: >-
-        Transcribe an audio or video file. If webhook is set to true, the
-        request will be processed asynchronously and results sent to configured
-        webhooks. When use_multi_channel is true and the provided audio has
-        multiple channels, a 'transcripts' object with separate transcripts for
-        each channel is returned; set multichannel_output_style='combined' to
-        instead receive a single transcript with all channels merged and sorted
-        by time. Otherwise, returns a single transcript. The optional
-        webhook_metadata parameter allows you to attach custom data that will be
-        included in webhook responses for request correlation and tracking.
-      tags:
-        - speechToText
-      parameters:
-        - name: token
-          in: query
-          description: >-
-            A single-use authentication token created via POST
-            /v1/single-use-token/batch_scribe. This token can only be used once
-            and expires after 15 minutes. Alternative to API key or bearer token
-            authentication for frontend clients.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: enable_logging
-          in: query
-          description: >-
-            When enable_logging is set to false zero retention mode will be used
-            for the request. This will mean log and transcript storage features
-            are unavailable for this request. Zero retention mode may only be
-            used by enterprise customers.
-          required: false
-          schema:
-            type: boolean
-            default: true
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Synchronous transcription result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/speech_to_text_convert_Response_200'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                model_id:
-                  $ref: >-
-                    #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaModelId
-                  description: The ID of the model to use for transcription.
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    The file to transcribe (100ms minimum audio length). All
-                    major audio and video formats are supported. Exactly one of
-                    the file or cloud_storage_url parameters must be provided.
-                    The file size must be less than 5.0GB.
-                language_code:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    An ISO-639-1 or ISO-639-3 language_code corresponding to the
-                    language of the audio file. Can sometimes improve
-                    transcription performance if known beforehand. Defaults to
-                    null, in this case the language is predicted automatically.
-                tag_audio_events:
-                  type: boolean
-                  default: true
-                  description: >-
-                    Whether to tag audio events like (laughter), (footsteps),
-                    etc. in the transcription.
-                num_speakers:
-                  type:
-                    - integer
-                    - 'null'
-                  description: >-
-                    The maximum amount of speakers talking in the uploaded file.
-                    Can help with predicting who speaks when. The maximum amount
-                    of speakers that can be predicted is 32. Defaults to null,
-                    in this case the amount of speakers is set to the maximum
-                    value the model supports.
-                timestamps_granularity:
-                  $ref: >-
-                    #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaTimestampsGranularity
-                  default: word
-                  description: >-
-                    The granularity of the timestamps in the transcription.
-                    'word' provides word-level timestamps and 'character'
-                    provides character-level timestamps per word.
-                diarize:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to annotate which speaker is currently talking in
-                    the uploaded file.
-                diarization_threshold:
-                  type:
-                    - number
-                    - 'null'
-                  format: double
-                  description: >-
-                    Diarization threshold to apply during speaker diarization. A
-                    higher value means there will be a lower chance of one
-                    speaker being diarized as two different speakers but also a
-                    higher chance of two different speakers being diarized as
-                    one speaker (less total speakers predicted). A low value
-                    means there will be a higher chance of one speaker being
-                    diarized as two different speakers but also a lower chance
-                    of two different speakers being diarized as one speaker
-                    (more total speakers predicted). Can only be set when
-                    diarize=True and num_speakers=None. Defaults to None, in
-                    which case we will choose a threshold based on the model_id
-                    (0.22 usually).
-                additional_formats:
-                  $ref: '#/components/schemas/AdditionalFormats'
-                  description: A list of additional formats to export the transcript to.
-                file_format:
-                  $ref: >-
-                    #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaFileFormat
-                  default: other
-                  description: >-
-                    The format of input audio. Options are 'pcm_s16le_16' or
-                    'other' For `pcm_s16le_16`, the input audio must be 16-bit
-                    PCM at a 16kHz sample rate, single channel (mono), and
-                    little-endian byte order. Latency will be lower than with
-                    passing an encoded waveform.
-                cloud_storage_url:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    [Deprecated] This parameter is deprecated and will be
-                    removed in the future. Use 'source_url' instead.The HTTPS
-                    URL of the file to transcribe. Exactly one of the file or
-                    cloud_storage_url parameters must be provided. The file must
-                    be accessible via HTTPS and the file size must be less than
-                    2GB. Any valid HTTPS URL is accepted, including URLs from
-                    cloud storage providers (AWS S3, Google Cloud Storage,
-                    Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs
-                    can be pre-signed or include authentication tokens in query
-                    parameters.
-                source_url:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    The URL of an audio or video file to transcribe. Supports
-                    hosted video or audio files, YouTube video URLs, TikTok
-                    video URLs, and other video hosting services.
-                webhook:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to send the transcription result to configured
-                    speech-to-text webhooks.  If set the request will return
-                    early without the transcription, which will be delivered
-                    later via webhook.
-                webhook_id:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Optional specific webhook ID to send the transcription
-                    result to. Only valid when webhook is set to true. If not
-                    provided, transcription will be sent to all configured
-                    speech-to-text webhooks.
-                temperature:
-                  type:
-                    - number
-                    - 'null'
-                  format: double
-                  description: >-
-                    Controls the randomness of the transcription output. Accepts
-                    values between 0.0 and 2.0, where higher values result in
-                    more diverse and less deterministic results. If omitted, we
-                    will use a temperature based on the model you selected which
-                    is usually 0.
-                seed:
-                  type:
-                    - integer
-                    - 'null'
-                  description: >-
-                    If specified, our system will make a best effort to sample
-                    deterministically, such that repeated requests with the same
-                    seed and parameters should return the same result.
-                    Determinism is not guaranteed. Must be an integer between 0
-                    and 2147483647.
-                use_multi_channel:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether the audio file contains multiple channels where each
-                    channel contains a single speaker. When enabled, each
-                    channel is transcribed independently. By default a separate
-                    transcript is returned per channel; set
-                    multichannel_output_style='combined' to instead receive a
-                    single transcript with all channels merged and sorted by
-                    time. Each word in the response includes a 'channel_index'
-                    field indicating which channel it was spoken on. A maximum
-                    of 5 channels is supported. Each channel is billed
-                    independently at the full audio duration, so cost scales
-                    linearly with the number of channels.
-                multichannel_output_style:
-                  $ref: >-
-                    #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaMultichannelOutputStyle
-                  default: separate
-                  description: >-
-                    Controls the response shape when use_multi_channel is
-                    enabled. 'separate' (default) returns one transcript per
-                    channel under 'transcripts'. 'combined' merges all channels
-                    into a single transcript whose words are sorted by start
-                    time, each carrying a 'channel_index' - matching the
-                    single-channel response shape. 'combined' requires
-                    timestamps (timestamps_granularity must not be 'none') and
-                    does not support entity detection or redaction.
-                webhook_metadata:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaWebhookMetadata
-                    - type: 'null'
-                  description: >-
-                    Optional metadata to be included in the webhook response.
-                    This should be a JSON string representing an object with a
-                    maximum depth of 2 levels and maximum size of 16KB. Useful
-                    for tracking internal IDs, job references, or other
-                    contextual information.
-                entity_detection:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityDetection
-                    - type: 'null'
-                  description: >-
-                    Detect entities in the transcript. Can be 'all' to detect
-                    all entities, a single entity type or category string, or a
-                    list of entity types/categories. Categories include 'pii',
-                    'phi', 'pci', 'other', 'offensive_language'. When enabled,
-                    detected entities will be returned in the 'entities' field
-                    with their text, type, and character positions. Usage of
-                    this parameter will incur an additional 30% surcharge on the
-                    base transcription cost.
-                no_verbatim:
-                  type: boolean
-                  default: false
-                  description: >-
-                    If true, the transcription will not have any filler words,
-                    false starts and non-speech sounds. Only supported with
-                    scribe_v2 model.
-                use_speaker_library:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to use the speaker library for identifying known
-                    speakers during diarization. When enabled and diarize is
-                    true, detected speakers will be matched against registered
-                    speakers in the workspace's speaker library.
-                detect_speaker_roles:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to detect speaker roles (agent vs customer).
-                    Requires diarize=true. Cannot be used with
-                    use_multi_channel=true. When enabled, speaker_id values will
-                    be 'agent' and 'customer' instead of 'speaker_0',
-                    'speaker_1', etc. Usage incurs an additional 10% surcharge
-                    on base transcription cost.
-                entity_redaction:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityRedaction
-                    - type: 'null'
-                  description: >-
-                    Redact entities from the transcript text. Accepts the same
-                    format as entity_detection: 'all', a category ('pii',
-                    'phi'), or specific entity types. Must be a subset of
-                    entity_detection. When redaction is enabled, the entities
-                    field will not be returned. Usage of this parameter will
-                    incur an additional 30% surcharge on the base transcription
-                    cost.
-                entity_redaction_mode:
-                  type: string
-                  default: enumerated_entity_type
-                  description: >-
-                    How to format redacted entities. 'redacted' replaces with
-                    {REDACTED}, 'entity_type' replaces with {ENTITY_TYPE},
-                    'enumerated_entity_type' replaces with {ENTITY_TYPE_N} where
-                    N enumerates each occurrence. Only used when
-                    entity_redaction is set.
-                keyterms:
-                  type: array
-                  items:
-                    type: string
-                  default: []
-                  description: >-
-                    A list of keyterms to bias the transcription
-                    towards.           The keyterms are words or phrases you
-                    want the model to recognise more accurately.           The
-                    number of keyterms cannot exceed 1000.           The length
-                    of each keyterm must be less than 50 characters.          
-                    Keyterms can contain at most 5 words (after
-                    normalisation).           For example ["hello", "world",
-                    "technical term"].           The following characters are
-                    not supported: `<`, `>`, `{`, `}`, `[`, `]`, `\`.          
-                    Usage of this parameter will incur an additional 20%
-                    surcharge on the base transcription cost.           When
-                    more than 100 keyterms are provided, a minimum billable
-                    duration of 20 seconds applies per request.
-              required:
-                - model_id
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaModelId:
-      type: string
-      enum:
-        - scribe_v2
-        - scribe_v1
-      description: The ID of the model to use for transcription.
-      title: V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaModelId
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaTimestampsGranularity:
-      type: string
-      enum:
-        - none
-        - word
-        - character
-      default: word
-      description: >-
-        The granularity of the timestamps in the transcription. 'word' provides
-        word-level timestamps and 'character' provides character-level
-        timestamps per word.
-      title: >-
-        V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaTimestampsGranularity
-    ExportOptions:
-      oneOf:
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - docx
-              description: 'Discriminator value: docx'
-            include_speakers:
-              type: boolean
-              default: true
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-          required:
-            - format
-          description: DocxExportOptions variant
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - html
-            include_speakers:
-              type: boolean
-              default: true
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-          required:
-            - format
-          description: HtmlExportOptions variant
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - pdf
-            include_speakers:
-              type: boolean
-              default: true
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-          required:
-            - format
-          description: PdfExportOptions variant
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - segmented_json
-            include_speakers:
-              type: boolean
-              default: true
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-          required:
-            - format
-          description: SegmentedJsonExportOptions variant
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - srt
-            max_characters_per_line:
-              type:
-                - integer
-                - 'null'
-              default: 42
-            include_speakers:
-              type: boolean
-              default: false
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-              default: 0.8
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-              default: 4
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-              default: 84
-          required:
-            - format
-          description: SrtExportOptions variant
-        - type: object
-          properties:
-            format:
-              type: string
-              enum:
-                - txt
-            max_characters_per_line:
-              type:
-                - integer
-                - 'null'
-              default: 100
-            include_speakers:
-              type: boolean
-              default: true
-            include_timestamps:
-              type: boolean
-              default: true
-            segment_on_silence_longer_than_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_duration_s:
-              type:
-                - number
-                - 'null'
-              format: double
-            max_segment_chars:
-              type:
-                - integer
-                - 'null'
-          required:
-            - format
-          description: TxtExportOptions variant
-      discriminator:
-        propertyName: format
-      title: ExportOptions
-    AdditionalFormats:
-      type: array
-      items:
-        $ref: '#/components/schemas/ExportOptions'
-      title: AdditionalFormats
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaFileFormat:
-      type: string
-      enum:
-        - pcm_s16le_16
-        - other
-      default: other
-      description: >-
-        The format of input audio. Options are 'pcm_s16le_16' or 'other' For
-        `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample
-        rate, single channel (mono), and little-endian byte order. Latency will
-        be lower than with passing an encoded waveform.
-      title: V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaFileFormat
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaMultichannelOutputStyle:
-      type: string
-      enum:
-        - separate
-        - combined
-      default: separate
-      description: >-
-        Controls the response shape when use_multi_channel is enabled.
-        'separate' (default) returns one transcript per channel under
-        'transcripts'. 'combined' merges all channels into a single transcript
-        whose words are sorted by start time, each carrying a 'channel_index' -
-        matching the single-channel response shape. 'combined' requires
-        timestamps (timestamps_granularity must not be 'none') and does not
-        support entity detection or redaction.
-      title: >-
-        V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaMultichannelOutputStyle
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaWebhookMetadata:
-      oneOf:
-        - type: string
-        - type: object
-          additionalProperties:
-            description: Any type
-      description: >-
-        Optional metadata to be included in the webhook response. This should be
-        a JSON string representing an object with a maximum depth of 2 levels
-        and maximum size of 16KB. Useful for tracking internal IDs, job
-        references, or other contextual information.
-      title: >-
-        V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaWebhookMetadata
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityDetection:
-      oneOf:
-        - type: string
-        - type: array
-          items:
-            type: string
-      description: >-
-        Detect entities in the transcript. Can be 'all' to detect all entities,
-        a single entity type or category string, or a list of entity
-        types/categories. Categories include 'pii', 'phi', 'pci', 'other',
-        'offensive_language'. When enabled, detected entities will be returned
-        in the 'entities' field with their text, type, and character positions.
-        Usage of this parameter will incur an additional 30% surcharge on the
-        base transcription cost.
-      title: >-
-        V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityDetection
-    V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityRedaction:
-      oneOf:
-        - type: string
-        - type: array
-          items:
-            type: string
-      description: >-
-        Redact entities from the transcript text. Accepts the same format as
-        entity_detection: 'all', a category ('pii', 'phi'), or specific entity
-        types. Must be a subset of entity_detection. When redaction is enabled,
-        the entities field will not be returned. Usage of this parameter will
-        incur an additional 30% surcharge on the base transcription cost.
-      title: >-
-        V1SpeechToTextPostRequestBodyContentMultipartFormDataSchemaEntityRedaction
-    SpeechToTextWordResponseModelType:
-      type: string
-      enum:
-        - word
-        - spacing
-        - audio_event
-      description: >-
-        The type of the word or sound. 'audio_event' is used for non-word sounds
-        like laughter or footsteps.
-      title: SpeechToTextWordResponseModelType
-    SpeechToTextCharacterResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The character that was transcribed.
-        start:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The start time of the character in seconds.
-        end:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The end time of the character in seconds.
-      required:
-        - text
-      title: SpeechToTextCharacterResponseModel
-    SpeechToTextWordResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The word or sound that was transcribed.
-        start:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The start time of the word or sound in seconds.
-        end:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The end time of the word or sound in seconds.
-        type:
-          $ref: '#/components/schemas/SpeechToTextWordResponseModelType'
-          description: >-
-            The type of the word or sound. 'audio_event' is used for non-word
-            sounds like laughter or footsteps.
-        speaker_id:
-          type:
-            - string
-            - 'null'
-          description: Unique identifier for the speaker of this word.
-        logprob:
-          type: number
-          format: double
-          description: >-
-            The log of the probability with which this word was predicted.
-            Logprobs are in range [-infinity, 0], higher logprobs indicate a
-            higher confidence the model has in its predictions.
-        characters:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SpeechToTextCharacterResponseModel'
-          description: The characters that make up the word and their timing information.
-        channel_index:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The channel this word was spoken on (for multichannel audio). Null
-            for single-channel transcriptions.
-      required:
-        - text
-        - type
-        - logprob
-      description: Word-level detail of the transcription with timing information.
-      title: SpeechToTextWordResponseModel
-    AdditionalFormatResponseModel:
-      type: object
-      properties:
-        requested_format:
-          type: string
-          description: The requested format.
-        file_extension:
-          type: string
-          description: The file extension of the additional format.
-        content_type:
-          type: string
-          description: The content type of the additional format.
-        is_base64_encoded:
-          type: boolean
-          description: Whether the content is base64 encoded.
-        content:
-          type: string
-          description: The content of the additional format.
-      required:
-        - requested_format
-        - file_extension
-        - content_type
-        - is_base64_encoded
-        - content
-      title: AdditionalFormatResponseModel
-    DetectedEntity:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text that was identified as an entity.
-        entity_type:
-          type: string
-          description: >-
-            The type of entity detected (e.g., 'credit_card', 'email_address',
-            'person_name').
-        start_char:
-          type: integer
-          description: Start character position in the transcript text.
-        end_char:
-          type: integer
-          description: End character position in the transcript text.
-      required:
-        - text
-        - entity_type
-        - start_char
-        - end_char
-      description: An entity detected within transcribed text.
-      title: DetectedEntity
-    SpeechToTextChunkResponseModel:
-      type: object
-      properties:
-        language_code:
-          type: string
-          description: The detected language code (e.g. 'eng' for English).
-        language_probability:
-          type: number
-          format: double
-          description: The confidence score of the language detection (0 to 1).
-        text:
-          type: string
-          description: The raw text of the transcription.
-        words:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechToTextWordResponseModel'
-          description: List of words with their timing information.
-        channel_index:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The channel index this transcript belongs to (for multichannel
-            audio).
-        additional_formats:
-          type:
-            - array
-            - 'null'
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/AdditionalFormatResponseModel'
-              - type: 'null'
-          description: Requested additional formats of the transcript.
-        transcription_id:
-          type:
-            - string
-            - 'null'
-          description: The transcription ID of the response.
-        entities:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/DetectedEntity'
-          description: >-
-            List of detected entities with their text, type, and character
-            positions in the transcript.
-        audio_duration_secs:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The duration of the audio that was transcribed in seconds.
-      required:
-        - language_code
-        - language_probability
-        - text
-        - words
-      description: Chunk-level detail of the transcription with timing information.
-      title: SpeechToTextChunkResponseModel
-    MultichannelSpeechToTextResponseModel:
-      type: object
-      properties:
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechToTextChunkResponseModel'
-          description: >-
-            List of transcripts, one for each audio channel. Each transcript
-            contains the text and word-level details for its respective channel.
-        transcription_id:
-          type:
-            - string
-            - 'null'
-          description: The transcription ID of the response.
-        audio_duration_secs:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            The duration of the audio that was transcribed across all channels
-            in seconds.
-      required:
-        - transcripts
-      description: Response model for multichannel speech-to-text transcription.
-      title: MultichannelSpeechToTextResponseModel
-    SpeechToTextWebhookResponseModel:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message of the webhook response.
-        request_id:
-          type: string
-          description: The request ID of the webhook response.
-        transcription_id:
-          type:
-            - string
-            - 'null'
-          description: The transcription ID of the webhook response.
-      required:
-        - message
-        - request_id
-      title: SpeechToTextWebhookResponseModel
-    speech_to_text_convert_Response_200:
-      oneOf:
-        - $ref: '#/components/schemas/SpeechToTextChunkResponseModel'
-        - $ref: '#/components/schemas/MultichannelSpeechToTextResponseModel'
-        - $ref: '#/components/schemas/SpeechToTextWebhookResponseModel'
-      title: speech_to_text_convert_Response_200
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `token` (string, optional, nullable) — A single-use authentication token created via POST /v1/single-use-token/batch_scribe. This token can only be used once and expires after 15 minutes. Alternative to API key or bearer token authentication for frontend clients.
+- `enable_logging` (boolean, optional, default: true) — When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers.
+
+### Body (multipart/form-data)
+
+- `model_id` (enum, required) — The ID of the model to use for transcription.
+- `file` (file, optional) — The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 5.0GB.
+- `language_code` (string, optional) — An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically.
+- `tag_audio_events` (boolean, optional) — Whether to tag audio events like (laughter), (footsteps), etc. in the transcription.
+- `num_speakers` (integer, optional) — The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports.
+- `timestamps_granularity` (enum, optional) — The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word.
+- `diarize` (boolean, optional) — Whether to annotate which speaker is currently talking in the uploaded file.
+- `diarization_threshold` (double, optional) — Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually).
+- `additional_formats` (list of object, optional) — A list of additional formats to export the transcript to.
+- `file_format` (enum, optional) — The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.
+- `cloud_storage_url` (string, optional) — [Deprecated] This parameter is deprecated and will be removed in the future. Use 'source_url' instead.The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters.
+- `source_url` (string, optional) — The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services.
+- `webhook` (boolean, optional) — Whether to send the transcription result to configured speech-to-text webhooks. If set the request will return early without the transcription, which will be delivered later via webhook.
+- `webhook_id` (string, optional) — Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks.
+- `temperature` (double, optional) — Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0.
+- `seed` (integer, optional) — If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647.
+- `use_multi_channel` (boolean, optional) — Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel is transcribed independently. By default a separate transcript is returned per channel; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Each word in the response includes a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels.
+- `multichannel_output_style` (enum, optional) — Controls the response shape when use_multi_channel is enabled. 'separate' (default) returns one transcript per channel under 'transcripts'. 'combined' merges all channels into a single transcript whose words are sorted by start time, each carrying a 'channel_index' - matching the single-channel response shape. 'combined' requires timestamps (timestamps_granularity must not be 'none') and does not support entity detection or redaction.
+- `webhook_metadata` (string or map from string to any, optional) — Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information.
+- `entity_detection` (string or list of string, optional) — Detect entities in the transcript. Can be 'all' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include 'pii', 'phi', 'pci', 'other', 'offensive_language'. When enabled, detected entities will be returned in the 'entities' field with their text, type, and character positions. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost.
+- `no_verbatim` (boolean, optional) — If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.
+- `use_speaker_library` (boolean, optional) — Whether to use the speaker library for identifying known speakers during diarization. When enabled and diarize is true, detected speakers will be matched against registered speakers in the workspace's speaker library.
+- `detect_speaker_roles` (boolean, optional) — Whether to detect speaker roles (agent vs customer). Requires diarize=true. Cannot be used with use_multi_channel=true. When enabled, speaker_id values will be 'agent' and 'customer' instead of 'speaker_0', 'speaker_1', etc. Usage incurs an additional 10% surcharge on base transcription cost.
+- `entity_redaction` (string or list of string, optional) — Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost.
+- `entity_redaction_mode` (string, optional) — How to format redacted entities. 'redacted' replaces with \{REDACTED}, 'entity\_type' replaces with \{ENTITY\_TYPE}, 'enumerated\_entity\_type' replaces with \{ENTITY\_TYPE\_N} where N enumerates each occurrence. Only used when entity\_redaction is set.
+- `keyterms` (list of string, optional) — A list of keyterms to bias the transcription towards. The keyterms are words or phrases you want the model to recognise more accurately. The number of keyterms cannot exceed 1000. The length of each keyterm must be less than 50 characters. Keyterms can contain at most 5 words (after normalisation). For example \["hello", "world", "technical term"]. The following characters are not supported: `<`, `>`, `{`, `}`, `[`, `]`, `\`. Usage of this parameter will incur an additional 20% surcharge on the base transcription cost. When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request.
+
+## Response
+
+### 200
+
+Synchronous transcription result
+
+- `object or object or object`
+  - SpeechToTextChunkResponseModel
+    - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
+    - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
+    - `text` (string, required) — The raw text of the transcription.
+    - `words` (list of object, required) — List of words with their timing information.
+      - `text` (string, required) — The word or sound that was transcribed.
+      - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
+        - Allowed values: `word`, `spacing`, `audio_event`
+      - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
+      - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
+      - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
+      - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
+      - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
+        - `text` (string, required) — The character that was transcribed.
+        - `start` (double, optional, nullable) — The start time of the character in seconds.
+        - `end` (double, optional, nullable) — The end time of the character in seconds.
+      - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
+    - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
+    - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
+      - `requested_format` (string, required) — The requested format.
+      - `file_extension` (string, required) — The file extension of the additional format.
+      - `content_type` (string, required) — The content type of the additional format.
+      - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
+      - `content` (string, required) — The content of the additional format.
+    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
+    - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
+      - `text` (string, required) — The text that was identified as an entity.
+      - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
+      - `start_char` (integer, required) — Start character position in the transcript text.
+      - `end_char` (integer, required) — End character position in the transcript text.
+    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
+  - MultichannelSpeechToTextResponseModel
+    - `transcripts` (list of object, required) — List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.
+      - `language_code` (string, required) — The detected language code (e.g. 'eng' for English).
+      - `language_probability` (double, required) — The confidence score of the language detection (0 to 1).
+      - `text` (string, required) — The raw text of the transcription.
+      - `words` (list of object, required) — List of words with their timing information.
+        - `text` (string, required) — The word or sound that was transcribed.
+        - `type` (enum, required) — The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
+          - Allowed values: `word`, `spacing`, `audio_event`
+        - `logprob` (double, required) — The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.
+        - `start` (double, optional, nullable) — The start time of the word or sound in seconds.
+        - `end` (double, optional, nullable) — The end time of the word or sound in seconds.
+        - `speaker_id` (string, optional, nullable) — Unique identifier for the speaker of this word.
+        - `characters` (list of object, optional, nullable) — The characters that make up the word and their timing information.
+          - `text` (string, required) — The character that was transcribed.
+          - `start` (double, optional, nullable) — The start time of the character in seconds.
+          - `end` (double, optional, nullable) — The end time of the character in seconds.
+        - `channel_index` (integer, optional, nullable) — The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions.
+      - `channel_index` (integer, optional, nullable) — The channel index this transcript belongs to (for multichannel audio).
+      - `additional_formats` (list of object, optional, nullable) — Requested additional formats of the transcript.
+        - `requested_format` (string, required) — The requested format.
+        - `file_extension` (string, required) — The file extension of the additional format.
+        - `content_type` (string, required) — The content type of the additional format.
+        - `is_base64_encoded` (boolean, required) — Whether the content is base64 encoded.
+        - `content` (string, required) — The content of the additional format.
+      - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
+      - `entities` (list of object, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
+        - `text` (string, required) — The text that was identified as an entity.
+        - `entity_type` (string, required) — The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name').
+        - `start_char` (integer, required) — Start character position in the transcript text.
+        - `end_char` (integer, required) — End character position in the transcript text.
+      - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
+    - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
+    - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed across all channels in seconds.
+  - SpeechToTextWebhookResponseModel
+    - `message` (string, required) — The message of the webhook response.
+    - `request_id` (string, required) — The request ID of the webhook response.
+    - `transcription_id` (string, optional, nullable) — The transcription ID of the webhook response.
+
+### 202
+
+Asynchronous request accepted
 
 ## Examples
 
 ### Single channel response
-
-
 
 **Request**
 
@@ -1235,8 +441,6 @@ dataTask.resume()
 ```
 
 ### Multichannel response
-
-
 
 **Request**
 
@@ -1556,8 +760,6 @@ dataTask.resume()
 ```
 
 ### speech_to_text_convert_example
-
-
 
 **Request**
 

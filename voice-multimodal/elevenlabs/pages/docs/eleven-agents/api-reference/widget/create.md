@@ -15,112 +15,32 @@ Sets the avatar for an agent displayed in the widget
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/avatar:
-    post:
-      operationId: create
-      summary: Post Agent Avatar
-      description: Sets the avatar for an agent displayed in the widget
-      tags:
-        - avatar
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:PostAgentAvatarResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                avatar_file:
-                  type: string
-                  format: binary
-                  description: An image file to be used as the agent's avatar.
-              required:
-                - avatar_file
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:PostAgentAvatarResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        avatar_url:
-          type: string
-      required:
-        - agent_id
-      title: PostAgentAvatarResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+
+### Body (multipart/form-data)
+
+- `avatar_file` (file, required) — An image file to be used as the agent's avatar.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `agent_id` (string, required)
+- `avatar_url` (string, optional)
 
 ## Examples
 

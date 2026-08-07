@@ -14,118 +14,30 @@ Starts conversion of a specific chapter.
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/convert-chapter
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/chapters/{chapter_id}/convert:
-    post:
-      operationId: convert
-      summary: Convert Chapter
-      description: Starts conversion of a specific chapter.
-      tags:
-        - chapters
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: chapter_id
-          in: path
-          description: >-
-            The ID of the chapter to be used. You can use the [List project
-            chapters](/docs/api-reference/studio/get-chapters) endpoint to list
-            all the available chapters.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConvertChapterResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ConvertChapterResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the studio chapter conversion request. If the request
-            was successful, the status will be 'ok'. Otherwise an error message
-            with status 500 will be returned.
-      required:
-        - status
-      title: ConvertChapterResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+- `chapter_id` (string, required) — The ID of the chapter to be used. You can use the [List project chapters](/docs/api-reference/studio/get-chapters) endpoint to list all the available chapters.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the studio chapter conversion request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Response**
 

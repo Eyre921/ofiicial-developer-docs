@@ -14,181 +14,44 @@ Returns a list of all your audio isolation generations.
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-isolation/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-isolation/history:
-    get:
-      operationId: list
-      summary: Get Audio Isolation History
-      description: Returns a list of all your audio isolation generations.
-      tags:
-        - audioIsolation
-      parameters:
-        - name: page_size
-          in: query
-          description: How many history items to return at maximum. Defaults to 100.
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: page
-          in: query
-          description: >-
-            Page number for search pagination (1-based). Only used when search
-            is provided.
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: search
-          in: query
-          description: >-
-            Optional search term used for filtering audio isolation history
-            (title/text).
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetAudioIsolationHistoryResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AudioIsolationHistoryItemResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type:
-            - string
-            - 'null'
-        created_at_unix:
-          type: integer
-        format:
-          type: string
-        duration_seconds:
-          type:
-            - number
-            - 'null'
-          format: double
-        download_url:
-          type:
-            - string
-            - 'null'
-        icon_url:
-          type:
-            - string
-            - 'null'
-        source_video_url:
-          type:
-            - string
-            - 'null'
-        supports_video:
-          type: boolean
-        processing:
-          type: boolean
-        video_processing_failed:
-          type: boolean
-        preview_b64:
-          type:
-            - string
-            - 'null'
-      required:
-        - id
-        - title
-        - created_at_unix
-        - format
-        - duration_seconds
-        - download_url
-        - icon_url
-        - source_video_url
-        - supports_video
-        - processing
-        - video_processing_failed
-        - preview_b64
-      title: AudioIsolationHistoryItemResponseModel
-    GetAudioIsolationHistoryResponseModel:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/AudioIsolationHistoryItemResponseModel'
-        has_more:
-          type: boolean
-      required:
-        - items
-        - has_more
-      title: GetAudioIsolationHistoryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 100) — How many history items to return at maximum. Defaults to 100.
+- `page` (integer, optional, default: 1) — Page number for search pagination (1-based). Only used when search is provided.
+- `search` (string, optional, nullable) — Optional search term used for filtering audio isolation history (title/text).
+
+## Response
+
+### 200
+
+Successful Response
+
+- `items` (list of object, required)
+  - `id` (string, required)
+  - `title` (string, required, nullable)
+  - `created_at_unix` (integer, required)
+  - `format` (string, required)
+  - `duration_seconds` (double, required, nullable)
+  - `download_url` (string, required, nullable)
+  - `icon_url` (string, required, nullable)
+  - `source_video_url` (string, required, nullable)
+  - `supports_video` (boolean, required)
+  - `processing` (boolean, required)
+  - `video_processing_failed` (boolean, required)
+  - `preview_b64` (string, required, nullable)
+- `has_more` (boolean, required)
 
 ## Examples
-
-
 
 **Request**
 

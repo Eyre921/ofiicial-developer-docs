@@ -15,111 +15,31 @@ Upload an image or PDF file for a conversation. Returns a unique file ID that ca
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversations/{conversation_id}/files:
-    post:
-      operationId: create
-      summary: Upload File
-      description: >-
-        Upload an image or PDF file for a conversation. Returns a unique file ID
-        that can be used to reference the file in the conversation.
-      tags:
-        - files
-      parameters:
-        - name: conversation_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ConvAiFileUploadResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: Image or PDF file to upload
-              required:
-                - file
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ConvAiFileUploadResponseModel:
-      type: object
-      properties:
-        file_id:
-          type: string
-      required:
-        - file_id
-      title: ConvAiFileUploadResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `conversation_id` (string, required)
+
+### Body (multipart/form-data)
+
+- `file` (file, required) — Image or PDF file to upload
+
+## Response
+
+### 200
+
+Successful Response
+
+- `file_id` (string, required)
 
 ## Examples
 

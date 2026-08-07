@@ -15,239 +15,44 @@ Creates Audio Native enabled project, optionally starts conversion and returns p
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-native/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-native:
-    post:
-      operationId: create
-      summary: Create audio native project
-      description: >-
-        Creates Audio Native enabled project, optionally starts conversion and
-        returns project ID and embeddable HTML snippet.
-      tags:
-        - audioNative
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AudioNativeCreateProjectResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Project name.
-                image:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    (Deprecated) Image URL used in the player. If not provided,
-                    default image set in the Player settings is used.
-                author:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Author used in the player and inserted at the start of the
-                    uploaded article. If not provided, the default author set in
-                    the Player settings is used.
-                title:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Title used in the player and inserted at the top of the
-                    uploaded article. If not provided, the default title set in
-                    the Player settings is used.
-                small:
-                  type: boolean
-                  default: false
-                  description: >-
-                    (Deprecated) Whether to use small player or not. If not
-                    provided, default value set in the Player settings is used.
-                text_color:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Text color used in the player. If not provided, default text
-                    color set in the Player settings is used.
-                background_color:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Background color used in the player. If not provided,
-                    default background color set in the Player settings is used.
-                sessionization:
-                  type: integer
-                  default: 0
-                  description: >-
-                    (Deprecated) Specifies for how many minutes to persist the
-                    session across page reloads. If not provided, default
-                    sessionization set in the Player settings is used.
-                voice_id:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Voice ID used to voice the content. If not provided, default
-                    voice ID set in the Player settings is used.
-                model_id:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    TTS Model ID used in the player. If not provided, default
-                    model ID set in the Player settings is used.
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    Either txt or HTML input file containing the article
-                    content. HTML should be formatted as follows
-                    '&lt;html&gt;&lt;body&gt;&lt;div&gt;&lt;p&gt;Your
-                    content&lt;/p&gt;&lt;h3&gt;More of your
-                    content&lt;/h3&gt;&lt;p&gt;Some more of your
-                    content&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'
-                auto_convert:
-                  type: boolean
-                  default: false
-                  description: Whether to auto convert the project to audio or not.
-                apply_text_normalization:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1AudioNativePostRequestBodyContentMultipartFormDataSchemaApplyTextNormalization
-                    - type: 'null'
-                  description: |2-
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-                        This parameter controls text normalization with four modes: 'auto', 'on', 'apply_english' and 'off'.
-                        When set to 'auto', the system will automatically decide whether to apply text normalization
-                        (e.g., spelling out numbers). With 'on', text normalization will always be applied, while
-                        with 'off', it will be skipped. 'apply_english' is the same as 'on' but will assume that text is in English.
-                        
-                pronunciation_dictionary_locators:
-                  type: array
-                  items:
-                    type: string
-                  description: >-
-                    A list of pronunciation dictionary locators
-                    (pronunciation_dictionary_id, version_id) encoded as a list
-                    of JSON strings for pronunciation dictionaries to be applied
-                    to the text. A list of json encoded strings is required as
-                    adding projects may occur through formData as opposed to
-                    jsonBody. To specify multiple dictionaries use multiple
-                    --form lines in your curl, such as --form
-                    'pronunciation_dictionary_locators="{\"pronunciation_dictionary_id\":\"Vmd4Zor6fplcA7WrINey\",\"version_id\":\"hRPaxjlTdR7wFMhV4w0b\"}"'
-                    --form
-                    'pronunciation_dictionary_locators="{\"pronunciation_dictionary_id\":\"JzWtcGQMJ6bnlWwyMo7e\",\"version_id\":\"lbmwxiLu4q6txYxgdZqn\"}"'.
-              required:
-                - name
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1AudioNativePostRequestBodyContentMultipartFormDataSchemaApplyTextNormalization:
-      type: string
-      enum:
-        - auto
-        - 'on'
-        - 'off'
-        - apply_english
-      description: |2-
+## Request
 
-            This parameter controls text normalization with four modes: 'auto', 'on', 'apply_english' and 'off'.
-            When set to 'auto', the system will automatically decide whether to apply text normalization
-            (e.g., spelling out numbers). With 'on', text normalization will always be applied, while
-            with 'off', it will be skipped. 'apply_english' is the same as 'on' but will assume that text is in English.
-            
-      title: >-
-        V1AudioNativePostRequestBodyContentMultipartFormDataSchemaApplyTextNormalization
-    AudioNativeCreateProjectResponseModel:
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: The ID of the created Audio Native project.
-        converting:
-          type: boolean
-          description: Whether the project is currently being converted.
-        html_snippet:
-          type: string
-          description: The HTML snippet to embed the Audio Native player.
-      required:
-        - project_id
-        - converting
-        - html_snippet
-      title: AudioNativeCreateProjectResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+### Body (multipart/form-data)
 
-```
+- `name` (string, required) — Project name.
+- `image` (string, optional) — (Deprecated) Image URL used in the player. If not provided, default image set in the Player settings is used.
+- `author` (string, optional) — Author used in the player and inserted at the start of the uploaded article. If not provided, the default author set in the Player settings is used.
+- `title` (string, optional) — Title used in the player and inserted at the top of the uploaded article. If not provided, the default title set in the Player settings is used.
+- `small` (boolean, optional) — (Deprecated) Whether to use small player or not. If not provided, default value set in the Player settings is used.
+- `text_color` (string, optional) — Text color used in the player. If not provided, default text color set in the Player settings is used.
+- `background_color` (string, optional) — Background color used in the player. If not provided, default background color set in the Player settings is used.
+- `sessionization` (integer, optional) — (Deprecated) Specifies for how many minutes to persist the session across page reloads. If not provided, default sessionization set in the Player settings is used.
+- `voice_id` (string, optional) — Voice ID used to voice the content. If not provided, default voice ID set in the Player settings is used.
+- `model_id` (string, optional) — TTS Model ID used in the player. If not provided, default model ID set in the Player settings is used.
+- `file` (file, optional) — Either txt or HTML input file containing the article content. HTML should be formatted as follows '&lt;html&gt;&lt;body&gt;&lt;div&gt;&lt;p&gt;Your content&lt;/p&gt;&lt;h3&gt;More of your content&lt;/h3&gt;&lt;p&gt;Some more of your content&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'
+- `auto_convert` (boolean, optional) — Whether to auto convert the project to audio or not.
+- `apply_text_normalization` (enum, optional) — This parameter controls text normalization with four modes: 'auto', 'on', 'apply_english' and 'off'. When set to 'auto', the system will automatically decide whether to apply text normalization (e.g., spelling out numbers). With 'on', text normalization will always be applied, while with 'off', it will be skipped. 'apply_english' is the same as 'on' but will assume that text is in English.
+- `pronunciation_dictionary_locators` (list of string, optional) — A list of pronunciation dictionary locators (pronunciation\_dictionary\_id, version\_id) encoded as a list of JSON strings for pronunciation dictionaries to be applied to the text. A list of json encoded strings is required as adding projects may occur through formData as opposed to jsonBody. To specify multiple dictionaries use multiple --form lines in your curl, such as --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"Vmd4Zor6fplcA7WrINey","version\_id":"hRPaxjlTdR7wFMhV4w0b"}"' --form 'pronunciation\_dictionary\_locators="\{"pronunciation\_dictionary\_id":"JzWtcGQMJ6bnlWwyMo7e","version\_id":"lbmwxiLu4q6txYxgdZqn"}"'.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `project_id` (string, required) — The ID of the created Audio Native project.
+- `converting` (boolean, required) — Whether the project is currently being converted.
+- `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
 
 ## Examples
-
-
 
 **Request**
 

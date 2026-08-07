@@ -15,267 +15,45 @@ Transform audio from one voice to another. Maintain full control over emotion, t
 
 Reference: https://elevenlabs.io/docs/api-reference/speech-to-speech/convert
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/speech-to-speech/{voice_id}:
-    post:
-      operationId: convert
-      summary: Voice changer
-      description: >-
-        Transform audio from one voice to another. Maintain full control over
-        emotion, timing and delivery.
-      tags:
-        - speechToSpeech
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            ID of the voice to be used. Use the [Get
-            voices](/docs/api-reference/voices/search) endpoint list all the
-            available voices.
-          required: true
-          schema:
-            type: string
-        - name: enable_logging
-          in: query
-          description: >-
-            When enable_logging is set to false zero retention mode will be used
-            for the request. This will mean history features are unavailable for
-            this request, including request stitching. Zero retention mode may
-            only be used by enterprise customers.
-          required: false
-          schema:
-            type: boolean
-            default: true
-        - name: optimize_streaming_latency
-          in: query
-          description: >
-            You can turn on latency optimizations at some cost of quality. The
-            best possible final latency varies by model. Possible values:
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-            0 - default mode (no latency optimizations)
+## Request
 
-            1 - normal latency optimizations (about 50% of possible latency
-            improvement of option 3)
+### Path parameters
 
-            2 - strong latency optimizations (about 75% of possible latency
-            improvement of option 3)
+- `voice_id` (string, required) — ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
 
-            3 - max latency optimizations
+### Query parameters
 
-            4 - max latency optimizations, but also with text normalizer turned
-            off for even more latency savings (best latency, but can
-            mispronounce eg numbers and dates).
+- `enable_logging` (boolean, optional, default: true) — When enable_logging is set to false zero retention mode will be used for the request. This will mean history features are unavailable for this request, including request stitching. Zero retention mode may only be used by enterprise customers.
+- `optimize_streaming_latency` (integer, optional, nullable, deprecated) — You can turn on latency optimizations at some cost of quality. The best possible final latency varies by model. Possible values: 0 - default mode (no latency optimizations) 1 - normal latency optimizations (about 50% of possible latency improvement of option 3) 2 - strong latency optimizations (about 75% of possible latency improvement of option 3) 3 - max latency optimizations 4 - max latency optimizations, but also with text normalizer turned off for even more latency savings (best latency, but can mispronounce eg numbers and dates). Defaults to None.
+- `output_format` (enum, optional, default: mp3_44100_128) — Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM and WAV formats with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
+  - Allowed values: `alaw_8000`, `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_128`, `mp3_44100_192`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `opus_48000_128`, `opus_48000_192`, `opus_48000_32`, `opus_48000_64`, `opus_48000_96`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_32000`, `pcm_44100`, `pcm_48000`, `pcm_8000`, `ulaw_8000`, `wav_16000`, `wav_22050`, `wav_24000`, `wav_32000`, `wav_44100`, `wav_48000`, `wav_8000`
 
+### Body (multipart/form-data)
 
-            Defaults to None.
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: output_format
-          in: query
-          description: >-
-            Output format of the generated audio. Formatted as
-            codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at
-            32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate
-            requires you to be subscribed to Creator tier or above. PCM and WAV
-            formats with 44.1kHz sample rate requires you to be subscribed to
-            Pro tier or above. Note that the μ-law format (sometimes written
-            mu-law, often approximated as u-law) is commonly used for Twilio
-            audio inputs.
-          required: false
-          schema:
-            $ref: >-
-              #/components/schemas/V1SpeechToSpeechVoiceIdPostParametersOutputFormat
-            default: mp3_44100_128
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The generated audio file
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                audio:
-                  type: string
-                  format: binary
-                  description: >-
-                    The audio file which holds the content and emotion that will
-                    control the generated speech.
-                model_id:
-                  type: string
-                  default: eleven_english_sts_v2
-                  description: >-
-                    Identifier of the model that will be used, you can query
-                    them using GET /v1/models. The model needs to have support
-                    for speech to speech, you can check this using the
-                    can_do_voice_conversion property.
-                voice_settings:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Voice settings overriding stored settings for the given
-                    voice. They are applied only on the given request. Needs to
-                    be send as a JSON encoded string.
-                seed:
-                  type:
-                    - integer
-                    - 'null'
-                  description: >-
-                    If specified, our system will make a best effort to sample
-                    deterministically, such that repeated requests with the same
-                    seed and parameters should return the same result.
-                    Determinism is not guaranteed. Must be integer between 0 and
-                    4294967295.
-                remove_background_noise:
-                  type: boolean
-                  default: false
-                  description: >-
-                    If set, will remove the background noise from your audio
-                    input using our audio isolation model. Only applies to Voice
-                    Changer.
-                file_format:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1SpeechToSpeechVoiceIdPostRequestBodyContentMultipartFormDataSchemaFileFormat
-                    - type: 'null'
-                  default: other
-                  description: >-
-                    The format of input audio. Options are 'pcm_s16le_16' or
-                    'other' For `pcm_s16le_16`, the input audio must be 16-bit
-                    PCM at a 16kHz sample rate, single channel (mono), and
-                    little-endian byte order. Latency will be lower than with
-                    passing an encoded waveform.
-              required:
-                - audio
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1SpeechToSpeechVoiceIdPostParametersOutputFormat:
-      type: string
-      enum:
-        - alaw_8000
-        - mp3_22050_32
-        - mp3_24000_48
-        - mp3_44100_128
-        - mp3_44100_192
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - opus_48000_128
-        - opus_48000_192
-        - opus_48000_32
-        - opus_48000_64
-        - opus_48000_96
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_32000
-        - pcm_44100
-        - pcm_48000
-        - pcm_8000
-        - ulaw_8000
-        - wav_16000
-        - wav_22050
-        - wav_24000
-        - wav_32000
-        - wav_44100
-        - wav_48000
-        - wav_8000
-      default: mp3_44100_128
-      description: >-
-        Output format of the generated audio. Formatted as
-        codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs
-        is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to
-        be subscribed to Creator tier or above. PCM and WAV formats with 44.1kHz
-        sample rate requires you to be subscribed to Pro tier or above. Note
-        that the μ-law format (sometimes written mu-law, often approximated as
-        u-law) is commonly used for Twilio audio inputs.
-      title: V1SpeechToSpeechVoiceIdPostParametersOutputFormat
-    V1SpeechToSpeechVoiceIdPostRequestBodyContentMultipartFormDataSchemaFileFormat:
-      type: string
-      enum:
-        - pcm_s16le_16
-        - other
-      default: other
-      description: >-
-        The format of input audio. Options are 'pcm_s16le_16' or 'other' For
-        `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample
-        rate, single channel (mono), and little-endian byte order. Latency will
-        be lower than with passing an encoded waveform.
-      title: >-
-        V1SpeechToSpeechVoiceIdPostRequestBodyContentMultipartFormDataSchemaFileFormat
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `audio` (file, required) — The audio file which holds the content and emotion that will control the generated speech.
+- `model_id` (string, optional) — Identifier of the model that will be used, you can query them using GET /v1/models. The model needs to have support for speech to speech, you can check this using the can_do_voice_conversion property.
+- `voice_settings` (string, optional) — Voice settings overriding stored settings for the given voice. They are applied only on the given request. Needs to be send as a JSON encoded string.
+- `seed` (integer, optional) — If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be integer between 0 and 4294967295.
+- `remove_background_noise` (boolean, optional) — If set, will remove the background noise from your audio input using our audio isolation model. Only applies to Voice Changer.
+- `file_format` (enum, optional) — The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.
 
-```
+## Response
+
+### 200
+
+The generated audio file
+
+- File download.
 
 ## Examples
-
-
 
 **Request**
 

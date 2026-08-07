@@ -14,222 +14,46 @@ Get a list of the pronunciation dictionaries you have access to and their metada
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries:
-    get:
-      operationId: list
-      summary: List pronunciation dictionaries
-      description: >-
-        Get a list of the pronunciation dictionaries you have access to and
-        their metadata
-      tags:
-        - pronunciationDictionaries
-      parameters:
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: >-
-            How many pronunciation dictionaries to return at maximum. Can not
-            exceed 100, defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: sort
-          in: query
-          description: Which field to sort by, one of 'created_at_unix' or 'name'.
-          required: false
-          schema:
-            oneOf:
-              - $ref: >-
-                  #/components/schemas/V1PronunciationDictionariesGetParametersSortSchema
-              - type: 'null'
-            default: creation_time_unix
-        - name: sort_direction
-          in: query
-          description: Which direction to sort the voices in. 'ascending' or 'descending'.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-            default: DESCENDING
-        - name: include_archived
-          in: query
-          description: >-
-            Whether to include archived pronunciation dictionaries in the
-            response.
-          required: false
-          schema:
-            type: boolean
-            default: true
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/GetPronunciationDictionariesMetadataResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1PronunciationDictionariesGetParametersSortSchema:
-      type: string
-      enum:
-        - creation_time_unix
-        - name
-      default: creation_time_unix
-      description: Which field to sort by, one of 'created_at_unix' or 'name'.
-      title: V1PronunciationDictionariesGetParametersSortSchema
-    GetPronunciationDictionaryMetadataResponseModelPermissionOnResource:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The permission on the resource of the pronunciation dictionary.
-      title: GetPronunciationDictionaryMetadataResponseModelPermissionOnResource
-    GetPronunciationDictionaryMetadataResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the pronunciation dictionary.
-        latest_version_id:
-          type: string
-          description: The ID of the latest version of the pronunciation dictionary.
-        latest_version_rules_num:
-          type: integer
-          description: >-
-            The number of rules in the latest version of the pronunciation
-            dictionary.
-        name:
-          type: string
-          description: The name of the pronunciation dictionary.
-        permission_on_resource:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/GetPronunciationDictionaryMetadataResponseModelPermissionOnResource
-            - type: 'null'
-          description: The permission on the resource of the pronunciation dictionary.
-        created_by:
-          type: string
-          description: The user ID of the creator of the pronunciation dictionary.
-        creation_time_unix:
-          type: integer
-          description: The creation time of the pronunciation dictionary in Unix timestamp.
-        archived_time_unix:
-          type:
-            - integer
-            - 'null'
-          description: The archive time of the pronunciation dictionary in Unix timestamp.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the pronunciation dictionary.
-      required:
-        - id
-        - latest_version_id
-        - latest_version_rules_num
-        - name
-        - permission_on_resource
-        - created_by
-        - creation_time_unix
-      title: GetPronunciationDictionaryMetadataResponseModel
-    GetPronunciationDictionariesMetadataResponseModel:
-      type: object
-      properties:
-        pronunciation_dictionaries:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/GetPronunciationDictionaryMetadataResponseModel
-          description: A list of pronunciation dictionaries and their metadata.
-        next_cursor:
-          type:
-            - string
-            - 'null'
-          description: The next cursor to use for pagination.
-        has_more:
-          type: boolean
-          description: Whether there are more pronunciation dictionaries to fetch.
-      required:
-        - pronunciation_dictionaries
-        - has_more
-      title: GetPronunciationDictionariesMetadataResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+- `page_size` (integer, optional, default: 30) — How many pronunciation dictionaries to return at maximum. Can not exceed 100, defaults to 30.
+- `sort` (enum, optional, nullable, default: creation_time_unix) — Which field to sort by, one of 'created_at_unix' or 'name'.
+  - Allowed values: `creation_time_unix`, `name`
+- `sort_direction` (string, optional, nullable, default: DESCENDING) — Which direction to sort the voices in. 'ascending' or 'descending'.
+- `include_archived` (boolean, optional, default: true) — Whether to include archived pronunciation dictionaries in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `pronunciation_dictionaries` (list of object, required) — A list of pronunciation dictionaries and their metadata.
+  - `id` (string, required) — The ID of the pronunciation dictionary.
+  - `latest_version_id` (string, required) — The ID of the latest version of the pronunciation dictionary.
+  - `latest_version_rules_num` (integer, required) — The number of rules in the latest version of the pronunciation dictionary.
+  - `name` (string, required) — The name of the pronunciation dictionary.
+  - `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
+  - `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
+  - `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
+  - `description` (string, optional, nullable) — The description of the pronunciation dictionary.
+- `has_more` (boolean, required) — Whether there are more pronunciation dictionaries to fetch.
+- `next_cursor` (string, optional, nullable) — The next cursor to use for pagination.
 
 ## Examples
-
-
 
 **Response**
 

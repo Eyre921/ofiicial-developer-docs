@@ -13,9 +13,9 @@ path: faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 Fireworks operates on a **pre-paid credits** billing system. You purchase credits to use the platform:
 
 * Credits are used first for all usage.
-* If credits are exhausted and auto top-up is disabled, usage pauses until you add credits.
-* If auto top-up is enabled, credits are purchased automatically when your balance reaches your configured minimum.
-* You can set a monthly budget cap to limit total spend.
+* If credits are exhausted and Auto Reload is disabled, usage pauses until you add credits.
+* If Auto Reload is enabled, credits are purchased automatically when your balance reaches your configured minimum.
+* You can separately set a monthly spend limit for your usage. Adding credits does not raise this limit.
 
 ## Missing credits after purchase?
 
@@ -23,9 +23,9 @@ If you don't see your credits reflected immediately:
 
 1. Visit your **billing dashboard**
 2. Review the **"Credits"** section
-3. Check your **credit balance** and **auto top-up settings**
+3. Check your **credit balance** and **Auto Reload settings**
 
-**Important**: Usage consumes available credits. If your balance is low, enable auto top-up to avoid interruptions.
+**Important**: Usage consumes available credits. If your balance is low, enable Auto Reload to avoid interruptions.
 
 ## Why did I receive an invoice after depositing credits?
 
@@ -43,7 +43,7 @@ When you finish your \$1 credit, the following occurs:
 **Payment Method Requirements:**
 
 * Adding a payment method is required to continue service after credit depletion
-* Add credits (or enable auto top-up) to continue service after credit depletion
+* Add credits (or enable Auto Reload) to continue service after credit depletion
 * As you spend more with Fireworks, your adaptive usage limits and serverless TPM upper bounds can increase
 
 ## Where's my receipt for purchased credits?

@@ -17,169 +17,34 @@ Updates the metadata associated with an agent configuration. The config itself i
 
 Reference: https://developers.deepgram.com/reference/voice-agent/agent-configurations/update-agent-metadata
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/agents/{agent_id}:
-    put:
-      operationId: update
-      summary: Update Agent Metadata
-      description: >-
-        Updates the metadata associated with an agent configuration. The config
-        itself is immutable—to change the configuration, delete the existing
-        agent and create a new one.
-      tags:
-        - configurations
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: agent_id
-          in: path
-          description: The unique identifier of the agent configuration
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Agent configuration updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentConfigurationV1'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: Updated metadata for the agent configuration
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateAgentMetadataV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    UpdateAgentMetadataV1Request:
-      type: object
-      properties:
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            A map of string key-value pairs to associate with this agent
-            configuration
-      required:
-        - metadata
-      description: Request body for updating agent configuration metadata
-      title: UpdateAgentMetadataV1Request
-    AgentConfigurationV1Config:
-      type: object
-      properties: {}
-      description: The agent configuration object
-      title: AgentConfigurationV1Config
-    AgentConfigurationV1:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The unique identifier of the agent configuration
-        config:
-          $ref: '#/components/schemas/AgentConfigurationV1Config'
-          description: The agent configuration object
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            A map of arbitrary key-value pairs for labeling or organizing the
-            agent configuration
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the configuration was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the configuration was last updated
-      required:
-        - agent_id
-        - config
-      description: A reusable agent configuration
-      title: AgentConfigurationV1
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+- `agent_id` (string, required) — The unique identifier of the agent configuration
+
+### Body (application/json)
+
+- `metadata` (map from string to string, required) — A map of string key-value pairs to associate with this agent configuration
+
+## Response
+
+### 200
+
+Agent configuration updated
+
+- `agent_id` (string, required) — The unique identifier of the agent configuration
+- `config` (object, required) — The agent configuration object
+- `metadata` (map from string to string, optional) — A map of arbitrary key-value pairs for labeling or organizing the agent configuration
+- `created_at` (string, optional) — Timestamp when the configuration was created
+- `updated_at` (string, optional) — Timestamp when the configuration was last updated
 
 ## Examples
-
-
 
 **Request**
 
@@ -191,7 +56,7 @@ components:
 
 ```json
 {
-  "agent_id": "string",
+  "agent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "config": {},
   "metadata": {},
   "created_at": "2024-01-15T09:30:00Z",

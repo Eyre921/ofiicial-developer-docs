@@ -14,133 +14,32 @@ Get a signed url to start a conversation with an agent with an agent that requir
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/get-signed-url
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversation/get-signed-url:
-    get:
-      operationId: get_signed_url
-      summary: Get Signed Url
-      description: >-
-        Get a signed url to start a conversation with an agent with an agent
-        that requires authorization
-      tags:
-        - conversations
-      parameters:
-        - name: agent_id
-          in: query
-          description: >-
-            Agent id (agent_…) or speech engine external id (seng_), resolved to
-            the same underlying resource.
-          required: true
-          schema:
-            type: string
-        - name: include_conversation_id
-          in: query
-          description: >-
-            Whether to include a conversation_id with the response. If included,
-            the conversation_signature cannot be used again.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: branch_id
-          in: query
-          description: The ID of the branch to use
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: environment
-          in: query
-          description: >-
-            The environment to use for resolving environment variables (e.g.
-            'production', 'staging'). Defaults to 'production'.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConversationSignedUrlResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ConversationSignedUrlResponseModel:
-      type: object
-      properties:
-        signed_url:
-          type: string
-      required:
-        - signed_url
-      title: ConversationSignedUrlResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_id` (string, required) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `include_conversation_id` (boolean, optional, default: false) — Whether to include a conversation_id with the response. If included, the conversation_signature cannot be used again.
+- `branch_id` (string, optional, nullable) — The ID of the branch to use
+- `environment` (string, optional, nullable) — The environment to use for resolving environment variables (e.g. 'production', 'staging'). Defaults to 'production'.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `signed_url` (string, required)
 
 ## Examples
-
-
 
 **Response**
 

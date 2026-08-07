@@ -15,144 +15,38 @@ Updates content for the specific AudioNative Project.
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-native/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-native/{project_id}/content:
-    post:
-      operationId: update
-      summary: Update audio native project
-      description: Updates content for the specific AudioNative Project.
-      tags:
-        - audioNative
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AudioNativeEditContentResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    Either txt or HTML input file containing the article
-                    content. HTML should be formatted as follows
-                    '&lt;html&gt;&lt;body&gt;&lt;div&gt;&lt;p&gt;Your
-                    content&lt;/p&gt;&lt;h5&gt;More of your
-                    content&lt;/h5&gt;&lt;p&gt;Some more of your
-                    content&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'
-                auto_convert:
-                  type: boolean
-                  default: false
-                  description: Whether to auto convert the project to audio or not.
-                auto_publish:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to auto publish the new project snapshot after it's
-                    converted.
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AudioNativeEditContentResponseModel:
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: The ID of the project.
-        converting:
-          type: boolean
-          description: Whether the project is currently being converted.
-        publishing:
-          type: boolean
-          description: Whether the project is currently being published.
-        html_snippet:
-          type: string
-          description: The HTML snippet to embed the Audio Native player.
-      required:
-        - project_id
-        - converting
-        - publishing
-        - html_snippet
-      title: AudioNativeEditContentResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+
+### Body (multipart/form-data)
+
+- `file` (file, optional) — Either txt or HTML input file containing the article content. HTML should be formatted as follows '&lt;html&gt;&lt;body&gt;&lt;div&gt;&lt;p&gt;Your content&lt;/p&gt;&lt;h5&gt;More of your content&lt;/h5&gt;&lt;p&gt;Some more of your content&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'
+- `auto_convert` (boolean, optional) — Whether to auto convert the project to audio or not.
+- `auto_publish` (boolean, optional) — Whether to auto publish the new project snapshot after it's converted.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `project_id` (string, required) — The ID of the project.
+- `converting` (boolean, required) — Whether the project is currently being converted.
+- `publishing` (boolean, required) — Whether the project is currently being published.
+- `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
 
 ## Examples
-
-
 
 **Request**
 

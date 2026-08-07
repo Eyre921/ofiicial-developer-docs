@@ -1,16 +1,16 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (7) for https://docs.perplexity.ai/llms-full.txt: curl: (7) Failed to connect to docs.perplexity.ai port 443 after 15 ms: Could not connect to server\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "status": "error: curl failed (28) for https://code.claude.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -30,7 +30,8 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "status": "error: curl failed (16) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 3935163 out of 5679040 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/mcp": {
     "pages": 145,
@@ -44,11 +45,12 @@
     "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "agent-frameworks/langchain": {
-    "pages": 1527,
+    "pages": 1538,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
-    "status": "error: curl failed (16) for https://www.assemblyai.com/docs/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 2778529 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
+    "pages": 0,
+    "status": "ok"
   },
   "voice-multimodal/vapi": {
     "pages": 0,
@@ -94,11 +96,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 323,
+    "pages": 326,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -183,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 99,
+    "pages": 106,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -199,8 +201,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1229,
+    "pages": 1231,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-07T11:31:33Z"
+  "_last_crawl": "2026-08-07T23:30:43Z"
 }

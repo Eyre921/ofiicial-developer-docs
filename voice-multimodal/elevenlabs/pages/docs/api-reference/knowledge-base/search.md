@@ -14,915 +14,216 @@ Fuzzy text search over knowledge base document content
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/search
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/search:
-    get:
-      operationId: search
-      summary: Search Knowledge Base Content
-      description: Fuzzy text search over knowledge base document content
-      tags:
-        - knowledgeBase
-      parameters:
-        - name: query
-          in: query
-          description: The search query text
-          required: true
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          description: >-
-            How many documents to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: types
-          in: query
-          description: >-
-            If present, the endpoint will return only documents of the given
-            types.
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentType'
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KnowledgeBaseContentSearchResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    KnowledgeBaseDocumentType:
-      type: string
-      enum:
-        - file
-        - url
-        - text
-        - folder
-      title: KnowledgeBaseDocumentType
-    KnowledgeBaseDocumentMetadataResponseModel:
-      type: object
-      properties:
-        created_at_unix_secs:
-          type: integer
-        last_updated_at_unix_secs:
-          type: integer
-        size_bytes:
-          type: integer
-      required:
-        - created_at_unix_secs
-        - last_updated_at_unix_secs
-        - size_bytes
-      title: KnowledgeBaseDocumentMetadataResponseModel
-    DocumentUsageModeEnum:
-      type: string
-      enum:
-        - prompt
-        - auto
-      default: auto
-      title: DocumentUsageModeEnum
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    KnowledgeBaseFolderPathSegmentSummaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-        - id
-      title: KnowledgeBaseFolderPathSegmentSummaryResponseModel
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableAgentIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an agent dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems
-    ExternalSyncProvider:
-      type: string
-      enum:
-        - google_drive
-      title: ExternalSyncProvider
-    ExternalFileSyncInfo:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ExternalSyncProvider'
-          description: Provider identifier
-        source_entity_id:
-          type: string
-          description: Entity ID in the external system
-        integration_connection_id:
-          type: string
-          description: Integration connection instance ID
-        source_parent_entity_id:
-          type: string
-          description: Folder ID in the external system this file was synced from
-        source_mime_type:
-          type: string
-          description: Original MIME type in the external system
-        source_modified_time:
-          type: string
-          format: date-time
-          description: Last modified time from the external system
-        root_folder_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            KB folder ID of the sync root, used to query all entities under a
-            sync tree
-      required:
-        - type
-        - source_entity_id
-        - integration_connection_id
-        - source_parent_entity_id
-        - source_mime_type
-        - source_modified_time
-      description: Tracks the link back to the original file in an external source.
-      title: ExternalFileSyncInfo
-    AutoSyncInfo:
-      type: object
-      properties:
-        minimum_frequency_days:
-          type: integer
-          default: 7
-          description: Maximum number of days between automatic syncs
-        auto_remove:
-          type: boolean
-          default: false
-          description: Whether to remove the document if the URL becomes unavailable
-        consec_failures:
-          type: integer
-          default: 0
-          description: Number of consecutive sync failures
-        next_refresh_by:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Unix timestamp for the next scheduled sync or None (in case of
-            folders)
-      title: AutoSyncInfo
-    CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
-    FileRefreshStatus:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/CrawlStatus'
-          default: queued
-        enqueued_at:
-          type:
-            - integer
-            - 'null'
-        started_at:
-          type:
-            - integer
-            - 'null'
-        completed_at:
-          type:
-            - integer
-            - 'null'
-        last_synced_at:
-          type:
-            - integer
-            - 'null'
-        error_message:
-          type:
-            - string
-            - 'null'
-      description: In-flight/last refresh state for an externally-synced KB file.
-      title: FileRefreshStatus
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableAgentIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an agent dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems
-    ExternalFolderSyncInfo:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ExternalSyncProvider'
-          description: Provider identifier
-        source_entity_id:
-          type: string
-          description: Entity ID in the external system
-        integration_connection_id:
-          type: string
-          description: Integration connection instance ID
-        root_folder_id:
-          type:
-            - string
-            - 'null'
-          description: KB folder ID of the sync root. None means this folder is the root.
-        sync_cursor:
-          type:
-            - string
-            - 'null'
-          description: Opaque cursor for incremental sync, interpreted by the provider
-        last_sync_at:
-          type:
-            - integer
-            - 'null'
-          description: Unix timestamp of last completed sync
-      required:
-        - type
-        - source_entity_id
-        - integration_connection_id
-      description: Metadata for a KB folder that mirrors an external source folder.
-      title: ExternalFolderSyncInfo
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingTextDependentAgentsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableAgentIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an agent dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingTextDependentAgentsItems
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableAgentIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an agent dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItems
-    KnowledgeBaseContentSearchResultDocument:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - file
-              description: 'Discriminator value: file'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            dependent_agents:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems
-              description: >-
-                This field is deprecated and will be removed in the future, use
-                the separate endpoint to get dependent agents instead.
-            external_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/ExternalFileSyncInfo'
-                - type: 'null'
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-            refresh_status:
-              oneOf:
-                - $ref: '#/components/schemas/FileRefreshStatus'
-                - type: 'null'
-            is_frozen:
-              type: boolean
-              default: false
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - dependent_agents
-          description: GetKnowledgeBaseSummaryFileResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - folder
-              description: 'Discriminator value: folder'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            dependent_agents:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems
-              description: >-
-                This field is deprecated and will be removed in the future, use
-                the separate endpoint to get dependent agents instead.
-            children_count:
-              type: integer
-            document_count:
-              type: integer
-              description: >-
-                Number of non-folder documents anywhere in this folder's subtree
-                (recursive). Counting stops past 1000;
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-            external_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/ExternalFolderSyncInfo'
-                - type: 'null'
-            is_frozen:
-              type: boolean
-              default: false
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - dependent_agents
-            - children_count
-            - document_count
-          description: GetKnowledgeBaseSummaryFolderResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - text
-              description: 'Discriminator value: text'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            dependent_agents:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingTextDependentAgentsItems
-              description: >-
-                This field is deprecated and will be removed in the future, use
-                the separate endpoint to get dependent agents instead.
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - dependent_agents
-          description: GetKnowledgeBaseSummaryTextResponseModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - url
-              description: 'Discriminator value: url'
-            id:
-              type: string
-            name:
-              type: string
-            metadata:
-              $ref: '#/components/schemas/KnowledgeBaseDocumentMetadataResponseModel'
-            supported_usages:
-              type: array
-              items:
-                $ref: '#/components/schemas/DocumentUsageModeEnum'
-            access_info:
-              $ref: '#/components/schemas/ResourceAccessInfo'
-            folder_parent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the parent folder, or null if the document is at the
-                root level.
-            folder_path:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-              description: >-
-                The folder path segments leading to this entity, from root to
-                parent folder.
-            dependent_agents:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItems
-              description: >-
-                This field is deprecated and will be removed in the future, use
-                the separate endpoint to get dependent agents instead.
-            url:
-              type: string
-            auto_sync_info:
-              oneOf:
-                - $ref: '#/components/schemas/AutoSyncInfo'
-                - type: 'null'
-          required:
-            - type
-            - id
-            - name
-            - metadata
-            - supported_usages
-            - access_info
-            - dependent_agents
-            - url
-          description: GetKnowledgeBaseSummaryURLResponseModel variant
-      discriminator:
-        propertyName: type
-      title: KnowledgeBaseContentSearchResultDocument
-    SearchHighlightSegment:
-      type: object
-      properties:
-        value:
-          type: string
-        is_hit:
-          type: boolean
-      required:
-        - value
-        - is_hit
-      title: SearchHighlightSegment
-    KnowledgeBaseContentSearchResult:
-      type: object
-      properties:
-        document:
-          $ref: '#/components/schemas/KnowledgeBaseContentSearchResultDocument'
-        search_snippet:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SearchHighlightSegment'
-        score:
-          type: number
-          format: double
-      required:
-        - document
-        - score
-      title: KnowledgeBaseContentSearchResult
-    KnowledgeBaseContentSearchResponseModel:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseContentSearchResult'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-      required:
-        - results
-      title: KnowledgeBaseContentSearchResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `query` (string, required) — The search query text
+- `page_size` (integer, optional, default: 30) — How many documents to return at maximum. Can not exceed 100, defaults to 30.
+- `types` (list of enum, optional, nullable) — If present, the endpoint will return only documents of the given types.
+  - Allowed values: `file`, `url`, `text`, `folder`
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `results` (list of object, required)
+  - `document` (object, required)
+    - `type`: `file` (GetKnowledgeBaseSummaryFileResponseModel)
+      - `access_info` (object, required)
+        - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+        - `creator_name` (string, required) — Name of the agent's creator
+        - `creator_email` (string, required) — Email of the agent's creator
+        - `role` (enum, required) — The role of the user making the request
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+          - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+      - `id` (string, required)
+      - `metadata` (object, required)
+        - `created_at_unix_secs` (integer, required)
+        - `last_updated_at_unix_secs` (integer, required)
+        - `size_bytes` (integer, required)
+      - `name` (string, required)
+      - `supported_usages` (list of enum, required)
+        - Allowed values: `prompt`, `auto`
+      - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+        - `type`: `available` (DependentAvailableAgentIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+        - `type`: `unknown` (DependentUnknownAgentIdentifier)
+          - `id` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+      - `auto_sync_info` (object, optional, nullable)
+        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+        - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+        - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+      - `external_sync_info` (object, optional, nullable) — Tracks the link back to the original file in an external source.
+        - `type` (enum, required) — Provider identifier
+          - Allowed values: `google_drive`
+        - `source_entity_id` (string, required) — Entity ID in the external system
+        - `integration_connection_id` (string, required) — Integration connection instance ID
+        - `source_parent_entity_id` (string, required) — Folder ID in the external system this file was synced from
+        - `source_mime_type` (string, required) — Original MIME type in the external system
+        - `source_modified_time` (string, required) — Last modified time from the external system
+        - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root, used to query all entities under a sync tree
+      - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+      - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+        - `id` (string, required)
+      - `is_frozen` (boolean, optional, default: false)
+      - `refresh_status` (object, optional, nullable) — In-flight/last refresh state for an externally-synced KB file.
+        - `status` (enum, optional, default: queued)
+          - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+        - `enqueued_at` (integer, optional, nullable)
+        - `started_at` (integer, optional, nullable)
+        - `completed_at` (integer, optional, nullable)
+        - `last_synced_at` (integer, optional, nullable)
+        - `error_message` (string, optional, nullable)
+    - `type`: `folder` (GetKnowledgeBaseSummaryFolderResponseModel)
+      - `access_info` (object, required)
+        - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+        - `creator_name` (string, required) — Name of the agent's creator
+        - `creator_email` (string, required) — Email of the agent's creator
+        - `role` (enum, required) — The role of the user making the request
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+          - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+      - `children_count` (integer, required)
+      - `document_count` (integer, required) — Number of non-folder documents anywhere in this folder's subtree (recursive). Counting stops past 1000;
+      - `id` (string, required)
+      - `metadata` (object, required)
+        - `created_at_unix_secs` (integer, required)
+        - `last_updated_at_unix_secs` (integer, required)
+        - `size_bytes` (integer, required)
+      - `name` (string, required)
+      - `supported_usages` (list of enum, required)
+        - Allowed values: `prompt`, `auto`
+      - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+        - `type`: `available` (DependentAvailableAgentIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+        - `type`: `unknown` (DependentUnknownAgentIdentifier)
+          - `id` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+      - `auto_sync_info` (object, optional, nullable)
+        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+        - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+        - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+      - `external_sync_info` (object, optional, nullable) — Metadata for a KB folder that mirrors an external source folder.
+        - `type` (enum, required) — Provider identifier
+          - Allowed values: `google_drive`
+        - `source_entity_id` (string, required) — Entity ID in the external system
+        - `integration_connection_id` (string, required) — Integration connection instance ID
+        - `root_folder_id` (string, optional, nullable) — KB folder ID of the sync root. None means this folder is the root.
+        - `sync_cursor` (string, optional, nullable) — Opaque cursor for incremental sync, interpreted by the provider
+        - `last_sync_at` (integer, optional, nullable) — Unix timestamp of last completed sync
+      - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+      - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+        - `id` (string, required)
+      - `is_frozen` (boolean, optional, default: false)
+    - `type`: `text` (GetKnowledgeBaseSummaryTextResponseModel)
+      - `access_info` (object, required)
+        - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+        - `creator_name` (string, required) — Name of the agent's creator
+        - `creator_email` (string, required) — Email of the agent's creator
+        - `role` (enum, required) — The role of the user making the request
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+          - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+      - `id` (string, required)
+      - `metadata` (object, required)
+        - `created_at_unix_secs` (integer, required)
+        - `last_updated_at_unix_secs` (integer, required)
+        - `size_bytes` (integer, required)
+      - `name` (string, required)
+      - `supported_usages` (list of enum, required)
+        - Allowed values: `prompt`, `auto`
+      - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+        - `type`: `available` (DependentAvailableAgentIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+        - `type`: `unknown` (DependentUnknownAgentIdentifier)
+          - `id` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+      - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+      - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+        - `id` (string, required)
+    - `type`: `url` (GetKnowledgeBaseSummaryURLResponseModel)
+      - `access_info` (object, required)
+        - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+        - `creator_name` (string, required) — Name of the agent's creator
+        - `creator_email` (string, required) — Email of the agent's creator
+        - `role` (enum, required) — The role of the user making the request
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+          - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+      - `id` (string, required)
+      - `metadata` (object, required)
+        - `created_at_unix_secs` (integer, required)
+        - `last_updated_at_unix_secs` (integer, required)
+        - `size_bytes` (integer, required)
+      - `name` (string, required)
+      - `supported_usages` (list of enum, required)
+        - Allowed values: `prompt`, `auto`
+      - `url` (string, required)
+      - `dependent_agents` (list of object, required, deprecated) — This field is deprecated and will be removed in the future, use the separate endpoint to get dependent agents instead.
+        - `type`: `available` (DependentAvailableAgentIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+        - `type`: `unknown` (DependentUnknownAgentIdentifier)
+          - `id` (string, required)
+          - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+      - `auto_sync_info` (object, optional, nullable)
+        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
+        - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
+        - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
+      - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder, or null if the document is at the root level.
+      - `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+        - `id` (string, required)
+  - `score` (double, required)
+  - `search_snippet` (list of object, optional, nullable)
+    - `value` (string, required)
+    - `is_hit` (boolean, required)
+- `next_cursor` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Response**
 

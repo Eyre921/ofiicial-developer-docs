@@ -14,211 +14,62 @@ Returns the latest topic discovery run results for a given agent.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/topics/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/topics:
-    get:
-      operationId: get
-      summary: Get Agent Conversation Topics
-      description: Returns the latest topic discovery run results for a given agent.
-      tags:
-        - topics
-      parameters:
-        - name: agent_id
-          in: path
-          description: ID of the agent
-          required: true
-          schema:
-            type: string
-        - name: from_unix_secs
-          in: query
-          description: >-
-            Start of the window to view topics for. When set with to_unix_secs,
-            per-day topics in the range are aggregated together.
-          required: false
-          schema:
-            type: integer
-        - name: to_unix_secs
-          in: query
-          description: End of the window to view topics for.
-          required: false
-          schema:
-            type: integer
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetAgentTopicsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:NumericDistributionAggregate:
-      type: object
-      properties:
-        count:
-          type: integer
-          default: 0
-        sum:
-          type: number
-          format: double
-          default: 0
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-      title: NumericDistributionAggregate
-    type_:TopicSentimentAggregate:
-      type: object
-      properties:
-        sentiment:
-          $ref: '#/components/schemas/type_:NumericDistributionAggregate'
-        frustration:
-          $ref: '#/components/schemas/type_:NumericDistributionAggregate'
-        positive_count:
-          type: integer
-          default: 0
-        neutral_count:
-          type: integer
-          default: 0
-        negative_count:
-          type: integer
-          default: 0
-      title: TopicSentimentAggregate
-    type_:TopicEvaluationCriteriaAggregate:
-      type: object
-      properties:
-        criteria_id:
-          type: string
-        success_count:
-          type: integer
-          default: 0
-        failure_count:
-          type: integer
-          default: 0
-        unknown_count:
-          type: integer
-          default: 0
-      required:
-        - criteria_id
-      title: TopicEvaluationCriteriaAggregate
-    type_:TopicMetricsAggregate:
-      type: object
-      properties:
-        conversation_count:
-          type: integer
-          default: 0
-        sentiment:
-          $ref: '#/components/schemas/type_:TopicSentimentAggregate'
-        evaluation_criteria:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:TopicEvaluationCriteriaAggregate'
-      title: TopicMetricsAggregate
-    type_:AgentTopicResponseModel:
-      type: object
-      properties:
-        topic_id:
-          type: string
-        label:
-          type: string
-        description:
-          type: string
-        conversation_count:
-          type: integer
-        parent_topic_id:
-          type: string
-        x_2d:
-          type: number
-          format: double
-        y_2d:
-          type: number
-          format: double
-        metrics:
-          $ref: '#/components/schemas/type_:TopicMetricsAggregate'
-      required:
-        - topic_id
-        - label
-        - description
-        - conversation_count
-      title: AgentTopicResponseModel
-    type_:GetAgentTopicsResponseModel:
-      type: object
-      properties:
-        topics:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentTopicResponseModel'
-        window_start_unix_secs:
-          type: integer
-        window_end_unix_secs:
-          type: integer
-      required:
-        - topics
-        - window_start_unix_secs
-        - window_end_unix_secs
-      title: GetAgentTopicsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — ID of the agent
+
+### Query parameters
+
+- `from_unix_secs` (integer, optional) — Start of the window to view topics for. When set with to_unix_secs, per-day topics in the range are aggregated together.
+- `to_unix_secs` (integer, optional) — End of the window to view topics for.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `topics` (list of object, required)
+  - `topic_id` (string, required)
+  - `label` (string, required)
+  - `description` (string, required)
+  - `conversation_count` (integer, required)
+  - `parent_topic_id` (string, optional)
+  - `x_2d` (double, optional)
+  - `y_2d` (double, optional)
+  - `metrics` (object, optional)
+    - `conversation_count` (integer, optional, default: 0)
+    - `sentiment` (object, optional)
+      - `sentiment` (object, optional)
+        - `count` (integer, optional, default: 0)
+        - `sum` (double, optional, default: 0)
+        - `min` (double, optional)
+        - `max` (double, optional)
+      - `frustration` (object, optional)
+        - `count` (integer, optional, default: 0)
+        - `sum` (double, optional, default: 0)
+        - `min` (double, optional)
+        - `max` (double, optional)
+      - `positive_count` (integer, optional, default: 0)
+      - `neutral_count` (integer, optional, default: 0)
+      - `negative_count` (integer, optional, default: 0)
+    - `evaluation_criteria` (list of object, optional)
+      - `criteria_id` (string, required)
+      - `success_count` (integer, optional, default: 0)
+      - `failure_count` (integer, optional, default: 0)
+      - `unknown_count` (integer, optional, default: 0)
+- `window_start_unix_secs` (integer, required)
+- `window_end_unix_secs` (integer, required)
 
 ## Examples
 

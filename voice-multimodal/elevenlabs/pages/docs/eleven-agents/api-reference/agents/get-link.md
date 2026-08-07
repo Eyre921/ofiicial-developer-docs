@@ -14,134 +14,35 @@ Get the current link used to share the agent with others
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/link:
-    get:
-      operationId: get
-      summary: Get Shareable Agent Link
-      description: Get the current link used to share the agent with others
-      tags:
-        - link
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetAgentLinkResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ConversationTokenPurpose:
-      type: string
-      enum:
-        - signed_url
-        - shareable_link
-      title: ConversationTokenPurpose
-    type_:ConversationTokenResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        conversation_token:
-          type: string
-          description: The token for the agent
-        expiration_time_unix_secs:
-          type: integer
-          description: The expiration time of the token in unix seconds
-        conversation_id:
-          type: string
-          description: The ID of the conversation
-        purpose:
-          $ref: '#/components/schemas/type_:ConversationTokenPurpose'
-          description: The purpose of the token
-        token_requester_user_id:
-          type: string
-          description: The user ID of the entity who requested the token
-      required:
-        - agent_id
-        - conversation_token
-        - purpose
-      title: ConversationTokenResponseModel
-    type_:GetAgentLinkResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        token:
-          $ref: '#/components/schemas/type_:ConversationTokenResponseModel'
-          description: The token data for the agent
-      required:
-        - agent_id
-      title: GetAgentLinkResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `agent_id` (string, required) — The ID of the agent
+- `token` (object, optional) — The token data for the agent
+  - `agent_id` (string, required) — The ID of the agent
+  - `conversation_token` (string, required) — The token for the agent
+  - `purpose` (enum, required) — The purpose of the token
+    - Allowed values: `signed_url`, `shareable_link`
+  - `expiration_time_unix_secs` (integer, optional) — The expiration time of the token in unix seconds
+  - `conversation_id` (string, optional) — The ID of the conversation
+  - `token_requester_user_id` (string, optional) — The user ID of the entity who requested the token
 
 ## Examples
 

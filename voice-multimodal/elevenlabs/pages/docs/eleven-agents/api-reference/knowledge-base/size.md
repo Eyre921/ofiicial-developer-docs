@@ -14,99 +14,27 @@ Returns the number of pages in the agent's knowledge base.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/size
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agent/{agent_id}/knowledge-base/size:
-    get:
-      operationId: size
-      summary: Returns The Size Of The Agent'S Knowledge Base
-      description: Returns the number of pages in the agent's knowledge base.
-      tags:
-        - knowledgeBase
-      parameters:
-        - name: agent_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_:GetAgentKnowledgebaseSizeResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:GetAgentKnowledgebaseSizeResponseModel:
-      type: object
-      properties:
-        number_of_pages:
-          type: number
-          format: double
-      required:
-        - number_of_pages
-      title: GetAgentKnowledgebaseSizeResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `number_of_pages` (double, required)
 
 ## Examples
 

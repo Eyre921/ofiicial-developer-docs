@@ -15,163 +15,42 @@ Create or update user's draft for a procedure
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft:
-    patch:
-      operationId: update
-      summary: Update Procedure Draft
-      description: Create or update user's draft for a procedure
-      tags:
-        - drafts
-      parameters:
-        - name: agent_id
-          in: path
-          description: Agent ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: branch_id
-          in: path
-          description: Branch ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: procedure_id
-          in: path
-          description: The procedure ID
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ProcedureDraftResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Procedure name
-                content:
-                  type: string
-                  description: Procedure content
-                type:
-                  $ref: '#/components/schemas/type_:ProcedureType'
-                  description: Procedure type
-                trigger:
-                  type: string
-                  description: >-
-                    When the agent should use this procedure. Empty string means
-                    this is a sub-procedure that should only start when another
-                    procedure references it. If omitted or null, the trigger is
-                    derived from the content instead. Also accepts `description`
-                    as an alias.
-              required:
-                - name
-                - content
-                - type
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ProcedureType:
-      type: string
-      enum:
-        - free_form
-        - deterministic
-      default: free_form
-      title: ProcedureType
-    type_:ProcedureDraftResponseModel:
-      type: object
-      properties:
-        procedure_id:
-          type: string
-          description: Procedure ID
-        name:
-          type: string
-          description: Procedure name
-        content:
-          type: string
-          description: Procedure content
-        type:
-          $ref: '#/components/schemas/type_:ProcedureType'
-          description: Procedure type
-        trigger:
-          type: string
-          default: ''
-          description: >-
-            When the agent should use this procedure. Empty string means this is
-            a sub-procedure that should only start when another procedure
-            references it.
-      required:
-        - procedure_id
-        - name
-        - content
-      title: ProcedureDraftResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — Agent ID to get the procedure draft from
+- `branch_id` (string, required) — Branch ID to get the procedure draft from
+- `procedure_id` (string, required) — The procedure ID
+
+### Body (application/json)
+
+- `name` (string, required) — Procedure name
+- `content` (string, required) — Procedure content
+- `type` (enum, required, default: free_form) — Procedure type
+  - Allowed values: `free_form`, `deterministic`
+- `trigger` (string, optional) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it. If omitted or null, the trigger is derived from the content instead. Also accepts `description` as an alias.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `procedure_id` (string, required) — Procedure ID
+- `name` (string, required) — Procedure name
+- `content` (string, required) — Procedure content
+- `type` (enum, optional, default: free_form) — Procedure type
+  - Allowed values: `free_form`, `deterministic`
+- `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
 
 ## Examples
 

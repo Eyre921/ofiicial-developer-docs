@@ -15,145 +15,33 @@ Create a new service account in the workspace. By default, a workspace can have 
 
 Reference: https://elevenlabs.io/docs/api-reference/service-accounts/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/service-accounts:
-    post:
-      operationId: create
-      summary: Create Service Account
-      description: >-
-        Create a new service account in the workspace. By default, a workspace
-        can have up to 20 service accounts. Enterprise customers may request an
-        increase to this limit, up to 100.
-      tags:
-        - serviceAccounts
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/WorkspaceCreateServiceAccountResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_create_service_account_v1_service_accounts_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DefaultSharingGroupConfigPermissionLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - viewer
-      description: The permission level to grant to the group
-      title: DefaultSharingGroupConfigPermissionLevel
-    DefaultSharingGroupConfig:
-      type: object
-      properties:
-        group_id:
-          type: string
-          description: The ID of the group to share with
-        permission_level:
-          $ref: '#/components/schemas/DefaultSharingGroupConfigPermissionLevel'
-          description: The permission level to grant to the group
-      required:
-        - group_id
-        - permission_level
-      title: DefaultSharingGroupConfig
-    Body_create_service_account_v1_service_accounts_post:
-      type: object
-      properties:
-        name:
-          type: string
-        default_sharing_groups:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/DefaultSharingGroupConfig'
-          description: >-
-            List of groups with their permission levels to share with by
-            default. Each entry should specify a group_id and a permission_level
-            (admin, editor, or viewer).
-      required:
-        - name
-      title: Body_create_service_account_v1_service_accounts_post
-    WorkspaceCreateServiceAccountResponseModel:
-      type: object
-      properties:
-        service-account-user-id:
-          type: string
-      required:
-        - service-account-user-id
-      title: WorkspaceCreateServiceAccountResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `name` (string, required)
+- `default_sharing_groups` (list of object, optional, nullable) — List of groups with their permission levels to share with by default. Each entry should specify a group_id and a permission_level (admin, editor, or viewer).
+  - `group_id` (string, required) — The ID of the group to share with
+  - `permission_level` (enum, required) — The permission level to grant to the group
+    - Allowed values: `admin`, `editor`, `viewer`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `service-account-user-id` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

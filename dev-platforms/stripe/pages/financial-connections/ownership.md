@@ -33,13 +33,15 @@ If you use [Connect Onboarding for Custom Accounts](https://docs.stripe.com/conn
 
 If you use an API integration to collect accounts, specify the data you need access to with the [permissions](https://docs.stripe.com/financial-connections/fundamentals.md#data-permissions) parameter. The set of requested data permissions are viewable by the user in the [authentication flow](https://docs.stripe.com/financial-connections/fundamentals.md#authentication-flow). Financial Connections Accounts are collectible through various integration paths, and how you specify the parameter varies slightly by API.
 
+[Enable US bank account](https://dashboard.stripe.com/settings/payment_methods) as a payment method in your Dashboard before creating the intent.
+
 #### Setup Intents
 
 ```curl
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "payment_method_types[]=us_bank_account" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=payment_method"
 ```
@@ -52,7 +54,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=20000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "payment_method_types[]=us_bank_account" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=payment_method"
 ```
@@ -73,7 +75,6 @@ curl https://api.stripe.com/v1/financial_connections/sessions \
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "payment_method_types[]=us_bank_account" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=payment_method"
 ```
@@ -84,7 +85,6 @@ curl https://api.stripe.com/v1/checkout/sessions \
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "payment_settings[payment_method_types][]=us_bank_account" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=payment_method"
 ```
@@ -95,7 +95,6 @@ curl https://api.stripe.com/v1/invoices \
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d customer={{CUSTOMER_ID}} \
-  -d "payment_settings[payment_method_types][]=us_bank_account" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=payment_method"
 ```
@@ -114,7 +113,7 @@ Specify whether you want to prefetch account ownership details *before* account 
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "payment_method_types[]=us_bank_account" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d "payment_method_options[us_bank_account][financial_connections][prefetch][]=ownership" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=payment_method" \
   -d "payment_method_options[us_bank_account][financial_connections][permissions][]=ownership"

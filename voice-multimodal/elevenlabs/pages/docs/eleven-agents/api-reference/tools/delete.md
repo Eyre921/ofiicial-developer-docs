@@ -14,100 +14,31 @@ Delete tool from the workspace.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tools/delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/tools/{tool_id}:
-    delete:
-      operationId: delete
-      summary: Delete Tool
-      description: Delete tool from the workspace.
-      tags:
-        - tools
-      parameters:
-        - name: tool_id
-          in: path
-          description: ID of the requested tool.
-          required: true
-          schema:
-            type: string
-        - name: force
-          in: query
-          description: >-
-            If set to true, the tool will be deleted regardless of whether it is
-            used by any agents and it will be removed from the dependent agents
-            and branches.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `tool_id` (string, required) — ID of the requested tool.
+
+### Query parameters
+
+- `force` (boolean, optional, default: false) — If set to true, the tool will be deleted regardless of whether it is used by any agents and it will be removed from the dependent agents and branches.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `any`
 
 ## Examples
 

@@ -14,470 +14,89 @@ Retrieves a list of shared voices.
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/voice-library/get-shared
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/shared-voices:
-    get:
-      operationId: get_shared
-      summary: Get shared voices
-      description: Retrieves a list of shared voices.
-      tags:
-        - voices
-      parameters:
-        - name: page_size
-          in: query
-          description: >-
-            How many shared voices to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: category
-          in: query
-          description: Voice category used for filtering
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1SharedVoicesGetParametersCategory'
-        - name: gender
-          in: query
-          description: Gender used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: age
-          in: query
-          description: Age used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: accent
-          in: query
-          description: Accent used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: language
-          in: query
-          description: Language used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: locale
-          in: query
-          description: Locale used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: search
-          in: query
-          description: Search term used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: use_cases
-          in: query
-          description: Use-case used for filtering
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              type: string
-        - name: descriptives
-          in: query
-          description: Search term used for filtering
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              type: string
-        - name: featured
-          in: query
-          description: Filter featured voices
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: min_notice_period_days
-          in: query
-          description: >-
-            Filter voices with a minimum notice period of the given number of
-            days.
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: include_custom_rates
-          in: query
-          description: Include/exclude voices with custom rates
-          required: false
-          schema:
-            type:
-              - boolean
-              - 'null'
-        - name: include_live_moderated
-          in: query
-          description: Include/exclude voices that are live moderated
-          required: false
-          schema:
-            type:
-              - boolean
-              - 'null'
-        - name: reader_app_enabled
-          in: query
-          description: Filter voices that are enabled for the reader app
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: owner_id
-          in: query
-          description: Filter voices by public owner ID
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: sort
-          in: query
-          description: >-
-            Sort criteria. Must be one of: created_date,
-            usage_character_count_1y, trending, cloned_by_count.
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1SharedVoicesGetParametersSort'
-            default: created_date
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetLibraryVoicesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1SharedVoicesGetParametersCategory:
-      type: string
-      enum:
-        - professional
-        - famous
-        - high_quality
-      description: Voice category used for filtering
-      title: V1SharedVoicesGetParametersCategory
-    V1SharedVoicesGetParametersSort:
-      type: string
-      enum:
-        - created_date
-        - usage_character_count_1y
-        - trending
-        - cloned_by_count
-      default: created_date
-      description: >-
-        Sort criteria. Must be one of: created_date, usage_character_count_1y,
-        trending, cloned_by_count.
-      title: V1SharedVoicesGetParametersSort
-    LibraryVoiceResponseModelCategory:
-      type: string
-      enum:
-        - generated
-        - cloned
-        - premade
-        - professional
-        - famous
-        - high_quality
-      description: The category of the voice.
-      title: LibraryVoiceResponseModelCategory
-    VerifiedVoiceLanguageResponseModel:
-      type: object
-      properties:
-        language:
-          type: string
-          description: The language of the voice.
-        model_id:
-          type: string
-          description: The voice's model ID.
-        accent:
-          type:
-            - string
-            - 'null'
-          description: The voice's accent, if applicable.
-        locale:
-          type:
-            - string
-            - 'null'
-          description: The voice's locale, if applicable.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The voice's preview URL, if applicable.
-      required:
-        - language
-        - model_id
-      title: VerifiedVoiceLanguageResponseModel
-    LibraryVoiceResponseModel:
-      type: object
-      properties:
-        public_owner_id:
-          type: string
-          description: The public owner id of the voice.
-        voice_id:
-          type: string
-          description: The id of the voice.
-        date_unix:
-          type: integer
-          description: The date the voice was added to the library in Unix time.
-        name:
-          type: string
-          description: The name of the voice.
-        accent:
-          type: string
-          description: The accent of the voice.
-        gender:
-          type: string
-          description: The gender of the voice.
-        age:
-          type: string
-          description: The age of the voice.
-        descriptive:
-          type: string
-          description: The descriptive of the voice.
-        use_case:
-          type: string
-          description: The use case of the voice.
-        category:
-          $ref: '#/components/schemas/LibraryVoiceResponseModelCategory'
-          description: The category of the voice.
-        language:
-          type:
-            - string
-            - 'null'
-          description: The language of the voice.
-        locale:
-          type:
-            - string
-            - 'null'
-          description: The locale of the voice.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the voice.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The preview URL of the voice.
-        usage_character_count_1y:
-          type: integer
-          description: The usage character count of the voice in the last year.
-        usage_character_count_7d:
-          type: integer
-          description: The usage character count of the voice in the last 7 days.
-        play_api_usage_character_count_1y:
-          type: integer
-          description: The play API usage character count of the voice in the last year.
-        cloned_by_count:
-          type: integer
-          description: The number of times the voice has been cloned.
-        rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate multiplier of the voice.
-        fiat_rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate of the voice in USD per 1000 credits. null if default
-        free_users_allowed:
-          type: boolean
-          description: Whether free users are allowed to use the voice.
-        live_moderation_enabled:
-          type: boolean
-          description: Whether live moderation is enabled for the voice.
-        featured:
-          type: boolean
-          description: Whether the voice is featured.
-        verified_languages:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VerifiedVoiceLanguageResponseModel'
-          description: The verified languages of the voice.
-        notice_period:
-          type:
-            - integer
-            - 'null'
-          description: The notice period of the voice.
-        instagram_username:
-          type:
-            - string
-            - 'null'
-          description: The Instagram username of the voice.
-        twitter_username:
-          type:
-            - string
-            - 'null'
-          description: The Twitter username of the voice.
-        youtube_username:
-          type:
-            - string
-            - 'null'
-          description: The YouTube username of the voice.
-        tiktok_username:
-          type:
-            - string
-            - 'null'
-          description: The TikTok username of the voice.
-        image_url:
-          type:
-            - string
-            - 'null'
-          description: The image URL of the voice.
-        is_added_by_user:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the voice was added by the user.
-        is_bookmarked:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether the voice is bookmarked by the current user. Only relevant
-            when is_added_by_user is True.
-      required:
-        - public_owner_id
-        - voice_id
-        - date_unix
-        - name
-        - accent
-        - gender
-        - age
-        - descriptive
-        - use_case
-        - category
-        - usage_character_count_1y
-        - usage_character_count_7d
-        - play_api_usage_character_count_1y
-        - cloned_by_count
-        - free_users_allowed
-        - live_moderation_enabled
-        - featured
-      title: LibraryVoiceResponseModel
-    GetLibraryVoicesResponseModel:
-      type: object
-      properties:
-        voices:
-          type: array
-          items:
-            $ref: '#/components/schemas/LibraryVoiceResponseModel'
-          description: The list of shared voices
-        has_more:
-          type: boolean
-          description: Whether there are more shared voices in subsequent pages.
-        total_count:
-          type: integer
-          default: 0
-          description: The total number of shared voices matching the query.
-        last_sort_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - voices
-        - has_more
-      title: GetLibraryVoicesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 30) — How many shared voices to return at maximum. Can not exceed 100, defaults to 30.
+- `category` (enum, optional) — Voice category used for filtering
+  - Allowed values: `professional`, `famous`, `high_quality`
+- `gender` (string, optional, nullable) — Gender used for filtering
+- `age` (string, optional, nullable) — Age used for filtering
+- `accent` (string, optional, nullable) — Accent used for filtering
+- `language` (string, optional, nullable) — Language used for filtering
+- `locale` (string, optional, nullable) — Locale used for filtering
+- `search` (string, optional, nullable) — Search term used for filtering
+- `use_cases` (list of string, optional, nullable) — Use-case used for filtering
+- `descriptives` (list of string, optional, nullable) — Search term used for filtering
+- `featured` (boolean, optional, default: false) — Filter featured voices
+- `min_notice_period_days` (integer, optional, nullable) — Filter voices with a minimum notice period of the given number of days.
+- `include_custom_rates` (boolean, optional, nullable) — Include/exclude voices with custom rates
+- `include_live_moderated` (boolean, optional, nullable) — Include/exclude voices that are live moderated
+- `reader_app_enabled` (boolean, optional, default: false) — Filter voices that are enabled for the reader app
+- `owner_id` (string, optional, nullable) — Filter voices by public owner ID
+- `sort` (enum, optional, default: created_date) — Sort criteria. Must be one of: created_date, usage_character_count_1y, trending, cloned_by_count.
+  - Allowed values: `created_date`, `usage_character_count_1y`, `trending`, `cloned_by_count`
+- `page` (integer, optional, default: 0)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voices` (list of object, required) — The list of shared voices
+  - `public_owner_id` (string, required) — The public owner id of the voice.
+  - `voice_id` (string, required) — The id of the voice.
+  - `date_unix` (integer, required) — The date the voice was added to the library in Unix time.
+  - `name` (string, required) — The name of the voice.
+  - `accent` (string, required) — The accent of the voice.
+  - `gender` (string, required) — The gender of the voice.
+  - `age` (string, required) — The age of the voice.
+  - `descriptive` (string, required) — The descriptive of the voice.
+  - `use_case` (string, required) — The use case of the voice.
+  - `category` (enum, required) — The category of the voice.
+    - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+  - `usage_character_count_1y` (integer, required) — The usage character count of the voice in the last year.
+  - `usage_character_count_7d` (integer, required) — The usage character count of the voice in the last 7 days.
+  - `play_api_usage_character_count_1y` (integer, required) — The play API usage character count of the voice in the last year.
+  - `cloned_by_count` (integer, required) — The number of times the voice has been cloned.
+  - `free_users_allowed` (boolean, required) — Whether free users are allowed to use the voice.
+  - `live_moderation_enabled` (boolean, required) — Whether live moderation is enabled for the voice.
+  - `featured` (boolean, required) — Whether the voice is featured.
+  - `language` (string, optional, nullable) — The language of the voice.
+  - `locale` (string, optional, nullable) — The locale of the voice.
+  - `description` (string, optional, nullable) — The description of the voice.
+  - `preview_url` (string, optional, nullable) — The preview URL of the voice.
+  - `rate` (double, optional, nullable) — The rate multiplier of the voice.
+  - `fiat_rate` (double, optional, nullable) — The rate of the voice in USD per 1000 credits. null if default
+  - `verified_languages` (list of object, optional, nullable) — The verified languages of the voice.
+    - `language` (string, required) — The language of the voice.
+    - `model_id` (string, required) — The voice's model ID.
+    - `accent` (string, optional, nullable) — The voice's accent, if applicable.
+    - `locale` (string, optional, nullable) — The voice's locale, if applicable.
+    - `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+  - `notice_period` (integer, optional, nullable) — The notice period of the voice.
+  - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
+  - `twitter_username` (string, optional, nullable) — The Twitter username of the voice.
+  - `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
+  - `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
+  - `image_url` (string, optional, nullable) — The image URL of the voice.
+  - `is_added_by_user` (boolean, optional, nullable) — Whether the voice was added by the user.
+  - `is_bookmarked` (boolean, optional, nullable) — Whether the voice is bookmarked by the current user. Only relevant when is_added_by_user is True.
+- `has_more` (boolean, required) — Whether there are more shared voices in subsequent pages.
+- `total_count` (integer, optional, default: 0) — The total number of shared voices matching the query.
+- `last_sort_id` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Response**
 

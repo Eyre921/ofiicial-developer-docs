@@ -15,199 +15,43 @@ Update Convai dashboard settings for the workspace
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/settings/dashboard:
-    patch:
-      operationId: update
-      summary: Update Convai Dashboard Settings
-      description: Update Convai dashboard settings for the workspace
-      tags:
-        - settings
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_:GetConvAiDashboardSettingsResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                charts:
-                  type: array
-                  items:
-                    $ref: >-
-                      #/components/schemas/type_conversationalAi/dashboard/settings:PatchConvAiDashboardSettingsRequestChartsItem
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_conversationalAi/dashboard/settings:PatchConvAiDashboardSettingsRequestChartsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - call_success
-              description: 'Discriminator value: call_success'
-            name:
-              type: string
-          required:
-            - type
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - criteria
-              description: 'Discriminator value: criteria'
-            name:
-              type: string
-            criteria_id:
-              type: string
-          required:
-            - type
-            - name
-            - criteria_id
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - data_collection
-              description: 'Discriminator value: data_collection'
-            name:
-              type: string
-            data_collection_id:
-              type: string
-          required:
-            - type
-            - name
-            - data_collection_id
-      discriminator:
-        propertyName: type
-      title: PatchConvAiDashboardSettingsRequestChartsItem
-    type_:GetConvAiDashboardSettingsResponseModelChartsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - call_success
-              description: 'Discriminator value: call_success'
-            name:
-              type: string
-          required:
-            - type
-            - name
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - criteria
-              description: 'Discriminator value: criteria'
-            name:
-              type: string
-            criteria_id:
-              type: string
-          required:
-            - type
-            - name
-            - criteria_id
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - data_collection
-              description: 'Discriminator value: data_collection'
-            name:
-              type: string
-            data_collection_id:
-              type: string
-          required:
-            - type
-            - name
-            - data_collection_id
-      discriminator:
-        propertyName: type
-      title: GetConvAiDashboardSettingsResponseModelChartsItem
-    type_:GetConvAiDashboardSettingsResponseModel:
-      type: object
-      properties:
-        charts:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:GetConvAiDashboardSettingsResponseModelChartsItem
-      title: GetConvAiDashboardSettingsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `charts` (list of object, optional)
+  - `type`: `call_success`
+    - `name` (string, required)
+  - `type`: `criteria`
+    - `criteria_id` (string, required)
+    - `name` (string, required)
+  - `type`: `data_collection`
+    - `data_collection_id` (string, required)
+    - `name` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `charts` (list of object, optional)
+  - `type`: `call_success`
+    - `name` (string, required)
+  - `type`: `criteria`
+    - `criteria_id` (string, required)
+    - `name` (string, required)
+  - `type`: `data_collection`
+    - `data_collection_id` (string, required)
+    - `name` (string, required)
 
 ## Examples
 

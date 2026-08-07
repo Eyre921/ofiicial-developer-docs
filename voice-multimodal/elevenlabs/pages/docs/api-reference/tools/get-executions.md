@@ -14,379 +14,84 @@ Get paginated list of tool executions for a specific tool.
 
 Reference: https://elevenlabs.io/docs/api-reference/tools/get-executions
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/tools/{tool_id}/executions:
-    get:
-      operationId: get
-      summary: Get Tool Executions
-      description: Get paginated list of tool executions for a specific tool.
-      tags:
-        - executions
-      parameters:
-        - name: tool_id
-          in: path
-          description: ID of the requested tool.
-          required: true
-          schema:
-            type: string
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: >-
-            How many documents to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: is_error
-          in: query
-          description: Filter by error status. If not provided, returns all executions.
-          required: false
-          schema:
-            type:
-              - boolean
-              - 'null'
-        - name: agent_id
-          in: query
-          description: Filter by agent ID.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: branch_id
-          in: query
-          description: Filter by agent branch ID.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: start_time
-          in: query
-          description: Filter executions from this Unix timestamp (inclusive).
-          required: false
-          schema:
-            type:
-              - number
-              - 'null'
-            format: double
-        - name: end_time
-          in: query
-          description: Filter executions until this Unix timestamp (inclusive).
-          required: false
-          schema:
-            type:
-              - number
-              - 'null'
-            format: double
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetToolExecutionsPageResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ConversationHistoryTranscriptToolCallWebhookDetails:
-      type: object
-      properties:
-        method:
-          type: string
-        url:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        path_params:
-          type: object
-          additionalProperties:
-            type: string
-        query_params:
-          type: object
-          additionalProperties:
-            type: string
-        body:
-          type:
-            - string
-            - 'null'
-      required:
-        - method
-        - url
-      title: ConversationHistoryTranscriptToolCallWebhookDetails
-    ToolExecutionResponseModelToolCallDetails:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            integration_id:
-              type: string
-              default: ''
-            credential_id:
-              type: string
-              default: ''
-            integration_connection_id:
-              type: string
-              default: ''
-            webhook_details:
-              $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptToolCallWebhookDetails
-          required:
-            - type
-            - integration_id
-            - credential_id
-            - integration_connection_id
-            - webhook_details
-          description: >-
-            ConversationHistoryTranscriptToolCallApiIntegrationWebhookDetails
-            variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            parameters:
-              type: string
-          required:
-            - type
-            - parameters
-          description: ConversationHistoryTranscriptToolCallClientDetails variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-            mcp_server_id:
-              type: string
-            mcp_server_name:
-              type: string
-            integration_type:
-              type: string
-            parameters:
-              type: object
-              additionalProperties:
-                type: string
-            approval_policy:
-              type: string
-            requires_approval:
-              type: boolean
-              default: false
-            mcp_tool_name:
-              type: string
-              default: ''
-            mcp_tool_description:
-              type: string
-              default: ''
-          required:
-            - type
-            - mcp_server_id
-            - mcp_server_name
-            - integration_type
-            - approval_policy
-          description: ConversationHistoryTranscriptToolCallMCPDetails variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-              description: 'Discriminator value: webhook'
-            method:
-              type: string
-            url:
-              type: string
-            headers:
-              type: object
-              additionalProperties:
-                type: string
-            path_params:
-              type: object
-              additionalProperties:
-                type: string
-            query_params:
-              type: object
-              additionalProperties:
-                type: string
-            body:
-              type:
-                - string
-                - 'null'
-          required:
-            - type
-            - method
-            - url
-          description: ConversationHistoryTranscriptToolCallWebhookDetails variant
-      discriminator:
-        propertyName: type
-      title: ToolExecutionResponseModelToolCallDetails
-    ToolExecutionResponseModel:
-      type: object
-      properties:
-        tool_id:
-          type: string
-          description: The ID of the tool that was executed
-        tool_request_id:
-          type: string
-          description: The request/call ID associated with this tool execution
-        conversation_id:
-          type: string
-          description: The ID of the conversation where the tool was executed
-        agent_id:
-          type: string
-          description: The ID of the agent that ran the tool
-        branch_id:
-          type:
-            - string
-            - 'null'
-          description: The branch ID if the agent has branches
-        timestamp:
-          type: number
-          format: double
-          description: Unix timestamp when the tool was executed
-        latency_secs:
-          type: number
-          format: double
-          description: How long the tool execution took
-        is_error:
-          type: boolean
-          default: false
-          description: Whether the tool execution failed
-        request_payload:
-          type:
-            - string
-            - 'null'
-          description: LLM-extracted parameters sent to the tool (JSON string)
-        response_payload:
-          type:
-            - string
-            - 'null'
-          description: Response returned by the tool
-        error_message:
-          type:
-            - string
-            - 'null'
-          description: Error message if the tool execution failed
-        error_type:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Error category (internal, customer_config, customer_auth,
-            external_server, external_client, client_timeout, unknown)
-        id:
-          type: string
-        tool_call_details:
-          oneOf:
-            - $ref: '#/components/schemas/ToolExecutionResponseModelToolCallDetails'
-            - type: 'null'
-      required:
-        - tool_id
-        - tool_request_id
-        - conversation_id
-        - agent_id
-        - timestamp
-        - latency_secs
-        - id
-      title: ToolExecutionResponseModel
-    GetToolExecutionsPageResponseModel:
-      type: object
-      properties:
-        executions:
-          type: array
-          items:
-            $ref: '#/components/schemas/ToolExecutionResponseModel'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-        has_more:
-          type: boolean
-      required:
-        - executions
-        - has_more
-      title: GetToolExecutionsPageResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `tool_id` (string, required) — ID of the requested tool.
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+- `page_size` (integer, optional, default: 30) — How many documents to return at maximum. Can not exceed 100, defaults to 30.
+- `is_error` (boolean, optional, nullable) — Filter by error status. If not provided, returns all executions.
+- `agent_id` (string, optional, nullable) — Filter by agent ID.
+- `branch_id` (string, optional, nullable) — Filter by agent branch ID.
+- `start_time` (double, optional, nullable) — Filter executions from this Unix timestamp (inclusive).
+- `end_time` (double, optional, nullable) — Filter executions until this Unix timestamp (inclusive).
+
+## Response
+
+### 200
+
+Successful Response
+
+- `executions` (list of object, required)
+  - `tool_id` (string, required) — The ID of the tool that was executed
+  - `tool_request_id` (string, required) — The request/call ID associated with this tool execution
+  - `conversation_id` (string, required) — The ID of the conversation where the tool was executed
+  - `agent_id` (string, required) — The ID of the agent that ran the tool
+  - `timestamp` (double, required) — Unix timestamp when the tool was executed
+  - `latency_secs` (double, required) — How long the tool execution took
+  - `id` (string, required)
+  - `branch_id` (string, optional, nullable) — The branch ID if the agent has branches
+  - `is_error` (boolean, optional, default: false) — Whether the tool execution failed
+  - `request_payload` (string, optional, nullable) — LLM-extracted parameters sent to the tool (JSON string)
+  - `response_payload` (string, optional, nullable) — Response returned by the tool
+  - `error_message` (string, optional, nullable) — Error message if the tool execution failed
+  - `error_type` (string, optional, nullable) — Error category (internal, customer_config, customer_auth, external_server, external_client, client_timeout, unknown)
+  - `tool_call_details` (object, optional, nullable)
+    - `type`: `api_integration_webhook` (ConversationHistoryTranscriptToolCallApiIntegrationWebhookDetails)
+      - `credential_id` (string, required, default: )
+      - `integration_connection_id` (string, required, default: )
+      - `integration_id` (string, required, default: )
+      - `webhook_details` (object, required)
+        - `method` (string, required)
+        - `url` (string, required)
+        - `headers` (map from string to string, optional)
+        - `path_params` (map from string to string, optional)
+        - `query_params` (map from string to string, optional)
+        - `body` (string, optional, nullable)
+    - `type`: `client` (ConversationHistoryTranscriptToolCallClientDetails)
+      - `parameters` (string, required)
+    - `type`: `mcp` (ConversationHistoryTranscriptToolCallMCPDetails)
+      - `approval_policy` (string, required)
+      - `integration_type` (string, required)
+      - `mcp_server_id` (string, required)
+      - `mcp_server_name` (string, required)
+      - `mcp_tool_description` (string, optional, default: )
+      - `mcp_tool_name` (string, optional, default: )
+      - `parameters` (map from string to string, optional)
+      - `requires_approval` (boolean, optional, default: false)
+    - `type`: `webhook` (ConversationHistoryTranscriptToolCallWebhookDetails)
+      - `method` (string, required)
+      - `url` (string, required)
+      - `body` (string, optional, nullable)
+      - `headers` (map from string to string, optional)
+      - `path_params` (map from string to string, optional)
+      - `query_params` (map from string to string, optional)
+- `has_more` (boolean, required)
+- `next_cursor` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Request**
 

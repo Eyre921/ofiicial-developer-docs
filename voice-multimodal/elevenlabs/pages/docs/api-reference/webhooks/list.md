@@ -14,209 +14,44 @@ List all webhooks for a workspace
 
 Reference: https://elevenlabs.io/docs/api-reference/webhooks/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/webhooks:
-    get:
-      operationId: list
-      summary: List Workspace Webhooks
-      description: List all webhooks for a workspace
-      tags:
-        - webhooks
-      parameters:
-        - name: include_usages
-          in: query
-          description: >-
-            Whether to include active usages of the webhook, only usable by
-            admins
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceWebhookListResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WebhookAuthMethodType:
-      type: string
-      enum:
-        - hmac
-        - oauth2
-        - mtls
-      title: WebhookAuthMethodType
-    WebhookUsageType:
-      type: string
-      enum:
-        - ConvAI Agent Settings
-        - ConvAI Settings
-        - Voice Library Removal Notices
-        - Speech to Text
-        - Agent QA Evaluations
-        - ConvAI Alerting
-        - Flows
-        - Dubbing
-      title: WebhookUsageType
-    WorkspaceWebhookUsageResponseModel:
-      type: object
-      properties:
-        usage_type:
-          $ref: '#/components/schemas/WebhookUsageType'
-      required:
-        - usage_type
-      title: WorkspaceWebhookUsageResponseModel
-    WorkspaceWebhookEventType:
-      type: string
-      enum:
-        - voice_library_removal_notice
-        - speech_to_text
-        - agent_qa
-      title: WorkspaceWebhookEventType
-    WorkspaceWebhookResponseModel:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The display name for this webhook.
-        webhook_id:
-          type: string
-          description: The unique ID for this webhook.
-        webhook_url:
-          type: string
-          description: >-
-            The HTTPS callback URL that is called when this webhook is triggered
-            in the platform.
-        is_disabled:
-          type: boolean
-          description: Whether the webhook has been manually disabled by a user.
-        is_auto_disabled:
-          type: boolean
-          description: >-
-            Whether the webhook has been automatically disabled due to repeated
-            consecutive failures over a long period of time.
-        created_at_unix:
-          type: integer
-          description: Original creation time of the webhook.
-        auth_type:
-          $ref: '#/components/schemas/WebhookAuthMethodType'
-          description: The authentication mode used to secure the webhook.
-        usage:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/WorkspaceWebhookUsageResponseModel'
-          description: >-
-            The list of products that are currently configured to trigger this
-            webhook.
-        events:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/WorkspaceWebhookEventType'
-          description: >-
-            The workspace-level events this webhook is currently subscribed to.
-            Only populated when usages are requested.
-        most_recent_failure_error_code:
-          type:
-            - integer
-            - 'null'
-          description: The most recent error code returned from the callback URL.
-        most_recent_failure_timestamp:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The most recent time the webhook failed, failures are any non-200
-            codes returned by the callback URL.
-      required:
-        - name
-        - webhook_id
-        - webhook_url
-        - is_disabled
-        - is_auto_disabled
-        - created_at_unix
-        - auth_type
-      title: WorkspaceWebhookResponseModel
-    WorkspaceWebhookListResponseModel:
-      type: object
-      properties:
-        webhooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkspaceWebhookResponseModel'
-          description: List of webhooks currently configured for the workspace
-      required:
-        - webhooks
-      title: WorkspaceWebhookListResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `include_usages` (boolean, optional, default: false) — Whether to include active usages of the webhook, only usable by admins
+
+## Response
+
+### 200
+
+Successful Response
+
+- `webhooks` (list of object, required) — List of webhooks currently configured for the workspace
+  - `name` (string, required) — The display name for this webhook.
+  - `webhook_id` (string, required) — The unique ID for this webhook.
+  - `webhook_url` (string, required) — The HTTPS callback URL that is called when this webhook is triggered in the platform.
+  - `is_disabled` (boolean, required) — Whether the webhook has been manually disabled by a user.
+  - `is_auto_disabled` (boolean, required) — Whether the webhook has been automatically disabled due to repeated consecutive failures over a long period of time.
+  - `created_at_unix` (integer, required) — Original creation time of the webhook.
+  - `auth_type` (enum, required) — The authentication mode used to secure the webhook.
+    - Allowed values: `hmac`, `oauth2`, `mtls`
+  - `usage` (list of object, optional, nullable) — The list of products that are currently configured to trigger this webhook.
+    - `usage_type` (enum, required)
+      - Allowed values: `ConvAI Agent Settings`, `ConvAI Settings`, `Voice Library Removal Notices`, `Speech to Text`, `Agent QA Evaluations`, `ConvAI Alerting`, `Flows`, `Dubbing`
+  - `events` (list of enum, optional, nullable) — The workspace-level events this webhook is currently subscribed to. Only populated when usages are requested.
+    - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`
+  - `most_recent_failure_error_code` (integer, optional, nullable) — The most recent error code returned from the callback URL.
+  - `most_recent_failure_timestamp` (integer, optional, nullable) — The most recent time the webhook failed, failures are any non-200 codes returned by the callback URL.
 
 ## Examples
-
-
 
 **Response**
 

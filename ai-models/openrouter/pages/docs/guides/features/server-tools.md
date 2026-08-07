@@ -117,7 +117,7 @@ Tools that run their own inner agent loops have separate, per-tool budgets confi
 
 | Tool                                               | Parameter        | Default          | Max  |
 | -------------------------------------------------- | ---------------- | ---------------- | ---- |
-| [Fusion](/docs/guides/features/server-tools/fusion)     | `max_tool_calls` | `8`              | `16` |
+| [Fusion](/docs/guides/features/server-tools/fusion)     | `max_tool_calls` | `4`              | `16` |
 | [Advisor](/docs/guides/features/server-tools/advisor)   | `max_tool_calls` | Provider default | `25` |
 | [Subagent](/docs/guides/features/server-tools/subagent) | `max_tool_calls` | Provider default | `25` |
 

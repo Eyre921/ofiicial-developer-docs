@@ -112,7 +112,7 @@ Confirmation of Instant Bank Payments is immediate, and authorized payments sett
 Instant Bank Payments are subject to two types of returns:
 
 - **Bank-initiated ACH returns**: Stripe still guarantees settlement and doesn’t debit any funds from your balance.
-- **Customer-initiated disputes**: When your customer initiates a dispute with their bank, Stripe debits your balance for the payment amount and dispute fee. To respond and provide supporting text and images, follow the same [guided process in your Stripe Dashboard](https://docs.stripe.com/disputes/responding.md) as for cardholder disputes.
+- **Customer-initiated disputes**: When your customer initiates a dispute with their bank, Stripe debits your balance for the payment amount and dispute fee. To respond and provide supporting text and images, follow the same [guided process in your Stripe Dashboard](https://docs.stripe.com/disputes/responding.md) as for cardholder disputes. For the evidence to submit by return code, see [Disputed Instant Bank Payments](https://docs.stripe.com/payments/link/instant-bank-payments/disputed-payments.md).
 
 ### Recurring and off-session payments
 

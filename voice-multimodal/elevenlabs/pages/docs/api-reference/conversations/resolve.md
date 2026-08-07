@@ -14,2918 +14,683 @@ Resolve a conversation URL (a Slack message URL or a Zendesk ticket URL) to the 
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/resolve
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversations/resolve:
-    get:
-      operationId: resolve
-      summary: Resolve Conversation Reference
-      description: >-
-        Resolve a conversation URL (a Slack message URL or a Zendesk ticket URL)
-        to the deterministic conversation ID for the given agent, then confirm
-        the conversation exists.
-      tags:
-        - conversations
-      parameters:
-        - name: agent_id
-          in: query
-          description: >-
-            Agent id (agent_…) or speech engine external id (seng_), resolved to
-            the same underlying resource.
-          required: true
-          schema:
-            type: string
-        - name: reference
-          in: query
-          description: A Slack message URL or a Zendesk ticket URL.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetConversationResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    GetConversationResponseModelStatus:
-      type: string
-      enum:
-        - initiated
-        - in-progress
-        - processing
-        - done
-        - failed
-      title: GetConversationResponseModelStatus
-    ConversationDeletionSettings:
-      type: object
-      properties:
-        deletion_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-        deleted_logs_at_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-        deleted_audio_at_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-        deleted_transcript_at_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-        delete_transcript_and_pii:
-          type: boolean
-          default: false
-        delete_audio:
-          type: boolean
-          default: false
-      title: ConversationDeletionSettings
-    ConversationFeedbackType:
-      type: string
-      enum:
-        - thumbs
-        - rating
-      title: ConversationFeedbackType
-    UserFeedbackScore:
-      type: string
-      enum:
-        - like
-        - dislike
-      title: UserFeedbackScore
-    ConversationHistoryFeedbackCommonModel:
-      type: object
-      properties:
-        type:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationFeedbackType'
-            - type: 'null'
-        overall_score:
-          oneOf:
-            - $ref: '#/components/schemas/UserFeedbackScore'
-            - type: 'null'
-        likes:
-          type: integer
-          default: 0
-        dislikes:
-          type: integer
-          default: 0
-        rating:
-          type:
-            - integer
-            - 'null'
-        comment:
-          type:
-            - string
-            - 'null'
-      title: ConversationHistoryFeedbackCommonModel
-    AuthorizationMethod:
-      type: string
-      enum:
-        - invalid
-        - public
-        - authorization_header
-        - signed_url
-        - shareable_link
-        - livekit_token
-        - livekit_token_website
-        - genesys_api_key
-        - audiocodes_api_key
-        - whatsapp
-        - sms
-      default: public
-      title: AuthorizationMethod
-    LLMTokensCategoryUsage:
-      type: object
-      properties:
-        tokens:
-          type: integer
-          default: 0
-        price:
-          type: number
-          format: double
-          default: 0
-      title: LLMTokensCategoryUsage
-    LLMInputOutputTokensUsage:
-      type: object
-      properties:
-        input:
-          $ref: '#/components/schemas/LLMTokensCategoryUsage'
-        input_cache_read:
-          $ref: '#/components/schemas/LLMTokensCategoryUsage'
-        input_cache_write:
-          $ref: '#/components/schemas/LLMTokensCategoryUsage'
-        output_total:
-          $ref: '#/components/schemas/LLMTokensCategoryUsage'
-      title: LLMInputOutputTokensUsage
-    LLMUsage-Output:
-      type: object
-      properties:
-        model_usage:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LLMInputOutputTokensUsage'
-      title: LLMUsage-Output
-    LLMCategoryUsage:
-      type: object
-      properties:
-        irreversible_generation:
-          $ref: '#/components/schemas/LLMUsage-Output'
-        initiated_generation:
-          $ref: '#/components/schemas/LLMUsage-Output'
-      title: LLMCategoryUsage
-    PlatformCategoryUsage:
-      type: object
-      properties:
-        credits:
-          type: integer
-          default: 0
-        price:
-          type: number
-          format: double
-          default: 0
-        quantity:
-          type: number
-          format: double
-          default: 0
-      description: Accumulated charge for a single :class:`PlatformCategory`.
-      title: PlatformCategoryUsage
-    PlatformUsage:
-      type: object
-      properties:
-        category_usage:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/PlatformCategoryUsage'
-      description: >-
-        Per-category breakdown of ``platform_charge`` (the analogue of
-        ``llm_usage``).
-      title: PlatformUsage
-    ConversationVoiceUsageModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-        audio_output_seconds:
-          type: number
-          format: double
-          default: 0
-      required:
-        - voice_id
-      title: ConversationVoiceUsageModel
-    ConversationTTSUsageModel:
-      type: object
-      properties:
-        primary_tts_model:
-          type:
-            - string
-            - 'null'
-        total_audio_output_seconds:
-          type: number
-          format: double
-          default: 0
-        total_characters:
-          type: integer
-          default: 0
-        per_voice_usage:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConversationVoiceUsageModel'
-      description: Aggregated TTS usage for a conversation (analytics-only, not billing).
-      title: ConversationTTSUsageModel
-    ConversationASRUsageModel:
-      type: object
-      properties:
-        asr_model:
-          type:
-            - string
-            - 'null'
-        total_transcription_calls:
-          type: integer
-          default: 0
-        total_audio_input_seconds:
-          type: number
-          format: double
-          default: 0
-      description: Aggregated ASR usage for a conversation (analytics-only, not billing).
-      title: ConversationASRUsageModel
-    AnalysisRunningTotal:
-      type: object
-      properties:
-        price:
-          type: number
-          format: double
-          default: 0
-        charge:
-          type: integer
-          default: 0
-        price_per_feature:
-          type: object
-          additionalProperties:
-            type: number
-            format: double
-        charge_per_feature:
-          type: object
-          additionalProperties:
-            type: integer
-      description: Cumulative LLM cost of running post-call analysis on this conversation.
-      title: AnalysisRunningTotal
-    AnalysisRunSnapshot:
-      type: object
-      properties:
-        price:
-          type: number
-          format: double
-          default: 0
-        charge:
-          type: integer
-          default: 0
-        price_per_feature:
-          type: object
-          additionalProperties:
-            type: number
-            format: double
-        charge_per_feature:
-          type: object
-          additionalProperties:
-            type: integer
-      description: >-
-        LLM cost of the most recent post-call analysis pass on this
-        conversation.
-      title: AnalysisRunSnapshot
-    AnalysisCharging:
-      type: object
-      properties:
-        total:
-          $ref: '#/components/schemas/AnalysisRunningTotal'
-        last_run:
-          oneOf:
-            - $ref: '#/components/schemas/AnalysisRunSnapshot'
-            - type: 'null'
-      required:
-        - total
-      description: |-
-        Cost of running post-call analysis on this conversation.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        Present once analysis has incurred a cost. `last_run` is null when the
-        most recent pass incurred none.
-      title: AnalysisCharging
-    ConversationChargingCommonModel:
-      type: object
-      properties:
-        dev_discount:
-          type: boolean
-          default: false
-        is_burst:
-          type: boolean
-          default: false
-        tier:
-          type:
-            - string
-            - 'null'
-        llm_usage:
-          $ref: '#/components/schemas/LLMCategoryUsage'
-        llm_price:
-          type:
-            - number
-            - 'null'
-          format: double
-        llm_charge:
-          type:
-            - integer
-            - 'null'
-        call_charge:
-          type:
-            - integer
-            - 'null'
-        platform_charge:
-          type:
-            - integer
-            - 'null'
-        platform_usage:
-          $ref: '#/components/schemas/PlatformUsage'
-        platform_price:
-          type:
-            - number
-            - 'null'
-          format: double
-        free_minutes_consumed:
-          type: number
-          format: double
-          default: 0
-        free_llm_dollars_consumed:
-          type: number
-          format: double
-          default: 0
-        tts_usage:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationTTSUsageModel'
-            - type: 'null'
-        asr_usage:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationASRUsageModel'
-            - type: 'null'
-        analysis:
-          oneOf:
-            - $ref: '#/components/schemas/AnalysisCharging'
-            - type: 'null'
-      title: ConversationChargingCommonModel
-    TelephonyDirection:
-      type: string
-      enum:
-        - inbound
-        - outbound
-      default: inbound
-      title: TelephonyDirection
-    ConversationHistoryMetadataCommonModelPhoneCall:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - exotel
-              description: 'Discriminator value: exotel'
-            direction:
-              $ref: '#/components/schemas/TelephonyDirection'
-            phone_number_id:
-              type: string
-            agent_number:
-              type: string
-            external_number:
-              type: string
-            stream_sid:
-              type: string
-            call_sid:
-              type: string
-          required:
-            - type
-            - direction
-            - phone_number_id
-            - agent_number
-            - external_number
-            - stream_sid
-            - call_sid
-          description: ConversationHistoryExotelPhoneCallModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sip_trunking
-            direction:
-              $ref: '#/components/schemas/TelephonyDirection'
-            phone_number_id:
-              type: string
-            agent_number:
-              type: string
-            external_number:
-              type: string
-            call_id:
-              type:
-                - string
-                - 'null'
-            call_sid:
-              type: string
-            sip_header_dynamic_variables:
-              type: object
-              additionalProperties:
-                type: string
-          required:
-            - type
-            - direction
-            - phone_number_id
-            - agent_number
-            - external_number
-            - call_sid
-          description: ConversationHistorySIPTrunkingPhoneCallModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - twilio
-            direction:
-              $ref: '#/components/schemas/TelephonyDirection'
-            phone_number_id:
-              type: string
-            agent_number:
-              type: string
-            external_number:
-              type: string
-            stream_sid:
-              type: string
-            call_sid:
-              type: string
-          required:
-            - type
-            - direction
-            - phone_number_id
-            - agent_number
-            - external_number
-            - stream_sid
-            - call_sid
-          description: ConversationHistoryTwilioPhoneCallModel variant
-      discriminator:
-        propertyName: type
-      title: ConversationHistoryMetadataCommonModelPhoneCall
-    ConversationHistoryBatchCallModel:
-      type: object
-      properties:
-        batch_call_id:
-          type: string
-        batch_call_recipient_id:
-          type: string
-      required:
-        - batch_call_id
-        - batch_call_recipient_id
-      title: ConversationHistoryBatchCallModel
-    ConversationHistoryErrorCommonModel:
-      type: object
-      properties:
-        code:
-          type: integer
-        reason:
-          type:
-            - string
-            - 'null'
-      required:
-        - code
-      title: ConversationHistoryErrorCommonModel
-    ConversationHistoryRagUsageCommonModel:
-      type: object
-      properties:
-        usage_count:
-          type: integer
-        embedding_model:
-          type: string
-      required:
-        - usage_count
-        - embedding_model
-      title: ConversationHistoryRagUsageCommonModel
-    FeatureStatusCommonModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        used:
-          type: boolean
-          default: false
-      title: FeatureStatusCommonModel
-    WorkflowFeaturesUsageCommonModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        tool_node:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        standalone_agent_node:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        phone_number_node:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        end_node:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-      title: WorkflowFeaturesUsageCommonModel
-    TestsFeatureUsageCommonModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        tests_ran_after_last_modification:
-          type: boolean
-          default: false
-        tests_ran_in_last_7_days:
-          type: boolean
-          default: false
-      title: TestsFeatureUsageCommonModel
-    FeaturesUsageCommonModel:
-      type: object
-      properties:
-        language_detection:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        transfer_to_agent:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        transfer_to_number:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        multivoice:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        dtmf_tones:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        external_mcp_servers:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        pii_zrm_workspace:
-          type: boolean
-          default: false
-        pii_zrm_agent:
-          type: boolean
-          default: false
-        tool_dynamic_variable_updates:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        is_livekit:
-          type: boolean
-          default: false
-        voicemail_detection:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        dtmf_input:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        workflow:
-          $ref: '#/components/schemas/WorkflowFeaturesUsageCommonModel'
-        agent_testing:
-          $ref: '#/components/schemas/TestsFeatureUsageCommonModel'
-        versioning:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-        file_input:
-          $ref: '#/components/schemas/FeatureStatusCommonModel'
-      title: FeaturesUsageCommonModel
-    ConversationHistoryElevenAssistantCommonModel:
-      type: object
-      properties:
-        is_eleven_assistant:
-          type: boolean
-          default: false
-      title: ConversationHistoryElevenAssistantCommonModel
-    ConversationInitiationSource:
-      type: string
-      enum:
-        - unknown
-        - android_sdk
-        - node_js_sdk
-        - react_native_sdk
-        - react_sdk
-        - js_sdk
-        - python_sdk
-        - widget
-        - sip_trunk
-        - twilio
-        - exotel
-        - genesys
-        - audiocodes
-        - swift_sdk
-        - whatsapp
-        - twilio_sms
-        - flutter_sdk
-        - zendesk_integration
-        - slack_integration
-        - telegram_integration
-        - intercom_integration
-        - freshdesk_integration
-        - salesforce_integration
-        - template_preview
-        - genesys_bot_connector
-        - subagent_tool
-      default: unknown
-      description: Enum representing the possible sources for conversation initiation.
-      title: ConversationInitiationSource
-    AsyncConversationMetadataDeliveryStatus:
-      type: string
-      enum:
-        - pending
-        - success
-        - failed
-      title: AsyncConversationMetadataDeliveryStatus
-    AsyncConversationMetadata:
-      type: object
-      properties:
-        delivery_status:
-          $ref: '#/components/schemas/AsyncConversationMetadataDeliveryStatus'
-        delivery_timestamp:
-          type: integer
-        delivery_error:
-          type:
-            - string
-            - 'null'
-        external_system:
-          type: string
-        external_id:
-          type: string
-        external_link:
-          type:
-            - string
-            - 'null'
-        retry_count:
-          type: integer
-          default: 0
-        last_retry_timestamp:
-          type:
-            - integer
-            - 'null'
-        last_processed_external_message_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - delivery_status
-        - delivery_timestamp
-        - external_system
-        - external_id
-      description: Metadata for async conversation delivery (Zendesk, Slack, etc.).
-      title: AsyncConversationMetadata
-    WhatsAppConversationInfoDirection:
-      type: string
-      enum:
-        - inbound
-        - outbound
-        - unknown
-      default: unknown
-      title: WhatsAppConversationInfoDirection
-    WhatsAppConversationInfo:
-      type: object
-      properties:
-        direction:
-          $ref: '#/components/schemas/WhatsAppConversationInfoDirection'
-          default: unknown
-        whatsapp_phone_number_id:
-          type:
-            - string
-            - 'null'
-        whatsapp_user_id:
-          type: string
-        awaiting_first_user_message:
-          type:
-            - boolean
-            - 'null'
-      required:
-        - whatsapp_user_id
-      title: WhatsAppConversationInfo
-    SmsConversationInfoDirection:
-      type: string
-      enum:
-        - inbound
-        - outbound
-      title: SmsConversationInfoDirection
-    SMSConversationInfo:
-      type: object
-      properties:
-        direction:
-          $ref: '#/components/schemas/SmsConversationInfoDirection'
-        phone_number_id:
-          type:
-            - string
-            - 'null'
-        sms_user_phone_number:
-          type: string
-        agent_phone_number:
-          type:
-            - string
-            - 'null'
-      required:
-        - direction
-        - sms_user_phone_number
-      title: SMSConversationInfo
-    AgentDefinitionSource:
-      type: string
-      enum:
-        - cli
-        - ui
-        - api
-        - template
-        - unknown
-      default: unknown
-      title: AgentDefinitionSource
-    ConversationVoiceRewardModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-        reward_usd_cents:
-          type: number
-          format: double
-      required:
-        - voice_id
-        - reward_usd_cents
-      title: ConversationVoiceRewardModel
-    ConversationHistoryMetadataCommonModel:
-      type: object
-      properties:
-        start_time_unix_secs:
-          type: integer
-        accepted_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-        call_duration_secs:
-          type: integer
-        cost:
-          type:
-            - integer
-            - 'null'
-        deletion_settings:
-          $ref: '#/components/schemas/ConversationDeletionSettings'
-        feedback:
-          $ref: '#/components/schemas/ConversationHistoryFeedbackCommonModel'
-        authorization_method:
-          $ref: '#/components/schemas/AuthorizationMethod'
-          default: public
-        charging:
-          $ref: '#/components/schemas/ConversationChargingCommonModel'
-        phone_call:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ConversationHistoryMetadataCommonModelPhoneCall
-            - type: 'null'
-        batch_call:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationHistoryBatchCallModel'
-            - type: 'null'
-        termination_reason:
-          type: string
-          default: ''
-        error:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationHistoryErrorCommonModel'
-            - type: 'null'
-        warnings:
-          type: array
-          items:
-            type: string
-        main_language:
-          type:
-            - string
-            - 'null'
-        rag_usage:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationHistoryRagUsageCommonModel'
-            - type: 'null'
-        text_only:
-          type: boolean
-          default: false
-        features_usage:
-          $ref: '#/components/schemas/FeaturesUsageCommonModel'
-        eleven_assistant:
-          $ref: '#/components/schemas/ConversationHistoryElevenAssistantCommonModel'
-        initiator_id:
-          type:
-            - string
-            - 'null'
-        conversation_initiation_source:
-          $ref: '#/components/schemas/ConversationInitiationSource'
-          default: unknown
-        conversation_initiation_source_version:
-          type:
-            - string
-            - 'null'
-        timezone:
-          type:
-            - string
-            - 'null'
-        async_metadata:
-          oneOf:
-            - $ref: '#/components/schemas/AsyncConversationMetadata'
-            - type: 'null'
-        whatsapp:
-          oneOf:
-            - $ref: '#/components/schemas/WhatsAppConversationInfo'
-            - type: 'null'
-        sms:
-          oneOf:
-            - $ref: '#/components/schemas/SMSConversationInfo'
-            - type: 'null'
-        agent_created_from:
-          $ref: '#/components/schemas/AgentDefinitionSource'
-          default: unknown
-        agent_last_updated_from:
-          $ref: '#/components/schemas/AgentDefinitionSource'
-          default: unknown
-        voice_rewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConversationVoiceRewardModel'
-        cost_fiat:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            Total fiat cost of the conversation in USD, i.e. the sum of the LLM
-            price and the non-LLM platform price (the fiat analogue of
-            ``cost``). ``None`` when neither is set (e.g. conversations that
-            predate fiat cost tracking).
-      required:
-        - start_time_unix_secs
-        - call_duration_secs
-        - cost_fiat
-      title: ConversationHistoryMetadataCommonModel
-    EvaluationSuccessResult:
-      type: string
-      enum:
-        - success
-        - failure
-        - unknown
-      title: EvaluationSuccessResult
-    CriteriaScoringMode:
-      type: string
-      enum:
-        - binary
-        - numeric_uniform
-      default: binary
-      title: CriteriaScoringMode
-    ConversationHistoryEvaluationCriteriaResultCommonModel:
-      type: object
-      properties:
-        criteria_id:
-          type: string
-        result:
-          $ref: '#/components/schemas/EvaluationSuccessResult'
-        rationale:
-          type: string
-        scoring_mode:
-          oneOf:
-            - $ref: '#/components/schemas/CriteriaScoringMode'
-            - type: 'null'
-        score:
-          type:
-            - integer
-            - 'null'
-        max_score:
-          type:
-            - integer
-            - 'null'
-      required:
-        - criteria_id
-        - result
-        - rationale
-      title: ConversationHistoryEvaluationCriteriaResultCommonModel
-    LiteralJsonSchemaPropertyType0:
-      type: string
-      enum:
-        - boolean
-        - string
-        - integer
-        - number
-      title: LiteralJsonSchemaPropertyType0
-    LiteralJsonSchemaPropertyType:
-      oneOf:
-        - $ref: '#/components/schemas/LiteralJsonSchemaPropertyType0'
-        - type: array
-          items:
-            type: string
-      title: LiteralJsonSchemaPropertyType
-    LiteralJsonSchemaPropertyConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      description: >-
-        A constant value to use for this property. Mutually exclusive with
-        description, dynamic_variable, is_system_provided, and is_omitted.
-      title: LiteralJsonSchemaPropertyConstantValue
-    LiteralJsonSchemaProperty:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/LiteralJsonSchemaPropertyType'
-        description:
-          type: string
-          default: ''
-          description: >-
-            The description of the property. When set, the LLM will provide the
-            value based on this description. Mutually exclusive with
-            dynamic_variable, is_system_provided, constant_value, and
-            is_omitted.
-        enum:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of allowed string values for string type parameters
-        is_system_provided:
-          type: boolean
-          default: false
-          description: >-
-            If true, the value will be populated by the system at runtime. Used
-            by API Integration Webhook tools for templating. Mutually exclusive
-            with description, dynamic_variable, constant_value, and is_omitted.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            The name of the dynamic variable to use for this property's value.
-            Mutually exclusive with description, is_system_provided,
-            constant_value, and is_omitted.
-        allowed_values_dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the LLM provides the value but the runtime rejects any
-            value not present in the list held by this dynamic variable. Use to
-            let the LLM pick from a server-verified set (e.g. the IDs the
-            current user is allowed to access). Requires description; mutually
-            exclusive with dynamic_variable, is_system_provided, constant_value,
-            and is_omitted.
-        constant_value:
-          $ref: '#/components/schemas/LiteralJsonSchemaPropertyConstantValue'
-          default: ''
-          description: >-
-            A constant value to use for this property. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and
-            constant_value.
-      required:
-        - type
-      description: >-
-        Schema property for literal JSON types. IMPORTANT: Only ONE of the
-        following fields can be set: description (LLM provides value),
-        dynamic_variable (value from variable), is_system_provided (system
-        provides value), constant_value (fixed value), or is_omitted (parameter
-        is omitted). These are mutually exclusive.
-      title: LiteralJsonSchemaProperty
-    DataCollectionResultCommonModel:
-      type: object
-      properties:
-        data_collection_id:
-          type: string
-        value:
-          description: Any type
-        json_schema:
-          oneOf:
-            - $ref: '#/components/schemas/LiteralJsonSchemaProperty'
-            - type: 'null'
-        rationale:
-          type: string
-      required:
-        - data_collection_id
-        - rationale
-      title: DataCollectionResultCommonModel
-    AnalysisScope:
-      type: string
-      enum:
-        - conversation
-        - agent
-      default: conversation
-      title: AnalysisScope
-    ScopedAnalysisResult:
-      type: object
-      properties:
-        scope:
-          $ref: '#/components/schemas/AnalysisScope'
-          description: >-
-            The scope of the analysis. 'conversation' uses the full transcript;
-            'agent' uses only the portion where the defining agent was active.
-        source_agent_id:
-          type: string
-        source_branch_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Branch of the agent for this scoped block; disambiguates repeated
-            agent_id.
-        evaluation_criteria_results:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/ConversationHistoryEvaluationCriteriaResultCommonModel
-        data_collection_results:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/DataCollectionResultCommonModel'
-        successful:
-          $ref: '#/components/schemas/EvaluationSuccessResult'
-        success_score:
-          type:
-            - number
-            - 'null'
-          format: double
-      required:
-        - scope
-        - source_agent_id
-        - successful
-      title: ScopedAnalysisResult
-    ConversationHistoryAnalysisCommonModel:
-      type: object
-      properties:
-        evaluation_criteria_results:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/ConversationHistoryEvaluationCriteriaResultCommonModel
-        data_collection_results:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/DataCollectionResultCommonModel'
-        evaluation_criteria_results_list:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/ConversationHistoryEvaluationCriteriaResultCommonModel
-        data_collection_results_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/DataCollectionResultCommonModel'
-        call_successful:
-          $ref: '#/components/schemas/EvaluationSuccessResult'
-        call_success_score:
-          type:
-            - number
-            - 'null'
-          format: double
-        transcript_summary:
-          type: string
-        call_summary_title:
-          type:
-            - string
-            - 'null'
-        scoped:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopedAnalysisResult'
-      required:
-        - call_successful
-        - transcript_summary
-      title: ConversationHistoryAnalysisCommonModel
-    VisitedAgentRef:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        branch_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - agent_id
-      description: >-
-        An agent (and optional branch) that participated in the call, in
-        first-seen transcript order.
-      title: VisitedAgentRef
-    ASRConversationalConfigOverride:
-      type: object
-      properties:
-        keywords:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfigOverride
-    SoftTimeoutConfigOverride:
-      type: object
-      properties:
-        message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-      title: SoftTimeoutConfigOverride
-    TurnConfigOverride:
-      type: object
-      properties:
-        soft_timeout_config:
-          oneOf:
-            - $ref: '#/components/schemas/SoftTimeoutConfigOverride'
-            - type: 'null'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfigOverride
-    TTSConversationalModel:
-      type: string
-      enum:
-        - eleven_turbo_v2
-        - eleven_turbo_v2_5
-        - eleven_flash_v2
-        - eleven_flash_v2_5
-        - eleven_multilingual_v2
-        - eleven_v3_conversational
-      default: eleven_flash_v2
-      title: TTSConversationalModel
-    TTSConversationalConfigOverride:
-      type: object
-      properties:
-        model_id:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalModel'
-            - type: 'null'
-          description: The model to use for TTS
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The voice ID to use for TTS
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The stability of generated speech
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The speed of generated speech
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The similarity boost for generated speech
-      title: TTSConversationalConfigOverride
-    ConversationConfigOverride:
-      type: object
-      properties:
-        text_only:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-      title: ConversationConfigOverride
-    LLM:
-      type: string
-      enum:
-        - gpt-4o-mini
-        - gpt-4o
-        - gpt-4
-        - gpt-4-turbo
-        - gpt-4.1
-        - gpt-4.1-mini
-        - gpt-4.1-nano
-        - gpt-5
-        - gpt-5.1
-        - gpt-5.2
-        - gpt-5.2-chat-latest
-        - gpt-5.4
-        - gpt-5.4-mini
-        - gpt-5.4-nano
-        - gpt-5.5
-        - gpt-5.6-sol
-        - gpt-5.6-terra
-        - gpt-5.6-luna
-        - gpt-5-mini
-        - gpt-5-nano
-        - gpt-3.5-turbo
-        - gemini-1.5-pro
-        - gemini-1.5-flash
-        - gemini-2.0-flash
-        - gemini-2.0-flash-lite
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3-pro-preview
-        - gemini-3-flash-preview
-        - gemini-3.1-pro-preview
-        - gemini-3.1-flash-lite-preview
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - gemini-3.5-flash-lite
-        - claude-sonnet-4-5
-        - claude-opus-4-7
-        - claude-opus-4-8
-        - claude-sonnet-4-6
-        - claude-sonnet-5
-        - claude-sonnet-4
-        - claude-haiku-4-5
-        - claude-3-7-sonnet
-        - claude-3-5-sonnet
-        - claude-3-5-sonnet-v1
-        - claude-3-haiku
-        - grok-beta
-        - custom-llm
-        - qwen3-4b
-        - qwen3-30b-a3b
-        - qwen36-35b-a3b
-        - qwen35-397b-a17b
-        - gpt-oss-20b
-        - gpt-oss-120b
-        - glm-45-air-fp8
-        - gemini-2.5-flash-preview-09-2025
-        - gemini-2.5-flash-lite-preview-09-2025
-        - gemini-2.5-flash-preview-05-20
-        - gemini-2.5-flash-preview-04-17
-        - gemini-2.5-flash-lite-preview-06-17
-        - gemini-2.0-flash-lite-001
-        - gemini-2.0-flash-001
-        - gemini-1.5-flash-002
-        - gemini-1.5-flash-001
-        - gemini-1.5-pro-002
-        - gemini-1.5-pro-001
-        - claude-sonnet-4@20250514
-        - claude-sonnet-4-5@20250929
-        - claude-haiku-4-5@20251001
-        - claude-3-7-sonnet@20250219
-        - claude-3-5-sonnet@20240620
-        - claude-3-5-sonnet-v2@20241022
-        - claude-3-haiku@20240307
-        - gpt-5-2025-08-07
-        - gpt-5.1-2025-11-13
-        - gpt-5.2-2025-12-11
-        - gpt-5.4-2026-03-05
-        - gpt-5.4-mini-2026-03-17
-        - gpt-5.4-nano-2026-03-17
-        - gpt-5.5-2026-04-23
-        - gpt-5-mini-2025-08-07
-        - gpt-5-nano-2025-08-07
-        - gpt-4.1-2025-04-14
-        - gpt-4.1-mini-2025-04-14
-        - gpt-4.1-nano-2025-04-14
-        - gpt-4o-mini-2024-07-18
-        - gpt-4o-2024-11-20
-        - gpt-4o-2024-08-06
-        - gpt-4o-2024-05-13
-        - gpt-4-0613
-        - gpt-4-0314
-        - gpt-4-turbo-2024-04-09
-        - gpt-3.5-turbo-0125
-        - gpt-3.5-turbo-1106
-        - watt-tool-8b
-        - watt-tool-70b
-      title: LLM
-    KnowledgeBaseDocumentType:
-      type: string
-      enum:
-        - file
-        - url
-        - text
-        - folder
-      title: KnowledgeBaseDocumentType
-    DocumentUsageModeEnum:
-      type: string
-      enum:
-        - prompt
-        - auto
-      default: auto
-      title: DocumentUsageModeEnum
-    KnowledgeBaseLocator:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/KnowledgeBaseDocumentType'
-          description: The type of the knowledge base
-        name:
-          type: string
-          description: The name of the knowledge base
-        id:
-          type: string
-          description: The ID of the knowledge base
-        usage_mode:
-          $ref: '#/components/schemas/DocumentUsageModeEnum'
-          default: auto
-          description: The usage mode of the knowledge base
-      required:
-        - type
-        - name
-        - id
-      title: KnowledgeBaseLocator
-    PromptAgentAPIModelOverride-Output:
-      type: object
-      properties:
-        prompt:
-          type:
-            - string
-            - 'null'
-          description: The prompt for the agent
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            The LLM to query with the prompt and the chat history. If using data
-            residency, the LLM must be supported in the data residency
-            environment
-        tool_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of IDs of tools used by the agent
-        native_mcp_server_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of Native MCP server ids to be used by the agent
-        knowledge_base:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseLocator'
-          description: A list of knowledge bases to be used by the agent
-      title: PromptAgentAPIModelOverride-Output
-    AgentConfigOverride-Output:
-      type: object
-      properties:
-        first_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the first message the agent will say. If empty, the
-            agent waits for the user to start the discussion.
-        language:
-          type:
-            - string
-            - 'null'
-          description: Language of the agent - used for ASR and TTS
-        max_conversation_duration_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the message the agent will send when max conversation
-            duration is reached.
-        prompt:
-          oneOf:
-            - $ref: '#/components/schemas/PromptAgentAPIModelOverride-Output'
-            - type: 'null'
-          description: The prompt for the agent
-      title: AgentConfigOverride-Output
-    ConversationConfigClientOverride-Output:
-      type: object
-      properties:
-        asr:
-          oneOf:
-            - $ref: '#/components/schemas/ASRConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational transcription
-        turn:
-          oneOf:
-            - $ref: '#/components/schemas/TurnConfigOverride'
-            - type: 'null'
-          description: Configuration for turn detection
-        tts:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational text to speech
-        conversation:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational events
-        agent:
-          oneOf:
-            - $ref: '#/components/schemas/AgentConfigOverride-Output'
-            - type: 'null'
-          description: Agent specific configuration
-      title: ConversationConfigClientOverride-Output
-    ConversationInitiationSourceInfo:
-      type: object
-      properties:
-        source:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationInitiationSource'
-            - type: 'null'
-          description: Source of the conversation initiation
-        version:
-          type:
-            - string
-            - 'null'
-          description: The SDK version number
-      description: Information about the source of conversation initiation
-      title: ConversationInitiationSourceInfo
-    ConversationInitiationClientDataRequest-Output:
-      type: object
-      properties:
-        conversation_config_override:
-          $ref: '#/components/schemas/ConversationConfigClientOverride-Output'
-        custom_llm_extra_body:
-          type: object
-          additionalProperties:
-            description: Any type
-        user_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            ID of the end user participating in this conversation (for agent
-            owner's user identification)
-        source_info:
-          $ref: '#/components/schemas/ConversationInitiationSourceInfo'
-        branch_id:
-          type:
-            - string
-            - 'null'
-          description: ID of the agent branch to use for this conversation
-        environment:
-          type:
-            - string
-            - 'null'
-          description: Environment to use for resolving environment variables
-        starting_workflow_node_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If set, start the workflow at this node id instead of the default
-            entry
-        dynamic_variables:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ConversationInitiationClientDataRequest-Output
-    ConversationHistoryTranscriptResponseModelRole:
-      type: string
-      enum:
-        - user
-        - agent
-      title: ConversationHistoryTranscriptResponseModelRole
-    AgentMetadata:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        branch_id:
-          type:
-            - string
-            - 'null'
-        workflow_node_id:
-          type:
-            - string
-            - 'null'
-        version_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - agent_id
-      title: AgentMetadata
-    ConversationHistoryMultivoiceMessagePartModel:
-      type: object
-      properties:
-        text:
-          type: string
-        voice_label:
-          type:
-            - string
-            - 'null'
-        time_in_call_secs:
-          type:
-            - integer
-            - 'null'
-      required:
-        - text
-        - voice_label
-        - time_in_call_secs
-      description: Represents a single voice part of a multi-voice message.
-      title: ConversationHistoryMultivoiceMessagePartModel
-    ConversationHistoryMultivoiceMessageModel:
-      type: object
-      properties:
-        parts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConversationHistoryMultivoiceMessagePartModel'
-      required:
-        - parts
-      description: Represents a message from a multi-voice agent.
-      title: ConversationHistoryMultivoiceMessageModel
-    ToolType:
-      type: string
-      enum:
-        - system
-        - webhook
-        - client
-        - mcp
-        - workflow
-        - api_integration_webhook
-        - api_integration_mcp
-        - smb
-      title: ToolType
-    ConversationHistoryTranscriptToolCallWebhookDetails:
-      type: object
-      properties:
-        method:
-          type: string
-        url:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        path_params:
-          type: object
-          additionalProperties:
-            type: string
-        query_params:
-          type: object
-          additionalProperties:
-            type: string
-        body:
-          type:
-            - string
-            - 'null'
-      required:
-        - method
-        - url
-      title: ConversationHistoryTranscriptToolCallWebhookDetails
-    ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            integration_id:
-              type: string
-              default: ''
-            credential_id:
-              type: string
-              default: ''
-            integration_connection_id:
-              type: string
-              default: ''
-            webhook_details:
-              $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptToolCallWebhookDetails
-          required:
-            - type
-            - integration_id
-            - credential_id
-            - integration_connection_id
-            - webhook_details
-          description: >-
-            ConversationHistoryTranscriptToolCallApiIntegrationWebhookDetails
-            variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            parameters:
-              type: string
-          required:
-            - type
-            - parameters
-          description: ConversationHistoryTranscriptToolCallClientDetails variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-            mcp_server_id:
-              type: string
-            mcp_server_name:
-              type: string
-            integration_type:
-              type: string
-            parameters:
-              type: object
-              additionalProperties:
-                type: string
-            approval_policy:
-              type: string
-            requires_approval:
-              type: boolean
-              default: false
-            mcp_tool_name:
-              type: string
-              default: ''
-            mcp_tool_description:
-              type: string
-              default: ''
-          required:
-            - type
-            - mcp_server_id
-            - mcp_server_name
-            - integration_type
-            - approval_policy
-          description: ConversationHistoryTranscriptToolCallMCPDetails variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-              description: 'Discriminator value: webhook'
-            method:
-              type: string
-            url:
-              type: string
-            headers:
-              type: object
-              additionalProperties:
-                type: string
-            path_params:
-              type: object
-              additionalProperties:
-                type: string
-            query_params:
-              type: object
-              additionalProperties:
-                type: string
-            body:
-              type:
-                - string
-                - 'null'
-          required:
-            - type
-            - method
-            - url
-          description: ConversationHistoryTranscriptToolCallWebhookDetails variant
-      discriminator:
-        propertyName: type
-      title: ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails
-    ConversationHistoryTranscriptToolCallCommonModel-Output:
-      type: object
-      properties:
-        type:
-          oneOf:
-            - $ref: '#/components/schemas/ToolType'
-            - type: 'null'
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        params_as_json:
-          type: string
-        tool_has_been_called:
-          type: boolean
-        tool_details:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails
-            - type: 'null'
-      required:
-        - request_id
-        - tool_name
-        - params_as_json
-        - tool_has_been_called
-      title: ConversationHistoryTranscriptToolCallCommonModel-Output
-    DynamicVariableUpdateCommonModel:
-      type: object
-      properties:
-        variable_name:
-          type: string
-        old_value:
-          type:
-            - string
-            - 'null'
-        new_value:
-          type: string
-        updated_at:
-          type: number
-          format: double
-        tool_name:
-          type: string
-        tool_request_id:
-          type: string
-      required:
-        - variable_name
-        - old_value
-        - new_value
-        - updated_at
-        - tool_name
-        - tool_request_id
-      description: Tracks a dynamic variable update that occurred during tool execution.
-      title: DynamicVariableUpdateCommonModel
-    ConversationHistoryTranscriptOtherToolsResultCommonModelType:
-      type: string
-      enum:
-        - client
-        - webhook
-        - mcp
-        - code
-      title: ConversationHistoryTranscriptOtherToolsResultCommonModelType
-    ConversationHistoryTranscriptOtherToolsResultCommonModel:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DynamicVariableUpdateCommonModel'
-        type:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptOtherToolsResultCommonModelType
-            - type: 'null'
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-      title: ConversationHistoryTranscriptOtherToolsResultCommonModel
-    KnowledgeBaseRagToolStatus:
-      type: string
-      enum:
-        - success
-        - no_documents
-        - no_results
-      default: success
-      title: KnowledgeBaseRagToolStatus
-    KnowledgeBaseRagChunkModel:
-      type: object
-      properties:
-        chunk_id:
-          type: string
-        document_id:
-          type: string
-        content:
-          type: string
-      required:
-        - chunk_id
-        - document_id
-        - content
-      title: KnowledgeBaseRagChunkModel
-    KnowledgeBaseToolStatus:
-      type: string
-      enum:
-        - success
-        - no_matching_documents
-        - no_results
-      default: success
-      title: KnowledgeBaseToolStatus
-    TransferToAgentToolResultSuccessModelOutputBranchInfo:
-      oneOf:
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - defaulting_to_main
-              description: 'Discriminator value: defaulting_to_main'
-            branch_id:
-              type: string
-          required:
-            - branch_reason
-            - branch_id
-          description: TransferBranchInfoDefaultingToMain variant
-        - type: object
-          properties:
-            branch_reason:
-              type: string
-              enum:
-                - traffic_split
-              description: 'Discriminator value: traffic_split'
-            branch_id:
-              type: string
-            traffic_percentage:
-              type: number
-              format: double
-          required:
-            - branch_reason
-            - branch_id
-            - traffic_percentage
-          description: TransferBranchInfoTrafficSplit variant
-      discriminator:
-        propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
-    ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
-      oneOf:
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - dummy
-              default: dummy
-          required:
-            - result_type
-          description: DummyToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - end_call_success
-              default: end_call_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            reason:
-              type:
-                - string
-                - 'null'
-            message:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-          description: EndCallToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_rag_success
-              default: knowledge_base_rag_success
-            status:
-              $ref: '#/components/schemas/KnowledgeBaseRagToolStatus'
-              default: success
-            chunk_count:
-              type: integer
-              default: 0
-              description: Number of relevant chunks retrieved
-            message:
-              type: string
-              default: Referenced knowledge base.
-              description: Human-readable status for the LLM about the search results
-            chunks:
-              type: array
-              items:
-                $ref: '#/components/schemas/KnowledgeBaseRagChunkModel'
-              description: >-
-                Retrieved chunks; populated only in the
-                rag-result-in-tool-result mode
-          required:
-            - result_type
-          description: KnowledgeBaseRagToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - knowledge_base_success
-              default: knowledge_base_success
-            status:
-              $ref: '#/components/schemas/KnowledgeBaseToolStatus'
-              default: success
-            chunk_count:
-              type: integer
-              default: 0
-            message:
-              type: string
-              default: Referenced knowledge base.
-          required:
-            - result_type
-          description: KnowledgeBaseToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - language_detection_success
-              default: language_detection_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            reason:
-              type:
-                - string
-                - 'null'
-            language:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-          description: LanguageDetectionToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_error
-              default: play_dtmf_error
-            status:
-              type: string
-              enum:
-                - error
-              default: error
-            error:
-              type: string
-            details:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - error
-          description: PlayDTMFResultErrorModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - play_dtmf_success
-              default: play_dtmf_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            dtmf_tones:
-              type: string
-            reason:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - dtmf_tones
-          description: PlayDTMFResultSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - skip_turn_success
-              default: skip_turn_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            reason:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-          description: SkipTurnToolResponseModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - testing_tool_result
-              default: testing_tool_result
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            reason:
-              type: string
-              default: Skipping tool call in test mode
-          required:
-            - result_type
-          description: TestToolResultModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_error
-              default: transfer_to_agent_error
-            status:
-              type: string
-              enum:
-                - error
-              default: error
-            from_agent:
-              type: string
-            error:
-              type: string
-          required:
-            - result_type
-            - from_agent
-            - error
-          description: TransferToAgentToolResultErrorModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_agent_success
-              default: transfer_to_agent_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            from_agent:
-              type: string
-            to_agent:
-              type: string
-            to_node:
-              type:
-                - string
-                - 'null'
-            condition:
-              type: string
-            delay_ms:
-              type: integer
-              default: 0
-            transfer_message:
-              type:
-                - string
-                - 'null'
-            enable_transferred_agent_first_message:
-              type: boolean
-              default: false
-            branch_info:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/TransferToAgentToolResultSuccessModelOutputBranchInfo
-                - type: 'null'
-            preserve_client_tts_overrides:
-              type: boolean
-              default: false
-          required:
-            - result_type
-            - from_agent
-            - to_agent
-            - condition
-          description: TransferToAgentToolResultSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_error
-              default: transfer_to_number_error
-            status:
-              type: string
-              enum:
-                - error
-              default: error
-            error:
-              type: string
-            details:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - error
-          description: TransferToNumberResultErrorModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_exotel_success
-              default: transfer_to_number_exotel_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            transfer_number:
-              type: string
-            reason:
-              type:
-                - string
-                - 'null'
-            agent_message:
-              type:
-                - string
-                - 'null'
-            note:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - transfer_number
-          description: TransferToNumberResultExotelSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_sip_success
-              default: transfer_to_number_sip_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            transfer_number:
-              type: string
-            reason:
-              type:
-                - string
-                - 'null'
-            note:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - transfer_number
-          description: TransferToNumberResultSipSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - transfer_to_number_twilio_success
-              default: transfer_to_number_twilio_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            transfer_number:
-              type: string
-            reason:
-              type:
-                - string
-                - 'null'
-            client_message:
-              type:
-                - string
-                - 'null'
-            agent_message:
-              type: string
-            conference_name:
-              type: string
-            post_dial_digits:
-              type:
-                - string
-                - 'null'
-            note:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-            - transfer_number
-            - agent_message
-            - conference_name
-          description: TransferToNumberResultTwilioSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - voicemail_detection_success
-              default: voicemail_detection_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            voicemail_message:
-              type:
-                - string
-                - 'null'
-            reason:
-              type:
-                - string
-                - 'null'
-          required:
-            - result_type
-          description: VoiceMailDetectionResultSuccessModel variant
-      discriminator:
-        propertyName: result_type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult
-    ConversationHistoryTranscriptSystemToolResultCommonModel-Output:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - system
-        result:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult
-            - type: 'null'
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
-    ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - api_integration_webhook
-        integration_id:
-          type: string
-          default: ''
-        credential_id:
-          type: string
-          default: ''
-        integration_connection_id:
-          type: string
-          default: ''
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - is_blocked
-        - tool_has_been_called
-        - tool_latency_secs
-        - error_type
-        - raw_error_message
-        - dynamic_variable_updates
-        - type
-        - integration_id
-        - credential_id
-        - integration_connection_id
-      title: >-
-        ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
-    WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptSystemToolResultCommonModel-Output
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
-      title: >-
-        WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
-    WorkflowToolResponseModelOutputStepsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - edge
-              description: 'Discriminator value: edge'
-            step_latency_secs:
-              type: number
-              format: double
-            edge_id:
-              type: string
-            target_node_id:
-              type: string
-          required:
-            - type
-            - step_latency_secs
-            - edge_id
-            - target_node_id
-          description: WorkflowToolEdgeStepModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - max_iterations_exceeded
-              description: 'Discriminator value: max_iterations_exceeded'
-            step_latency_secs:
-              type: number
-              format: double
-            max_iterations:
-              type: integer
-          required:
-            - type
-            - step_latency_secs
-            - max_iterations
-          description: WorkflowToolMaxIterationsExceededStepModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - nested_tools
-              description: 'Discriminator value: nested_tools'
-            step_latency_secs:
-              type: number
-              format: double
-            node_id:
-              type: string
-            requests:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/ConversationHistoryTranscriptToolCallCommonModel-Output
-            results:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
-            is_successful:
-              type: boolean
-          required:
-            - type
-            - step_latency_secs
-            - node_id
-            - requests
-            - results
-            - is_successful
-          description: WorkflowToolNestedToolsStepModel variant
-      discriminator:
-        propertyName: type
-      title: WorkflowToolResponseModelOutputStepsItems
-    WorkflowToolResponseModel-Output:
-      type: object
-      properties:
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowToolResponseModelOutputStepsItems'
-      description: A common model for workflow tool responses.
-      title: WorkflowToolResponseModel-Output
-    ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output:
-      type: object
-      properties:
-        request_id:
-          type: string
-        tool_name:
-          type: string
-        result_value:
-          type: string
-        is_error:
-          type: boolean
-        is_blocked:
-          type: boolean
-          default: false
-        tool_has_been_called:
-          type: boolean
-        tool_latency_secs:
-          type: number
-          format: double
-          default: 0
-        error_type:
-          type: string
-          default: ''
-        raw_error_message:
-          type: string
-          default: ''
-        dynamic_variable_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DynamicVariableUpdateCommonModel'
-        type:
-          type: string
-          enum:
-            - workflow
-        result:
-          oneOf:
-            - $ref: '#/components/schemas/WorkflowToolResponseModel-Output'
-            - type: 'null'
-      required:
-        - request_id
-        - tool_name
-        - result_value
-        - is_error
-        - tool_has_been_called
-        - type
-      title: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
-    ConversationHistoryTranscriptResponseModelToolResultsItems:
-      oneOf:
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptOtherToolsResultCommonModel
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptSystemToolResultCommonModel-Output
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
-        - $ref: >-
-            #/components/schemas/ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
-      title: ConversationHistoryTranscriptResponseModelToolResultsItems
-    UserFeedback:
-      type: object
-      properties:
-        score:
-          $ref: '#/components/schemas/UserFeedbackScore'
-        time_in_call_secs:
-          type: integer
-      required:
-        - score
-        - time_in_call_secs
-      title: UserFeedback
-    MetricRecord:
-      type: object
-      properties:
-        elapsed_time:
-          type: number
-          format: double
-      required:
-        - elapsed_time
-      title: MetricRecord
-    ConversationTurnMetrics:
-      type: object
-      properties:
-        metrics:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/MetricRecord'
-        convai_asr_provider:
-          type:
-            - string
-            - 'null'
-        convai_tts_model:
-          type:
-            - string
-            - 'null'
-        convai_tts_cascade:
-          type:
-            - string
-            - 'null'
-      title: ConversationTurnMetrics
-    RagChunkMetadata:
-      type: object
-      properties:
-        document_id:
-          type: string
-        chunk_id:
-          type: string
-        vector_distance:
-          type: number
-          format: double
-      required:
-        - document_id
-        - chunk_id
-        - vector_distance
-      title: RagChunkMetadata
-    EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    RagRetrievalInfo:
-      type: object
-      properties:
-        chunks:
-          type: array
-          items:
-            $ref: '#/components/schemas/RagChunkMetadata'
-        embedding_model:
-          $ref: '#/components/schemas/EmbeddingModelEnum'
-        retrieval_query:
-          type: string
-        rag_latency_secs:
-          type: number
-          format: double
-        used_chunk_ids:
-          type: array
-          items:
-            type: string
-      required:
-        - chunks
-        - embedding_model
-        - retrieval_query
-        - rag_latency_secs
-      title: RagRetrievalInfo
-    ConversationReasoningModel:
-      type: object
-      properties:
-        summary:
-          type:
-            - string
-            - 'null'
-        provider_redact:
-          type: boolean
-          default: false
-      title: ConversationReasoningModel
-    ChatSourceMedium:
-      type: string
-      enum:
-        - audio
-        - text
-        - image
-        - file
-      title: ChatSourceMedium
-    GuardrailType:
-      type: string
-      enum:
-        - custom
-        - prompt_injection
-        - self_harm_intent
-        - violence_graphic
-        - sexual
-        - violence
-        - harassment
-        - sexual_minors
-        - self_harm
-        - self_harm_instructions
-        - harassment_threatening
-        - hate
-        - hate_threatening
-        - profanity
-        - religion_or_politics
-        - medical_and_legal
-        - guardrail
-      title: GuardrailType
-    TriggeredGuardrailCommonModel:
-      type: object
-      properties:
-        guardrail_type:
-          $ref: '#/components/schemas/GuardrailType'
-        guardrail_name:
-          type:
-            - string
-            - 'null'
-      required:
-        - guardrail_type
-      title: TriggeredGuardrailCommonModel
-    ConversationHistoryTranscriptFileInputResponseModel:
-      type: object
-      properties:
-        file_id:
-          type: string
-        original_filename:
-          type: string
-        mime_type:
-          type: string
-        file_url:
-          type: string
-      required:
-        - file_id
-        - original_filename
-        - mime_type
-        - file_url
-      title: ConversationHistoryTranscriptFileInputResponseModel
-    ContextualUpdateInfo:
-      type: object
-      properties:
-        context_id:
-          type: string
-          description: Client-supplied identifier grouping related contextual updates.
-        is_superseded:
-          type: boolean
-          default: false
-          description: >-
-            True when this contextual update has been replaced by a newer update
-            with the same context_id.
-      required:
-        - context_id
-      title: ContextualUpdateInfo
-    ConversationHistoryTranscriptResponseModel:
-      type: object
-      properties:
-        role:
-          $ref: '#/components/schemas/ConversationHistoryTranscriptResponseModelRole'
-        agent_metadata:
-          oneOf:
-            - $ref: '#/components/schemas/AgentMetadata'
-            - type: 'null'
-        message:
-          type:
-            - string
-            - 'null'
-        multivoice_message:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationHistoryMultivoiceMessageModel'
-            - type: 'null'
-        tool_calls:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/ConversationHistoryTranscriptToolCallCommonModel-Output
-        tool_results:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/ConversationHistoryTranscriptResponseModelToolResultsItems
-        feedback:
-          oneOf:
-            - $ref: '#/components/schemas/UserFeedback'
-            - type: 'null'
-        llm_override:
-          type:
-            - string
-            - 'null'
-        time_in_call_secs:
-          type: integer
-        conversation_turn_metrics:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationTurnMetrics'
-            - type: 'null'
-        rag_retrieval_info:
-          oneOf:
-            - $ref: '#/components/schemas/RagRetrievalInfo'
-            - type: 'null'
-        llm_usage:
-          oneOf:
-            - $ref: '#/components/schemas/LLMUsage-Output'
-            - type: 'null'
-        interrupted:
-          type: boolean
-          default: false
-        ignored_as_backchannel:
-          type: boolean
-          default: false
-        original_message:
-          type:
-            - string
-            - 'null'
-        reasoning:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConversationReasoningModel'
-        source_medium:
-          oneOf:
-            - $ref: '#/components/schemas/ChatSourceMedium'
-            - type: 'null'
-        source_event_id:
-          type:
-            - integer
-            - 'null'
-        used_static_kb_document_ids:
-          type: array
-          items:
-            type: string
-        user_identifier:
-          type:
-            - string
-            - 'null'
-        id:
-          type:
-            - string
-            - 'null'
-        triggered_guardrails:
-          type: array
-          items:
-            $ref: '#/components/schemas/TriggeredGuardrailCommonModel'
-        file_input:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ConversationHistoryTranscriptFileInputResponseModel
-            - type: 'null'
-        contextual_update_info:
-          oneOf:
-            - $ref: '#/components/schemas/ContextualUpdateInfo'
-            - type: 'null'
-        reasoned:
-          type: boolean
-          default: false
-      required:
-        - role
-        - time_in_call_secs
-      title: ConversationHistoryTranscriptResponseModel
-    GetConversationResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        agent_name:
-          type:
-            - string
-            - 'null'
-        conversation_product:
-          type: string
-          default: agent
-        status:
-          $ref: '#/components/schemas/GetConversationResponseModelStatus'
-        user_id:
-          type:
-            - string
-            - 'null'
-        branch_id:
-          type:
-            - string
-            - 'null'
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the agent version used for this conversation
-        metadata:
-          $ref: '#/components/schemas/ConversationHistoryMetadataCommonModel'
-        analysis:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationHistoryAnalysisCommonModel'
-            - type: 'null'
-        visited_agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/VisitedAgentRef'
-        conversation_initiation_client_data:
-          $ref: '#/components/schemas/ConversationInitiationClientDataRequest-Output'
-        environment:
-          type: string
-          default: production
-        conversation_id:
-          type: string
-        has_audio:
-          type: boolean
-        has_user_audio:
-          type: boolean
-        has_response_audio:
-          type: boolean
-        has_auxiliary_audio:
-          type: boolean
-        transcript:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConversationHistoryTranscriptResponseModel'
-        tag_ids:
-          type: array
-          items:
-            type: string
-          description: Conversation tag ids assigned to this conversation.
-        otlp_traces:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: >-
-            OpenTelemetry trace payload when the request uses
-            format=opentelemetry; otherwise omitted.
-      required:
-        - agent_id
-        - status
-        - metadata
-        - conversation_id
-        - has_audio
-        - has_user_audio
-        - has_response_audio
-        - has_auxiliary_audio
-        - transcript
-      title: GetConversationResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+## Request
 
-```
+### Query parameters
+
+- `agent_id` (string, required) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `reference` (string, required) — A Slack message URL or a Zendesk ticket URL.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `agent_id` (string, required)
+- `status` (enum, required)
+  - Allowed values: `initiated`, `in-progress`, `processing`, `done`, `failed`
+- `metadata` (object, required)
+  - `start_time_unix_secs` (integer, required)
+  - `call_duration_secs` (integer, required)
+  - `cost_fiat` (double, required, nullable) — Total fiat cost of the conversation in USD, i.e. the sum of the LLM price and the non-LLM platform price (the fiat analogue of ``cost``). ``None`` when neither is set (e.g. conversations that predate fiat cost tracking).
+  - `accepted_time_unix_secs` (integer, optional, nullable)
+  - `cost` (integer, optional, nullable)
+  - `deletion_settings` (object, optional)
+    - `deletion_time_unix_secs` (integer, optional, nullable)
+    - `deleted_logs_at_time_unix_secs` (integer, optional, nullable)
+    - `deleted_audio_at_time_unix_secs` (integer, optional, nullable)
+    - `deleted_transcript_at_time_unix_secs` (integer, optional, nullable)
+    - `delete_transcript_and_pii` (boolean, optional, default: false)
+    - `delete_audio` (boolean, optional, default: false)
+  - `feedback` (object, optional)
+    - `type` (enum, optional, nullable)
+      - Allowed values: `thumbs`, `rating`
+    - `overall_score` (enum, optional, nullable)
+      - Allowed values: `like`, `dislike`
+    - `likes` (integer, optional, default: 0)
+    - `dislikes` (integer, optional, default: 0)
+    - `rating` (integer, optional, nullable)
+    - `comment` (string, optional, nullable)
+  - `authorization_method` (enum, optional, default: public)
+    - Allowed values: `invalid`, `public`, `authorization_header`, `signed_url`, `shareable_link`, `livekit_token`, `livekit_token_website`, `genesys_api_key`, `audiocodes_api_key`, `whatsapp`, `sms`
+  - `charging` (object, optional)
+    - `dev_discount` (boolean, optional, default: false)
+    - `is_burst` (boolean, optional, default: false)
+    - `tier` (string, optional, nullable)
+    - `llm_usage` (object, optional)
+      - `irreversible_generation` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+      - `initiated_generation` (object, optional)
+        - `model_usage` (map from string to object, optional)
+          - `input` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_read` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `input_cache_write` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+          - `output_total` (object, optional)
+            - `tokens` (integer, optional, default: 0)
+            - `price` (double, optional, default: 0)
+    - `llm_price` (double, optional, nullable)
+    - `llm_charge` (integer, optional, nullable)
+    - `call_charge` (integer, optional, nullable)
+    - `platform_charge` (integer, optional, nullable)
+    - `platform_usage` (object, optional) — Per-category breakdown of ``platform_charge`` (the analogue of ``llm_usage``).
+      - `category_usage` (map from string to object, optional)
+        - `credits` (integer, optional, default: 0)
+        - `price` (double, optional, default: 0)
+        - `quantity` (double, optional, default: 0)
+    - `platform_price` (double, optional, nullable)
+    - `free_minutes_consumed` (double, optional, default: 0)
+    - `free_llm_dollars_consumed` (double, optional, default: 0)
+    - `tts_usage` (object, optional, nullable) — Aggregated TTS usage for a conversation (analytics-only, not billing).
+      - `primary_tts_model` (string, optional, nullable)
+      - `total_audio_output_seconds` (double, optional, default: 0)
+      - `total_characters` (integer, optional, default: 0)
+      - `per_voice_usage` (list of object, optional)
+        - `voice_id` (string, required)
+        - `audio_output_seconds` (double, optional, default: 0)
+    - `asr_usage` (object, optional, nullable) — Aggregated ASR usage for a conversation (analytics-only, not billing).
+      - `asr_model` (string, optional, nullable)
+      - `total_transcription_calls` (integer, optional, default: 0)
+      - `total_audio_input_seconds` (double, optional, default: 0)
+    - `analysis` (object, optional, nullable) — Cost of running post-call analysis on this conversation. Present once analysis has incurred a cost. `last_run` is null when the most recent pass incurred none.
+      - `total` (object, required) — Cumulative LLM cost of running post-call analysis on this conversation.
+        - `price` (double, optional, default: 0)
+        - `charge` (integer, optional, default: 0)
+        - `price_per_feature` (map from string to double, optional)
+        - `charge_per_feature` (map from string to integer, optional)
+      - `last_run` (object, optional, nullable) — LLM cost of the most recent post-call analysis pass on this conversation.
+        - `price` (double, optional, default: 0)
+        - `charge` (integer, optional, default: 0)
+        - `price_per_feature` (map from string to double, optional)
+        - `charge_per_feature` (map from string to integer, optional)
+  - `phone_call` (object, optional, nullable)
+    - `type`: `exotel` (ConversationHistoryExotelPhoneCallModel)
+      - `agent_number` (string, required)
+      - `call_sid` (string, required)
+      - `direction` (enum, required, default: inbound)
+        - Allowed values: `inbound`, `outbound`
+      - `external_number` (string, required)
+      - `phone_number_id` (string, required)
+      - `stream_sid` (string, required)
+    - `type`: `sip_trunking` (ConversationHistorySIPTrunkingPhoneCallModel)
+      - `agent_number` (string, required)
+      - `call_sid` (string, required)
+      - `direction` (enum, required, default: inbound)
+        - Allowed values: `inbound`, `outbound`
+      - `external_number` (string, required)
+      - `phone_number_id` (string, required)
+      - `call_id` (string, optional, nullable)
+      - `sip_header_dynamic_variables` (map from string to string, optional)
+    - `type`: `twilio` (ConversationHistoryTwilioPhoneCallModel)
+      - `agent_number` (string, required)
+      - `call_sid` (string, required)
+      - `direction` (enum, required, default: inbound)
+        - Allowed values: `inbound`, `outbound`
+      - `external_number` (string, required)
+      - `phone_number_id` (string, required)
+      - `stream_sid` (string, required)
+  - `batch_call` (object, optional, nullable)
+    - `batch_call_id` (string, required)
+    - `batch_call_recipient_id` (string, required)
+  - `termination_reason` (string, optional, default: )
+  - `error` (object, optional, nullable)
+    - `code` (integer, required)
+    - `reason` (string, optional, nullable)
+  - `warnings` (list of string, optional)
+  - `main_language` (string, optional, nullable)
+  - `rag_usage` (object, optional, nullable)
+    - `usage_count` (integer, required)
+    - `embedding_model` (string, required)
+  - `text_only` (boolean, optional, default: false)
+  - `features_usage` (object, optional)
+    - `language_detection` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `transfer_to_agent` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `transfer_to_number` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `multivoice` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `dtmf_tones` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `external_mcp_servers` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `pii_zrm_workspace` (boolean, optional, default: false)
+    - `pii_zrm_agent` (boolean, optional, default: false)
+    - `tool_dynamic_variable_updates` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `is_livekit` (boolean, optional, default: false)
+    - `voicemail_detection` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `dtmf_input` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `workflow` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `tool_node` (object, optional)
+        - `enabled` (boolean, optional, default: false)
+        - `used` (boolean, optional, default: false)
+      - `standalone_agent_node` (object, optional)
+        - `enabled` (boolean, optional, default: false)
+        - `used` (boolean, optional, default: false)
+      - `phone_number_node` (object, optional)
+        - `enabled` (boolean, optional, default: false)
+        - `used` (boolean, optional, default: false)
+      - `end_node` (object, optional)
+        - `enabled` (boolean, optional, default: false)
+        - `used` (boolean, optional, default: false)
+    - `agent_testing` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `tests_ran_after_last_modification` (boolean, optional, default: false)
+      - `tests_ran_in_last_7_days` (boolean, optional, default: false)
+    - `versioning` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+    - `file_input` (object, optional)
+      - `enabled` (boolean, optional, default: false)
+      - `used` (boolean, optional, default: false)
+  - `eleven_assistant` (object, optional)
+    - `is_eleven_assistant` (boolean, optional, default: false)
+  - `initiator_id` (string, optional, nullable)
+  - `conversation_initiation_source` (enum, optional, default: unknown) — Enum representing the possible sources for conversation initiation.
+    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+  - `conversation_initiation_source_version` (string, optional, nullable)
+  - `timezone` (string, optional, nullable)
+  - `async_metadata` (object, optional, nullable) — Metadata for async conversation delivery (Zendesk, Slack, etc.).
+    - `delivery_status` (enum, required)
+      - Allowed values: `pending`, `success`, `failed`
+    - `delivery_timestamp` (integer, required)
+    - `external_system` (string, required)
+    - `external_id` (string, required)
+    - `delivery_error` (string, optional, nullable)
+    - `external_link` (string, optional, nullable)
+    - `retry_count` (integer, optional, default: 0)
+    - `last_retry_timestamp` (integer, optional, nullable)
+    - `last_processed_external_message_id` (string, optional, nullable)
+  - `whatsapp` (object, optional, nullable)
+    - `whatsapp_user_id` (string, required)
+    - `direction` (enum, optional, default: unknown)
+      - Allowed values: `inbound`, `outbound`, `unknown`
+    - `whatsapp_phone_number_id` (string, optional, nullable)
+    - `awaiting_first_user_message` (boolean, optional, nullable)
+  - `sms` (object, optional, nullable)
+    - `direction` (enum, required)
+      - Allowed values: `inbound`, `outbound`
+    - `sms_user_phone_number` (string, required)
+    - `phone_number_id` (string, optional, nullable)
+    - `agent_phone_number` (string, optional, nullable)
+  - `agent_created_from` (enum, optional, default: unknown)
+    - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - `agent_last_updated_from` (enum, optional, default: unknown)
+    - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - `voice_rewards` (list of object, optional)
+    - `voice_id` (string, required)
+    - `reward_usd_cents` (double, required)
+- `conversation_id` (string, required)
+- `has_audio` (boolean, required)
+- `has_user_audio` (boolean, required)
+- `has_response_audio` (boolean, required)
+- `has_auxiliary_audio` (boolean, required)
+- `transcript` (list of object, required)
+  - `role` (enum, required)
+    - Allowed values: `user`, `agent`
+  - `time_in_call_secs` (integer, required)
+  - `agent_metadata` (object, optional, nullable)
+    - `agent_id` (string, required)
+    - `branch_id` (string, optional, nullable)
+    - `workflow_node_id` (string, optional, nullable)
+    - `version_id` (string, optional, nullable)
+  - `message` (string, optional, nullable)
+  - `multivoice_message` (object, optional, nullable) — Represents a message from a multi-voice agent.
+    - `parts` (list of object, required)
+      - `text` (string, required)
+      - `voice_label` (string, required, nullable)
+      - `time_in_call_secs` (integer, required, nullable)
+  - `tool_calls` (list of object, optional)
+    - `request_id` (string, required)
+    - `tool_name` (string, required)
+    - `params_as_json` (string, required)
+    - `tool_has_been_called` (boolean, required)
+    - `type` (enum, optional, nullable)
+      - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+    - `tool_details` (object, optional, nullable)
+      - `type`: `api_integration_webhook` (ConversationHistoryTranscriptToolCallApiIntegrationWebhookDetails)
+        - `credential_id` (string, required, default: )
+        - `integration_connection_id` (string, required, default: )
+        - `integration_id` (string, required, default: )
+        - `webhook_details` (object, required)
+          - `method` (string, required)
+          - `url` (string, required)
+          - `headers` (map from string to string, optional)
+          - `path_params` (map from string to string, optional)
+          - `query_params` (map from string to string, optional)
+          - `body` (string, optional, nullable)
+      - `type`: `client` (ConversationHistoryTranscriptToolCallClientDetails)
+        - `parameters` (string, required)
+      - `type`: `mcp` (ConversationHistoryTranscriptToolCallMCPDetails)
+        - `approval_policy` (string, required)
+        - `integration_type` (string, required)
+        - `mcp_server_id` (string, required)
+        - `mcp_server_name` (string, required)
+        - `mcp_tool_description` (string, optional, default: )
+        - `mcp_tool_name` (string, optional, default: )
+        - `parameters` (map from string to string, optional)
+        - `requires_approval` (boolean, optional, default: false)
+      - `type`: `webhook` (ConversationHistoryTranscriptToolCallWebhookDetails)
+        - `method` (string, required)
+        - `url` (string, required)
+        - `body` (string, optional, nullable)
+        - `headers` (map from string to string, optional)
+        - `path_params` (map from string to string, optional)
+        - `query_params` (map from string to string, optional)
+  - `tool_results` (list of object or object or object or object, optional)
+    - ConversationHistoryTranscriptOtherToolsResultCommonModel
+      - `request_id` (string, required)
+      - `tool_name` (string, required)
+      - `result_value` (string, required)
+      - `is_error` (boolean, required)
+      - `tool_has_been_called` (boolean, required)
+      - `is_blocked` (boolean, optional, default: false)
+      - `tool_latency_secs` (double, optional, default: 0)
+      - `error_type` (string, optional, default: )
+      - `raw_error_message` (string, optional, default: )
+      - `dynamic_variable_updates` (list of object, optional)
+        - `variable_name` (string, required)
+        - `old_value` (string, required, nullable)
+        - `new_value` (string, required)
+        - `updated_at` (double, required)
+        - `tool_name` (string, required)
+        - `tool_request_id` (string, required)
+      - `type` (enum, optional, nullable)
+        - Allowed values: `client`, `webhook`, `mcp`, `code`
+    - ConversationHistoryTranscriptSystemToolResultCommonModel
+      - `request_id` (string, required)
+      - `tool_name` (string, required)
+      - `result_value` (string, required)
+      - `is_error` (boolean, required)
+      - `tool_has_been_called` (boolean, required)
+      - `type` ("system", required)
+      - `is_blocked` (boolean, optional, default: false)
+      - `tool_latency_secs` (double, optional, default: 0)
+      - `error_type` (string, optional, default: )
+      - `raw_error_message` (string, optional, default: )
+      - `dynamic_variable_updates` (list of object, optional)
+        - `variable_name` (string, required)
+        - `old_value` (string, required, nullable)
+        - `new_value` (string, required)
+        - `updated_at` (double, required)
+        - `tool_name` (string, required)
+        - `tool_request_id` (string, required)
+      - `result` (object, optional, nullable)
+        - `result_type`: `dummy` (DummyToolResultModel)
+        - `result_type`: `end_call_success` (EndCallToolResultModel)
+          - `message` (string, optional, nullable)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `knowledge_base_rag_success` (KnowledgeBaseRagToolResultModel)
+          - `chunk_count` (integer, optional, default: 0) — Number of relevant chunks retrieved
+          - `chunks` (list of object, optional) — Retrieved chunks; populated only in the rag-result-in-tool-result mode
+            - `chunk_id` (string, required)
+            - `document_id` (string, required)
+            - `content` (string, required)
+          - `message` (string, optional, default: Referenced knowledge base.) — Human-readable status for the LLM about the search results
+          - `status` (enum, optional, default: success)
+            - Allowed values: `success`, `no_documents`, `no_results`
+        - `result_type`: `knowledge_base_success` (KnowledgeBaseToolResultModel)
+          - `chunk_count` (integer, optional, default: 0)
+          - `message` (string, optional, default: Referenced knowledge base.)
+          - `status` (enum, optional, default: success)
+            - Allowed values: `success`, `no_matching_documents`, `no_results`
+        - `result_type`: `language_detection_success` (LanguageDetectionToolResultModel)
+          - `language` (string, optional, nullable)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `play_dtmf_error` (PlayDTMFResultErrorModel)
+          - `error` (string, required)
+          - `details` (string, optional, nullable)
+          - `status` ("error", optional, default: error)
+        - `result_type`: `play_dtmf_success` (PlayDTMFResultSuccessModel)
+          - `dtmf_tones` (string, required)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `skip_turn_success` (SkipTurnToolResponseModel)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `testing_tool_result` (TestToolResultModel)
+          - `reason` (string, optional, default: Skipping tool call in test mode)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `transfer_to_agent_error` (TransferToAgentToolResultErrorModel)
+          - `error` (string, required)
+          - `from_agent` (string, required)
+          - `status` ("error", optional, default: error)
+        - `result_type`: `transfer_to_agent_success` (TransferToAgentToolResultSuccessModel)
+          - `condition` (string, required)
+          - `from_agent` (string, required)
+          - `to_agent` (string, required)
+          - `branch_info` (object, optional, nullable)
+            - `branch_reason`: `defaulting_to_main` (TransferBranchInfoDefaultingToMain)
+              - `branch_id` (string, required)
+            - `branch_reason`: `traffic_split` (TransferBranchInfoTrafficSplit)
+              - `branch_id` (string, required)
+              - `traffic_percentage` (double, required)
+          - `delay_ms` (integer, optional, default: 0)
+          - `enable_transferred_agent_first_message` (boolean, optional, default: false)
+          - `preserve_client_tts_overrides` (boolean, optional, default: false)
+          - `status` ("success", optional, default: success)
+          - `to_node` (string, optional, nullable)
+          - `transfer_message` (string, optional, nullable)
+        - `result_type`: `transfer_to_number_error` (TransferToNumberResultErrorModel)
+          - `error` (string, required)
+          - `details` (string, optional, nullable)
+          - `status` ("error", optional, default: error)
+        - `result_type`: `transfer_to_number_exotel_success` (TransferToNumberResultExotelSuccessModel)
+          - `transfer_number` (string, required)
+          - `agent_message` (string, optional, nullable)
+          - `note` (string, optional, nullable)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `transfer_to_number_sip_success` (TransferToNumberResultSipSuccessModel)
+          - `transfer_number` (string, required)
+          - `note` (string, optional, nullable)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `transfer_to_number_twilio_success` (TransferToNumberResultTwilioSuccessModel)
+          - `agent_message` (string, required)
+          - `conference_name` (string, required)
+          - `transfer_number` (string, required)
+          - `client_message` (string, optional, nullable)
+          - `note` (string, optional, nullable)
+          - `post_dial_digits` (string, optional, nullable)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+        - `result_type`: `voicemail_detection_success` (VoiceMailDetectionResultSuccessModel)
+          - `reason` (string, optional, nullable)
+          - `status` ("success", optional, default: success)
+          - `voicemail_message` (string, optional, nullable)
+    - ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel
+      - `request_id` (string, required)
+      - `tool_name` (string, required)
+      - `result_value` (string, required)
+      - `is_error` (boolean, required)
+      - `is_blocked` (boolean, required, default: false)
+      - `tool_has_been_called` (boolean, required)
+      - `tool_latency_secs` (double, required, default: 0)
+      - `error_type` (string, required, default: )
+      - `raw_error_message` (string, required, default: )
+      - `dynamic_variable_updates` (list of object, required)
+        - `variable_name` (string, required)
+        - `old_value` (string, required, nullable)
+        - `new_value` (string, required)
+        - `updated_at` (double, required)
+        - `tool_name` (string, required)
+        - `tool_request_id` (string, required)
+      - `type` ("api_integration_webhook", required)
+      - `integration_id` (string, required, default: )
+      - `credential_id` (string, required, default: )
+      - `integration_connection_id` (string, required, default: )
+    - ConversationHistoryTranscriptWorkflowToolsResultCommonModel
+      - `request_id` (string, required)
+      - `tool_name` (string, required)
+      - `result_value` (string, required)
+      - `is_error` (boolean, required)
+      - `tool_has_been_called` (boolean, required)
+      - `type` ("workflow", required)
+      - `is_blocked` (boolean, optional, default: false)
+      - `tool_latency_secs` (double, optional, default: 0)
+      - `error_type` (string, optional, default: )
+      - `raw_error_message` (string, optional, default: )
+      - `dynamic_variable_updates` (list of object, optional)
+        - `variable_name` (string, required)
+        - `old_value` (string, required, nullable)
+        - `new_value` (string, required)
+        - `updated_at` (double, required)
+        - `tool_name` (string, required)
+        - `tool_request_id` (string, required)
+      - `result` (object, optional, nullable) — A common model for workflow tool responses.
+        - `steps` (list of object, optional)
+          - `type`: `edge` (WorkflowToolEdgeStepModel)
+            - `edge_id` (string, required)
+            - `step_latency_secs` (double, required)
+            - `target_node_id` (string, required)
+          - `type`: `max_iterations_exceeded` (WorkflowToolMaxIterationsExceededStepModel)
+            - `max_iterations` (integer, required)
+            - `step_latency_secs` (double, required)
+          - `type`: `nested_tools` (WorkflowToolNestedToolsStepModel)
+            - `is_successful` (boolean, required)
+            - `node_id` (string, required)
+            - `requests` (list of object, required)
+            - `results` (list of object or object or object or object, required)
+            - `step_latency_secs` (double, required)
+  - `feedback` (object, optional, nullable)
+    - `score` (enum, required)
+      - Allowed values: `like`, `dislike`
+    - `time_in_call_secs` (integer, required)
+  - `llm_override` (string, optional, nullable)
+  - `conversation_turn_metrics` (object, optional, nullable)
+    - `metrics` (map from string to object, optional)
+      - `elapsed_time` (double, required)
+    - `convai_asr_provider` (string, optional, nullable)
+    - `convai_tts_model` (string, optional, nullable)
+    - `convai_tts_cascade` (string, optional, nullable)
+  - `rag_retrieval_info` (object, optional, nullable)
+    - `chunks` (list of object, required)
+      - `document_id` (string, required)
+      - `chunk_id` (string, required)
+      - `vector_distance` (double, required)
+    - `embedding_model` (enum, required, default: e5_mistral_7b_instruct)
+      - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+    - `retrieval_query` (string, required)
+    - `rag_latency_secs` (double, required)
+    - `used_chunk_ids` (list of string, optional)
+  - `llm_usage` (object, optional, nullable)
+    - `model_usage` (map from string to object, optional)
+      - `input` (object, optional)
+        - `tokens` (integer, optional, default: 0)
+        - `price` (double, optional, default: 0)
+      - `input_cache_read` (object, optional)
+        - `tokens` (integer, optional, default: 0)
+        - `price` (double, optional, default: 0)
+      - `input_cache_write` (object, optional)
+        - `tokens` (integer, optional, default: 0)
+        - `price` (double, optional, default: 0)
+      - `output_total` (object, optional)
+        - `tokens` (integer, optional, default: 0)
+        - `price` (double, optional, default: 0)
+  - `interrupted` (boolean, optional, default: false)
+  - `ignored_as_backchannel` (boolean, optional, default: false)
+  - `original_message` (string, optional, nullable)
+  - `reasoning` (list of object, optional)
+    - `summary` (string, optional, nullable)
+    - `provider_redact` (boolean, optional, default: false)
+  - `source_medium` (enum, optional, nullable)
+    - Allowed values: `audio`, `text`, `image`, `file`
+  - `source_event_id` (integer, optional, nullable)
+  - `used_static_kb_document_ids` (list of string, optional)
+  - `user_identifier` (string, optional, nullable)
+  - `id` (string, optional, nullable)
+  - `triggered_guardrails` (list of object, optional)
+    - `guardrail_type` (enum, required)
+      - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
+    - `guardrail_name` (string, optional, nullable)
+  - `file_input` (object, optional, nullable)
+    - `file_id` (string, required)
+    - `original_filename` (string, required)
+    - `mime_type` (string, required)
+    - `file_url` (string, required)
+  - `contextual_update_info` (object, optional, nullable)
+    - `context_id` (string, required) — Client-supplied identifier grouping related contextual updates.
+    - `is_superseded` (boolean, optional, default: false) — True when this contextual update has been replaced by a newer update with the same context_id.
+  - `reasoned` (boolean, optional, default: false)
+- `agent_name` (string, optional, nullable)
+- `conversation_product` (string, optional, default: agent)
+- `user_id` (string, optional, nullable)
+- `branch_id` (string, optional, nullable)
+- `version_id` (string, optional, nullable) — The ID of the agent version used for this conversation
+- `analysis` (object, optional, nullable)
+  - `call_successful` (enum, required)
+    - Allowed values: `success`, `failure`, `unknown`
+  - `transcript_summary` (string, required)
+  - `evaluation_criteria_results` (map from string to object, optional)
+    - `criteria_id` (string, required)
+    - `result` (enum, required)
+      - Allowed values: `success`, `failure`, `unknown`
+    - `rationale` (string, required)
+    - `scoring_mode` (enum, optional, nullable, default: binary)
+      - Allowed values: `binary`, `numeric_uniform`
+    - `score` (integer, optional, nullable)
+    - `max_score` (integer, optional, nullable)
+  - `data_collection_results` (map from string to object, optional)
+    - `data_collection_id` (string, required)
+    - `rationale` (string, required)
+    - `value` (any, optional)
+    - `json_schema` (object, optional, nullable) — Schema property for literal JSON types. IMPORTANT: Only ONE of the following fields can be set: description (LLM provides value), dynamic_variable (value from variable), is_system_provided (system provides value), constant_value (fixed value), or is_omitted (parameter is omitted). These are mutually exclusive.
+      - `type` (enum or list of string, required)
+      - `description` (string, optional, default: ) — The description of the property. When set, the LLM will provide the value based on this description. Mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+      - `enum` (list of string, optional, nullable) — List of allowed string values for string type parameters
+      - `is_system_provided` (boolean, optional, default: false) — If true, the value will be populated by the system at runtime. Used by API Integration Webhook tools for templating. Mutually exclusive with description, dynamic_variable, constant_value, and is_omitted.
+      - `dynamic_variable` (string, optional, default: ) — The name of the dynamic variable to use for this property's value. Mutually exclusive with description, is_system_provided, constant_value, and is_omitted.
+      - `allowed_values_dynamic_variable` (string, optional, default: ) — When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable. Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+      - `constant_value` (string or integer or double or boolean, optional, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+      - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
+  - `evaluation_criteria_results_list` (list of object, optional)
+    - `criteria_id` (string, required)
+    - `result` (enum, required)
+      - Allowed values: `success`, `failure`, `unknown`
+    - `rationale` (string, required)
+    - `scoring_mode` (enum, optional, nullable, default: binary)
+      - Allowed values: `binary`, `numeric_uniform`
+    - `score` (integer, optional, nullable)
+    - `max_score` (integer, optional, nullable)
+  - `data_collection_results_list` (list of object, optional)
+    - `data_collection_id` (string, required)
+    - `rationale` (string, required)
+    - `value` (any, optional)
+    - `json_schema` (object, optional, nullable) — Schema property for literal JSON types. IMPORTANT: Only ONE of the following fields can be set: description (LLM provides value), dynamic_variable (value from variable), is_system_provided (system provides value), constant_value (fixed value), or is_omitted (parameter is omitted). These are mutually exclusive.
+      - `type` (enum or list of string, required)
+      - `description` (string, optional, default: ) — The description of the property. When set, the LLM will provide the value based on this description. Mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+      - `enum` (list of string, optional, nullable) — List of allowed string values for string type parameters
+      - `is_system_provided` (boolean, optional, default: false) — If true, the value will be populated by the system at runtime. Used by API Integration Webhook tools for templating. Mutually exclusive with description, dynamic_variable, constant_value, and is_omitted.
+      - `dynamic_variable` (string, optional, default: ) — The name of the dynamic variable to use for this property's value. Mutually exclusive with description, is_system_provided, constant_value, and is_omitted.
+      - `allowed_values_dynamic_variable` (string, optional, default: ) — When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable. Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+      - `constant_value` (string or integer or double or boolean, optional, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+      - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
+  - `call_success_score` (double, optional, nullable)
+  - `call_summary_title` (string, optional, nullable)
+  - `scoped` (list of object, optional)
+    - `scope` (enum, required, default: conversation) — The scope of the analysis. 'conversation' uses the full transcript; 'agent' uses only the portion where the defining agent was active.
+      - Allowed values: `conversation`, `agent`
+    - `source_agent_id` (string, required)
+    - `successful` (enum, required)
+      - Allowed values: `success`, `failure`, `unknown`
+    - `source_branch_id` (string, optional, nullable) — Branch of the agent for this scoped block; disambiguates repeated agent_id.
+    - `evaluation_criteria_results` (map from string to object, optional)
+      - `criteria_id` (string, required)
+      - `result` (enum, required)
+        - Allowed values: `success`, `failure`, `unknown`
+      - `rationale` (string, required)
+      - `scoring_mode` (enum, optional, nullable, default: binary)
+        - Allowed values: `binary`, `numeric_uniform`
+      - `score` (integer, optional, nullable)
+      - `max_score` (integer, optional, nullable)
+    - `data_collection_results` (map from string to object, optional)
+      - `data_collection_id` (string, required)
+      - `rationale` (string, required)
+      - `value` (any, optional)
+      - `json_schema` (object, optional, nullable) — Schema property for literal JSON types. IMPORTANT: Only ONE of the following fields can be set: description (LLM provides value), dynamic_variable (value from variable), is_system_provided (system provides value), constant_value (fixed value), or is_omitted (parameter is omitted). These are mutually exclusive.
+        - `type` (enum or list of string, required)
+        - `description` (string, optional, default: ) — The description of the property. When set, the LLM will provide the value based on this description. Mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+        - `enum` (list of string, optional, nullable) — List of allowed string values for string type parameters
+        - `is_system_provided` (boolean, optional, default: false) — If true, the value will be populated by the system at runtime. Used by API Integration Webhook tools for templating. Mutually exclusive with description, dynamic_variable, constant_value, and is_omitted.
+        - `dynamic_variable` (string, optional, default: ) — The name of the dynamic variable to use for this property's value. Mutually exclusive with description, is_system_provided, constant_value, and is_omitted.
+        - `allowed_values_dynamic_variable` (string, optional, default: ) — When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable. Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+        - `constant_value` (string or integer or double or boolean, optional, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+        - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
+    - `success_score` (double, optional, nullable)
+- `visited_agents` (list of object, optional)
+  - `agent_id` (string, required)
+  - `branch_id` (string, optional, nullable)
+- `conversation_initiation_client_data` (object, optional)
+  - `conversation_config_override` (object, optional)
+    - `asr` (object, optional, nullable) — Configuration for conversational transcription
+      - `keywords` (list of string, optional, nullable) — Keywords to boost prediction probability for
+    - `turn` (object, optional, nullable) — Configuration for turn detection
+      - `soft_timeout_config` (object, optional, nullable) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
+        - `message` (string, optional, nullable) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+    - `tts` (object, optional, nullable) — Configuration for conversational text to speech
+      - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
+        - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+      - `voice_id` (string, optional, nullable) — The voice ID to use for TTS
+      - `stability` (double, optional, nullable) — The stability of generated speech
+      - `speed` (double, optional, nullable) — The speed of generated speech
+      - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+    - `conversation` (object, optional, nullable) — Configuration for conversational events
+      - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+    - `agent` (object, optional, nullable) — Agent specific configuration
+      - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
+      - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
+      - `max_conversation_duration_message` (string, optional, nullable) — If non-empty, the message the agent will send when max conversation duration is reached.
+      - `prompt` (object, optional, nullable) — The prompt for the agent
+        - `prompt` (string, optional, nullable) — The prompt for the agent
+        - `llm` (enum, optional, nullable) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
+          - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+        - `tool_ids` (list of string, optional, nullable) — A list of IDs of tools used by the agent
+        - `native_mcp_server_ids` (list of string, optional, nullable) — A list of Native MCP server ids to be used by the agent
+        - `knowledge_base` (list of object, optional, nullable) — A list of knowledge bases to be used by the agent
+          - `type` (enum, required) — The type of the knowledge base
+            - Allowed values: `file`, `url`, `text`, `folder`
+          - `name` (string, required) — The name of the knowledge base
+          - `id` (string, required) — The ID of the knowledge base
+          - `usage_mode` (enum, optional, default: auto) — The usage mode of the knowledge base
+            - Allowed values: `prompt`, `auto`
+  - `custom_llm_extra_body` (map from string to any, optional)
+  - `user_id` (string, optional, nullable) — ID of the end user participating in this conversation (for agent owner's user identification)
+  - `source_info` (object, optional) — Information about the source of conversation initiation
+    - `source` (enum, optional, nullable, default: unknown) — Source of the conversation initiation
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - `version` (string, optional, nullable) — The SDK version number
+  - `branch_id` (string, optional, nullable) — ID of the agent branch to use for this conversation
+  - `environment` (string, optional, nullable) — Environment to use for resolving environment variables
+  - `starting_workflow_node_id` (string, optional, nullable) — If set, start the workflow at this node id instead of the default entry
+  - `dynamic_variables` (map from string to any, optional)
+- `environment` (string, optional, default: production)
+- `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
+- `otlp_traces` (map from string to any, optional, nullable) — OpenTelemetry trace payload when the request uses format=opentelemetry; otherwise omitted.
 
 ## Examples
-
-
 
 **Response**
 

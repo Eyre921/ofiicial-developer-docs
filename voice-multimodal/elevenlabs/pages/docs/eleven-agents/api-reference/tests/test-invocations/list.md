@@ -14,249 +14,55 @@ Lists all test invocations with pagination support and optional search filtering
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/test-invocations:
-    get:
-      operationId: list
-      summary: List Test Invocations
-      description: >-
-        Lists all test invocations with pagination support and optional search
-        filtering.
-      tags:
-        - invocations
-      parameters:
-        - name: agent_id
-          in: query
-          description: Filter by agent ID
-          required: false
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          description: >-
-            How many Tests to return at maximum. Can not exceed 100, defaults to
-            30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetTestInvocationsPageResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ListResponseMeta:
-      type: object
-      properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        page_size:
-          type: integer
-      title: ListResponseMeta
-    type_:ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    type_:ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    type_:ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      title: ResourceAccessInfoAccessSource
-    type_:ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          $ref: >-
-            #/components/schemas/type_:ResourceAccessInfoAnonymousAccessLevelOverride
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoAccessSource'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    type_:TestInvocationSummaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the test invocation
-        agent_id:
-          type: string
-          description: The ID of the agent this test invocation belongs to
-        branch_id:
-          type: string
-          description: The ID of the branch this test invocation was run on
-        created_at_unix_secs:
-          type: integer
-          description: Creation time of the test invocation in unix seconds
-        test_run_count:
-          type: integer
-          description: Number of test runs in this invocation
-        passed_count:
-          type: integer
-          description: Number of test runs that passed
-        failed_count:
-          type: integer
-          description: Number of test runs that failed
-        pending_count:
-          type: integer
-          description: Number of test runs that are pending
-        title:
-          type: string
-          description: >-
-            Title of the test invocation - either the single test name or count
-            of tests
-        access_info:
-          $ref: '#/components/schemas/type_:ResourceAccessInfo'
-          description: The access information of the test invocation
-        repeat_count:
-          type: integer
-          default: 1
-          description: Number of times each test was repeated in this invocation
-      required:
-        - id
-        - created_at_unix_secs
-        - test_run_count
-        - passed_count
-        - failed_count
-        - pending_count
-        - title
-      title: TestInvocationSummaryResponseModel
-    type_:GetTestInvocationsPageResponseModel:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/type_:ListResponseMeta'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:TestInvocationSummaryResponseModel'
-        next_cursor:
-          type: string
-          description: Cursor for the next page of results
-        has_more:
-          type: boolean
-          description: Whether there are more results available
-      required:
-        - results
-        - has_more
-      title: GetTestInvocationsPageResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_id` (string, optional) — Filter by agent ID
+- `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `results` (list of object, required)
+  - `id` (string, required) — The ID of the test invocation
+  - `created_at_unix_secs` (integer, required) — Creation time of the test invocation in unix seconds
+  - `test_run_count` (integer, required) — Number of test runs in this invocation
+  - `passed_count` (integer, required) — Number of test runs that passed
+  - `failed_count` (integer, required) — Number of test runs that failed
+  - `pending_count` (integer, required) — Number of test runs that are pending
+  - `title` (string, required) — Title of the test invocation - either the single test name or count of tests
+  - `agent_id` (string, optional) — The ID of the agent this test invocation belongs to
+  - `branch_id` (string, optional) — The ID of the branch this test invocation was run on
+  - `access_info` (object, optional) — The access information of the test invocation
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+  - `repeat_count` (integer, optional, default: 1) — Number of times each test was repeated in this invocation
+- `has_more` (boolean, required) — Whether there are more results available
+- `meta` (object, optional)
+  - `total` (integer, optional)
+  - `page` (integer, optional)
+  - `page_size` (integer, optional)
+- `next_cursor` (string, optional) — Cursor for the next page of results
 
 ## Examples
 

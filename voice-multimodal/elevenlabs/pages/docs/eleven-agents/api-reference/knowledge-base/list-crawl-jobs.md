@@ -14,179 +14,46 @@ Get a list of ongoing and recent crawl jobs for the user.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/crawl:
-    get:
-      operationId: list
-      summary: List Ongoing And Recent Crawl Jobs Created By A User
-      description: Get a list of ongoing and recent crawl jobs for the user.
-      tags:
-        - crawlJobs
-      parameters:
-        - name: include_job_ids
-          in: query
-          description: Ids of additional crawl jobs to retrieve
-          required: false
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          description: >-
-            How many documents to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ListCrawlJobsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:CrawlType:
-      type: string
-      enum:
-        - discovery
-        - sitemap
-      default: discovery
-      title: CrawlType
-    type_:CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
-    type_:GetCrawlJobResponseModel:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/type_:CrawlType'
-        seed_url:
-          type: string
-        pattern:
-          type: string
-        max_depth:
-          type: integer
-        max_pages:
-          type: integer
-        status:
-          $ref: '#/components/schemas/type_:CrawlStatus'
-        pages_identified:
-          type: integer
-          default: 0
-        pages_scraped:
-          type: integer
-          default: 0
-        pages_skipped:
-          type: integer
-          default: 0
-        pages_failed:
-          type: integer
-          default: 0
-        root_folder_id:
-          type: string
-        updated_at:
-          type: integer
-        id:
-          type: string
-        created_at:
-          type: integer
-      required:
-        - seed_url
-        - max_depth
-        - max_pages
-        - root_folder_id
-        - updated_at
-        - id
-        - created_at
-      title: GetCrawlJobResponseModel
-    type_:ListCrawlJobsResponseModel:
-      type: object
-      properties:
-        crawl_jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:GetCrawlJobResponseModel'
-        next_cursor:
-          type: string
-      required:
-        - crawl_jobs
-      title: ListCrawlJobsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `include_job_ids` (string, optional) — Ids of additional crawl jobs to retrieve
+- `page_size` (integer, optional, default: 30) — How many documents to return at maximum. Can not exceed 100, defaults to 30.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `crawl_jobs` (list of object, required)
+  - `seed_url` (string, required)
+  - `max_depth` (integer, required)
+  - `max_pages` (integer, required)
+  - `root_folder_id` (string, required)
+  - `updated_at` (integer, required)
+  - `id` (string, required)
+  - `created_at` (integer, required)
+  - `type` (enum, optional, default: discovery)
+    - Allowed values: `discovery`, `sitemap`
+  - `pattern` (string, optional)
+  - `status` (enum, optional, default: queued)
+    - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
+  - `pages_identified` (integer, optional, default: 0)
+  - `pages_scraped` (integer, optional, default: 0)
+  - `pages_skipped` (integer, optional, default: 0)
+  - `pages_failed` (integer, optional, default: 0)
+- `next_cursor` (string, optional)
 
 ## Examples
 

@@ -14,233 +14,52 @@ Returns a list of a Studio project's chapters.
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/get-chapters
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/chapters:
-    get:
-      operationId: list
-      summary: List Chapters
-      description: Returns a list of a Studio project's chapters.
-      tags:
-        - chapters
-      parameters:
-        - name: project_id
-          in: path
-          description: The ID of the Studio project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetChaptersResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ChapterState:
-      type: string
-      enum:
-        - default
-        - converting
-      description: The state of the chapter.
-      title: ChapterState
-    VoiceStatisticsResponseModel:
-      type: object
-      properties:
-        project_voice_ref_id:
-          type: string
-          description: The project voice reference ID.
-        characters_unconverted:
-          type: integer
-          description: The number of unconverted characters for this voice.
-        characters_converted:
-          type: integer
-          description: The number of converted characters for this voice.
-        credits_needed_to_convert:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The number of credits needed to convert the remaining audio for this
-            voice.
-        voice_id:
-          type: string
-          description: The voice ID.
-      required:
-        - project_voice_ref_id
-        - characters_unconverted
-        - characters_converted
-        - voice_id
-      title: VoiceStatisticsResponseModel
-    ChapterStatisticsResponseModel:
-      type: object
-      properties:
-        characters_unconverted:
-          type: integer
-          description: The number of unconverted characters.
-        characters_converted:
-          type: integer
-          description: The number of converted characters.
-        paragraphs_converted:
-          type: integer
-          description: The number of converted paragraphs.
-        paragraphs_unconverted:
-          type: integer
-          description: The number of unconverted paragraphs.
-        credits_needed_to_convert:
-          type:
-            - integer
-            - 'null'
-          description: The number of credits needed to convert the remaining paragraphs.
-        voice_statistics:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VoiceStatisticsResponseModel'
-          description: Per-voice breakdown of character counts.
-      required:
-        - characters_unconverted
-        - characters_converted
-        - paragraphs_converted
-        - paragraphs_unconverted
-      title: ChapterStatisticsResponseModel
-    ChapterResponseModel:
-      type: object
-      properties:
-        chapter_id:
-          type: string
-          description: The ID of the chapter.
-        name:
-          type: string
-          description: The name of the chapter.
-        last_conversion_date_unix:
-          type:
-            - integer
-            - 'null'
-          description: The last conversion date of the chapter.
-        conversion_progress:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The conversion progress of the chapter.
-        can_be_downloaded:
-          type: boolean
-          description: Whether the chapter can be downloaded.
-        state:
-          $ref: '#/components/schemas/ChapterState'
-          description: The state of the chapter.
-        has_video:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the chapter has a video.
-        has_visual_content:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether the chapter has any visual content (video, image, or text
-            clips).
-        voice_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of voice ids used by the chapter
-        statistics:
-          oneOf:
-            - $ref: '#/components/schemas/ChapterStatisticsResponseModel'
-            - type: 'null'
-          description: The statistics of the chapter.
-        last_conversion_error:
-          type:
-            - string
-            - 'null'
-          description: The last conversion error of the chapter.
-      required:
-        - chapter_id
-        - name
-        - can_be_downloaded
-        - state
-      title: ChapterResponseModel
-    GetChaptersResponseModel:
-      type: object
-      properties:
-        chapters:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChapterResponseModel'
-      required:
-        - chapters
-      title: GetChaptersResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the Studio project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `chapters` (list of object, required)
+  - `chapter_id` (string, required) — The ID of the chapter.
+  - `name` (string, required) — The name of the chapter.
+  - `can_be_downloaded` (boolean, required) — Whether the chapter can be downloaded.
+  - `state` (enum, required) — The state of the chapter.
+    - Allowed values: `default`, `converting`
+  - `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the chapter.
+  - `conversion_progress` (double, optional, nullable) — The conversion progress of the chapter.
+  - `has_video` (boolean, optional, nullable) — Whether the chapter has a video.
+  - `has_visual_content` (boolean, optional, nullable) — Whether the chapter has any visual content (video, image, or text clips).
+  - `voice_ids` (list of string, optional, nullable) — List of voice ids used by the chapter
+  - `statistics` (object, optional, nullable) — The statistics of the chapter.
+    - `characters_unconverted` (integer, required) — The number of unconverted characters.
+    - `characters_converted` (integer, required) — The number of converted characters.
+    - `paragraphs_converted` (integer, required) — The number of converted paragraphs.
+    - `paragraphs_unconverted` (integer, required) — The number of unconverted paragraphs.
+    - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining paragraphs.
+    - `voice_statistics` (list of object, optional, nullable) — Per-voice breakdown of character counts.
+      - `project_voice_ref_id` (string, required) — The project voice reference ID.
+      - `characters_unconverted` (integer, required) — The number of unconverted characters for this voice.
+      - `characters_converted` (integer, required) — The number of converted characters for this voice.
+      - `voice_id` (string, required, deprecated) — The voice ID.
+      - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
+  - `last_conversion_error` (string, optional, nullable) — The last conversion error of the chapter.
 
 ## Examples
-
-
 
 **Response**
 

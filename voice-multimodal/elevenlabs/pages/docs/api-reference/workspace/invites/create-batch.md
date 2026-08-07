@@ -15,151 +15,33 @@ Sends email invitations to join your workspace to the provided emails. Requires 
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/create-batch
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/invites/add-bulk:
-    post:
-      operationId: create_batch
-      summary: Invite Multiple Users
-      description: >-
-        Sends email invitations to join your workspace to the provided emails.
-        Requires all email addresses to be part of a verified domain. If the
-        users don't have an account they will be prompted to create one. If the
-        users accept these invites they will be added as users to your workspace
-        and your subscription using one of your seats. This endpoint may only be
-        called by workspace members with the WORKSPACE_MEMBERS_INVITE
-        permission.
-      tags:
-        - invites
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddWorkspaceInviteResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Invite_multiple_users_v1_workspace_invites_add_bulk_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SeatType:
-      type: string
-      enum:
-        - workspace_admin
-        - workspace_member
-        - workspace_lite_member
-      description: Seat types for workspace members.
-      title: SeatType
-    Body_Invite_multiple_users_v1_workspace_invites_add_bulk_post:
-      type: object
-      properties:
-        emails:
-          type: array
-          items:
-            type: string
-          description: The email of the customer
-        seat_type:
-          oneOf:
-            - $ref: '#/components/schemas/SeatType'
-            - type: 'null'
-          description: The seat type of the user
-        group_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: The group ids of the user
-        usage_limit:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Monthly credit usage limit for the invitee. Omit or set to null for
-            no custom cap.
-      required:
-        - emails
-      title: Body_Invite_multiple_users_v1_workspace_invites_add_bulk_post
-    AddWorkspaceInviteResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the workspace invite request. If the request was
-            successful, the status will be 'ok'. Otherwise an error message with
-            status 500 will be returned.
-      required:
-        - status
-      title: AddWorkspaceInviteResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `emails` (list of string, required) — The email of the customer
+- `seat_type` (enum, optional, nullable) — The seat type of the user
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+- `group_ids` (list of string, optional, nullable) — The group ids of the user
+- `usage_limit` (integer, optional, nullable) — Monthly credit usage limit for the invitee. Omit or set to null for no custom cap.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the workspace invite request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

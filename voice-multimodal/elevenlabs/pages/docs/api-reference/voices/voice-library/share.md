@@ -15,132 +15,35 @@ Add a shared voice to your collection of Voices
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/voice-library/share
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/add/{public_user_id}/{voice_id}:
-    post:
-      operationId: share
-      summary: Add shared voice
-      description: Add a shared voice to your collection of Voices
-      tags:
-        - voices
-      parameters:
-        - name: public_user_id
-          in: path
-          description: Public user ID used to publicly identify ElevenLabs users.
-          required: true
-          schema:
-            type: string
-        - name: voice_id
-          in: path
-          description: >-
-            ID of the voice to be used. You can use the [Get
-            voices](/docs/api-reference/voices/search) endpoint list all the
-            available voices.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddVoiceResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Add_shared_voice_v1_voices_add__public_user_id___voice_id__post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Add_shared_voice_v1_voices_add__public_user_id___voice_id__post:
-      type: object
-      properties:
-        new_name:
-          type: string
-          description: >-
-            The name that identifies this voice. This will be displayed in the
-            dropdown of the website.
-        bookmarked:
-          type: boolean
-          default: true
-      required:
-        - new_name
-      title: Body_Add_shared_voice_v1_voices_add__public_user_id___voice_id__post
-    AddVoiceResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-      required:
-        - voice_id
-      title: AddVoiceResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `public_user_id` (string, required) — Public user ID used to publicly identify ElevenLabs users.
+- `voice_id` (string, required) — ID of the voice to be used. You can use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
+
+### Body (application/json)
+
+- `new_name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
+- `bookmarked` (boolean, optional, default: true)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voice_id` (string, required) — The ID of the voice.
 
 ## Examples
-
-
 
 **Request**
 

@@ -15,129 +15,35 @@ Remove rules from the pronunciation dictionary
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/rules/remove
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries/{pronunciation_dictionary_id}/remove-rules:
-    post:
-      operationId: remove
-      summary: Remove pronunciation dictionary rules
-      description: Remove rules from the pronunciation dictionary
-      tags:
-        - rules
-      parameters:
-        - name: pronunciation_dictionary_id
-          in: path
-          description: The id of the pronunciation dictionary
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PronunciationDictionaryRulesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Remove_rules_from_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__remove_rules_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Remove_rules_from_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__remove_rules_post:
-      type: object
-      properties:
-        rule_strings:
-          type: array
-          items:
-            type: string
-          description: List of strings to remove from the pronunciation dictionary.
-      required:
-        - rule_strings
-      title: >-
-        Body_Remove_rules_from_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__remove_rules_post
-    PronunciationDictionaryRulesResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the pronunciation dictionary.
-        version_id:
-          type: string
-          description: The version ID of the pronunciation dictionary.
-        version_rules_num:
-          type: integer
-          description: The number of rules in the version of the pronunciation dictionary.
-      required:
-        - id
-        - version_id
-        - version_rules_num
-      title: PronunciationDictionaryRulesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `pronunciation_dictionary_id` (string, required) — The id of the pronunciation dictionary
+
+### Body (application/json)
+
+- `rule_strings` (list of string, required) — List of strings to remove from the pronunciation dictionary.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required) — The ID of the pronunciation dictionary.
+- `version_id` (string, required) — The version ID of the pronunciation dictionary.
+- `version_rules_num` (integer, required) — The number of rules in the version of the pronunciation dictionary.
 
 ## Examples
-
-
 
 **Request**
 

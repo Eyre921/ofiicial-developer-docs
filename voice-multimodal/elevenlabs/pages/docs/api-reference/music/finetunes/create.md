@@ -15,245 +15,48 @@ Create a new music finetune
 
 Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/music/finetunes:
-    post:
-      operationId: create
-      summary: Create Music Finetune
-      description: Create a new music finetune
-      tags:
-        - finetunes
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '201':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MusicFinetuneResponseModel'
-        '403':
-          description: Missing permissions to manage music finetunes.
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '404':
-          description: Finetune not found.
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Name for the finetune (5-200 characters).
-                primary_genre:
-                  type: string
-                  description: Primary musical genre of the finetune.
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-                  description: Audio files to train on.
-                tags:
-                  type: array
-                  items:
-                    type: string
-                  default: []
-                  description: Tags to associate with the finetune.
-                visibility:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaVisibility
-                    - type: 'null'
-                  description: >-
-                    Finetune visibility. Only 'private' and 'workspace' can be
-                    set.
-                model_id:
-                  $ref: >-
-                    #/components/schemas/V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaModelId
-                  default: music_v1
-                  description: The model to create a finetune for.
-              required:
-                - name
-                - primary_genre
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaVisibility:
-      type: string
-      enum:
-        - private
-        - workspace
-      description: Finetune visibility. Only 'private' and 'workspace' can be set.
-      title: V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaVisibility
-    V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaModelId:
-      type: string
-      enum:
-        - music_v1
-        - music_v2
-      default: music_v1
-      description: The model to create a finetune for.
-      title: V1MusicFinetunesPostRequestBodyContentMultipartFormDataSchemaModelId
-    FinetuneVisibility:
-      type: string
-      enum:
-        - private
-        - workspace
-        - public
-      title: FinetuneVisibility
-    FinetuneCreatedBy:
-      type: string
-      enum:
-        - self
-        - workspace
-        - elevenlabs
-      title: FinetuneCreatedBy
-    MusicFinetuneStatus:
-      type: string
-      enum:
-        - pending
-        - in_progress
-        - completed
-        - failed
-        - blocked
-      title: MusicFinetuneStatus
-    MusicFinetuneFailureReason:
-      type: string
-      enum:
-        - audio_processing_failed
-        - copyright_violation
-        - training_failed
-      title: MusicFinetuneFailureReason
-    MusicFinetuneResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the finetune.
-        name:
-          type: string
-          description: Name of the finetune.
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags associated with the finetune.
-        primary_genre:
-          type:
-            - string
-            - 'null'
-          description: Primary musical genre of the finetune.
-        model_id:
-          type: string
-          description: The base music model the finetune was trained on.
-        created_at:
-          type: string
-          format: date-time
-          description: When the finetune was created (UTC).
-        visibility:
-          $ref: '#/components/schemas/FinetuneVisibility'
-          description: >-
-            Who can access this finetune: `private` (only you), `workspace`
-            (members of your workspace), `public` (ElevenLabs-curated, available
-            to everyone).
-        created_by:
-          $ref: '#/components/schemas/FinetuneCreatedBy'
-          description: 'Who created the finetune: `self`, `workspace`, or `elevenlabs`.'
-        status:
-          $ref: '#/components/schemas/MusicFinetuneStatus'
-          description: >-
-            Training lifecycle status: pending, in_progress, completed, failed,
-            and blocked.
-        training_progress:
-          type: number
-          format: double
-          description: Training progress from 0.0 to 1.0.
-        failure_reason:
-          oneOf:
-            - $ref: '#/components/schemas/MusicFinetuneFailureReason'
-            - type: 'null'
-          description: Reason the finetune failed or was blocked, if applicable.
-      required:
-        - id
-        - name
-        - tags
-        - model_id
-        - created_at
-        - visibility
-        - created_by
-        - status
-        - training_progress
-      title: MusicFinetuneResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `name` (string, required) — Name for the finetune (5-200 characters).
+- `primary_genre` (string, required) — Primary musical genre of the finetune.
+- `files` (files, optional) — Audio files to train on.
+- `tags` (list of string, optional) — Tags to associate with the finetune.
+- `visibility` (enum, optional) — Finetune visibility. Only 'private' and 'workspace' can be set.
+- `model_id` (enum, optional) — The model to create a finetune for.
+
+## Response
+
+### 201
+
+Successful Response
+
+- `id` (string, required) — Unique identifier of the finetune.
+- `name` (string, required) — Name of the finetune.
+- `tags` (list of string, required) — Tags associated with the finetune.
+- `model_id` (string, required) — The base music model the finetune was trained on.
+- `created_at` (string, required) — When the finetune was created (UTC).
+- `visibility` (enum, required) — Who can access this finetune: `private` (only you), `workspace` (members of your workspace), `public` (ElevenLabs-curated, available to everyone).
+  - Allowed values: `private`, `workspace`, `public`
+- `created_by` (enum, required) — Who created the finetune: `self`, `workspace`, or `elevenlabs`.
+  - Allowed values: `self`, `workspace`, `elevenlabs`
+- `status` (enum, required) — Training lifecycle status: pending, in_progress, completed, failed, and blocked.
+  - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `blocked`
+- `training_progress` (double, required) — Training progress from 0.0 to 1.0.
+- `primary_genre` (string, optional, nullable) — Primary musical genre of the finetune.
+- `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
+  - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
 
 ## Examples
-
-
 
 **Request**
 

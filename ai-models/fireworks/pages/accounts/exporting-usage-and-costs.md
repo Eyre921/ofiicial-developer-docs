@@ -419,4 +419,4 @@ done
 * [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) - Rated dollar costs by billing category, with optional daily breakdown
 * [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/user/API key
 * [Exporting Billing Metrics](/accounts/exporting-billing-metrics) - Raw per-event billing CSV export
-* [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and budget controls
+* [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits

@@ -35,7 +35,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: subpackage_agent/v1.agent.v1-publish
+      operationId: agent-v-1-publish
       summary: Server messages
       message:
         oneOf:
@@ -78,7 +78,7 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_agent/v1.agent.v1-server-18-AgentV1Audio
     subscribe:
-      operationId: subpackage_agent/v1.agent.v1-subscribe
+      operationId: agent-v-1-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -494,38 +494,38 @@ components:
             - LatencyReport
           description: Message type identifier for the latency report
         stt_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             Speech-to-text: time from audio received to transcript produced, in
             seconds
         ttt_token_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             Time to first token of any type (text, tool call, or thinking), in
             seconds
         ttt_text_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Time to first text token from the LLM, in seconds
         ttt_tool_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Time to first tool-call token from the LLM, in seconds
         ttt_thinking_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: Time to first thinking token from the LLM, in seconds
         tts_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             Text-to-speech: time from first text token to first audio byte, in
             seconds
         total_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             End-to-end: time from user utterance end to first audio byte, in
             seconds
@@ -585,18 +585,18 @@ components:
             - AgentStartedSpeaking
           description: Message type identifier for agent started speaking
         total_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             Seconds from receiving the user's utterance to producing the agent's
             reply
         tts_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: The portion of total latency attributable to text-to-speech
         ttt_latency:
-          type: string
-          title: float
+          type: number
+          format: double
           description: >-
             The portion of total latency attributable to text-to-text (usually
             an LLM)

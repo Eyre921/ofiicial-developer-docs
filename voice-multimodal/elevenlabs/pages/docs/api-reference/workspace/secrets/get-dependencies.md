@@ -14,300 +14,37 @@ Get paginated list of resources that depend on a specific secret, filtered by re
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/secrets/get-dependencies
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/secrets/{secret_id}/dependencies/{resource_type}:
-    get:
-      operationId: get_dependencies
-      summary: Get Secret Dependencies By Type
-      description: >-
-        Get paginated list of resources that depend on a specific secret,
-        filtered by resource type.
-      tags:
-        - secrets
-      parameters:
-        - name: secret_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: resource_type
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/SecretDependencyResourceType'
-        - name: page_size
-          in: query
-          description: How many dependency items to return per page.
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSecretDependenciesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SecretDependencyResourceType:
-      type: string
-      enum:
-        - tools
-        - agents
-        - phone_numbers
-      title: SecretDependencyResourceType
-    GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: >-
-        GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel
-    GetSecretDependenciesResponseModelDependenciesOneOf0Items:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableToolIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an tool dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: GetSecretDependenciesResponseModelDependenciesOneOf0Items
-    GetSecretDependenciesResponseModelDependencies0:
-      type: array
-      items:
-        $ref: >-
-          #/components/schemas/GetSecretDependenciesResponseModelDependenciesOneOf0Items
-      title: GetSecretDependenciesResponseModelDependencies0
-    V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: >-
-        V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-    GetSecretDependenciesResponseModelDependenciesOneOf1Items:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingUrlDependentAgentsItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableAgentIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an agent dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: GetSecretDependenciesResponseModelDependenciesOneOf1Items
-    GetSecretDependenciesResponseModelDependencies1:
-      type: array
-      items:
-        $ref: >-
-          #/components/schemas/GetSecretDependenciesResponseModelDependenciesOneOf1Items
-      title: GetSecretDependenciesResponseModelDependencies1
-    TelephonyProvider:
-      type: string
-      enum:
-        - twilio
-        - sip_trunk
-        - exotel
-      title: TelephonyProvider
-    DependentPhoneNumberIdentifier:
-      type: object
-      properties:
-        phone_number_id:
-          type: string
-        phone_number:
-          type: string
-        label:
-          type: string
-        provider:
-          $ref: '#/components/schemas/TelephonyProvider'
-      required:
-        - phone_number_id
-        - phone_number
-        - label
-        - provider
-      title: DependentPhoneNumberIdentifier
-    GetSecretDependenciesResponseModelDependencies2:
-      type: array
-      items:
-        $ref: '#/components/schemas/DependentPhoneNumberIdentifier'
-      title: GetSecretDependenciesResponseModelDependencies2
-    GetSecretDependenciesResponseModelDependencies:
-      oneOf:
-        - $ref: '#/components/schemas/GetSecretDependenciesResponseModelDependencies0'
-        - $ref: '#/components/schemas/GetSecretDependenciesResponseModelDependencies1'
-        - $ref: '#/components/schemas/GetSecretDependenciesResponseModelDependencies2'
-      title: GetSecretDependenciesResponseModelDependencies
-    GetSecretDependenciesResponseModel:
-      type: object
-      properties:
-        dependencies:
-          $ref: '#/components/schemas/GetSecretDependenciesResponseModelDependencies'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-          description: Cursor for fetching the next page of dependencies
-      required:
-        - dependencies
-      title: GetSecretDependenciesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `secret_id` (string, required)
+- `resource_type` (enum, required)
+  - Allowed values: `tools`, `agents`, `phone_numbers`
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 20) — How many dependency items to return per page.
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `dependencies` (list of object or list of object or list of object, required)
+- `next_cursor` (string, optional, nullable) — Cursor for fetching the next page of dependencies
 
 ## Examples
-
-
 
 **Request**
 

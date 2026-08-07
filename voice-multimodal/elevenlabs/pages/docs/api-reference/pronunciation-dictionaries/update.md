@@ -15,173 +15,43 @@ Partially update the pronunciation dictionary without changing the version
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries/{pronunciation_dictionary_id}:
-    patch:
-      operationId: update
-      summary: Update Pronunciation Dictionary
-      description: >-
-        Partially update the pronunciation dictionary without changing the
-        version
-      tags:
-        - pronunciationDictionaries
-      parameters:
-        - name: pronunciation_dictionary_id
-          in: path
-          description: The id of the pronunciation dictionary
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/GetPronunciationDictionaryMetadataResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Update_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__patch
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Update_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__patch:
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Whether to archive the pronunciation dictionary.
-        name:
-          type: string
-          description: >-
-            The name of the pronunciation dictionary, used for identification
-            only.
-      title: >-
-        Body_Update_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__patch
-    GetPronunciationDictionaryMetadataResponseModelPermissionOnResource:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The permission on the resource of the pronunciation dictionary.
-      title: GetPronunciationDictionaryMetadataResponseModelPermissionOnResource
-    GetPronunciationDictionaryMetadataResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the pronunciation dictionary.
-        latest_version_id:
-          type: string
-          description: The ID of the latest version of the pronunciation dictionary.
-        latest_version_rules_num:
-          type: integer
-          description: >-
-            The number of rules in the latest version of the pronunciation
-            dictionary.
-        name:
-          type: string
-          description: The name of the pronunciation dictionary.
-        permission_on_resource:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/GetPronunciationDictionaryMetadataResponseModelPermissionOnResource
-            - type: 'null'
-          description: The permission on the resource of the pronunciation dictionary.
-        created_by:
-          type: string
-          description: The user ID of the creator of the pronunciation dictionary.
-        creation_time_unix:
-          type: integer
-          description: The creation time of the pronunciation dictionary in Unix timestamp.
-        archived_time_unix:
-          type:
-            - integer
-            - 'null'
-          description: The archive time of the pronunciation dictionary in Unix timestamp.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the pronunciation dictionary.
-      required:
-        - id
-        - latest_version_id
-        - latest_version_rules_num
-        - name
-        - permission_on_resource
-        - created_by
-        - creation_time_unix
-      title: GetPronunciationDictionaryMetadataResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `pronunciation_dictionary_id` (string, required) — The id of the pronunciation dictionary
+
+### Body (application/json)
+
+- `archived` (boolean, optional) — Whether to archive the pronunciation dictionary.
+- `name` (string, optional) — The name of the pronunciation dictionary, used for identification only.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required) — The ID of the pronunciation dictionary.
+- `latest_version_id` (string, required) — The ID of the latest version of the pronunciation dictionary.
+- `latest_version_rules_num` (integer, required) — The number of rules in the latest version of the pronunciation dictionary.
+- `name` (string, required) — The name of the pronunciation dictionary.
+- `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
+- `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
+- `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
+- `description` (string, optional, nullable) — The description of the pronunciation dictionary.
 
 ## Examples
-
-
 
 **Request**
 

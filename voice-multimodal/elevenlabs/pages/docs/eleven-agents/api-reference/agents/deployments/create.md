@@ -15,148 +15,36 @@ Create a new deployment for an agent
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/deployments:
-    post:
-      operationId: create
-      summary: Create Or Update Deployments
-      description: Create a new deployment for an agent
-      tags:
-        - deployments
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:AgentDeploymentResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                deployment_request:
-                  $ref: '#/components/schemas/type_:AgentDeploymentRequest'
-                  description: Request to create a new deployment
-              required:
-                - deployment_request
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:AgentDeploymentPercentageStrategy:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - percentage
-        traffic_percentage:
-          type: number
-          format: double
-          description: Traffic percentage to deploy
-      required:
-        - traffic_percentage
-      title: AgentDeploymentPercentageStrategy
-    type_:AgentDeploymentRequestItem:
-      type: object
-      properties:
-        branch_id:
-          type: string
-          description: ID of the branch to deploy
-        deployment_strategy:
-          $ref: '#/components/schemas/type_:AgentDeploymentPercentageStrategy'
-      required:
-        - branch_id
-        - deployment_strategy
-      title: AgentDeploymentRequestItem
-    type_:AgentDeploymentRequest:
-      type: object
-      properties:
-        requests:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentDeploymentRequestItem'
-          description: List of deployment requests
-      required:
-        - requests
-      title: AgentDeploymentRequest
-    type_:AgentDeploymentResponse:
-      type: object
-      properties:
-        traffic_percentage_branch_id_map:
-          type: object
-          additionalProperties:
-            type: number
-            format: double
-          description: Map of branch IDs to traffic percentages
-      title: AgentDeploymentResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+
+### Body (application/json)
+
+- `deployment_request` (object, required) — Request to create a new deployment
+  - `requests` (list of object, required) — List of deployment requests
+    - `branch_id` (string, required) — ID of the branch to deploy
+    - `deployment_strategy` (object, required)
+      - `traffic_percentage` (double, required) — Traffic percentage to deploy
+      - `type` ("percentage", optional)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `traffic_percentage_branch_id_map` (map from string to double, optional) — Map of branch IDs to traffic percentages
 
 ## Examples
 

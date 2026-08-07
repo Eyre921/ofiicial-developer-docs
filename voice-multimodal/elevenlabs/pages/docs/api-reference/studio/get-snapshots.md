@@ -14,140 +14,35 @@ Retrieves a list of snapshots for a Studio project.
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/get-snapshots
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/snapshots:
-    get:
-      operationId: list
-      summary: List Studio Project Snapshots
-      description: Retrieves a list of snapshots for a Studio project.
-      tags:
-        - snapshots
-      parameters:
-        - name: project_id
-          in: path
-          description: The ID of the Studio project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProjectSnapshotsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ProjectSnapshotResponseModel:
-      type: object
-      properties:
-        project_snapshot_id:
-          type: string
-          description: The ID of the project snapshot.
-        project_id:
-          type: string
-          description: The ID of the project.
-        created_at_unix:
-          type: integer
-          description: The creation date of the project snapshot.
-        name:
-          type: string
-          description: The name of the project snapshot.
-        audio_upload:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: (Deprecated)
-        zip_upload:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: (Deprecated)
-      required:
-        - project_snapshot_id
-        - project_id
-        - created_at_unix
-        - name
-      title: ProjectSnapshotResponseModel
-    ProjectSnapshotsResponseModel:
-      type: object
-      properties:
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProjectSnapshotResponseModel'
-          description: List of project snapshots.
-      required:
-        - snapshots
-      title: ProjectSnapshotsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the Studio project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `snapshots` (list of object, required) — List of project snapshots.
+  - `project_snapshot_id` (string, required) — The ID of the project snapshot.
+  - `project_id` (string, required) — The ID of the project.
+  - `created_at_unix` (integer, required) — The creation date of the project snapshot.
+  - `name` (string, required) — The name of the project snapshot.
+  - `audio_upload` (map from string to any, optional, nullable) — (Deprecated)
+  - `zip_upload` (map from string to any, optional, nullable) — (Deprecated)
 
 ## Examples
-
-
 
 **Response**
 

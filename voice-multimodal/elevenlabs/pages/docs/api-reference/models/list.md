@@ -14,184 +14,44 @@ Gets a list of available models.
 
 Reference: https://elevenlabs.io/docs/api-reference/models/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/models:
-    get:
-      operationId: list
-      summary: List models
-      description: Gets a list of available models.
-      tags:
-        - Models
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ModelResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    LanguageResponseModel:
-      type: object
-      properties:
-        language_id:
-          type: string
-          description: The unique identifier of the language.
-        name:
-          type: string
-          description: The name of the language.
-      required:
-        - language_id
-        - name
-      title: LanguageResponseModel
-    ModelRatesResponseModel:
-      type: object
-      properties:
-        character_cost_multiplier:
-          type: number
-          format: double
-          description: The cost multiplier for characters.
-        cost_discount_multiplier:
-          type: number
-          format: double
-          default: 1
-          description: >-
-            Discount multiplier applied to cost estimates. Defaults to 1.0 (no
-            discount).
-      required:
-        - character_cost_multiplier
-      title: ModelRatesResponseModel
-    ModelResponseModel:
-      type: object
-      properties:
-        model_id:
-          type: string
-          description: The unique identifier of the model.
-        name:
-          type: string
-          description: The name of the model.
-        can_be_finetuned:
-          type: boolean
-          description: Whether the model can be finetuned.
-        can_do_text_to_speech:
-          type: boolean
-          description: Whether the model can do text-to-speech.
-        can_do_voice_conversion:
-          type: boolean
-          description: Whether the model can do voice conversion.
-        can_use_style:
-          type: boolean
-          description: Whether the model can use style.
-        can_use_speaker_boost:
-          type: boolean
-          description: Whether the model can use speaker boost.
-        serves_pro_voices:
-          type: boolean
-          description: Whether the model serves pro voices.
-        token_cost_factor:
-          type: number
-          format: double
-          description: The cost factor for the model.
-        description:
-          type: string
-          description: The description of the model.
-        requires_alpha_access:
-          type: boolean
-          description: Whether the model requires alpha access.
-        max_characters_request_free_user:
-          type: integer
-          description: >-
-            The maximum number of characters that can be requested by a free
-            user.
-        max_characters_request_subscribed_user:
-          type: integer
-          description: >-
-            The maximum number of characters that can be requested by a
-            subscribed user.
-        maximum_text_length_per_request:
-          type: integer
-          description: The maximum length of text that can be requested for this model.
-        languages:
-          type: array
-          items:
-            $ref: '#/components/schemas/LanguageResponseModel'
-          description: The languages supported by the model.
-        model_rates:
-          $ref: '#/components/schemas/ModelRatesResponseModel'
-          description: The rates for the model.
-        concurrency_group:
-          type: string
-          description: The concurrency group for the model.
-      required:
-        - model_id
-      title: ModelResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Response
+
+### 200
+
+Successful Response
+
+- `list of object`
+  - `model_id` (string, required) — The unique identifier of the model.
+  - `name` (string, optional) — The name of the model.
+  - `can_be_finetuned` (boolean, optional) — Whether the model can be finetuned.
+  - `can_do_text_to_speech` (boolean, optional) — Whether the model can do text-to-speech.
+  - `can_do_voice_conversion` (boolean, optional) — Whether the model can do voice conversion.
+  - `can_use_style` (boolean, optional) — Whether the model can use style.
+  - `can_use_speaker_boost` (boolean, optional) — Whether the model can use speaker boost.
+  - `serves_pro_voices` (boolean, optional) — Whether the model serves pro voices.
+  - `token_cost_factor` (double, optional) — The cost factor for the model.
+  - `description` (string, optional) — The description of the model.
+  - `requires_alpha_access` (boolean, optional) — Whether the model requires alpha access.
+  - `max_characters_request_free_user` (integer, optional) — The maximum number of characters that can be requested by a free user.
+  - `max_characters_request_subscribed_user` (integer, optional) — The maximum number of characters that can be requested by a subscribed user.
+  - `maximum_text_length_per_request` (integer, optional) — The maximum length of text that can be requested for this model.
+  - `languages` (list of object, optional) — The languages supported by the model.
+    - `language_id` (string, required) — The unique identifier of the language.
+    - `name` (string, required) — The name of the language.
+  - `model_rates` (object, optional) — The rates for the model.
+    - `character_cost_multiplier` (double, required) — The cost multiplier for characters.
+    - `cost_discount_multiplier` (double, optional, default: 1) — Discount multiplier applied to cost estimates. Defaults to 1.0 (no discount).
+  - `concurrency_group` (string, optional) — The concurrency group for the model.
 
 ## Examples
-
-
 
 **Response**
 

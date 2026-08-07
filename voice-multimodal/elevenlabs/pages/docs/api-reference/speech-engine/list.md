@@ -14,269 +14,51 @@ Returns a paginated list of Speech Engine resources.
 
 Reference: https://elevenlabs.io/docs/api-reference/speech-engine/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/speech-engine:
-    get:
-      operationId: list
-      summary: List Speech Engines
-      description: Returns a paginated list of Speech Engine resources.
-      tags:
-        - speechEngine
-      parameters:
-        - name: page_size
-          in: query
-          description: >-
-            How many Speech Engines to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: search
-          in: query
-          description: Search term to filter Speech Engines by name
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: sort_direction
-          in: query
-          description: The direction to sort the results
-          required: false
-          schema:
-            $ref: '#/components/schemas/SortDirection'
-        - name: sort_by
-          in: query
-          description: The field to sort the results by
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/AgentSortBy'
-              - type: 'null'
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListSpeechEnginesResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SortDirection:
-      type: string
-      enum:
-        - asc
-        - desc
-      title: SortDirection
-    AgentSortBy:
-      type: string
-      enum:
-        - name
-        - created_at
-        - call_count_7d
-      title: AgentSortBy
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    SpeechEngineSummaryResponse:
-      type: object
-      properties:
-        speech_engine_id:
-          type: string
-          description: The speech engine resource ID
-        name:
-          type: string
-          description: Human-readable name for the speech engine
-        created_at_unix_secs:
-          type: integer
-          description: Creation time in Unix seconds
-        tags:
-          type: array
-          items:
-            type: string
-          description: Arbitrary tags for categorization and filtering
-        access_info:
-          $ref: '#/components/schemas/ResourceAccessInfo'
-          description: The access information of the speech engine for the user
-      required:
-        - speech_engine_id
-        - name
-        - created_at_unix_secs
-        - tags
-        - access_info
-      title: SpeechEngineSummaryResponse
-    ListSpeechEnginesResponse:
-      type: object
-      properties:
-        speech_engines:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechEngineSummaryResponse'
-          description: The speech engines matching the query
-        next_cursor:
-          type:
-            - string
-            - 'null'
-          description: Cursor for fetching the next page
-        has_more:
-          type: boolean
-          description: Whether there are more results
-      required:
-        - speech_engines
-        - has_more
-      title: ListSpeechEnginesResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 30) — How many Speech Engines to return at maximum. Can not exceed 100, defaults to 30.
+- `search` (string, optional, nullable) — Search term to filter Speech Engines by name
+- `sort_direction` (enum, optional) — The direction to sort the results
+  - Allowed values: `asc`, `desc`
+- `sort_by` (enum, optional, nullable) — The field to sort the results by
+  - Allowed values: `name`, `created_at`, `call_count_7d`
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `speech_engines` (list of object, required) — The speech engines matching the query
+  - `speech_engine_id` (string, required) — The speech engine resource ID
+  - `name` (string, required) — Human-readable name for the speech engine
+  - `created_at_unix_secs` (integer, required) — Creation time in Unix seconds
+  - `tags` (list of string, required) — Arbitrary tags for categorization and filtering
+  - `access_info` (object, required) — The access information of the speech engine for the user
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+- `has_more` (boolean, required) — Whether there are more results
+- `next_cursor` (string, optional, nullable) — Cursor for fetching the next page
 
 ## Examples
-
-
 
 **Response**
 

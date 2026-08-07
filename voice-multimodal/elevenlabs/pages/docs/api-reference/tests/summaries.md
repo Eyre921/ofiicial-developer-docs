@@ -15,313 +15,54 @@ Gets agent response test summaries for the requested test IDs.
 
 Reference: https://elevenlabs.io/docs/api-reference/tests/summaries
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agent-testing/summaries:
-    post:
-      operationId: summaries
-      summary: Get Agent Response Test Summaries By Ids
-      description: Gets agent response test summaries for the requested test IDs.
-      tags:
-        - tests
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetTestsSummariesByIdsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListTestsByIdsRequestModel'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ListTestsByIdsRequestModel:
-      type: object
-      properties:
-        test_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of test IDs to fetch. No duplicates allowed. Prefer at most
-            1000 IDs per request.
-      required:
-        - test_ids
-      title: ListTestsByIdsRequestModel
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    TestType:
-      type: string
-      enum:
-        - llm
-        - tool
-        - simulation
-        - folder
-      title: TestType
-    AgentTestEntityType:
-      type: string
-      enum:
-        - test
-        - folder
-      default: test
-      title: AgentTestEntityType
-    AgentTestFolderPathSegmentResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-          default: ''
-      required:
-        - id
-      title: AgentTestFolderPathSegmentResponseModel
-    ConversationInitiationSource:
-      type: string
-      enum:
-        - unknown
-        - android_sdk
-        - node_js_sdk
-        - react_native_sdk
-        - react_sdk
-        - js_sdk
-        - python_sdk
-        - widget
-        - sip_trunk
-        - twilio
-        - exotel
-        - genesys
-        - audiocodes
-        - swift_sdk
-        - whatsapp
-        - twilio_sms
-        - flutter_sdk
-        - zendesk_integration
-        - slack_integration
-        - telegram_integration
-        - intercom_integration
-        - freshdesk_integration
-        - salesforce_integration
-        - template_preview
-        - genesys_bot_connector
-        - subagent_tool
-      default: unknown
-      description: Enum representing the possible sources for conversation initiation.
-      title: ConversationInitiationSource
-    UnitTestSummaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the test
-        name:
-          type: string
-          description: Name of the test
-        access_info:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfo'
-            - type: 'null'
-          description: The access information of the test
-        created_at_unix_secs:
-          type: integer
-          description: Creation time of the test in unix seconds
-        last_updated_at_unix_secs:
-          type: integer
-          description: Last update time of the test in unix seconds
-        type:
-          $ref: '#/components/schemas/TestType'
-          description: Type of the test or entity
-        entity_type:
-          $ref: '#/components/schemas/AgentTestEntityType'
-          default: test
-          description: The type of entity (test or folder)
-        folder_parent_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the parent folder
-        folder_path:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentTestFolderPathSegmentResponseModel'
-          description: The folder path segments from root to this entity
-        children_count:
-          type:
-            - integer
-            - 'null'
-          description: Number of direct children (tests and subfolders) for folders only
-        conversation_initiation_source:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationInitiationSource'
-            - type: 'null'
-          description: >-
-            Channel the test simulates the conversation as. Null for folders or
-            default behavior.
-      required:
-        - id
-        - name
-        - created_at_unix_secs
-        - last_updated_at_unix_secs
-        - type
-      title: UnitTestSummaryResponseModel
-    GetTestsSummariesByIdsResponseModel:
-      type: object
-      properties:
-        tests:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/UnitTestSummaryResponseModel'
-          description: Dictionary mapping test IDs to their summary information
-      required:
-        - tests
-      title: GetTestsSummariesByIdsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `test_ids` (list of string, required) — List of test IDs to fetch. No duplicates allowed. Prefer at most 1000 IDs per request.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `tests` (map from string to object, required) — Dictionary mapping test IDs to their summary information
+  - `id` (string, required) — The ID of the test
+  - `name` (string, required) — Name of the test
+  - `created_at_unix_secs` (integer, required) — Creation time of the test in unix seconds
+  - `last_updated_at_unix_secs` (integer, required) — Last update time of the test in unix seconds
+  - `type` (enum, required) — Type of the test or entity
+    - Allowed values: `llm`, `tool`, `simulation`, `folder`
+  - `access_info` (object, optional, nullable) — The access information of the test
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+  - `entity_type` (enum, optional, default: test) — The type of entity (test or folder)
+    - Allowed values: `test`, `folder`
+  - `folder_parent_id` (string, optional, nullable) — The ID of the parent folder
+  - `folder_path` (list of object, optional) — The folder path segments from root to this entity
+    - `id` (string, required)
+    - `name` (string, optional, default: )
+  - `children_count` (integer, optional, nullable) — Number of direct children (tests and subfolders) for folders only
+  - `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Channel the test simulates the conversation as. Null for folders or default behavior.
+    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
 
 ## Examples
-
-
 
 **Request**
 

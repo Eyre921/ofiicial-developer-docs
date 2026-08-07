@@ -15,199 +15,48 @@ Add rules to the pronunciation dictionary. If a rule with the same string_to_rep
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/rules/add
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries/{pronunciation_dictionary_id}/add-rules:
-    post:
-      operationId: add
-      summary: Add pronunciation dictionary rules
-      description: >-
-        Add rules to the pronunciation dictionary. If a rule with the same
-        string_to_replace already exists, it will be replaced.
-      tags:
-        - rules
-      parameters:
-        - name: pronunciation_dictionary_id
-          in: path
-          description: The id of the pronunciation dictionary
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PronunciationDictionaryRulesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Add_rules_to_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__add_rules_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    PronunciationDictionaryAliasRuleRequestModel:
-      type: object
-      properties:
-        string_to_replace:
-          type: string
-          description: The string to replace. Must be a non-empty string.
-        case_sensitive:
-          type: boolean
-          default: true
-          description: Whether the rule should match case-sensitively.
-        word_boundaries:
-          type: boolean
-          default: true
-          description: Whether the rule should only match at word boundaries.
-        type:
-          type: string
-          enum:
-            - alias
-          description: The type of the rule.
-        alias:
-          type: string
-          description: The alias for the string to be replaced.
-      required:
-        - string_to_replace
-        - type
-        - alias
-      title: PronunciationDictionaryAliasRuleRequestModel
-    PronunciationDictionaryPhonemeRuleRequestModel:
-      type: object
-      properties:
-        string_to_replace:
-          type: string
-          description: The string to replace. Must be a non-empty string.
-        case_sensitive:
-          type: boolean
-          default: true
-          description: Whether the rule should match case-sensitively.
-        word_boundaries:
-          type: boolean
-          default: true
-          description: Whether the rule should only match at word boundaries.
-        type:
-          type: string
-          enum:
-            - phoneme
-          description: The type of the rule.
-        phoneme:
-          type: string
-          description: The phoneme rule.
-        alphabet:
-          type: string
-          description: The alphabet to use with the phoneme rule.
-      required:
-        - string_to_replace
-        - type
-        - phoneme
-        - alphabet
-      title: PronunciationDictionaryPhonemeRuleRequestModel
-    BodyAddRulesToThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdAddRulesPostRulesItems:
-      oneOf:
-        - $ref: '#/components/schemas/PronunciationDictionaryAliasRuleRequestModel'
-        - $ref: '#/components/schemas/PronunciationDictionaryPhonemeRuleRequestModel'
-      title: >-
-        BodyAddRulesToThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdAddRulesPostRulesItems
-    Body_Add_rules_to_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__add_rules_post:
-      type: object
-      properties:
-        rules:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/BodyAddRulesToThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdAddRulesPostRulesItems
-          description: |-
-            List of pronunciation rules. Rule can be either:
-                an alias rule: {'string_to_replace': 'a', 'type': 'alias', 'alias': 'b', }
-                or a phoneme rule: {'string_to_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
-      required:
-        - rules
-      title: >-
-        Body_Add_rules_to_the_pronunciation_dictionary_v1_pronunciation_dictionaries__pronunciation_dictionary_id__add_rules_post
-    PronunciationDictionaryRulesResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the pronunciation dictionary.
-        version_id:
-          type: string
-          description: The version ID of the pronunciation dictionary.
-        version_rules_num:
-          type: integer
-          description: The number of rules in the version of the pronunciation dictionary.
-      required:
-        - id
-        - version_id
-        - version_rules_num
-      title: PronunciationDictionaryRulesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `pronunciation_dictionary_id` (string, required) — The id of the pronunciation dictionary
+
+### Body (application/json)
+
+- `rules` (list of object or object, required) — List of pronunciation rules. Rule can be either: an alias rule: \{'string\_to\_replace': 'a', 'type': 'alias', 'alias': 'b', } or a phoneme rule: \{'string\_to\_replace': 'a', 'type': 'phoneme', 'phoneme': 'b', 'alphabet': 'ipa' }
+  - PronunciationDictionaryAliasRuleRequestModel
+    - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
+    - `type` ("alias", required) — The type of the rule.
+    - `alias` (string, required) — The alias for the string to be replaced.
+    - `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
+    - `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
+  - PronunciationDictionaryPhonemeRuleRequestModel
+    - `string_to_replace` (string, required) — The string to replace. Must be a non-empty string.
+    - `type` ("phoneme", required) — The type of the rule.
+    - `phoneme` (string, required) — The phoneme rule.
+    - `alphabet` (string, required) — The alphabet to use with the phoneme rule.
+    - `case_sensitive` (boolean, optional, default: true) — Whether the rule should match case-sensitively.
+    - `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required) — The ID of the pronunciation dictionary.
+- `version_id` (string, required) — The version ID of the pronunciation dictionary.
+- `version_rules_num` (integer, required) — The number of rules in the version of the pronunciation dictionary.
 
 ## Examples
-
-
 
 **Request**
 

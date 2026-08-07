@@ -14,104 +14,30 @@ Returns a compressed archive of the Studio project's audio.
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/archive-snapshot
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/snapshots/{project_snapshot_id}/archive:
-    post:
-      operationId: stream_archive
-      summary: Stream Archive With Studio Project Audio
-      description: Returns a compressed archive of the Studio project's audio.
-      tags:
-        - snapshots
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: project_snapshot_id
-          in: path
-          description: The ID of the Studio project snapshot.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Streaming archive data
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+- `project_snapshot_id` (string, required) — The ID of the Studio project snapshot.
+
+## Response
+
+### 200
+
+Streaming archive data
+
+- File download.
 
 ## Examples
-
-
 
 **SDK Code**
 

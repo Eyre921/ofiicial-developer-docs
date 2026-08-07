@@ -14,215 +14,52 @@ Get metadata for a pronunciation dictionary
 
 Reference: https://elevenlabs.io/docs/api-reference/pronunciation-dictionaries/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/pronunciation-dictionaries/{pronunciation_dictionary_id}:
-    get:
-      operationId: get
-      summary: Get pronunciation dictionary
-      description: Get metadata for a pronunciation dictionary
-      tags:
-        - pronunciationDictionaries
-      parameters:
-        - name: pronunciation_dictionary_id
-          in: path
-          description: The id of the pronunciation dictionary
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/GetPronunciationDictionaryWithRulesResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    GetPronunciationDictionaryWithRulesResponseModelPermissionOnResource:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The permission on the resource of the pronunciation dictionary.
-      title: GetPronunciationDictionaryWithRulesResponseModelPermissionOnResource
-    PronunciationDictionaryAliasRuleResponseModel:
-      type: object
-      properties:
-        string_to_replace:
-          type: string
-        case_sensitive:
-          type: boolean
-          default: true
-          description: Whether the rule matches case-sensitively.
-        word_boundaries:
-          type: boolean
-          default: true
-          description: Whether the rule only matches at word boundaries.
-        type:
-          type: string
-          enum:
-            - alias
-        alias:
-          type: string
-      required:
-        - string_to_replace
-        - type
-        - alias
-      title: PronunciationDictionaryAliasRuleResponseModel
-    PronunciationDictionaryPhonemeRuleResponseModel:
-      type: object
-      properties:
-        string_to_replace:
-          type: string
-        case_sensitive:
-          type: boolean
-          default: true
-          description: Whether the rule matches case-sensitively.
-        word_boundaries:
-          type: boolean
-          default: true
-          description: Whether the rule only matches at word boundaries.
-        type:
-          type: string
-          enum:
-            - phoneme
-        phoneme:
-          type: string
-        alphabet:
-          type: string
-      required:
-        - string_to_replace
-        - type
-        - phoneme
-        - alphabet
-      title: PronunciationDictionaryPhonemeRuleResponseModel
-    GetPronunciationDictionaryWithRulesResponseModelRulesItems:
-      oneOf:
-        - $ref: '#/components/schemas/PronunciationDictionaryAliasRuleResponseModel'
-        - $ref: '#/components/schemas/PronunciationDictionaryPhonemeRuleResponseModel'
-      title: GetPronunciationDictionaryWithRulesResponseModelRulesItems
-    GetPronunciationDictionaryWithRulesResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the pronunciation dictionary.
-        latest_version_id:
-          type: string
-          description: The ID of the latest version of the pronunciation dictionary.
-        latest_version_rules_num:
-          type: integer
-          description: >-
-            The number of rules in the latest version of the pronunciation
-            dictionary.
-        name:
-          type: string
-          description: The name of the pronunciation dictionary.
-        permission_on_resource:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/GetPronunciationDictionaryWithRulesResponseModelPermissionOnResource
-            - type: 'null'
-          description: The permission on the resource of the pronunciation dictionary.
-        created_by:
-          type: string
-          description: The user ID of the creator of the pronunciation dictionary.
-        creation_time_unix:
-          type: integer
-          description: The creation time of the pronunciation dictionary in Unix timestamp.
-        archived_time_unix:
-          type:
-            - integer
-            - 'null'
-          description: The archive time of the pronunciation dictionary in Unix timestamp.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the pronunciation dictionary.
-        rules:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/GetPronunciationDictionaryWithRulesResponseModelRulesItems
-          description: The rules in the latest version of the pronunciation dictionary.
-      required:
-        - id
-        - latest_version_id
-        - latest_version_rules_num
-        - name
-        - permission_on_resource
-        - created_by
-        - creation_time_unix
-        - rules
-      title: GetPronunciationDictionaryWithRulesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `pronunciation_dictionary_id` (string, required) — The id of the pronunciation dictionary
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required) — The ID of the pronunciation dictionary.
+- `latest_version_id` (string, required) — The ID of the latest version of the pronunciation dictionary.
+- `latest_version_rules_num` (integer, required) — The number of rules in the latest version of the pronunciation dictionary.
+- `name` (string, required) — The name of the pronunciation dictionary.
+- `permission_on_resource` (enum, required, nullable) — The permission on the resource of the pronunciation dictionary.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `created_by` (string, required) — The user ID of the creator of the pronunciation dictionary.
+- `creation_time_unix` (integer, required) — The creation time of the pronunciation dictionary in Unix timestamp.
+- `rules` (list of object or object, required) — The rules in the latest version of the pronunciation dictionary.
+  - PronunciationDictionaryAliasRuleResponseModel
+    - `string_to_replace` (string, required)
+    - `type` ("alias", required)
+    - `alias` (string, required)
+    - `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
+    - `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
+  - PronunciationDictionaryPhonemeRuleResponseModel
+    - `string_to_replace` (string, required)
+    - `type` ("phoneme", required)
+    - `phoneme` (string, required)
+    - `alphabet` (string, required)
+    - `case_sensitive` (boolean, optional, default: true) — Whether the rule matches case-sensitively.
+    - `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
+- `archived_time_unix` (integer, optional, nullable) — The archive time of the pronunciation dictionary in Unix timestamp.
+- `description` (string, optional, nullable) — The description of the pronunciation dictionary.
 
 ## Examples
-
-
 
 **Response**
 

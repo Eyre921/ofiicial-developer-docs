@@ -15,143 +15,34 @@ Finds an AudioNative project matching the provided URL, extracts content from th
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-native/update-content-from-url
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-native/content:
-    post:
-      operationId: update_content_from_url
-      summary: Update Audio-Native Content From Url
-      description: >-
-        Finds an AudioNative project matching the provided URL, extracts content
-        from the URL, updates the project content, and queues it for conversion
-        and auto-publishing.
-      tags:
-        - audioNative
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AudioNativeEditContentResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Update_audio_native_content_from_URL_v1_audio_native_content_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Update_audio_native_content_from_URL_v1_audio_native_content_post:
-      type: object
-      properties:
-        url:
-          type: string
-          description: URL of the page to extract content from.
-        author:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Author used in the player and inserted at the start of the uploaded
-            article. If not provided, the default author set in the Player
-            settings is used.
-        title:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Title used in the player and inserted at the top of the uploaded
-            article. If not provided, the default title set in the Player
-            settings is used.
-      required:
-        - url
-      title: Body_Update_audio_native_content_from_URL_v1_audio_native_content_post
-    AudioNativeEditContentResponseModel:
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: The ID of the project.
-        converting:
-          type: boolean
-          description: Whether the project is currently being converted.
-        publishing:
-          type: boolean
-          description: Whether the project is currently being published.
-        html_snippet:
-          type: string
-          description: The HTML snippet to embed the Audio Native player.
-      required:
-        - project_id
-        - converting
-        - publishing
-        - html_snippet
-      title: AudioNativeEditContentResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `url` (string, required) — URL of the page to extract content from.
+- `author` (string, optional, nullable) — Author used in the player and inserted at the start of the uploaded article. If not provided, the default author set in the Player settings is used.
+- `title` (string, optional, nullable) — Title used in the player and inserted at the top of the uploaded article. If not provided, the default title set in the Player settings is used.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `project_id` (string, required) — The ID of the project.
+- `converting` (boolean, required) — Whether the project is currently being converted.
+- `publishing` (boolean, required) — Whether the project is currently being published.
+- `html_snippet` (string, required) — The HTML snippet to embed the Audio Native player.
 
 ## Examples
-
-
 
 **Request**
 

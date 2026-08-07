@@ -17,145 +17,34 @@ Creates a new API key with specified settings for the project
 
 Reference: https://developers.deepgram.com/reference/manage/keys/create
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/keys:
-    post:
-      operationId: create
-      summary: Create a Project Key
-      description: Creates a new API key with specified settings for the project
-      tags:
-        - keys
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: API key created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateKeyV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: API key settings
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateKeyV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    CreateKeyV1Request:
-      oneOf:
-        - description: Any type
-        - description: Any type
-      title: CreateKeyV1Request
-    CreateKeyV1Response:
-      type: object
-      properties:
-        api_key_id:
-          type: string
-          description: The unique identifier of the API key
-        key:
-          type: string
-          description: The API key
-        comment:
-          type: string
-          description: A comment for the API key
-        scopes:
-          type: array
-          items:
-            type: string
-          description: The scopes for the API key
-        tags:
-          type: array
-          items:
-            type: string
-          description: The tags for the API key
-        expiration_date:
-          type: string
-          format: date-time
-          description: The expiration date of the API key
-      description: API key created
-      title: CreateKeyV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Body (application/json)
+
+- `any or any`
+
+## Response
+
+### 200
+
+API key created successfully
+
+- `api_key_id` (string, optional) — The unique identifier of the API key
+- `key` (string, optional) — The API key
+- `comment` (string, optional) — A comment for the API key
+- `scopes` (list of string, optional) — The scopes for the API key
+- `tags` (list of string, optional) — The tags for the API key
+- `expiration_date` (string, optional) — The expiration date of the API key
 
 ## Examples
-
-
 
 **Request**
 

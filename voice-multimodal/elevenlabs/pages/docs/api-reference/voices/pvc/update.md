@@ -15,135 +15,36 @@ Edit PVC voice metadata
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}:
-    post:
-      operationId: update
-      summary: Edit Pvc Voice
-      description: Edit PVC voice metadata
-      tags:
-        - pvc
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddVoiceResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Edit_PVC_voice_v1_voices_pvc__voice_id__post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Edit_PVC_voice_v1_voices_pvc__voice_id__post:
-      type: object
-      properties:
-        name:
-          type: string
-          description: >-
-            The name that identifies this voice. This will be displayed in the
-            dropdown of the website.
-        language:
-          type: string
-          description: Language used in the samples.
-        description:
-          type:
-            - string
-            - 'null'
-          description: Description to use for the created voice.
-        labels:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-          description: Labels for the voice. Keys can be language, accent, gender, or age.
-      title: Body_Edit_PVC_voice_v1_voices_pvc__voice_id__post
-    AddVoiceResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-      required:
-        - voice_id
-      title: AddVoiceResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+
+### Body (application/json)
+
+- `name` (string, optional) — The name that identifies this voice. This will be displayed in the dropdown of the website.
+- `language` (string, optional) — Language used in the samples.
+- `description` (string, optional, nullable) — Description to use for the created voice.
+- `labels` (map from string to string, optional, nullable) — Labels for the voice. Keys can be language, accent, gender, or age.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voice_id` (string, required) — The ID of the voice.
 
 ## Examples
-
-
 
 **Request**
 

@@ -14,275 +14,54 @@ Returns a list of your agents and their metadata.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents:
-    get:
-      operationId: list
-      summary: List Agents
-      description: Returns a list of your agents and their metadata.
-      tags:
-        - agents
-      parameters:
-        - name: page_size
-          in: query
-          description: >-
-            How many Agents to return at maximum. Can not exceed 100, defaults
-            to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: search
-          in: query
-          description: Search by agents name.
-          required: false
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Filter agents by archived status
-          required: false
-          schema:
-            type: boolean
-        - name: show_only_owned_agents
-          in: query
-          description: >-
-            If set to true, the endpoint will omit any agents that were shared
-            with you by someone else and include only the ones you own.
-            Deprecated: use created_by_user_id instead.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: created_by_user_id
-          in: query
-          description: >-
-            Filter agents by creator user ID. When set, only agents created by
-            this user are returned. Takes precedence over
-            show_only_owned_agents. Use '@me' to refer to the authenticated
-            user.
-          required: false
-          schema:
-            type: string
-        - name: sort_direction
-          in: query
-          description: The direction to sort the results
-          required: false
-          schema:
-            $ref: '#/components/schemas/type_:SortDirection'
-        - name: sort_by
-          in: query
-          description: The field to sort the results by
-          required: false
-          schema:
-            $ref: '#/components/schemas/type_:AgentSortBy'
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetAgentsPageResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:SortDirection:
-      type: string
-      enum:
-        - asc
-        - desc
-      title: SortDirection
-    type_:AgentSortBy:
-      type: string
-      enum:
-        - name
-        - created_at
-        - call_count_7d
-      title: AgentSortBy
-    type_:ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    type_:ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    type_:ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      title: ResourceAccessInfoAccessSource
-    type_:ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          $ref: >-
-            #/components/schemas/type_:ResourceAccessInfoAnonymousAccessLevelOverride
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoAccessSource'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    type_:AgentSummaryResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        name:
-          type: string
-          description: The name of the agent
-        tags:
-          type: array
-          items:
-            type: string
-          description: Agent tags used to categorize the agent
-        created_at_unix_secs:
-          type: integer
-          description: The creation time of the agent in unix seconds
-        access_info:
-          $ref: '#/components/schemas/type_:ResourceAccessInfo'
-          description: The access information of the agent
-        last_call_time_unix_secs:
-          type: integer
-          description: >-
-            The time of the most recent call in unix seconds, null if no calls
-            have been made
-        archived:
-          type: boolean
-          default: false
-          description: Whether the agent is archived
-      required:
-        - agent_id
-        - name
-        - tags
-        - created_at_unix_secs
-        - access_info
-      title: AgentSummaryResponseModel
-    type_:GetAgentsPageResponseModel:
-      type: object
-      properties:
-        agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentSummaryResponseModel'
-          description: A list of agents and their metadata
-        next_cursor:
-          type: string
-          description: The next cursor to paginate through the agents
-        has_more:
-          type: boolean
-          description: Whether there are more agents to paginate through
-      required:
-        - agents
-        - has_more
-      title: GetAgentsPageResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 30) — How many Agents to return at maximum. Can not exceed 100, defaults to 30.
+- `search` (string, optional) — Search by agents name.
+- `archived` (boolean, optional) — Filter agents by archived status
+- `show_only_owned_agents` (boolean, optional, default: false, deprecated) — If set to true, the endpoint will omit any agents that were shared with you by someone else and include only the ones you own. Deprecated: use created_by_user_id instead.
+- `created_by_user_id` (string, optional) — Filter agents by creator user ID. When set, only agents created by this user are returned. Takes precedence over show_only_owned_agents. Use '@me' to refer to the authenticated user.
+- `sort_direction` (enum, optional) — The direction to sort the results
+  - Allowed values: `asc`, `desc`
+- `sort_by` (enum, optional) — The field to sort the results by
+  - Allowed values: `name`, `created_at`, `call_count_7d`
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `agents` (list of object, required) — A list of agents and their metadata
+  - `agent_id` (string, required) — The ID of the agent
+  - `name` (string, required) — The name of the agent
+  - `tags` (list of string, required) — Agent tags used to categorize the agent
+  - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+  - `access_info` (object, required) — The access information of the agent
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+  - `last_call_time_unix_secs` (integer, optional) — The time of the most recent call in unix seconds, null if no calls have been made
+  - `archived` (boolean, optional, default: false) — Whether the agent is archived
+- `has_more` (boolean, required) — Whether there are more agents to paginate through
+- `next_cursor` (string, optional) — The next cursor to paginate through the agents
 
 ## Examples
 

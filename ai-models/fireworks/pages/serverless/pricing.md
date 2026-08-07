@@ -78,4 +78,4 @@ Embeddings are billed per 1M input tokens.
 ## Notes
 
 * [US-only Serverless](/serverless/us-only-serverless) endpoints are priced at a 10% premium to the base model serverless prices, except GLM 5.2 Fast US, which matches global GLM 5.2 Fast pricing.
-* For account-level controls (spend tiers, monthly budget, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).
+* For account-level controls (spend tiers, monthly spend limits, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).

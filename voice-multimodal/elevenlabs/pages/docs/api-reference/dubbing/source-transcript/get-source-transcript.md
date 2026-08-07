@@ -14,149 +14,37 @@ The project's source transcript, as editable segments.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/transcript:
-    get:
-      operationId: get
-      summary: Get Dubbing Transcript
-      description: The project's source transcript, as editable segments.
-      tags:
-        - transcript
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingSourceTranscriptResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingTranscriptSegment:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Stable identifier of the segment.
-        text:
-          type: string
-          description: The transcribed text of the segment.
-        speaker_id:
-          type: string
-          description: Identifier of the segment's speaker.
-        start_s:
-          type: number
-          format: double
-          description: Start time of the segment, in seconds.
-        end_s:
-          type: number
-          format: double
-          description: End time of the segment, in seconds.
-        external_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The caller-supplied external id for this segment, if one was
-            provided.
-      required:
-        - id
-        - text
-        - speaker_id
-        - start_s
-        - end_s
-      description: One segment of a source transcript.
-      title: DubbingTranscriptSegment
-    DubbingSourceTranscriptResponse:
-      type: object
-      properties:
-        language:
-          type:
-            - string
-            - 'null'
-          description: BCP-47 language tag of the source transcript (null if unknown).
-        segments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingTranscriptSegment'
-          description: The source segments, in playback order.
-        revision:
-          type: integer
-          description: The project's source-transcript revision at read time.
-      required:
-        - segments
-        - revision
-      title: DubbingSourceTranscriptResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `segments` (list of object, required) — The source segments, in playback order.
+  - `id` (string, required) — Stable identifier of the segment.
+  - `text` (string, required) — The transcribed text of the segment.
+  - `speaker_id` (string, required) — Identifier of the segment's speaker.
+  - `start_s` (double, required) — Start time of the segment, in seconds.
+  - `end_s` (double, required) — End time of the segment, in seconds.
+  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+- `revision` (integer, required) — The project's source-transcript revision at read time.
+- `language` (string, optional, nullable) — BCP-47 language tag of the source transcript (null if unknown).
 
 ## Examples
-
-
 
 **Response**
 

@@ -16,195 +16,53 @@ Returns metadata on all the latest models that a specific project has access to,
 
 Reference: https://developers.deepgram.com/reference/manage/projects/models/list
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/models:
-    get:
-      operationId: list
-      summary: List Project Models
-      description: >-
-        Returns metadata on all the latest models that a specific project has
-        access to, including non-public models
-      tags:
-        - models
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: include_outdated
-          in: query
-          description: returns non-latest versions of models
-          required: false
-          schema:
-            type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of models
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListModelsV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ListModelsV1ResponseSttModels:
-      type: object
-      properties:
-        name:
-          type: string
-        canonical_name:
-          type: string
-        architecture:
-          type: string
-        languages:
-          type: array
-          items:
-            type: string
-        version:
-          type: string
-        uuid:
-          type: string
-        batch:
-          type: boolean
-        streaming:
-          type: boolean
-        formatted_output:
-          type: boolean
-      title: ListModelsV1ResponseSttModels
-    ListModelsV1ResponseTtsModelsMetadata:
-      type: object
-      properties:
-        accent:
-          type: string
-        age:
-          type: string
-        color:
-          type: string
-        image:
-          type: string
-          format: uri
-        sample:
-          type: string
-          format: uri
-        tags:
-          type: array
-          items:
-            type: string
-        use_cases:
-          type: array
-          items:
-            type: string
-      title: ListModelsV1ResponseTtsModelsMetadata
-    ListModelsV1ResponseTtsModels:
-      type: object
-      properties:
-        name:
-          type: string
-        canonical_name:
-          type: string
-        architecture:
-          type: string
-        languages:
-          type: array
-          items:
-            type: string
-        version:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-        metadata:
-          $ref: '#/components/schemas/ListModelsV1ResponseTtsModelsMetadata'
-      title: ListModelsV1ResponseTtsModels
-    ListModelsV1Response:
-      type: object
-      properties:
-        stt:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListModelsV1ResponseSttModels'
-        tts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListModelsV1ResponseTtsModels'
-      title: ListModelsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `include_outdated` (boolean, optional) — returns non-latest versions of models
+
+## Response
+
+### 200
+
+A list of models
+
+- `stt` (list of object, optional)
+  - `name` (string, optional)
+  - `canonical_name` (string, optional)
+  - `architecture` (string, optional)
+  - `languages` (list of string, optional)
+  - `version` (string, optional)
+  - `uuid` (string, optional)
+  - `batch` (boolean, optional)
+  - `streaming` (boolean, optional)
+  - `formatted_output` (boolean, optional)
+- `tts` (list of object, optional)
+  - `name` (string, optional)
+  - `canonical_name` (string, optional)
+  - `architecture` (string, optional)
+  - `languages` (list of string, optional)
+  - `version` (string, optional)
+  - `uuid` (string, optional)
+  - `metadata` (object, optional)
+    - `accent` (string, optional)
+    - `age` (string, optional)
+    - `color` (string, optional)
+    - `image` (string, optional)
+    - `sample` (string, optional)
+    - `tags` (list of string, optional)
+    - `use_cases` (list of string, optional)
 
 ## Examples
-
-
 
 **Response**
 

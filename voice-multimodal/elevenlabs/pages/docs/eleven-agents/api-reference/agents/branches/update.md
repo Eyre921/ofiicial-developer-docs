@@ -15,284 +15,81 @@ Update agent branch properties such as archiving status and protection level
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{branch_id}:
-    patch:
-      operationId: update
-      summary: Update Agent Branch
-      description: >-
-        Update agent branch properties such as archiving status and protection
-        level
-      tags:
-        - branches
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: branch_id
-          in: path
-          description: Unique identifier for the branch.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:AgentBranchResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: New name for the branch. Must be unique within the agent.
-                is_archived:
-                  type: boolean
-                  description: Whether the branch should be archived
-                protection_status:
-                  $ref: '#/components/schemas/type_:BranchProtectionStatus'
-                  description: The protection level for the branch
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:BranchProtectionStatus:
-      type: string
-      enum:
-        - writer_perms_required
-        - admin_perms_required
-      default: writer_perms_required
-      title: BranchProtectionStatus
-    type_:ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    type_:ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    type_:ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      title: ResourceAccessInfoAccessSource
-    type_:ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          $ref: >-
-            #/components/schemas/type_:ResourceAccessInfoAnonymousAccessLevelOverride
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoAccessSource'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    type_:AgentBranchBasicInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      required:
-        - id
-        - name
-      title: AgentBranchBasicInfo
-    type_:AgentVersionParents:
-      type: object
-      properties:
-        in_branch_parent_id:
-          type: string
-        out_of_branch_parent_id:
-          type: string
-        merged_into_branch_id:
-          type: string
-        merged_from_branch_id:
-          type: string
-        merged_from_version_id:
-          type: string
-        rebased_from_version_id:
-          type: string
-      title: AgentVersionParents
-    type_:AgentVersionMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-        agent_id:
-          type: string
-        branch_id:
-          type: string
-        version_description:
-          type: string
-        seq_no_in_branch:
-          type: integer
-        time_committed_secs:
-          type: integer
-        parents:
-          $ref: '#/components/schemas/type_:AgentVersionParents'
-        access_info:
-          $ref: '#/components/schemas/type_:ResourceAccessInfo'
-      required:
-        - id
-        - agent_id
-        - branch_id
-        - version_description
-        - seq_no_in_branch
-        - time_committed_secs
-        - parents
-      title: AgentVersionMetadata
-    type_:AgentBranchResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        agent_id:
-          type: string
-        description:
-          type: string
-        created_at:
-          type: integer
-        last_committed_at:
-          type: integer
-        is_archived:
-          type: boolean
-        protection_status:
-          $ref: '#/components/schemas/type_:BranchProtectionStatus'
-        access_info:
-          $ref: '#/components/schemas/type_:ResourceAccessInfo'
-          description: Access information for the branch
-        current_live_percentage:
-          type: number
-          format: double
-          default: 0
-          description: Percentage of traffic live on the branch
-        parent_branch:
-          $ref: '#/components/schemas/type_:AgentBranchBasicInfo'
-          description: Parent branch of the branch
-        most_recent_versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentVersionMetadata'
-          description: Most recent versions on the branch
-      required:
-        - id
-        - name
-        - agent_id
-        - description
-        - created_at
-        - last_committed_at
-        - is_archived
-      title: AgentBranchResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+- `branch_id` (string, required) — Unique identifier for the branch.
+
+### Body (application/json)
+
+- `name` (string, optional) — New name for the branch. Must be unique within the agent.
+- `is_archived` (boolean, optional) — Whether the branch should be archived
+- `protection_status` (enum, optional, default: writer_perms_required) — The protection level for the branch
+  - Allowed values: `writer_perms_required`, `admin_perms_required`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `name` (string, required)
+- `agent_id` (string, required)
+- `description` (string, required)
+- `created_at` (integer, required)
+- `last_committed_at` (integer, required)
+- `is_archived` (boolean, required)
+- `protection_status` (enum, optional, default: writer_perms_required)
+  - Allowed values: `writer_perms_required`, `admin_perms_required`
+- `access_info` (object, optional) — Access information for the branch
+  - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+  - `creator_name` (string, required) — Name of the agent's creator
+  - `creator_email` (string, required) — Email of the agent's creator
+  - `role` (enum, required) — The role of the user making the request
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+    - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+- `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
+- `parent_branch` (object, optional) — Parent branch of the branch
+  - `id` (string, required)
+  - `name` (string, required)
+- `most_recent_versions` (list of object, optional) — Most recent versions on the branch
+  - `id` (string, required)
+  - `agent_id` (string, required)
+  - `branch_id` (string, required)
+  - `version_description` (string, required)
+  - `seq_no_in_branch` (integer, required)
+  - `time_committed_secs` (integer, required)
+  - `parents` (object, required)
+    - `in_branch_parent_id` (string, optional)
+    - `out_of_branch_parent_id` (string, optional)
+    - `merged_into_branch_id` (string, optional)
+    - `merged_from_branch_id` (string, optional)
+    - `merged_from_version_id` (string, optional)
+    - `rebased_from_version_id` (string, optional)
+  - `access_info` (object, optional)
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
 
 ## Examples
 

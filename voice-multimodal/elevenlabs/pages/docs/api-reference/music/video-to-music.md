@@ -15,162 +15,38 @@ Generate background music from one or more video files. Videos are combined in o
 
 Reference: https://elevenlabs.io/docs/api-reference/music/video-to-music
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/music/video-to-music:
-    post:
-      operationId: video_to_music
-      summary: Video To Music
-      description: >-
-        Generate background music from one or more video files. Videos are
-        combined in order. Optional description and style tags influence the
-        generated music.
-      tags:
-        - music
-      parameters:
-        - name: output_format
-          in: query
-          description: >-
-            Output format of the generated audio. Formatted as
-            codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at
-            32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate
-            requires you to be subscribed to Creator tier or above. PCM with
-            44.1kHz sample rate requires you to be subscribed to Pro tier or
-            above. Note that the μ-law format (sometimes written mu-law, often
-            approximated as u-law) is commonly used for Twilio audio inputs.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AllowedOutputFormats'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >-
-            Generated audio file matching the video. Content-Type and file
-            extension depend on the output_format parameter (default mp3).
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '403':
-          description: Subscription required.
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation error (e.g. invalid or missing videos).
-          content:
-            application/json:
-              schema:
-                description: Any type
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                videos:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-                  description: |2-
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-                                One or more video files sent via FormData array (multipart/form-data). They will be combined into one codec in order.
-                                A maximum of 10 videos is allowed, where the total size of the combined video is limited to 200MB.
-                                In total, the video can be up to 600 seconds long. Note that combining multiple videos may increase the request duration significantly. If possible, combine the videos beforehand.
-                                
-                description:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    Optional text description of the music you want. A maximum
-                    of 1000 characters is allowed.
-                tags:
-                  type: array
-                  items:
-                    type: string
-                  default: []
-                  description: >-
-                    Optional list of style tags (e.g. ['upbeat', 'cinematic']).
-                    A maximum of 10 tags is allowed.
-                model_id:
-                  $ref: >-
-                    #/components/schemas/V1MusicVideoToMusicPostRequestBodyContentMultipartFormDataSchemaModelId
-                  default: music_v1
-                  description: The model to use for the generation.
-                sign_with_c2pa:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to sign the generated song with C2PA. Applicable
-                    only for mp3 files.
-              required:
-                - videos
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AllowedOutputFormats:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_24000_48
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_32000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-        - alaw_8000
-        - opus_48000_32
-        - opus_48000_64
-        - opus_48000_96
-        - opus_48000_128
-        - opus_48000_192
-      title: AllowedOutputFormats
-    V1MusicVideoToMusicPostRequestBodyContentMultipartFormDataSchemaModelId:
-      type: string
-      enum:
-        - music_v1
-        - music_v2
-      default: music_v1
-      description: The model to use for the generation.
-      title: V1MusicVideoToMusicPostRequestBodyContentMultipartFormDataSchemaModelId
+## Request
 
-```
+### Query parameters
+
+- `output_format` (enum, optional) — Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
+  - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`, `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_32000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`, `alaw_8000`, `opus_48000_32`, `opus_48000_64`, `opus_48000_96`, `opus_48000_128`, `opus_48000_192`
+
+### Body (multipart/form-data)
+
+- `videos` (files, required) — One or more video files sent via FormData array (multipart/form-data). They will be combined into one codec in order. A maximum of 10 videos is allowed, where the total size of the combined video is limited to 200MB. In total, the video can be up to 600 seconds long. Note that combining multiple videos may increase the request duration significantly. If possible, combine the videos beforehand.
+- `description` (string, optional) — Optional text description of the music you want. A maximum of 1000 characters is allowed.
+- `tags` (list of string, optional) — Optional list of style tags (e.g. ['upbeat', 'cinematic']). A maximum of 10 tags is allowed.
+- `model_id` (enum, optional) — The model to use for the generation.
+- `sign_with_c2pa` (boolean, optional) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.
+
+## Response
+
+### 200
+
+Generated audio file matching the video. Content-Type and file extension depend on the output_format parameter (default mp3).
+
+- File download.
 
 ## Examples
-
-
 
 **Request**
 

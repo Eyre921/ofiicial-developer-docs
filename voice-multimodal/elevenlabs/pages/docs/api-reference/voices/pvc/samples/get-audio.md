@@ -14,141 +14,38 @@ Retrieve the first 30 seconds of voice sample audio with or without noise remova
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/get-audio
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/samples/{sample_id}/audio:
-    get:
-      operationId: get
-      summary: Retrieve Voice Sample Audio
-      description: >-
-        Retrieve the first 30 seconds of voice sample audio with or without
-        noise removal.
-      tags:
-        - audio
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: sample_id
-          in: path
-          description: Sample ID to be used
-          required: true
-          schema:
-            type: string
-        - name: remove_background_noise
-          in: query
-          description: >-
-            If set will remove background noise for voice samples using our
-            audio isolation model. If the samples do not include background
-            noise, it can make the quality worse.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoiceSamplePreviewResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    VoiceSamplePreviewResponseModel:
-      type: object
-      properties:
-        audio_base_64:
-          type: string
-          description: The base64 encoded audio.
-        voice_id:
-          type: string
-          description: The ID of the voice.
-        sample_id:
-          type: string
-          description: The ID of the sample.
-        media_type:
-          type: string
-          description: The media type of the audio.
-        duration_secs:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The duration of the audio in seconds.
-      required:
-        - audio_base_64
-        - voice_id
-        - sample_id
-        - media_type
-      title: VoiceSamplePreviewResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+- `sample_id` (string, required) — Sample ID to be used
+
+### Query parameters
+
+- `remove_background_noise` (boolean, optional, default: false) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `audio_base_64` (string, required) — The base64 encoded audio.
+- `voice_id` (string, required) — The ID of the voice.
+- `sample_id` (string, required) — The ID of the sample.
+- `media_type` (string, required) — The media type of the audio.
+- `duration_secs` (double, optional, nullable) — The duration of the audio in seconds.
 
 ## Examples
-
-
 
 **Response**
 

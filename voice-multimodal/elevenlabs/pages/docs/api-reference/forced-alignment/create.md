@@ -15,188 +15,39 @@ Force align an audio file to text. Use this endpoint to get the timing informati
 
 Reference: https://elevenlabs.io/docs/api-reference/forced-alignment/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/forced-alignment:
-    post:
-      operationId: create
-      summary: Create Forced Alignment
-      description: >-
-        Force align an audio file to text. Use this endpoint to get the timing
-        information for each character and word in an audio file based on a
-        provided text transcript.
-      tags:
-        - forcedAlignment
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForcedAlignmentResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    The file to align. All major audio formats are supported.
-                    The file size must be less than 1GB.
-                text:
-                  type: string
-                  description: >-
-                    The text to align with the audio. The input text can be in
-                    any format, however diarization is not supported at this
-                    time.
-              required:
-                - file
-                - text
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ForcedAlignmentCharacterResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The character that was transcribed.
-        start:
-          type: number
-          format: double
-          description: The start time of the character in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the character in seconds.
-      required:
-        - text
-        - start
-        - end
-      description: >-
-        Model representing a single character with its timing information from
-        the aligner.
-      title: ForcedAlignmentCharacterResponseModel
-    ForcedAlignmentWordResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The word that was transcribed.
-        start:
-          type: number
-          format: double
-          description: The start time of the word in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the word in seconds.
-        loss:
-          type: number
-          format: double
-          description: >-
-            The average alignment loss/confidence score for this word,
-            calculated from its constituent characters.
-      required:
-        - text
-        - start
-        - end
-        - loss
-      description: >-
-        Model representing a single word with its timing information from the
-        aligner.
-      title: ForcedAlignmentWordResponseModel
-    ForcedAlignmentResponseModel:
-      type: object
-      properties:
-        characters:
-          type: array
-          items:
-            $ref: '#/components/schemas/ForcedAlignmentCharacterResponseModel'
-          description: List of characters with their timing information.
-        words:
-          type: array
-          items:
-            $ref: '#/components/schemas/ForcedAlignmentWordResponseModel'
-          description: List of words with their timing information.
-        loss:
-          type: number
-          format: double
-          description: >-
-            The average alignment loss/confidence score for the entire
-            transcript, calculated from all characters.
-      required:
-        - characters
-        - words
-        - loss
-      description: Model representing the response from the aligner service.
-      title: ForcedAlignmentResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `file` (file, required) — The file to align. All major audio formats are supported. The file size must be less than 1GB.
+- `text` (string, required) — The text to align with the audio. The input text can be in any format, however diarization is not supported at this time.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `characters` (list of object, required) — List of characters with their timing information.
+  - `text` (string, required) — The character that was transcribed.
+  - `start` (double, required) — The start time of the character in seconds.
+  - `end` (double, required) — The end time of the character in seconds.
+- `words` (list of object, required) — List of words with their timing information.
+  - `text` (string, required) — The word that was transcribed.
+  - `start` (double, required) — The start time of the word in seconds.
+  - `end` (double, required) — The end time of the word in seconds.
+  - `loss` (double, required) — The average alignment loss/confidence score for this word, calculated from its constituent characters.
+- `loss` (double, required) — The average alignment loss/confidence score for the entire transcript, calculated from all characters.
 
 ## Examples
-
-
 
 **Request**
 

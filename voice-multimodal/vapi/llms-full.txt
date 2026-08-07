@@ -112,14 +112,14 @@
 - [Retrieve call artifacts](https://docs.vapi.ai/assistants/retrieve-call-artifacts.md): How to download call recordings and logs from Vapi's private storage using your Private API Key and short-lived, authenticated redirect URLs.
 - [Outbound campaigns quickstart](https://docs.vapi.ai/outbound-campaigns/quickstart.md): Build a simple personalized outbound campaign that conducts post-service feedback and follow-up calls to improve customer experience
 - [Outbound campaigns overview](https://docs.vapi.ai/outbound-campaigns/overview.md): Learn how to efficiently schedule calls, manage recipients, analyze performance metrics, and review detailed call logs and transcripts with Vapi's Outbound Call Campaigns
-- [Chat quickstart](https://docs.vapi.ai/chat/quickstart.md): Build your first text-based conversation with a Vapi assistant in 5 minutes
-- [Streaming chat](https://docs.vapi.ai/chat/streaming.md): Build real-time chat experiences with token-by-token responses like ChatGPT
-- [Non-streaming chat](https://docs.vapi.ai/chat/non-streaming.md): Build reliable chat integrations with complete response patterns for batch processing and simple UIs
-- [OpenAI compatibility](https://docs.vapi.ai/chat/openai-compatibility.md): Seamlessly migrate existing OpenAI integrations to Vapi with zero code changes
-- [Session management](https://docs.vapi.ai/chat/session-management.md): Maintain conversation context using previousChatId vs sessionId
-- [Variable substitution in sessions](https://docs.vapi.ai/chat/variable-substitution.md): Learn how template variables behave with sessions and chats
-- [SMS chat](https://docs.vapi.ai/chat/sms-chat.md): Enable text-based conversations with assistants via SMS messaging
-- [Web widget](https://docs.vapi.ai/chat/web-widget.md): Add AI chat and voice capabilities to any website with a simple embeddable widget
+- [Chat quickstart](https://docs.vapi.ai/chat/quickstart.md): Create a text chat with a Vapi assistant, send messages through the Chat API, continue conversations, pass variables, and integrate with TypeScript apps.
+- [Streaming chat](https://docs.vapi.ai/chat/streaming.md): Build a streaming Vapi chat integration with server-sent events, display tokens as they arrive, and maintain context across real-time app conversations.
+- [Non-streaming chat](https://docs.vapi.ai/chat/non-streaming.md): Build a non-streaming Vapi chat integration that returns complete responses, maintains conversation context, and supports reliable request-response workflows.
+- [OpenAI compatibility](https://docs.vapi.ai/chat/openai-compatibility.md): Use Vapi through OpenAI-compatible chat interfaces, migrate existing integrations, and support streaming, non-streaming, and common JavaScript frameworks.
+- [Session management](https://docs.vapi.ai/chat/session-management.md): Manage Vapi chat context with previousChatId or sessionId, understand when to use each method, and build persistent multi-turn conversations safely at scale.
+- [Variable substitution in sessions](https://docs.vapi.ai/chat/variable-substitution.md): Use variable substitution in Vapi chat sessions, understand when values are resolved, and choose safe patterns for updating personalized conversation context.
+- [SMS chat](https://docs.vapi.ai/chat/sms-chat.md): Connect a 10DLC-approved Twilio number to a Vapi assistant, receive customer-initiated SMS messages, and maintain context through managed chat sessions.
+- [Web widget](https://docs.vapi.ai/chat/web-widget.md): Add Vapi's web widget to a website for voice and text conversations, configure its appearance and behavior, and meet pay-as-you-go chat access requirements.
 - [Workflows migration guide](https://docs.vapi.ai/workflows/legacy-migration.md): Migrate your Vapi Workflows to Squads before Workflows is retired on August 18, 2026.
 - [Workflows quickstart](https://docs.vapi.ai/workflows/quickstart.md): Build a simple agent that greets users and gathers basic information using Vapi workflows.
 - [Workflows overview](https://docs.vapi.ai/workflows/overview.md): Learn to create robust, deterministic conversation flows with a visual builder.
@@ -150,6 +150,7 @@
 - [Simulations quickstart](https://docs.vapi.ai/observability/simulations-quickstart.md): Test your AI assistants with realistic AI-powered callers
 - [Simulations advanced](https://docs.vapi.ai/observability/simulations-advanced.md): Master testing strategies and best practices for AI voice agent simulations
 - [Boards quickstart](https://docs.vapi.ai/observability/boards-quickstart.md): Create custom analytics dashboards in minutes
+- [Structured outputs](https://docs.vapi.ai/assistants/structured-outputs.md): Extract structured, schema-defined data from voice calls using AI-powered analysis. Covers field types, extraction timing, limitations, and HIPAA storage behavior.
 - [Structured outputs quickstart](https://docs.vapi.ai/assistants/structured-outputs-quickstart.md): Set up structured data extraction from calls in a few minutes. Create a schema, link it to an assistant, test extraction, and configure HIPAA-safe storage settings.
 - [Structured outputs examples](https://docs.vapi.ai/assistants/structured-outputs-examples.md): Real-world examples and templates for common use cases
 - [Scorecard quickstart](https://docs.vapi.ai/observability/scorecard-quickstart.md): Automatically grade calls against KPIs using structured outputs
@@ -162,6 +163,7 @@
 - [Chat Testing](https://docs.vapi.ai/test/chat-testing.md): Automated text-based testing for AI agents
 - [Voice Testing](https://docs.vapi.ai/test/voice-testing.md): Automated voice call testing for AI voice agents
 - [Frequently Asked Questions](https://docs.vapi.ai/faq.md): Frequently asked questions about Vapi.
+- [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices.
 - [Core Models](https://docs.vapi.ai/quickstart.md): Learn about the three core components to Vapi's voice AI pipeline.
 - [Voices (Text-to-speech)](https://docs.vapi.ai/providers/voice/overview.md): Find, preview, and use text-to-speech voices from any Vapi-supported provider, and look up a voiceId in the Vapi dashboard.
 - [Vapi Voices](https://docs.vapi.ai/providers/voice/vapi-voices.md): Our curated selection of high-quality voices

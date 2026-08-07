@@ -8,6 +8,6 @@ path: docs/help-center/legal/audio-detector/can-the-eleven-labs-audio-detector-b
 
 # Can the ElevenLabs Audio Detector be used to check audio from other AI platforms?
 
-No. The [ElevenLabs Audio Detector](https://elevenlabs.io/app/audio-detector) can only detect watermarks embedded by ElevenLabs. It will not detect SynthID watermarks applied by other partners such as Google, NVIDIA, or OpenAI.
+No. The [ElevenLabs Audio Detector](https://elevenlabs.io/app/audio-detector) can only detect watermarks embedded by ElevenLabs. It will not detect watermarks applied by other platforms.
 
-For more information, see [What is SynthID, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-synth-id-and-why-is-eleven-labs-using-it)
+For more information, see [What is watermarking, and why is ElevenLabs using it?](/docs/help-center/legal/audio-detector/what-is-watermarking-and-why-is-eleven-labs-using-it)

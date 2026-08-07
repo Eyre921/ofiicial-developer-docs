@@ -15,189 +15,43 @@ Create a crawl job to crawl the given URL with specified depth and page limits.
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-job
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/crawl:
-    post:
-      operationId: create
-      summary: Create Crawl Job
-      description: >-
-        Create a crawl job to crawl the given URL with specified depth and page
-        limits.
-      tags:
-        - crawlJobs
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateCrawlJobResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Create_crawl_job_v1_convai_knowledge_base_crawl_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Create_crawl_job_v1_convai_knowledge_base_crawl_post:
-      type: object
-      properties:
-        url:
-          type: string
-          description: >-
-            URL to a page of documentation that the agent will have access to in
-            order to interact with users.
-        max_depth:
-          type: integer
-          default: 3
-          description: Maximum depth for crawling (1-5), defaults to 3.
-        max_pages:
-          type: integer
-          default: 1000
-          description: Maximum number of pages to crawl (1-10,000), defaults to 1000.
-        pattern:
-          type:
-            - string
-            - 'null'
-          description: If set, only URLs that match this pattern are included.
-        sitemap_urls:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            List of URLs to crawl from sitemap (optional, overrides automatic
-            URL discovery).
-        parent_folder_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If set, the created document or folder will be placed inside the
-            given folder.
-        enable_auto_sync:
-          type: boolean
-          default: false
-          description: Whether to enable auto-sync for this URL document.
-        auto_remove:
-          type: boolean
-          default: false
-          description: >-
-            Whether to automatically remove the document if the URL becomes
-            unavailable. Only applicable when auto-sync is enabled.
-      required:
-        - url
-      title: Body_Create_crawl_job_v1_convai_knowledge_base_crawl_post
-    CrawlType:
-      type: string
-      enum:
-        - discovery
-        - sitemap
-      default: discovery
-      title: CrawlType
-    KnowledgeBaseFolderPathSegmentSummaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-        - id
-      title: KnowledgeBaseFolderPathSegmentSummaryResponseModel
-    CreateCrawlJobResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/CrawlType'
-        root_folder_id:
-          type: string
-        status:
-          type: string
-        created_at:
-          type: integer
-        folder_path:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-          description: >-
-            The folder path segments leading to the root folder, from root to
-            parent folder.
-      required:
-        - id
-        - type
-        - root_folder_id
-        - status
-        - created_at
-      title: CreateCrawlJobResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `url` (string, required) — URL to a page of documentation that the agent will have access to in order to interact with users.
+- `max_depth` (integer, optional, default: 3) — Maximum depth for crawling (1-5), defaults to 3.
+- `max_pages` (integer, optional, default: 1000) — Maximum number of pages to crawl (1-10,000), defaults to 1000.
+- `pattern` (string, optional, nullable) — If set, only URLs that match this pattern are included.
+- `sitemap_urls` (list of string, optional, nullable) — List of URLs to crawl from sitemap (optional, overrides automatic URL discovery).
+- `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
+- `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
+- `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `type` (enum, required, default: discovery)
+  - Allowed values: `discovery`, `sitemap`
+- `root_folder_id` (string, required)
+- `status` (string, required)
+- `created_at` (integer, required)
+- `folder_path` (list of object, optional) — The folder path segments leading to the root folder, from root to parent folder.
+  - `id` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

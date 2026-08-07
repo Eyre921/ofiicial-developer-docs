@@ -15,127 +15,39 @@ Merge a branch into a target branch
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/branches/merge
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge:
-    post:
-      operationId: merge
-      summary: Merge A Branch Into A Target Branch
-      description: Merge a branch into a target branch
-      tags:
-        - branches
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: source_branch_id
-          in: path
-          description: Unique identifier for the source branch to merge from.
-          required: true
-          schema:
-            type: string
-        - name: target_branch_id
-          in: query
-          description: The ID of the target branch to merge into.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Merge_a_branch_into_a_target_branch_v1_convai_agents__agent_id__branches__source_branch_id__merge_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Merge_a_branch_into_a_target_branch_v1_convai_agents__agent_id__branches__source_branch_id__merge_post:
-      type: object
-      properties:
-        archive_source_branch:
-          type: boolean
-          default: true
-          description: Whether to archive the source branch after merging
-        force:
-          type: boolean
-          default: false
-          description: >-
-            Force source branch changes onto the target, overriding
-            timestamp-based conflict resolution
-      title: >-
-        Body_Merge_a_branch_into_a_target_branch_v1_convai_agents__agent_id__branches__source_branch_id__merge_post
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+- `source_branch_id` (string, required) — Unique identifier for the source branch to merge from.
+
+### Query parameters
+
+- `target_branch_id` (string, required) — The ID of the target branch to merge into.
+
+### Body (application/json)
+
+- `archive_source_branch` (boolean, optional, default: true) — Whether to archive the source branch after merging
+- `force` (boolean, optional, default: false) — Force source branch changes onto the target, overriding timestamp-based conflict resolution
+
+## Response
+
+### 200
+
+Successful Response
+
+- `any`
 
 ## Examples
-
-
 
 **Request**
 

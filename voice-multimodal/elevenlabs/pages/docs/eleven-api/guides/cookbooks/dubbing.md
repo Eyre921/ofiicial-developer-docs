@@ -12,6 +12,8 @@ This guide shows you how to dub a media file into another language with the Dubb
 
 A dubbing project has two parts: a **project**, which holds one source of media and its transcript, and one or more **language targets**, each producing a dubbed output in a single language. You create a project, wait for its source to be transcribed, add a language, then download the finished dub.
 
+Languages are specified as BCP-47 tags, for example `es` or `fr-CA`. See the [supported languages and dialects](/docs/overview/capabilities/dubbing#supported-languages) for all accepted values.
+
 ## Using the Dubbing API
 
 #### Create an API key
@@ -172,6 +174,10 @@ produces more accurate translations. See [Refine and regenerate a
 dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate).
 
 ## Next steps
+
+#### [Bring your own transcript](/docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript)
+
+Create a project from an existing transcript and supply your own translations
 
 #### [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate)
 

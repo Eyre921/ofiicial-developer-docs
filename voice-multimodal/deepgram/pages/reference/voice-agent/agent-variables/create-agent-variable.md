@@ -17,166 +17,42 @@ Creates a new template variable. Variables follow the `DG_<VARIABLE_NAME>` namin
 
 Reference: https://developers.deepgram.com/reference/voice-agent/agent-variables/create-agent-variable
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/agent-variables:
-    post:
-      operationId: create
-      summary: Create an Agent Variable
-      description: >-
-        Creates a new template variable. Variables follow the
-        `DG_<VARIABLE_NAME>` naming format and can substitute any JSON value in
-        an agent configuration.
-      tags:
-        - variables
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Agent variable created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentVariableV1'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: Agent variable details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateAgentVariableV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    CreateAgentVariableV1Request:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The variable name, following the DG_<VARIABLE_NAME> format
-        value:
-          description: >-
-            The value to substitute. Can be any valid JSON type (string, number,
-            boolean, object, or array)
-        api_version:
-          type: integer
-          default: 1
-          description: API version. Defaults to 1
-      required:
-        - key
-        - value
-      description: Request body for creating an agent variable
-      title: CreateAgentVariableV1Request
-    AgentVariableV1:
-      type: object
-      properties:
-        variable_id:
-          type: string
-          description: The unique identifier of the variable
-        key:
-          type: string
-          description: The variable name, following the DG_<VARIABLE_NAME> format
-        value:
-          description: The value to substitute. Can be any valid JSON type
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the variable was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the variable was last updated
-      required:
-        - variable_id
-        - key
-        - value
-      description: A template variable for agent configurations
-      title: AgentVariableV1
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Body (application/json)
+
+- `key` (string, required) — The variable name, following the DG\_\<VARIABLE\_NAME> format
+- `value` (any, required) — The value to substitute. Can be any valid JSON type (string, number, boolean, object, or array)
+- `api_version` (integer, optional, default: 1) — API version. Defaults to 1
+
+## Response
+
+### 200
+
+Agent variable created successfully
+
+- `variable_id` (string, required) — The unique identifier of the variable
+- `key` (string, required) — The variable name, following the DG\_\<VARIABLE\_NAME> format
+- `value` (any, required) — The value to substitute. Can be any valid JSON type
+- `created_at` (string, optional) — Timestamp when the variable was created
+- `updated_at` (string, optional) — Timestamp when the variable was last updated
 
 ## Examples
-
-
 
 **Request**
 
 ```json
 {
-  "key": "string",
-  "value": null
+  "key": "DG_API_TIMEOUT",
+  "value": 30
 }
 ```
 
@@ -184,9 +60,9 @@ components:
 
 ```json
 {
-  "variable_id": "string",
-  "key": "string",
-  "value": null,
+  "variable_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "key": "DG_API_TIMEOUT",
+  "value": 30,
   "created_at": "2024-01-15T09:30:00Z",
   "updated_at": "2024-01-15T09:30:00Z"
 }
@@ -200,8 +76,8 @@ import requests
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
 payload = {
-    "key": "string",
-    "value": None
+    "key": "DG_API_TIMEOUT",
+    "value": 30
 }
 headers = {
     "Authorization": "Token <apiKey>",
@@ -218,7 +94,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"key":"string","value":null}'
+  body: '{"key":"DG_API_TIMEOUT","value":30}'
 };
 
 try {
@@ -244,7 +120,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
-	payload := strings.NewReader("{\n  \"key\": \"string\",\n  \"value\": null\n}")
+	payload := strings.NewReader("{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -274,7 +150,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"key\": \"string\",\n  \"value\": null\n}"
+request.body = "{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -287,7 +163,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"key\": \"string\",\n  \"value\": null\n}")
+  .body("{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}")
   .asString();
 ```
 
@@ -299,8 +175,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables', [
   'body' => '{
-  "key": "string",
-  "value": null
+  "key": "DG_API_TIMEOUT",
+  "value": 30
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -318,7 +194,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"key\": \"string\",\n  \"value\": null\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -330,8 +206,8 @@ let headers = [
   "Content-Type": "application/json"
 ]
 let parameters = [
-  "key": "string",
-  "value": 
+  "key": "DG_API_TIMEOUT",
+  "value": 30
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

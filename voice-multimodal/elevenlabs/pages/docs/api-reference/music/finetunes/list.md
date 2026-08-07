@@ -14,273 +14,55 @@ List music finetunes accessible to you (your own, workspace-shared, and ElevenLa
 
 Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/music/finetunes:
-    get:
-      operationId: list
-      summary: Get Music Finetunes
-      description: >-
-        List music finetunes accessible to you (your own, workspace-shared, and
-        ElevenLabs-curated), with optional filtering, sorting, and cursor
-        pagination.
-      tags:
-        - finetunes
-      parameters:
-        - name: cursor
-          in: query
-          description: Used for fetching the next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: How many finetunes to return. Max 100, default 50.
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: visibility
-          in: query
-          description: >-
-            Filter by visibility. 'private' returns private finetunes;
-            'workspace' returns workspace-shared finetunes; 'public' returns
-            public finetunes, which are currently ElevenLabs curated finetunes.
-            Omit to return all accessible finetunes.
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/FinetuneVisibility'
-              - type: 'null'
-        - name: created_by
-          in: query
-          description: >-
-            Filter by creator. 'self' returns finetunes you created; 'workspace'
-            returns finetunes created by workspace teammates; 'elevenlabs'
-            returns ElevenLabs curated finetunes. Omit to return finetunes from
-            all creators.
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/FinetuneCreatedBy'
-              - type: 'null'
-        - name: sort
-          in: query
-          description: Sort by field (created_at or name)
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1MusicFinetunesGetParametersSort'
-            default: created_at
-        - name: sort_direction
-          in: query
-          description: Sort direction (asc or desc)
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1MusicFinetunesGetParametersSortDirection'
-            default: desc
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MusicFinetunePageResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    FinetuneVisibility:
-      type: string
-      enum:
-        - private
-        - workspace
-        - public
-      title: FinetuneVisibility
-    FinetuneCreatedBy:
-      type: string
-      enum:
-        - self
-        - workspace
-        - elevenlabs
-      title: FinetuneCreatedBy
-    V1MusicFinetunesGetParametersSort:
-      type: string
-      enum:
-        - created_at
-        - name
-      default: created_at
-      description: Sort by field (created_at or name)
-      title: V1MusicFinetunesGetParametersSort
-    V1MusicFinetunesGetParametersSortDirection:
-      type: string
-      enum:
-        - asc
-        - desc
-      default: desc
-      description: Sort direction (asc or desc)
-      title: V1MusicFinetunesGetParametersSortDirection
-    MusicFinetuneStatus:
-      type: string
-      enum:
-        - pending
-        - in_progress
-        - completed
-        - failed
-        - blocked
-      title: MusicFinetuneStatus
-    MusicFinetuneFailureReason:
-      type: string
-      enum:
-        - audio_processing_failed
-        - copyright_violation
-        - training_failed
-      title: MusicFinetuneFailureReason
-    MusicFinetuneResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the finetune.
-        name:
-          type: string
-          description: Name of the finetune.
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags associated with the finetune.
-        primary_genre:
-          type:
-            - string
-            - 'null'
-          description: Primary musical genre of the finetune.
-        model_id:
-          type: string
-          description: The base music model the finetune was trained on.
-        created_at:
-          type: string
-          format: date-time
-          description: When the finetune was created (UTC).
-        visibility:
-          $ref: '#/components/schemas/FinetuneVisibility'
-          description: >-
-            Who can access this finetune: `private` (only you), `workspace`
-            (members of your workspace), `public` (ElevenLabs-curated, available
-            to everyone).
-        created_by:
-          $ref: '#/components/schemas/FinetuneCreatedBy'
-          description: 'Who created the finetune: `self`, `workspace`, or `elevenlabs`.'
-        status:
-          $ref: '#/components/schemas/MusicFinetuneStatus'
-          description: >-
-            Training lifecycle status: pending, in_progress, completed, failed,
-            and blocked.
-        training_progress:
-          type: number
-          format: double
-          description: Training progress from 0.0 to 1.0.
-        failure_reason:
-          oneOf:
-            - $ref: '#/components/schemas/MusicFinetuneFailureReason'
-            - type: 'null'
-          description: Reason the finetune failed or was blocked, if applicable.
-      required:
-        - id
-        - name
-        - tags
-        - model_id
-        - created_at
-        - visibility
-        - created_by
-        - status
-        - training_progress
-      title: MusicFinetuneResponseModel
-    MusicFinetunePageResponseModel:
-      type: object
-      properties:
-        finetunes:
-          type: array
-          items:
-            $ref: '#/components/schemas/MusicFinetuneResponseModel'
-          description: The finetunes in this page.
-        next_cursor:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Cursor to pass as `cursor` to fetch the next page; `null` when there
-            are no more results.
-        has_more:
-          type: boolean
-          description: Whether more finetunes are available beyond this page.
-      required:
-        - finetunes
-        - next_cursor
-        - has_more
-      title: MusicFinetunePageResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Used for fetching the next page. Cursor is returned in the response.
+- `page_size` (integer, optional, default: 50) — How many finetunes to return. Max 100, default 50.
+- `visibility` (enum, optional, nullable) — Filter by visibility. 'private' returns private finetunes; 'workspace' returns workspace-shared finetunes; 'public' returns public finetunes, which are currently ElevenLabs curated finetunes. Omit to return all accessible finetunes.
+  - Allowed values: `private`, `workspace`, `public`
+- `created_by` (enum, optional, nullable) — Filter by creator. 'self' returns finetunes you created; 'workspace' returns finetunes created by workspace teammates; 'elevenlabs' returns ElevenLabs curated finetunes. Omit to return finetunes from all creators.
+  - Allowed values: `self`, `workspace`, `elevenlabs`
+- `sort` (enum, optional, default: created_at) — Sort by field (created_at or name)
+  - Allowed values: `created_at`, `name`
+- `sort_direction` (enum, optional, default: desc) — Sort direction (asc or desc)
+  - Allowed values: `asc`, `desc`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `finetunes` (list of object, required) — The finetunes in this page.
+  - `id` (string, required) — Unique identifier of the finetune.
+  - `name` (string, required) — Name of the finetune.
+  - `tags` (list of string, required) — Tags associated with the finetune.
+  - `model_id` (string, required) — The base music model the finetune was trained on.
+  - `created_at` (string, required) — When the finetune was created (UTC).
+  - `visibility` (enum, required) — Who can access this finetune: `private` (only you), `workspace` (members of your workspace), `public` (ElevenLabs-curated, available to everyone).
+    - Allowed values: `private`, `workspace`, `public`
+  - `created_by` (enum, required) — Who created the finetune: `self`, `workspace`, or `elevenlabs`.
+    - Allowed values: `self`, `workspace`, `elevenlabs`
+  - `status` (enum, required) — Training lifecycle status: pending, in_progress, completed, failed, and blocked.
+    - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `blocked`
+  - `training_progress` (double, required) — Training progress from 0.0 to 1.0.
+  - `primary_genre` (string, optional, nullable) — Primary musical genre of the finetune.
+  - `failure_reason` (enum, optional, nullable) — Reason the finetune failed or was blocked, if applicable.
+    - Allowed values: `audio_processing_failed`, `copyright_violation`, `training_failed`
+- `next_cursor` (string, required, nullable) — Cursor to pass as `cursor` to fetch the next page; `null` when there are no more results.
+- `has_more` (boolean, required) — Whether more finetunes are available beyond this page.
 
 ## Examples
-
-
 
 **Request**
 

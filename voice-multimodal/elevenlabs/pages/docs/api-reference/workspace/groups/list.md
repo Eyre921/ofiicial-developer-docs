@@ -14,227 +14,41 @@ Get all groups in the workspace
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/groups/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/groups:
-    get:
-      operationId: list
-      summary: List workspace groups
-      description: Get all groups in the workspace
-      tags:
-        - groups
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: '#/components/schemas/WorkspaceGroupResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WorkspaceGroupPermission:
-      type: string
-      enum:
-        - text_to_speech
-        - speech_to_speech
-        - speech_to_text
-        - voice_lab
-        - sound_effects
-        - projects
-        - voiceover_studio
-        - dubbing
-        - audio_native
-        - conversational_ai
-        - conversational_ai_read
-        - voice_isolator
-        - ai_speech_classifier
-        - synthid_detector
-        - add_voice_from_voice_library
-        - create_instant_voice_clone
-        - create_professional_voice_clone
-        - create_user_api_key
-        - publish_studio_project
-        - music
-        - image_video_generation
-        - flows
-        - templates
-        - share_voice_externally
-        - publish_voice_to_voice_library
-        - view_fiat_balance
-        - workspace_analytics_full_read
-        - service_accounts_manage
-        - webhooks_manage
-        - group_members_manage
-        - workspace_members_invite
-        - workspace_members_remove
-        - terms_of_service_accept
-        - audit_log_read
-        - conversation_privacy_manage
-        - copy_resources_cross_workspace
-        - voice_design
-      title: WorkspaceGroupPermission
-    WorkspaceGroupResponseModelGroupUsageLimit:
-      oneOf:
-        - type: integer
-        - type: string
-          enum:
-            - unlimited
-      title: WorkspaceGroupResponseModelGroupUsageLimit
-    WorkspaceGroupResponseModelGroupPvcLimit:
-      oneOf:
-        - type: integer
-        - type: string
-          enum:
-            - unlimited
-      title: WorkspaceGroupResponseModelGroupPvcLimit
-    SeatType:
-      type: string
-      enum:
-        - workspace_admin
-        - workspace_member
-        - workspace_lite_member
-      description: Seat types for workspace members.
-      title: SeatType
-    ScimGroupResponseModel:
-      type: object
-      properties:
-        scim_external_id:
-          type:
-            - string
-            - 'null'
-        display_name:
-          type: string
-        created_at_unix:
-          type:
-            - integer
-            - 'null'
-        updated_at_unix:
-          type:
-            - integer
-            - 'null'
-        seat_type:
-          oneOf:
-            - $ref: '#/components/schemas/SeatType'
-            - type: 'null'
-      required:
-        - scim_external_id
-        - display_name
-      title: ScimGroupResponseModel
-    WorkspaceGroupResponseModel:
-      type: object
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-        members:
-          type: array
-          items:
-            type: string
-        permissions:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/WorkspaceGroupPermission'
-        group_usage_limit:
-          oneOf:
-            - $ref: '#/components/schemas/WorkspaceGroupResponseModelGroupUsageLimit'
-            - type: 'null'
-        group_pvc_limit:
-          oneOf:
-            - $ref: '#/components/schemas/WorkspaceGroupResponseModelGroupPvcLimit'
-            - type: 'null'
-        character_count:
-          type:
-            - integer
-            - 'null'
-        scim_external_id:
-          type:
-            - string
-            - 'null'
-        is_scim_synced:
-          type: boolean
-          default: false
-        scim_group:
-          oneOf:
-            - $ref: '#/components/schemas/ScimGroupResponseModel'
-            - type: 'null'
-        scim_frozen:
-          type: boolean
-          default: false
-      required:
-        - name
-        - id
-        - members
-        - permissions
-      title: WorkspaceGroupResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Response
+
+### 200
+
+Successful Response
+
+- `map from string to object`
+  - `name` (string, required)
+  - `id` (string, required)
+  - `members` (list of string, required)
+  - `permissions` (list of enum, required, nullable)
+    - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `voice_design`
+  - `group_usage_limit` (integer or "unlimited", optional, nullable)
+  - `group_pvc_limit` (integer or "unlimited", optional, nullable)
+  - `character_count` (integer, optional, nullable)
+  - `scim_external_id` (string, optional, nullable)
+  - `is_scim_synced` (boolean, optional, default: false)
+  - `scim_group` (object, optional, nullable)
+    - `scim_external_id` (string, required, nullable)
+    - `display_name` (string, required)
+    - `created_at_unix` (integer, optional, nullable)
+    - `updated_at_unix` (integer, optional, nullable)
+    - `seat_type` (enum, optional, nullable) — Seat types for workspace members.
+      - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+  - `scim_frozen` (boolean, optional, default: false)
 
 ## Examples
-
-
 
 **Request**
 

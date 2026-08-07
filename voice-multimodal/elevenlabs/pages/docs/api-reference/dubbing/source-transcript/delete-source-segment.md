@@ -14,112 +14,30 @@ Enterprise only. Remove a source segment from the transcript.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/transcript/segment/{segment_id}:
-    delete:
-      operationId: delete_segment
-      summary: Delete Dubbing Transcript Segment
-      description: Enterprise only. Remove a source segment from the transcript.
-      tags:
-        - transcript
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: segment_id
-          in: path
-          description: Identifier of the segment to remove.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingTranscriptRevisionResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingTranscriptRevisionResponse:
-      type: object
-      properties:
-        revision:
-          type: integer
-          description: The project's source-transcript revision after this edit.
-      required:
-        - revision
-      description: >-
-        The new revision after a source edit that returns no segment (e.g. a
-        delete).
-      title: DubbingTranscriptRevisionResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project.
+- `segment_id` (string, required) — Identifier of the segment to remove.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `revision` (integer, required) — The project's source-transcript revision after this edit.
 
 ## Examples
-
-
 
 **Response**
 

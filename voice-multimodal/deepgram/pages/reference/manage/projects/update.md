@@ -17,126 +17,29 @@ Updates the name or other properties of an existing project
 
 Reference: https://developers.deepgram.com/reference/manage/projects/update
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}:
-    patch:
-      operationId: update
-      summary: Update a Project
-      description: Updates the name or other properties of an existing project
-      tags:
-        - projects
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateProjectV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: The name of the project
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateProjectV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    UpdateProjectV1Request:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the project
-      title: UpdateProjectV1Request
-    UpdateProjectV1Response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: confirmation message
-      title: UpdateProjectV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Body (application/json)
+
+- `name` (string, optional) — The name of the project
+
+## Response
+
+### 200
+
+A project
+
+- `message` (string, optional) — confirmation message
 
 ## Examples
-
-
 
 **Request**
 

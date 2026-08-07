@@ -15,804 +15,222 @@ Updates Studio project content.
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/update-content
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/content:
-    post:
-      operationId: update
-      summary: Update Studio Project Content
-      description: Updates Studio project content.
-      tags:
-        - content
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EditProjectResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                from_url:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    An optional URL from which we will extract content to
-                    initialize the Studio project. If this is set, 'from_url'
-                    and 'from_content' must be null. If neither 'from_url',
-                    'from_document', 'from_content' are provided we will
-                    initialize the Studio project as blank.
-                from_document:
-                  type: string
-                  format: binary
-                  description: >-
-                    An optional .epub, .pdf, .txt or similar file can be
-                    provided. If provided, we will initialize the Studio project
-                    with its content. If this is set, 'from_url' and
-                    'from_content' must be null. If neither 'from_url',
-                    'from_document', 'from_content' are provided we will
-                    initialize the Studio project as blank.
-                from_content_json:
-                  type: string
-                  description: |2-
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-                        An optional content to initialize the Studio project with. If this is set, 'from_url' and 'from_document' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
+## Request
 
-                        Example:
-                        [{"name": "Chapter A", "blocks": [{"sub_type": "p", "nodes": [{"voice_id": "6lCwbsX1yVjD49QmpkT0", "text": "A", "type": "tts_node"}, {"voice_id": "6lCwbsX1yVjD49QmpkT1", "text": "B", "type": "tts_node"}]}, {"sub_type": "h1", "nodes": [{"voice_id": "6lCwbsX1yVjD49QmpkT0", "text": "C", "type": "tts_node"}, {"voice_id": "6lCwbsX1yVjD49QmpkT1", "text": "D", "type": "tts_node"}]}]}, {"name": "Chapter B", "blocks": [{"sub_type": "p", "nodes": [{"voice_id": "6lCwbsX1yVjD49QmpkT0", "text": "E", "type": "tts_node"}, {"voice_id": "6lCwbsX1yVjD49QmpkT1", "text": "F", "type": "tts_node"}]}, {"sub_type": "h2", "nodes": [{"voice_id": "6lCwbsX1yVjD49QmpkT0", "text": "G", "type": "tts_node"}, {"voice_id": "6lCwbsX1yVjD49QmpkT1", "text": "H", "type": "tts_node"}]}]}]
-                        
-                auto_convert:
-                  type: boolean
-                  default: false
-                  description: Whether to auto convert the Studio project to audio or not.
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ProjectResponseModelTargetAudience:
-      type: string
-      enum:
-        - children
-        - young adult
-        - adult
-        - all ages
-      description: The target audience of the project.
-      title: ProjectResponseModelTargetAudience
-    ProjectState:
-      type: string
-      enum:
-        - creating
-        - default
-        - converting
-        - in_queue
-      description: The state of the project.
-      title: ProjectState
-    ProjectResponseModelAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The access level of the project.
-      title: ProjectResponseModelAccessLevel
-    ProjectResponseModelFiction:
-      type: string
-      enum:
-        - fiction
-        - non-fiction
-      description: Whether the project is fiction.
-      title: ProjectResponseModelFiction
-    ProjectCreationMetaResponseModelStatus:
-      type: string
-      enum:
-        - draft
-        - pending
-        - creating
-        - finished
-        - failed
-      description: The status of the project creation action.
-      title: ProjectCreationMetaResponseModelStatus
-    ProjectCreationMetaType:
-      type: string
-      enum:
-        - blank
-        - generate_podcast
-        - auto_assign_voices
-        - dub_video
-        - import_speech
-      title: ProjectCreationMetaType
-    ProjectCreationMetaResponseModel:
-      type: object
-      properties:
-        creation_progress:
-          type: number
-          format: double
-          description: The progress of the project creation.
-        status:
-          $ref: '#/components/schemas/ProjectCreationMetaResponseModelStatus'
-          description: The status of the project creation action.
-        type:
-          $ref: '#/components/schemas/ProjectCreationMetaType'
-          description: The type of the project creation action.
-      required:
-        - creation_progress
-        - status
-        - type
-      title: ProjectCreationMetaResponseModel
-    ProjectResponseModelSourceType:
-      type: string
-      enum:
-        - blank
-        - book
-        - article
-        - genfm
-        - video
-        - screenplay
-      description: The source type of the project.
-      title: ProjectResponseModelSourceType
-    CaptionStyleTemplateModel:
-      type: object
-      properties:
-        key:
-          type: string
-        label:
-          type: string
-        requires_high_fps:
-          type: boolean
-          default: false
-      required:
-        - key
-        - label
-      title: CaptionStyleTemplateModel
-    CaptionStyleModelTextAlign:
-      type: string
-      enum:
-        - start
-        - center
-        - end
-      title: CaptionStyleModelTextAlign
-    CaptionStyleModelTextStyle:
-      type: string
-      enum:
-        - normal
-        - italic
-      title: CaptionStyleModelTextStyle
-    CaptionStyleModelTextWeight:
-      type: string
-      enum:
-        - normal
-        - bold
-        - '900'
-      title: CaptionStyleModelTextWeight
-    CaptionStyleModelTextTransform:
-      type: string
-      enum:
-        - none
-        - uppercase
-      title: CaptionStyleModelTextTransform
-    CaptionStyleModelTextBlendMode:
-      type: string
-      enum:
-        - normal
-        - difference
-        - multiply
-      title: CaptionStyleModelTextBlendMode
-    StudioTextStyleShadowModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        color:
-          type: string
-        opacity:
-          type: number
-          format: double
-        blur:
-          type: number
-          format: double
-        offset_x:
-          type: number
-          format: double
-        offset_y:
-          type: number
-          format: double
-      required:
-        - enabled
-        - color
-        - opacity
-        - blur
-        - offset_x
-        - offset_y
-      title: StudioTextStyleShadowModel
-    StudioTextStyleOutlineModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        color:
-          type: string
-        opacity:
-          type: number
-          format: double
-        width:
-          type: number
-          format: double
-      required:
-        - enabled
-        - color
-        - opacity
-        - width
-      title: StudioTextStyleOutlineModel
-    CaptionStyleSectionAnimationModelEnterType:
-      type: string
-      enum:
-        - none
-        - fade
-        - scale
-        - pop
-        - slide_up
-        - slide_down
-        - slam
-        - scale_down
-        - slide_in
-      title: CaptionStyleSectionAnimationModelEnterType
-    CaptionStyleSectionAnimationModelExitType:
-      type: string
-      enum:
-        - none
-        - fade
-        - scale
-        - pop
-        - slide_up
-        - slide_down
-        - slam
-        - scale_down
-        - slide_in
-      title: CaptionStyleSectionAnimationModelExitType
-    CaptionStyleSectionAnimationModel:
-      type: object
-      properties:
-        enter_type:
-          $ref: '#/components/schemas/CaptionStyleSectionAnimationModelEnterType'
-        exit_type:
-          $ref: '#/components/schemas/CaptionStyleSectionAnimationModelExitType'
-      required:
-        - enter_type
-        - exit_type
-      title: CaptionStyleSectionAnimationModel
-    CaptionStyleWordAnimationModelEnterType:
-      type: string
-      enum:
-        - none
-        - fade
-        - scale
-        - pop
-        - slide_up
-        - slide_down
-        - slam
-        - scale_down
-        - slide_in
-      title: CaptionStyleWordAnimationModelEnterType
-    CaptionStyleWordAnimationModelExitType:
-      type: string
-      enum:
-        - none
-        - fade
-        - scale
-        - pop
-        - slide_up
-        - slide_down
-        - slam
-        - scale_down
-        - slide_in
-      title: CaptionStyleWordAnimationModelExitType
-    CaptionStyleWordAnimationModel:
-      type: object
-      properties:
-        enter_type:
-          $ref: '#/components/schemas/CaptionStyleWordAnimationModelEnterType'
-        exit_type:
-          $ref: '#/components/schemas/CaptionStyleWordAnimationModelExitType'
-      required:
-        - enter_type
-        - exit_type
-      title: CaptionStyleWordAnimationModel
-    CaptionStyleCharacterAnimationModelEnterType:
-      type: string
-      enum:
-        - none
-        - fade
-        - typewriter
-      title: CaptionStyleCharacterAnimationModelEnterType
-    CaptionStyleCharacterAnimationModelExitType:
-      type: string
-      enum:
-        - none
-        - fade
-      title: CaptionStyleCharacterAnimationModelExitType
-    CaptionStyleCharacterAnimationModel:
-      type: object
-      properties:
-        enter_type:
-          $ref: '#/components/schemas/CaptionStyleCharacterAnimationModelEnterType'
-        exit_type:
-          $ref: '#/components/schemas/CaptionStyleCharacterAnimationModelExitType'
-      required:
-        - enter_type
-        - exit_type
-      title: CaptionStyleCharacterAnimationModel
-    CaptionStyleHorizontalPlacementModelAlign:
-      type: string
-      enum:
-        - left
-        - center
-        - right
-      title: CaptionStyleHorizontalPlacementModelAlign
-    CaptionStyleHorizontalPlacementModel:
-      type: object
-      properties:
-        align:
-          $ref: '#/components/schemas/CaptionStyleHorizontalPlacementModelAlign'
-        translate_pct:
-          type: number
-          format: double
-      required:
-        - align
-        - translate_pct
-      title: CaptionStyleHorizontalPlacementModel
-    CaptionStyleVerticalPlacementModelAlign:
-      type: string
-      enum:
-        - top
-        - center
-        - bottom
-      title: CaptionStyleVerticalPlacementModelAlign
-    CaptionStyleVerticalPlacementModel:
-      type: object
-      properties:
-        align:
-          $ref: '#/components/schemas/CaptionStyleVerticalPlacementModelAlign'
-        translate_pct:
-          type: number
-          format: double
-      required:
-        - align
-        - translate_pct
-      title: CaptionStyleVerticalPlacementModel
-    CaptionStyleModel:
-      type: object
-      properties:
-        template:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleTemplateModel'
-            - type: 'null'
-        text_font:
-          type:
-            - string
-            - 'null'
-        text_scale:
-          type:
-            - number
-            - 'null'
-          format: double
-        text_color:
-          type:
-            - string
-            - 'null'
-        text_align:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModelTextAlign'
-            - type: 'null'
-        text_style:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModelTextStyle'
-            - type: 'null'
-        text_weight:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModelTextWeight'
-            - type: 'null'
-        text_transform:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModelTextTransform'
-            - type: 'null'
-        text_blend_mode:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModelTextBlendMode'
-            - type: 'null'
-        text_shadow:
-          oneOf:
-            - $ref: '#/components/schemas/StudioTextStyleShadowModel'
-            - type: 'null'
-        text_outline:
-          oneOf:
-            - $ref: '#/components/schemas/StudioTextStyleOutlineModel'
-            - type: 'null'
-        background_enabled:
-          type:
-            - boolean
-            - 'null'
-        background_color:
-          type:
-            - string
-            - 'null'
-        background_opacity:
-          type:
-            - number
-            - 'null'
-          format: double
-        background_blur:
-          type:
-            - number
-            - 'null'
-          format: double
-        background_border_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-        word_highlights_enabled:
-          type:
-            - boolean
-            - 'null'
-        word_highlights_color:
-          type:
-            - string
-            - 'null'
-        word_highlights_background_color:
-          type:
-            - string
-            - 'null'
-        word_highlights_opacity:
-          type:
-            - number
-            - 'null'
-          format: double
-        word_highlights_border_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-        word_highlights_blur:
-          type:
-            - number
-            - 'null'
-          format: double
-        section_animation:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleSectionAnimationModel'
-            - type: 'null'
-        word_animation:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleWordAnimationModel'
-            - type: 'null'
-        character_animation:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleCharacterAnimationModel'
-            - type: 'null'
-        cursor_enabled:
-          type:
-            - boolean
-            - 'null'
-        width_pct:
-          type:
-            - number
-            - 'null'
-          format: double
-        horizontal_placement:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleHorizontalPlacementModel'
-            - type: 'null'
-        vertical_placement:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleVerticalPlacementModel'
-            - type: 'null'
-        auto_break_enabled:
-          type:
-            - boolean
-            - 'null'
-        max_lines_per_section:
-          type:
-            - integer
-            - 'null'
-        max_words_per_line:
-          type:
-            - integer
-            - 'null'
-      title: CaptionStyleModel
-    ProjectResponseModelAspectRatio:
-      type: string
-      enum:
-        - '16:9'
-        - '9:16'
-        - '4:5'
-        - '1:1'
-      description: The aspect ratio of the project.
-      title: ProjectResponseModelAspectRatio
-    StudioAgentToolSettingsModel:
-      type: object
-      properties:
-        skip_confirmation:
-          type: boolean
-          default: false
-      title: StudioAgentToolSettingsModel
-    StudioAgentSettingsModel:
-      type: object
-      properties:
-        tool_settings:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/StudioAgentToolSettingsModel'
-      title: StudioAgentSettingsModel
-    ProjectResponseModel:
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: The ID of the project.
-        name:
-          type: string
-          description: The name of the project.
-        create_date_unix:
-          type: integer
-          description: The creation date of the project.
-        created_by_user_id:
-          type:
-            - string
-            - 'null'
-          description: The user ID who created the project.
-        default_title_voice_ref_id:
-          type: string
-          description: The default title project voice reference ID.
-        default_paragraph_voice_ref_id:
-          type: string
-          description: The default paragraph project voice reference ID.
-        default_model_id:
-          type: string
-          description: The default model ID.
-        last_conversion_date_unix:
-          type:
-            - integer
-            - 'null'
-          description: The last conversion date of the project.
-        can_be_downloaded:
-          type: boolean
-          description: Whether the project can be downloaded.
-        title:
-          type:
-            - string
-            - 'null'
-          description: The title of the project.
-        author:
-          type:
-            - string
-            - 'null'
-          description: The author of the project.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the project.
-        genres:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of genres of the project.
-        cover_image_url:
-          type:
-            - string
-            - 'null'
-          description: The cover image URL of the project.
-        target_audience:
-          oneOf:
-            - $ref: '#/components/schemas/ProjectResponseModelTargetAudience'
-            - type: 'null'
-          description: The target audience of the project.
-        language:
-          type:
-            - string
-            - 'null'
-          description: Two-letter language code (ISO 639-1) of the language of the project.
-        content_type:
-          type:
-            - string
-            - 'null'
-          description: The content type of the project, e.g. 'Novel' or 'Short Story'
-        original_publication_date:
-          type:
-            - string
-            - 'null'
-          description: The original publication date of the project.
-        mature_content:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the project contains mature content.
-        isbn_number:
-          type:
-            - string
-            - 'null'
-          description: The ISBN number of the project.
-        volume_normalization:
-          type: boolean
-          description: Whether the project uses volume normalization.
-        state:
-          $ref: '#/components/schemas/ProjectState'
-          description: The state of the project.
-        access_level:
-          $ref: '#/components/schemas/ProjectResponseModelAccessLevel'
-          description: The access level of the project.
-        fiction:
-          oneOf:
-            - $ref: '#/components/schemas/ProjectResponseModelFiction'
-            - type: 'null'
-          description: Whether the project is fiction.
-        quality_check_on:
-          type: boolean
-          description: Whether quality check is enabled for this project.
-        quality_check_on_when_bulk_convert:
-          type: boolean
-          description: >-
-            Whether quality check is enabled on the project when bulk
-            converting.
-        creation_meta:
-          oneOf:
-            - $ref: '#/components/schemas/ProjectCreationMetaResponseModel'
-            - type: 'null'
-          description: The creation meta of the project.
-        source_type:
-          oneOf:
-            - $ref: '#/components/schemas/ProjectResponseModelSourceType'
-            - type: 'null'
-          description: The source type of the project.
-        chapters_enabled:
-          type:
-            - boolean
-            - 'null'
-          default: true
-          description: Whether chapters are enabled for the project.
-        captions_enabled:
-          type:
-            - boolean
-            - 'null'
-          default: true
-          description: Whether captions are enabled for the project.
-        caption_style:
-          oneOf:
-            - $ref: '#/components/schemas/CaptionStyleModel'
-            - type: 'null'
-          description: Global styling to be applied to all captions
-        caption_style_template_overrides:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/CaptionStyleModel'
-          description: Styling changes that have been made to the provided templates
-        public_share_id:
-          type:
-            - string
-            - 'null'
-          description: The public share ID of the project.
-        aspect_ratio:
-          oneOf:
-            - $ref: '#/components/schemas/ProjectResponseModelAspectRatio'
-            - type: 'null'
-          description: The aspect ratio of the project.
-        agent_settings:
-          oneOf:
-            - $ref: '#/components/schemas/StudioAgentSettingsModel'
-            - type: 'null'
-          description: Agent-related settings for the project
-        default_title_voice_id:
-          type: string
-          description: The default title voice ID.
-        default_paragraph_voice_id:
-          type: string
-          description: The default paragraph voice ID.
-      required:
-        - project_id
-        - name
-        - create_date_unix
-        - created_by_user_id
-        - default_title_voice_ref_id
-        - default_paragraph_voice_ref_id
-        - default_model_id
-        - can_be_downloaded
-        - volume_normalization
-        - state
-        - access_level
-        - quality_check_on
-        - quality_check_on_when_bulk_convert
-        - default_title_voice_id
-        - default_paragraph_voice_id
-      title: ProjectResponseModel
-    EditProjectResponseModel:
-      type: object
-      properties:
-        project:
-          $ref: '#/components/schemas/ProjectResponseModel'
-      required:
-        - project
-      title: EditProjectResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+### Path parameters
 
-```
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+
+### Body (multipart/form-data)
+
+- `from_url` (string, optional) — An optional URL from which we will extract content to initialize the Studio project. If this is set, 'from_url' and 'from_content' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
+- `from_document` (file, optional) — An optional .epub, .pdf, .txt or similar file can be provided. If provided, we will initialize the Studio project with its content. If this is set, 'from_url' and 'from_content' must be null. If neither 'from_url', 'from_document', 'from_content' are provided we will initialize the Studio project as blank.
+- `from_content_json` (string, optional) — An optional content to initialize the Studio project with. If this is set, 'from\_url' and 'from\_document' must be null. If neither 'from\_url', 'from\_document', 'from\_content' are provided we will initialize the Studio project as blank. Example: \[\{"name": "Chapter A", "blocks": \[\{"sub\_type": "p", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "A", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "B", "type": "tts\_node"}]}, \{"sub\_type": "h1", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "C", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "D", "type": "tts\_node"}]}]}, \{"name": "Chapter B", "blocks": \[\{"sub\_type": "p", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "E", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "F", "type": "tts\_node"}]}, \{"sub\_type": "h2", "nodes": \[\{"voice\_id": "6lCwbsX1yVjD49QmpkT0", "text": "G", "type": "tts\_node"}, \{"voice\_id": "6lCwbsX1yVjD49QmpkT1", "text": "H", "type": "tts\_node"}]}]}]
+- `auto_convert` (boolean, optional) — Whether to auto convert the Studio project to audio or not.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `project` (object, required)
+  - `project_id` (string, required) — The ID of the project.
+  - `name` (string, required) — The name of the project.
+  - `create_date_unix` (integer, required) — The creation date of the project.
+  - `created_by_user_id` (string, required, nullable) — The user ID who created the project.
+  - `default_title_voice_ref_id` (string, required) — The default title project voice reference ID.
+  - `default_paragraph_voice_ref_id` (string, required) — The default paragraph project voice reference ID.
+  - `default_model_id` (string, required) — The default model ID.
+  - `can_be_downloaded` (boolean, required) — Whether the project can be downloaded.
+  - `volume_normalization` (boolean, required) — Whether the project uses volume normalization.
+  - `state` (enum, required) — The state of the project.
+    - Allowed values: `creating`, `default`, `converting`, `in_queue`
+  - `access_level` (enum, required) — The access level of the project.
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `quality_check_on` (boolean, required, deprecated) — Whether quality check is enabled for this project.
+  - `quality_check_on_when_bulk_convert` (boolean, required, deprecated) — Whether quality check is enabled on the project when bulk converting.
+  - `default_title_voice_id` (string, required, deprecated) — The default title voice ID.
+  - `default_paragraph_voice_id` (string, required, deprecated) — The default paragraph voice ID.
+  - `last_conversion_date_unix` (integer, optional, nullable) — The last conversion date of the project.
+  - `title` (string, optional, nullable) — The title of the project.
+  - `author` (string, optional, nullable) — The author of the project.
+  - `description` (string, optional, nullable) — The description of the project.
+  - `genres` (list of string, optional, nullable) — List of genres of the project.
+  - `cover_image_url` (string, optional, nullable) — The cover image URL of the project.
+  - `target_audience` (enum, optional, nullable) — The target audience of the project.
+    - Allowed values: `children`, `young adult`, `adult`, `all ages`
+  - `language` (string, optional, nullable) — Two-letter language code (ISO 639-1) of the language of the project.
+  - `content_type` (string, optional, nullable) — The content type of the project, e.g. 'Novel' or 'Short Story'
+  - `original_publication_date` (string, optional, nullable) — The original publication date of the project.
+  - `mature_content` (boolean, optional, nullable) — Whether the project contains mature content.
+  - `isbn_number` (string, optional, nullable) — The ISBN number of the project.
+  - `fiction` (enum, optional, nullable) — Whether the project is fiction.
+    - Allowed values: `fiction`, `non-fiction`
+  - `creation_meta` (object, optional, nullable) — The creation meta of the project.
+    - `creation_progress` (double, required) — The progress of the project creation.
+    - `status` (enum, required) — The status of the project creation action.
+      - Allowed values: `draft`, `pending`, `creating`, `finished`, `failed`
+    - `type` (enum, required) — The type of the project creation action.
+      - Allowed values: `blank`, `generate_podcast`, `auto_assign_voices`, `dub_video`, `import_speech`
+  - `source_type` (enum, optional, nullable) — The source type of the project.
+    - Allowed values: `blank`, `book`, `article`, `genfm`, `video`, `screenplay`
+  - `chapters_enabled` (boolean, optional, nullable, default: true) — Whether chapters are enabled for the project.
+  - `captions_enabled` (boolean, optional, nullable, default: true) — Whether captions are enabled for the project.
+  - `caption_style` (object, optional, nullable) — Global styling to be applied to all captions
+    - `template` (object, optional, nullable)
+      - `key` (string, required)
+      - `label` (string, required)
+      - `requires_high_fps` (boolean, optional, default: false)
+    - `text_font` (string, optional, nullable)
+    - `text_scale` (double, optional, nullable)
+    - `text_color` (string, optional, nullable)
+    - `text_align` (enum, optional, nullable)
+      - Allowed values: `start`, `center`, `end`
+    - `text_style` (enum, optional, nullable)
+      - Allowed values: `normal`, `italic`
+    - `text_weight` (enum, optional, nullable)
+      - Allowed values: `normal`, `bold`, `900`
+    - `text_transform` (enum, optional, nullable)
+      - Allowed values: `none`, `uppercase`
+    - `text_blend_mode` (enum, optional, nullable)
+      - Allowed values: `normal`, `difference`, `multiply`
+    - `text_shadow` (object, optional, nullable)
+      - `enabled` (boolean, required)
+      - `color` (string, required)
+      - `opacity` (double, required)
+      - `blur` (double, required)
+      - `offset_x` (double, required)
+      - `offset_y` (double, required)
+    - `text_outline` (object, optional, nullable)
+      - `enabled` (boolean, required)
+      - `color` (string, required)
+      - `opacity` (double, required)
+      - `width` (double, required)
+    - `background_enabled` (boolean, optional, nullable)
+    - `background_color` (string, optional, nullable)
+    - `background_opacity` (double, optional, nullable)
+    - `background_blur` (double, optional, nullable)
+    - `background_border_radius` (double, optional, nullable)
+    - `word_highlights_enabled` (boolean, optional, nullable)
+    - `word_highlights_color` (string, optional, nullable)
+    - `word_highlights_background_color` (string, optional, nullable)
+    - `word_highlights_opacity` (double, optional, nullable)
+    - `word_highlights_border_radius` (double, optional, nullable)
+    - `word_highlights_blur` (double, optional, nullable)
+    - `section_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+    - `word_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+    - `character_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `typewriter`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`
+    - `cursor_enabled` (boolean, optional, nullable)
+    - `width_pct` (double, optional, nullable)
+    - `horizontal_placement` (object, optional, nullable)
+      - `align` (enum, required)
+        - Allowed values: `left`, `center`, `right`
+      - `translate_pct` (double, required)
+    - `vertical_placement` (object, optional, nullable)
+      - `align` (enum, required)
+        - Allowed values: `top`, `center`, `bottom`
+      - `translate_pct` (double, required)
+    - `auto_break_enabled` (boolean, optional, nullable)
+    - `max_lines_per_section` (integer, optional, nullable)
+    - `max_words_per_line` (integer, optional, nullable)
+  - `caption_style_template_overrides` (map from string to object, optional, nullable) — Styling changes that have been made to the provided templates
+    - `template` (object, optional, nullable)
+      - `key` (string, required)
+      - `label` (string, required)
+      - `requires_high_fps` (boolean, optional, default: false)
+    - `text_font` (string, optional, nullable)
+    - `text_scale` (double, optional, nullable)
+    - `text_color` (string, optional, nullable)
+    - `text_align` (enum, optional, nullable)
+      - Allowed values: `start`, `center`, `end`
+    - `text_style` (enum, optional, nullable)
+      - Allowed values: `normal`, `italic`
+    - `text_weight` (enum, optional, nullable)
+      - Allowed values: `normal`, `bold`, `900`
+    - `text_transform` (enum, optional, nullable)
+      - Allowed values: `none`, `uppercase`
+    - `text_blend_mode` (enum, optional, nullable)
+      - Allowed values: `normal`, `difference`, `multiply`
+    - `text_shadow` (object, optional, nullable)
+      - `enabled` (boolean, required)
+      - `color` (string, required)
+      - `opacity` (double, required)
+      - `blur` (double, required)
+      - `offset_x` (double, required)
+      - `offset_y` (double, required)
+    - `text_outline` (object, optional, nullable)
+      - `enabled` (boolean, required)
+      - `color` (string, required)
+      - `opacity` (double, required)
+      - `width` (double, required)
+    - `background_enabled` (boolean, optional, nullable)
+    - `background_color` (string, optional, nullable)
+    - `background_opacity` (double, optional, nullable)
+    - `background_blur` (double, optional, nullable)
+    - `background_border_radius` (double, optional, nullable)
+    - `word_highlights_enabled` (boolean, optional, nullable)
+    - `word_highlights_color` (string, optional, nullable)
+    - `word_highlights_background_color` (string, optional, nullable)
+    - `word_highlights_opacity` (double, optional, nullable)
+    - `word_highlights_border_radius` (double, optional, nullable)
+    - `word_highlights_blur` (double, optional, nullable)
+    - `section_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+    - `word_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`, `scale`, `pop`, `slide_up`, `slide_down`, `slam`, `scale_down`, `slide_in`
+    - `character_animation` (object, optional, nullable)
+      - `enter_type` (enum, required)
+        - Allowed values: `none`, `fade`, `typewriter`
+      - `exit_type` (enum, required)
+        - Allowed values: `none`, `fade`
+    - `cursor_enabled` (boolean, optional, nullable)
+    - `width_pct` (double, optional, nullable)
+    - `horizontal_placement` (object, optional, nullable)
+      - `align` (enum, required)
+        - Allowed values: `left`, `center`, `right`
+      - `translate_pct` (double, required)
+    - `vertical_placement` (object, optional, nullable)
+      - `align` (enum, required)
+        - Allowed values: `top`, `center`, `bottom`
+      - `translate_pct` (double, required)
+    - `auto_break_enabled` (boolean, optional, nullable)
+    - `max_lines_per_section` (integer, optional, nullable)
+    - `max_words_per_line` (integer, optional, nullable)
+  - `public_share_id` (string, optional, nullable) — The public share ID of the project.
+  - `aspect_ratio` (enum, optional, nullable) — The aspect ratio of the project.
+    - Allowed values: `16:9`, `9:16`, `4:5`, `1:1`
+  - `agent_settings` (object, optional, nullable) — Agent-related settings for the project
+    - `tool_settings` (map from string to object, optional)
+      - `skip_confirmation` (boolean, optional, default: false)
 
 ## Examples
-
-
 
 **Request**
 

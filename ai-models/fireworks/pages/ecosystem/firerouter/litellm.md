@@ -12,7 +12,7 @@ FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redir
 
 ## Prerequisites
 
-* A running LiteLLM Proxy configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
+* A running LiteLLM Proxy on **v1.95.0** configured for Fireworks (see [LiteLLM integration](/ecosystem/integrations/litellm))
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
 * An **Anthropic API key** (`sk-ant-...`) for pass-through
 

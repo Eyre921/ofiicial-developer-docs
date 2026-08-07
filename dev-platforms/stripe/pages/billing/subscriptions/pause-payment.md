@@ -63,7 +63,10 @@ If you don’t set a `resumes_at` date, the subscription remains paused until yo
 
 > If you have custom logic that finalizes invoices you might need to disable or modify it so that it doesn’t conflict with these settings.
 
-When you’re ready to collect payment for these invoices, set `auto_advance` back to `true`. If you don’t have the invoice IDs, you can use Subscription IDs to check for invoices with `status=draft`. Using the invoice ID, you can then update `auto_advance=true`:
+When you want to collect payment for these invoices:
+
+1. Unset `pause_collection` on the subscription. While paused, Stripe automatically sets `auto_advance=false` on all draft invoices, even if you explicitly set it to `true`. To unset `pause_collection`, see [Manually unpausing](https://docs.stripe.com/billing/subscriptions/pause-payment.md#unpausing).
+2. Set `auto_advance=true` on each draft invoice. If you don’t have the invoice IDs, look them up using the subscription ID with `status=draft` as a filter. For example:
 
 ```curl
 curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \

@@ -53,6 +53,8 @@ const languages = await Promise.all(
 
 You can also queue the first language when you create the project by passing `target_language` to `project.create`. Add any further languages with `language.create` as shown above.
 
+Languages are specified as BCP-47 tags, for example `es` or `fr-CA`. See the [supported languages and dialects](/docs/overview/capabilities/dubbing#supported-languages) for all accepted values.
+
 ## Track each language independently
 
 Languages generate in parallel and finish at different times. List the project's languages to check the status of each, rather than polling them one by one.

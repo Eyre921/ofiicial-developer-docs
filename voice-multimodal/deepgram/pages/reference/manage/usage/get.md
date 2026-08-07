@@ -16,422 +16,79 @@ Retrieves the usage for a specific project. Use Get Project Usage Breakdown for 
 
 Reference: https://developers.deepgram.com/reference/manage/usage/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/usage:
-    get:
-      operationId: get
-      summary: Get Project Usage
-      description: >-
-        Retrieves the usage for a specific project. Use Get Project Usage
-        Breakdown for a more comprehensive usage summary.
-      tags:
-        - usage
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: >-
-            Start date of the requested date range. Format accepted is
-            YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: end
-          in: query
-          description: End date of the requested date range. Format accepted is YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: accessor
-          in: query
-          description: Filter for requests where a specific accessor was used
-          required: false
-          schema:
-            type: string
-        - name: alternatives
-          in: query
-          description: Filter for requests where alternatives were used
-          required: false
-          schema:
-            type: boolean
-        - name: callback_method
-          in: query
-          description: Filter for requests where callback method was used
-          required: false
-          schema:
-            type: boolean
-        - name: callback
-          in: query
-          description: Filter for requests where callback was used
-          required: false
-          schema:
-            type: boolean
-        - name: channels
-          in: query
-          description: Filter for requests where channels were used
-          required: false
-          schema:
-            type: boolean
-        - name: custom_intent_mode
-          in: query
-          description: Filter for requests where custom intent mode was used
-          required: false
-          schema:
-            type: boolean
-        - name: custom_intent
-          in: query
-          description: Filter for requests where custom intent was used
-          required: false
-          schema:
-            type: boolean
-        - name: custom_topic_mode
-          in: query
-          description: Filter for requests where custom topic mode was used
-          required: false
-          schema:
-            type: boolean
-        - name: custom_topic
-          in: query
-          description: Filter for requests where custom topic was used
-          required: false
-          schema:
-            type: boolean
-        - name: deployment
-          in: query
-          description: Filter for requests where a specific deployment was used
-          required: false
-          schema:
-            $ref: >-
-              #/components/schemas/V1ProjectsProjectIdUsageGetParametersDeployment
-        - name: detect_entities
-          in: query
-          description: Filter for requests where detect entities was used
-          required: false
-          schema:
-            type: boolean
-        - name: detect_language
-          in: query
-          description: Filter for requests where detect language was used
-          required: false
-          schema:
-            type: boolean
-        - name: diarize
-          in: query
-          description: Filter for requests where diarize was used
-          required: false
-          schema:
-            type: boolean
-        - name: dictation
-          in: query
-          description: Filter for requests where dictation was used
-          required: false
-          schema:
-            type: boolean
-        - name: encoding
-          in: query
-          description: Filter for requests where encoding was used
-          required: false
-          schema:
-            type: boolean
-        - name: endpoint
-          in: query
-          description: Filter for requests where a specific endpoint was used
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1ProjectsProjectIdUsageGetParametersEndpoint'
-        - name: extra
-          in: query
-          description: Filter for requests where extra was used
-          required: false
-          schema:
-            type: boolean
-        - name: filler_words
-          in: query
-          description: Filter for requests where filler words was used
-          required: false
-          schema:
-            type: boolean
-        - name: intents
-          in: query
-          description: Filter for requests where intents was used
-          required: false
-          schema:
-            type: boolean
-        - name: keyterm
-          in: query
-          description: Filter for requests where keyterm was used
-          required: false
-          schema:
-            type: boolean
-        - name: keywords
-          in: query
-          description: Filter for requests where keywords was used
-          required: false
-          schema:
-            type: boolean
-        - name: language
-          in: query
-          description: Filter for requests where language was used
-          required: false
-          schema:
-            type: boolean
-        - name: measurements
-          in: query
-          description: Filter for requests where measurements were used
-          required: false
-          schema:
-            type: boolean
-        - name: method
-          in: query
-          description: Filter for requests where a specific method was used
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1ProjectsProjectIdUsageGetParametersMethod'
-        - name: model
-          in: query
-          description: Filter for requests where a specific model uuid was used
-          required: false
-          schema:
-            type: string
-        - name: multichannel
-          in: query
-          description: Filter for requests where multichannel was used
-          required: false
-          schema:
-            type: boolean
-        - name: numerals
-          in: query
-          description: Filter for requests where numerals were used
-          required: false
-          schema:
-            type: boolean
-        - name: paragraphs
-          in: query
-          description: Filter for requests where paragraphs were used
-          required: false
-          schema:
-            type: boolean
-        - name: profanity_filter
-          in: query
-          description: Filter for requests where profanity filter was used
-          required: false
-          schema:
-            type: boolean
-        - name: punctuate
-          in: query
-          description: Filter for requests where punctuate was used
-          required: false
-          schema:
-            type: boolean
-        - name: redact
-          in: query
-          description: Filter for requests where redact was used
-          required: false
-          schema:
-            type: boolean
-        - name: replace
-          in: query
-          description: Filter for requests where replace was used
-          required: false
-          schema:
-            type: boolean
-        - name: sample_rate
-          in: query
-          description: Filter for requests where sample rate was used
-          required: false
-          schema:
-            type: boolean
-        - name: search
-          in: query
-          description: Filter for requests where search was used
-          required: false
-          schema:
-            type: boolean
-        - name: sentiment
-          in: query
-          description: Filter for requests where sentiment was used
-          required: false
-          schema:
-            type: boolean
-        - name: smart_format
-          in: query
-          description: Filter for requests where smart format was used
-          required: false
-          schema:
-            type: boolean
-        - name: summarize
-          in: query
-          description: Filter for requests where summarize was used
-          required: false
-          schema:
-            type: boolean
-        - name: tag
-          in: query
-          description: Filter for requests where a specific tag was used
-          required: false
-          schema:
-            type: string
-        - name: topics
-          in: query
-          description: Filter for requests where topics was used
-          required: false
-          schema:
-            type: boolean
-        - name: utt_split
-          in: query
-          description: Filter for requests where utt split was used
-          required: false
-          schema:
-            type: boolean
-        - name: utterances
-          in: query
-          description: Filter for requests where utterances was used
-          required: false
-          schema:
-            type: boolean
-        - name: version
-          in: query
-          description: Filter for requests where version was used
-          required: false
-          schema:
-            type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A specific request for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsageV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    V1ProjectsProjectIdUsageGetParametersDeployment:
-      type: string
-      enum:
-        - hosted
-        - beta
-        - self-hosted
-      description: Deployment type for the requests
-      title: V1ProjectsProjectIdUsageGetParametersDeployment
-    V1ProjectsProjectIdUsageGetParametersEndpoint:
-      type: string
-      enum:
-        - listen
-        - read
-        - speak
-        - agent
-      title: V1ProjectsProjectIdUsageGetParametersEndpoint
-    V1ProjectsProjectIdUsageGetParametersMethod:
-      type: string
-      enum:
-        - sync
-        - async
-        - streaming
-      description: Method type for the request
-      title: V1ProjectsProjectIdUsageGetParametersMethod
-    UsageV1ResponseResolution:
-      type: object
-      properties:
-        units:
-          type: string
-        amount:
-          type: number
-          format: double
-      title: UsageV1ResponseResolution
-    UsageV1Response:
-      type: object
-      properties:
-        start:
-          type: string
-          format: date
-        end:
-          type: string
-          format: date
-        resolution:
-          $ref: '#/components/schemas/UsageV1ResponseResolution'
-      title: UsageV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `start` (string, optional) — Start date of the requested date range. Format accepted is YYYY-MM-DD
+- `end` (string, optional) — End date of the requested date range. Format accepted is YYYY-MM-DD
+- `accessor` (string, optional) — Filter for requests where a specific accessor was used
+- `alternatives` (boolean, optional) — Filter for requests where alternatives were used
+- `callback_method` (boolean, optional) — Filter for requests where callback method was used
+- `callback` (boolean, optional) — Filter for requests where callback was used
+- `channels` (boolean, optional) — Filter for requests where channels were used
+- `custom_intent_mode` (boolean, optional) — Filter for requests where custom intent mode was used
+- `custom_intent` (boolean, optional) — Filter for requests where custom intent was used
+- `custom_topic_mode` (boolean, optional) — Filter for requests where custom topic mode was used
+- `custom_topic` (boolean, optional) — Filter for requests where custom topic was used
+- `deployment` (enum, optional) — Filter for requests where a specific deployment was used
+  - Allowed values: `hosted`, `beta`, `self-hosted`
+- `detect_entities` (boolean, optional) — Filter for requests where detect entities was used
+- `detect_language` (boolean, optional) — Filter for requests where detect language was used
+- `diarize` (boolean, optional) — Filter for requests where diarize was used
+- `dictation` (boolean, optional) — Filter for requests where dictation was used
+- `encoding` (boolean, optional) — Filter for requests where encoding was used
+- `endpoint` (enum, optional) — Filter for requests where a specific endpoint was used
+  - Allowed values: `listen`, `read`, `speak`, `agent`
+- `extra` (boolean, optional) — Filter for requests where extra was used
+- `filler_words` (boolean, optional) — Filter for requests where filler words was used
+- `intents` (boolean, optional) — Filter for requests where intents was used
+- `keyterm` (boolean, optional) — Filter for requests where keyterm was used
+- `keywords` (boolean, optional) — Filter for requests where keywords was used
+- `language` (boolean, optional) — Filter for requests where language was used
+- `measurements` (boolean, optional) — Filter for requests where measurements were used
+- `method` (enum, optional) — Filter for requests where a specific method was used
+  - Allowed values: `sync`, `async`, `streaming`
+- `model` (string, optional) — Filter for requests where a specific model uuid was used
+- `multichannel` (boolean, optional) — Filter for requests where multichannel was used
+- `numerals` (boolean, optional) — Filter for requests where numerals were used
+- `paragraphs` (boolean, optional) — Filter for requests where paragraphs were used
+- `profanity_filter` (boolean, optional) — Filter for requests where profanity filter was used
+- `punctuate` (boolean, optional) — Filter for requests where punctuate was used
+- `redact` (boolean, optional) — Filter for requests where redact was used
+- `replace` (boolean, optional) — Filter for requests where replace was used
+- `sample_rate` (boolean, optional) — Filter for requests where sample rate was used
+- `search` (boolean, optional) — Filter for requests where search was used
+- `sentiment` (boolean, optional) — Filter for requests where sentiment was used
+- `smart_format` (boolean, optional) — Filter for requests where smart format was used
+- `summarize` (boolean, optional) — Filter for requests where summarize was used
+- `tag` (string, optional) — Filter for requests where a specific tag was used
+- `topics` (boolean, optional) — Filter for requests where topics was used
+- `utt_split` (boolean, optional) — Filter for requests where utt split was used
+- `utterances` (boolean, optional) — Filter for requests where utterances was used
+- `version` (boolean, optional) — Filter for requests where version was used
+
+## Response
+
+### 200
+
+A specific request for a specific project
+
+- `start` (string, optional)
+- `end` (string, optional)
+- `resolution` (object, optional)
+  - `units` (string, optional)
+  - `amount` (double, optional)
 
 ## Examples
-
-
 
 **Response**
 
@@ -453,7 +110,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage"
 
-querystring = {"accessor":"12345678-1234-1234-1234-123456789012","alternatives":"true","callback":"true","callback_method":"true","channels":"true","custom_intent":"true","custom_intent_mode":"true","custom_topic":"true","custom_topic_mode":"true","deployment":"hosted","detect_entities":"true","detect_language":"true","diarize":"true","dictation":"true","encoding":"true","endpoint":"listen","extra":"true","filler_words":"true","intents":"true","keyterm":"true","keywords":"true","language":"true","measurements":"true","method":"async","model":"6f548761-c9c0-429a-9315-11a1d28499c8","multichannel":"true","numerals":"true","paragraphs":"true","profanity_filter":"true","punctuate":"true","redact":"true","replace":"true","search":"true","sentiment":"true","smart_format":"true","summarize":"true","tag":"tag1","topics":"true","utt_split":"true","utterances":"true","version":"true"}
+querystring = {"accessor":"12345678-1234-1234-1234-123456789012","alternatives":"true","callback_method":"true","callback":"true","channels":"true","custom_intent_mode":"true","custom_intent":"true","custom_topic_mode":"true","custom_topic":"true","deployment":"hosted","detect_entities":"true","detect_language":"true","diarize":"true","dictation":"true","encoding":"true","endpoint":"listen","extra":"true","filler_words":"true","intents":"true","keyterm":"true","keywords":"true","language":"true","measurements":"true","method":"async","model":"6f548761-c9c0-429a-9315-11a1d28499c8","multichannel":"true","numerals":"true","paragraphs":"true","profanity_filter":"true","punctuate":"true","redact":"true","replace":"true","search":"true","sentiment":"true","smart_format":"true","summarize":"true","tag":"tag1","topics":"true","utt_split":"true","utterances":"true","version":"true"}
 
 headers = {"Authorization": "Token <apiKey>"}
 
@@ -463,7 +120,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true';
+const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true';
 const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
@@ -486,7 +143,7 @@ import (
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true"
+	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -507,7 +164,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
+url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -523,7 +180,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
   .header("Authorization", "Token <apiKey>")
   .asString();
 ```
@@ -534,7 +191,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true', [
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
   ],
@@ -546,7 +203,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true");
+var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
 IRestResponse response = client.Execute(request);
@@ -557,7 +214,7 @@ import Foundation
 
 let headers = ["Authorization": "Token <apiKey>"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

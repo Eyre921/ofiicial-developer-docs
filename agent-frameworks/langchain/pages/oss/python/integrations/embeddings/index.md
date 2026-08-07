@@ -279,6 +279,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`Isaacus`](https://isaacus.com/docs)                                                                  | <span><a href="https://pypi.org/project/langchain-isaacus/">  <img alt="Downloads per month" /></a></span>                |
   | [`GreenNodeEmbeddings`](https://greennode.ai/)                                                         | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>              |
   | [`Lindorm`](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview)         | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
+  | [`KeiroEmbeddings`](https://github.com/Keirolabs-API/langchain-keiro)                                  | <span><a href="https://pypi.org/project/langchain-keiro/">  <img alt="Downloads per month" /></a></span>                  |
 </div>
 
 ***

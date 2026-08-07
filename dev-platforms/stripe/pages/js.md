@@ -556,6 +556,12 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
             Use `off_session` if your customer may or may not be present in your checkout flow.
           - `on_session`
             Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
+      - `sequra`
+        If this is a `sequra` PaymentMethod, this sub-hash contains details about the SeQura payment method options.
+        - `setup_future_usage`
+          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
+          - `none`
+            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `sofort`
         If this is a `sofort` PaymentMethod, this sub-hash contains details about the Sofort payment method options.
         - `setup_future_usage`
@@ -988,6 +994,12 @@ Incompatible with `paymentMethodCreation='manual'`.
             Use `off_session` if your customer may or may not be present in your checkout flow.
           - `on_session`
             Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
+      - `sequra`
+        If this is a `sequra` PaymentMethod, this sub-hash contains details about the SeQura payment method options.
+        - `setup_future_usage`
+          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
+          - `none`
+            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `sofort`
         If this is a `sofort` PaymentMethod, this sub-hash contains details about the Sofort payment method options.
         - `setup_future_usage`
@@ -8693,6 +8705,12 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
             Use `off_session` if your customer may or may not be present in your checkout flow.
           - `on_session`
             Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
+      - `sequra`
+        If this is a `sequra` PaymentMethod, this sub-hash contains details about the SeQura payment method options.
+        - `setup_future_usage`
+          Indicates that you intend to make future payments with the payment details collected by the Payment Element.
+          - `none`
+            Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
       - `sofort`
         If this is a `sofort` PaymentMethod, this sub-hash contains details about the Sofort payment method options.
         - `setup_future_usage`

@@ -17,217 +17,44 @@ Creates a set of distribution credentials for the specified project
 
 Reference: https://developers.deepgram.com/reference/self-hosted/distribution-credentials/create
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/self-hosted/distribution/credentials:
-    post:
-      operationId: create
-      summary: Create a Project Self-Hosted Distribution Credential
-      description: Creates a set of distribution credentials for the specified project
-      tags:
-        - distributionCredentials
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: scopes
-          in: query
-          description: List of permission scopes for the credentials
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: >-
-                #/components/schemas/V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersScopesSchemaItems
-            default:
-              - self-hosted:products
-        - name: provider
-          in: query
-          description: The provider of the distribution service
-          required: false
-          schema:
-            $ref: >-
-              #/components/schemas/V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersProvider
-            default: quay
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Single distribution credential
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/CreateProjectDistributionCredentialsV1Response
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: The set of distribution credentials to create
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/CreateProjectDistributionCredentialsV1Request
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersScopesSchemaItems:
-      type: string
-      enum:
-        - self-hosted:products
-        - self-hosted:product:api
-        - self-hosted:product:engine
-        - self-hosted:product:license-proxy
-        - self-hosted:product:dgtools
-        - self-hosted:product:billing
-        - self-hosted:product:hotpepper
-        - self-hosted:product:metrics-server
-      title: >-
-        V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersScopesSchemaItems
-    V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersProvider:
-      type: string
-      enum:
-        - quay
-      default: quay
-      title: >-
-        V1ProjectsProjectIdSelfHostedDistributionCredentialsPostParametersProvider
-    CreateProjectDistributionCredentialsV1Request:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Optional comment about the credentials
-      description: Request body for creating distribution credentials
-      title: CreateProjectDistributionCredentialsV1Request
-    CreateProjectDistributionCredentialsV1ResponseMember:
-      type: object
-      properties:
-        member_id:
-          type: string
-          format: uuid
-          description: Unique identifier for the member
-        email:
-          type: string
-          format: email
-          description: Email address of the member
-      required:
-        - member_id
-        - email
-      title: CreateProjectDistributionCredentialsV1ResponseMember
-    CreateProjectDistributionCredentialsV1ResponseDistributionCredentials:
-      type: object
-      properties:
-        distribution_credentials_id:
-          type: string
-          format: uuid
-          description: Unique identifier for the distribution credentials
-        provider:
-          type: string
-          description: The provider of the distribution service
-        comment:
-          type: string
-          description: Optional comment about the credentials
-        scopes:
-          type: array
-          items:
-            type: string
-          description: List of permission scopes for the credentials
-        created:
-          type: string
-          format: date-time
-          description: Timestamp when the credentials were created
-      required:
-        - distribution_credentials_id
-        - provider
-        - scopes
-        - created
-      title: CreateProjectDistributionCredentialsV1ResponseDistributionCredentials
-    CreateProjectDistributionCredentialsV1Response:
-      type: object
-      properties:
-        member:
-          $ref: >-
-            #/components/schemas/CreateProjectDistributionCredentialsV1ResponseMember
-        distribution_credentials:
-          $ref: >-
-            #/components/schemas/CreateProjectDistributionCredentialsV1ResponseDistributionCredentials
-      required:
-        - member
-        - distribution_credentials
-      title: CreateProjectDistributionCredentialsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `scopes` (list of enum, optional, default: ["self-hosted:products"]) — List of permission scopes for the credentials
+  - Allowed values: `self-hosted:products`, `self-hosted:product:api`, `self-hosted:product:engine`, `self-hosted:product:license-proxy`, `self-hosted:product:dgtools`, `self-hosted:product:billing`, `self-hosted:product:hotpepper`, `self-hosted:product:metrics-server`
+- `provider` (enum, optional, default: quay) — The provider of the distribution service
+  - Allowed values: `quay`
+
+### Body (application/json)
+
+- `comment` (string, optional) — Optional comment about the credentials
+
+## Response
+
+### 200
+
+Single distribution credential
+
+- `member` (object, required)
+  - `member_id` (string, required) — Unique identifier for the member
+  - `email` (string, required) — Email address of the member
+- `distribution_credentials` (object, required)
+  - `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
+  - `provider` (string, required) — The provider of the distribution service
+  - `scopes` (list of string, required) — List of permission scopes for the credentials
+  - `created` (string, required) — Timestamp when the credentials were created
+  - `comment` (string, optional) — Optional comment about the credentials
 
 ## Examples
-
-
 
 **Request**
 

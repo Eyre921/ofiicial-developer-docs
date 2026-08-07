@@ -14,241 +14,46 @@ Gets the metadata of a resource by ID.
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/resources/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/resources/{resource_id}:
-    get:
-      operationId: get
-      summary: Get Resource
-      description: Gets the metadata of a resource by ID.
-      tags:
-        - resources
-      parameters:
-        - name: resource_id
-          in: path
-          description: The ID of the target resource.
-          required: true
-          schema:
-            type: string
-        - name: resource_type
-          in: query
-          description: Resource type of the target resource.
-          required: true
-          schema:
-            $ref: '#/components/schemas/WorkspaceResourceType'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceMetadataResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WorkspaceResourceType:
-      type: string
-      enum:
-        - voice
-        - voice_collection
-        - pronunciation_dictionary
-        - dubbing
-        - project
-        - convai_agents
-        - convai_knowledge_base_documents
-        - convai_tools
-        - convai_settings
-        - convai_secrets
-        - workspace_auth_connections
-        - convai_phone_numbers
-        - convai_mcp_servers
-        - convai_api_integration_connections
-        - convai_api_integration_trigger_connections
-        - convai_batch_calls
-        - convai_agent_response_tests
-        - convai_test_suite_invocations
-        - convai_crawl_jobs
-        - convai_crawl_tasks
-        - convai_kb_external_sync_jobs
-        - convai_whatsapp_accounts
-        - convai_agent_versions
-        - convai_agent_branches
-        - convai_agent_versions_deployments
-        - convai_memory_entries
-        - convai_coaching_proposals
-        - convai_templates
-        - dashboard
-        - dashboard_configuration
-        - convai_agent_drafts
-        - resource_locators
-        - assets
-        - content_generations
-        - content_templates
-        - songs
-        - transcription_tasks
-        - avatars
-        - avatar_video_generations
-        - resource_collection
-        - studio_projects
-        - convai_analysis_items
-      description: >-
-        Resource types that can be shared in the workspace. The name always need
-        to match the collection names
-      title: WorkspaceResourceType
-    ResourceMetadataResponseModelAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceMetadataResponseModelAnonymousAccessLevelOverride
-    ShareOptionResponseModelType:
-      type: string
-      enum:
-        - user
-        - group
-        - key
-      description: >-
-        The type of the principal: user, group, or service account (under
-        'key').
-      title: ShareOptionResponseModelType
-    ShareOptionResponseModel:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the principal.
-        id:
-          type: string
-          description: The ID of the principal.
-        type:
-          $ref: '#/components/schemas/ShareOptionResponseModelType'
-          description: >-
-            The type of the principal: user, group, or service account (under
-            'key').
-      required:
-        - name
-        - id
-        - type
-      title: ShareOptionResponseModel
-    ResourceMetadataResponseModel:
-      type: object
-      properties:
-        resource_id:
-          type: string
-          description: The ID of the resource.
-        resource_name:
-          type:
-            - string
-            - 'null'
-          description: The name of the resource, if available.
-        resource_type:
-          $ref: '#/components/schemas/WorkspaceResourceType'
-          description: The type of the resource.
-        creator_user_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the user who created the resource.
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceMetadataResponseModelAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        role_to_group_ids:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: >-
-            A mapping of roles to group IDs. When the resource is shared with a
-            user, the group id is the user's id.
-        share_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShareOptionResponseModel'
-          description: >-
-            List of options for sharing the resource further in the workspace.
-            These are users who don't have access to the resource yet.
-      required:
-        - resource_id
-        - resource_name
-        - resource_type
-        - creator_user_id
-        - anonymous_access_level_override
-        - role_to_group_ids
-        - share_options
-      title: ResourceMetadataResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `resource_id` (string, required) — The ID of the target resource.
+
+### Query parameters
+
+- `resource_type` (enum, required) — Resource type of the target resource.
+  - Allowed values: `voice`, `voice_collection`, `pronunciation_dictionary`, `dubbing`, `project`, `convai_agents`, `convai_knowledge_base_documents`, `convai_tools`, `convai_settings`, `convai_secrets`, `workspace_auth_connections`, `convai_phone_numbers`, `convai_mcp_servers`, `convai_api_integration_connections`, `convai_api_integration_trigger_connections`, `convai_batch_calls`, `convai_agent_response_tests`, `convai_test_suite_invocations`, `convai_crawl_jobs`, `convai_crawl_tasks`, `convai_kb_external_sync_jobs`, `convai_whatsapp_accounts`, `convai_agent_versions`, `convai_agent_branches`, `convai_agent_versions_deployments`, `convai_memory_entries`, `convai_coaching_proposals`, `convai_templates`, `dashboard`, `dashboard_configuration`, `convai_agent_drafts`, `resource_locators`, `assets`, `content_generations`, `content_templates`, `songs`, `transcription_tasks`, `avatars`, `avatar_video_generations`, `resource_collection`, `studio_projects`, `convai_analysis_items`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `resource_id` (string, required) — The ID of the resource.
+- `resource_name` (string, required, nullable) — The name of the resource, if available.
+- `resource_type` (enum, required) — The type of the resource.
+  - Allowed values: `voice`, `voice_collection`, `pronunciation_dictionary`, `dubbing`, `project`, `convai_agents`, `convai_knowledge_base_documents`, `convai_tools`, `convai_settings`, `convai_secrets`, `workspace_auth_connections`, `convai_phone_numbers`, `convai_mcp_servers`, `convai_api_integration_connections`, `convai_api_integration_trigger_connections`, `convai_batch_calls`, `convai_agent_response_tests`, `convai_test_suite_invocations`, `convai_crawl_jobs`, `convai_crawl_tasks`, `convai_kb_external_sync_jobs`, `convai_whatsapp_accounts`, `convai_agent_versions`, `convai_agent_branches`, `convai_agent_versions_deployments`, `convai_memory_entries`, `convai_coaching_proposals`, `convai_templates`, `dashboard`, `dashboard_configuration`, `convai_agent_drafts`, `resource_locators`, `assets`, `content_generations`, `content_templates`, `songs`, `transcription_tasks`, `avatars`, `avatar_video_generations`, `resource_collection`, `studio_projects`, `convai_analysis_items`
+- `creator_user_id` (string, required, nullable) — The ID of the user who created the resource.
+- `anonymous_access_level_override` (enum, required, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `role_to_group_ids` (map from string to list of string, required) — A mapping of roles to group IDs. When the resource is shared with a user, the group id is the user's id.
+- `share_options` (list of object, required) — List of options for sharing the resource further in the workspace. These are users who don't have access to the resource yet.
+  - `name` (string, required) — The name of the principal.
+  - `id` (string, required) — The ID of the principal.
+  - `type` (enum, required) — The type of the principal: user, group, or service account (under 'key').
+    - Allowed values: `user`, `group`, `key`
 
 ## Examples
-
-
 
 **Response**
 

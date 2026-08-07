@@ -16,161 +16,34 @@ Lists the accessors, deployment types, tags, and line items used for billing dat
 
 Reference: https://developers.deepgram.com/reference/manage/billing/fields/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/billing/fields:
-    get:
-      operationId: list
-      summary: List Project Billing Fields
-      description: >-
-        Lists the accessors, deployment types, tags, and line items used for
-        billing data in the specified time period. Use this endpoint if you want
-        to filter your results from the Billing Breakdown endpoint and want to
-        know what filters are available.
-      tags:
-        - fields
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: >-
-            Start date of the requested date range. Format accepted is
-            YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: end
-          in: query
-          description: End date of the requested date range. Format accepted is YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of billing fields for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListBillingFieldsV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ListBillingFieldsV1ResponseDeploymentsItems:
-      type: string
-      enum:
-        - hosted
-        - beta
-        - self-hosted
-        - dedicated
-      title: ListBillingFieldsV1ResponseDeploymentsItems
-    ListBillingFieldsV1Response:
-      type: object
-      properties:
-        accessors:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of accessor UUIDs for the time period
-        deployments:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListBillingFieldsV1ResponseDeploymentsItems'
-          description: List of deployment types for the time period
-        tags:
-          type: array
-          items:
-            type: string
-          description: List of tags for the time period
-        line_items:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of line item names to human-readable descriptions for the time
-            period
-      title: ListBillingFieldsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `start` (string, optional) — Start date of the requested date range. Format accepted is YYYY-MM-DD
+- `end` (string, optional) — End date of the requested date range. Format accepted is YYYY-MM-DD
+
+## Response
+
+### 200
+
+A list of billing fields for a specific project
+
+- `accessors` (list of string, optional) — List of accessor UUIDs for the time period
+- `deployments` (list of enum, optional) — List of deployment types for the time period
+  - Allowed values: `hosted`, `beta`, `self-hosted`, `dedicated`
+- `tags` (list of string, optional) — List of tags for the time period
+- `line_items` (map from string to string, optional) — Map of line item names to human-readable descriptions for the time period
 
 ## Examples
-
-
 
 **Response**
 

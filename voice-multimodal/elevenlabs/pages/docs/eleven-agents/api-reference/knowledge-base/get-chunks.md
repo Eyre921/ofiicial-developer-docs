@@ -14,147 +14,38 @@ Get all RAG chunks for a specific knowledge base document.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/{documentation_id}/chunks:
-    get:
-      operationId: list
-      summary: Get All Rag Chunks For A Document
-      description: Get all RAG chunks for a specific knowledge base document.
-      tags:
-        - chunks
-      parameters:
-        - name: documentation_id
-          in: path
-          description: >-
-            The id of a document from the knowledge base. This is returned on
-            document addition.
-          required: true
-          schema:
-            type: string
-        - name: embedding_model
-          in: query
-          description: The embedding model used to retrieve the chunk.
-          required: true
-          schema:
-            $ref: '#/components/schemas/type_:EmbeddingModelEnum'
-        - name: page_size
-          in: query
-          description: >-
-            How many documents to return at maximum. Can not exceed 100,
-            defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_:KnowledgeBaseDocumentChunksResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    type_:KnowledgeBaseDocumentChunkResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        content:
-          type: string
-      required:
-        - id
-        - name
-        - content
-      title: KnowledgeBaseDocumentChunkResponseModel
-    type_:KnowledgeBaseDocumentChunksResponseModel:
-      type: object
-      properties:
-        chunks:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:KnowledgeBaseDocumentChunkResponseModel'
-        next_cursor:
-          type: string
-      required:
-        - chunks
-      title: KnowledgeBaseDocumentChunksResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `documentation_id` (string, required) — The id of a document from the knowledge base. This is returned on document addition.
+
+### Query parameters
+
+- `embedding_model` (enum, required, default: e5_mistral_7b_instruct) — The embedding model used to retrieve the chunk.
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `page_size` (integer, optional, default: 30) — How many documents to return at maximum. Can not exceed 100, defaults to 30.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `chunks` (list of object, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `content` (string, required)
+- `next_cursor` (string, optional)
 
 ## Examples
 

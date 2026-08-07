@@ -16,166 +16,37 @@ Lists the features, models, tags, languages, and processing method used for requ
 
 Reference: https://developers.deepgram.com/reference/manage/usage/list
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/usage/fields:
-    get:
-      operationId: list
-      summary: List Project Usage Fields
-      description: >-
-        Lists the features, models, tags, languages, and processing method used
-        for requests in the specified project
-      tags:
-        - fields
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: >-
-            Start date of the requested date range. Format accepted is
-            YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: end
-          in: query
-          description: End date of the requested date range. Format accepted is YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of fields for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsageFieldsV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    UsageFieldsV1ResponseModelsItems:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the model.
-        language:
-          type: string
-          description: The language supported by the model (IETF language tag).
-        version:
-          type: string
-          description: >-
-            Version identifier of the model, typically with a date and a
-            revision number.
-        model_id:
-          type: string
-          description: Unique identifier for the model.
-      title: UsageFieldsV1ResponseModelsItems
-    UsageFieldsV1Response:
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
-            type: string
-          description: List of tags associated with the project
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsageFieldsV1ResponseModelsItems'
-          description: List of models available for the project.
-        processing_methods:
-          type: array
-          items:
-            type: string
-          description: Processing methods supported by the API
-        features:
-          type: array
-          items:
-            type: string
-          description: API features available to the project
-      title: UsageFieldsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `start` (string, optional) — Start date of the requested date range. Format accepted is YYYY-MM-DD
+- `end` (string, optional) — End date of the requested date range. Format accepted is YYYY-MM-DD
+
+## Response
+
+### 200
+
+A list of fields for a specific project
+
+- `tags` (list of string, optional) — List of tags associated with the project
+- `models` (list of object, optional) — List of models available for the project.
+  - `name` (string, optional) — Name of the model.
+  - `language` (string, optional) — The language supported by the model (IETF language tag).
+  - `version` (string, optional) — Version identifier of the model, typically with a date and a revision number.
+  - `model_id` (string, optional) — Unique identifier for the model.
+- `processing_methods` (list of string, optional) — Processing methods supported by the API
+- `features` (list of string, optional) — API features available to the project
 
 ## Examples
-
-
 
 **Response**
 

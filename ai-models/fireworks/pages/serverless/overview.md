@@ -32,7 +32,7 @@ Other things to know:
 
 * The `usage` object in each response is the source of truth for what was billed (`prompt_tokens`, `completion_tokens`, `total_tokens`).
 * **Batch inference** is billed at 50% of standard Serverless rates on both input and output. See [Batch inference](/guides/batch-inference).
-* Your **spend tier** influences Serverless capacity caps in addition to your monthly budget — higher spend tiers unlock higher TPM upper bounds. See [Account quotas](/guides/quotas_usage/account-quotas) and [Serverless rate limits](/serverless/rate-limits).
+* Your **spend tier** influences Serverless capacity caps. Your monthly spend limit is a separate account control. Higher spend tiers unlock higher TPM upper bounds. See [Account quotas](/guides/quotas_usage/account-quotas) and [Serverless rate limits](/serverless/rate-limits).
 
 ## Request and response headers
 

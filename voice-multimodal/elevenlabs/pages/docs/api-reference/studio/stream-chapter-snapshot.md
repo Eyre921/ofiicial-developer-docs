@@ -15,134 +15,35 @@ Stream the audio from a chapter snapshot. Use `GET /v1/studio/projects/{project_
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/stream-chapter-snapshot
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/chapters/{chapter_id}/snapshots/{chapter_snapshot_id}/stream:
-    post:
-      operationId: stream
-      summary: Stream Chapter Audio
-      description: >-
-        Stream the audio from a chapter snapshot. Use `GET
-        /v1/studio/projects/{project_id}/chapters/{chapter_id}/snapshots` to
-        return the snapshots of a chapter.
-      tags:
-        - snapshots
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: chapter_id
-          in: path
-          description: >-
-            The ID of the chapter to be used. You can use the [List project
-            chapters](/docs/api-reference/studio/get-chapters) endpoint to list
-            all the available chapters.
-          required: true
-          schema:
-            type: string
-        - name: chapter_snapshot_id
-          in: path
-          description: >-
-            The ID of the chapter snapshot to be used. You can use the [List
-            project chapter snapshots](/docs/api-reference/studio/get-snapshots)
-            endpoint to list all the available snapshots.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Streaming audio data
-          content:
-            text/event-stream:
-              schema:
-                type: string
-                format: binary
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Stream_chapter_audio_v1_studio_projects__project_id__chapters__chapter_id__snapshots__chapter_snapshot_id__stream_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Stream_chapter_audio_v1_studio_projects__project_id__chapters__chapter_id__snapshots__chapter_snapshot_id__stream_post:
-      type: object
-      properties:
-        convert_to_mpeg:
-          type: boolean
-          default: false
-          description: Whether to convert the audio to mpeg format.
-      title: >-
-        Body_Stream_chapter_audio_v1_studio_projects__project_id__chapters__chapter_id__snapshots__chapter_snapshot_id__stream_post
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+- `chapter_id` (string, required) — The ID of the chapter to be used. You can use the [List project chapters](/docs/api-reference/studio/get-chapters) endpoint to list all the available chapters.
+- `chapter_snapshot_id` (string, required) — The ID of the chapter snapshot to be used. You can use the [List project chapter snapshots](/docs/api-reference/studio/get-snapshots) endpoint to list all the available snapshots.
+
+### Body (application/json)
+
+- `convert_to_mpeg` (boolean, optional, default: false) — Whether to convert the audio to mpeg format.
+
+## Response
+
+### 200
+
+Streaming audio data
+
+- Streaming response of `string`.
 
 ## Examples
-
-
 
 **Request**
 

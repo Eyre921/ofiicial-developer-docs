@@ -17,131 +17,26 @@ Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and
 
 Reference: https://developers.deepgram.com/reference/auth/tokens/grant
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/auth/grant:
-    post:
-      operationId: grant
-      summary: Token-based Authentication
-      description: >-
-        Generates a temporary JSON Web Token (JWT) with a 30-second (by default)
-        TTL and usage::write permission for core voice APIs, requiring an API
-        key with Member or higher authorization. Tokens created with this
-        endpoint will not work with the Manage APIs.
-      tags:
-        - tokens
-      parameters:
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Grant response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GrantV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: Time to live settings
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GrantV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    GrantV1Request:
-      type: object
-      properties:
-        ttl_seconds:
-          type: number
-          format: double
-          description: Time to live in seconds for the token. Defaults to 30 seconds.
-      title: GrantV1Request
-    GrantV1Response:
-      type: object
-      properties:
-        access_token:
-          type: string
-          description: JSON Web Token (JWT)
-        expires_in:
-          type: number
-          format: double
-          description: Time in seconds until the JWT expires
-      required:
-        - access_token
-      title: GrantV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Body (application/json)
+
+- `ttl_seconds` (double, optional) — Time to live in seconds for the token. Defaults to 30 seconds.
+
+## Response
+
+### 200
+
+Grant response
+
+- `access_token` (string, required) — JSON Web Token (JWT)
+- `expires_in` (double, optional) — Time in seconds until the JWT expires
 
 ## Examples
-
-
 
 **Request**
 

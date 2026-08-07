@@ -14,976 +14,192 @@ Returns a list of all available voices for a user. Stops working once the user's
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/voices/get-all
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices:
-    get:
-      operationId: get_all
-      summary: List voices
-      description: >-
-        Returns a list of all available voices for a user. Stops working once
-        the user's workspace exceeds 500 voices.
-      tags:
-        - voices
-      parameters:
-        - name: show_legacy
-          in: query
-          description: >-
-            If set to true, legacy premade voices will be included in responses
-            from /v1/voices
-          required: false
-          schema:
-            type:
-              - boolean
-              - 'null'
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetVoicesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SpeakerSeparationResponseModelStatus:
-      type: string
-      enum:
-        - not_started
-        - pending
-        - completed
-        - failed
-      description: The status of the speaker separation.
-      title: SpeakerSeparationResponseModelStatus
-    UtteranceResponseModel:
-      type: object
-      properties:
-        start:
-          type: number
-          format: double
-          description: The start time of the utterance in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the utterance in seconds.
-      required:
-        - start
-        - end
-      title: UtteranceResponseModel
-    SpeakerResponseModel:
-      type: object
-      properties:
-        speaker_id:
-          type: string
-          description: The ID of the speaker.
-        duration_secs:
-          type: number
-          format: double
-          description: The duration of the speaker segment in seconds.
-        utterances:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/UtteranceResponseModel'
-          description: The utterances of the speaker.
-      required:
-        - speaker_id
-        - duration_secs
-      title: SpeakerResponseModel
-    SpeakerSeparationResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-        sample_id:
-          type: string
-          description: The ID of the sample.
-        status:
-          $ref: '#/components/schemas/SpeakerSeparationResponseModelStatus'
-          description: The status of the speaker separation.
-        speakers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/SpeakerResponseModel'
-          description: The speakers of the sample.
-        selected_speaker_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: The IDs of the selected speakers.
-      required:
-        - voice_id
-        - sample_id
-        - status
-      title: SpeakerSeparationResponseModel
-    SampleResponseModel:
-      type: object
-      properties:
-        sample_id:
-          type: string
-          description: The ID of the sample.
-        file_name:
-          type: string
-          description: The name of the sample file.
-        mime_type:
-          type: string
-          description: The MIME type of the sample file.
-        size_bytes:
-          type: integer
-          description: The size of the sample file in bytes.
-        hash:
-          type: string
-          description: The hash of the sample file.
-        duration_secs:
-          type:
-            - number
-            - 'null'
-          format: double
-        remove_background_noise:
-          type:
-            - boolean
-            - 'null'
-        has_isolated_audio:
-          type:
-            - boolean
-            - 'null'
-        has_isolated_audio_preview:
-          type:
-            - boolean
-            - 'null'
-        speaker_separation:
-          oneOf:
-            - $ref: '#/components/schemas/SpeakerSeparationResponseModel'
-            - type: 'null'
-        trim_start:
-          type:
-            - integer
-            - 'null'
-        trim_end:
-          type:
-            - integer
-            - 'null'
-      title: SampleResponseModel
-    VoiceResponseModelCategory:
-      type: string
-      enum:
-        - generated
-        - cloned
-        - premade
-        - professional
-        - famous
-        - high_quality
-      description: The category of the voice.
-      title: VoiceResponseModelCategory
-    FineTuningResponseModelState:
-      type: string
-      enum:
-        - not_started
-        - queued
-        - fine_tuning
-        - fine_tuned
-        - failed
-        - delayed
-      title: FineTuningResponseModelState
-    RecordingResponseModel:
-      type: object
-      properties:
-        recording_id:
-          type: string
-          description: The ID of the recording.
-        mime_type:
-          type: string
-          description: The MIME type of the recording.
-        size_bytes:
-          type: integer
-          description: The size of the recording in bytes.
-        upload_date_unix:
-          type: integer
-          description: The date of the recording in Unix time.
-        transcription:
-          type: string
-          description: The transcription of the recording.
-      required:
-        - recording_id
-        - mime_type
-        - size_bytes
-        - upload_date_unix
-        - transcription
-      title: RecordingResponseModel
-    VerificationAttemptResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the verification attempt.
-        date_unix:
-          type: integer
-          description: The date of the verification attempt in Unix time.
-        accepted:
-          type: boolean
-          description: Whether the verification attempt was accepted.
-        similarity:
-          type: number
-          format: double
-          description: The similarity of the verification attempt.
-        levenshtein_distance:
-          type: number
-          format: double
-          description: The Levenshtein distance of the verification attempt.
-        recording:
-          oneOf:
-            - $ref: '#/components/schemas/RecordingResponseModel'
-            - type: 'null'
-          description: The recording of the verification attempt.
-      required:
-        - text
-        - date_unix
-        - accepted
-        - similarity
-        - levenshtein_distance
-      title: VerificationAttemptResponseModel
-    ManualVerificationFileResponseModel:
-      type: object
-      properties:
-        file_id:
-          type: string
-          description: The ID of the file.
-        file_name:
-          type: string
-          description: The name of the file.
-        mime_type:
-          type: string
-          description: The MIME type of the file.
-        size_bytes:
-          type: integer
-          description: The size of the file in bytes.
-        upload_date_unix:
-          type: integer
-          description: The date of the file in Unix time.
-      required:
-        - file_id
-        - file_name
-        - mime_type
-        - size_bytes
-        - upload_date_unix
-      title: ManualVerificationFileResponseModel
-    ManualVerificationResponseModel:
-      type: object
-      properties:
-        extra_text:
-          type: string
-          description: The extra text of the manual verification.
-        request_time_unix:
-          type: integer
-          description: The date of the manual verification in Unix time.
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/ManualVerificationFileResponseModel'
-          description: The files of the manual verification.
-      required:
-        - extra_text
-        - request_time_unix
-        - files
-      title: ManualVerificationResponseModel
-    FineTuningResponseModel:
-      type: object
-      properties:
-        is_allowed_to_fine_tune:
-          type: boolean
-          description: Whether the user is allowed to fine-tune the voice.
-        state:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/FineTuningResponseModelState'
-          description: The state of the fine-tuning process for each model.
-        verification_failures:
-          type: array
-          items:
-            type: string
-          description: List of verification failures in the fine-tuning process.
-        verification_attempts_count:
-          type: integer
-          description: The number of verification attempts in the fine-tuning process.
-        manual_verification_requested:
-          type: boolean
-          description: >-
-            Whether a manual verification was requested for the fine-tuning
-            process.
-        language:
-          type:
-            - string
-            - 'null'
-          description: The language of the fine-tuning process.
-        progress:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: number
-            format: double
-          description: The progress of the fine-tuning process.
-        message:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-          description: The message of the fine-tuning process.
-        dataset_duration_seconds:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The duration of the dataset in seconds.
-        verification_attempts:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VerificationAttemptResponseModel'
-          description: The number of verification attempts.
-        slice_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of slice IDs.
-        manual_verification:
-          oneOf:
-            - $ref: '#/components/schemas/ManualVerificationResponseModel'
-            - type: 'null'
-          description: The manual verification of the fine-tuning process.
-        max_verification_attempts:
-          type:
-            - integer
-            - 'null'
-          description: The maximum number of verification attempts.
-        next_max_verification_attempts_reset_unix_ms:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The next maximum verification attempts reset time in Unix
-            milliseconds.
-        finetuning_state:
-          description: Any type
-      title: FineTuningResponseModel
-    VoiceSettingsResponseModel:
-      type: object
-      properties:
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0.5
-          description: >-
-            Determines how stable the voice is and the randomness between each
-            generation. Lower values introduce broader emotional range for the
-            voice. Higher values can result in a monotonous voice with limited
-            emotion.
-        use_speaker_boost:
-          type:
-            - boolean
-            - 'null'
-          default: true
-          description: >-
-            This setting boosts the similarity to the original speaker. Using
-            this setting requires a slightly higher computational load, which in
-            turn increases latency.
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0.75
-          description: >-
-            Determines how closely the AI should adhere to the original voice
-            when attempting to replicate it.
-        style:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0
-          description: >-
-            Determines the style exaggeration of the voice. This setting
-            attempts to amplify the style of the original speaker. It does
-            consume additional computational resources and might increase
-            latency if set to anything other than 0.
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 1
-          description: >-
-            Adjusts the speed of the voice. A value of 1.0 is the default speed,
-            while values less than 1.0 slow down the speech, and values greater
-            than 1.0 speed it up.
-      title: VoiceSettingsResponseModel
-    voice_sharing_state:
-      type: string
-      enum:
-        - enabled
-        - disabled
-        - copied
-        - copied_disabled
-      description: The status of the voice sharing.
-      title: voice_sharing_state
-    VoiceSharingResponseModelCategory:
-      type: string
-      enum:
-        - generated
-        - cloned
-        - premade
-        - professional
-        - famous
-        - high_quality
-      description: The category of the voice.
-      title: VoiceSharingResponseModelCategory
-    review_status:
-      type: string
-      enum:
-        - not_requested
-        - pending
-        - declined
-        - allowed
-        - allowed_with_changes
-      description: The review status of the voice.
-      title: review_status
-    VoiceSharingModerationCheckResponseModel:
-      type: object
-      properties:
-        date_checked_unix:
-          type:
-            - integer
-            - 'null'
-          description: The date the moderation check was made in Unix time.
-        name_value:
-          type:
-            - string
-            - 'null'
-          description: The name value of the voice.
-        name_check:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the name check was successful.
-        description_value:
-          type:
-            - string
-            - 'null'
-          description: The description value of the voice.
-        description_check:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the description check was successful.
-        sample_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of sample IDs.
-        sample_checks:
-          type:
-            - array
-            - 'null'
-          items:
-            type: number
-            format: double
-          description: A list of sample checks.
-        captcha_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of captcha IDs.
-        captcha_checks:
-          type:
-            - array
-            - 'null'
-          items:
-            type: number
-            format: double
-          description: A list of CAPTCHA check values.
-      title: VoiceSharingModerationCheckResponseModel
-    ReaderResourceResponseModelResourceType:
-      type: string
-      enum:
-        - read
-        - collection
-      description: The type of resource.
-      title: ReaderResourceResponseModelResourceType
-    ReaderResourceResponseModel:
-      type: object
-      properties:
-        resource_type:
-          $ref: '#/components/schemas/ReaderResourceResponseModelResourceType'
-          description: The type of resource.
-        resource_id:
-          type: string
-          description: The ID of the resource.
-      required:
-        - resource_type
-        - resource_id
-      title: ReaderResourceResponseModel
-    VoiceSharingResponseModel:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/voice_sharing_state'
-          description: The status of the voice sharing.
-        history_item_sample_id:
-          type:
-            - string
-            - 'null'
-          description: The sample ID of the history item.
-        date_unix:
-          type: integer
-          description: The date of the voice sharing in Unix time.
-        whitelisted_emails:
-          type: array
-          items:
-            type: string
-          description: A list of whitelisted emails.
-        public_owner_id:
-          type: string
-          description: The ID of the public owner.
-        original_voice_id:
-          type: string
-          description: The ID of the original voice.
-        financial_rewards_enabled:
-          type: boolean
-          description: Whether financial rewards are enabled.
-        free_users_allowed:
-          type: boolean
-          description: Whether free users are allowed.
-        live_moderation_enabled:
-          type: boolean
-          description: Whether live moderation is enabled.
-        rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate of the voice sharing.
-        fiat_rate:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The rate of the voice sharing in USD per 1000 credits.
-        notice_period:
-          type: integer
-          description: The notice period of the voice sharing.
-        disable_at_unix:
-          type:
-            - integer
-            - 'null'
-          description: The date of the voice sharing in Unix time.
-        voice_mixing_allowed:
-          type: boolean
-          description: Whether voice mixing is allowed.
-        featured:
-          type: boolean
-          description: Whether the voice is featured.
-        category:
-          $ref: '#/components/schemas/VoiceSharingResponseModelCategory'
-          description: The category of the voice.
-        reader_app_enabled:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the reader app is enabled.
-        image_url:
-          type:
-            - string
-            - 'null'
-          description: The image URL of the voice.
-        ban_reason:
-          type:
-            - string
-            - 'null'
-          description: The ban reason of the voice.
-        liked_by_count:
-          type: integer
-          description: The number of likes on the voice.
-        cloned_by_count:
-          type: integer
-          description: The number of clones on the voice.
-        name:
-          type: string
-          description: The name of the voice.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the voice.
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-          description: The labels of the voice.
-        review_status:
-          $ref: '#/components/schemas/review_status'
-          description: The review status of the voice.
-        review_message:
-          type:
-            - string
-            - 'null'
-          description: The review message of the voice.
-        enabled_in_library:
-          type: boolean
-          description: Whether the voice is enabled in the library.
-        instagram_username:
-          type:
-            - string
-            - 'null'
-          description: The Instagram username of the voice.
-        twitter_username:
-          type:
-            - string
-            - 'null'
-          description: The Twitter/X username of the voice.
-        youtube_username:
-          type:
-            - string
-            - 'null'
-          description: The YouTube username of the voice.
-        tiktok_username:
-          type:
-            - string
-            - 'null'
-          description: The TikTok username of the voice.
-        moderation_check:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceSharingModerationCheckResponseModel'
-            - type: 'null'
-          description: The moderation check of the voice.
-        reader_restricted_on:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/ReaderResourceResponseModel'
-          description: The reader restricted on of the voice.
-      title: VoiceSharingResponseModel
-    VerifiedVoiceLanguageResponseModel:
-      type: object
-      properties:
-        language:
-          type: string
-          description: The language of the voice.
-        model_id:
-          type: string
-          description: The voice's model ID.
-        accent:
-          type:
-            - string
-            - 'null'
-          description: The voice's accent, if applicable.
-        locale:
-          type:
-            - string
-            - 'null'
-          description: The voice's locale, if applicable.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The voice's preview URL, if applicable.
-      required:
-        - language
-        - model_id
-      title: VerifiedVoiceLanguageResponseModel
-    VoiceResponseModelSafetyControl:
-      type: string
-      enum:
-        - NONE
-        - BAN
-        - CAPTCHA
-        - ENTERPRISE_BAN
-        - ENTERPRISE_CAPTCHA
-      description: The safety controls of the voice.
-      title: VoiceResponseModelSafetyControl
-    VoiceVerificationResponseModel:
-      type: object
-      properties:
-        requires_verification:
-          type: boolean
-          description: Whether the voice requires verification.
-        is_verified:
-          type: boolean
-          description: Whether the voice has been verified.
-        verification_failures:
-          type: array
-          items:
-            type: string
-          description: List of verification failures.
-        verification_attempts_count:
-          type: integer
-          description: The number of verification attempts.
-        language:
-          type:
-            - string
-            - 'null'
-          description: The language of the voice.
-        verification_attempts:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VerificationAttemptResponseModel'
-          description: Number of times a verification was attempted.
-      required:
-        - requires_verification
-        - is_verified
-        - verification_failures
-        - verification_attempts_count
-      title: VoiceVerificationResponseModel
-    VoiceResponseModelRecordingQuality:
-      type: string
-      enum:
-        - studio
-        - good
-        - ok
-        - poor
-        - bad
-      description: The recording quality of the voice as determined by the review pipeline.
-      title: VoiceResponseModelRecordingQuality
-    VoiceResponseModelLabellingStatus:
-      type: string
-      enum:
-        - in_review
-        - review_complete
-      description: The review pipeline status of the voice.
-      title: VoiceResponseModelLabellingStatus
-    VoiceResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-        name:
-          type: string
-          description: The name of the voice.
-        samples:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SampleResponseModel'
-          description: List of samples associated with the voice.
-        category:
-          $ref: '#/components/schemas/VoiceResponseModelCategory'
-          description: The category of the voice.
-        fine_tuning:
-          oneOf:
-            - $ref: '#/components/schemas/FineTuningResponseModel'
-            - type: 'null'
-          description: Fine-tuning information for the voice.
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-          description: Labels associated with the voice.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The description of the voice.
-        preview_url:
-          type:
-            - string
-            - 'null'
-          description: The preview URL of the voice.
-        available_for_tiers:
-          type: array
-          items:
-            type: string
-          description: The tiers the voice is available for.
-        settings:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceSettingsResponseModel'
-            - type: 'null'
-          description: The settings of the voice.
-        sharing:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceSharingResponseModel'
-            - type: 'null'
-          description: The sharing information of the voice.
-        high_quality_base_model_ids:
-          type: array
-          items:
-            type: string
-          description: The base model IDs for high-quality voices.
-        verified_languages:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/VerifiedVoiceLanguageResponseModel'
-          description: The verified languages of the voice.
-        collection_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: The IDs of collections this voice belongs to.
-        safety_control:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceResponseModelSafetyControl'
-            - type: 'null'
-          description: The safety controls of the voice.
-        voice_verification:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceVerificationResponseModel'
-            - type: 'null'
-          description: The voice verification of the voice.
-        permission_on_resource:
-          type:
-            - string
-            - 'null'
-          description: The permission on the resource of the voice.
-        is_owner:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the voice is owned by the user.
-        is_legacy:
-          type: boolean
-          default: false
-          description: Whether the voice is legacy.
-        is_mixed:
-          type: boolean
-          default: false
-          description: Whether the voice is mixed.
-        favorited_at_unix:
-          type:
-            - integer
-            - 'null'
-          description: Timestamp when the voice was marked as favorite in Unix time.
-        created_at_unix:
-          type:
-            - integer
-            - 'null'
-          description: The creation time of the voice in Unix time.
-        is_bookmarked:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether the voice is bookmarked by the current user. Only relevant
-            for community (library-copied) voices.
-        recording_quality:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceResponseModelRecordingQuality'
-            - type: 'null'
-          description: >-
-            The recording quality of the voice as determined by the review
-            pipeline.
-        labelling_status:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceResponseModelLabellingStatus'
-            - type: 'null'
-          description: The review pipeline status of the voice.
-        recording_quality_reason:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The reason for the recording quality assessment, as determined by
-            the review pipeline.
-      required:
-        - voice_id
-      title: VoiceResponseModel
-    GetVoicesResponseModel:
-      type: object
-      properties:
-        voices:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoiceResponseModel'
-          description: A list of available voices.
-      required:
-        - voices
-      title: GetVoicesResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `show_legacy` (boolean, optional, nullable, default: false) — If set to true, legacy premade voices will be included in responses from /v1/voices
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voices` (list of object, required) — A list of available voices.
+  - `voice_id` (string, required) — The ID of the voice.
+  - `name` (string, optional) — The name of the voice.
+  - `samples` (list of object, optional, nullable) — List of samples associated with the voice.
+    - `sample_id` (string, optional) — The ID of the sample.
+    - `file_name` (string, optional) — The name of the sample file.
+    - `mime_type` (string, optional) — The MIME type of the sample file.
+    - `size_bytes` (integer, optional) — The size of the sample file in bytes.
+    - `hash` (string, optional) — The hash of the sample file.
+    - `duration_secs` (double, optional, nullable)
+    - `remove_background_noise` (boolean, optional, nullable)
+    - `has_isolated_audio` (boolean, optional, nullable)
+    - `has_isolated_audio_preview` (boolean, optional, nullable)
+    - `speaker_separation` (object, optional, nullable)
+      - `voice_id` (string, required) — The ID of the voice.
+      - `sample_id` (string, required) — The ID of the sample.
+      - `status` (enum, required) — The status of the speaker separation.
+        - Allowed values: `not_started`, `pending`, `completed`, `failed`
+      - `speakers` (map from string to object, optional, nullable) — The speakers of the sample.
+        - `speaker_id` (string, required) — The ID of the speaker.
+        - `duration_secs` (double, required) — The duration of the speaker segment in seconds.
+        - `utterances` (list of object, optional, nullable) — The utterances of the speaker.
+          - `start` (double, required) — The start time of the utterance in seconds.
+          - `end` (double, required) — The end time of the utterance in seconds.
+      - `selected_speaker_ids` (list of string, optional, nullable) — The IDs of the selected speakers.
+    - `trim_start` (integer, optional, nullable)
+    - `trim_end` (integer, optional, nullable)
+  - `category` (enum, optional) — The category of the voice.
+    - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+  - `fine_tuning` (object, optional, nullable) — Fine-tuning information for the voice.
+    - `is_allowed_to_fine_tune` (boolean, optional) — Whether the user is allowed to fine-tune the voice.
+    - `state` (map from string to enum, optional) — The state of the fine-tuning process for each model.
+      - Allowed values: `not_started`, `queued`, `fine_tuning`, `fine_tuned`, `failed`, `delayed`
+    - `verification_failures` (list of string, optional) — List of verification failures in the fine-tuning process.
+    - `verification_attempts_count` (integer, optional) — The number of verification attempts in the fine-tuning process.
+    - `manual_verification_requested` (boolean, optional) — Whether a manual verification was requested for the fine-tuning process.
+    - `language` (string, optional, nullable) — The language of the fine-tuning process.
+    - `progress` (map from string to double, optional, nullable) — The progress of the fine-tuning process.
+    - `message` (map from string to string, optional, nullable) — The message of the fine-tuning process.
+    - `dataset_duration_seconds` (double, optional, nullable) — The duration of the dataset in seconds.
+    - `verification_attempts` (list of object, optional, nullable) — The number of verification attempts.
+      - `text` (string, required) — The text of the verification attempt.
+      - `date_unix` (integer, required) — The date of the verification attempt in Unix time.
+      - `accepted` (boolean, required) — Whether the verification attempt was accepted.
+      - `similarity` (double, required) — The similarity of the verification attempt.
+      - `levenshtein_distance` (double, required) — The Levenshtein distance of the verification attempt.
+      - `recording` (object, optional, nullable) — The recording of the verification attempt.
+        - `recording_id` (string, required) — The ID of the recording.
+        - `mime_type` (string, required) — The MIME type of the recording.
+        - `size_bytes` (integer, required) — The size of the recording in bytes.
+        - `upload_date_unix` (integer, required) — The date of the recording in Unix time.
+        - `transcription` (string, required) — The transcription of the recording.
+    - `slice_ids` (list of string, optional, nullable) — List of slice IDs.
+    - `manual_verification` (object, optional, nullable) — The manual verification of the fine-tuning process.
+      - `extra_text` (string, required) — The extra text of the manual verification.
+      - `request_time_unix` (integer, required) — The date of the manual verification in Unix time.
+      - `files` (list of object, required) — The files of the manual verification.
+        - `file_id` (string, required) — The ID of the file.
+        - `file_name` (string, required) — The name of the file.
+        - `mime_type` (string, required) — The MIME type of the file.
+        - `size_bytes` (integer, required) — The size of the file in bytes.
+        - `upload_date_unix` (integer, required) — The date of the file in Unix time.
+    - `max_verification_attempts` (integer, optional, nullable) — The maximum number of verification attempts.
+    - `next_max_verification_attempts_reset_unix_ms` (integer, optional, nullable) — The next maximum verification attempts reset time in Unix milliseconds.
+    - `finetuning_state` (any, optional)
+  - `labels` (map from string to string, optional) — Labels associated with the voice.
+  - `description` (string, optional, nullable) — The description of the voice.
+  - `preview_url` (string, optional, nullable) — The preview URL of the voice.
+  - `available_for_tiers` (list of string, optional) — The tiers the voice is available for.
+  - `settings` (object, optional, nullable) — The settings of the voice.
+    - `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+    - `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+    - `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+    - `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+    - `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
+  - `sharing` (object, optional, nullable) — The sharing information of the voice.
+    - `status` (enum, optional) — The status of the voice sharing.
+      - Allowed values: `enabled`, `disabled`, `copied`, `copied_disabled`
+    - `history_item_sample_id` (string, optional, nullable) — The sample ID of the history item.
+    - `date_unix` (integer, optional) — The date of the voice sharing in Unix time.
+    - `whitelisted_emails` (list of string, optional) — A list of whitelisted emails.
+    - `public_owner_id` (string, optional) — The ID of the public owner.
+    - `original_voice_id` (string, optional) — The ID of the original voice.
+    - `financial_rewards_enabled` (boolean, optional) — Whether financial rewards are enabled.
+    - `free_users_allowed` (boolean, optional) — Whether free users are allowed.
+    - `live_moderation_enabled` (boolean, optional) — Whether live moderation is enabled.
+    - `rate` (double, optional, nullable) — The rate of the voice sharing.
+    - `fiat_rate` (double, optional, nullable) — The rate of the voice sharing in USD per 1000 credits.
+    - `notice_period` (integer, optional) — The notice period of the voice sharing.
+    - `disable_at_unix` (integer, optional, nullable) — The date of the voice sharing in Unix time.
+    - `voice_mixing_allowed` (boolean, optional) — Whether voice mixing is allowed.
+    - `featured` (boolean, optional) — Whether the voice is featured.
+    - `category` (enum, optional) — The category of the voice.
+      - Allowed values: `generated`, `cloned`, `premade`, `professional`, `famous`, `high_quality`
+    - `reader_app_enabled` (boolean, optional, nullable) — Whether the reader app is enabled.
+    - `image_url` (string, optional, nullable) — The image URL of the voice.
+    - `ban_reason` (string, optional, nullable) — The ban reason of the voice.
+    - `liked_by_count` (integer, optional) — The number of likes on the voice.
+    - `cloned_by_count` (integer, optional) — The number of clones on the voice.
+    - `name` (string, optional) — The name of the voice.
+    - `description` (string, optional, nullable) — The description of the voice.
+    - `labels` (map from string to string, optional) — The labels of the voice.
+    - `review_status` (enum, optional) — The review status of the voice.
+      - Allowed values: `not_requested`, `pending`, `declined`, `allowed`, `allowed_with_changes`
+    - `review_message` (string, optional, nullable) — The review message of the voice.
+    - `enabled_in_library` (boolean, optional) — Whether the voice is enabled in the library.
+    - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.
+    - `twitter_username` (string, optional, nullable) — The Twitter/X username of the voice.
+    - `youtube_username` (string, optional, nullable) — The YouTube username of the voice.
+    - `tiktok_username` (string, optional, nullable) — The TikTok username of the voice.
+    - `moderation_check` (object, optional, nullable) — The moderation check of the voice.
+      - `date_checked_unix` (integer, optional, nullable) — The date the moderation check was made in Unix time.
+      - `name_value` (string, optional, nullable) — The name value of the voice.
+      - `name_check` (boolean, optional, nullable) — Whether the name check was successful.
+      - `description_value` (string, optional, nullable) — The description value of the voice.
+      - `description_check` (boolean, optional, nullable) — Whether the description check was successful.
+      - `sample_ids` (list of string, optional, nullable) — A list of sample IDs.
+      - `sample_checks` (list of double, optional, nullable) — A list of sample checks.
+      - `captcha_ids` (list of string, optional, nullable) — A list of captcha IDs.
+      - `captcha_checks` (list of double, optional, nullable) — A list of CAPTCHA check values.
+    - `reader_restricted_on` (list of object, optional, nullable) — The reader restricted on of the voice.
+      - `resource_type` (enum, required) — The type of resource.
+        - Allowed values: `read`, `collection`
+      - `resource_id` (string, required) — The ID of the resource.
+  - `high_quality_base_model_ids` (list of string, optional) — The base model IDs for high-quality voices.
+  - `verified_languages` (list of object, optional, nullable) — The verified languages of the voice.
+    - `language` (string, required) — The language of the voice.
+    - `model_id` (string, required) — The voice's model ID.
+    - `accent` (string, optional, nullable) — The voice's accent, if applicable.
+    - `locale` (string, optional, nullable) — The voice's locale, if applicable.
+    - `preview_url` (string, optional, nullable) — The voice's preview URL, if applicable.
+  - `collection_ids` (list of string, optional, nullable) — The IDs of collections this voice belongs to.
+  - `safety_control` (enum, optional, nullable) — The safety controls of the voice.
+    - Allowed values: `NONE`, `BAN`, `CAPTCHA`, `ENTERPRISE_BAN`, `ENTERPRISE_CAPTCHA`
+  - `voice_verification` (object, optional, nullable) — The voice verification of the voice.
+    - `requires_verification` (boolean, required) — Whether the voice requires verification.
+    - `is_verified` (boolean, required) — Whether the voice has been verified.
+    - `verification_failures` (list of string, required) — List of verification failures.
+    - `verification_attempts_count` (integer, required) — The number of verification attempts.
+    - `language` (string, optional, nullable) — The language of the voice.
+    - `verification_attempts` (list of object, optional, nullable) — Number of times a verification was attempted.
+      - `text` (string, required) — The text of the verification attempt.
+      - `date_unix` (integer, required) — The date of the verification attempt in Unix time.
+      - `accepted` (boolean, required) — Whether the verification attempt was accepted.
+      - `similarity` (double, required) — The similarity of the verification attempt.
+      - `levenshtein_distance` (double, required) — The Levenshtein distance of the verification attempt.
+      - `recording` (object, optional, nullable) — The recording of the verification attempt.
+        - `recording_id` (string, required) — The ID of the recording.
+        - `mime_type` (string, required) — The MIME type of the recording.
+        - `size_bytes` (integer, required) — The size of the recording in bytes.
+        - `upload_date_unix` (integer, required) — The date of the recording in Unix time.
+        - `transcription` (string, required) — The transcription of the recording.
+  - `permission_on_resource` (string, optional, nullable) — The permission on the resource of the voice.
+  - `is_owner` (boolean, optional, nullable) — Whether the voice is owned by the user.
+  - `is_legacy` (boolean, optional, default: false) — Whether the voice is legacy.
+  - `is_mixed` (boolean, optional, default: false) — Whether the voice is mixed.
+  - `favorited_at_unix` (integer, optional, nullable) — Timestamp when the voice was marked as favorite in Unix time.
+  - `created_at_unix` (integer, optional, nullable) — The creation time of the voice in Unix time.
+  - `is_bookmarked` (boolean, optional, nullable) — Whether the voice is bookmarked by the current user. Only relevant for community (library-copied) voices.
+  - `recording_quality` (enum, optional, nullable) — The recording quality of the voice as determined by the review pipeline.
+    - Allowed values: `studio`, `good`, `ok`, `poor`, `bad`
+  - `labelling_status` (enum, optional, nullable) — The review pipeline status of the voice.
+    - Allowed values: `in_review`, `review_complete`
+  - `recording_quality_reason` (string, optional, nullable) — The reason for the recording quality assessment, as determined by the review pipeline.
 
 ## Examples
-
-
 
 **Response**
 

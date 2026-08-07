@@ -14,280 +14,67 @@ Get distinct users from conversations with pagination.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/users/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/users:
-    get:
-      operationId: list
-      summary: Get Conversation Users
-      description: Get distinct users from conversations with pagination.
-      tags:
-        - users
-      parameters:
-        - name: agent_id
-          in: query
-          description: >-
-            Agent id (agent_…) or speech engine external id (seng_), resolved to
-            the same underlying resource.
-          required: false
-          schema:
-            type: string
-        - name: branch_id
-          in: query
-          description: Filter conversations by branch ID.
-          required: false
-          schema:
-            type: string
-        - name: call_start_before_unix
-          in: query
-          description: >-
-            Unix timestamp (in seconds) to filter conversations up to this start
-            date.
-          required: false
-          schema:
-            type: integer
-        - name: call_start_after_unix
-          in: query
-          description: >-
-            Unix timestamp (in seconds) to filter conversations after to this
-            start date.
-          required: false
-          schema:
-            type: integer
-        - name: search
-          in: query
-          description: Search/filter by user ID (exact match).
-          required: false
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          description: How many users to return at maximum. Defaults to 30.
-          required: false
-          schema:
-            type: integer
-            default: 30
-        - name: sort_by
-          in: query
-          description: >-
-            The field to sort the results by. Defaults to
-            last_contact_unix_secs.
-          required: false
-          schema:
-            $ref: '#/components/schemas/type_:UsersSortBy'
-        - name: sort_direction
-          in: query
-          description: The direction to sort the results
-          required: false
-          schema:
-            $ref: '#/components/schemas/type_:SortDirection'
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_:GetConversationUsersPageResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:UsersSortBy:
-      type: string
-      enum:
-        - last_contact_unix_secs
-        - conversation_count
-        - average_sentiment_score
-      title: UsersSortBy
-    type_:SortDirection:
-      type: string
-      enum:
-        - asc
-        - desc
-      title: SortDirection
-    type_:SentimentAggregate:
-      type: object
-      properties:
-        scored_conversation_count:
-          type: integer
-        positive_count:
-          type: integer
-        neutral_count:
-          type: integer
-        negative_count:
-          type: integer
-        average_sentiment_score:
-          type: number
-          format: double
-        average_frustration_score:
-          type: number
-          format: double
-        recent_scored_conversation_count:
-          type: integer
-        recent_positive_count:
-          type: integer
-        recent_neutral_count:
-          type: integer
-        recent_negative_count:
-          type: integer
-        recent_average_sentiment_score:
-          type: number
-          format: double
-        recent_average_frustration_score:
-          type: number
-          format: double
-      required:
-        - scored_conversation_count
-        - positive_count
-        - neutral_count
-        - negative_count
-        - recent_scored_conversation_count
-        - recent_positive_count
-        - recent_neutral_count
-        - recent_negative_count
-      title: SentimentAggregate
-    type_:FrustratedConversationRefOverallLabel:
-      type: string
-      enum:
-        - positive
-        - neutral
-        - negative
-      title: FrustratedConversationRefOverallLabel
-    type_:FrustratedConversationRef:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-        agent_id:
-          type: string
-        start_time_unix_secs:
-          type: integer
-        overall_label:
-          $ref: '#/components/schemas/type_:FrustratedConversationRefOverallLabel'
-        overall_sentiment_score:
-          type: number
-          format: double
-        overall_frustration_score:
-          type: number
-          format: double
-      required:
-        - conversation_id
-        - agent_id
-        - start_time_unix_secs
-        - overall_label
-        - overall_sentiment_score
-        - overall_frustration_score
-      title: FrustratedConversationRef
-    type_:ConversationUserResponseModel:
-      type: object
-      properties:
-        user_id:
-          type: string
-        last_contact_unix_secs:
-          type: integer
-        first_contact_unix_secs:
-          type: integer
-        conversation_count:
-          type: integer
-        last_contact_agent_id:
-          type: string
-        last_contact_conversation_id:
-          type: string
-        last_contact_agent_name:
-          type: string
-        sentiment:
-          $ref: '#/components/schemas/type_:SentimentAggregate'
-        most_frustrated_conversations:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:FrustratedConversationRef'
-      required:
-        - user_id
-        - last_contact_unix_secs
-        - first_contact_unix_secs
-        - conversation_count
-        - last_contact_conversation_id
-        - sentiment
-      title: ConversationUserResponseModel
-    type_:GetConversationUsersPageResponseModel:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ConversationUserResponseModel'
-        next_cursor:
-          type: string
-        has_more:
-          type: boolean
-      required:
-        - users
-        - has_more
-      title: GetConversationUsersPageResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_id` (string, optional) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `branch_id` (string, optional) — Filter conversations by branch ID.
+- `call_start_before_unix` (integer, optional) — Unix timestamp (in seconds) to filter conversations up to this start date.
+- `call_start_after_unix` (integer, optional) — Unix timestamp (in seconds) to filter conversations after to this start date.
+- `search` (string, optional) — Search/filter by user ID (exact match).
+- `page_size` (integer, optional, default: 30) — How many users to return at maximum. Defaults to 30.
+- `sort_by` (enum, optional) — The field to sort the results by. Defaults to last_contact_unix_secs.
+  - Allowed values: `last_contact_unix_secs`, `conversation_count`, `average_sentiment_score`
+- `sort_direction` (enum, optional) — The direction to sort the results
+  - Allowed values: `asc`, `desc`
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `users` (list of object, required)
+  - `user_id` (string, required)
+  - `last_contact_unix_secs` (integer, required)
+  - `first_contact_unix_secs` (integer, required)
+  - `conversation_count` (integer, required)
+  - `last_contact_conversation_id` (string, required)
+  - `sentiment` (object, required)
+    - `scored_conversation_count` (integer, required)
+    - `positive_count` (integer, required)
+    - `neutral_count` (integer, required)
+    - `negative_count` (integer, required)
+    - `recent_scored_conversation_count` (integer, required)
+    - `recent_positive_count` (integer, required)
+    - `recent_neutral_count` (integer, required)
+    - `recent_negative_count` (integer, required)
+    - `average_sentiment_score` (double, optional)
+    - `average_frustration_score` (double, optional)
+    - `recent_average_sentiment_score` (double, optional)
+    - `recent_average_frustration_score` (double, optional)
+  - `last_contact_agent_id` (string, optional)
+  - `last_contact_agent_name` (string, optional)
+  - `most_frustrated_conversations` (list of object, optional)
+    - `conversation_id` (string, required)
+    - `agent_id` (string, required)
+    - `start_time_unix_secs` (integer, required)
+    - `overall_label` (enum, required)
+      - Allowed values: `positive`, `neutral`, `negative`
+    - `overall_sentiment_score` (double, required)
+    - `overall_frustration_score` (double, required)
+- `has_more` (boolean, required)
+- `next_cursor` (string, optional)
 
 ## Examples
 

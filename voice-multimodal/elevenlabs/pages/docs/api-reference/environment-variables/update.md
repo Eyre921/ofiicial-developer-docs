@@ -15,220 +15,45 @@ Replace an environment variable's values. Use null to remove an environment (exc
 
 Reference: https://elevenlabs.io/docs/api-reference/environment-variables/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/environment-variables/{env_var_id}:
-    patch:
-      operationId: update
-      summary: Update Environment Variable
-      description: >-
-        Replace an environment variable's values. Use null to remove an
-        environment (except production).
-      tags:
-        - environmentVariables
-      parameters:
-        - name: env_var_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnvironmentVariableResponse'
-        '400':
-          description: Invalid parameters or type mismatch
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '404':
-          description: Environment variable not found
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateEnvironmentVariableRequest'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    EnvironmentVariableSecretValueRequest:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValueRequest
-    EnvironmentVariableAuthConnectionValueRequest:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValueRequest
-    UpdateEnvironmentVariableRequestValues:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/EnvironmentVariableSecretValueRequest'
-        - $ref: '#/components/schemas/EnvironmentVariableAuthConnectionValueRequest'
-      title: UpdateEnvironmentVariableRequestValues
-    UpdateEnvironmentVariableRequest:
-      type: object
-      properties:
-        values:
-          type: object
-          additionalProperties:
-            oneOf:
-              - $ref: '#/components/schemas/UpdateEnvironmentVariableRequestValues'
-              - type: 'null'
-          description: >-
-            Values to replace. Set to null to remove an environment (except
-            'production').
-      required:
-        - values
-      title: UpdateEnvironmentVariableRequest
-    EnvironmentVariableResponseType:
-      type: string
-      enum:
-        - string
-        - secret
-        - auth_connection
-      title: EnvironmentVariableResponseType
-    EnvironmentVariableSecretValue:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValue
-    EnvironmentVariableResponseValues1:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableSecretValue'
-      title: EnvironmentVariableResponseValues1
-    EnvironmentVariableAuthConnectionValue:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValue
-    EnvironmentVariableResponseValues2:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableAuthConnectionValue'
-      title: EnvironmentVariableResponseValues2
-    EnvironmentVariableResponseValues:
-      oneOf:
-        - type: object
-          additionalProperties:
-            type: string
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues1'
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues2'
-      title: EnvironmentVariableResponseValues
-    EnvironmentVariableResponse:
-      type: object
-      properties:
-        label:
-          type: string
-        created_at_unix_secs:
-          type: integer
-        updated_at_unix_secs:
-          type: integer
-        created_by_user_id:
-          type:
-            - string
-            - 'null'
-        type:
-          $ref: '#/components/schemas/EnvironmentVariableResponseType'
-        id:
-          type: string
-        workspace_id:
-          type: string
-        values:
-          $ref: '#/components/schemas/EnvironmentVariableResponseValues'
-      required:
-        - label
-        - created_at_unix_secs
-        - updated_at_unix_secs
-        - type
-        - id
-        - workspace_id
-        - values
-      title: EnvironmentVariableResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `env_var_id` (string, required)
+
+### Body (application/json)
+
+- `values` (map from string to string or object or object, required) — Values to replace. Set to null to remove an environment (except 'production').
+  - EnvironmentVariableSecretValueRequest
+    - `secret_id` (string, required)
+  - EnvironmentVariableAuthConnectionValueRequest
+    - `auth_connection_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `label` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `updated_at_unix_secs` (integer, required)
+- `type` (enum, required)
+  - Allowed values: `string`, `secret`, `auth_connection`
+- `id` (string, required)
+- `workspace_id` (string, required)
+- `values` (map from string to string or map from string to object or map from string to object, required)
+- `created_by_user_id` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Request**
 

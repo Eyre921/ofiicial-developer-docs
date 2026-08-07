@@ -70,7 +70,7 @@ To edit a subscription:
 
 ## Delete a subscription 
 
-You can’t delete a subscription. But you can cancel it or pause payment collection. See [editing a subscription](https://docs.stripe.com/no-code/subscriptions.md#edit-susbscription) for those details.
+You can’t delete a subscription. But you can cancel it or pause payment collection. See [editing a subscription](https://docs.stripe.com/no-code/subscriptions.md#edit-subscription) for those details.
 
 ## Subscriptions on mobile
 

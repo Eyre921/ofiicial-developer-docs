@@ -16,6 +16,11 @@ The cookbook's
 rollouts, but it does not require a particular agent framework, environment,
 session service, or history-reconciliation policy.
 
+The rollout contract is infrastructure-independent. On the shared serverless
+pool, use the experimental
+[`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py);
+on dedicated infrastructure, use the primary `async_rl_loop` recipe.
+
 ## Correctness boundary
 
 For each logical trajectory, the adapter should:

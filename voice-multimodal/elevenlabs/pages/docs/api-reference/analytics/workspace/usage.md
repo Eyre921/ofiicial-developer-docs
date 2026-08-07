@@ -15,282 +15,44 @@ Returns credit usage broken down by product type over time. The response is a ta
 
 Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/usage
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/analytics/query/usage-by-product-over-time:
-    post:
-      operationId: get_usage_by_product_over_time
-      summary: Get Workspace Usage
-      description: >-
-        Returns credit usage broken down by product type over time. The response
-        is a tabular structure with columns, column_types, column_units, and
-        rows.
-      tags:
-        - usage
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceAnalyticsQueryResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Get_Workspace_Usage_v1_workspace_analytics_query_usage_by_product_over_time_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    BodyGetWorkspaceUsageV1WorkspaceAnalyticsQueryUsageByProductOverTimePostGroupByItems:
-      type: string
-      enum:
-        - product_type
-        - model
-        - voice_id
-        - user_id
-        - fiat_currency
-        - fiat_charge_type
-        - region
-        - reporting_workspace_id
-        - request_source
-        - resource_id
-        - subresource_id
-        - request_queue_type
-        - voice_multiplier
-        - hashed_xi_api_key
-        - billing_group_id
-        - surface
-        - actor
-      title: >-
-        BodyGetWorkspaceUsageV1WorkspaceAnalyticsQueryUsageByProductOverTimePostGroupByItems
-    ColumnFilterOperation:
-      type: string
-      enum:
-        - in
-        - not_in
-        - le
-        - ge
-        - lt
-        - gt
-        - eq
-        - neq
-      title: ColumnFilterOperation
-    ColumnFilterValuesItems:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: string
-          format: date-time
-        - type: boolean
-      title: ColumnFilterValuesItems
-    ColumnFilter:
-      type: object
-      properties:
-        column:
-          type: string
-        operation:
-          $ref: '#/components/schemas/ColumnFilterOperation'
-        values:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ColumnFilterValuesItems'
-              - type: 'null'
-      required:
-        - column
-        - operation
-        - values
-      title: ColumnFilter
-    Body_Get_Workspace_Usage_v1_workspace_analytics_query_usage_by_product_over_time_post:
-      type: object
-      properties:
-        start_time:
-          type: integer
-          description: >-
-            Start of the time range as a Unix timestamp in milliseconds. Must be
-            at least 2020-01-01.
-        end_time:
-          type: integer
-          description: >-
-            End of the time range as a Unix timestamp in milliseconds. Must be
-            at least 2020-01-01.
-        interval_seconds:
-          type: integer
-          default: 60
-          description: >-
-            Bucket size in seconds. Each row in the response covers this many
-            seconds of the selected time range. For example, pass 3600 for
-            hourly buckets or 86400 for daily buckets. Whether `time_zone`
-            shifts bucket boundaries depends on this value: whole-day multiples
-            (e.g. 86400) align to local midnight; whole-hour multiples up to 24
-            hours (e.g. 3600, 14400) align to local hour boundaries from
-            midnight; sub-hour values and other sizes remain UTC-anchored
-            regardless of `time_zone`.
-        group_by:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: >-
-              #/components/schemas/BodyGetWorkspaceUsageV1WorkspaceAnalyticsQueryUsageByProductOverTimePostGroupByItems
-        filters:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/ColumnFilter'
-        time_zone:
-          type: string
-          default: UTC
-          description: >-
-            IANA time zone identifier (e.g. 'America/New_York', 'Europe/London',
-            'UTC') used to align bucket boundaries for eligible
-            `interval_seconds` values. Whole-day multiples start at local
-            midnight; whole-hour multiples up to 24 hours align to local hour
-            boundaries from midnight. Sub-hour intervals and other bucket sizes
-            remain UTC-anchored regardless of this setting. Defaults to UTC.
-      required:
-        - start_time
-        - end_time
-      title: >-
-        Body_Get_Workspace_Usage_v1_workspace_analytics_query_usage_by_product_over_time_post
-    WorkspaceAnalyticsQueryResponseModelColumnTypesItems:
-      type: string
-      enum:
-        - String
-        - Float
-        - DateTime
-        - Int
-        - Bool
-        - JSON
-        - Map
-        - Array
-      title: WorkspaceAnalyticsQueryResponseModelColumnTypesItems
-    WorkspaceAnalyticsQueryResponseModelRowsItemsItems:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-        - type: string
-          format: date-time
-      title: WorkspaceAnalyticsQueryResponseModelRowsItemsItems
-    ColumnUnit:
-      type: string
-      enum:
-        - ms
-        - s
-        - min
-        - duration
-        - credits
-        - usd
-        - eur
-        - inr
-        - pln
-        - ratio
-        - rating
-      title: ColumnUnit
-    WorkspaceAnalyticsQueryResponseModel:
-      type: object
-      properties:
-        columns:
-          type: array
-          items:
-            type: string
-        column_types:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/WorkspaceAnalyticsQueryResponseModelColumnTypesItems
-        rows:
-          type: array
-          items:
-            type: array
-            items:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/WorkspaceAnalyticsQueryResponseModelRowsItemsItems
-                - type: 'null'
-        column_units:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ColumnUnit'
-              - type: 'null'
-      required:
-        - columns
-        - column_types
-        - rows
-        - column_units
-      title: WorkspaceAnalyticsQueryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `start_time` (integer, required) — Start of the time range as a Unix timestamp in milliseconds. Must be at least 2020-01-01.
+- `end_time` (integer, required) — End of the time range as a Unix timestamp in milliseconds. Must be at least 2020-01-01.
+- `interval_seconds` (integer, optional, default: 60) — Bucket size in seconds. Each row in the response covers this many seconds of the selected time range. For example, pass 3600 for hourly buckets or 86400 for daily buckets. Whether `time_zone` shifts bucket boundaries depends on this value: whole-day multiples (e.g. 86400) align to local midnight; whole-hour multiples up to 24 hours (e.g. 3600, 14400) align to local hour boundaries from midnight; sub-hour values and other sizes remain UTC-anchored regardless of `time_zone`.
+- `group_by` (list of enum, optional, nullable)
+  - Allowed values: `product_type`, `model`, `voice_id`, `user_id`, `fiat_currency`, `fiat_charge_type`, `region`, `reporting_workspace_id`, `request_source`, `resource_id`, `subresource_id`, `request_queue_type`, `voice_multiplier`, `hashed_xi_api_key`, `billing_group_id`, `surface`, `actor`
+- `filters` (list of object, optional, nullable)
+  - `column` (string, required)
+  - `operation` (enum, required)
+    - Allowed values: `in`, `not_in`, `le`, `ge`, `lt`, `gt`, `eq`, `neq`
+  - `values` (list of string or integer or double or string or boolean, required)
+- `time_zone` (string, optional, default: UTC) — IANA time zone identifier (e.g. 'America/New_York', 'Europe/London', 'UTC') used to align bucket boundaries for eligible `interval_seconds` values. Whole-day multiples start at local midnight; whole-hour multiples up to 24 hours align to local hour boundaries from midnight. Sub-hour intervals and other bucket sizes remain UTC-anchored regardless of this setting. Defaults to UTC.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `columns` (list of string, required)
+- `column_types` (list of enum, required)
+  - Allowed values: `String`, `Float`, `DateTime`, `Int`, `Bool`, `JSON`, `Map`, `Array`
+- `rows` (list of list of string or integer or double or boolean or string, required)
+- `column_units` (list of enum, required)
+  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
 
 ## Examples
-
-
 
 **Request**
 

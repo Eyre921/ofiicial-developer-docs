@@ -14,159 +14,44 @@ Get SIP messages for a phone number
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/phone-numbers/{phone_number_id}/sip-messages:
-    get:
-      operationId: get_sip_messages
-      summary: Get Sip Messages For A Phone Number
-      description: Get SIP messages for a phone number
-      tags:
-        - phoneNumbers
-      parameters:
-        - name: phone_number_id
-          in: path
-          description: >-
-            The phone number ID. This is returned when a phone number is
-            imported.
-          required: true
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetSipLogMessagesResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:SipLogMessageDirection:
-      type: string
-      enum:
-        - in
-        - out
-      title: SipLogMessageDirection
-    type_:SipLogMessage:
-      type: object
-      properties:
-        call_id:
-          type: string
-        phone_numbers:
-          type: array
-          items:
-            type: string
-        local_address:
-          type: string
-        remote_address:
-          type: string
-        transport:
-          type: string
-        raw_message:
-          type: string
-        error_message:
-          type: string
-        direction:
-          $ref: '#/components/schemas/type_:SipLogMessageDirection'
-        created_at_unix_micro:
-          type: integer
-      required:
-        - call_id
-        - phone_numbers
-        - local_address
-        - remote_address
-        - transport
-        - raw_message
-        - error_message
-        - direction
-        - created_at_unix_micro
-      title: SipLogMessage
-    type_:GetSipLogMessagesResponse:
-      type: object
-      properties:
-        sip_messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:SipLogMessage'
-        next_cursor:
-          type: string
-        has_more:
-          type: boolean
-          default: false
-      required:
-        - sip_messages
-      title: GetSipLogMessagesResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `phone_number_id` (string, required) — The phone number ID. This is returned when a phone number is imported.
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 20)
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `sip_messages` (list of object, required)
+  - `call_id` (string, required)
+  - `phone_numbers` (list of string, required)
+  - `local_address` (string, required)
+  - `remote_address` (string, required)
+  - `transport` (string, required)
+  - `raw_message` (string, required)
+  - `error_message` (string, required)
+  - `direction` (enum, required)
+    - Allowed values: `in`, `out`
+  - `created_at_unix_micro` (integer, required)
+- `next_cursor` (string, optional)
+- `has_more` (boolean, optional, default: false)
 
 ## Examples
 

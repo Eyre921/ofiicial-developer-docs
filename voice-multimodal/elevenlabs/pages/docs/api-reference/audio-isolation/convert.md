@@ -15,136 +15,29 @@ Removes background noise from audio.
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-isolation/convert
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-isolation:
-    post:
-      operationId: convert
-      summary: Audio isolation
-      description: Removes background noise from audio.
-      tags:
-        - audioIsolation
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/audio_isolation_convert_Response_200'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                audio:
-                  type: string
-                  format: binary
-                  description: >-
-                    The audio file from which vocals/speech will be isolated
-                    from.
-                file_format:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1AudioIsolationPostRequestBodyContentMultipartFormDataSchemaFileFormat
-                    - type: 'null'
-                  default: other
-                  description: >-
-                    The format of input audio. Options are 'pcm_s16le_16' or
-                    'other' For `pcm_s16le_16`, the input audio must be 16-bit
-                    PCM at a 16kHz sample rate, single channel (mono), and
-                    little-endian byte order. Latency will be lower than with
-                    passing an encoded waveform.
-                preview_b64:
-                  type:
-                    - string
-                    - 'null'
-                  description: Optional preview image base64 for tracking this generation.
-              required:
-                - audio
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1AudioIsolationPostRequestBodyContentMultipartFormDataSchemaFileFormat:
-      type: string
-      enum:
-        - pcm_s16le_16
-        - other
-      default: other
-      description: >-
-        The format of input audio. Options are 'pcm_s16le_16' or 'other' For
-        `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample
-        rate, single channel (mono), and little-endian byte order. Latency will
-        be lower than with passing an encoded waveform.
-      title: V1AudioIsolationPostRequestBodyContentMultipartFormDataSchemaFileFormat
-    audio_isolation_convert_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: audio_isolation_convert_Response_200
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `audio` (file, required) — The audio file from which vocals/speech will be isolated from.
+- `file_format` (enum, optional) — The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.
+- `preview_b64` (string, optional) — Optional preview image base64 for tracking this generation.
+
+## Response
+
+### 200
+
+Successful Response
 
 ## Examples
-
-
 
 **Request**
 

@@ -67,7 +67,7 @@ This page describes the core workflows you’ll use in Studio. It explains how t
 
 ## Manage assistants
 
-Studio lets you view, edit, and update your assistants, and allows you to run your graph using these assistant configurations.
+Studio lets you view and edit your assistants, and allows you to run your graph using these assistant configurations.
 
 For more conceptual details, refer to the [Assistants overview](/langsmith/assistants/).
 

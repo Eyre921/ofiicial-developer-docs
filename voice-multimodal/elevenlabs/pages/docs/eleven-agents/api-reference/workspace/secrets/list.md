@@ -14,374 +14,74 @@ Get all workspace secrets for the user
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/secrets:
-    get:
-      operationId: list
-      summary: Get Convai Workspace Secrets
-      description: Get all workspace secrets for the user
-      tags:
-        - secrets
-      parameters:
-        - name: page_size
-          in: query
-          description: >-
-            How many documents to return at maximum. Can not exceed 100. If not
-            provided, returns all secrets.
-          required: false
-          schema:
-            type: integer
-        - name: dependency_limit
-          in: query
-          description: >-
-            Maximum number of dependent resources (tools, agents, phone numbers)
-            to return per secret. Can not exceed 100.
-          required: false
-          schema:
-            type: integer
-        - name: search
-          in: query
-          description: >-
-            If specified, returns only secrets whose names start with this
-            string.
-          required: false
-          schema:
-            type: string
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetWorkspaceSecretsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:DependentAvailableToolIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableToolIdentifierAccessLevel
-    type_:ConvAiStoredSecretDependenciesToolsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/type_:DependentAvailableToolIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            id:
-              type: string
-          required:
-            - type
-            - id
-      discriminator:
-        propertyName: type
-      title: ConvAiStoredSecretDependenciesToolsItem
-    type_:DependentAvailableAgentIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableAgentIdentifierAccessLevel
-    type_:ConvAiStoredSecretDependenciesAgentsItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/type_:DependentAvailableAgentIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-      discriminator:
-        propertyName: type
-      title: ConvAiStoredSecretDependenciesAgentsItem
-    type_:TelephonyProvider:
-      type: string
-      enum:
-        - twilio
-        - sip_trunk
-        - exotel
-      title: TelephonyProvider
-    type_:DependentPhoneNumberIdentifier:
-      type: object
-      properties:
-        phone_number_id:
-          type: string
-        phone_number:
-          type: string
-        label:
-          type: string
-        provider:
-          $ref: '#/components/schemas/type_:TelephonyProvider'
-      required:
-        - phone_number_id
-        - phone_number
-        - label
-        - provider
-      title: DependentPhoneNumberIdentifier
-    type_:DependentAvailableMcpServerIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableMcpServerIdentifierAccessLevel
-    type_:ConvAiStoredSecretDependenciesMcpServersItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/type_:DependentAvailableMcpServerIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            id:
-              type: string
-          required:
-            - type
-            - id
-      discriminator:
-        propertyName: type
-      title: ConvAiStoredSecretDependenciesMcpServersItem
-    type_:SecretDependencyType:
-      type: string
-      enum:
-        - conversation_initiation_webhook
-      title: SecretDependencyType
-    type_:ConvAiStoredSecretDependencies:
-      type: object
-      properties:
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ConvAiStoredSecretDependenciesToolsItem'
-        tools_has_more:
-          type: boolean
-          default: false
-          description: Whether there are more tool dependents beyond the returned preview
-        agents:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConvAiStoredSecretDependenciesAgentsItem
-        agents_has_more:
-          type: boolean
-          default: false
-          description: Whether there are more agent dependents beyond the returned preview
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DependentPhoneNumberIdentifier'
-        phone_numbers_has_more:
-          type: boolean
-          default: false
-          description: >-
-            Whether there are more phone number dependents beyond the returned
-            preview
-        mcp_servers:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ConvAiStoredSecretDependenciesMcpServersItem
-        others:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:SecretDependencyType'
-      required:
-        - tools
-        - agents
-        - others
-      title: ConvAiStoredSecretDependencies
-    type_:ConvAiWorkspaceStoredSecretConfig:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - stored
-        secret_id:
-          type: string
-        name:
-          type: string
-        used_by:
-          $ref: '#/components/schemas/type_:ConvAiStoredSecretDependencies'
-      required:
-        - type
-        - secret_id
-        - name
-        - used_by
-      title: ConvAiWorkspaceStoredSecretConfig
-    type_:GetWorkspaceSecretsResponseModel:
-      type: object
-      properties:
-        secrets:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ConvAiWorkspaceStoredSecretConfig'
-        next_cursor:
-          type: string
-          description: Cursor for fetching the next page of secrets
-      required:
-        - secrets
-      title: GetWorkspaceSecretsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional) — How many documents to return at maximum. Can not exceed 100. If not provided, returns all secrets.
+- `dependency_limit` (integer, optional) — Maximum number of dependent resources (tools, agents, phone numbers) to return per secret. Can not exceed 100.
+- `search` (string, optional) — If specified, returns only secrets whose names start with this string.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `secrets` (list of object, required)
+  - `type` ("stored", required)
+  - `secret_id` (string, required)
+  - `name` (string, required)
+  - `used_by` (object, required)
+    - `tools` (list of object, required)
+      - `type`: `available`
+        - `access_level` (enum, required)
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `created_at_unix_secs` (integer, required)
+        - `id` (string, required)
+        - `name` (string, required)
+      - `type`: `unknown`
+        - `id` (string, required)
+    - `agents` (list of object, required)
+      - `type`: `available`
+        - `access_level` (enum, required)
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `created_at_unix_secs` (integer, required)
+        - `id` (string, required)
+        - `name` (string, required)
+        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+      - `type`: `unknown`
+        - `id` (string, required)
+        - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+    - `others` (list of "conversation_initiation_webhook", required)
+    - `tools_has_more` (boolean, optional, default: false) — Whether there are more tool dependents beyond the returned preview
+    - `agents_has_more` (boolean, optional, default: false) — Whether there are more agent dependents beyond the returned preview
+    - `phone_numbers` (list of object, optional)
+      - `phone_number_id` (string, required)
+      - `phone_number` (string, required)
+      - `label` (string, required)
+      - `provider` (enum, required)
+        - Allowed values: `twilio`, `sip_trunk`, `exotel`
+    - `phone_numbers_has_more` (boolean, optional, default: false) — Whether there are more phone number dependents beyond the returned preview
+    - `mcp_servers` (list of object, optional)
+      - `type`: `available`
+        - `access_level` (enum, required)
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `created_at_unix_secs` (integer, required)
+        - `id` (string, required)
+        - `name` (string, required)
+      - `type`: `unknown`
+        - `id` (string, required)
+- `next_cursor` (string, optional) — Cursor for fetching the next page of secrets
 
 ## Examples
 

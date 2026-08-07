@@ -16,157 +16,38 @@ Retrieves all API keys associated with the specified project
 
 Reference: https://developers.deepgram.com/reference/manage/keys/list
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/keys:
-    get:
-      operationId: list
-      summary: List Project Keys
-      description: Retrieves all API keys associated with the specified project
-      tags:
-        - keys
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Only return keys with a specific status
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1ProjectsProjectIdKeysGetParametersStatus'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of API keys
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListProjectKeysV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    V1ProjectsProjectIdKeysGetParametersStatus:
-      type: string
-      enum:
-        - active
-        - expired
-      title: V1ProjectsProjectIdKeysGetParametersStatus
-    ListProjectKeysV1ResponseApiKeysItemsMember:
-      type: object
-      properties:
-        member_id:
-          type: string
-        email:
-          type: string
-      title: ListProjectKeysV1ResponseApiKeysItemsMember
-    ListProjectKeysV1ResponseApiKeysItemsApiKey:
-      type: object
-      properties:
-        api_key_id:
-          type: string
-        comment:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-        created:
-          type: string
-          format: date-time
-      title: ListProjectKeysV1ResponseApiKeysItemsApiKey
-    ListProjectKeysV1ResponseApiKeysItems:
-      type: object
-      properties:
-        member:
-          $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItemsMember'
-        api_key:
-          $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItemsApiKey'
-      title: ListProjectKeysV1ResponseApiKeysItems
-    ListProjectKeysV1Response:
-      type: object
-      properties:
-        api_keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItems'
-      title: ListProjectKeysV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `status` (enum, optional) — Only return keys with a specific status
+  - Allowed values: `active`, `expired`
+
+## Response
+
+### 200
+
+A list of API keys
+
+- `api_keys` (list of object, optional)
+  - `member` (object, optional)
+    - `member_id` (string, optional)
+    - `email` (string, optional)
+  - `api_key` (object, optional)
+    - `api_key_id` (string, optional)
+    - `comment` (string, optional)
+    - `scopes` (list of string, optional)
+    - `created` (string, optional)
 
 ## Examples
-
-
 
 **Response**
 

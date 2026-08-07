@@ -15,244 +15,49 @@ Dubs a provided audio or video file into given language.
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing:
-    post:
-      operationId: create
-      summary: Dub a video or audio file
-      description: Dubs a provided audio or video file into given language.
-      tags:
-        - dubbing
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DoDubbingResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    A list of file paths to audio recordings intended for voice
-                    cloning
-                csv_file:
-                  type: string
-                  format: binary
-                  description: CSV file containing transcription/translation metadata
-                foreground_audio_file:
-                  type: string
-                  format: binary
-                  description: For use only with csv input
-                background_audio_file:
-                  type: string
-                  format: binary
-                  description: For use only with csv input
-                name:
-                  type:
-                    - string
-                    - 'null'
-                  description: Name of the dubbing project.
-                source_url:
-                  type:
-                    - string
-                    - 'null'
-                  description: URL of the source video/audio file.
-                source_lang:
-                  type: string
-                  default: auto
-                  description: >-
-                    Source language. Expects a valid iso639-1 or iso639-3
-                    language code.
-                target_lang:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    The Target language to dub the content into. Expects a valid
-                    iso639-1 or iso639-3 language code.
-                target_accent:
-                  type:
-                    - string
-                    - 'null'
-                  description: >-
-                    [Experimental] An accent to apply when selecting voices from
-                    the library and to use to inform translation of the dialect
-                    to prefer.
-                num_speakers:
-                  type: integer
-                  default: 0
-                  description: >-
-                    Number of speakers to use for the dubbing. Set to 0 to
-                    automatically detect the number of speakers
-                watermark:
-                  type: boolean
-                  default: false
-                  description: Whether to apply watermark to the output video.
-                start_time:
-                  type:
-                    - integer
-                    - 'null'
-                  description: Start time of the source video/audio file.
-                end_time:
-                  type:
-                    - integer
-                    - 'null'
-                  description: End time of the source video/audio file.
-                highest_resolution:
-                  type: boolean
-                  default: false
-                  description: Whether to use the highest resolution available.
-                drop_background_audio:
-                  type: boolean
-                  default: false
-                  description: >-
-                    An advanced setting. Whether to drop background audio from
-                    the final dub. This can improve dub quality where it's known
-                    that audio shouldn't have a background track such as for
-                    speeches or monologues.
-                use_profanity_filter:
-                  type:
-                    - boolean
-                    - 'null'
-                  description: >-
-                    [BETA] Whether transcripts should have profanities censored
-                    with the words '[censored]'
-                dubbing_studio:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to prepare dub for edits in dubbing studio or edits
-                    as a dubbing resource.
-                disable_voice_cloning:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Instead of using a voice clone in dubbing, use a similar
-                    voice from the ElevenLabs Voice Library. Voices used from
-                    the library will contribute towards a workspace's custom
-                    voices limit, and if there aren't enough available slots the
-                    dub will fail. Using this feature requires the caller to
-                    have the 'add_voice_from_voice_library' permission on their
-                    workspace to access new voices.
-                mode:
-                  $ref: >-
-                    #/components/schemas/V1DubbingPostRequestBodyContentMultipartFormDataSchemaMode
-                  default: automatic
-                  description: >-
-                    The mode in which to run this Dubbing job. Defaults to
-                    automatic, use manual if specifically providing a CSV
-                    transcript to use. Note that manual mode is experimental and
-                    production use is strongly discouraged.
-                csv_fps:
-                  type:
-                    - number
-                    - 'null'
-                  format: double
-                  description: >-
-                    Frames per second to use when parsing a CSV file for
-                    dubbing. If not provided, FPS will be inferred from
-                    timecodes.
-              required:
-                - target_lang
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1DubbingPostRequestBodyContentMultipartFormDataSchemaMode:
-      type: string
-      enum:
-        - automatic
-        - manual
-      default: automatic
-      description: >-
-        The mode in which to run this Dubbing job. Defaults to automatic, use
-        manual if specifically providing a CSV transcript to use. Note that
-        manual mode is experimental and production use is strongly discouraged.
-      title: V1DubbingPostRequestBodyContentMultipartFormDataSchemaMode
-    DoDubbingResponseModel:
-      type: object
-      properties:
-        dubbing_id:
-          type: string
-          description: The ID of the dubbing project.
-        expected_duration_sec:
-          type: number
-          format: double
-          description: The expected duration of the dubbing project in seconds.
-      required:
-        - dubbing_id
-        - expected_duration_sec
-      title: DoDubbingResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `file` (file, optional) — A list of file paths to audio recordings intended for voice cloning
+- `csv_file` (file, optional) — CSV file containing transcription/translation metadata
+- `foreground_audio_file` (file, optional) — For use only with csv input
+- `background_audio_file` (file, optional) — For use only with csv input
+- `name` (string, optional) — Name of the dubbing project.
+- `source_url` (string, optional) — URL of the source video/audio file.
+- `source_lang` (string, optional) — Source language. Expects a valid iso639-1 or iso639-3 language code.
+- `target_lang` (string, required) — The Target language to dub the content into. Expects a valid iso639-1 or iso639-3 language code.
+- `target_accent` (string, optional) — [Experimental] An accent to apply when selecting voices from the library and to use to inform translation of the dialect to prefer.
+- `num_speakers` (integer, optional) — Number of speakers to use for the dubbing. Set to 0 to automatically detect the number of speakers
+- `watermark` (boolean, optional) — Whether to apply watermark to the output video.
+- `start_time` (integer, optional) — Start time of the source video/audio file.
+- `end_time` (integer, optional) — End time of the source video/audio file.
+- `highest_resolution` (boolean, optional) — Whether to use the highest resolution available.
+- `drop_background_audio` (boolean, optional) — An advanced setting. Whether to drop background audio from the final dub. This can improve dub quality where it's known that audio shouldn't have a background track such as for speeches or monologues.
+- `use_profanity_filter` (boolean, optional) — [BETA] Whether transcripts should have profanities censored with the words '[censored]'
+- `dubbing_studio` (boolean, optional) — Whether to prepare dub for edits in dubbing studio or edits as a dubbing resource.
+- `disable_voice_cloning` (boolean, optional) — Instead of using a voice clone in dubbing, use a similar voice from the ElevenLabs Voice Library. Voices used from the library will contribute towards a workspace's custom voices limit, and if there aren't enough available slots the dub will fail. Using this feature requires the caller to have the 'add_voice_from_voice_library' permission on their workspace to access new voices.
+- `mode` (enum, optional) — The mode in which to run this Dubbing job. Defaults to automatic, use manual if specifically providing a CSV transcript to use. Note that manual mode is experimental and production use is strongly discouraged.
+- `csv_fps` (double, optional) — Frames per second to use when parsing a CSV file for dubbing. If not provided, FPS will be inferred from timecodes.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `dubbing_id` (string, required) — The ID of the dubbing project.
+- `expected_duration_sec` (double, required) — The expected duration of the dubbing project in seconds.
 
 ## Examples
-
-
 
 **Request**
 

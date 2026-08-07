@@ -16,132 +16,36 @@ Retrieves a list of members for a given project
 
 Reference: https://developers.deepgram.com/reference/manage/members/list
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/members:
-    get:
-      operationId: list
-      summary: List Project Members
-      description: Retrieves a list of members for a given project
-      tags:
-        - members
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of members for a given project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListProjectMembersV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ListProjectMembersV1ResponseMembersItems:
-      type: object
-      properties:
-        member_id:
-          type: string
-          description: The unique identifier of the member
-        scopes:
-          type: array
-          items:
-            type: string
-          description: The API scopes of the member
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-      title: ListProjectMembersV1ResponseMembersItems
-    ListProjectMembersV1Response:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListProjectMembersV1ResponseMembersItems'
-      title: ListProjectMembersV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+## Response
+
+### 200
+
+A list of members for a given project
+
+- `members` (list of object, optional)
+  - `member_id` (string, optional) — The unique identifier of the member
+  - `scopes` (list of string, optional) — The API scopes of the member
+  - `email` (string, optional)
+  - `first_name` (string, optional)
+  - `last_name` (string, optional)
 
 ## Examples
 
+**Request**
 
+```json
+{}
+```
 
 **Response**
 
@@ -149,13 +53,14 @@ components:
 {
   "members": [
     {
-      "member_id": "string",
+      "member_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
       "scopes": [
-        "string"
+        "read:transcripts",
+        "write:projects"
       ],
-      "email": "string",
-      "first_name": "string",
-      "last_name": "string"
+      "email": "jane.doe@example.com",
+      "first_name": "Jane",
+      "last_name": "Doe"
     }
   ]
 }
@@ -168,16 +73,24 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members"
 
-headers = {"Authorization": "Token <apiKey>"}
+payload = {}
+headers = {
+    "Authorization": "Token <apiKey>",
+    "Content-Type": "application/json"
+}
 
-response = requests.get(url, headers=headers)
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members';
-const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
+const options = {
+  method: 'GET',
+  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
+  body: '{}'
+};
 
 try {
   const response = await fetch(url, options);
@@ -193,6 +106,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -201,9 +115,12 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -227,6 +144,8 @@ http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -238,6 +157,8 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members")
   .header("Authorization", "Token <apiKey>")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -248,8 +169,10 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members', [
+  'body' => '{}',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
+    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -262,19 +185,28 @@ using RestSharp;
 var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Authorization": "Token <apiKey>"]
+let headers = [
+  "Authorization": "Token <apiKey>",
+  "Content-Type": "application/json"
+]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

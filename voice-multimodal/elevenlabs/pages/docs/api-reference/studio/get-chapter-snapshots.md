@@ -14,145 +14,35 @@ Gets information about all the snapshots of a chapter. Each snapshot can be down
 
 Reference: https://elevenlabs.io/docs/api-reference/studio/get-chapter-snapshots
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/studio/projects/{project_id}/chapters/{chapter_id}/snapshots:
-    get:
-      operationId: list
-      summary: List Chapter Snapshots
-      description: >-
-        Gets information about all the snapshots of a chapter. Each snapshot can
-        be downloaded as audio. Whenever a chapter is converted a snapshot will
-        automatically be created.
-      tags:
-        - snapshots
-      parameters:
-        - name: project_id
-          in: path
-          description: >-
-            The ID of the project to be used. You can use the [List
-            projects](/docs/api-reference/studio/get-projects) endpoint to list
-            all the available projects.
-          required: true
-          schema:
-            type: string
-        - name: chapter_id
-          in: path
-          description: >-
-            The ID of the chapter to be used. You can use the [List project
-            chapters](/docs/api-reference/studio/get-chapters) endpoint to list
-            all the available chapters.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChapterSnapshotsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ChapterSnapshotResponseModel:
-      type: object
-      properties:
-        chapter_snapshot_id:
-          type: string
-          description: The ID of the chapter snapshot.
-        project_id:
-          type: string
-          description: The ID of the project.
-        chapter_id:
-          type: string
-          description: The ID of the chapter.
-        created_at_unix:
-          type: integer
-          description: The creation date of the chapter snapshot.
-        name:
-          type: string
-          description: The name of the chapter snapshot.
-      required:
-        - chapter_snapshot_id
-        - project_id
-        - chapter_id
-        - created_at_unix
-        - name
-      title: ChapterSnapshotResponseModel
-    ChapterSnapshotsResponseModel:
-      type: object
-      properties:
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChapterSnapshotResponseModel'
-          description: List of chapter snapshots.
-      required:
-        - snapshots
-      title: ChapterSnapshotsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the project to be used. You can use the [List projects](/docs/api-reference/studio/get-projects) endpoint to list all the available projects.
+- `chapter_id` (string, required) — The ID of the chapter to be used. You can use the [List project chapters](/docs/api-reference/studio/get-chapters) endpoint to list all the available chapters.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `snapshots` (list of object, required) — List of chapter snapshots.
+  - `chapter_snapshot_id` (string, required) — The ID of the chapter snapshot.
+  - `project_id` (string, required) — The ID of the project.
+  - `chapter_id` (string, required) — The ID of the chapter.
+  - `created_at_unix` (integer, required) — The creation date of the chapter snapshot.
+  - `name` (string, required) — The name of the chapter snapshot.
 
 ## Examples
-
-
 
 **Response**
 

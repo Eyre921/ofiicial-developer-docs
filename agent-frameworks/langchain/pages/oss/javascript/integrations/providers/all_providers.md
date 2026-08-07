@@ -421,6 +421,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search results from the Perplexity Search API.
   </Card>
 
+  <Card title="Serpex" href="https://serpex.dev/docs" icon="link">
+    Multi-engine web search API for AI applications and data aggregation.
+  </Card>
+
   <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
     Unified SERP API across 33 search engines with geo-targeting.
   </Card>

@@ -15,183 +15,44 @@ Enterprise only. Edit a source segment's text, speaker, or timing.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/update-source-segment
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/transcript/segment/{segment_id}:
-    patch:
-      operationId: update_segment
-      summary: Update Dubbing Transcript Segment
-      description: Enterprise only. Edit a source segment's text, speaker, or timing.
-      tags:
-        - transcript
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: segment_id
-          in: path
-          description: Identifier of the segment to edit.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingSourceSegmentUpdateResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DubbingSegmentUpdateRequest'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingSegmentUpdateRequest:
-      type: object
-      properties:
-        text:
-          type:
-            - string
-            - 'null'
-          description: New text for the segment.
-        speaker_id:
-          type:
-            - string
-            - 'null'
-          description: New speaker id for the segment.
-        start_s:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: New start time, in seconds.
-        end_s:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: New end time, in seconds.
-      description: A partial update to a source segment; omitted fields are left unchanged.
-      title: DubbingSegmentUpdateRequest
-    DubbingTranscriptSegment:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Stable identifier of the segment.
-        text:
-          type: string
-          description: The transcribed text of the segment.
-        speaker_id:
-          type: string
-          description: Identifier of the segment's speaker.
-        start_s:
-          type: number
-          format: double
-          description: Start time of the segment, in seconds.
-        end_s:
-          type: number
-          format: double
-          description: End time of the segment, in seconds.
-        external_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The caller-supplied external id for this segment, if one was
-            provided.
-      required:
-        - id
-        - text
-        - speaker_id
-        - start_s
-        - end_s
-      description: One segment of a source transcript.
-      title: DubbingTranscriptSegment
-    DubbingSourceSegmentUpdateResponse:
-      type: object
-      properties:
-        segment:
-          $ref: '#/components/schemas/DubbingTranscriptSegment'
-          description: The segment in its updated state.
-        revision:
-          type: integer
-          description: The project's source-transcript revision after this edit.
-      required:
-        - segment
-        - revision
-      description: >-
-        The result of a source-segment add or edit: the segment and the new
-        revision.
-      title: DubbingSourceSegmentUpdateResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project.
+- `segment_id` (string, required) — Identifier of the segment to edit.
+
+### Body (application/json)
+
+- `text` (string, optional, nullable) — New text for the segment.
+- `speaker_id` (string, optional, nullable) — New speaker id for the segment.
+- `start_s` (double, optional, nullable) — New start time, in seconds.
+- `end_s` (double, optional, nullable) — New end time, in seconds.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `segment` (object, required) — The segment in its updated state.
+  - `id` (string, required) — Stable identifier of the segment.
+  - `text` (string, required) — The transcribed text of the segment.
+  - `speaker_id` (string, required) — Identifier of the segment's speaker.
+  - `start_s` (double, required) — Start time of the segment, in seconds.
+  - `end_s` (double, required) — End time of the segment, in seconds.
+  - `external_id` (string, optional, nullable) — The caller-supplied external id for this segment, if one was provided.
+- `revision` (integer, required) — The project's source-transcript revision after this edit.
 
 ## Examples
-
-
 
 **Request**
 

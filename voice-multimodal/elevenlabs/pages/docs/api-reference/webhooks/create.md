@@ -15,150 +15,34 @@ Create a new webhook for the workspace with the specified authentication type.
 
 Reference: https://elevenlabs.io/docs/api-reference/webhooks/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/webhooks:
-    post:
-      operationId: create
-      summary: Create Workspace Webhook
-      description: >-
-        Create a new webhook for the workspace with the specified authentication
-        type.
-      tags:
-        - webhooks
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceCreateWebhookResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Create_workspace_webhook_v1_workspace_webhooks_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WebhookHMACSettings:
-      type: object
-      properties:
-        auth_type:
-          type: string
-          enum:
-            - hmac
-          description: The authentication type for this webhook
-        name:
-          type: string
-          description: The display name for this webhook
-        webhook_url:
-          type: string
-          description: >-
-            The HTTPS callback URL that will be called when this webhook is
-            triggered
-        request_headers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-          description: >-
-            Optional custom request headers to include with each webhook
-            delivery
-      required:
-        - auth_type
-        - name
-        - webhook_url
-      description: Settings for creating an HMAC-authenticated webhook
-      title: WebhookHMACSettings
-    Body_Create_workspace_webhook_v1_workspace_webhooks_post:
-      type: object
-      properties:
-        settings:
-          $ref: '#/components/schemas/WebhookHMACSettings'
-          description: >-
-            Webhook settings object containing auth_type and corresponding
-            configuration
-      required:
-        - settings
-      title: Body_Create_workspace_webhook_v1_workspace_webhooks_post
-    WorkspaceCreateWebhookResponseModel:
-      type: object
-      properties:
-        webhook_id:
-          type: string
-        webhook_secret:
-          type:
-            - string
-            - 'null'
-      required:
-        - webhook_id
-      title: WorkspaceCreateWebhookResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `settings` (object, required) — Webhook settings object containing auth_type and corresponding configuration
+  - `auth_type` ("hmac", required) — The authentication type for this webhook
+  - `name` (string, required) — The display name for this webhook
+  - `webhook_url` (string, required) — The HTTPS callback URL that will be called when this webhook is triggered
+  - `request_headers` (map from string to string, optional, nullable) — Optional custom request headers to include with each webhook delivery
+
+## Response
+
+### 200
+
+Successful Response
+
+- `webhook_id` (string, required)
+- `webhook_secret` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Request**
 

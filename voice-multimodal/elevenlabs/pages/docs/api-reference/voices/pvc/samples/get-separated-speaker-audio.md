@@ -14,129 +14,33 @@ Retrieve the separated audio for a specific speaker.
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/get-separated-speaker-audio
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/samples/{sample_id}/speakers/{speaker_id}/audio:
-    get:
-      operationId: get
-      summary: Retrieve Separated Speaker Audio
-      description: Retrieve the separated audio for a specific speaker.
-      tags:
-        - audio
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: sample_id
-          in: path
-          description: Sample ID to be used
-          required: true
-          schema:
-            type: string
-        - name: speaker_id
-          in: path
-          description: >-
-            Speaker ID to be used, you can use GET
-            https://api.elevenlabs.io/v1/voices/{voice_id}/samples/{sample_id}/speakers
-            to list all the available speakers for a sample.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpeakerAudioResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SpeakerAudioResponseModel:
-      type: object
-      properties:
-        audio_base_64:
-          type: string
-          description: The base64 encoded audio.
-        media_type:
-          type: string
-          description: The media type of the audio.
-        duration_secs:
-          type: number
-          format: double
-          description: The duration of the audio in seconds.
-      required:
-        - audio_base_64
-        - media_type
-        - duration_secs
-      title: SpeakerAudioResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+- `sample_id` (string, required) — Sample ID to be used
+- `speaker_id` (string, required) — Speaker ID to be used, you can use GET [https://api.elevenlabs.io/v1/voices/\{voice\_id}/samples/\{sample\_id}/speakers](https://api.elevenlabs.io/v1/voices/\{voice_id}/samples/\{sample_id}/speakers) to list all the available speakers for a sample.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `audio_base_64` (string, required) — The base64 encoded audio.
+- `media_type` (string, required) — The media type of the audio.
+- `duration_secs` (double, required) — The duration of the audio in seconds.
 
 ## Examples
-
-
 
 **Response**
 

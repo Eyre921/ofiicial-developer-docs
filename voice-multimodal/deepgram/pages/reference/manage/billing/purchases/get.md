@@ -16,142 +16,35 @@ Returns the original purchased amount on an order transaction
 
 Reference: https://developers.deepgram.com/reference/manage/billing/purchases/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/purchases:
-    get:
-      operationId: list
-      summary: List Project Purchases
-      description: Returns the original purchased amount on an order transaction
-      tags:
-        - purchases
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Number of results to return per page. Default 10. Range [1,1000]
-          required: false
-          schema:
-            type: number
-            format: double
-            default: 10
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of purchases for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListProjectPurchasesV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ListProjectPurchasesV1ResponseOrdersItems:
-      type: object
-      properties:
-        order_id:
-          type: string
-          format: uuid
-        expiration:
-          type: string
-          format: date-time
-        created:
-          type: string
-          format: date-time
-        amount:
-          type: string
-          title: float
-        units:
-          type: string
-        order_type:
-          type: string
-      title: ListProjectPurchasesV1ResponseOrdersItems
-    ListProjectPurchasesV1Response:
-      type: object
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListProjectPurchasesV1ResponseOrdersItems'
-      title: ListProjectPurchasesV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `limit` (double, optional, default: 10) — Number of results to return per page. Default 10. Range [1,1000]
+
+## Response
+
+### 200
+
+A list of purchases for a specific project
+
+- `orders` (list of object, optional)
+  - `order_id` (string, optional)
+  - `expiration` (string, optional)
+  - `created` (string, optional)
+  - `amount` (double, optional)
+  - `units` (string, optional)
+  - `order_type` (string, optional)
 
 ## Examples
-
-
 
 **Response**
 

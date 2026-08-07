@@ -125,5 +125,5 @@ This export includes:
 
 * [firectl CLI overview](/tools-sdks/firectl/firectl)
 * [Exporting deployment metrics](/deployments/exporting-metrics) - Real-time Prometheus metrics for on-demand deployments
-* [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers, budget controls, and account-wide request limits
+* [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers, monthly spend limits, and account-wide request limits
 * [Serverless rate limits](/serverless/rate-limits) - Adaptive serverless TPM bounds

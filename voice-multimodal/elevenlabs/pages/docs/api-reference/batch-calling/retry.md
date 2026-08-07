@@ -14,232 +14,56 @@ Retry a batch call, calling failed and no-response recipients again.
 
 Reference: https://elevenlabs.io/docs/api-reference/batch-calling/retry
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/batch-calling/{batch_id}/retry:
-    post:
-      operationId: retry
-      summary: Retry A Batch Call.
-      description: Retry a batch call, calling failed and no-response recipients again.
-      tags:
-        - batchCalls
-      parameters:
-        - name: batch_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchCallResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    TelephonyProvider:
-      type: string
-      enum:
-        - twilio
-        - sip_trunk
-        - exotel
-      title: TelephonyProvider
-    BatchCallWhatsAppParams:
-      type: object
-      properties:
-        whatsapp_phone_number_id:
-          type:
-            - string
-            - 'null'
-        whatsapp_call_permission_request_template_name:
-          type: string
-        whatsapp_call_permission_request_template_language_code:
-          type: string
-      required:
-        - whatsapp_call_permission_request_template_name
-        - whatsapp_call_permission_request_template_language_code
-      title: BatchCallWhatsAppParams
-    BatchCallStatus:
-      type: string
-      enum:
-        - pending
-        - in_progress
-        - completed
-        - failed
-        - cancelled
-      title: BatchCallStatus
-    TelephonyCallConfig:
-      type: object
-      properties:
-        ringing_timeout_secs:
-          type: integer
-          default: 60
-          description: >-
-            How long to ring the recipient before giving up, in seconds. Note
-            that this will also be limited by the provider's own constraints.
-        twilio_call_recording_enabled:
-          type: boolean
-          default: false
-          description: >-
-            Whether to record the call using Twilio call recording. Ignored for
-            non-Twilio providers. Recordings are stored in your Twilio account.
-      title: TelephonyCallConfig
-    BatchCallResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        phone_number_id:
-          type:
-            - string
-            - 'null'
-        phone_provider:
-          oneOf:
-            - $ref: '#/components/schemas/TelephonyProvider'
-            - type: 'null'
-        whatsapp_params:
-          oneOf:
-            - $ref: '#/components/schemas/BatchCallWhatsAppParams'
-            - type: 'null'
-        name:
-          type: string
-        agent_id:
-          type: string
-        branch_id:
-          type:
-            - string
-            - 'null'
-        environment:
-          type:
-            - string
-            - 'null'
-        created_at_unix:
-          type: integer
-        scheduled_time_unix:
-          type: integer
-        timezone:
-          type:
-            - string
-            - 'null'
-        total_calls_dispatched:
-          type: integer
-          default: 0
-        total_calls_scheduled:
-          type: integer
-          default: 0
-        total_calls_finished:
-          type: integer
-          default: 0
-        last_updated_at_unix:
-          type: integer
-        status:
-          $ref: '#/components/schemas/BatchCallStatus'
-        retry_count:
-          type: integer
-          default: 0
-        telephony_call_config:
-          $ref: '#/components/schemas/TelephonyCallConfig'
-        target_concurrency_limit:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Maximum number of simultaneous calls for this batch. When set,
-            dispatch is governed by this limit rather than workspace/agent
-            capacity percentages.
-        agent_name:
-          type: string
-        branch_name:
-          type:
-            - string
-            - 'null'
-      required:
-        - id
-        - phone_number_id
-        - phone_provider
-        - whatsapp_params
-        - name
-        - agent_id
-        - branch_id
-        - environment
-        - created_at_unix
-        - scheduled_time_unix
-        - timezone
-        - total_calls_dispatched
-        - total_calls_scheduled
-        - total_calls_finished
-        - last_updated_at_unix
-        - status
-        - retry_count
-        - telephony_call_config
-        - target_concurrency_limit
-        - agent_name
-        - branch_name
-      title: BatchCallResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `batch_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `phone_number_id` (string, required, nullable)
+- `phone_provider` (enum, required, nullable)
+  - Allowed values: `twilio`, `sip_trunk`, `exotel`
+- `whatsapp_params` (object, required, nullable)
+  - `whatsapp_call_permission_request_template_name` (string, required)
+  - `whatsapp_call_permission_request_template_language_code` (string, required)
+  - `whatsapp_phone_number_id` (string, optional, nullable)
+- `name` (string, required)
+- `agent_id` (string, required)
+- `branch_id` (string, required, nullable)
+- `environment` (string, required, nullable)
+- `created_at_unix` (integer, required)
+- `scheduled_time_unix` (integer, required)
+- `timezone` (string, required, nullable)
+- `total_calls_dispatched` (integer, required, default: 0)
+- `total_calls_scheduled` (integer, required, default: 0)
+- `total_calls_finished` (integer, required, default: 0)
+- `last_updated_at_unix` (integer, required)
+- `status` (enum, required)
+  - Allowed values: `pending`, `in_progress`, `completed`, `failed`, `cancelled`
+- `retry_count` (integer, required, default: 0)
+- `telephony_call_config` (object, required)
+  - `ringing_timeout_secs` (integer, optional, default: 60) — How long to ring the recipient before giving up, in seconds. Note that this will also be limited by the provider's own constraints.
+  - `twilio_call_recording_enabled` (boolean, optional, default: false) — Whether to record the call using Twilio call recording. Ignored for non-Twilio providers. Recordings are stored in your Twilio account.
+- `target_concurrency_limit` (integer, required, nullable) — Maximum number of simultaneous calls for this batch. When set, dispatch is governed by this limit rather than workspace/agent capacity percentages.
+- `agent_name` (string, required)
+- `branch_name` (string, required, nullable)
 
 ## Examples
-
-
 
 **Response**
 

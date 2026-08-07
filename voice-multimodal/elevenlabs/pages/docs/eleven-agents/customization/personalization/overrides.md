@@ -33,8 +33,14 @@ Overrides can be enabled for the following fields in the agent's security settin
 * Stability
 * Speed
 * Similarity boost
+* ASR keywords
 
-When overrides are enabled for a field, providing an override is still optional. If not provided, the agent will use the default values defined in the agent's [dashboard](https://elevenlabs.io/app/agents/agents). An error will be thrown if an override is provided for a field that does not have overrides enabled.
+When overrides are enabled for a field, providing an override is still optional. If not provided, the agent will use the default values defined in the agent's [dashboard](https://elevenlabs.io/app/agents/agents). For most fields, an error will be thrown if an override is provided when that field does not have overrides enabled.
+
+**ASR keywords** use soft disallow: if the Security toggle is off and the client still sends
+`asr.keywords`, the conversation continues and the keywords are ignored (no error). Enable the
+**ASR keywords** override in Security settings when you want per-conversation keyword boosting to
+apply. Up to 50 keywords are supported per conversation.
 
 Here are a few examples where overrides can be useful:
 
@@ -42,6 +48,7 @@ Here are a few examples where overrides can be useful:
 * **Include account-specific details** in responses
 * **Adjust the agent's language** or tone based on user preferences
 * **Pass real-time data** like account balances or order status
+* **Boost transcription** of per-call names or terms (for example CRM company names) via ASR keywords
 
 Overrides are particularly useful for applications requiring personalized interactions or handling
 sensitive user data that shouldn't be stored in the agent's base configuration.
@@ -53,17 +60,17 @@ sensitive user data that shouldn't be stored in the agent's base configuration.
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
 
-This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Tools**, **Knowledge base**, and **TTS settings**.
+This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Tools**, **Knowledge base**, **TTS settings**, and **ASR keywords**.
 
 #### Enable overrides
 
-For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.tool_ids`, `prompt.knowledge_base`, or `language`.
+For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.tool_ids`, `prompt.knowledge_base`, `language`, or `asr.keywords`.
 
 #### Update via the dashboard
 
-Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, and any other overrides you need, such as `LLM`.
+Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260807%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260807T112202Z&X-Amz-Expires=604800&X-Amz-Signature=ec04918ad4ecc444e5a4ff0f19e65a42a579a0d26ec4735db50a9848eb35e86c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260807%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260807T233208Z&X-Amz-Expires=604800&X-Amz-Signature=81b1f494212bc31c0fe0ee7ac26411843e5154e84076c3a9f9474833aa9651a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -91,7 +98,8 @@ Set fields under `platform_settings.overrides.conversation_config_override` to `
             "knowledge_base": true
           }
         },
-        "tts": { "voice_id": true }
+        "tts": { "voice_id": true },
+        "asr": { "keywords": true }
       }
     }
   }
@@ -126,6 +134,7 @@ elevenlabs.conversational_ai.agents.update(
                     },
                 },
                 "tts": {"voice_id": True},
+                "asr": {"keywords": True},
             },
         },
     },
@@ -151,6 +160,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
           },
         },
         tts: { voiceId: true },
+        asr: { keywords: true },
       },
     },
   },
@@ -159,7 +169,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 #### Override the conversation
 
-In your code, where the conversation is started, pass the overrides as a parameter. Tool and knowledge base overrides replace the default arrays for that conversation.
+In your code, where the conversation is started, pass the overrides as a parameter. Tool and knowledge base overrides replace the default arrays for that conversation. ASR keyword overrides replace the agent's default keyword list for that conversation (maximum 50 keywords).
 
 ```json title="Conversation initiation payload" focus={4-15}
 {
@@ -176,6 +186,9 @@ In your code, where the conversation is started, pass the overrides as a paramet
           }
         ]
       }
+    },
+    "asr": {
+      "keywords": ["Acme Corp", "Contoso", "Globex"]
     }
   }
 }
@@ -214,6 +227,9 @@ conversation_override = {
     },
     "conversation": {
         "text_only": True # Optional: enable text-only mode (no audio).
+    },
+    "asr": {
+        "keywords": ["Acme Corp", "Contoso"] # Optional: boost ASR for per-call terms (max 50). Requires Security → ASR keywords.
     }
 }
 
@@ -260,6 +276,9 @@ const conversation = await Conversation.startSession({
       },
       conversation: {
           textOnly: true // Optional: enable text-only mode (no audio).
+      },
+      asr: {
+          keywords: ["Acme Corp", "Contoso"] // Optional: boost ASR for per-call terms (max 50). Requires Security → ASR keywords.
       }
   },
   ...

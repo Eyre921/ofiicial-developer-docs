@@ -15,1100 +15,504 @@ Update an auth connection
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/auth-connections/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/auth-connections/{auth_connection_id}:
-    patch:
-      operationId: update
-      summary: Update Workspace Auth Connection
-      description: Update an auth connection
-      tags:
-        - authConnections
-      parameters:
-        - name: auth_connection_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/workspace_auth_connections_update_Response_200
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/workspace_auth_connections_update_Request'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    UpdateOAuth2ClientCredsRequest:
-      type: object
-      properties:
-        auth_type:
-          type: string
-          enum:
-            - oauth2_client_credentials
-          default: oauth2_client_credentials
-        provider:
-          type:
-            - string
-            - 'null'
-        client_id:
-          type:
-            - string
-            - 'null'
-        scopes:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        extra_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-        basic_auth_in_header:
-          type:
-            - boolean
-            - 'null'
-        client_secret:
-          type:
-            - string
-            - 'null'
-        custom_headers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-      title: UpdateOAuth2ClientCredsRequest
-    UpdateBasicAuthRequest:
-      type: object
-      properties:
-        auth_type:
-          type: string
-          enum:
-            - basic_auth
-          default: basic_auth
-        provider:
-          type:
-            - string
-            - 'null'
-        username:
-          type:
-            - string
-            - 'null'
-        password:
-          type:
-            - string
-            - 'null'
-      title: UpdateBasicAuthRequest
-    UpdateBearerAuthRequest:
-      type: object
-      properties:
-        auth_type:
-          type: string
-          enum:
-            - bearer_auth
-          default: bearer_auth
-        provider:
-          type:
-            - string
-            - 'null'
-        token:
-          type:
-            - string
-            - 'null'
-      title: UpdateBearerAuthRequest
-    UpdateOAuth2JwtRequestAlgorithm:
-      type: string
-      enum:
-        - HS256
-        - HS384
-        - HS512
-        - RS256
-        - RS384
-        - RS512
-      title: UpdateOAuth2JwtRequestAlgorithm
-    UpdateOAuth2JwtRequestTokenResponseField:
-      type: string
-      enum:
-        - access_token
-        - id_token
-      title: UpdateOAuth2JwtRequestTokenResponseField
-    UpdateOAuth2JWTRequest:
-      type: object
-      properties:
-        auth_type:
-          type: string
-          enum:
-            - oauth2_jwt
-          default: oauth2_jwt
-        provider:
-          type:
-            - string
-            - 'null'
-        algorithm:
-          oneOf:
-            - $ref: '#/components/schemas/UpdateOAuth2JwtRequestAlgorithm'
-            - type: 'null'
-        key_id:
-          type:
-            - string
-            - 'null'
-        issuer:
-          type:
-            - string
-            - 'null'
-        audience:
-          type:
-            - string
-            - 'null'
-        subject:
-          type:
-            - string
-            - 'null'
-        expiration_seconds:
-          type:
-            - integer
-            - 'null'
-        extra_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-        scopes:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        token_response_field:
-          oneOf:
-            - $ref: '#/components/schemas/UpdateOAuth2JwtRequestTokenResponseField'
-            - type: 'null'
-        secret_key:
-          type:
-            - string
-            - 'null'
-      title: UpdateOAuth2JWTRequest
-    workspace_auth_connections_update_Request:
-      oneOf:
-        - $ref: '#/components/schemas/UpdateOAuth2ClientCredsRequest'
-        - $ref: '#/components/schemas/UpdateBasicAuthRequest'
-        - $ref: '#/components/schemas/UpdateBearerAuthRequest'
-        - $ref: '#/components/schemas/UpdateOAuth2JWTRequest'
-      description: Updated auth connection fields
-      title: workspace_auth_connections_update_Request
-    GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: >-
-        GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel
-    AuthConnectionDependenciesToolsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/GetSecretDependenciesResponseModelDependenciesOneOf0ItemsDiscriminatorMappingAvailableAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableToolIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: |-
-            A model that represents an tool dependent on a knowledge base/tools
-            to which the user has no direct access.
-      discriminator:
-        propertyName: type
-      title: AuthConnectionDependenciesToolsItems
-    DependentAvailableMcpServerIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableMcpServerIdentifierAccessLevel
-    AuthConnectionDependenciesMcpServersItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              default: available
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/DependentAvailableMcpServerIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-          description: DependentAvailableMCPServerIdentifier variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              default: unknown
-            id:
-              type: string
-          required:
-            - type
-            - id
-          description: DependentUnknownMCPServerIdentifier variant
-      discriminator:
-        propertyName: type
-      title: AuthConnectionDependenciesMcpServersItems
-    DependentIntegrationConnectionIdentifier:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      required:
-        - id
-        - name
-      description: >-
-        Identifier for an integration connection that depends on an auth
-        connection
-      title: DependentIntegrationConnectionIdentifier
-    AuthConnectionDependencies:
-      type: object
-      properties:
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthConnectionDependenciesToolsItems'
-          default: []
-        mcp_servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthConnectionDependenciesMcpServersItems'
-          default: []
-        integration_connections:
-          type: array
-          items:
-            $ref: '#/components/schemas/DependentIntegrationConnectionIdentifier'
-          default: []
-      description: Dependencies that use an auth connection
-      title: AuthConnectionDependencies
-    AuthConnectionStatus:
-      type: string
-      enum:
-        - active
-        - refresh_failed
-        - revoked
-        - credential_invalid
-      default: active
-      description: |-
-        Single status field shared by every auth type's stored credential.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth
-        token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the
-        tool execution path when an upstream response matches a credential's
-        ``failure_signatures`` entry (Bearer, Basic auth, etc.).
-      title: AuthConnectionStatus
-    V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtAlgorithm:
-      type: string
-      enum:
-        - HS256
-        - HS384
-        - HS512
-        - RS256
-        - RS384
-        - RS512
-      default: HS256
-      description: JWT signing algorithm
-      title: >-
-        V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtAlgorithm
-    V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtTokenResponseField:
-      type: string
-      enum:
-        - access_token
-        - id_token
-      default: access_token
-      description: Token field to extract from the token endpoint response.
-      title: >-
-        V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtTokenResponseField
-    V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingPrivateKeyJwtAlgorithm:
-      type: string
-      enum:
-        - HS256
-        - HS384
-        - HS512
-        - RS256
-        - RS384
-        - RS512
-      default: HS256
-      description: JWT signing algorithm
-      title: >-
-        V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingPrivateKeyJwtAlgorithm
-    V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2AuthCodeScopeSeparator:
-      type: string
-      enum:
-        - ' '
-        - ','
-      default: ' '
-      description: Separator for scopes
-      title: >-
-        V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2AuthCodeScopeSeparator
-    V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2CustomAppScopeSeparator:
-      type: string
-      enum:
-        - ' '
-        - ','
-      default: ' '
-      description: Separator for scopes
-      title: >-
-        V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2CustomAppScopeSeparator
-    workspace_auth_connections_update_Response_200:
-      oneOf:
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - oauth2_client_credentials
-              description: 'Discriminator value: oauth2_client_credentials'
-            name:
-              type: string
-            provider:
-              type: string
-            client_id:
-              type: string
-            token_url:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
-              default: []
-            extra_params:
-              type: object
-              additionalProperties:
-                type: string
-              default: {}
-            basic_auth_in_header:
-              type: boolean
-              default: false
-              description: >-
-                If True, send client credentials in Authorization header as
-                Basic Auth instead of request body
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-            custom_headers:
-              type: object
-              additionalProperties:
-                type: string
-              description: Custom headers configured for OAuth2 token requests
-          required:
-            - auth_type
-            - name
-            - provider
-            - client_id
-            - token_url
-            - id
-          description: Response model for oauth2 client creds
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - refresh_token_auth
-              description: 'Discriminator value: refresh_token_auth'
-            name:
-              type: string
-            provider:
-              type: string
-            client_id:
-              type: string
-            token_url:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
-              default: []
-            extra_params:
-              type: object
-              additionalProperties:
-                type: string
-              default: {}
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - client_id
-            - token_url
-            - id
-          description: Response model for OAuth2 refresh-token-grant auth connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - basic_auth
-              description: 'Discriminator value: basic_auth'
-            name:
-              type: string
-            provider:
-              type: string
-            username:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - username
-            - id
-          description: Response model for basic auth
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - bearer_auth
-              description: 'Discriminator value: bearer_auth'
-            name:
-              type: string
-            provider:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - id
-          description: Response model for bearer auth
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - oauth2_jwt
-              description: 'Discriminator value: oauth2_jwt'
-            name:
-              type: string
-            provider:
-              type: string
-            algorithm:
-              $ref: >-
-                #/components/schemas/V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtAlgorithm
-              default: HS256
-              description: JWT signing algorithm
-            key_id:
-              type:
-                - string
-                - 'null'
-              description: Key ID (kid) for JWT header - useful for key rotation
-            issuer:
-              type: string
-              description: JWT issuer (iss claim)
-            audience:
-              type: string
-              description: JWT audience (aud claim)
-            subject:
-              type: string
-              description: JWT subject (sub claim)
-            expiration_seconds:
-              type: integer
-              default: 3600
-              description: Token expiration time in seconds
-            extra_params:
-              type: object
-              additionalProperties:
-                type: string
-              description: Additional custom claims to include in the JWT
-            token_url:
-              type: string
-              description: Token endpoint URL for exchanging JWT for access token
-            scopes:
-              type: array
-              items:
-                type: string
-              description: OAuth2 scopes to request when exchanging JWT for access token
-            token_response_field:
-              $ref: >-
-                #/components/schemas/V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingOauth2JwtTokenResponseField
-              default: access_token
-              description: Token field to extract from the token endpoint response.
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - issuer
-            - audience
-            - subject
-            - token_url
-            - id
-          description: Response model for OAuth2 JWT auth connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - private_key_jwt
-              description: 'Discriminator value: private_key_jwt'
-            name:
-              type: string
-            provider:
-              type: string
-            algorithm:
-              $ref: >-
-                #/components/schemas/V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingPrivateKeyJwtAlgorithm
-              default: HS256
-              description: JWT signing algorithm
-            key_id:
-              type:
-                - string
-                - 'null'
-              description: Key ID (kid) for JWT header - useful for key rotation
-            issuer:
-              type: string
-              description: JWT issuer (iss claim)
-            audience:
-              type: string
-              description: JWT audience (aud claim)
-            subject:
-              type: string
-              description: JWT subject (sub claim)
-            expiration_seconds:
-              type: integer
-              default: 3600
-              description: Token expiration time in seconds
-            extra_params:
-              type: object
-              additionalProperties:
-                type: string
-              description: Additional custom claims to include in the JWT
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - issuer
-            - audience
-            - subject
-            - id
-          description: Response model for Private Key JWT auth connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - mtls
-              description: 'Discriminator value: mtls'
-            name:
-              type: string
-            provider:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - id
-          description: Response model for mTLS auth connections.
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - custom_header_auth
-              description: 'Discriminator value: custom_header_auth'
-            name:
-              type: string
-            provider:
-              type: string
-            header_name:
-              type: string
-              description: >-
-                The name of the header to use for authentication (e.g.,
-                'x-api-key')
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - header_name
-            - id
-          description: Response model for Custom Header Auth auth connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - api_integration_oauth2_auth_code
-              description: 'Discriminator value: api_integration_oauth2_auth_code'
-            name:
-              type: string
-            provider:
-              type: string
-            token_url:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
-            scope_separator:
-              $ref: >-
-                #/components/schemas/V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2AuthCodeScopeSeparator
-              default: ' '
-              description: Separator for scopes
-            expires_at:
-              type: string
-              description: ISO 8601 timestamp of when the access token expires
-            integration_id:
-              type: string
-            credential_id:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - token_url
-            - expires_at
-            - integration_id
-            - credential_id
-            - id
-          description: >-
-            Response model for integration-managed OAuth2 Auth Code auth
-            connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - api_integration_oauth2_custom_app
-              description: 'Discriminator value: api_integration_oauth2_custom_app'
-            name:
-              type: string
-            provider:
-              type: string
-            token_url:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
-            scope_separator:
-              $ref: >-
-                #/components/schemas/V1WorkspaceAuthConnectionsAuthConnectionIdPatchResponsesContentApplicationJsonSchemaDiscriminatorMappingApiIntegrationOauth2CustomAppScopeSeparator
-              default: ' '
-              description: Separator for scopes
-            expires_at:
-              type: string
-              description: ISO 8601 timestamp of when the access token expires
-            integration_id:
-              type: string
-            credential_id:
-              type: string
-            client_id:
-              type: string
-              description: >-
-                OAuth client ID (rendered from template if credential uses
-                templated credentials, None for legacy connections)
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - token_url
-            - expires_at
-            - integration_id
-            - credential_id
-            - client_id
-            - id
-          description: Response model for user-owned OAuth2 Custom App auth connections
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - whatsapp_auth
-              description: 'Discriminator value: whatsapp_auth'
-            name:
-              type: string
-            provider:
-              type: string
-              enum:
-                - whatsapp
-              default: whatsapp
-            phone_number_id:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - phone_number_id
-            - id
-          description: WhatsAppAuthResponse variant
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - slack_bot_auth
-              description: 'Discriminator value: slack_bot_auth'
-            name:
-              type: string
-            provider:
-              type: string
-              enum:
-                - Slack
-              default: Slack
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - id
-          description: Response model for the internal Slack BYO bot auth connection.
-        - type: object
-          properties:
-            auth_type:
-              type: string
-              enum:
-                - url_secret
-              description: 'Discriminator value: url_secret'
-            name:
-              type: string
-            provider:
-              type: string
-            id:
-              type: string
-            used_by:
-              oneOf:
-                - $ref: '#/components/schemas/AuthConnectionDependencies'
-                - type: 'null'
-            status:
-              $ref: '#/components/schemas/AuthConnectionStatus'
-              default: active
-            status_detail:
-              type:
-                - string
-                - 'null'
-            status_updated_at:
-              type:
-                - string
-                - 'null'
-          required:
-            - auth_type
-            - name
-            - provider
-            - id
-          description: UrlSecretAuthResponse variant
-      discriminator:
-        propertyName: auth_type
-      description: The type of auth connection config
-      title: workspace_auth_connections_update_Response_200
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+## Request
 
-```
+### Path parameters
+
+- `auth_connection_id` (string, required)
+
+### Body (application/json)
+
+- `object or object or object or object`
+  - UpdateOAuth2ClientCredsRequest
+    - `auth_type` ("oauth2_client_credentials", optional, default: oauth2_client_credentials)
+    - `provider` (string, optional, nullable)
+    - `client_id` (string, optional, nullable)
+    - `scopes` (list of string, optional, nullable)
+    - `extra_params` (map from string to string, optional, nullable)
+    - `basic_auth_in_header` (boolean, optional, nullable)
+    - `client_secret` (string, optional, nullable)
+    - `custom_headers` (map from string to string, optional, nullable)
+  - UpdateBasicAuthRequest
+    - `auth_type` ("basic_auth", optional, default: basic_auth)
+    - `provider` (string, optional, nullable)
+    - `username` (string, optional, nullable)
+    - `password` (string, optional, nullable)
+  - UpdateBearerAuthRequest
+    - `auth_type` ("bearer_auth", optional, default: bearer_auth)
+    - `provider` (string, optional, nullable)
+    - `token` (string, optional, nullable)
+  - UpdateOAuth2JWTRequest
+    - `auth_type` ("oauth2_jwt", optional, default: oauth2_jwt)
+    - `provider` (string, optional, nullable)
+    - `algorithm` (enum, optional, nullable)
+      - Allowed values: `HS256`, `HS384`, `HS512`, `RS256`, `RS384`, `RS512`
+    - `key_id` (string, optional, nullable)
+    - `issuer` (string, optional, nullable)
+    - `audience` (string, optional, nullable)
+    - `subject` (string, optional, nullable)
+    - `expiration_seconds` (integer, optional, nullable)
+    - `extra_params` (map from string to string, optional, nullable)
+    - `scopes` (list of string, optional, nullable)
+    - `token_response_field` (enum, optional, nullable)
+      - Allowed values: `access_token`, `id_token`
+    - `secret_key` (string, optional, nullable)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `object`
+  - `auth_type`: `oauth2_client_credentials` (OAuth2ClientCredsResponse)
+    - `client_id` (string, required)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `token_url` (string, required)
+    - `basic_auth_in_header` (boolean, optional, default: false) — If True, send client credentials in Authorization header as Basic Auth instead of request body
+    - `custom_headers` (map from string to string, optional) — Custom headers configured for OAuth2 token requests
+    - `extra_params` (map from string to string, optional, default: {})
+    - `scopes` (list of string, optional, default: [])
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `refresh_token_auth` (RefreshTokenAuthResponse)
+    - `client_id` (string, required)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `token_url` (string, required)
+    - `extra_params` (map from string to string, optional, default: {})
+    - `scopes` (list of string, optional, default: [])
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `basic_auth` (BasicAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `username` (string, required)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `bearer_auth` (BearerAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `oauth2_jwt` (OAuth2JWTResponse)
+    - `audience` (string, required) — JWT audience (aud claim)
+    - `id` (string, required)
+    - `issuer` (string, required) — JWT issuer (iss claim)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `subject` (string, required) — JWT subject (sub claim)
+    - `token_url` (string, required) — Token endpoint URL for exchanging JWT for access token
+    - `algorithm` (enum, optional, default: HS256) — JWT signing algorithm
+      - Allowed values: `HS256`, `HS384`, `HS512`, `RS256`, `RS384`, `RS512`
+    - `expiration_seconds` (integer, optional, default: 3600) — Token expiration time in seconds
+    - `extra_params` (map from string to string, optional) — Additional custom claims to include in the JWT
+    - `key_id` (string, optional, nullable) — Key ID (kid) for JWT header - useful for key rotation
+    - `scopes` (list of string, optional) — OAuth2 scopes to request when exchanging JWT for access token
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `token_response_field` (enum, optional, default: access_token) — Token field to extract from the token endpoint response.
+      - Allowed values: `access_token`, `id_token`
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `private_key_jwt` (PrivateKeyJWTResponse)
+    - `audience` (string, required) — JWT audience (aud claim)
+    - `id` (string, required)
+    - `issuer` (string, required) — JWT issuer (iss claim)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `subject` (string, required) — JWT subject (sub claim)
+    - `algorithm` (enum, optional, default: HS256) — JWT signing algorithm
+      - Allowed values: `HS256`, `HS384`, `HS512`, `RS256`, `RS384`, `RS512`
+    - `expiration_seconds` (integer, optional, default: 3600) — Token expiration time in seconds
+    - `extra_params` (map from string to string, optional) — Additional custom claims to include in the JWT
+    - `key_id` (string, optional, nullable) — Key ID (kid) for JWT header - useful for key rotation
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `mtls` (MTLSAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `custom_header_auth` (CustomHeaderAuthResponse)
+    - `header_name` (string, required) — The name of the header to use for authentication (e.g., 'x-api-key')
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `api_integration_oauth2_auth_code` (ApiIntegrationOAuth2AuthCodeResponse)
+    - `credential_id` (string, required)
+    - `expires_at` (string, required) — ISO 8601 timestamp of when the access token expires
+    - `id` (string, required)
+    - `integration_id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `token_url` (string, required)
+    - `scope_separator` (enum, optional, default:  ) — Separator for scopes
+      - Allowed values: ` `, `,`
+    - `scopes` (list of string, optional)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `api_integration_oauth2_custom_app` (ApiIntegrationOAuth2CustomAppResponse)
+    - `client_id` (string, required) — OAuth client ID (rendered from template if credential uses templated credentials, None for legacy connections)
+    - `credential_id` (string, required)
+    - `expires_at` (string, required) — ISO 8601 timestamp of when the access token expires
+    - `id` (string, required)
+    - `integration_id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `token_url` (string, required)
+    - `scope_separator` (enum, optional, default:  ) — Separator for scopes
+      - Allowed values: ` `, `,`
+    - `scopes` (list of string, optional)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `whatsapp_auth` (WhatsAppAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `phone_number_id` (string, required)
+    - `provider` ("whatsapp", optional, default: whatsapp)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `slack_bot_auth` (SlackBotAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` ("Slack", optional, default: Slack)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
+  - `auth_type`: `url_secret` (UrlSecretAuthResponse)
+    - `id` (string, required)
+    - `name` (string, required)
+    - `provider` (string, required)
+    - `status` (enum, optional, default: active) — Single status field shared by every auth type's stored credential. OAuth values (``REFRESH_FAILED``, ``REVOKED``) are written by the OAuth token-manager refresh path. ``CREDENTIAL_INVALID`` is written by the tool execution path when an upstream response matches a credential's ``failure_signatures`` entry (Bearer, Basic auth, etc.).
+      - Allowed values: `active`, `refresh_failed`, `revoked`, `credential_invalid`
+    - `status_detail` (string, optional, nullable)
+    - `status_updated_at` (string, optional, nullable)
+    - `used_by` (object, optional, nullable) — Dependencies that use an auth connection
+      - `tools` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableToolIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownToolIdentifier)
+          - `id` (string, required)
+      - `mcp_servers` (list of object, optional, default: [])
+        - `type`: `available` (DependentAvailableMCPServerIdentifier)
+          - `access_level` (enum, required)
+            - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+          - `created_at_unix_secs` (integer, required)
+          - `id` (string, required)
+          - `name` (string, required)
+        - `type`: `unknown` (DependentUnknownMCPServerIdentifier)
+          - `id` (string, required)
+      - `integration_connections` (list of object, optional, default: [])
+        - `id` (string, required)
+        - `name` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

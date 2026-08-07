@@ -19,43 +19,43 @@ A harness is everything around that loop: the prompt, the tools, and any middlew
 [`create_agent`](https://reference.langchain.com/javascript/langchain/index/createAgent) is a highly configurable harness. At its simplest, you can create one with:
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "openai:gpt-5.5", tools });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
@@ -63,6 +63,10 @@ A harness is everything around that loop: the prompt, the tools, and any middlew
 </CodeGroup>
 
 Building on that, you can configure the basics directly with the `model=`, `tools=`, and `system_prompt=` parameters. For more advanced capabilities, extend the harness with [middleware](#configure-the-harness).
+
+<Tip>
+  [Deep Agents](/oss/javascript/deepagents/overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. Use `create_agent` when you need to configure the harness yourself.
+</Tip>
 
 ## Core components
 
@@ -73,43 +77,43 @@ Building on that, you can configure the basics directly with the `model=`, `tool
 Pass a model identifier string (`"provider:model"`) or an initialized model instance to select the model for your agent. See [Models](/oss/javascript/langchain/models) for parameters, provider setup, and dynamic model selection.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "openai:gpt-5.5", tools });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
@@ -121,7 +125,7 @@ Pass a model identifier string (`"provider:model"`) or an initialized model inst
 To provide the agent with tools, pass any Python callable, LangChain tool, or tool dict. See [Tools](/oss/javascript/langchain/tools) for tool definition, context access, and dynamic tool selection.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -134,7 +138,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools: [search] });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -147,7 +151,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "openai:gpt-5.5", tools: [search] });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -160,7 +164,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools: [search] });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -173,7 +177,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools: [search] });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -186,7 +190,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools: [search] });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -199,7 +203,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
   var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools: [search] });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import * as z from "zod";
 
@@ -218,7 +222,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
 Shape how the agent approaches tasks. The system prompt parameter accepts a string or `SystemMessage`. For dynamic prompts at runtime, use [middleware](/oss/javascript/langchain/middleware).
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "google-genai:gemini-3.6-flash",
     tools,
@@ -226,7 +230,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "openai:gpt-5.5",
     tools,
@@ -234,7 +238,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "anthropic:claude-sonnet-4-6",
     tools,
@@ -242,7 +246,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "openrouter:openrouter:z-ai/glm-5.2",
     tools,
@@ -250,7 +254,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
@@ -258,7 +262,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "baseten:zai-org/GLM-5.2",
     tools,
@@ -266,7 +270,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "ollama:north-mini-code-1.0",
     tools,
@@ -280,7 +284,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
 Return a validated schema from the agent using `response_format=`. See [Structured output](/oss/javascript/langchain/structured-output) for strategies and examples.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -294,7 +298,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -308,7 +312,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -322,7 +326,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -336,7 +340,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -350,7 +354,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -364,7 +368,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   result.structuredResponse; // { summary: ..., confidence: ... }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
@@ -388,7 +392,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
 You can invoke an agent with a message. Behind the scenes that passes an update to the agent's [`State`](/oss/javascript/langgraph/graph-api#state). All agents include a [sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue) in their state; to invoke the agent, pass a new message along with a `thread_id` so the agent can persist and resume conversation history:
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -417,7 +421,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -446,7 +450,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -475,7 +479,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -504,7 +508,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -533,7 +537,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -562,7 +566,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   );
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -599,7 +603,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
 If you also need to pass per-run configuration (such as a user ID, API keys, or feature flags) to tools and middleware, pass it as `context` alongside the config. Define the shape of that data with `contextSchema` and access it through `runtime.context`:
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -629,7 +633,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -659,7 +663,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -689,7 +693,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -719,7 +723,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -749,7 +753,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -779,7 +783,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   );
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -816,7 +820,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
 
 `invoke` returns the final response at the end of a run. If an agent executes multiple tool calls, users often need progress updates before completion. Use streaming to surface intermediate messages and tool activity as they happen.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(
   {
     messages: [
@@ -894,7 +898,7 @@ As agents take on complex work, they need support across a few key areas. The mi
 Agents are especially useful when they can take action rather than just generate text. The execution environment gives the agent a workspace: tools it can call, a filesystem for reading and writing files across turns, and code execution for running scripts or shell commands.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -905,7 +909,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -916,7 +920,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -927,7 +931,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -938,7 +942,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -949,7 +953,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -960,7 +964,7 @@ Agents are especially useful when they can take action rather than just generate
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
@@ -974,11 +978,29 @@ Agents are especially useful when they can take action rather than just generate
 
 See [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware), [Sandboxes](/oss/javascript/deepagents/sandboxes), [Interpreters](/oss/javascript/deepagents/interpreters).
 
+<Note>
+  This example imports from the `deepagents` package. Install it with:
+
+  <CodeGroup>
+    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install deepagents
+    ```
+
+    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    yarn add deepagents
+    ```
+
+    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pnpm add deepagents
+    ```
+  </CodeGroup>
+</Note>
+
 ### Context management
 
 Every model call has a fixed context window. As an agent runs, that window fills with accumulating history, tool results, and intermediate steps. Summarization compresses history before overflow hits; memory loads persistent instructions at startup so knowledge carries across sessions; skills surface domain knowledge on demand rather than loading everything upfront.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 import {
   StateBackend,
@@ -1003,12 +1025,30 @@ var agent = createAgent({
 
 See [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware), [`MemoryMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware), [Skills](/oss/javascript/langchain/multi-agent/skills), [Context engineering](/oss/javascript/deepagents/context-engineering).
 
+<Note>
+  This example imports from the `deepagents` package. Install it with:
+
+  <CodeGroup>
+    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install deepagents
+    ```
+
+    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    yarn add deepagents
+    ```
+
+    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pnpm add deepagents
+    ```
+  </CodeGroup>
+</Note>
+
 ### Planning and delegation
 
 Complex tasks often exceed what one context window can handle. Delegation lets the main agent break work into pieces, hand them to subagents that each run in their own isolated context, and stay focused on coordination rather than execution. Work can run in parallel; the main agent's context stays clean.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1050,7 +1090,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1092,7 +1132,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1134,7 +1174,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1176,7 +1216,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1218,7 +1258,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1260,7 +1300,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, todoListMiddleware, tool } from "langchain";
   import {
     createFilesystemMiddleware,
@@ -1305,12 +1345,30 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
 
 See [Subagents](/oss/javascript/langchain/multi-agent/subagents).
 
+<Note>
+  This example imports from the `deepagents` package. Install it with:
+
+  <CodeGroup>
+    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install deepagents
+    ```
+
+    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    yarn add deepagents
+    ```
+
+    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pnpm add deepagents
+    ```
+  </CodeGroup>
+</Note>
+
 ### Name your agent
 
 Optionally use an identifier for the agent. This is especially useful when embedding the agent as a subgraph in [multi-agent](/oss/javascript/langchain/multi-agent) systems.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "google-genai:gemini-3.6-flash",
     tools,
@@ -1318,7 +1376,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "openai:gpt-5.5",
     tools,
@@ -1326,7 +1384,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "anthropic:claude-sonnet-4-6",
     tools,
@@ -1334,7 +1392,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "openrouter:openrouter:z-ai/glm-5.2",
     tools,
@@ -1342,7 +1400,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
@@ -1350,7 +1408,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "baseten:zai-org/GLM-5.2",
     tools,
@@ -1358,7 +1416,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
     model: "ollama:north-mini-code-1.0",
     tools,
@@ -1372,7 +1430,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
 Agents in production encounter failures that rarely appear in development: rate limits, model timeouts, transient API errors. Fault tolerance middleware handles these at the infrastructure level so your tools and business logic don't need try/catch around every call.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1397,7 +1455,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1422,7 +1480,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1447,7 +1505,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1472,7 +1530,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1497,7 +1555,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1522,7 +1580,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import {
     createAgent,
     modelRetryMiddleware,
@@ -1555,7 +1613,7 @@ See [`modelRetryMiddleware`](https://reference.langchain.com/javascript/langchai
 Some policies can't live in a prompt—they need to be enforced deterministically regardless of what the model does. Guardrails intercept data as it flows through the agent loop, applying compliance rules or content policies before tool results reach the model's context.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1572,7 +1630,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1589,7 +1647,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1606,7 +1664,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1623,7 +1681,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1640,7 +1698,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1657,7 +1715,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, piiMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1682,7 +1740,7 @@ See [`piiMiddleware`](https://reference.langchain.com/javascript/langchain/index
 Full autonomy isn't always appropriate. Steering lets you place humans at specific decision points—before destructive writes, expensive API calls, or anything requiring judgment—without restructuring your agent. The agent pauses and waits; a human approves, edits, or rejects; execution continues.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1699,7 +1757,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1716,7 +1774,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1733,7 +1791,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1750,7 +1808,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1767,7 +1825,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 
@@ -1784,7 +1842,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
   import * as z from "zod";
 

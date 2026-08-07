@@ -15,123 +15,33 @@ Start PVC training process for a voice.
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/train
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/train:
-    post:
-      operationId: train
-      summary: Run Pvc Training
-      description: Start PVC training process for a voice.
-      tags:
-        - pvc
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StartPVCVoiceTrainingResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Run_PVC_training_v1_voices_pvc__voice_id__train_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Run_PVC_training_v1_voices_pvc__voice_id__train_post:
-      type: object
-      properties:
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: The model ID to use for the conversion.
-      title: Body_Run_PVC_training_v1_voices_pvc__voice_id__train_post
-    StartPVCVoiceTrainingResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the start PVC voice training request. If the request
-            was successful, the status will be 'ok'. Otherwise an error message
-            with status 500 will be returned.
-      required:
-        - status
-      title: StartPVCVoiceTrainingResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+
+### Body (application/json)
+
+- `model_id` (string, optional, nullable) — The model ID to use for the conversion.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the start PVC voice training request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

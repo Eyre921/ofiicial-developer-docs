@@ -14,414 +14,67 @@ Retrieve configuration overrides for a specific MCP tool.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name}:
-    get:
-      operationId: get
-      summary: Get Mcp Tool Configuration Override
-      description: Retrieve configuration overrides for a specific MCP tool.
-      tags:
-        - toolConfigs
-      parameters:
-        - name: mcp_server_id
-          in: path
-          description: ID of the MCP Server.
-          required: true
-          schema:
-            type: string
-        - name: tool_name
-          in: path
-          description: Name of the MCP tool to retrieve config overrides for.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:McpToolConfigOverrideOutput'
-        '404':
-          description: Tool config override not found
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:PreToolSpeechMode:
-      type: string
-      enum:
-        - auto
-        - force
-        - 'off'
-      default: auto
-      title: PreToolSpeechMode
-    type_:ToolInterruptionMode:
-      type: string
-      enum:
-        - allow
-        - disable_during_tool
-        - disable_during_tool_and_turn
-      default: allow
-      title: ToolInterruptionMode
-    type_:ToolCallSoundType:
-      type: string
-      enum:
-        - typing
-        - elevator1
-        - elevator2
-        - elevator3
-        - elevator4
-      description: Predefined tool call sounds; ``None`` means no sound.
-      title: ToolCallSoundType
-    type_:McpToolConfigOverrideOutputToolCallSound:
-      oneOf:
-        - $ref: '#/components/schemas/type_:ToolCallSoundType'
-        - type: string
-          enum:
-            - 'off'
-      description: >-
-        Overrides the server's tool_call_sound setting for this tool. A sound
-        name plays that sound; 'off' overrides to no sound (silence); null means
-        do not override (inherit the server default).
-      title: McpToolConfigOverrideOutputToolCallSound
-    type_:ToolCallSoundBehavior:
-      type: string
-      enum:
-        - auto
-        - always
-      default: auto
-      description: Determines how the tool call sound should be played.
-      title: ToolCallSoundBehavior
-    type_:ToolExecutionMode:
-      type: string
-      enum:
-        - immediate
-        - post_tool_speech
-        - async
-      default: immediate
-      title: ToolExecutionMode
-    type_:DynamicVariableAssignment:
-      type: object
-      properties:
-        source:
-          type: string
-          enum:
-            - response
-          description: >-
-            The source to extract the value from. Currently only 'response' is
-            supported.
-        dynamic_variable:
-          type: string
-          description: The name of the dynamic variable to assign the extracted value to
-        value_path:
-          type: string
-          description: >-
-            Dot notation path to extract the value from the source (e.g.,
-            'user.name' or 'data.0.id')
-        sanitize:
-          type: boolean
-          default: false
-          description: >-
-            If true, this assignment's value will be removed from the tool
-            response before sending to the LLM and transcript, but still
-            processed for variable assignment.
-        preserve_native_type:
-          type: boolean
-          default: false
-          description: >-
-            If true, non-scalar values (lists, objects) extracted from the tool
-            response are stored as their native type instead of being
-            stringified to JSON. Enable this to use extracted arrays directly as
-            list dynamic variables.
-      required:
-        - dynamic_variable
-        - value_path
-      description: >-
-        Configuration for extracting values from tool responses and assigning
-        them to dynamic variables.
-      title: DynamicVariableAssignment
-    type_:ConstantSchemaOverrideConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-        - type: array
-          items:
-            description: Any type
-        - type: object
-          additionalProperties:
-            description: Any type
-      description: The constant value to use
-      title: ConstantSchemaOverrideConstantValue
-    type_:McpToolConfigOverrideOutputInputOverridesValue:
-      oneOf:
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - constant
-              description: 'Discriminator value: constant'
-            constant_value:
-              $ref: '#/components/schemas/type_:ConstantSchemaOverrideConstantValue'
-              description: The constant value to use
-          required:
-            - source
-            - constant_value
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - dynamic_variable
-              description: 'Discriminator value: dynamic_variable'
-            dynamic_variable:
-              type: string
-              description: The name of the dynamic variable to use
-          required:
-            - source
-            - dynamic_variable
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            prompt:
-              type: string
-              description: >-
-                Prompt override for the LLM. If not provided, the original
-                schema description is used.
-          required:
-            - source
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - omit
-              description: 'Discriminator value: omit'
-          required:
-            - source
-      discriminator:
-        propertyName: source
-      title: McpToolConfigOverrideOutputInputOverridesValue
-    type_:UnitTestToolCallParameterEval:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - anything
-              description: 'Discriminator value: anything'
-          required:
-            - type
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - exact
-              description: 'Discriminator value: exact'
-            expected_value:
-              type: string
-              description: The exact string value that the parameter must match.
-          required:
-            - type
-            - expected_value
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            description:
-              type: string
-              description: A description of the evaluation strategy to use for the test.
-          required:
-            - type
-            - description
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - regex
-              description: 'Discriminator value: regex'
-            pattern:
-              type: string
-              description: A regex pattern to match the agent's response against.
-          required:
-            - type
-            - pattern
-      discriminator:
-        propertyName: type
-      title: UnitTestToolCallParameterEval
-    type_:UnitTestToolCallParameter:
-      type: object
-      properties:
-        eval:
-          $ref: '#/components/schemas/type_:UnitTestToolCallParameterEval'
-        path:
-          type: string
-      required:
-        - eval
-        - path
-      title: UnitTestToolCallParameter
-    type_:ToolResponseMockConfigOutput:
-      type: object
-      properties:
-        parameter_conditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
-          description: If the list is empty, the mock will always activate.
-        mock_result:
-          type: string
-          description: The return value the LLM sees when this mock is active.
-        is_error:
-          type: boolean
-          default: false
-          description: >-
-            If true, the mock result is surfaced to the LLM as a tool error
-            rather than a successful result.
-      required:
-        - mock_result
-      title: ToolResponseMockConfigOutput
-    type_:McpToolConfigOverrideOutput:
-      type: object
-      properties:
-        tool_name:
-          type: string
-          description: The name of the MCP tool
-        force_pre_tool_speech:
-          type: boolean
-          description: >-
-            DEPRECATED: use `pre_tool_speech` instead. If set, overrides the
-            server's force_pre_tool_speech setting for this tool.
-        pre_tool_speech:
-          $ref: '#/components/schemas/type_:PreToolSpeechMode'
-          description: >-
-            If set, overrides the server's pre_tool_speech setting for this
-            tool.
-        disable_interruptions:
-          type: boolean
-          description: >-
-            DEPRECATED: use `interruption_mode` instead. If set, overrides the
-            server's disable_interruptions setting for this tool.
-        interruption_mode:
-          $ref: '#/components/schemas/type_:ToolInterruptionMode'
-          description: >-
-            If set, overrides the server's interruption_mode setting for this
-            tool.
-        tool_call_sound:
-          $ref: '#/components/schemas/type_:McpToolConfigOverrideOutputToolCallSound'
-          description: >-
-            Overrides the server's tool_call_sound setting for this tool. A
-            sound name plays that sound; 'off' overrides to no sound (silence);
-            null means do not override (inherit the server default).
-        tool_call_sound_behavior:
-          $ref: '#/components/schemas/type_:ToolCallSoundBehavior'
-          description: >-
-            If set, overrides the server's tool_call_sound_behavior setting for
-            this tool
-        execution_mode:
-          $ref: '#/components/schemas/type_:ToolExecutionMode'
-          description: If set, overrides the server's execution_mode setting for this tool
-        response_timeout_secs:
-          type: integer
-          description: >-
-            If set, overrides the server's response timeout for this MCP tool
-            (seconds).
-        assignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:DynamicVariableAssignment'
-          description: Dynamic variable assignments for this MCP tool
-        input_overrides:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/type_:McpToolConfigOverrideOutputInputOverridesValue
-          description: Mapping of json path to input override configuration
-        response_mocks:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ToolResponseMockConfigOutput'
-          description: >-
-            Mock responses with optional parameter conditions. Evaluated
-            top-to-bottom; first match wins.
-      required:
-        - tool_name
-      title: McpToolConfigOverrideOutput
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `mcp_server_id` (string, required) — ID of the MCP Server.
+- `tool_name` (string, required) — Name of the MCP tool to retrieve config overrides for.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `tool_name` (string, required) — The name of the MCP tool
+- `pre_tool_speech` (enum, optional, default: auto) — If set, overrides the server's pre_tool_speech setting for this tool.
+  - Allowed values: `auto`, `force`, `off`
+- `interruption_mode` (enum, optional, default: allow) — If set, overrides the server's interruption_mode setting for this tool.
+  - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+- `tool_call_sound` (enum or "off", optional) — Overrides the server's tool_call_sound setting for this tool. A sound name plays that sound; 'off' overrides to no sound (silence); null means do not override (inherit the server default).
+- `tool_call_sound_behavior` (enum, optional, default: auto) — If set, overrides the server's tool_call_sound_behavior setting for this tool
+  - Allowed values: `auto`, `always`
+- `execution_mode` (enum, optional, default: immediate) — If set, overrides the server's execution_mode setting for this tool
+  - Allowed values: `immediate`, `post_tool_speech`, `async`
+- `response_timeout_secs` (integer, optional) — If set, overrides the server's response timeout for this MCP tool (seconds).
+- `assignments` (list of object, optional) — Dynamic variable assignments for this MCP tool
+  - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+  - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+  - `source` ("response", optional) — The source to extract the value from. Currently only 'response' is supported.
+  - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+  - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+- `input_overrides` (map from string to object, optional) — Mapping of json path to input override configuration
+  - `source`: `constant`
+    - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+  - `source`: `dynamic_variable`
+    - `dynamic_variable` (string, required) — The name of the dynamic variable to use
+  - `source`: `llm`
+    - `prompt` (string, optional) — Prompt override for the LLM. If not provided, the original schema description is used.
+  - `source`: `omit`
+- `response_mocks` (list of object, optional) — Mock responses with optional parameter conditions. Evaluated top-to-bottom; first match wins.
+  - `mock_result` (string, required) — The return value the LLM sees when this mock is active.
+  - `parameter_conditions` (list of object, optional) — If the list is empty, the mock will always activate.
+    - `eval` (object, required)
+      - `type`: `anything`
+      - `type`: `exact`
+        - `expected_value` (string, required) — The exact string value that the parameter must match.
+      - `type`: `llm`
+        - `description` (string, required) — A description of the evaluation strategy to use for the test.
+      - `type`: `regex`
+        - `pattern` (string, required) — A regex pattern to match the agent's response against.
+    - `path` (string, required)
+  - `is_error` (boolean, optional, default: false) — If true, the mock result is surfaced to the LLM as a tool error rather than a successful result.
+- `force_pre_tool_speech` (boolean, optional, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If set, overrides the server's force_pre_tool_speech setting for this tool.
+- `disable_interruptions` (boolean, optional, deprecated) — DEPRECATED: use `interruption_mode` instead. If set, overrides the server's disable_interruptions setting for this tool.
 
 ## Examples
 

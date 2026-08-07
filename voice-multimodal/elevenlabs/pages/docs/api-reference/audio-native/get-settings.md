@@ -14,171 +14,42 @@ Get player settings for the specific project.
 
 Reference: https://elevenlabs.io/docs/api-reference/audio-native/get-settings
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/audio-native/{project_id}/settings:
-    get:
-      operationId: get_settings
-      summary: Get Audio Native Project Settings
-      description: Get player settings for the specific project.
-      tags:
-        - audioNative
-      parameters:
-        - name: project_id
-          in: path
-          description: The ID of the Studio project.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/GetAudioNativeProjectSettingsResponseModel
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AudioNativeProjectSettingsResponseModelStatus:
-      type: string
-      enum:
-        - processing
-        - ready
-      default: ready
-      description: Current state of the project
-      title: AudioNativeProjectSettingsResponseModelStatus
-    AudioNativeProjectSettingsResponseModel:
-      type: object
-      properties:
-        title:
-          type: string
-          description: The title of the project.
-        image:
-          type: string
-          description: The image of the project.
-        author:
-          type: string
-          description: The author of the project.
-        small:
-          type: boolean
-          description: Whether the project is small.
-        text_color:
-          type: string
-          description: The text color of the project.
-        background_color:
-          type: string
-          description: The background color of the project.
-        sessionization:
-          type: integer
-          description: >-
-            The sessionization of the project. Specifies for how many minutes to
-            persist the session across page reloads.
-        audio_path:
-          type:
-            - string
-            - 'null'
-          description: The path of the audio file.
-        audio_url:
-          type:
-            - string
-            - 'null'
-          description: The URL of the audio file.
-        status:
-          $ref: '#/components/schemas/AudioNativeProjectSettingsResponseModelStatus'
-          default: ready
-          description: Current state of the project
-      required:
-        - title
-        - image
-        - author
-        - small
-        - text_color
-        - background_color
-        - sessionization
-      title: AudioNativeProjectSettingsResponseModel
-    GetAudioNativeProjectSettingsResponseModel:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the project is enabled.
-        snapshot_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the latest snapshot of the project.
-        settings:
-          oneOf:
-            - $ref: '#/components/schemas/AudioNativeProjectSettingsResponseModel'
-            - type: 'null'
-          description: The settings of the project.
-      required:
-        - enabled
-      title: GetAudioNativeProjectSettingsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The ID of the Studio project.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `enabled` (boolean, required) — Whether the project is enabled.
+- `snapshot_id` (string, optional, nullable) — The ID of the latest snapshot of the project.
+- `settings` (object, optional, nullable) — The settings of the project.
+  - `title` (string, required) — The title of the project.
+  - `image` (string, required) — The image of the project.
+  - `author` (string, required) — The author of the project.
+  - `small` (boolean, required) — Whether the project is small.
+  - `text_color` (string, required) — The text color of the project.
+  - `background_color` (string, required) — The background color of the project.
+  - `sessionization` (integer, required) — The sessionization of the project. Specifies for how many minutes to persist the session across page reloads.
+  - `audio_path` (string, optional, nullable) — The path of the audio file.
+  - `audio_url` (string, optional, nullable) — The URL of the audio file.
+  - `status` (enum, optional, default: ready) — Current state of the project
+    - Allowed values: `processing`, `ready`
 
 ## Examples
-
-
 
 **Response**
 

@@ -10,7 +10,7 @@ Order carbon removal from Frontier's offtake portfolio
 Available in: US, EU, CA, GB, JP, LI, NO
 ## Get started
 
-You can purchase carbon removal programmatically using the Climate API or manually using the [Dashboard](https://dashboard.stripe.com/climate/orders). All orders are for future delivery.
+You can purchase carbon removal programmatically using the Climate API or manually using the [Dashboard](https://dashboard.stripe.com/climate/orders). Inventory is available for immediate and future delivery.
 
 - [Use the API](https://docs.stripe.com/climate/orders/order-carbon-removal.md): Get up and running using the Climate API.
 - [Use the Dashboard (No Code)](https://docs.stripe.com/climate/orders/order-carbon-removal.md?dashboard-or-api=dashboard): Purchase without writing a line of code.

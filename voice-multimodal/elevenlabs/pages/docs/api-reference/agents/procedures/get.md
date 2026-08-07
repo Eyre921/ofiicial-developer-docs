@@ -14,158 +14,41 @@ Retrieve a procedure at a specific version or the current branch HEAD.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}:
-    get:
-      operationId: get
-      summary: Get Procedure
-      description: Retrieve a procedure at a specific version or the current branch HEAD.
-      tags:
-        - procedures
-      parameters:
-        - name: agent_id
-          in: path
-          description: Agent ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: branch_id
-          in: path
-          description: Branch ID to get the procedure draft from
-          required: true
-          schema:
-            type: string
-        - name: procedure_id
-          in: path
-          description: The procedure ID
-          required: true
-          schema:
-            type: string
-        - name: version_id
-          in: query
-          description: >-
-            The version ID to retrieve. If omitted, returns the version at
-            branch HEAD.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProcedureAtVersionResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ProcedureType:
-      type: string
-      enum:
-        - free_form
-        - deterministic
-      default: free_form
-      title: ProcedureType
-    ProcedureAtVersionResponseModel:
-      type: object
-      properties:
-        procedure_id:
-          type: string
-          description: Procedure ID
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Version ID of a version of the procedure. None for a procedure never
-            versioned.
-        name:
-          type: string
-          description: Procedure name
-        content:
-          type: string
-          description: Procedure content
-        type:
-          $ref: '#/components/schemas/ProcedureType'
-          default: free_form
-          description: Procedure type
-        trigger:
-          type: string
-          default: ''
-          description: >-
-            When the agent should use this procedure. Empty string means this is
-            a sub-procedure that should only start when another procedure
-            references it.
-      required:
-        - procedure_id
-        - name
-        - content
-      title: ProcedureAtVersionResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — Agent ID to get the procedure draft from
+- `branch_id` (string, required) — Branch ID to get the procedure draft from
+- `procedure_id` (string, required) — The procedure ID
+
+### Query parameters
+
+- `version_id` (string, optional, nullable) — The version ID to retrieve. If omitted, returns the version at branch HEAD.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `procedure_id` (string, required) — Procedure ID
+- `name` (string, required) — Procedure name
+- `content` (string, required) — Procedure content
+- `version_id` (string, optional, nullable) — Version ID of a version of the procedure. None for a procedure never versioned.
+- `type` (enum, optional, default: free_form) — Procedure type
+  - Allowed values: `free_form`, `deterministic`
+- `trigger` (string, optional, default: ) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it.
 
 ## Examples
-
-
 
 **Response**
 

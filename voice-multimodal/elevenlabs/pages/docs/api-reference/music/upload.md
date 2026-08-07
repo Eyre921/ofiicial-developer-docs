@@ -15,415 +15,74 @@ Upload a music file to be later used for inpainting. Price for uploading is the 
 
 Reference: https://elevenlabs.io/docs/api-reference/music/upload
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/music/upload:
-    post:
-      operationId: upload
-      summary: Upload Music
-      description: >-
-        Upload a music file to be later used for inpainting. Price for uploading
-        is the same as the one for song generation. All uploaded content gets
-        inspected for copyright infringement. If copyrighted content is
-        detected, half of the request cost is still charged.
-      tags:
-        - music
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successfully uploaded music file with optional composition plan
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MusicUploadResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The audio file to upload.
-                extract_composition_plan:
-                  $ref: >-
-                    #/components/schemas/V1MusicUploadPostRequestBodyContentMultipartFormDataSchemaExtractCompositionPlan
-                  default: false
-                  description: >-
-                    Whether to generate and return the composition plan for the
-                    uploaded song. Pass a model id (`music_v1` or `music_v2`) to
-                    control which composition plan format is returned. Passing
-                    `true`/`false` is deprecated; `true` defaults to the
-                    `music_v1` plan format. Enabling this will increase the
-                    latency.
-                with_timestamps:
-                  type: boolean
-                  default: false
-                  description: >-
-                    Whether to transcribe the uploaded song and return
-                    word-level timestamps. If True, the response will include
-                    words_timestamps but will increase the latency.
-              required:
-                - file
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1MusicUploadPostRequestBodyContentMultipartFormDataSchemaExtractCompositionPlan:
-      type: string
-      enum:
-        - music_v1
-        - music_v2
-      description: >-
-        Whether to generate and return the composition plan for the uploaded
-        song. Pass a model id (`music_v1` or `music_v2`) to control which
-        composition plan format is returned. Passing `true`/`false` is
-        deprecated; `true` defaults to the `music_v1` plan format. Enabling this
-        will increase the latency.
-      title: >-
-        V1MusicUploadPostRequestBodyContentMultipartFormDataSchemaExtractCompositionPlan
-    TimeRange:
-      type: object
-      properties:
-        start_ms:
-          type: integer
-        end_ms:
-          type: integer
-      required:
-        - start_ms
-        - end_ms
-      title: TimeRange
-    SectionSource:
-      type: object
-      properties:
-        song_id:
-          type: string
-          description: >-
-            The ID of the song to source the section from. You can find the song
-            ID in the response headers when you generate a song.
-        range:
-          $ref: '#/components/schemas/TimeRange'
-          description: The range to extract from the source song.
-        negative_ranges:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeRange'
-          description: The ranges to exclude from the 'range'.
-      required:
-        - song_id
-        - range
-      title: SectionSource
-    SongSection:
-      type: object
-      properties:
-        section_name:
-          type: string
-          description: The name of the section. Must be between 1 and 100 characters.
-        positive_local_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should be present in this
-            section. Use English language for best result.
-        negative_local_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should not be present in this
-            section. Use English language for best result.
-        duration_ms:
-          type: integer
-          description: >-
-            The duration of the section in milliseconds. Must be between 3000ms
-            and 120000ms.
-        lines:
-          type: array
-          items:
-            type: string
-          description: >-
-            The lyrics of the section. Max 30 lines per section and max 200
-            characters per line.
-        source_from:
-          oneOf:
-            - $ref: '#/components/schemas/SectionSource'
-            - type: 'null'
-          description: Optional source to extract the section from. Used for inpainting.
-      required:
-        - section_name
-        - positive_local_styles
-        - negative_local_styles
-        - duration_ms
-        - lines
-      title: SongSection
-    MusicPrompt:
-      type: object
-      properties:
-        positive_global_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should be present in the
-            entire song. Use English language for best result.
-        negative_global_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should not be present in the
-            entire song. Use English language for best result.
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/SongSection'
-          description: The sections of the song.
-      required:
-        - positive_global_styles
-        - negative_global_styles
-        - sections
-      description: >-
-        Composition plan for the `music_v1` model. Using this field with any
-        other model will result in an error.
-      title: MusicPrompt
-    GenerationChunkInputContextAdherence:
-      type: string
-      enum:
-        - low
-        - medium
-        - high
-      default: high
-      description: >-
-        How much the model adheres to the context of its surrounding chunks. Low
-        adherence means the model can deviate from the context and be more
-        creative. High adherence means the model will be more consistent with
-        the context.
-      title: GenerationChunkInputContextAdherence
-    AudioRefChunk:
-      type: object
-      properties:
-        song_id:
-          type: string
-          description: >-
-            The ID of the song to source the chunk from. You can find the song
-            ID in the response headers when you generate a song.
-        range:
-          $ref: '#/components/schemas/TimeRange'
-          description: The time range to extract from the song.
-      required:
-        - song_id
-        - range
-      title: AudioRefChunk
-    GenerationChunkInputConditionStrength:
-      type: string
-      enum:
-        - low
-        - medium
-        - high
-        - xhigh
-      description: >-
-        How strongly the model adheres to the conditioning reference. Low
-        strength means the model will be more creative and deviate from the
-        reference. High strength means the model will be more consistent with
-        the reference.
-      title: GenerationChunkInputConditionStrength
-    GenerationChunk-Input:
-      type: object
-      properties:
-        text:
-          type: string
-          description: >-
-            The text config to be generated for this chunk. Can contain section
-            name in square brackets, e.g. [Verse 1], lyrics lines, and inline
-            directions in curly braces, e.g. {scratching}.
-        duration_ms:
-          type: integer
-          description: >-
-            The duration of the chunk in milliseconds. Must be between 3000ms
-            and 120000ms.
-        positive_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should be present in this
-            chunk. Use English language for best results. The styles for the
-            first chunk are the most important as they set the overall tone and
-            genre. Styles for subsequent chunks can be used to add nuance,
-            progression, emphasis, or change the direction of the song. Aim to
-            have at least 6-7 styles in early chunks until the direction is
-            established. Generic styles like 'great production quality' are good
-            default styles to append to the list.
-        negative_styles:
-          type: array
-          items:
-            type: string
-          description: >-
-            The styles and musical directions that should not be present in this
-            chunk. Use English language for best results. Leaving empty is a
-            good default, only use this field if you want to explicitly avoid a
-            particular style or direction.
-        context_adherence:
-          $ref: '#/components/schemas/GenerationChunkInputContextAdherence'
-          default: high
-          description: >-
-            How much the model adheres to the context of its surrounding chunks.
-            Low adherence means the model can deviate from the context and be
-            more creative. High adherence means the model will be more
-            consistent with the context.
-        conditioning_ref:
-          oneOf:
-            - $ref: '#/components/schemas/AudioRefChunk'
-            - type: 'null'
-          description: >-
-            The audio reference to condition the generation on. The first chunk
-            is the most important as it will influence the generation of all
-            subsequent chunks. Thus, if you want to apply conditioning to the
-            entire song, start conditioning from the first chunk.
-        condition_strength:
-          oneOf:
-            - $ref: '#/components/schemas/GenerationChunkInputConditionStrength'
-            - type: 'null'
-          description: >-
-            How strongly the model adheres to the conditioning reference. Low
-            strength means the model will be more creative and deviate from the
-            reference. High strength means the model will be more consistent
-            with the reference.
-      required:
-        - text
-        - duration_ms
-        - positive_styles
-      title: GenerationChunk-Input
-    CompositionPlanChunksItems:
-      oneOf:
-        - $ref: '#/components/schemas/GenerationChunk-Input'
-        - $ref: '#/components/schemas/AudioRefChunk'
-      title: CompositionPlanChunksItems
-    CompositionPlan:
-      type: object
-      properties:
-        chunks:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompositionPlanChunksItems'
-          description: The chunks that make up the generation.
-      required:
-        - chunks
-      description: >-
-        Composition plan for the `music_v2` model. Using this field with any
-        other model will result in an error.
-      title: CompositionPlan
-    MusicUploadResponseCompositionPlan:
-      oneOf:
-        - $ref: '#/components/schemas/MusicPrompt'
-        - $ref: '#/components/schemas/CompositionPlan'
-      description: >-
-        The composition plan extracted from the uploaded song. Only present if
-        `extract_composition_plan` was provided in the request body.
-      title: MusicUploadResponseCompositionPlan
-    WordTimestamp:
-      type: object
-      properties:
-        word:
-          type: string
-        start_ms:
-          type: integer
-        end_ms:
-          type: integer
-      required:
-        - word
-        - start_ms
-        - end_ms
-      title: WordTimestamp
-    MusicUploadResponse:
-      type: object
-      properties:
-        song_id:
-          type: string
-          description: Unique identifier for the uploaded song
-        composition_plan:
-          oneOf:
-            - $ref: '#/components/schemas/MusicUploadResponseCompositionPlan'
-            - type: 'null'
-          description: >-
-            The composition plan extracted from the uploaded song. Only present
-            if `extract_composition_plan` was provided in the request body.
-        words_timestamps:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/WordTimestamp'
-          description: >-
-            Word-level timestamps transcribed from the uploaded song. Only
-            present if `with_timestamps` was True in the request body
-      required:
-        - song_id
-      description: Response model for music upload endpoint.
-      title: MusicUploadResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `file` (file, required) — The audio file to upload.
+- `extract_composition_plan` (enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1` or `music_v2`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
+- `with_timestamps` (boolean, optional) — Whether to transcribe the uploaded song and return word-level timestamps. If True, the response will include words_timestamps but will increase the latency.
+
+## Response
+
+### 200
+
+Successfully uploaded music file with optional composition plan
+
+- `song_id` (string, required) — Unique identifier for the uploaded song
+- `composition_plan` (object or object, optional, nullable) — The composition plan extracted from the uploaded song. Only present if `extract_composition_plan` was provided in the request body.
+  - MusicPrompt
+    - `positive_global_styles` (list of string, required) — The styles and musical directions that should be present in the entire song. Use English language for best result.
+    - `negative_global_styles` (list of string, required) — The styles and musical directions that should not be present in the entire song. Use English language for best result.
+    - `sections` (list of object, required) — The sections of the song.
+      - `section_name` (string, required) — The name of the section. Must be between 1 and 100 characters.
+      - `positive_local_styles` (list of string, required) — The styles and musical directions that should be present in this section. Use English language for best result.
+      - `negative_local_styles` (list of string, required) — The styles and musical directions that should not be present in this section. Use English language for best result.
+      - `duration_ms` (integer, required) — The duration of the section in milliseconds. Must be between 3000ms and 120000ms.
+      - `lines` (list of string, required) — The lyrics of the section. Max 30 lines per section and max 200 characters per line.
+      - `source_from` (object, optional, nullable) — Optional source to extract the section from. Used for inpainting.
+        - `song_id` (string, required) — The ID of the song to source the section from. You can find the song ID in the response headers when you generate a song.
+        - `range` (object, required) — The range to extract from the source song.
+          - `start_ms` (integer, required)
+          - `end_ms` (integer, required)
+        - `negative_ranges` (list of object, optional) — The ranges to exclude from the 'range'.
+          - `start_ms` (integer, required)
+          - `end_ms` (integer, required)
+  - CompositionPlan
+    - `chunks` (list of object or object, required) — The chunks that make up the generation.
+      - GenerationChunk
+        - `text` (string, required) — The text config to be generated for this chunk. Can contain section name in square brackets, e.g. \[Verse 1], lyrics lines, and inline directions in curly braces, e.g. \{scratching}.
+        - `duration_ms` (integer, required) — The duration of the chunk in milliseconds. Must be between 3000ms and 120000ms.
+        - `positive_styles` (list of string, required) — The styles and musical directions that should be present in this chunk. Use English language for best results. The styles for the first chunk are the most important as they set the overall tone and genre. Styles for subsequent chunks can be used to add nuance, progression, emphasis, or change the direction of the song. Aim to have at least 6-7 styles in early chunks until the direction is established. Generic styles like 'great production quality' are good default styles to append to the list.
+        - `negative_styles` (list of string, optional) — The styles and musical directions that should not be present in this chunk. Use English language for best results. Leaving empty is a good default, only use this field if you want to explicitly avoid a particular style or direction.
+        - `context_adherence` (enum, optional, default: high) — How much the model adheres to the context of its surrounding chunks. Low adherence means the model can deviate from the context and be more creative. High adherence means the model will be more consistent with the context.
+          - Allowed values: `low`, `medium`, `high`
+        - `conditioning_ref` (object, optional, nullable) — The audio reference to condition the generation on. The first chunk is the most important as it will influence the generation of all subsequent chunks. Thus, if you want to apply conditioning to the entire song, start conditioning from the first chunk.
+          - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
+          - `range` (object, required) — The time range to extract from the song.
+            - `start_ms` (integer, required)
+            - `end_ms` (integer, required)
+        - `condition_strength` (enum, optional, nullable) — How strongly the model adheres to the conditioning reference. Low strength means the model will be more creative and deviate from the reference. High strength means the model will be more consistent with the reference.
+          - Allowed values: `low`, `medium`, `high`, `xhigh`
+      - AudioRefChunk
+        - `song_id` (string, required) — The ID of the song to source the chunk from. You can find the song ID in the response headers when you generate a song.
+        - `range` (object, required) — The time range to extract from the song.
+          - `start_ms` (integer, required)
+          - `end_ms` (integer, required)
+- `words_timestamps` (list of object, optional, nullable) — Word-level timestamps transcribed from the uploaded song. Only present if `with_timestamps` was True in the request body
+  - `word` (string, required)
+  - `start_ms` (integer, required)
+  - `end_ms` (integer, required)
 
 ## Examples
-
-
 
 **Request**
 

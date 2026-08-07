@@ -16,260 +16,50 @@ Retrieves the billing summary for a specific project, with various filter option
 
 Reference: https://developers.deepgram.com/reference/manage/billing/breakdown/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/billing/breakdown:
-    get:
-      operationId: list
-      summary: Get Project Billing Breakdown
-      description: >-
-        Retrieves the billing summary for a specific project, with various
-        filter options or by grouping options.
-      tags:
-        - breakdown
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: >-
-            Start date of the requested date range. Format accepted is
-            YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: end
-          in: query
-          description: End date of the requested date range. Format accepted is YYYY-MM-DD
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: accessor
-          in: query
-          description: Filter for requests where a specific accessor was used
-          required: false
-          schema:
-            type: string
-        - name: deployment
-          in: query
-          description: Filter for requests where a specific deployment was used
-          required: false
-          schema:
-            $ref: >-
-              #/components/schemas/V1ProjectsProjectIdBillingBreakdownGetParametersDeployment
-        - name: tag
-          in: query
-          description: Filter for requests where a specific tag was used
-          required: false
-          schema:
-            type: string
-        - name: line_item
-          in: query
-          description: Filter requests by line item (e.g. streaming::nova-3)
-          required: false
-          schema:
-            type: string
-        - name: grouping
-          in: query
-          description: >-
-            Group billing breakdown by one or more dimensions (accessor,
-            deployment, line_item, tags)
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: >-
-                #/components/schemas/V1ProjectsProjectIdBillingBreakdownGetParametersGroupingSchemaItems
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Billing breakdown response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BillingBreakdownV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    V1ProjectsProjectIdBillingBreakdownGetParametersDeployment:
-      type: string
-      enum:
-        - hosted
-        - beta
-        - self-hosted
-      description: Deployment type for the requests
-      title: V1ProjectsProjectIdBillingBreakdownGetParametersDeployment
-    V1ProjectsProjectIdBillingBreakdownGetParametersGroupingSchemaItems:
-      type: string
-      enum:
-        - accessor
-        - deployment
-        - line_item
-        - tags
-      title: V1ProjectsProjectIdBillingBreakdownGetParametersGroupingSchemaItems
-    BillingBreakdownV1ResponseResolution:
-      type: object
-      properties:
-        units:
-          type: string
-          description: Time unit for the resolution
-        amount:
-          type: number
-          format: double
-          description: Amount of units
-      required:
-        - units
-        - amount
-      title: BillingBreakdownV1ResponseResolution
-    BillingBreakdownV1ResponseResultsItemsGrouping:
-      type: object
-      properties:
-        start:
-          type: string
-          format: date
-          description: Start date for this group
-        end:
-          type: string
-          format: date
-          description: End date for this group
-        accessor:
-          type:
-            - string
-            - 'null'
-          description: Optional accessor identifier, null unless grouped by accessor.
-        deployment:
-          type:
-            - string
-            - 'null'
-          description: Optional deployment identifier, null unless grouped by deployment.
-        line_item:
-          type:
-            - string
-            - 'null'
-          description: Optional line item identifier, null unless grouped by line item.
-        tags:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Optional list of tags, null unless grouped by tags.
-      title: BillingBreakdownV1ResponseResultsItemsGrouping
-    BillingBreakdownV1ResponseResultsItems:
-      type: object
-      properties:
-        dollars:
-          type: string
-          title: float
-          description: USD cost of the billing for this grouping
-        grouping:
-          $ref: '#/components/schemas/BillingBreakdownV1ResponseResultsItemsGrouping'
-      required:
-        - dollars
-        - grouping
-      title: BillingBreakdownV1ResponseResultsItems
-    BillingBreakdownV1Response:
-      type: object
-      properties:
-        start:
-          type: string
-          format: date
-          description: Start date of the billing summmary period
-        end:
-          type: string
-          format: date
-          description: End date of the billing summary period
-        resolution:
-          $ref: '#/components/schemas/BillingBreakdownV1ResponseResolution'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BillingBreakdownV1ResponseResultsItems'
-      required:
-        - start
-        - end
-        - resolution
-        - results
-      title: BillingBreakdownV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Query parameters
+
+- `start` (string, optional) — Start date of the requested date range. Format accepted is YYYY-MM-DD
+- `end` (string, optional) — End date of the requested date range. Format accepted is YYYY-MM-DD
+- `accessor` (string, optional) — Filter for requests where a specific accessor was used
+- `deployment` (enum, optional) — Filter for requests where a specific deployment was used
+  - Allowed values: `hosted`, `beta`, `self-hosted`
+- `tag` (string, optional) — Filter for requests where a specific tag was used
+- `line_item` (string, optional) — Filter requests by line item (e.g. streaming::nova-3)
+- `grouping` (list of enum, optional) — Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)
+  - Allowed values: `accessor`, `deployment`, `line_item`, `tags`
+
+## Response
+
+### 200
+
+Billing breakdown response
+
+- `start` (string, required) — Start date of the billing summmary period
+- `end` (string, required) — End date of the billing summary period
+- `resolution` (object, required)
+  - `units` (string, required) — Time unit for the resolution
+  - `amount` (double, required) — Amount of units
+- `results` (list of object, required)
+  - `dollars` (double, required) — USD cost of the billing for this grouping
+  - `grouping` (object, required)
+    - `start` (string, optional) — Start date for this group
+    - `end` (string, optional) — End date for this group
+    - `accessor` (string, optional, nullable) — Optional accessor identifier, null unless grouped by accessor.
+    - `deployment` (string, optional, nullable) — Optional deployment identifier, null unless grouped by deployment.
+    - `line_item` (string, optional, nullable) — Optional line item identifier, null unless grouped by line item.
+    - `tags` (list of string, optional, nullable) — Optional list of tags, null unless grouped by tags.
 
 ## Examples
-
-
 
 **Response**
 
@@ -307,7 +97,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown"
 
-querystring = {"accessor":"12345678-1234-1234-1234-123456789012","deployment":"hosted","grouping":"[\"deployment\",\"line_item\"]","line_item":"streaming::nova-3","tag":"tag1"}
+querystring = {"accessor":"12345678-1234-1234-1234-123456789012","deployment":"hosted","tag":"tag1","line_item":"streaming::nova-3","grouping":"[\"deployment\",\"line_item\"]"}
 
 headers = {"Authorization": "Token <apiKey>"}
 
@@ -317,7 +107,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1';
+const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D';
 const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
@@ -340,7 +130,7 @@ import (
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1"
+	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -361,7 +151,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")
+url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -377,7 +167,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")
   .header("Authorization", "Token <apiKey>")
   .asString();
 ```
@@ -388,7 +178,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1', [
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
   ],
@@ -400,7 +190,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1");
+var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
 IRestResponse response = client.Execute(request);
@@ -411,7 +201,7 @@ import Foundation
 
 let headers = ["Authorization": "Token <apiKey>"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

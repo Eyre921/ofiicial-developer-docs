@@ -14,263 +14,51 @@ Full language-target detail.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/get-language-target
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/language/{language_id}:
-    get:
-      operationId: get
-      summary: Get Dubbing Language Target
-      description: Full language-target detail.
-      tags:
-        - language
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the parent dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_id
-          in: path
-          description: Identifier of the language target to fetch.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingLanguageResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingLanguageResponseStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - completed
-        - stale
-        - failed
-      description: >-
-        Lifecycle status: 'queued' (waiting on the project), 'processing',
-        'completed', 'stale' (source/transcript changed), or 'failed'.
-      title: DubbingLanguageResponseStatus
-    VoiceSettings:
-      type: object
-      properties:
-        cloning_strength:
-          type: integer
-          default: 7
-          description: How strongly the dubbed speakers clone the source voices, 0 to 10.
-      title: VoiceSettings
-    DubbingLanguageOutputs:
-      type: object
-      properties:
-        lossless_audio:
-          type:
-            - string
-            - 'null'
-          description: Signed URL of the dubbed lossless audio track.
-      description: Signed, time-limited download URLs for a language target's outputs.
-      title: DubbingLanguageOutputs
-    DubbingError:
-      type: object
-      properties:
-        code:
-          type: string
-          description: >-
-            Stable identifier for the failure, safe to branch on. New codes are
-            added over time, so treat an unrecognized value as 'internal_error'.
-        message:
-          type: string
-          description: >-
-            Human-readable description of the failure, for display. The wording
-            may change at any time; branch on `code` instead.
-        retryable:
-          type: boolean
-          description: >-
-            Whether resubmitting the same input could succeed. False means the
-            failure describes the input or the account, so an identical retry
-            will fail the same way.
-      required:
-        - code
-        - message
-        - retryable
-      title: DubbingError
-    VoicesNotPermittedWarning:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - voices_not_permitted
-          description: Identifies this warning; branch on it to read the fields below.
-        speaker_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            Speakers whose voices were not permitted for cloning. The dub used a
-            replacement voice for each of them; the rest of the speakers are
-            unaffected.
-        message:
-          type: string
-          description: >-
-            Human-readable description of the warning, for display. The wording
-            may change at any time; branch on `type` instead.
-      required:
-        - type
-        - speaker_ids
-        - message
-      title: VoicesNotPermittedWarning
-    DubbingLanguageResponse:
-      type: object
-      properties:
-        language_id:
-          type: string
-          description: Unique identifier of the language target.
-        project_id:
-          type: string
-          description: Identifier of the parent dubbing project.
-        target_language:
-          type: string
-          description: BCP-47 language tag this target is dubbed into.
-        status:
-          $ref: '#/components/schemas/DubbingLanguageResponseStatus'
-          description: >-
-            Lifecycle status: 'queued' (waiting on the project), 'processing',
-            'completed', 'stale' (source/transcript changed), or 'failed'.
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: Effective dubbing model id (target override or project default).
-        voice_settings:
-          oneOf:
-            - $ref: '#/components/schemas/VoiceSettings'
-            - type: 'null'
-          description: Voice settings applied to the whole language, or null if unset.
-        outputs:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingLanguageOutputs'
-            - type: 'null'
-          description: >-
-            Signed output URLs; null until the target has produced an output
-            (present once 'completed', and kept while 'stale' -- compare
-            `output_revision` against `revision` to tell whether the output is
-            up to date).
-        revision:
-          type: integer
-          description: >-
-            Monotonic counter incremented whenever this target's transcript
-            changes (a source edit affecting it, or an edit to its translation).
-        output_revision:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The `revision` the current dubbed output was generated from; equal
-            to `revision` when up to date, less than it when 'stale'. Null until
-            a generation has completed.
-        error:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingError'
-            - type: 'null'
-          description: >-
-            Why this language failed; null unless `status` is 'failed', and also
-            null for the few languages that failed before failure reporting was
-            introduced. A code of 'project_failed' means the parent project
-            failed, so read the project for the underlying cause.
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoicesNotPermittedWarning'
-          description: >-
-            Non-fatal conditions raised while dubbing this language, empty when
-            there are none. Reflects the latest generation. Conditions raised
-            while preparing the source are reported on the project instead.
-        created_at:
-          type: string
-          format: date-time
-          description: When the language target was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: When the language target was last updated.
-      required:
-        - language_id
-        - project_id
-        - target_language
-        - status
-        - revision
-        - created_at
-        - updated_at
-      title: DubbingLanguageResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the parent dubbing project.
+- `language_id` (string, required) — Identifier of the language target to fetch.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `language_id` (string, required) — Unique identifier of the language target.
+- `project_id` (string, required) — Identifier of the parent dubbing project.
+- `target_language` (string, required) — BCP-47 language tag this target is dubbed into.
+- `status` (enum, required) — Lifecycle status: 'queued' (waiting on the project), 'processing', 'completed', 'stale' (source/transcript changed), or 'failed'.
+  - Allowed values: `queued`, `processing`, `completed`, `stale`, `failed`
+- `revision` (integer, required) — Monotonic counter incremented whenever this target's transcript changes (a source edit affecting it, or an edit to its translation).
+- `created_at` (string, required) — When the language target was created.
+- `updated_at` (string, required) — When the language target was last updated.
+- `model_id` (string, optional, nullable) — Effective dubbing model id (target override or project default).
+- `voice_settings` (object, optional, nullable) — Voice settings applied to the whole language, or null if unset.
+  - `cloning_strength` (integer, optional, default: 7) — How strongly the dubbed speakers clone the source voices, 0 to 10.
+- `outputs` (object, optional, nullable) — Signed output URLs; null until the target has produced an output (present once 'completed', and kept while 'stale' -- compare `output_revision` against `revision` to tell whether the output is up to date).
+  - `lossless_audio` (string, optional, nullable) — Signed URL of the dubbed lossless audio track.
+- `output_revision` (integer, optional, nullable) — The `revision` the current dubbed output was generated from; equal to `revision` when up to date, less than it when 'stale'. Null until a generation has completed.
+- `error` (object, optional, nullable) — Why this language failed; null unless `status` is 'failed', and also null for the few languages that failed before failure reporting was introduced. A code of 'project_failed' means the parent project failed, so read the project for the underlying cause.
+  - `code` (string, required) — Stable identifier for the failure, safe to branch on. New codes are added over time, so treat an unrecognized value as 'internal_error'.
+  - `message` (string, required) — Human-readable description of the failure, for display. The wording may change at any time; branch on `code` instead.
+  - `retryable` (boolean, required) — Whether resubmitting the same input could succeed. False means the failure describes the input or the account, so an identical retry will fail the same way.
+- `warnings` (list of object, optional) — Non-fatal conditions raised while dubbing this language, empty when there are none. Reflects the latest generation. Conditions raised while preparing the source are reported on the project instead.
+  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
+  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.
+  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time; branch on `type` instead.
 
 ## Examples
-
-
 
 **Response**
 

@@ -39,6 +39,18 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
 * **Kubernetes**: Use the LangSmith Helm chart to run Agent Servers in a Kubernetes cluster. This is the recommended option for production-grade deployments.
 * **Docker**: Run in any Docker-supported compute platform (local dev machine, VM, ECS, etc.). This is best suited for development or small-scale workloads.
 
+<Warning>
+  For production deployments, use Kubernetes with the maintained LangSmith Helm chart. This is the production path that LangChain regularly tests. LangChain does not regularly test other orchestrators.
+
+  Non-Kubernetes deployments have known gaps that you must implement and maintain yourself. These deployments may diverge further from the tested production path as the Helm chart evolves:
+
+  * **Independent queue autoscaling**: Configure scaling policies and queue metrics for bursty, write-heavy workloads.
+  * **Graceful run draining**: Configure shutdown draining and sufficient termination windows so in-flight runs can finish during deployments and scale-down events.
+  * **Split-mode wiring**: Provision and connect separate API and queue services. The Helm chart handles this when `queue.enabled` is `true`.
+  * **Reference scaling configuration**: Translate the [Agent Server scaling](/langsmith/agent-server-scale) settings, including `api.replicas`, `queue.replicas`, `numberOfJobsPerWorker`, and read replicas, into your orchestrator's task definitions and scaling policies.
+  * **Version upgrades and support**: Maintain task definitions and apply version updates. LangChain tests and ships supported Helm chart version updates.
+</Warning>
+
 ## Prerequisites
 
 1. Use the [LangGraph CLI](/langsmith/cli) to [test your application locally](/langsmith/local-dev-testing).
@@ -79,7 +91,9 @@ The Helm chart (v0.2.6+) supports MongoDB checkpointing with a bundled instance 
 
 ## Docker
 
-This `docker` example is intended for local development and testing.
+<Warning>
+  This Docker example is intended for local development and testing. For production, use the Kubernetes deployment.
+</Warning>
 
 Run the following `docker` command:
 
@@ -103,7 +117,9 @@ docker run \
 
 ## Docker Compose
 
-This Docker Compose example is intended for local development and testing.
+<Warning>
+  This Docker Compose example is intended for local development and testing. For production, use the Kubernetes deployment.
+</Warning>
 
 Use the following Docker Compose file:
 

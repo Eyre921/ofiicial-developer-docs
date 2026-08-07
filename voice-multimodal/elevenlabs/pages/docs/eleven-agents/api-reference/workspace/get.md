@@ -14,180 +14,37 @@ Retrieve Convai settings for the workspace
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/settings:
-    get:
-      operationId: get
-      summary: Get Convai Settings
-      description: Retrieve Convai settings for the workspace
-      tags:
-        - settings
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetConvAiSettingsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ConvAiSecretLocator:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      description: Used to reference a secret from the agent's secret store.
-      title: ConvAiSecretLocator
-    type_:ConversationInitiationClientDataWebhookRequestHeadersValue:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/type_:ConvAiSecretLocator'
-      title: ConversationInitiationClientDataWebhookRequestHeadersValue
-    type_:ConversationInitiationClientDataWebhook:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL to send the webhook to
-        request_headers:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/type_:ConversationInitiationClientDataWebhookRequestHeadersValue
-          description: The headers to send with the webhook request
-      required:
-        - url
-        - request_headers
-      title: ConversationInitiationClientDataWebhook
-    type_:WebhookEventType:
-      type: string
-      enum:
-        - transcript
-        - audio
-        - call_initiation_failure
-        - unredacted_transcript
-        - unredacted_audio
-      title: WebhookEventType
-    type_:WebhookTranscriptFormat:
-      type: string
-      enum:
-        - json
-        - opentelemetry
-      default: json
-      title: WebhookTranscriptFormat
-    type_:ConvAiWebhooks:
-      type: object
-      properties:
-        post_call_webhook_id:
-          type: string
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:WebhookEventType'
-          description: >-
-            List of event types to send via webhook. Options: transcript, audio,
-            call_initiation_failure, unredacted_transcript, unredacted_audio.
-        transcript_format:
-          $ref: '#/components/schemas/type_:WebhookTranscriptFormat'
-          description: Format for transcript webhooks.
-        send_audio:
-          type: boolean
-          description: >-
-            DEPRECATED: Use 'events' field instead. Whether to send audio data
-            with post-call webhooks for ConvAI conversations
-      title: ConvAiWebhooks
-    type_:LivekitStackType:
-      type: string
-      enum:
-        - standard
-        - static
-      default: standard
-      title: LivekitStackType
-    type_:GetConvAiSettingsResponseModel:
-      type: object
-      properties:
-        conversation_initiation_client_data_webhook:
-          $ref: '#/components/schemas/type_:ConversationInitiationClientDataWebhook'
-        webhooks:
-          $ref: '#/components/schemas/type_:ConvAiWebhooks'
-        can_use_mcp_servers:
-          type: boolean
-          default: false
-          description: Whether the workspace can use MCP servers
-        rag_retention_period_days:
-          type: integer
-          default: 10
-        conversation_embedding_retention_days:
-          type: integer
-          description: >-
-            Days to retain conversation embeddings. None means use the system
-            default (30 days).
-        default_livekit_stack:
-          $ref: '#/components/schemas/type_:LivekitStackType'
-      title: GetConvAiSettingsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Response
+
+### 200
+
+Successful Response
+
+- `conversation_initiation_client_data_webhook` (object, optional)
+  - `url` (string, required) — The URL to send the webhook to
+  - `request_headers` (map from string to string or object, required) — The headers to send with the webhook request
+    - Conv AI Secret Locator
+      - `secret_id` (string, required)
+- `webhooks` (object, optional)
+  - `post_call_webhook_id` (string, optional)
+  - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, unredacted_transcript, unredacted_audio.
+    - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `unredacted_transcript`, `unredacted_audio`
+  - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
+    - Allowed values: `json`, `opentelemetry`
+  - `send_audio` (boolean, optional, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
+- `can_use_mcp_servers` (boolean, optional, default: false) — Whether the workspace can use MCP servers
+- `rag_retention_period_days` (integer, optional, default: 10)
+- `conversation_embedding_retention_days` (integer, optional) — Days to retain conversation embeddings. None means use the system default (30 days).
+- `default_livekit_stack` (enum, optional, default: standard)
+  - Allowed values: `standard`, `static`
 
 ## Examples
 

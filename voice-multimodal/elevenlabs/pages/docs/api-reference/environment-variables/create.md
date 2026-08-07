@@ -15,262 +15,48 @@ Create a new environment variable for the workspace
 
 Reference: https://elevenlabs.io/docs/api-reference/environment-variables/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/environment-variables:
-    post:
-      operationId: create
-      summary: Create Environment Variable
-      description: Create a new environment variable for the workspace
-      tags:
-        - environmentVariables
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnvironmentVariableResponse'
-        '400':
-          description: Invalid parameters
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '409':
-          description: Environment variable with this label already exists
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/environment_variables_create_Request'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    EnvironmentVariableSecretValueRequest:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValueRequest
-    EnvironmentVariableAuthConnectionValueRequest:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValueRequest
-    environment_variables_create_Request:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - string
-              description: 'Discriminator value: string'
-            label:
-              type: string
-              description: Unique label for the environment variable.
-            values:
-              type: object
-              additionalProperties:
-                type: string
-              description: Environment-specific values. Must include 'production' key.
-          required:
-            - type
-            - label
-            - values
-          description: CreateStringEnvironmentVariableRequest variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - secret
-              description: 'Discriminator value: secret'
-            label:
-              type: string
-              description: Unique label for the environment variable.
-            values:
-              type: object
-              additionalProperties:
-                $ref: '#/components/schemas/EnvironmentVariableSecretValueRequest'
-              description: >-
-                Environment-specific secret references. Must include
-                'production' key.
-          required:
-            - type
-            - label
-            - values
-          description: CreateSecretEnvironmentVariableRequest variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - auth_connection
-              description: 'Discriminator value: auth_connection'
-            label:
-              type: string
-              description: Unique label for the environment variable.
-            values:
-              type: object
-              additionalProperties:
-                $ref: >-
-                  #/components/schemas/EnvironmentVariableAuthConnectionValueRequest
-              description: >-
-                Environment-specific auth connection references. Must include
-                'production' key.
-          required:
-            - type
-            - label
-            - values
-          description: CreateAuthConnectionEnvironmentVariableRequest variant
-      discriminator:
-        propertyName: type
-      title: environment_variables_create_Request
-    EnvironmentVariableResponseType:
-      type: string
-      enum:
-        - string
-        - secret
-        - auth_connection
-      title: EnvironmentVariableResponseType
-    EnvironmentVariableSecretValue:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValue
-    EnvironmentVariableResponseValues1:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableSecretValue'
-      title: EnvironmentVariableResponseValues1
-    EnvironmentVariableAuthConnectionValue:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValue
-    EnvironmentVariableResponseValues2:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableAuthConnectionValue'
-      title: EnvironmentVariableResponseValues2
-    EnvironmentVariableResponseValues:
-      oneOf:
-        - type: object
-          additionalProperties:
-            type: string
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues1'
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues2'
-      title: EnvironmentVariableResponseValues
-    EnvironmentVariableResponse:
-      type: object
-      properties:
-        label:
-          type: string
-        created_at_unix_secs:
-          type: integer
-        updated_at_unix_secs:
-          type: integer
-        created_by_user_id:
-          type:
-            - string
-            - 'null'
-        type:
-          $ref: '#/components/schemas/EnvironmentVariableResponseType'
-        id:
-          type: string
-        workspace_id:
-          type: string
-        values:
-          $ref: '#/components/schemas/EnvironmentVariableResponseValues'
-      required:
-        - label
-        - created_at_unix_secs
-        - updated_at_unix_secs
-        - type
-        - id
-        - workspace_id
-        - values
-      title: EnvironmentVariableResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `object`
+  - `type`: `string` (CreateStringEnvironmentVariableRequest)
+    - `label` (string, required) — Unique label for the environment variable.
+    - `values` (map from string to string, required) — Environment-specific values. Must include 'production' key.
+  - `type`: `secret` (CreateSecretEnvironmentVariableRequest)
+    - `label` (string, required) — Unique label for the environment variable.
+    - `values` (map from string to object, required) — Environment-specific secret references. Must include 'production' key.
+      - `secret_id` (string, required)
+  - `type`: `auth_connection` (CreateAuthConnectionEnvironmentVariableRequest)
+    - `label` (string, required) — Unique label for the environment variable.
+    - `values` (map from string to object, required) — Environment-specific auth connection references. Must include 'production' key.
+      - `auth_connection_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `label` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `updated_at_unix_secs` (integer, required)
+- `type` (enum, required)
+  - Allowed values: `string`, `secret`, `auth_connection`
+- `id` (string, required)
+- `workspace_id` (string, required)
+- `values` (map from string to string or map from string to object or map from string to object, required)
+- `created_by_user_id` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Request**
 

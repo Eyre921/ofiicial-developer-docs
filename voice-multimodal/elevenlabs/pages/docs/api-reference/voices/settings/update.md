@@ -15,171 +15,37 @@ Edit your settings for a specific voice. "similarity_boost" corresponds to "Clar
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/settings/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/{voice_id}/settings/edit:
-    post:
-      operationId: update
-      summary: Edit voice settings
-      description: >-
-        Edit your settings for a specific voice. "similarity_boost" corresponds
-        to "Clarity + Similarity Enhancement" in the web app and "stability"
-        corresponds to "Stability" slider in the web app.
-      tags:
-        - settings
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            ID of the voice to be used. You can use the [Get
-            voices](/docs/api-reference/voices/search) endpoint list all the
-            available voices.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EditVoiceSettingsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VoiceSettingsResponseModel'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    VoiceSettingsResponseModel:
-      type: object
-      properties:
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0.5
-          description: >-
-            Determines how stable the voice is and the randomness between each
-            generation. Lower values introduce broader emotional range for the
-            voice. Higher values can result in a monotonous voice with limited
-            emotion.
-        use_speaker_boost:
-          type:
-            - boolean
-            - 'null'
-          default: true
-          description: >-
-            This setting boosts the similarity to the original speaker. Using
-            this setting requires a slightly higher computational load, which in
-            turn increases latency.
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0.75
-          description: >-
-            Determines how closely the AI should adhere to the original voice
-            when attempting to replicate it.
-        style:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0
-          description: >-
-            Determines the style exaggeration of the voice. This setting
-            attempts to amplify the style of the original speaker. It does
-            consume additional computational resources and might increase
-            latency if set to anything other than 0.
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 1
-          description: >-
-            Adjusts the speed of the voice. A value of 1.0 is the default speed,
-            while values less than 1.0 slow down the speech, and values greater
-            than 1.0 speed it up.
-      title: VoiceSettingsResponseModel
-    EditVoiceSettingsResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the voice settings edit request. If the request was
-            successful, the status will be 'ok'. Otherwise an error message with
-            status 500 will be returned.
-      required:
-        - status
-      title: EditVoiceSettingsResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — ID of the voice to be used. You can use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
+
+### Body (application/json)
+
+- `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+- `use_speaker_boost` (boolean, optional, nullable, default: true) — This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+- `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+- `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+- `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the voice settings edit request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

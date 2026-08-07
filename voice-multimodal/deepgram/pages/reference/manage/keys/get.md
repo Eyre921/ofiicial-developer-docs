@@ -16,160 +16,38 @@ Retrieves information about a specified API key
 
 Reference: https://developers.deepgram.com/reference/manage/keys/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/keys/{key_id}:
-    get:
-      operationId: get
-      summary: Get a Project Key
-      description: Retrieves information about a specified API key
-      tags:
-        - keys
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: key_id
-          in: path
-          description: The unique identifier of the API key
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A specific API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetProjectKeyV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    GetProjectKeyV1ResponseItemMemberApiKey:
-      type: object
-      properties:
-        api_key_id:
-          type: string
-        comment:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-        tags:
-          type: array
-          items:
-            type: string
-        expiration_date:
-          type: string
-          format: date-time
-        created:
-          type: string
-          format: date-time
-      title: GetProjectKeyV1ResponseItemMemberApiKey
-    GetProjectKeyV1ResponseItemMember:
-      type: object
-      properties:
-        member_id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        api_key:
-          $ref: '#/components/schemas/GetProjectKeyV1ResponseItemMemberApiKey'
-      title: GetProjectKeyV1ResponseItemMember
-    GetProjectKeyV1ResponseItem:
-      type: object
-      properties:
-        member:
-          $ref: '#/components/schemas/GetProjectKeyV1ResponseItemMember'
-      title: GetProjectKeyV1ResponseItem
-    GetProjectKeyV1Response:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/GetProjectKeyV1ResponseItem'
-      title: GetProjectKeyV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+- `key_id` (string, required) — The unique identifier of the API key
+
+## Response
+
+### 200
+
+A specific API key
+
+- `item` (object, optional)
+  - `member` (object, optional)
+    - `member_id` (string, optional)
+    - `email` (string, optional)
+    - `first_name` (string, optional)
+    - `last_name` (string, optional)
+    - `api_key` (object, optional)
+      - `api_key_id` (string, optional)
+      - `comment` (string, optional)
+      - `scopes` (list of string, optional)
+      - `tags` (list of string, optional)
+      - `expiration_date` (string, optional)
+      - `created` (string, optional)
 
 ## Examples
-
-
 
 **Response**
 

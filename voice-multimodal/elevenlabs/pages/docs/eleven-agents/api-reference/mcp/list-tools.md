@@ -14,205 +14,52 @@ Retrieve all tools available for a specific MCP server configuration.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list-tools
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/mcp-servers/{mcp_server_id}/tools:
-    get:
-      operationId: list
-      summary: List Mcp Server Tools
-      description: Retrieve all tools available for a specific MCP server configuration.
-      tags:
-        - tools
-      parameters:
-        - name: mcp_server_id
-          in: path
-          description: ID of the MCP Server.
-          required: true
-          schema:
-            type: string
-        - name: environment
-          in: query
-          description: >-
-            Environment whose values are used when the MCP server URL, headers,
-            or auth connection reference environment variables. Mirrors the
-            environment a conversation would run in; defaults to production.
-          required: false
-          schema:
-            type: string
-            default: production
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ListMcpToolsResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:Icon:
-      type: object
-      properties:
-        src:
-          type: string
-        mimeType:
-          type: string
-        sizes:
-          type: array
-          items:
-            type: string
-      required:
-        - src
-      description: An icon for display in user interfaces.
-      title: Icon
-    type_:ToolAnnotations:
-      type: object
-      properties:
-        title:
-          type: string
-        readOnlyHint:
-          type: boolean
-        destructiveHint:
-          type: boolean
-        idempotentHint:
-          type: boolean
-        openWorldHint:
-          type: boolean
-      description: |-
-        Additional properties describing a Tool to clients.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        NOTE: all properties in ToolAnnotations are **hints**.
-        They are not guaranteed to provide a faithful description of
-        tool behavior (including descriptive properties like `title`).
+## Request
 
-        Clients should never make tool use decisions based on ToolAnnotations
-        received from untrusted servers.
-      title: ToolAnnotations
-    type_:ToolExecutionTaskSupport:
-      type: string
-      enum:
-        - forbidden
-        - optional
-        - required
-      title: ToolExecutionTaskSupport
-    type_:ToolExecution:
-      type: object
-      properties:
-        taskSupport:
-          $ref: '#/components/schemas/type_:ToolExecutionTaskSupport'
-      description: Execution-related properties for a tool.
-      title: ToolExecution
-    type_:Tool:
-      type: object
-      properties:
-        name:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        inputSchema:
-          type: object
-          additionalProperties:
-            description: Any type
-        outputSchema:
-          type: object
-          additionalProperties:
-            description: Any type
-        icons:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:Icon'
-        annotations:
-          $ref: '#/components/schemas/type_:ToolAnnotations'
-        _meta:
-          type: object
-          additionalProperties:
-            description: Any type
-        execution:
-          $ref: '#/components/schemas/type_:ToolExecution'
-      required:
-        - name
-        - inputSchema
-      description: Definition for a tool the client can call.
-      title: Tool
-    type_:ListMcpToolsResponseModel:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates if the operation was successful.
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:Tool'
-          description: A list of tools available on the MCP server.
-        error_message:
-          type: string
-          description: Error message if the operation was not successful.
-      required:
-        - success
-        - tools
-      description: Response model for testing tools available on an MCP server.
-      title: ListMcpToolsResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+### Path parameters
 
-```
+- `mcp_server_id` (string, required) — ID of the MCP Server.
+
+### Query parameters
+
+- `environment` (string, optional, default: production) — Environment whose values are used when the MCP server URL, headers, or auth connection reference environment variables. Mirrors the environment a conversation would run in; defaults to production.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `success` (boolean, required) — Indicates if the operation was successful.
+- `tools` (list of object, required) — A list of tools available on the MCP server.
+  - `name` (string, required)
+  - `inputSchema` (map from string to any, required)
+  - `title` (string, optional)
+  - `description` (string, optional)
+  - `outputSchema` (map from string to any, optional)
+  - `icons` (list of object, optional)
+    - `src` (string, required)
+    - `mimeType` (string, optional)
+    - `sizes` (list of string, optional)
+  - `annotations` (object, optional) — Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like `title`). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.
+    - `title` (string, optional)
+    - `readOnlyHint` (boolean, optional)
+    - `destructiveHint` (boolean, optional)
+    - `idempotentHint` (boolean, optional)
+    - `openWorldHint` (boolean, optional)
+  - `_meta` (map from string to any, optional)
+  - `execution` (object, optional) — Execution-related properties for a tool.
+    - `taskSupport` (enum, optional)
+      - Allowed values: `forbidden`, `optional`, `required`
+- `error_message` (string, optional) — Error message if the operation was not successful.
 
 ## Examples
 

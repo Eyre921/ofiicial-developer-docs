@@ -14,400 +14,73 @@ Returns a list of your generated audio (e.g. text to speech, speech to speech, S
 
 Reference: https://elevenlabs.io/docs/api-reference/history/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/history:
-    get:
-      operationId: list
-      summary: Get generated items
-      description: >-
-        Returns a list of your generated audio (e.g. text to speech, speech to
-        speech, Studio, dubbing). Music and SFX generations are not included and
-        cannot currently be retrieved via the API.
-      tags:
-        - history
-      parameters:
-        - name: page_size
-          in: query
-          description: >-
-            How many history items to return at maximum. Can not exceed 1000,
-            defaults to 100.
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: start_after_history_item_id
-          in: query
-          description: >-
-            After which ID to start fetching, use this parameter to paginate
-            across a large collection of history items. In case this parameter
-            is not provided history items will be fetched starting from the most
-            recently created one ordered descending by their creation date.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: voice_id
-          in: query
-          description: >-
-            ID of the voice to be filtered for. You can use the [Get
-            voices](/docs/api-reference/voices/search) endpoint list all the
-            available voices.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: model_id
-          in: query
-          description: >-
-            Search term used for filtering history items. If provided, source
-            becomes required.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: date_before_unix
-          in: query
-          description: Unix timestamp to filter history items before this date (exclusive).
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: date_after_unix
-          in: query
-          description: Unix timestamp to filter history items after this date (inclusive).
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: sort_direction
-          in: query
-          description: Sort direction for the results.
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/V1HistoryGetParametersSortDirectionSchema'
-              - type: 'null'
-            default: desc
-        - name: search
-          in: query
-          description: search term used for filtering
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: source
-          in: query
-          description: Source of the generated history item
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/V1HistoryGetParametersSourceSchema'
-              - type: 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSpeechHistoryResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1HistoryGetParametersSortDirectionSchema:
-      type: string
-      enum:
-        - asc
-        - desc
-      default: desc
-      description: Sort direction for the results.
-      title: V1HistoryGetParametersSortDirectionSchema
-    V1HistoryGetParametersSourceSchema:
-      type: string
-      enum:
-        - TTS
-        - STS
-        - Flows
-      description: Source of the generated history item
-      title: V1HistoryGetParametersSourceSchema
-    SpeechHistoryItemResponseModelVoiceCategory:
-      type: string
-      enum:
-        - premade
-        - cloned
-        - generated
-        - professional
-      description: >-
-        The category of the voice. Either 'premade', 'cloned', 'generated' or
-        'professional'.
-      title: SpeechHistoryItemResponseModelVoiceCategory
-    SpeechHistoryItemResponseModelSource:
-      type: string
-      enum:
-        - TTS
-        - STS
-        - Projects
-        - PD
-        - AN
-        - Dubbing
-        - PlayAPI
-        - ConvAI
-        - VoiceGeneration
-        - InVPC
-        - Flows
-      description: >-
-        The source of the history item. Either TTS (text to speech), STS (speech
-        to text), AN (audio native), Projects, Dubbing, PlayAPI, PD
-        (pronunciation dictionary) or ConvAI (Agents Platform).
-      title: SpeechHistoryItemResponseModelSource
-    HistoryAlignmentResponseModel:
-      type: object
-      properties:
-        characters:
-          type: array
-          items:
-            type: string
-          description: The characters in the alignment.
-        character_start_times_seconds:
-          type: array
-          items:
-            type: number
-            format: double
-          description: The start times of the characters in seconds.
-        character_end_times_seconds:
-          type: array
-          items:
-            type: number
-            format: double
-          description: The end times of the characters in seconds.
-      required:
-        - characters
-        - character_start_times_seconds
-        - character_end_times_seconds
-      title: HistoryAlignmentResponseModel
-    HistoryAlignmentsResponseModel:
-      type: object
-      properties:
-        alignment:
-          $ref: '#/components/schemas/HistoryAlignmentResponseModel'
-          description: The alignment of the text.
-        normalized_alignment:
-          $ref: '#/components/schemas/HistoryAlignmentResponseModel'
-          description: The normalized alignment of the text.
-      required:
-        - alignment
-        - normalized_alignment
-      title: HistoryAlignmentsResponseModel
-    DialogueInputResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the dialogue input line.
-        voice_id:
-          type: string
-          description: The ID of the voice used for this dialogue input line.
-        voice_name:
-          type: string
-          description: The name of the voice used for this dialogue input line.
-      required:
-        - text
-        - voice_id
-        - voice_name
-      title: DialogueInputResponseModel
-    SpeechHistoryItemResponseModel:
-      type: object
-      properties:
-        history_item_id:
-          type: string
-          description: The ID of the history item.
-        request_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the request.
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the voice used.
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the model.
-        voice_name:
-          type:
-            - string
-            - 'null'
-          description: The name of the voice.
-        voice_category:
-          oneOf:
-            - $ref: '#/components/schemas/SpeechHistoryItemResponseModelVoiceCategory'
-            - type: 'null'
-          description: >-
-            The category of the voice. Either 'premade', 'cloned', 'generated'
-            or 'professional'.
-        text:
-          type:
-            - string
-            - 'null'
-          description: The text used to generate the audio item.
-        date_unix:
-          type: integer
-          description: Unix timestamp of when the item was created.
-        character_count_change_from:
-          type: integer
-          description: The character count change from.
-        character_count_change_to:
-          type: integer
-          description: The character count change to.
-        content_type:
-          type: string
-          description: The content type of the generated item.
-        state:
-          description: Any type
-        settings:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: The settings of the history item.
-        share_link_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the share link.
-        source:
-          oneOf:
-            - $ref: '#/components/schemas/SpeechHistoryItemResponseModelSource'
-            - type: 'null'
-          description: >-
-            The source of the history item. Either TTS (text to speech), STS
-            (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD
-            (pronunciation dictionary) or ConvAI (Agents Platform).
-        alignments:
-          oneOf:
-            - $ref: '#/components/schemas/HistoryAlignmentsResponseModel'
-            - type: 'null'
-          description: The alignments of the history item.
-        dialogue:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/DialogueInputResponseModel'
-          description: >-
-            The dialogue (voice and text pairs) used to generate the audio item.
-            If this is set then the top level `text` and `voice_id` fields will
-            be empty.
-        output_format:
-          type:
-            - string
-            - 'null'
-          description: The output format the audio was originally generated in.
-      required:
-        - history_item_id
-        - date_unix
-        - character_count_change_from
-        - character_count_change_to
-        - content_type
-        - state
-      title: SpeechHistoryItemResponseModel
-    GetSpeechHistoryResponseModel:
-      type: object
-      properties:
-        history:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechHistoryItemResponseModel'
-          description: A list of speech history items.
-        last_history_item_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the last history item.
-        has_more:
-          type: boolean
-          description: Whether there are more history items to fetch.
-        scanned_until:
-          type:
-            - integer
-            - 'null'
-          description: The timestamp of the last history item.
-      required:
-        - history
-        - has_more
-      title: GetSpeechHistoryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 100) — How many history items to return at maximum. Can not exceed 1000, defaults to 100.
+- `start_after_history_item_id` (string, optional, nullable) — After which ID to start fetching, use this parameter to paginate across a large collection of history items. In case this parameter is not provided history items will be fetched starting from the most recently created one ordered descending by their creation date.
+- `voice_id` (string, optional, nullable) — ID of the voice to be filtered for. You can use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
+- `model_id` (string, optional, nullable) — Search term used for filtering history items. If provided, source becomes required.
+- `date_before_unix` (integer, optional, nullable) — Unix timestamp to filter history items before this date (exclusive).
+- `date_after_unix` (integer, optional, nullable) — Unix timestamp to filter history items after this date (inclusive).
+- `sort_direction` (enum, optional, nullable, default: desc) — Sort direction for the results.
+  - Allowed values: `asc`, `desc`
+- `search` (string, optional, nullable) — search term used for filtering
+- `source` (enum, optional, nullable) — Source of the generated history item
+  - Allowed values: `TTS`, `STS`, `Flows`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `history` (list of object, required) — A list of speech history items.
+  - `history_item_id` (string, required) — The ID of the history item.
+  - `date_unix` (integer, required) — Unix timestamp of when the item was created.
+  - `character_count_change_from` (integer, required) — The character count change from.
+  - `character_count_change_to` (integer, required) — The character count change to.
+  - `content_type` (string, required) — The content type of the generated item.
+  - `state` (any, required)
+  - `request_id` (string, optional, nullable) — The ID of the request.
+  - `voice_id` (string, optional, nullable) — The ID of the voice used.
+  - `model_id` (string, optional, nullable) — The ID of the model.
+  - `voice_name` (string, optional, nullable) — The name of the voice.
+  - `voice_category` (enum, optional, nullable) — The category of the voice. Either 'premade', 'cloned', 'generated' or 'professional'.
+    - Allowed values: `premade`, `cloned`, `generated`, `professional`
+  - `text` (string, optional, nullable) — The text used to generate the audio item.
+  - `settings` (map from string to any, optional, nullable) — The settings of the history item.
+  - `share_link_id` (string, optional, nullable) — The ID of the share link.
+  - `source` (enum, optional, nullable) — The source of the history item. Either TTS (text to speech), STS (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD (pronunciation dictionary) or ConvAI (Agents Platform).
+    - Allowed values: `TTS`, `STS`, `Projects`, `PD`, `AN`, `Dubbing`, `PlayAPI`, `ConvAI`, `VoiceGeneration`, `InVPC`, `Flows`
+  - `alignments` (object, optional, nullable) — The alignments of the history item.
+    - `alignment` (object, required) — The alignment of the text.
+      - `characters` (list of string, required) — The characters in the alignment.
+      - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
+      - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
+    - `normalized_alignment` (object, required) — The normalized alignment of the text.
+      - `characters` (list of string, required) — The characters in the alignment.
+      - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
+      - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
+  - `dialogue` (list of object, optional, nullable) — The dialogue (voice and text pairs) used to generate the audio item. If this is set then the top level `text` and `voice_id` fields will be empty.
+    - `text` (string, required) — The text of the dialogue input line.
+    - `voice_id` (string, required) — The ID of the voice used for this dialogue input line.
+    - `voice_name` (string, required) — The name of the voice used for this dialogue input line.
+  - `output_format` (string, optional, nullable) — The output format the audio was originally generated in.
+- `has_more` (boolean, required) — Whether there are more history items to fetch.
+- `last_history_item_id` (string, optional, nullable) — The ID of the last history item.
+- `scanned_until` (integer, optional, nullable) — The timestamp of the last history item.
 
 ## Examples
-
-
 
 **Response**
 

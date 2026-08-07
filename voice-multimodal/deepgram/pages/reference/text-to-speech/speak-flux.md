@@ -59,7 +59,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: subpackage_speak/v2.speak.v2-publish
+      operationId: speak-v-2-publish
       summary: Server messages
       message:
         oneOf:
@@ -80,7 +80,7 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_speak/v2.speak.v2-server-7-SpeakV2Error
     subscribe:
-      operationId: subpackage_speak/v2.speak.v2-subscribe
+      operationId: speak-v-2-subscribe
       summary: Client messages
       message:
         oneOf:

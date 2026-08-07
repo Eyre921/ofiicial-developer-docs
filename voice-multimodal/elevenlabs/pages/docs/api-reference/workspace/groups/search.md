@@ -14,117 +14,32 @@ Searches for user groups in the workspace. Multiple or no groups may be returned
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/groups/search
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/groups/search:
-    get:
-      operationId: search
-      summary: Search user group
-      description: >-
-        Searches for user groups in the workspace. Multiple or no groups may be
-        returned.
-      tags:
-        - groups
-      parameters:
-        - name: name
-          in: query
-          description: Name of the target group.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WorkspaceGroupByNameResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WorkspaceGroupByNameResponseModel:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the workspace group.
-        id:
-          type: string
-          description: The ID of the workspace group.
-        members_emails:
-          type: array
-          items:
-            type: string
-          description: The emails of the members of the workspace group.
-      required:
-        - name
-        - id
-        - members_emails
-      title: WorkspaceGroupByNameResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `name` (string, required) — Name of the target group.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `list of object`
+  - `name` (string, required) — The name of the workspace group.
+  - `id` (string, required) — The ID of the workspace group.
+  - `members_emails` (list of string, required) — The emails of the members of the workspace group.
 
 ## Examples
-
-
 
 **Response**
 

@@ -45,6 +45,10 @@ Enable agents to play DTMF tones to interact with automated phone systems and na
 
 Enable agents to automatically detect voicemail systems and optionally leave messages.
 
+#### [Update state](/docs/eleven-agents/customization/tools/system-tools/update-state)
+
+Let your agent update dynamic variables mid-conversation using expressions.
+
 ## Implementation
 
 When creating an agent via API, you can add system tools to your agent configuration. Here's how to implement both the end call and language detection tools:
@@ -252,6 +256,35 @@ Learn more: [Play keypad touch tone tool](/docs/eleven-agents/customization/tool
 ```
 
 Learn more: [Voicemail detection tool](/docs/eleven-agents/customization/tools/system-tools/voicemail-detection)
+
+#### Update state
+
+**Purpose**: Let the agent update one or more dynamic variables based on the conversation, without calling an external API.
+
+**Trigger conditions**: The LLM should call this tool when:
+
+* The conversation provides information that should be recorded (e.g. an escalation flag, a chosen option, a value the user provided)
+* A configured state update depends on a value the LLM must judge or extract from the conversation
+
+**Parameters**:
+
+The function's parameters depend on how the tool is configured. Each configured state update that uses an LLM-extracted value adds one property to the schema, named after that update's dynamic variable and typed as `string`, `number`, or `boolean`. State updates built only from constants or other dynamic variables don't add any parameters.
+
+**Function call format**:
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "update_state",
+    "arguments": "{\"should_escalate\": true}"
+  }
+}
+```
+
+**Implementation**: The agent evaluates every configured expression using the extracted parameters plus the conversation's current dynamic variables, then assigns the results to the corresponding dynamic variables. No external request is made.
+
+Learn more: [Update state tool](/docs/eleven-agents/customization/tools/system-tools/update-state)
 
 ```python
 from elevenlabs import (

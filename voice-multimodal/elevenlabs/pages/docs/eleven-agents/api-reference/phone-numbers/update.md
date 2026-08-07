@@ -15,481 +15,131 @@ Update assigned agent of a phone number
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/phone-numbers/{phone_number_id}:
-    patch:
-      operationId: update
-      summary: Update Phone Number
-      description: Update assigned agent of a phone number
-      tags:
-        - phoneNumbers
-      parameters:
-        - name: phone_number_id
-          in: path
-          description: >-
-            The phone number ID. This is returned when a phone number is
-            imported.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/type_conversationalAi/phoneNumbers:PhoneNumbersUpdateResponse
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                agent_id:
-                  type: string
-                label:
-                  type: string
-                inbound_trunk_config:
-                  $ref: '#/components/schemas/type_:InboundSipTrunkConfigRequestModel'
-                outbound_trunk_config:
-                  $ref: >-
-                    #/components/schemas/type_:OutboundSipTrunkConfigRequestModel
-                livekit_stack:
-                  $ref: '#/components/schemas/type_:LivekitStackType'
-                store_sip_messages:
-                  type: boolean
-                environment:
-                  type: string
-                  description: >-
-                    Environment to use for resolving environment variables on
-                    calls to this number.
-                branch_id:
-                  type: string
-                  description: Agent branch to use for calls to this number.
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:SipMediaEncryptionEnum:
-      type: string
-      enum:
-        - disabled
-        - allowed
-        - required
-      default: allowed
-      title: SipMediaEncryptionEnum
-    type_:SipTrunkCredentialsRequestModel:
-      type: object
-      properties:
-        username:
-          type: string
-          description: SIP trunk username
-        password:
-          type: string
-          description: SIP trunk password - if not specified, then remain unchanged
-      required:
-        - username
-      title: SipTrunkCredentialsRequestModel
-    type_:InboundSipTrunkConfigRequestModel:
-      type: object
-      properties:
-        allowed_addresses:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of IP addresses that are allowed to use the trunk. Each item in
-            the list can be an individual IP address or a Classless Inter-Domain
-            Routing notation representing a CIDR block.
-        allowed_numbers:
-          type: array
-          items:
-            type: string
-          description: List of phone numbers that are allowed to use the trunk.
-        media_encryption:
-          $ref: '#/components/schemas/type_:SipMediaEncryptionEnum'
-          description: Whether or not to encrypt media (data layer).
-        credentials:
-          $ref: '#/components/schemas/type_:SipTrunkCredentialsRequestModel'
-          description: Optional digest authentication credentials (username/password).
-        remote_domains:
-          type: array
-          items:
-            type: string
-          description: Domains of remote SIP servers used to validate TLS certificates.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-      title: InboundSipTrunkConfigRequestModel
-    type_:SipTrunkTransportEnum:
-      type: string
-      enum:
-        - auto
-        - udp
-        - tcp
-        - tls
-      default: auto
-      title: SipTrunkTransportEnum
-    type_:MediaCodec:
-      type: string
-      enum:
-        - G722/8000
-        - PCMU/8000
-        - PCMA/8000
-      title: MediaCodec
-    type_:OutboundSipTrunkConfigRequestModel:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Hostname or IP the SIP INVITE is sent to.
-        transport:
-          $ref: '#/components/schemas/type_:SipTrunkTransportEnum'
-          description: Protocol to use for SIP transport (signalling layer).
-        media_encryption:
-          $ref: '#/components/schemas/type_:SipMediaEncryptionEnum'
-          description: Whether or not to encrypt media (data layer).
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            SIP X-* headers for INVITE request. These headers are sent as-is and
-            may help identify this call.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-        credentials:
-          $ref: '#/components/schemas/type_:SipTrunkCredentialsRequestModel'
-          description: >-
-            Optional digest authentication credentials (username/password). If
-            not provided, ACL authentication is assumed.
-        enabled_codecs:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:MediaCodec'
-          description: >-
-            Media codecs that should be offered in the SDP for outbound calls.
-            If empty, all supported codecs are offered.
-      required:
-        - address
-      title: OutboundSipTrunkConfigRequestModel
-    type_:LivekitStackType:
-      type: string
-      enum:
-        - standard
-        - static
-      default: standard
-      title: LivekitStackType
-    type_:PhoneNumberAgentInfo:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        agent_name:
-          type: string
-          description: The name of the agent
-        environment:
-          type: string
-          description: >-
-            Environment to use for resolving environment variables on calls to
-            this number.
-        branch_id:
-          type: string
-          description: Agent branch to use for calls to this number.
-      required:
-        - agent_id
-        - agent_name
-      title: PhoneNumberAgentInfo
-    type_:GetPhoneNumberOutboundSipTrunkConfigResponseModel:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Hostname or IP the SIP INVITE is sent to
-        transport:
-          $ref: '#/components/schemas/type_:SipTrunkTransportEnum'
-          description: Protocol to use for SIP transport
-        media_encryption:
-          $ref: '#/components/schemas/type_:SipMediaEncryptionEnum'
-          description: Whether or not to encrypt media (data layer).
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: SIP headers for INVITE request
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-        has_auth_credentials:
-          type: boolean
-          description: Whether authentication credentials are configured
-        username:
-          type: string
-          description: SIP trunk username (if available)
-        has_outbound_trunk:
-          type: boolean
-          default: false
-          description: Whether a LiveKit SIP outbound trunk is configured
-        enabled_codecs:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:MediaCodec'
-          description: >-
-            Media codecs that are offered in the SDP for outbound calls. If
-            empty, all supported codecs are offered.
-      required:
-        - address
-        - transport
-        - media_encryption
-        - has_auth_credentials
-      description: SIP Trunk configuration details for a phone number
-      title: GetPhoneNumberOutboundSipTrunkConfigResponseModel
-    type_:GetPhoneNumberInboundSipTrunkConfigResponseModel:
-      type: object
-      properties:
-        allowed_addresses:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of IP addresses that are allowed to use the trunk. Each item in
-            the list can be an individual IP address or a Classless Inter-Domain
-            Routing notation representing a CIDR block.
-        allowed_numbers:
-          type: array
-          items:
-            type: string
-          description: List of phone numbers that are allowed to use the trunk.
-        media_encryption:
-          $ref: '#/components/schemas/type_:SipMediaEncryptionEnum'
-        has_auth_credentials:
-          type: boolean
-          description: Whether authentication credentials are configured
-        username:
-          type: string
-          description: SIP trunk username (if available)
-        remote_domains:
-          type: array
-          items:
-            type: string
-          description: Domains of remote SIP servers used to validate TLS certificates.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-      required:
-        - allowed_addresses
-        - media_encryption
-        - has_auth_credentials
-      title: GetPhoneNumberInboundSipTrunkConfigResponseModel
-    type_conversationalAi/phoneNumbers:PhoneNumbersUpdateResponse:
-      oneOf:
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - twilio
-              description: 'Discriminator value: twilio'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              $ref: '#/components/schemas/type_:PhoneNumberAgentInfo'
-              description: The agent that is assigned to the phone number
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - exotel
-              description: 'Discriminator value: exotel'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              $ref: '#/components/schemas/type_:PhoneNumberAgentInfo'
-              description: The agent that is assigned to the phone number
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - sip_trunk
-              description: 'Discriminator value: sip_trunk'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              $ref: '#/components/schemas/type_:PhoneNumberAgentInfo'
-              description: The agent that is assigned to the phone number
-            provider_config:
-              $ref: >-
-                #/components/schemas/type_:GetPhoneNumberOutboundSipTrunkConfigResponseModel
-            outbound_trunk:
-              $ref: >-
-                #/components/schemas/type_:GetPhoneNumberOutboundSipTrunkConfigResponseModel
-              description: Configuration of the Outbound SIP trunk - if configured.
-            inbound_trunk:
-              $ref: >-
-                #/components/schemas/type_:GetPhoneNumberInboundSipTrunkConfigResponseModel
-              description: Configuration of the Inbound SIP trunk - if configured.
-            livekit_stack:
-              $ref: '#/components/schemas/type_:LivekitStackType'
-              description: Type of Livekit stack used for this number.
-            store_sip_messages:
-              type: boolean
-              default: true
-              description: Whether to store SIP messages for this phone number.
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-            - livekit_stack
-      discriminator:
-        propertyName: provider
-      title: PhoneNumbersUpdateResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `phone_number_id` (string, required) — The phone number ID. This is returned when a phone number is imported.
+
+### Body (application/json)
+
+- `agent_id` (string, optional)
+- `label` (string, optional)
+- `inbound_trunk_config` (object, optional)
+  - `allowed_addresses` (list of string, optional) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
+  - `allowed_numbers` (list of string, optional) — List of phone numbers that are allowed to use the trunk.
+  - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+    - Allowed values: `disabled`, `allowed`, `required`
+  - `credentials` (object, optional) — Optional digest authentication credentials (username/password).
+    - `username` (string, required) — SIP trunk username
+    - `password` (string, optional) — SIP trunk password - if not specified, then remain unchanged
+  - `remote_domains` (list of string, optional) — Domains of remote SIP servers used to validate TLS certificates.
+  - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+- `outbound_trunk_config` (object, optional)
+  - `address` (string, required) — Hostname or IP the SIP INVITE is sent to.
+  - `transport` (enum, optional, default: auto) — Protocol to use for SIP transport (signalling layer).
+    - Allowed values: `auto`, `udp`, `tcp`, `tls`
+  - `media_encryption` (enum, optional, default: allowed) — Whether or not to encrypt media (data layer).
+    - Allowed values: `disabled`, `allowed`, `required`
+  - `headers` (map from string to string, optional) — SIP X-* headers for INVITE request. These headers are sent as-is and may help identify this call.
+  - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+  - `credentials` (object, optional) — Optional digest authentication credentials (username/password). If not provided, ACL authentication is assumed.
+    - `username` (string, required) — SIP trunk username
+    - `password` (string, optional) — SIP trunk password - if not specified, then remain unchanged
+  - `enabled_codecs` (list of enum, optional) — Media codecs that should be offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+    - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+- `livekit_stack` (enum, optional, default: standard)
+  - Allowed values: `standard`, `static`
+- `store_sip_messages` (boolean, optional)
+- `environment` (string, optional) — Environment to use for resolving environment variables on calls to this number.
+- `branch_id` (string, optional) — Agent branch to use for calls to this number.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `object`
+  - `provider`: `twilio`
+    - `label` (string, required) — Label for the phone number
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional) — Agent branch to use for calls to this number.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - `provider`: `exotel`
+    - `label` (string, required) — Label for the phone number
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional) — Agent branch to use for calls to this number.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - `provider`: `sip_trunk`
+    - `label` (string, required) — Label for the phone number
+    - `livekit_stack` (enum, required, default: standard) — Type of Livekit stack used for this number.
+      - Allowed values: `standard`, `static`
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional) — Agent branch to use for calls to this number.
+    - `inbound_trunk` (object, optional) — Configuration of the Inbound SIP trunk - if configured.
+      - `allowed_addresses` (list of string, required) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
+      - `media_encryption` (enum, required, default: allowed)
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `allowed_numbers` (list of string, optional) — List of phone numbers that are allowed to use the trunk.
+      - `username` (string, optional) — SIP trunk username (if available)
+      - `remote_domains` (list of string, optional) — Domains of remote SIP servers used to validate TLS certificates.
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+    - `outbound_trunk` (object, optional) — Configuration of the Outbound SIP trunk - if configured.
+      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to
+      - `transport` (enum, required, default: auto) — Protocol to use for SIP transport
+        - Allowed values: `auto`, `udp`, `tcp`, `tls`
+      - `media_encryption` (enum, required, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `headers` (map from string to string, optional) — SIP headers for INVITE request
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+      - `username` (string, optional) — SIP trunk username (if available)
+      - `has_outbound_trunk` (boolean, optional, default: false) — Whether a LiveKit SIP outbound trunk is configured
+      - `enabled_codecs` (list of enum, optional) — Media codecs that are offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+    - `store_sip_messages` (boolean, optional, default: true) — Whether to store SIP messages for this phone number.
+    - `provider_config` (object, optional, deprecated) — SIP Trunk configuration details for a phone number
+      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to
+      - `transport` (enum, required, default: auto) — Protocol to use for SIP transport
+        - Allowed values: `auto`, `udp`, `tcp`, `tls`
+      - `media_encryption` (enum, required, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `headers` (map from string to string, optional) — SIP headers for INVITE request
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+      - `username` (string, optional) — SIP trunk username (if available)
+      - `has_outbound_trunk` (boolean, optional, default: false) — Whether a LiveKit SIP outbound trunk is configured
+      - `enabled_codecs` (list of enum, optional) — Media codecs that are offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
 
 ## Examples
 

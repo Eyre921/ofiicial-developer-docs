@@ -14,268 +14,52 @@ Full project detail, including its language target ids.
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/get-project
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}:
-    get:
-      operationId: get
-      summary: Get Dubbing Project
-      description: Full project detail, including its language target ids.
-      tags:
-        - project
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project to fetch.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingProjectResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingProjectResponseStatus:
-      type: string
-      enum:
-        - queued
-        - preparing
-        - processing
-        - ready
-        - failed
-      description: >-
-        Lifecycle status of the project: 'preparing'/'processing' while it
-        transcribes, 'ready' once transcription is done, or 'failed'.
-      title: DubbingProjectResponseStatus
-    DubbingSourceMediaInfo:
-      type: object
-      properties:
-        filename:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Original filename of the uploaded source media (null for URL
-            sources).
-        duration_s:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Duration of the source media in seconds.
-        has_video:
-          type:
-            - boolean
-            - 'null'
-          description: Whether the source media contains a video stream.
-        mime_type:
-          type:
-            - string
-            - 'null'
-          description: MIME type of the uploaded source media.
-      description: Metadata about the project's source media.
-      title: DubbingSourceMediaInfo
-    DubbingError:
-      type: object
-      properties:
-        code:
-          type: string
-          description: >-
-            Stable identifier for the failure, safe to branch on. New codes are
-            added over time, so treat an unrecognized value as 'internal_error'.
-        message:
-          type: string
-          description: >-
-            Human-readable description of the failure, for display. The wording
-            may change at any time; branch on `code` instead.
-        retryable:
-          type: boolean
-          description: >-
-            Whether resubmitting the same input could succeed. False means the
-            failure describes the input or the account, so an identical retry
-            will fail the same way.
-      required:
-        - code
-        - message
-        - retryable
-      title: DubbingError
-    VoicesNotPermittedWarning:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - voices_not_permitted
-          description: Identifies this warning; branch on it to read the fields below.
-        speaker_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            Speakers whose voices were not permitted for cloning. The dub used a
-            replacement voice for each of them; the rest of the speakers are
-            unaffected.
-        message:
-          type: string
-          description: >-
-            Human-readable description of the warning, for display. The wording
-            may change at any time; branch on `type` instead.
-      required:
-        - type
-        - speaker_ids
-        - message
-      title: VoicesNotPermittedWarning
-    DubbingProjectResponse:
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: Unique identifier of the dubbing project.
-        status:
-          $ref: '#/components/schemas/DubbingProjectResponseStatus'
-          description: >-
-            Lifecycle status of the project: 'preparing'/'processing' while it
-            transcribes, 'ready' once transcription is done, or 'failed'.
-        reference:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Optional free-form string the customer can provide to identify the
-            project on their end.
-        source_language:
-          type:
-            - string
-            - 'null'
-          description: BCP-47 language tag of the source media (null if auto-detected).
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: Default dubbing model id applied to this project's language targets.
-        media:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingSourceMediaInfo'
-            - type: 'null'
-          description: Source media metadata; null until the project is ready.
-        language_ids:
-          type: array
-          items:
-            type: string
-          default: []
-          description: Identifiers of the language targets created under this project.
-        webhook_ids:
-          type: array
-          items:
-            type: string
-          default: []
-          description: >-
-            Workspace webhooks notified when this project becomes ready or
-            fails, and when any of its languages completes or fails.
-        revision:
-          type: integer
-          description: >-
-            Monotonic counter incremented whenever the source transcript is
-            edited (segment add/edit/delete).
-        error:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingError'
-            - type: 'null'
-          description: >-
-            Why the project failed; null unless `status` is 'failed'. Also null
-            for the few projects that failed before failure reporting was
-            introduced.
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/VoicesNotPermittedWarning'
-          description: >-
-            Non-fatal conditions raised while preparing the source, empty when
-            there are none. Reflects the latest preparation. Conditions raised
-            while dubbing a particular language are reported on that language
-            instead.
-        created_at:
-          type: string
-          format: date-time
-          description: When the project was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: When the project was last updated.
-      required:
-        - project_id
-        - status
-        - revision
-        - created_at
-        - updated_at
-      title: DubbingProjectResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project to fetch.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `project_id` (string, required) — Unique identifier of the dubbing project.
+- `status` (enum, required) — Lifecycle status of the project: 'preparing'/'processing' while it transcribes, 'ready' once transcription is done, or 'failed'.
+  - Allowed values: `queued`, `preparing`, `processing`, `ready`, `failed`
+- `revision` (integer, required) — Monotonic counter incremented whenever the source transcript is edited (segment add/edit/delete).
+- `created_at` (string, required) — When the project was created.
+- `updated_at` (string, required) — When the project was last updated.
+- `reference` (string, optional, nullable) — Optional free-form string the customer can provide to identify the project on their end.
+- `source_language` (string, optional, nullable) — BCP-47 language tag of the source media (null if auto-detected).
+- `model_id` (string, optional, nullable) — Default dubbing model id applied to this project's language targets.
+- `media` (object, optional, nullable) — Source media metadata; null until the project is ready.
+  - `filename` (string, optional, nullable) — Original filename of the uploaded source media (null for URL sources).
+  - `duration_s` (double, optional, nullable) — Duration of the source media in seconds.
+  - `has_video` (boolean, optional, nullable) — Whether the source media contains a video stream.
+  - `mime_type` (string, optional, nullable) — MIME type of the uploaded source media.
+- `language_ids` (list of string, optional, default: []) — Identifiers of the language targets created under this project.
+- `webhook_ids` (list of string, optional, default: []) — Workspace webhooks notified when this project becomes ready or fails, and when any of its languages completes or fails.
+- `error` (object, optional, nullable) — Why the project failed; null unless `status` is 'failed'. Also null for the few projects that failed before failure reporting was introduced.
+  - `code` (string, required) — Stable identifier for the failure, safe to branch on. New codes are added over time, so treat an unrecognized value as 'internal_error'.
+  - `message` (string, required) — Human-readable description of the failure, for display. The wording may change at any time; branch on `code` instead.
+  - `retryable` (boolean, required) — Whether resubmitting the same input could succeed. False means the failure describes the input or the account, so an identical retry will fail the same way.
+- `warnings` (list of object, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
+  - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
+  - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.
+  - `message` (string, required) — Human-readable description of the warning, for display. The wording may change at any time; branch on `type` instead.
 
 ## Examples
-
-
 
 **Response**
 

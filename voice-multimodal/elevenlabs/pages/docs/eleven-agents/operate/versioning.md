@@ -19,7 +19,8 @@ The versioning system provides:
 * **Immutable snapshots** of your agent configuration at any point in time
 * **Isolated branches** for testing changes before going live
 * **Traffic splitting** to gradually roll out changes to a percentage of users
-* **Merging** to bring successful experiments back to main
+* **Merging** to bring changes from any branch into any other branch
+* **Rebasing** to pull the latest main branch changes into a branch
 
 Once versioning is enabled on an agent, it cannot be disabled. Consider this before enabling
 versioning on existing agents.
@@ -41,7 +42,8 @@ Versions are created automatically when you save changes to a versioned agent. O
 Branches are named lines of development, similar to git branches. They allow you to work on changes in isolation before merging back to the main branch.
 
 * Every versioned agent has a **Main** branch that cannot be deleted or archived
-* Additional branches can be created from any version on the main branch
+* Additional branches can be created from any version on any existing branch, not just main
+* Branches can be merged into any other branch, and non-main branches can be rebased onto main to pull in its latest changes
 * Each branch has: id (`agtbrch_xxxx`), name, description, and a list of versions
 * Branch names can contain: letters, numbers, and `() [] {} - / .` (max 140 characters)
 
@@ -143,7 +145,7 @@ Enabling versioning creates the initial "Main" branch with the first version con
 
 ### Creating a branch
 
-Branches can only be created from versions on the main branch. You can optionally include configuration changes that will be applied to the new branch's initial version.
+Branches can be created from any version on any branch, not just main. You can optionally include configuration changes that will be applied to the new branch's initial version.
 
 ```python
 branch = client.conversational_ai.agents.branches.create(
@@ -290,14 +292,15 @@ Traffic routing is deterministic based on the conversation ID, ensuring the same
 
 ## Merging branches
 
-When you're satisfied with changes on a branch, merge them back to the main branch.
+When you're satisfied with changes on a branch, merge them into another branch. Any non-archived branch can be merged into any other non-archived branch, not just into main.
 
 ```python
 merge = client.conversational_ai.agents.branches.merge(
     agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
     source_branch_id="agtbrch_xxxx",
     target_branch_id="agtbrch_main",
-    archive_source_branch=True  # Default: true
+    archive_source_branch=True,  # Default: true
+    force=False  # Default: false
 )
 ```
 
@@ -305,16 +308,90 @@ merge = client.conversational_ai.agents.branches.merge(
 const merge = await client.conversationalAi.agents.branches.merge('agent_7101k5zvyjhmfg983brhmhkd98n6', 'agtbrch_xxxx', {
   targetBranchId: 'agtbrch_main',
   archiveSourceBranch: true, // Default: true
+  force: false, // Default: false
 });
 ```
 
 Merging:
 
-* Creates a new version on the main branch with the source branch's configuration
+* Creates a new version on the target branch with the source branch's configuration
 * Optionally archives the source branch (default behavior)
-* Automatically transfers traffic from the source branch to main
+* Automatically transfers traffic from the source branch to the target branch
 
-You can only merge into the main branch. Merging between non-main branches is not supported.
+Merging fails with `no_new_changes_to_merge` if the source branch was created from (and has no
+new commits beyond) the target branch, and with `branch_already_merged` if it was already merged
+into that target.
+
+### Resolving merge conflicts
+
+If a setting was changed on both the source and target branch since they diverged, the value from
+the branch that was updated more recently is kept by default. Set `force=True` to always take the
+source branch's value instead, regardless of timestamps.
+
+Preview the result of a merge, including any fields that would be overridden, before committing to it:
+
+```python
+preview = client.conversational_ai.agents.branches.preview_merge(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    source_branch_id="agtbrch_xxxx",
+    target_branch_id="agtbrch_main",
+    force=False
+)
+
+print(preview.overridden_fields)
+print(preview.conflicts)
+```
+
+```javascript
+const preview = await client.conversationalAi.agents.branches.previewMerge('agent_7101k5zvyjhmfg983brhmhkd98n6', 'agtbrch_xxxx', {
+  targetBranchId: 'agtbrch_main',
+  force: false,
+});
+
+console.log(preview.overriddenFields);
+console.log(preview.conflicts);
+```
+
+## Rebasing branches onto main
+
+Rebasing pulls the latest changes from the main branch into another branch, similar to a git rebase. This keeps a long-lived branch up to date with main without merging the branch's own changes back yet.
+
+```python
+client.conversational_ai.agents.branches.rebase(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    branch_id="agtbrch_xxxx"
+)
+```
+
+```javascript
+await client.conversationalAi.agents.branches.rebase('agent_7101k5zvyjhmfg983brhmhkd98n6', 'agtbrch_xxxx');
+```
+
+Rebasing:
+
+* Creates a new version on the branch that incorporates main's latest changes
+* Preserves the branch's own changes: if a setting was edited on both the branch and main, the branch's value is always kept
+* Fails with `branch_already_up_to_date` if the branch already includes all changes from main
+
+Only non-main branches can be rebased, and only onto main. Rebasing the main branch itself
+returns a `cannot_rebase_main` error.
+
+Preview the result of a rebase before committing to it:
+
+```python
+preview = client.conversational_ai.agents.branches.preview_rebase(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    branch_id="agtbrch_xxxx"
+)
+
+print(preview.overridden_fields)
+```
+
+```javascript
+const preview = await client.conversationalAi.agents.branches.previewRebase('agent_7101k5zvyjhmfg983brhmhkd98n6', 'agtbrch_xxxx');
+
+console.log(preview.overriddenFields);
+```
 
 ## Archiving branches
 
@@ -459,8 +536,9 @@ minimizes risk while validating performance at each stage.
 
 #### Keep branches short-lived
 
-Merge successful experiments promptly to avoid configuration drift. Long-running branches become
-harder to merge and may conflict with other changes made to main.
+Merge successful experiments promptly to avoid configuration drift. For branches that need to
+stay open longer, periodically rebase them onto main so they don't drift too far and become
+harder to merge.
 
 ## Next steps
 

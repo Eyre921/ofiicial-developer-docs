@@ -14,282 +14,59 @@ Retrieves a history item.
 
 Reference: https://elevenlabs.io/docs/api-reference/history/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/history/{history_item_id}:
-    get:
-      operationId: get
-      summary: Get history item
-      description: Retrieves a history item.
-      tags:
-        - history
-      parameters:
-        - name: history_item_id
-          in: path
-          description: >-
-            ID of the history item to be used. You can use the [Get generated
-            items](/docs/api-reference/history/list) endpoint to retrieve a list
-            of history items.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpeechHistoryItemResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SpeechHistoryItemResponseModelVoiceCategory:
-      type: string
-      enum:
-        - premade
-        - cloned
-        - generated
-        - professional
-      description: >-
-        The category of the voice. Either 'premade', 'cloned', 'generated' or
-        'professional'.
-      title: SpeechHistoryItemResponseModelVoiceCategory
-    SpeechHistoryItemResponseModelSource:
-      type: string
-      enum:
-        - TTS
-        - STS
-        - Projects
-        - PD
-        - AN
-        - Dubbing
-        - PlayAPI
-        - ConvAI
-        - VoiceGeneration
-        - InVPC
-        - Flows
-      description: >-
-        The source of the history item. Either TTS (text to speech), STS (speech
-        to text), AN (audio native), Projects, Dubbing, PlayAPI, PD
-        (pronunciation dictionary) or ConvAI (Agents Platform).
-      title: SpeechHistoryItemResponseModelSource
-    HistoryAlignmentResponseModel:
-      type: object
-      properties:
-        characters:
-          type: array
-          items:
-            type: string
-          description: The characters in the alignment.
-        character_start_times_seconds:
-          type: array
-          items:
-            type: number
-            format: double
-          description: The start times of the characters in seconds.
-        character_end_times_seconds:
-          type: array
-          items:
-            type: number
-            format: double
-          description: The end times of the characters in seconds.
-      required:
-        - characters
-        - character_start_times_seconds
-        - character_end_times_seconds
-      title: HistoryAlignmentResponseModel
-    HistoryAlignmentsResponseModel:
-      type: object
-      properties:
-        alignment:
-          $ref: '#/components/schemas/HistoryAlignmentResponseModel'
-          description: The alignment of the text.
-        normalized_alignment:
-          $ref: '#/components/schemas/HistoryAlignmentResponseModel'
-          description: The normalized alignment of the text.
-      required:
-        - alignment
-        - normalized_alignment
-      title: HistoryAlignmentsResponseModel
-    DialogueInputResponseModel:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the dialogue input line.
-        voice_id:
-          type: string
-          description: The ID of the voice used for this dialogue input line.
-        voice_name:
-          type: string
-          description: The name of the voice used for this dialogue input line.
-      required:
-        - text
-        - voice_id
-        - voice_name
-      title: DialogueInputResponseModel
-    SpeechHistoryItemResponseModel:
-      type: object
-      properties:
-        history_item_id:
-          type: string
-          description: The ID of the history item.
-        request_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the request.
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the voice used.
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the model.
-        voice_name:
-          type:
-            - string
-            - 'null'
-          description: The name of the voice.
-        voice_category:
-          oneOf:
-            - $ref: '#/components/schemas/SpeechHistoryItemResponseModelVoiceCategory'
-            - type: 'null'
-          description: >-
-            The category of the voice. Either 'premade', 'cloned', 'generated'
-            or 'professional'.
-        text:
-          type:
-            - string
-            - 'null'
-          description: The text used to generate the audio item.
-        date_unix:
-          type: integer
-          description: Unix timestamp of when the item was created.
-        character_count_change_from:
-          type: integer
-          description: The character count change from.
-        character_count_change_to:
-          type: integer
-          description: The character count change to.
-        content_type:
-          type: string
-          description: The content type of the generated item.
-        state:
-          description: Any type
-        settings:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: The settings of the history item.
-        share_link_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the share link.
-        source:
-          oneOf:
-            - $ref: '#/components/schemas/SpeechHistoryItemResponseModelSource'
-            - type: 'null'
-          description: >-
-            The source of the history item. Either TTS (text to speech), STS
-            (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD
-            (pronunciation dictionary) or ConvAI (Agents Platform).
-        alignments:
-          oneOf:
-            - $ref: '#/components/schemas/HistoryAlignmentsResponseModel'
-            - type: 'null'
-          description: The alignments of the history item.
-        dialogue:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/DialogueInputResponseModel'
-          description: >-
-            The dialogue (voice and text pairs) used to generate the audio item.
-            If this is set then the top level `text` and `voice_id` fields will
-            be empty.
-        output_format:
-          type:
-            - string
-            - 'null'
-          description: The output format the audio was originally generated in.
-      required:
-        - history_item_id
-        - date_unix
-        - character_count_change_from
-        - character_count_change_to
-        - content_type
-        - state
-      title: SpeechHistoryItemResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `history_item_id` (string, required) — ID of the history item to be used. You can use the [Get generated items](/docs/api-reference/history/list) endpoint to retrieve a list of history items.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `history_item_id` (string, required) — The ID of the history item.
+- `date_unix` (integer, required) — Unix timestamp of when the item was created.
+- `character_count_change_from` (integer, required) — The character count change from.
+- `character_count_change_to` (integer, required) — The character count change to.
+- `content_type` (string, required) — The content type of the generated item.
+- `state` (any, required)
+- `request_id` (string, optional, nullable) — The ID of the request.
+- `voice_id` (string, optional, nullable) — The ID of the voice used.
+- `model_id` (string, optional, nullable) — The ID of the model.
+- `voice_name` (string, optional, nullable) — The name of the voice.
+- `voice_category` (enum, optional, nullable) — The category of the voice. Either 'premade', 'cloned', 'generated' or 'professional'.
+  - Allowed values: `premade`, `cloned`, `generated`, `professional`
+- `text` (string, optional, nullable) — The text used to generate the audio item.
+- `settings` (map from string to any, optional, nullable) — The settings of the history item.
+- `share_link_id` (string, optional, nullable) — The ID of the share link.
+- `source` (enum, optional, nullable) — The source of the history item. Either TTS (text to speech), STS (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD (pronunciation dictionary) or ConvAI (Agents Platform).
+  - Allowed values: `TTS`, `STS`, `Projects`, `PD`, `AN`, `Dubbing`, `PlayAPI`, `ConvAI`, `VoiceGeneration`, `InVPC`, `Flows`
+- `alignments` (object, optional, nullable) — The alignments of the history item.
+  - `alignment` (object, required) — The alignment of the text.
+    - `characters` (list of string, required) — The characters in the alignment.
+    - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
+    - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
+  - `normalized_alignment` (object, required) — The normalized alignment of the text.
+    - `characters` (list of string, required) — The characters in the alignment.
+    - `character_start_times_seconds` (list of double, required) — The start times of the characters in seconds.
+    - `character_end_times_seconds` (list of double, required) — The end times of the characters in seconds.
+- `dialogue` (list of object, optional, nullable) — The dialogue (voice and text pairs) used to generate the audio item. If this is set then the top level `text` and `voice_id` fields will be empty.
+  - `text` (string, required) — The text of the dialogue input line.
+  - `voice_id` (string, required) — The ID of the voice used for this dialogue input line.
+  - `voice_name` (string, required) — The name of the voice used for this dialogue input line.
+- `output_format` (string, optional, nullable) — The output format the audio was originally generated in.
 
 ## Examples
-
-
 
 **Response**
 

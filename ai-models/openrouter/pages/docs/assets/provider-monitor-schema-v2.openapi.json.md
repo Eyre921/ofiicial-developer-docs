@@ -9,7 +9,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
   "info": {
     "title": "Provider Monitor Schema V2",
     "version": "2.4",
-    "description": "A provider’s declaration of a model, expressed as typed input/output modality objects that own their pricing (nested pricing design). Only request-scoped SKUs live at the document root."
+    "description": "A provider’s declaration of a model, expressed as typed input/output modality objects that own their pricing and capacity. Only request-scoped entries live at the document root."
   },
   "components": {
     "schemas": {
@@ -46,16 +46,21 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
               }
             ]
           },
+          "tokenizer": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
           "input_modalities": {
+            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/InputModality"
             }
           },
           "output_modalities": {
+            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OutputModality"
@@ -65,7 +70,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RequestPricingEntry"
-            }
+            },
+            "description": "Entries must be unique by type"
+          },
+          "capacity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequestCapacityEntry"
+            },
+            "description": "Entries must be unique by type, unit, and window"
           },
           "passthrough_parameters": {
             "type": "object",
@@ -77,7 +90,18 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             }
           },
           "deprecation_date": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+              },
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              }
+            ]
           },
           "is_ready": {
             "type": "boolean"
@@ -86,10 +110,8 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "type": "boolean"
           },
           "discount_to_user": {
-            "type": "number"
-          },
-          "capacity_tpm": {
-            "type": "number"
+            "type": "number",
+            "exclusiveMaximum": 1
           },
           "openrouter": {
             "type": "object",
@@ -129,12 +151,17 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "text"
+                "enum": [
+                  "text"
+                ]
               },
               "supported_inputs": {
                 "type": "object",
                 "properties": {
-                  "max_length": {
+                  "max_context_length": {
+                    "$ref": "#/components/schemas/IntegerInputLimit"
+                  },
+                  "max_prompt_length": {
                     "$ref": "#/components/schemas/IntegerInputLimit"
                   }
                 },
@@ -144,7 +171,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InputPricingEntry"
-                }
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (ttl_seconds, implicit, utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "passthrough_parameters": {
                 "type": "object",
@@ -166,7 +201,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "image"
+                "enum": [
+                  "image"
+                ]
               },
               "supported_inputs": {
                 "$ref": "#/components/schemas/ImageSupportedInputs"
@@ -175,7 +212,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InputPricingEntry"
-                }
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (ttl_seconds, implicit, utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "passthrough_parameters": {
                 "type": "object",
@@ -197,7 +242,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "video"
+                "enum": [
+                  "video"
+                ]
               },
               "supported_inputs": {
                 "type": "object",
@@ -207,7 +254,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -227,7 +276,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -255,7 +306,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InputPricingEntry"
-                }
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (ttl_seconds, implicit, utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "passthrough_parameters": {
                 "type": "object",
@@ -277,7 +336,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "audio"
+                "enum": [
+                  "audio"
+                ]
               },
               "supported_inputs": {
                 "type": "object",
@@ -287,7 +348,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -307,7 +370,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -335,7 +400,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InputPricingEntry"
-                }
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (ttl_seconds, implicit, utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "passthrough_parameters": {
                 "type": "object",
@@ -357,7 +430,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "file"
+                "enum": [
+                  "file"
+                ]
               },
               "supported_inputs": {
                 "type": "object",
@@ -367,7 +442,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -387,7 +464,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "enum"
+                        "enum": [
+                          "enum"
+                        ]
                       },
                       "values": {
                         "type": "array",
@@ -407,7 +486,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "properties": {
                       "type": {
                         "type": "string",
-                        "const": "integer"
+                        "enum": [
+                          "integer"
+                        ]
                       },
                       "min": {
                         "type": "integer",
@@ -438,7 +519,15 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InputPricingEntry"
-                }
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (ttl_seconds, implicit, utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "passthrough_parameters": {
                 "type": "object",
@@ -464,14 +553,13 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "text"
+                "enum": [
+                  "text"
+                ]
               },
               "max_length": {
                 "$ref": "#/components/schemas/IntegerInputLimit"
               },
-              "streaming": {
-                "type": "boolean"
-              },
               "supported_parameters": {
                 "type": "object",
                 "propertyNames": {
@@ -494,24 +582,34 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "image"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "streaming": {
                 "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "image"
+                ]
               },
               "supported_parameters": {
                 "type": "object",
@@ -535,24 +633,34 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "video"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "streaming": {
                 "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "video"
+                ]
               },
               "supported_parameters": {
                 "type": "object",
@@ -576,24 +684,34 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "speech"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "streaming": {
                 "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "speech"
+                ]
               },
               "supported_parameters": {
                 "type": "object",
@@ -617,24 +735,34 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "transcription"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
               },
               "streaming": {
                 "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "transcription"
+                ]
               },
               "supported_parameters": {
                 "type": "object",
@@ -658,100 +786,34 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "embeddings"
-              },
-              "supported_parameters": {
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
                 },
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/ParameterDescriptor"
-                }
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
               },
-              "passthrough_parameters": {
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
-                },
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/ParameterDescriptor"
-                }
-              },
-              "pricing": {
+              "capacity": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "rerank"
-              },
-              "supported_parameters": {
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
                 },
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/ParameterDescriptor"
-                }
-              },
-              "passthrough_parameters": {
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
-                },
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/ParameterDescriptor"
-                }
-              },
-              "pricing": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OutputPricingEntry"
-                }
-              }
-            },
-            "required": [
-              "type",
-              "supported_parameters"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "const": "audio"
+                "description": "Entries must be unique by type, unit, and window"
               },
               "streaming": {
                 "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "embeddings"
+                ]
               },
               "supported_parameters": {
                 "type": "object",
@@ -775,7 +837,114 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/OutputPricingEntry"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "rerank"
+                ]
+              },
+              "supported_parameters": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ParameterDescriptor"
                 }
+              },
+              "passthrough_parameters": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ParameterDescriptor"
+                }
+              },
+              "pricing": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputPricingEntry"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
+              }
+            },
+            "required": [
+              "type",
+              "supported_parameters"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "audio"
+                ]
+              },
+              "supported_parameters": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ParameterDescriptor"
+                }
+              },
+              "passthrough_parameters": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/ParameterDescriptor"
+                }
+              },
+              "pricing": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputPricingEntry"
+                },
+                "description": "Entries must be unique by type together with the qualifier fields (utc_start, utc_end)"
+              },
+              "capacity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OutputCapacityEntry"
+                },
+                "description": "Entries must be unique by type, unit, and window"
+              },
+              "streaming": {
+                "type": "boolean"
               }
             },
             "required": [
@@ -786,31 +955,402 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
           }
         ]
       },
-      "InputPricingEntry": {
+      "InputCapacityEntry": {
         "type": "object",
         "properties": {
           "type": {
             "$ref": "#/components/schemas/InputPricingType"
           },
           "unit": {
-            "$ref": "#/components/schemas/PricingUnit"
+            "type": "string",
+            "enum": [
+              "token",
+              "image",
+              "second",
+              "character"
+            ]
           },
-          "cost_usd": {
-            "type": "string"
+          "per": {
+            "$ref": "#/components/schemas/CapacityWindow"
           },
-          "overrides": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PricingOverride"
-            }
+          "value": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
           }
         },
         "required": [
           "type",
           "unit",
-          "cost_usd"
+          "per",
+          "value"
         ],
         "additionalProperties": false
+      },
+      "OutputCapacityEntry": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/OutputPricingType"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "token",
+                  "image",
+                  "second",
+                  "character",
+                  "request"
+                ]
+              },
+              "per": {
+                "$ref": "#/components/schemas/CapacityWindow"
+              },
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "per",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "concurrency"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "RequestCapacityEntry": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "per": {
+                "$ref": "#/components/schemas/CapacityWindow"
+              },
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "per",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "web_search"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "search"
+                ]
+              },
+              "per": {
+                "$ref": "#/components/schemas/CapacityWindow"
+              },
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "per",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "concurrency"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "CapacityWindow": {
+        "type": "string",
+        "enum": [
+          "minute",
+          "hour",
+          "day"
+        ]
+      },
+      "InputPricingEntry": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "prompt"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "token",
+                  "image",
+                  "second",
+                  "character"
+                ]
+              },
+              "cost_usd": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?$",
+                "description": "Non-negative decimal number string, e.g. \"0.000008\""
+              },
+              "overrides": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingOverride"
+                }
+              },
+              "utc_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "cost_usd"
+            ],
+            "additionalProperties": false,
+            "dependentRequired": {
+              "utc_start": [
+                "utc_end"
+              ],
+              "utc_end": [
+                "utc_start"
+              ]
+            },
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "cached_prompt"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "token",
+                  "image",
+                  "second",
+                  "character"
+                ]
+              },
+              "cost_usd": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?$",
+                "description": "Non-negative decimal number string, e.g. \"0.000008\""
+              },
+              "overrides": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingOverride"
+                }
+              },
+              "ttl_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "implicit": {
+                "default": false,
+                "type": "boolean"
+              },
+              "utc_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "cost_usd"
+            ],
+            "additionalProperties": false,
+            "dependentRequired": {
+              "utc_start": [
+                "utc_end"
+              ],
+              "utc_end": [
+                "utc_start"
+              ]
+            },
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "cache_write"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "token",
+                  "image",
+                  "second",
+                  "character"
+                ]
+              },
+              "cost_usd": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?$",
+                "description": "Non-negative decimal number string, e.g. \"0.000008\""
+              },
+              "overrides": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingOverride"
+                }
+              },
+              "ttl_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "implicit": {
+                "default": false,
+                "type": "boolean"
+              },
+              "utc_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              },
+              "utc_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2359,
+                "description": "HHMM UTC clock time; the minute component must be 00-59"
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "cost_usd"
+            ],
+            "additionalProperties": false,
+            "dependentRequired": {
+              "utc_start": [
+                "utc_end"
+              ],
+              "utc_end": [
+                "utc_start"
+              ]
+            },
+            "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
+          }
+        ]
       },
       "OutputPricingEntry": {
         "type": "object",
@@ -819,16 +1359,37 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "$ref": "#/components/schemas/OutputPricingType"
           },
           "unit": {
-            "$ref": "#/components/schemas/PricingUnit"
+            "type": "string",
+            "enum": [
+              "token",
+              "image",
+              "second",
+              "character",
+              "request"
+            ]
           },
           "cost_usd": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d+(\\.\\d+)?$",
+            "description": "Non-negative decimal number string, e.g. \"0.000008\""
           },
           "overrides": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PricingOverride"
             }
+          },
+          "utc_start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2359,
+            "description": "HHMM UTC clock time; the minute component must be 00-59"
+          },
+          "utc_end": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2359,
+            "description": "HHMM UTC clock time; the minute component must be 00-59"
           }
         },
         "required": [
@@ -836,33 +1397,88 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
           "unit",
           "cost_usd"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "dependentRequired": {
+          "utc_start": [
+            "utc_end"
+          ],
+          "utc_end": [
+            "utc_start"
+          ]
+        },
+        "description": "Time-window qualifiers: utc_start and utc_end must be declared together and must differ; the window is half-open [utc_start, utc_end) and may wrap midnight."
       },
       "RequestPricingEntry": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/RequestPricingType"
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "request"
+                ]
+              },
+              "cost_usd": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?$",
+                "description": "Non-negative decimal number string, e.g. \"0.000008\""
+              },
+              "overrides": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingOverride"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "cost_usd"
+            ],
+            "additionalProperties": false
           },
-          "unit": {
-            "$ref": "#/components/schemas/PricingUnit"
-          },
-          "cost_usd": {
-            "type": "string"
-          },
-          "overrides": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PricingOverride"
-            }
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "web_search"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "search"
+                ]
+              },
+              "cost_usd": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?$",
+                "description": "Non-negative decimal number string, e.g. \"0.000008\""
+              },
+              "overrides": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingOverride"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "unit",
+              "cost_usd"
+            ],
+            "additionalProperties": false
           }
-        },
-        "required": [
-          "type",
-          "unit",
-          "cost_usd"
-        ],
-        "additionalProperties": false
+        ]
       },
       "InputPricingType": {
         "type": "string",
@@ -901,11 +1517,93 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "type": "object",
         "properties": {
           "when": {
+            "$ref": "#/components/schemas/PricingPredicate"
+          },
+          "cost_usd": {
+            "type": "string",
+            "pattern": "^\\d+(\\.\\d+)?$",
+            "description": "Non-negative decimal number string, e.g. \"0.000008\""
+          }
+        },
+        "required": [
+          "when",
+          "cost_usd"
+        ],
+        "additionalProperties": false
+      },
+      "PricingPredicate": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/PricingParameterPredicate"
+          },
+          {
+            "$ref": "#/components/schemas/PricingCompositionPredicate"
+          }
+        ]
+      },
+      "PricingParameterPredicate": {
+        "type": "object",
+        "propertyNames": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/PricingCondition"
+        },
+        "minProperties": 1
+      },
+      "PricingCompositionPredicate": {
+        "anyOf": [
+          {
             "type": "object",
             "properties": {
-              "parameter": {
-                "type": "string"
-              },
+              "allOf": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingPredicate"
+                }
+              }
+            },
+            "required": [
+              "allOf"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "anyOf": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PricingPredicate"
+                }
+              }
+            },
+            "required": [
+              "anyOf"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "not": {
+                "$ref": "#/components/schemas/PricingPredicate"
+              }
+            },
+            "required": [
+              "not"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PricingCondition": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
               "equals": {
                 "anyOf": [
                   {
@@ -918,33 +1616,52 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                     "type": "boolean"
                   }
                 ]
-              },
+              }
+            },
+            "required": [
+              "equals"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
               "gte": {
                 "type": "number"
-              },
+              }
+            },
+            "required": [
+              "gte"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
               "lte": {
                 "type": "number"
-              },
+              }
+            },
+            "required": [
+              "lte"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
               "min_items": {
                 "type": "integer",
-                "minimum": -9007199254740991,
+                "minimum": 0,
                 "maximum": 9007199254740991
               }
             },
             "required": [
-              "parameter"
+              "min_items"
             ],
             "additionalProperties": false
-          },
-          "cost_usd": {
-            "type": "string"
           }
-        },
-        "required": [
-          "when",
-          "cost_usd"
-        ],
-        "additionalProperties": false
+        ]
       },
       "ParameterDescriptor": {
         "type": "object",
@@ -989,7 +1706,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
           },
           "max_items": {
             "type": "integer",
-            "minimum": -9007199254740991,
+            "minimum": 1,
             "maximum": 9007199254740991
           },
           "properties": {
@@ -1008,7 +1725,180 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "required": [
           "type"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "range"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "values": false,
+                "max_items": false,
+                "properties": false,
+                "items": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "integer"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "values": false,
+                "max_items": false,
+                "properties": false,
+                "items": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "boolean"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "min": false,
+                "max": false,
+                "values": false,
+                "unit": false,
+                "max_items": false,
+                "properties": false,
+                "items": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "enum"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "min": false,
+                "max": false,
+                "unit": false,
+                "max_items": false,
+                "properties": false,
+                "items": false
+              },
+              "required": [
+                "values"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "array"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "min": false,
+                "max": false,
+                "values": false,
+                "unit": false,
+                "properties": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "object"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "min": false,
+                "max": false,
+                "values": false,
+                "unit": false,
+                "max_items": false,
+                "items": false
+              },
+              "required": [
+                "properties"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "unknown"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "properties": {
+                "min": false,
+                "max": false,
+                "values": false,
+                "unit": false,
+                "max_items": false,
+                "properties": false,
+                "items": false
+              }
+            }
+          }
+        ]
       },
       "ParameterDescriptorType": {
         "type": "string",
@@ -1114,7 +2004,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "enum"
+                "enum": [
+                  "enum"
+                ]
               },
               "values": {
                 "type": "array",
@@ -1134,7 +2026,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "enum"
+                "enum": [
+                  "enum"
+                ]
               },
               "values": {
                 "type": "array",
@@ -1154,7 +2048,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "enum"
+                "enum": [
+                  "enum"
+                ]
               },
               "values": {
                 "type": "array",
@@ -1174,7 +2070,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "integer"
+                "enum": [
+                  "integer"
+                ]
               },
               "min": {
                 "type": "integer",
@@ -1200,7 +2098,9 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "properties": {
               "type": {
                 "type": "string",
-                "const": "enum"
+                "enum": [
+                  "enum"
+                ]
               },
               "values": {
                 "type": "array",
@@ -1226,7 +2126,7 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "properties": {
           "value": {
             "type": "integer",
-            "minimum": -9007199254740991,
+            "minimum": 1,
             "maximum": 9007199254740991
           },
           "unit": {
@@ -1242,7 +2142,8 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "type": "object",
         "properties": {
           "value": {
-            "type": "number"
+            "type": "number",
+            "exclusiveMinimum": 0
           },
           "unit": {
             "$ref": "#/components/schemas/DescriptorUnit"
@@ -1257,12 +2158,16 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "type": "object",
         "properties": {
           "country_code": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
           },
           "region": {
             "type": "string"
           }
         },
+        "required": [
+          "country_code"
+        ],
         "additionalProperties": false
       },
       "Compliance": {

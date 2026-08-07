@@ -14,272 +14,63 @@ Returns a list of branches an agent has
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches:
-    get:
-      operationId: list
-      summary: List Agent Branches
-      description: Returns a list of branches an agent has
-      tags:
-        - branches
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: include_archived
-          in: query
-          description: Whether archived branches should be included
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: limit
-          in: query
-          description: How many results at most should be returned
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: include_commit_status
-          in: query
-          description: >-
-            Whether to compute how far each branch has diverged from main
-            (commits_ahead/commits_behind). This walks the version DAG of every
-            branch, so it is slow on agents with long histories and is off by
-            default, leaving those fields null.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:ListResponseAgentBranchSummary'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:ListResponseMeta:
-      type: object
-      properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        page_size:
-          type: integer
-      title: ListResponseMeta
-    type_:BranchProtectionStatus:
-      type: string
-      enum:
-        - writer_perms_required
-        - admin_perms_required
-      default: writer_perms_required
-      title: BranchProtectionStatus
-    type_:ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    type_:ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    type_:ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      title: ResourceAccessInfoAccessSource
-    type_:ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          $ref: >-
-            #/components/schemas/type_:ResourceAccessInfoAnonymousAccessLevelOverride
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          $ref: '#/components/schemas/type_:ResourceAccessInfoAccessSource'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    type_:AgentBranchSummary:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        agent_id:
-          type: string
-        description:
-          type: string
-        created_at:
-          type: integer
-        last_committed_at:
-          type: integer
-        is_archived:
-          type: boolean
-        protection_status:
-          $ref: '#/components/schemas/type_:BranchProtectionStatus'
-        access_info:
-          $ref: '#/components/schemas/type_:ResourceAccessInfo'
-          description: Access information for the branch
-        current_live_percentage:
-          type: number
-          format: double
-          default: 0
-          description: Percentage of traffic live on the branch
-        parent_branch_id:
-          type: string
-          description: ID of the parent branch
-        draft_exists:
-          type: boolean
-          default: false
-          description: Whether a draft exists for the branch
-        calls_7d:
-          type: integer
-          default: 0
-          description: Number of calls in the last 7 days
-        commits_ahead:
-          type: integer
-          description: >-
-            Number of commits on this branch not yet on main, relative to their
-            common ancestor. Null if it could not be computed (e.g. no common
-            ancestor, or the branch history exceeds the comparison budget).
-        commits_behind:
-          type: integer
-          description: >-
-            Number of commits on main not yet incorporated into this branch,
-            relative to their common ancestor. Null if it could not be computed
-            (e.g. no common ancestor, or the branch history exceeds the
-            comparison budget).
-        merged_into_branch_id:
-          type: string
-          description: ID of the branch this branch's tip version was merged into, if any
-      required:
-        - id
-        - name
-        - agent_id
-        - description
-        - created_at
-        - last_committed_at
-        - is_archived
-      title: AgentBranchSummary
-    type_:ListResponseAgentBranchSummary:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/type_:ListResponseMeta'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentBranchSummary'
-      required:
-        - results
-      title: ListResponseAgentBranchSummary
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+
+### Query parameters
+
+- `include_archived` (boolean, optional, default: false) — Whether archived branches should be included
+- `limit` (integer, optional, default: 100) — How many results at most should be returned
+- `include_commit_status` (boolean, optional, default: false) — Whether to compute how far each branch has diverged from main (commits_ahead/commits_behind). This walks the version DAG of every branch, so it is slow on agents with long histories and is off by default, leaving those fields null.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `results` (list of object, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `agent_id` (string, required)
+  - `description` (string, required)
+  - `created_at` (integer, required)
+  - `last_committed_at` (integer, required)
+  - `is_archived` (boolean, required)
+  - `protection_status` (enum, optional, default: writer_perms_required)
+    - Allowed values: `writer_perms_required`, `admin_perms_required`
+  - `access_info` (object, optional) — Access information for the branch
+    - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+    - `creator_name` (string, required) — Name of the agent's creator
+    - `creator_email` (string, required) — Email of the agent's creator
+    - `role` (enum, required) — The role of the user making the request
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `anonymous_access_level_override` (enum, optional) — The access level for anonymous users. If None, the resource is not shared publicly.
+      - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+    - `access_source` (enum, optional) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+      - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+  - `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
+  - `parent_branch_id` (string, optional) — ID of the parent branch
+  - `draft_exists` (boolean, optional, default: false) — Whether a draft exists for the branch
+  - `calls_7d` (integer, optional, default: 0) — Number of calls in the last 7 days
+  - `commits_ahead` (integer, optional) — Number of commits on this branch not yet on main, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
+  - `commits_behind` (integer, optional) — Number of commits on main not yet incorporated into this branch, relative to their common ancestor. Null if it could not be computed (e.g. no common ancestor, or the branch history exceeds the comparison budget).
+  - `merged_into_branch_id` (string, optional) — ID of the branch this branch's tip version was merged into, if any
+- `meta` (object, optional)
+  - `total` (integer, optional)
+  - `page` (integer, optional)
+  - `page_size` (integer, optional)
 
 ## Examples
 

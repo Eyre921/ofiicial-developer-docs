@@ -8,16 +8,14 @@ path: docs/help-center/account
 
 # Account
 
-#### [General](account/general)
+#### [General](/docs/help-center/account/general)
 
 Common account questions about credits, subscriptions, authentication, and account management
 
-{" "}
-
-#### [Cancellation & Refunds](account/cancellation-refunds)
+#### [Cancellation & Refunds](/docs/help-center/account/cancellation-refunds)
 
 Questions about cancelling subscriptions, requesting refunds, and refund policies
 
-#### [Payment & Billing](account/payment-billing)
+#### [Payment & Billing](/docs/help-center/account/payment-billing)
 
 Questions about payment methods, billing information, invoices, and subscription plans

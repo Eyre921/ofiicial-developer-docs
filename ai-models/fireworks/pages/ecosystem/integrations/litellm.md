@@ -11,7 +11,7 @@ Use [LiteLLM Proxy](https://docs.litellm.ai/docs/proxy/quick_start) as a shared 
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* LiteLLM installed (`pip install litellm`)
+* LiteLLM v1.95.0 installed (`pip install "litellm[proxy]==1.95.0"`)
 
 ## Configure Fireworks models
 

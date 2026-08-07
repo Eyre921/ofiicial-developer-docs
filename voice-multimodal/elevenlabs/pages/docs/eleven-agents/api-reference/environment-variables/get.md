@@ -14,158 +14,35 @@ Get a specific environment variable by ID
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/environment-variables/{env_var_id}:
-    get:
-      operationId: get
-      summary: Get Environment Variable
-      description: Get a specific environment variable by ID
-      tags:
-        - environmentVariables
-      parameters:
-        - name: env_var_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:EnvironmentVariableResponse'
-        '404':
-          description: Environment variable not found
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:EnvironmentVariableResponseType:
-      type: string
-      enum:
-        - string
-        - secret
-        - auth_connection
-      title: EnvironmentVariableResponseType
-    type_:EnvironmentVariableSecretValue:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValue
-    type_:EnvironmentVariableAuthConnectionValue:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValue
-    type_:EnvironmentVariableResponseValues:
-      oneOf:
-        - type: object
-          additionalProperties:
-            type: string
-        - type: object
-          additionalProperties:
-            $ref: '#/components/schemas/type_:EnvironmentVariableSecretValue'
-        - type: object
-          additionalProperties:
-            $ref: '#/components/schemas/type_:EnvironmentVariableAuthConnectionValue'
-      title: EnvironmentVariableResponseValues
-    type_:EnvironmentVariableResponse:
-      type: object
-      properties:
-        label:
-          type: string
-        created_at_unix_secs:
-          type: integer
-        updated_at_unix_secs:
-          type: integer
-        created_by_user_id:
-          type: string
-        type:
-          $ref: '#/components/schemas/type_:EnvironmentVariableResponseType'
-        id:
-          type: string
-        workspace_id:
-          type: string
-        values:
-          $ref: '#/components/schemas/type_:EnvironmentVariableResponseValues'
-      required:
-        - label
-        - created_at_unix_secs
-        - updated_at_unix_secs
-        - type
-        - id
-        - workspace_id
-        - values
-      title: EnvironmentVariableResponse
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `env_var_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `label` (string, required)
+- `created_at_unix_secs` (integer, required)
+- `updated_at_unix_secs` (integer, required)
+- `type` (enum, required)
+  - Allowed values: `string`, `secret`, `auth_connection`
+- `id` (string, required)
+- `workspace_id` (string, required)
+- `values` (map from string to string or map from string to object or map from string to object, required)
+- `created_by_user_id` (string, optional)
 
 ## Examples
 

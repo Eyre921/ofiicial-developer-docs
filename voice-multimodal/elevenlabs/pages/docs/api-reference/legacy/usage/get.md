@@ -14,221 +14,39 @@ GET https://api.elevenlabs.io/v1/usage/character-stats
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/usage/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/usage/character-stats:
-    get:
-      operationId: get
-      summary: Get character usage metrics
-      description: >-
-        (Deprecated) This endpoint is deprecated. Use
-        /v1/workspace/analytics/query/usage-by-product-over-time instead, which
-        exposes the bucket size as `interval_seconds` (an integer in seconds)
-        rather than `aggregation_interval`. Returns the usage metrics for the
-        current user or the entire workspace they are part of. The response
-        provides a time axis based on the specified aggregation interval
-        (default: day), with usage values for each interval along that axis.
-        Usage is broken down by the selected breakdown type. For example,
-        breakdown type "voice" will return the usage of each voice for each
-        interval along the time axis.
-      tags:
-        - usage
-      parameters:
-        - name: start_unix
-          in: query
-          description: >-
-            UTC Unix timestamp for the start of the usage window, in
-            milliseconds. To include the first day of the window, the timestamp
-            should be at 00:00:00 of that day.
-          required: true
-          schema:
-            type: integer
-        - name: end_unix
-          in: query
-          description: >-
-            UTC Unix timestamp for the end of the usage window, in milliseconds.
-            To include the last day of the window, the timestamp should be at
-            23:59:59 of that day.
-          required: true
-          schema:
-            type: integer
-        - name: include_workspace_metrics
-          in: query
-          description: Whether or not to include the statistics of the entire workspace.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: breakdown_type
-          in: query
-          description: >-
-            How to break down the information. Cannot be "user" if
-            include_workspace_metrics is False.
-          required: false
-          schema:
-            $ref: '#/components/schemas/BreakdownTypes'
-        - name: aggregation_interval
-          in: query
-          description: >-
-            How to aggregate usage data over time. Can be "hour", "day", "week",
-            "month", or "cumulative".
-          required: false
-          schema:
-            $ref: '#/components/schemas/UsageAggregationInterval'
-        - name: aggregation_bucket_size
-          in: query
-          description: >-
-            Aggregation bucket size in seconds. Overrides the aggregation
-            interval.
-          required: false
-          schema:
-            type:
-              - integer
-              - 'null'
-        - name: metric
-          in: query
-          description: Which metric to aggregate.
-          required: false
-          schema:
-            $ref: '#/components/schemas/MetricType'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsageCharactersResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    BreakdownTypes:
-      type: string
-      enum:
-        - none
-        - voice
-        - voice_multiplier
-        - user
-        - groups
-        - api_keys
-        - all_api_keys
-        - product_type
-        - model
-        - resource
-        - request_queue
-        - region
-        - subresource_id
-        - reporting_workspace_id
-        - has_api_key
-        - request_source
-      description: >-
-        How to break down the information. Cannot be "user" or "api_key" if
-        include_workspace_metrics is False.
-      title: BreakdownTypes
-    UsageAggregationInterval:
-      type: string
-      enum:
-        - hour
-        - day
-        - week
-        - month
-        - cumulative
-      description: The time interval over which to aggregate the usage data.
-      title: UsageAggregationInterval
-    MetricType:
-      type: string
-      enum:
-        - credits
-        - tts_characters
-        - minutes_used
-        - request_count
-        - ttfb_avg
-        - ttfb_p95
-        - fiat_units_spent
-        - concurrency
-        - concurrency_average
-      title: MetricType
-    UsageCharactersResponseModel:
-      type: object
-      properties:
-        time:
-          type: array
-          items:
-            type: integer
-          description: The time axis with unix timestamps for each day.
-        usage:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: number
-              format: double
-          description: The usage of each breakdown type along the time axis.
-      required:
-        - time
-        - usage
-      title: UsageCharactersResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `start_unix` (integer, required) — UTC Unix timestamp for the start of the usage window, in milliseconds. To include the first day of the window, the timestamp should be at 00:00:00 of that day.
+- `end_unix` (integer, required) — UTC Unix timestamp for the end of the usage window, in milliseconds. To include the last day of the window, the timestamp should be at 23:59:59 of that day.
+- `include_workspace_metrics` (boolean, optional, default: false) — Whether or not to include the statistics of the entire workspace.
+- `breakdown_type` (enum, optional) — How to break down the information. Cannot be "user" if include_workspace_metrics is False.
+  - Allowed values: `none`, `voice`, `voice_multiplier`, `user`, `groups`, `api_keys`, `all_api_keys`, `product_type`, `model`, `resource`, `request_queue`, `region`, `subresource_id`, `reporting_workspace_id`, `has_api_key`, `request_source`
+- `aggregation_interval` (enum, optional) — How to aggregate usage data over time. Can be "hour", "day", "week", "month", or "cumulative".
+  - Allowed values: `hour`, `day`, `week`, `month`, `cumulative`
+- `aggregation_bucket_size` (integer, optional, nullable) — Aggregation bucket size in seconds. Overrides the aggregation interval.
+- `metric` (enum, optional) — Which metric to aggregate.
+  - Allowed values: `credits`, `tts_characters`, `minutes_used`, `request_count`, `ttfb_avg`, `ttfb_p95`, `fiat_units_spent`, `concurrency`, `concurrency_average`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `time` (list of integer, required) — The time axis with unix timestamps for each day.
+- `usage` (map from string to list of double, required) — The usage of each breakdown type along the time axis.
 
 ## Examples
-
-
 
 **Response**
 

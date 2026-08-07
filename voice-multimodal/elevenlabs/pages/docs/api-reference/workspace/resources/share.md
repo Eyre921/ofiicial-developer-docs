@@ -15,208 +15,39 @@ Grants a role (one of 'admin', 'editor', 'commenter', or 'viewer') on a workspac
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/resources/share
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/resources/{resource_id}/share:
-    post:
-      operationId: share
-      summary: Share Workspace Resource
-      description: >-
-        Grants a role (one of 'admin', 'editor', 'commenter', or 'viewer') on a
-        workspace resource to a user, group, or workspace (service account) API
-        key. This overrides any existing role the target has on the resource. To
-        target a user or service account, pass only the user email; the user
-        must be in your workspace. To target a group, pass only the group id. To
-        target a workspace (service account) API key, pass the api key id; the
-        resource will be shared with the service account associated with that
-        key. You must have admin access to the resource to share it.
-      tags:
-        - resources
-      parameters:
-        - name: resource_id
-          in: path
-          description: The ID of the target resource.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Share_workspace_resource_v1_workspace_resources__resource_id__share_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    BodyShareWorkspaceResourceV1WorkspaceResourcesResourceIdSharePostRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        Role to grant to the target: one of 'admin', 'editor', 'commenter', or
-        'viewer'.
-      title: BodyShareWorkspaceResourceV1WorkspaceResourcesResourceIdSharePostRole
-    WorkspaceResourceType:
-      type: string
-      enum:
-        - voice
-        - voice_collection
-        - pronunciation_dictionary
-        - dubbing
-        - project
-        - convai_agents
-        - convai_knowledge_base_documents
-        - convai_tools
-        - convai_settings
-        - convai_secrets
-        - workspace_auth_connections
-        - convai_phone_numbers
-        - convai_mcp_servers
-        - convai_api_integration_connections
-        - convai_api_integration_trigger_connections
-        - convai_batch_calls
-        - convai_agent_response_tests
-        - convai_test_suite_invocations
-        - convai_crawl_jobs
-        - convai_crawl_tasks
-        - convai_kb_external_sync_jobs
-        - convai_whatsapp_accounts
-        - convai_agent_versions
-        - convai_agent_branches
-        - convai_agent_versions_deployments
-        - convai_memory_entries
-        - convai_coaching_proposals
-        - convai_templates
-        - dashboard
-        - dashboard_configuration
-        - convai_agent_drafts
-        - resource_locators
-        - assets
-        - content_generations
-        - content_templates
-        - songs
-        - transcription_tasks
-        - avatars
-        - avatar_video_generations
-        - resource_collection
-        - studio_projects
-        - convai_analysis_items
-      description: >-
-        Resource types that can be shared in the workspace. The name always need
-        to match the collection names
-      title: WorkspaceResourceType
-    Body_Share_workspace_resource_v1_workspace_resources__resource_id__share_post:
-      type: object
-      properties:
-        role:
-          $ref: >-
-            #/components/schemas/BodyShareWorkspaceResourceV1WorkspaceResourcesResourceIdSharePostRole
-          description: >-
-            Role to grant to the target: one of 'admin', 'editor', 'commenter',
-            or 'viewer'.
-        resource_type:
-          $ref: '#/components/schemas/WorkspaceResourceType'
-          description: Resource type of the target resource.
-        user_email:
-          type:
-            - string
-            - 'null'
-          description: The email of the user or service account.
-        group_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The ID of the target group. Use 'default' to set the resource's
-            baseline role — every workspace member receives this role unless
-            they hold a higher one through a direct user grant, group
-            membership, or workspace (service account) API key.
-        workspace_api_key_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The ID of the target workspace (service account) API key. This is
-            not the API key string itself that you pass in the header for
-            authentication — it is the key's ID, which workspace admins can find
-            under Developers → Service Accounts.
-      required:
-        - role
-        - resource_type
-      title: >-
-        Body_Share_workspace_resource_v1_workspace_resources__resource_id__share_post
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `resource_id` (string, required) — The ID of the target resource.
+
+### Body (application/json)
+
+- `role` (enum, required) — Role to grant to the target: one of 'admin', 'editor', 'commenter', or 'viewer'.
+  - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+- `resource_type` (enum, required) — Resource type of the target resource.
+  - Allowed values: `voice`, `voice_collection`, `pronunciation_dictionary`, `dubbing`, `project`, `convai_agents`, `convai_knowledge_base_documents`, `convai_tools`, `convai_settings`, `convai_secrets`, `workspace_auth_connections`, `convai_phone_numbers`, `convai_mcp_servers`, `convai_api_integration_connections`, `convai_api_integration_trigger_connections`, `convai_batch_calls`, `convai_agent_response_tests`, `convai_test_suite_invocations`, `convai_crawl_jobs`, `convai_crawl_tasks`, `convai_kb_external_sync_jobs`, `convai_whatsapp_accounts`, `convai_agent_versions`, `convai_agent_branches`, `convai_agent_versions_deployments`, `convai_memory_entries`, `convai_coaching_proposals`, `convai_templates`, `dashboard`, `dashboard_configuration`, `convai_agent_drafts`, `resource_locators`, `assets`, `content_generations`, `content_templates`, `songs`, `transcription_tasks`, `avatars`, `avatar_video_generations`, `resource_collection`, `studio_projects`, `convai_analysis_items`
+- `user_email` (string, optional, nullable) — The email of the user or service account.
+- `group_id` (string, optional, nullable) — The ID of the target group. Use 'default' to set the resource's baseline role — every workspace member receives this role unless they hold a higher one through a direct user grant, group membership, or workspace (service account) API key.
+- `workspace_api_key_id` (string, optional, nullable) — The ID of the target workspace (service account) API key. This is not the API key string itself that you pass in the header for authentication — it is the key's ID, which workspace admins can find under Developers → Service Accounts.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `any`
 
 ## Examples
-
-
 
 **Request**
 

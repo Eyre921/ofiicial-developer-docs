@@ -16,224 +16,39 @@ Retrieves the available think models that can be used for AI agent processing
 
 Reference: https://developers.deepgram.com/reference/voice-agent/think-models
 
-## OpenAPI Specification
+## Response
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/agent/settings/think/models:
-    get:
-      operationId: list
-      summary: List Agent Think Models
-      description: >-
-        Retrieves the available think models that can be used for AI agent
-        processing
-      tags:
-        - models
-      responses:
-        '200':
-          description: List of available think models
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentThinkModelsV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://agent.deepgram.com
-    description: Production
-components:
-  schemas:
-    AgentThinkModelsV1ResponseModelsItemsOneOf0Id:
-      type: string
-      enum:
-        - gpt-5
-        - gpt-5-mini
-        - gpt-5-nano
-        - gpt-4.1
-        - gpt-4.1-mini
-        - gpt-4.1-nano
-        - gpt-4o
-        - gpt-4o-mini
-      description: The unique identifier of the OpenAI model
-      title: AgentThinkModelsV1ResponseModelsItemsOneOf0Id
-    AgentThinkModelsV1ResponseModelsItems0:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItemsOneOf0Id'
-          description: The unique identifier of the OpenAI model
-        name:
-          type: string
-          description: The display name of the model
-        provider:
-          description: The provider of the model
-      required:
-        - id
-        - name
-        - provider
-      description: OpenAI models
-      title: AgentThinkModelsV1ResponseModelsItems0
-    AgentThinkModelsV1ResponseModelsItemsOneOf1Id:
-      type: string
-      enum:
-        - claude-3-5-haiku-latest
-        - claude-sonnet-4-20250514
-      description: The unique identifier of the Anthropic model
-      title: AgentThinkModelsV1ResponseModelsItemsOneOf1Id
-    AgentThinkModelsV1ResponseModelsItems1:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItemsOneOf1Id'
-          description: The unique identifier of the Anthropic model
-        name:
-          type: string
-          description: The display name of the model
-        provider:
-          description: The provider of the model
-      required:
-        - id
-        - name
-        - provider
-      description: Anthropic models
-      title: AgentThinkModelsV1ResponseModelsItems1
-    AgentThinkModelsV1ResponseModelsItemsOneOf2Id:
-      type: string
-      enum:
-        - gemini-2.5-flash
-        - gemini-2.0-flash
-        - gemini-2.0-flash-lite
-      description: The unique identifier of the Google model
-      title: AgentThinkModelsV1ResponseModelsItemsOneOf2Id
-    AgentThinkModelsV1ResponseModelsItems2:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItemsOneOf2Id'
-          description: The unique identifier of the Google model
-        name:
-          type: string
-          description: The display name of the model
-        provider:
-          description: The provider of the model
-      required:
-        - id
-        - name
-        - provider
-      description: Google models
-      title: AgentThinkModelsV1ResponseModelsItems2
-    AgentThinkModelsV1ResponseModelsItemsOneOf3Id:
-      type: string
-      enum:
-        - openai/gpt-oss-20b
-      description: The unique identifier of the Groq model
-      title: AgentThinkModelsV1ResponseModelsItemsOneOf3Id
-    AgentThinkModelsV1ResponseModelsItems3:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItemsOneOf3Id'
-          description: The unique identifier of the Groq model
-        name:
-          type: string
-          description: The display name of the model
-        provider:
-          description: The provider of the model
-      required:
-        - id
-        - name
-        - provider
-      description: Groq models
-      title: AgentThinkModelsV1ResponseModelsItems3
-    AgentThinkModelsV1ResponseModelsItems4:
-      type: object
-      properties:
-        id:
-          type: string
-          description: >-
-            The unique identifier of the AWS Bedrock model (any model string
-            accepted for BYO LLMs)
-        name:
-          type: string
-          description: The display name of the model
-        provider:
-          description: The provider of the model
-      required:
-        - id
-        - name
-        - provider
-      description: AWS Bedrock models (custom models accepted)
-      title: AgentThinkModelsV1ResponseModelsItems4
-    AgentThinkModelsV1ResponseModelsItems:
-      oneOf:
-        - $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems0'
-        - $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems1'
-        - $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems2'
-        - $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems3'
-        - $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems4'
-      title: AgentThinkModelsV1ResponseModelsItems
-    AgentThinkModelsV1Response:
-      type: object
-      properties:
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentThinkModelsV1ResponseModelsItems'
-      required:
-        - models
-      title: AgentThinkModelsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
+### 200
 
-```
+List of available think models
+
+- `models` (list of object or object or object or object or object, required)
+  - object
+    - `id` (enum, required) — The unique identifier of the OpenAI model
+      - Allowed values: `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-4o`, `gpt-4o-mini`
+    - `name` (string, required) — The display name of the model
+    - `provider` (any, required) — The provider of the model
+  - object
+    - `id` (enum, required) — The unique identifier of the Anthropic model
+      - Allowed values: `claude-3-5-haiku-latest`, `claude-sonnet-4-20250514`
+    - `name` (string, required) — The display name of the model
+    - `provider` (any, required) — The provider of the model
+  - object
+    - `id` (enum, required) — The unique identifier of the Google model
+      - Allowed values: `gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`
+    - `name` (string, required) — The display name of the model
+    - `provider` (any, required) — The provider of the model
+  - object
+    - `id` (enum, required) — The unique identifier of the Groq model
+      - Allowed values: `openai/gpt-oss-20b`
+    - `name` (string, required) — The display name of the model
+    - `provider` (any, required) — The provider of the model
+  - object
+    - `id` (string, required) — The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)
+    - `name` (string, required) — The display name of the model
+    - `provider` (any, required) — The provider of the model
 
 ## Examples
-
-
 
 **Response**
 

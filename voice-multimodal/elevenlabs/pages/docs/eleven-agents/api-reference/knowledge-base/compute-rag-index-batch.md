@@ -15,202 +15,45 @@ Retrieves and/or creates RAG indexes for multiple knowledge base documents in a 
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/rag-index:
-    post:
-      operationId: get_or_create_rag_indexes
-      summary: Compute Rag Indexes In Batch
-      description: >-
-        Retrieves and/or creates RAG indexes for multiple knowledge base
-        documents in a single request. Maximum 100 items per request.
-      tags:
-        - knowledgeBase
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: >-
-                    #/components/schemas/type_conversationalAi/knowledgeBase:KnowledgeBaseGetOrCreateRagIndexesResponseValue
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                items:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/type_:GetOrCreateRagIndexRequestModel'
-                  description: List of requested RAG indexes. Minimum 1, maximum 100 items.
-              required:
-                - items
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    type_:GetOrCreateRagIndexRequestModel:
-      type: object
-      properties:
-        document_id:
-          type: string
-          description: ID of the knowledgebase document for which to retrieve the index
-        create_if_missing:
-          type: boolean
-          description: Whether to create the RAG index if it does not exist
-        model:
-          $ref: '#/components/schemas/type_:EmbeddingModelEnum'
-          description: Embedding model to use for the RAG index
-      required:
-        - document_id
-        - create_if_missing
-        - model
-      title: GetOrCreateRagIndexRequestModel
-    type_:RagIndexStatus:
-      type: string
-      enum:
-        - new
-        - created
-        - processing
-        - failed
-        - succeeded
-        - rag_limit_exceeded
-        - document_too_small
-        - cannot_index_folder
-      title: RagIndexStatus
-    type_:RagDocumentIndexUsage:
-      type: object
-      properties:
-        used_bytes:
-          type: integer
-      required:
-        - used_bytes
-      title: RagDocumentIndexUsage
-    type_:RagDocumentIndexResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        model:
-          $ref: '#/components/schemas/type_:EmbeddingModelEnum'
-        status:
-          $ref: '#/components/schemas/type_:RagIndexStatus'
-        progress_percentage:
-          type: number
-          format: double
-        document_model_index_usage:
-          $ref: '#/components/schemas/type_:RagDocumentIndexUsage'
-      required:
-        - id
-        - model
-        - status
-        - progress_percentage
-        - document_model_index_usage
-      title: RagDocumentIndexResponseModel
-    type_conversationalAi/knowledgeBase:KnowledgeBaseGetOrCreateRagIndexesResponseValue:
-      oneOf:
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - success
-              description: 'Discriminator value: success'
-            data:
-              $ref: '#/components/schemas/type_:RagDocumentIndexResponseModel'
-          required:
-            - status
-            - data
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - failure
-              description: 'Discriminator value: failure'
-            error_code:
-              type: integer
-            error_status:
-              type: string
-            error_message:
-              type: string
-          required:
-            - status
-            - error_code
-            - error_status
-            - error_message
-      discriminator:
-        propertyName: status
-      title: KnowledgeBaseGetOrCreateRagIndexesResponseValue
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `items` (list of object, required) — List of requested RAG indexes. Minimum 1, maximum 100 items.
+  - `document_id` (string, required) — ID of the knowledgebase document for which to retrieve the index
+  - `create_if_missing` (boolean, required) — Whether to create the RAG index if it does not exist
+  - `model` (enum, required, default: e5_mistral_7b_instruct) — Embedding model to use for the RAG index
+    - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `map from string to object`
+  - `status`: `success`
+    - `data` (object, required)
+      - `id` (string, required)
+      - `model` (enum, required, default: e5_mistral_7b_instruct)
+        - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+      - `status` (enum, required)
+        - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
+      - `progress_percentage` (double, required)
+      - `document_model_index_usage` (object, required)
+        - `used_bytes` (integer, required)
+  - `status`: `failure`
+    - `error_code` (integer, required)
+    - `error_message` (string, required)
+    - `error_status` (string, required)
 
 ## Examples
 

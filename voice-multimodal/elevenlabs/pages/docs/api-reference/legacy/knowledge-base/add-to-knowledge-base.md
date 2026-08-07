@@ -11,150 +11,42 @@ path: docs/api-reference/legacy/knowledge-base/add-to-knowledge-base
 POST https://api.elevenlabs.io/v1/convai/knowledge-base
 Content-Type: multipart/form-data
 
-Upload a file or webpage URL to create a knowledge base document. <br> <Note> After creating the document, update the agent's knowledge base by calling [Update agent](/docs/api-reference/agents/update). </Note>
+Upload a file or webpage URL to create a knowledge base document.   After creating the document, update the agent's knowledge base by calling [Update agent](/docs/api-reference/agents/update).&#x20;
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base:
-    post:
-      operationId: add_to_knowledge_base
-      summary: Add To Knowledge Base
-      description: >-
-        Upload a file or webpage URL to create a knowledge base document. <br>
-        <Note> After creating the document, update the agent's knowledge base by
-        calling [Update agent](/docs/api-reference/agents/update). </Note>
-      tags:
-        - conversationalAi
-      parameters:
-        - name: agent_id
-          in: query
-          required: false
-          schema:
-            type: string
-            default: ''
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddKnowledgeBaseResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                name:
-                  type:
-                    - string
-                    - 'null'
-                  description: A custom, human-readable name for the document.
-                url:
-                  type: string
-                  description: >-
-                    URL to a page of documentation that the agent will have
-                    access to in order to interact with users.
-                file:
-                  type: string
-                  format: binary
-                  description: >-
-                    Documentation that the agent will have access to in order to
-                    interact with users.
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    KnowledgeBaseFolderPathSegmentSummaryResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-        - id
-      title: KnowledgeBaseFolderPathSegmentSummaryResponseModel
-    AddKnowledgeBaseResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        folder_path:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/KnowledgeBaseFolderPathSegmentSummaryResponseModel
-          description: >-
-            The folder path segments leading to this entity, from root to parent
-            folder.
-      required:
-        - id
-        - name
-      title: AddKnowledgeBaseResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_id` (string, optional, default: )
+
+### Body (multipart/form-data)
+
+- `name` (string, optional) — A custom, human-readable name for the document.
+- `url` (string, optional) — URL to a page of documentation that the agent will have access to in order to interact with users.
+- `file` (file, optional) — Documentation that the agent will have access to in order to interact with users.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `name` (string, required)
+- `folder_path` (list of object, optional) — The folder path segments leading to this entity, from root to parent folder.
+  - `id` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

@@ -14,104 +14,30 @@ Returns dub as a streamed MP3 or MP4 file. If this dub has been edited using Dub
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/audio/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/{dubbing_id}/audio/{language_code}:
-    get:
-      operationId: get
-      summary: Get dubbed audio
-      description: >-
-        Returns dub as a streamed MP3 or MP4 file. If this dub has been edited
-        using Dubbing Studio you need to use the resource render endpoint as
-        this endpoint only returns the original automatic dub result.
-      tags:
-        - audio
-      parameters:
-        - name: dubbing_id
-          in: path
-          description: ID of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_code
-          in: path
-          description: ID of the language.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The dubbed audio or video file
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `dubbing_id` (string, required) — ID of the dubbing project.
+- `language_code` (string, required) — ID of the language.
+
+## Response
+
+### 200
+
+The dubbed audio or video file
+
+- File download.
 
 ## Examples
-
-
 
 **SDK Code**
 

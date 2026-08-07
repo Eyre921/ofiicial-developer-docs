@@ -14,256 +14,51 @@ Returns summaries for the specified agents.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/get-summaries
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/summaries:
-    get:
-      operationId: get
-      summary: Get Agent Summaries
-      description: Returns summaries for the specified agents.
-      tags:
-        - summaries
-      parameters:
-        - name: agent_ids
-          in: query
-          description: List of agent IDs to fetch summaries for
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: >-
-                    #/components/schemas/V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    AgentSummaryResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        name:
-          type: string
-          description: The name of the agent
-        tags:
-          type: array
-          items:
-            type: string
-          description: Agent tags used to categorize the agent
-        created_at_unix_secs:
-          type: integer
-          description: The creation time of the agent in unix seconds
-        access_info:
-          $ref: '#/components/schemas/ResourceAccessInfo'
-          description: The access information of the agent
-        last_call_time_unix_secs:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The time of the most recent call in unix seconds, null if no calls
-            have been made
-        archived:
-          type: boolean
-          default: false
-          description: Whether the agent is archived
-      required:
-        - agent_id
-        - name
-        - tags
-        - created_at_unix_secs
-        - access_info
-      title: AgentSummaryResponseModel
-    V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema:
-      oneOf:
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - success
-              description: 'Discriminator value: success'
-            data:
-              $ref: '#/components/schemas/AgentSummaryResponseModel'
-          required:
-            - status
-            - data
-          description: AgentSummaryBatchSuccessfulResponseModel variant
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - failure
-              description: 'Discriminator value: failure'
-            error_code:
-              type: integer
-            error_status:
-              type: string
-            error_message:
-              type: string
-          required:
-            - status
-            - error_code
-            - error_status
-            - error_message
-          description: BatchFailureResponseModel variant
-      discriminator:
-        propertyName: status
-      title: V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_ids` (list of string, required) — List of agent IDs to fetch summaries for
+
+## Response
+
+### 200
+
+Successful Response
+
+- `map from string to object`
+  - `status`: `success` (AgentSummaryBatchSuccessfulResponseModel)
+    - `data` (object, required)
+      - `agent_id` (string, required) — The ID of the agent
+      - `name` (string, required) — The name of the agent
+      - `tags` (list of string, required) — Agent tags used to categorize the agent
+      - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+      - `access_info` (object, required) — The access information of the agent
+        - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+        - `creator_name` (string, required) — Name of the agent's creator
+        - `creator_email` (string, required) — Email of the agent's creator
+        - `role` (enum, required) — The role of the user making the request
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+          - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+        - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+          - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+      - `last_call_time_unix_secs` (integer, optional, nullable) — The time of the most recent call in unix seconds, null if no calls have been made
+      - `archived` (boolean, optional, default: false) — Whether the agent is archived
+  - `status`: `failure` (BatchFailureResponseModel)
+    - `error_code` (integer, required)
+    - `error_message` (string, required)
+    - `error_status` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

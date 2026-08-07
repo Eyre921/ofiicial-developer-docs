@@ -15,151 +15,34 @@ Create a voice clone and add it to your Voices
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/ivc/create
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/add:
-    post:
-      operationId: create
-      summary: Create voice clone
-      description: Create a voice clone and add it to your Voices
-      tags:
-        - ivc
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddVoiceIVCResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: >-
-                    The name that identifies this voice. This will be displayed
-                    in the dropdown of the website.
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-                  description: >-
-                    A list of file paths to audio recordings intended for voice
-                    cloning.
-                remove_background_noise:
-                  type: boolean
-                  default: false
-                  description: >-
-                    If set will remove background noise for voice samples using
-                    our audio isolation model. If the samples do not include
-                    background noise, it can make the quality worse.
-                description:
-                  type:
-                    - string
-                    - 'null'
-                  description: A description of the voice.
-                labels:
-                  oneOf:
-                    - $ref: >-
-                        #/components/schemas/V1VoicesAddPostRequestBodyContentMultipartFormDataSchemaLabels
-                    - type: 'null'
-                  description: >-
-                    Labels for the voice. Keys can be language, accent, gender,
-                    or age.
-              required:
-                - name
-                - files
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1VoicesAddPostRequestBodyContentMultipartFormDataSchemaLabels:
-      oneOf:
-        - type: object
-          additionalProperties:
-            type: string
-        - type: string
-      description: Labels for the voice. Keys can be language, accent, gender, or age.
-      title: V1VoicesAddPostRequestBodyContentMultipartFormDataSchemaLabels
-    AddVoiceIVCResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the newly created voice.
-        requires_verification:
-          type: boolean
-          description: Whether the voice requires verification
-      required:
-        - voice_id
-        - requires_verification
-      title: AddVoiceIVCResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (multipart/form-data)
+
+- `name` (string, required) — The name that identifies this voice. This will be displayed in the dropdown of the website.
+- `files` (files, required) — A list of file paths to audio recordings intended for voice cloning.
+- `remove_background_noise` (boolean, optional) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
+- `description` (string, optional) — A description of the voice.
+- `labels` (map from string to string or string, optional) — Labels for the voice. Keys can be language, accent, gender, or age.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voice_id` (string, required) — The ID of the newly created voice.
+- `requires_verification` (boolean, required) — Whether the voice requires verification
 
 ## Examples
-
-
 
 **Request**
 

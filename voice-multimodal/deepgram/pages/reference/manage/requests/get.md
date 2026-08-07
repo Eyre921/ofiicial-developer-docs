@@ -16,157 +16,35 @@ Retrieves a specific request for a specific project
 
 Reference: https://developers.deepgram.com/reference/manage/requests/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/requests/{request_id}:
-    get:
-      operationId: get
-      summary: Get a Project Request
-      description: Retrieves a specific request for a specific project
-      tags:
-        - requests
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: request_id
-          in: path
-          description: The unique identifier of the request
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A specific request for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetProjectRequestV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ProjectRequestResponseResponse:
-      type: object
-      properties: {}
-      description: The response of the request
-      title: ProjectRequestResponseResponse
-    ProjectRequestResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-          description: The unique identifier of the request
-        project_uuid:
-          type: string
-          description: The unique identifier of the project
-        created:
-          type: string
-          format: date-time
-          description: The date and time the request was created
-        path:
-          type: string
-          description: The API path of the request
-        api_key_id:
-          type: string
-          description: The unique identifier of the API key
-        response:
-          $ref: '#/components/schemas/ProjectRequestResponseResponse'
-          description: The response of the request
-        code:
-          type: number
-          format: double
-          description: The response code of the request
-        deployment:
-          type: string
-          description: The deployment type
-        callback:
-          type: string
-          description: The callback URL for the request
-      description: A single request
-      title: ProjectRequestResponse
-    GetProjectRequestV1Response:
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/ProjectRequestResponse'
-      title: GetProjectRequestV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+- `request_id` (string, required) — The unique identifier of the request
+
+## Response
+
+### 200
+
+A specific request for a specific project
+
+- `request` (object, optional) — A single request
+  - `request_id` (string, optional) — The unique identifier of the request
+  - `project_uuid` (string, optional) — The unique identifier of the project
+  - `created` (string, optional) — The date and time the request was created
+  - `path` (string, optional) — The API path of the request
+  - `api_key_id` (string, optional) — The unique identifier of the API key
+  - `response` (object, optional) — The response of the request
+  - `code` (double, optional) — The response code of the request
+  - `deployment` (string, optional) — The deployment type
+  - `callback` (string, optional) — The callback URL for the request
 
 ## Examples
-
-
 
 **Response**
 
@@ -179,26 +57,26 @@ components:
     "path": "/v1/listen?",
     "api_key_id": "b1e2c3d4-5678-90ab-cdef-1234567890ab",
     "response": {
-      "code": 200,
-      "completed": "2024-01-15T09:48:21.000Z",
-      "deployment": "hosted:us",
       "details": {
-        "channels": 1,
-        "config": {},
+        "usd": 0.0075,
         "duration": 30,
-        "features": [],
+        "total_audio": 30,
+        "channels": 1,
+        "streams": 1,
+        "tier": "base",
         "metadata": {},
-        "method": "sync",
         "models": [
           "1a2b3c4d-5e6f-4a8b-9c0d-1e2f3a4b5c6d"
         ],
-        "streams": 1,
+        "method": "sync",
         "tags": [],
-        "tier": "base",
-        "total_audio": 30,
-        "usd": 0.0075
+        "features": [],
+        "config": {}
       },
-      "token_details": []
+      "token_details": [],
+      "code": 200,
+      "completed": "2024-01-15T09:48:21.000Z",
+      "deployment": "hosted:us"
     },
     "callback": null
   }

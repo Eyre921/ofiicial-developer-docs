@@ -15,114 +15,29 @@ Set the workspace-wide Third-Party Disabling policy. When set, it forces, for ev
 
 Reference: https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspaces/api-keys/third-party-disabling:
-    post:
-      operationId: set_third_party_disabling_policy
-      summary: Set Workspace Third-Party Disabling Policy
-      description: >-
-        Set the workspace-wide Third-Party Disabling policy. When set, it
-        forces, for every API key in the workspace, whether the holder of a key
-        (potentially a third party who found it) may disable it via the
-        self-disable endpoint or when it leaks publicly — overriding each key's
-        own setting. Pass `true` to allow it for all keys, `false` to forbid it
-        for all keys, or `null` to clear the override so per-key values and the
-        plan default apply again. Workspace admins only.
-      tags:
-        - workspace
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Set_workspace_Third_Party_Disabling_policy_v1_workspaces_api_keys_third_party_disabling_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Set_workspace_Third_Party_Disabling_policy_v1_workspaces_api_keys_third_party_disabling_post:
-      type: object
-      properties:
-        third_party_disable_allowed:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            `true` forces every key in the workspace to be disable-able by its
-            holder; `false` forbids it for every key; `null` clears the override
-            (per-key values and the plan default apply).
-      title: >-
-        Body_Set_workspace_Third_Party_Disabling_policy_v1_workspaces_api_keys_third_party_disabling_post
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `third_party_disable_allowed` (boolean, optional, nullable) — `true` forces every key in the workspace to be disable-able by its holder; `false` forbids it for every key; `null` clears the override (per-key values and the plan default apply).
+
+## Response
+
+### 200
+
+Successful Response
+
+- `any`
 
 ## Examples
-
-
 
 **Request**
 

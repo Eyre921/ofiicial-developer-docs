@@ -14,274 +14,35 @@ Get paginated list of resources that depend on a specific secret, filtered by re
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/secrets/{secret_id}/dependencies/{resource_type}:
-    get:
-      operationId: get_dependencies
-      summary: Get Secret Dependencies By Type
-      description: >-
-        Get paginated list of resources that depend on a specific secret,
-        filtered by resource type.
-      tags:
-        - secrets
-      parameters:
-        - name: secret_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: resource_type
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/type_:SecretDependencyResourceType'
-        - name: page_size
-          in: query
-          description: How many dependency items to return per page.
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetSecretDependenciesResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:SecretDependencyResourceType:
-      type: string
-      enum:
-        - tools
-        - agents
-        - phone_numbers
-      title: SecretDependencyResourceType
-    type_:DependentAvailableToolIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableToolIdentifierAccessLevel
-    type_:GetSecretDependenciesResponseModelDependenciesZeroItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/type_:DependentAvailableToolIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            id:
-              type: string
-          required:
-            - type
-            - id
-      discriminator:
-        propertyName: type
-      title: GetSecretDependenciesResponseModelDependenciesZeroItem
-    type_:DependentAvailableAgentIdentifierAccessLevel:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      title: DependentAvailableAgentIdentifierAccessLevel
-    type_:GetSecretDependenciesResponseModelDependenciesOneItem:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - available
-              description: 'Discriminator value: available'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-            name:
-              type: string
-            created_at_unix_secs:
-              type: integer
-            access_level:
-              $ref: >-
-                #/components/schemas/type_:DependentAvailableAgentIdentifierAccessLevel
-          required:
-            - type
-            - id
-            - name
-            - created_at_unix_secs
-            - access_level
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unknown
-              description: 'Discriminator value: unknown'
-            referenced_resource_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                If the agent is a transitive dependent, contains IDs of the
-                resources that the agent depends on directly.
-            id:
-              type: string
-          required:
-            - type
-            - id
-      discriminator:
-        propertyName: type
-      title: GetSecretDependenciesResponseModelDependenciesOneItem
-    type_:TelephonyProvider:
-      type: string
-      enum:
-        - twilio
-        - sip_trunk
-        - exotel
-      title: TelephonyProvider
-    type_:DependentPhoneNumberIdentifier:
-      type: object
-      properties:
-        phone_number_id:
-          type: string
-        phone_number:
-          type: string
-        label:
-          type: string
-        provider:
-          $ref: '#/components/schemas/type_:TelephonyProvider'
-      required:
-        - phone_number_id
-        - phone_number
-        - label
-        - provider
-      title: DependentPhoneNumberIdentifier
-    type_:GetSecretDependenciesResponseModelDependencies:
-      oneOf:
-        - type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:GetSecretDependenciesResponseModelDependenciesZeroItem
-        - type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:GetSecretDependenciesResponseModelDependenciesOneItem
-        - type: array
-          items:
-            $ref: '#/components/schemas/type_:DependentPhoneNumberIdentifier'
-      title: GetSecretDependenciesResponseModelDependencies
-    type_:GetSecretDependenciesResponseModel:
-      type: object
-      properties:
-        dependencies:
-          $ref: >-
-            #/components/schemas/type_:GetSecretDependenciesResponseModelDependencies
-        next_cursor:
-          type: string
-          description: Cursor for fetching the next page of dependencies
-      required:
-        - dependencies
-      title: GetSecretDependenciesResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `secret_id` (string, required)
+- `resource_type` (enum, required)
+  - Allowed values: `tools`, `agents`, `phone_numbers`
+
+### Query parameters
+
+- `page_size` (integer, optional, default: 20) — How many dependency items to return per page.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `dependencies` (list of object or list of object or list of object, required)
+- `next_cursor` (string, optional) — Cursor for fetching the next page of dependencies
 
 ## Examples
 

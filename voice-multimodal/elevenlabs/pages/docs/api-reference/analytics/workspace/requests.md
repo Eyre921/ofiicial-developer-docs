@@ -15,254 +15,44 @@ Returns a list of API requests. Supports filtering by time range, column filters
 
 Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/requests
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/analytics/requests:
-    post:
-      operationId: get
-      summary: List Api Requests
-      description: >-
-        Returns a list of API requests. Supports filtering by time range, column
-        filters, and search terms. At least one of start_time or end_time must
-        be provided. An optional sort parameter controls timestamp ordering.
-        Results are ordered by timestamp. Descending if end_time is used,
-        ascending if start_time is used. The response is a tabular structure
-        with columns, column_types, column_units, and rows.
-      tags:
-        - requests
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceAnalyticsQueryResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_List_API_requests_v1_workspace_analytics_requests_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    BodyListApiRequestsV1WorkspaceAnalyticsRequestsPostSort:
-      type: string
-      enum:
-        - asc
-        - desc
-      description: >-
-        Optional timestamp sort direction. If omitted, defaults to desc when
-        end_time is provided, otherwise asc.
-      title: BodyListApiRequestsV1WorkspaceAnalyticsRequestsPostSort
-    ColumnFilterOperation:
-      type: string
-      enum:
-        - in
-        - not_in
-        - le
-        - ge
-        - lt
-        - gt
-        - eq
-        - neq
-      title: ColumnFilterOperation
-    ColumnFilterValuesItems:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: string
-          format: date-time
-        - type: boolean
-      title: ColumnFilterValuesItems
-    ColumnFilter:
-      type: object
-      properties:
-        column:
-          type: string
-        operation:
-          $ref: '#/components/schemas/ColumnFilterOperation'
-        values:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ColumnFilterValuesItems'
-              - type: 'null'
-      required:
-        - column
-        - operation
-        - values
-      title: ColumnFilter
-    Body_List_API_requests_v1_workspace_analytics_requests_post:
-      type: object
-      properties:
-        start_time:
-          type:
-            - integer
-            - 'null'
-          description: Start of the time range as a Unix timestamp in milliseconds.
-        end_time:
-          type:
-            - integer
-            - 'null'
-          description: End of the time range as a Unix timestamp in milliseconds.
-        limit:
-          type: integer
-          default: 100
-        sort:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/BodyListApiRequestsV1WorkspaceAnalyticsRequestsPostSort
-            - type: 'null'
-          description: >-
-            Optional timestamp sort direction. If omitted, defaults to desc when
-            end_time is provided, otherwise asc.
-        filters:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/ColumnFilter'
-        search:
-          type:
-            - string
-            - 'null'
-      title: Body_List_API_requests_v1_workspace_analytics_requests_post
-    WorkspaceAnalyticsQueryResponseModelColumnTypesItems:
-      type: string
-      enum:
-        - String
-        - Float
-        - DateTime
-        - Int
-        - Bool
-        - JSON
-        - Map
-        - Array
-      title: WorkspaceAnalyticsQueryResponseModelColumnTypesItems
-    WorkspaceAnalyticsQueryResponseModelRowsItemsItems:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-        - type: string
-          format: date-time
-      title: WorkspaceAnalyticsQueryResponseModelRowsItemsItems
-    ColumnUnit:
-      type: string
-      enum:
-        - ms
-        - s
-        - min
-        - duration
-        - credits
-        - usd
-        - eur
-        - inr
-        - pln
-        - ratio
-        - rating
-      title: ColumnUnit
-    WorkspaceAnalyticsQueryResponseModel:
-      type: object
-      properties:
-        columns:
-          type: array
-          items:
-            type: string
-        column_types:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/WorkspaceAnalyticsQueryResponseModelColumnTypesItems
-        rows:
-          type: array
-          items:
-            type: array
-            items:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/WorkspaceAnalyticsQueryResponseModelRowsItemsItems
-                - type: 'null'
-        column_units:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ColumnUnit'
-              - type: 'null'
-      required:
-        - columns
-        - column_types
-        - rows
-        - column_units
-      title: WorkspaceAnalyticsQueryResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `start_time` (integer, optional, nullable) — Start of the time range as a Unix timestamp in milliseconds.
+- `end_time` (integer, optional, nullable) — End of the time range as a Unix timestamp in milliseconds.
+- `limit` (integer, optional, default: 100)
+- `sort` (enum, optional, nullable) — Optional timestamp sort direction. If omitted, defaults to desc when end_time is provided, otherwise asc.
+  - Allowed values: `asc`, `desc`
+- `filters` (list of object, optional, nullable)
+  - `column` (string, required)
+  - `operation` (enum, required)
+    - Allowed values: `in`, `not_in`, `le`, `ge`, `lt`, `gt`, `eq`, `neq`
+  - `values` (list of string or integer or double or string or boolean, required)
+- `search` (string, optional, nullable)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `columns` (list of string, required)
+- `column_types` (list of enum, required)
+  - Allowed values: `String`, `Float`, `DateTime`, `Int`, `Bool`, `JSON`, `Map`, `Array`
+- `rows` (list of list of string or integer or double or boolean or string, required)
+- `column_units` (list of enum, required)
+  - Allowed values: `ms`, `s`, `min`, `duration`, `credits`, `usd`, `eur`, `inr`, `pln`, `ratio`, `rating`
 
 ## Examples
-
-
 
 **Request**
 

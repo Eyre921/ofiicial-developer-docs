@@ -14,121 +14,32 @@ Gets an agent test folder by ID, including its folder path.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/get
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agent-testing/folders/{folder_id}:
-    get:
-      operationId: get
-      summary: Get Agent Test Folder By Id
-      description: Gets an agent test folder by ID, including its folder path.
-      tags:
-        - folders
-      parameters:
-        - name: folder_id
-          in: path
-          description: The folder ID.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Folder details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:GetAgentTestFolderResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/type_:HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    type_:AgentTestFolderPathSegmentResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-          default: ''
-      required:
-        - id
-      title: AgentTestFolderPathSegmentResponseModel
-    type_:GetAgentTestFolderResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        folder_path:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:AgentTestFolderPathSegmentResponseModel'
-          description: The path from the root folder to the current folder.
-        children_count:
-          type: integer
-          default: 0
-          description: The number of direct children (tests and subfolders) in this folder
-      required:
-        - id
-        - name
-      title: GetAgentTestFolderResponseModel
-    type_:ValidationErrorLocItem:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItem
-    type_:ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    type_:HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `folder_id` (string, required) — The folder ID.
+
+## Response
+
+### 200
+
+Folder details retrieved successfully
+
+- `id` (string, required)
+- `name` (string, required)
+- `folder_path` (list of object, optional) — The path from the root folder to the current folder.
+  - `id` (string, required)
+  - `name` (string, optional, default: )
+- `children_count` (integer, optional, default: 0) — The number of direct children (tests and subfolders) in this folder
 
 ## Examples
 

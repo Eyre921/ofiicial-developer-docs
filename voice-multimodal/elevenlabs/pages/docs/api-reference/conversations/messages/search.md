@@ -14,214 +14,48 @@ Search conversation transcripts by semantic similarity to surface relevant messa
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/search
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversations/messages/smart-search:
-    get:
-      operationId: search
-      summary: Smart Search Conversation Messages
-      description: >-
-        Search conversation transcripts by semantic similarity to surface
-        relevant messages based on meaning and intent, rather than exact keyword
-        matches
-      tags:
-        - messages
-      parameters:
-        - name: text_query
-          in: query
-          description: The search query text for semantic similarity matching
-          required: true
-          schema:
-            type: string
-        - name: agent_id
-          in: query
-          description: >-
-            Agent id (agent_…) or speech engine external id (seng_), resolved to
-            the same underlying resource.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: Number of results per page. Max 50.
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MessagesSearchResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ListResponseMeta:
-      type: object
-      properties:
-        total:
-          type:
-            - integer
-            - 'null'
-        page:
-          type:
-            - integer
-            - 'null'
-        page_size:
-          type:
-            - integer
-            - 'null'
-      title: ListResponseMeta
-    SearchHighlightSegment:
-      type: object
-      properties:
-        value:
-          type: string
-        is_hit:
-          type: boolean
-      required:
-        - value
-        - is_hit
-      title: SearchHighlightSegment
-    MessagesSearchResult:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-        agent_id:
-          type: string
-        agent_name:
-          type:
-            - string
-            - 'null'
-        transcript_index:
-          type: integer
-        chunk_text:
-          type: string
-        chunk_highlights:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SearchHighlightSegment'
-        score:
-          type: number
-          format: double
-        conversation_start_time_unix_secs:
-          type: integer
-      required:
-        - conversation_id
-        - agent_id
-        - transcript_index
-        - chunk_text
-        - score
-        - conversation_start_time_unix_secs
-      description: >-
-        transcript_index: index of the message in the conversation transcript
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        chunk_text: text of the transcript; transcript messages if very long
-        could have several chunks.
+## Request
 
-        chunk_highlights: chunk_text split into matched/unmatched segments for
-        highlighting.
-            Only populated for keyword/text search, not semantic search.
-        score: similarity score of the message to the search query
-      title: MessagesSearchResult
-    MessagesSearchResponse:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/ListResponseMeta'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessagesSearchResult'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-          description: Cursor for the next page of results
-        has_more:
-          type: boolean
-          description: Whether there are more results available
-      required:
-        - results
-        - has_more
-      title: MessagesSearchResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+### Query parameters
 
-```
+- `text_query` (string, required) — The search query text for semantic similarity matching
+- `agent_id` (string, optional, nullable) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `page_size` (integer, optional, default: 20) — Number of results per page. Max 50.
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `results` (list of object, required)
+  - `conversation_id` (string, required)
+  - `agent_id` (string, required)
+  - `transcript_index` (integer, required)
+  - `chunk_text` (string, required)
+  - `score` (double, required)
+  - `conversation_start_time_unix_secs` (integer, required)
+  - `agent_name` (string, optional, nullable)
+  - `chunk_highlights` (list of object, optional, nullable)
+    - `value` (string, required)
+    - `is_hit` (boolean, required)
+- `has_more` (boolean, required) — Whether there are more results available
+- `meta` (object, optional)
+  - `total` (integer, optional, nullable)
+  - `page` (integer, optional, nullable)
+  - `page_size` (integer, optional, nullable)
+- `next_cursor` (string, optional, nullable) — Cursor for the next page of results
 
 ## Examples
-
-
 
 **Response**
 

@@ -16,175 +16,34 @@ Lists sets of distribution credentials for the specified project
 
 Reference: https://developers.deepgram.com/reference/self-hosted/distribution-credentials/list
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/self-hosted/distribution/credentials:
-    get:
-      operationId: list
-      summary: List Project Self-Hosted Distribution Credentials
-      description: Lists sets of distribution credentials for the specified project
-      tags:
-        - distributionCredentials
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of distribution credentials for a specific project
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ListProjectDistributionCredentialsV1Response
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsMember:
-      type: object
-      properties:
-        member_id:
-          type: string
-          format: uuid
-          description: Unique identifier for the member
-        email:
-          type: string
-          format: email
-          description: Email address of the member
-      required:
-        - member_id
-        - email
-      title: >-
-        ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsMember
-    ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsDistributionCredentials:
-      type: object
-      properties:
-        distribution_credentials_id:
-          type: string
-          format: uuid
-          description: Unique identifier for the distribution credentials
-        provider:
-          type: string
-          description: The provider of the distribution service
-        comment:
-          type: string
-          description: Optional comment about the credentials
-        scopes:
-          type: array
-          items:
-            type: string
-          description: List of permission scopes for the credentials
-        created:
-          type: string
-          format: date-time
-          description: Timestamp when the credentials were created
-      required:
-        - distribution_credentials_id
-        - provider
-        - scopes
-        - created
-      title: >-
-        ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsDistributionCredentials
-    ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItems:
-      type: object
-      properties:
-        member:
-          $ref: >-
-            #/components/schemas/ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsMember
-        distribution_credentials:
-          $ref: >-
-            #/components/schemas/ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemsDistributionCredentials
-      required:
-        - member
-        - distribution_credentials
-      title: ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItems
-    ListProjectDistributionCredentialsV1Response:
-      type: object
-      properties:
-        distribution_credentials:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItems
-          description: Array of distribution credentials with associated member information
-      title: ListProjectDistributionCredentialsV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+## Response
+
+### 200
+
+A list of distribution credentials for a specific project
+
+- `distribution_credentials` (list of object, optional) — Array of distribution credentials with associated member information
+  - `member` (object, required)
+    - `member_id` (string, required) — Unique identifier for the member
+    - `email` (string, required) — Email address of the member
+  - `distribution_credentials` (object, required)
+    - `distribution_credentials_id` (string, required) — Unique identifier for the distribution credentials
+    - `provider` (string, required) — The provider of the distribution service
+    - `scopes` (list of string, required) — List of permission scopes for the credentials
+    - `created` (string, required) — Timestamp when the credentials were created
+    - `comment` (string, optional) — Optional comment about the credentials
 
 ## Examples
-
-
 
 **Response**
 

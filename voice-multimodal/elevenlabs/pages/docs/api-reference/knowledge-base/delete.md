@@ -14,107 +14,33 @@ Delete a document or folder from the knowledge base.
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/{documentation_id}:
-    delete:
-      operationId: delete
-      summary: Delete Knowledge Base Document Or Folder
-      description: Delete a document or folder from the knowledge base.
-      tags:
-        - documents
-      parameters:
-        - name: documentation_id
-          in: path
-          description: >-
-            The id of a document from the knowledge base. This is returned on
-            document addition.
-          required: true
-          schema:
-            type: string
-        - name: force
-          in: query
-          description: >-
-            If set to true, the document or folder will be deleted regardless of
-            whether it is used by any agents and it will be removed from the
-            dependent agents. For non-empty folders, this will also delete all
-            child documents and folders.
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `documentation_id` (string, required) — The id of a document from the knowledge base. This is returned on document addition.
+
+### Query parameters
+
+- `force` (boolean, optional, default: false) — If set to true, the document or folder will be deleted regardless of whether it is used by any agents and it will be removed from the dependent agents. For non-empty folders, this will also delete all child documents and folders.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `any`
 
 ## Examples
-
-
 
 **SDK Code**
 

@@ -15,190 +15,42 @@ Enterprise only. Edit several segments' translations for a language target in on
 
 Reference: https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/batch-update-target-segments
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing/project/{project_id}/language/{language_id}/transcript/segments:
-    patch:
-      operationId: update_segments
-      summary: Update Dubbing Target Transcript Segments
-      description: >-
-        Enterprise only. Edit several segments' translations for a language
-        target in one atomic request.
-      tags:
-        - transcript
-      parameters:
-        - name: project_id
-          in: path
-          description: Identifier of the dubbing project.
-          required: true
-          schema:
-            type: string
-        - name: language_id
-          in: path
-          description: Identifier of the language target.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingBulkTargetSegmentUpdateResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DubbingBulkTargetSegmentUpdateRequest'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DubbingTargetSegmentUpdateRequest:
-      type: object
-      properties:
-        translation:
-          type:
-            - string
-            - 'null'
-          description: New translated text, or null to mark the segment for re-translation.
-      description: >-
-        A partial edit to a target segment. An omitted field is left unchanged;
-        a provided ``null``
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        clears it (see each field for what clearing means).
-      title: DubbingTargetSegmentUpdateRequest
-    DubbingBulkTargetSegmentUpdateRequest:
-      type: object
-      properties:
-        segments:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/DubbingTargetSegmentUpdateRequest'
-          description: Map of segment id to the translation edit to apply to that segment.
-      required:
-        - segments
-      description: >-
-        Edit several target translations at once, applied atomically (all
-        succeed or none do).
-      title: DubbingBulkTargetSegmentUpdateRequest
-    DubbingTargetTranscriptSegment:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Stable identifier of the segment (from the source).
-        speaker_id:
-          type: string
-          description: Identifier of the segment's speaker.
-        start_s:
-          type: number
-          format: double
-          description: Start time of the segment, in seconds.
-        end_s:
-          type: number
-          format: double
-          description: End time of the segment, in seconds.
-        source_text:
-          type: string
-          description: The source-language text of the segment.
-        translation:
-          type:
-            - string
-            - 'null'
-          description: >-
-            The translated text, or null if not translated yet (needs
-            translation).
-      required:
-        - id
-        - speaker_id
-        - start_s
-        - end_s
-        - source_text
-      description: >-
-        One segment of a target transcript: a source segment plus its
-        translation.
-      title: DubbingTargetTranscriptSegment
-    DubbingBulkTargetSegmentUpdateResponse:
-      type: object
-      properties:
-        segments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingTargetTranscriptSegment'
-          description: The edited target segments in their updated state.
-        revision:
-          type: integer
-          description: The target's revision after the edits.
-      required:
-        - segments
-        - revision
-      description: >-
-        The result of a bulk target edit: the updated segments and the new
-        revision.
-      title: DubbingBulkTargetSegmentUpdateResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+## Request
 
-```
+### Path parameters
+
+- `project_id` (string, required) — Identifier of the dubbing project.
+- `language_id` (string, required) — Identifier of the language target.
+
+### Body (application/json)
+
+- `segments` (map from string to object, required) — Map of segment id to the translation edit to apply to that segment.
+  - `translation` (string, optional, nullable) — New translated text, or null to mark the segment for re-translation.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `segments` (list of object, required) — The edited target segments in their updated state.
+  - `id` (string, required) — Stable identifier of the segment (from the source).
+  - `speaker_id` (string, required) — Identifier of the segment's speaker.
+  - `start_s` (double, required) — Start time of the segment, in seconds.
+  - `end_s` (double, required) — End time of the segment, in seconds.
+  - `source_text` (string, required) — The source-language text of the segment.
+  - `translation` (string, optional, nullable) — The translated text, or null if not translated yet (needs translation).
+- `revision` (integer, required) — The target's revision after the edits.
 
 ## Examples
-
-
 
 **Request**
 

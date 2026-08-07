@@ -15,119 +15,29 @@ Invalidates an existing email invitation. The invitation will still show up in t
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/invites/delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/invites:
-    delete:
-      operationId: delete
-      summary: Delete invite
-      description: >-
-        Invalidates an existing email invitation. The invitation will still show
-        up in the inbox it has been delivered to, but activating it to join the
-        workspace won't work. This endpoint may only be called by workspace
-        members with the WORKSPACE_MEMBERS_INVITE permission.
-      tags:
-        - invites
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteWorkspaceInviteResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Delete_existing_invitation_v1_workspace_invites_delete
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Delete_existing_invitation_v1_workspace_invites_delete:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email of the customer
-      required:
-        - email
-      title: Body_Delete_existing_invitation_v1_workspace_invites_delete
-    DeleteWorkspaceInviteResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the workspace invite deletion request. If the request
-            was successful, the status will be 'ok'. Otherwise an error message
-            with status 500 will be returned.
-      required:
-        - status
-      title: DeleteWorkspaceInviteResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `email` (string, required) — The email of the customer
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the workspace invite deletion request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

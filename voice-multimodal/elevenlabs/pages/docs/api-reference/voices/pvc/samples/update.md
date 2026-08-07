@@ -15,160 +15,38 @@ Update a PVC voice sample - apply noise removal, select speaker, change trim tim
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/samples/{sample_id}:
-    post:
-      operationId: update
-      summary: Update Pvc Voice Sample
-      description: >-
-        Update a PVC voice sample - apply noise removal, select speaker, change
-        trim times or file name.
-      tags:
-        - samples
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: sample_id
-          in: path
-          description: Sample ID to be used
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddVoiceResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Update_PVC_voice_sample_v1_voices_pvc__voice_id__samples__sample_id__post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Update_PVC_voice_sample_v1_voices_pvc__voice_id__samples__sample_id__post:
-      type: object
-      properties:
-        remove_background_noise:
-          type: boolean
-          default: false
-          description: >-
-            If set will remove background noise for voice samples using our
-            audio isolation model. If the samples do not include background
-            noise, it can make the quality worse.
-        selected_speaker_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            Speaker IDs to be used for PVC training. Make sure you send all the
-            speaker IDs you want to use for PVC training in one request because
-            the last request will override the previous ones.
-        trim_start_time:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The start time of the audio to be used for PVC training. Time should
-            be in milliseconds
-        trim_end_time:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            The end time of the audio to be used for PVC training. Time should
-            be in milliseconds
-        file_name:
-          type:
-            - string
-            - 'null'
-          description: The name of the audio file to be used for PVC training.
-      title: >-
-        Body_Update_PVC_voice_sample_v1_voices_pvc__voice_id__samples__sample_id__post
-    AddVoiceResponseModel:
-      type: object
-      properties:
-        voice_id:
-          type: string
-          description: The ID of the voice.
-      required:
-        - voice_id
-      title: AddVoiceResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+- `sample_id` (string, required) — Sample ID to be used
+
+### Body (application/json)
+
+- `remove_background_noise` (boolean, optional, default: false) — If set will remove background noise for voice samples using our audio isolation model. If the samples do not include background noise, it can make the quality worse.
+- `selected_speaker_ids` (list of string, optional, nullable) — Speaker IDs to be used for PVC training. Make sure you send all the speaker IDs you want to use for PVC training in one request because the last request will override the previous ones.
+- `trim_start_time` (integer, optional, nullable) — The start time of the audio to be used for PVC training. Time should be in milliseconds
+- `trim_end_time` (integer, optional, nullable) — The end time of the audio to be used for PVC training. Time should be in milliseconds
+- `file_name` (string, optional, nullable) — The name of the audio file to be used for PVC training.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `voice_id` (string, required) — The ID of the voice.
 
 ## Examples
-
-
 
 **Request**
 

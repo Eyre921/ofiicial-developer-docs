@@ -16,198 +16,67 @@ Returns metadata for a specific public model
 
 Reference: https://developers.deepgram.com/reference/manage/models/get
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/models/{model_id}:
-    get:
-      operationId: get
-      summary: Get a specific Model
-      description: Returns metadata for a specific public model
-      tags:
-        - models
-      parameters:
-        - name: model_id
-          in: path
-          description: The specific UUID of the model
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A model object that can be either STT or TTS
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetModelV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    GetModelV1Response0:
-      type: object
-      properties:
-        name:
-          type: string
-        canonical_name:
-          type: string
-        architecture:
-          type: string
-        languages:
-          type: array
-          items:
-            type: string
-        version:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-        batch:
-          type: boolean
-        streaming:
-          type: boolean
-        formatted_output:
-          type: boolean
-      title: GetModelV1Response0
-    GetModelV1ResponseOneOf1Metadata:
-      type: object
-      properties:
-        accent:
-          type: string
-        age:
-          type: string
-        color:
-          type: string
-        image:
-          type: string
-          format: uri
-        sample:
-          type: string
-          format: uri
-        tags:
-          type: array
-          items:
-            type: string
-        use_cases:
-          type: array
-          items:
-            type: string
-      title: GetModelV1ResponseOneOf1Metadata
-    GetModelV1Response1:
-      type: object
-      properties:
-        name:
-          type: string
-        canonical_name:
-          type: string
-        architecture:
-          type: string
-        languages:
-          type: array
-          items:
-            type: string
-        version:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-        metadata:
-          $ref: '#/components/schemas/GetModelV1ResponseOneOf1Metadata'
-      title: GetModelV1Response1
-    GetModelV1Response:
-      oneOf:
-        - $ref: '#/components/schemas/GetModelV1Response0'
-        - $ref: '#/components/schemas/GetModelV1Response1'
-      title: GetModelV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `model_id` (string, required) — The specific UUID of the model
+
+## Response
+
+### 200
+
+A model object that can be either STT or TTS
+
+- `object or object`
+  - object
+    - `name` (string, optional)
+    - `canonical_name` (string, optional)
+    - `architecture` (string, optional)
+    - `languages` (list of string, optional)
+    - `version` (string, optional)
+    - `uuid` (string, optional)
+    - `batch` (boolean, optional)
+    - `streaming` (boolean, optional)
+    - `formatted_output` (boolean, optional)
+  - object
+    - `name` (string, optional)
+    - `canonical_name` (string, optional)
+    - `architecture` (string, optional)
+    - `languages` (list of string, optional)
+    - `version` (string, optional)
+    - `uuid` (string, optional)
+    - `metadata` (object, optional)
+      - `accent` (string, optional)
+      - `age` (string, optional)
+      - `color` (string, optional)
+      - `image` (string, optional)
+      - `sample` (string, optional)
+      - `tags` (list of string, optional)
+      - `use_cases` (list of string, optional)
 
 ## Examples
-
-
 
 **Response**
 
 ```json
 {
-  "architecture": "polaris",
-  "batch": true,
+  "name": "general",
   "canonical_name": "enhanced-general",
-  "formatted_output": false,
+  "architecture": "polaris",
   "languages": [
     "en",
     "en-us"
   ],
-  "name": "general",
-  "streaming": true,
+  "version": "2022-05-18.1",
   "uuid": "c7226e9e-ae1c-4057-ae2a-a71a6b0dc588",
-  "version": "2022-05-18.1"
+  "batch": true,
+  "streaming": true,
+  "formatted_output": false
 }
 ```
 

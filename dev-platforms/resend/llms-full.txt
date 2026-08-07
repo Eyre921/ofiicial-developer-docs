@@ -14832,6 +14832,86 @@ Remove an existing webhook.
 </ResponseExample>
 
 
+# Retrieve Event
+Source: https://resend.com/docs/api-reference/webhooks/get-event
+
+GET /webhooks/:webhook_id/events/:event_id
+Retrieve the details of a single event delivered to a webhook.
+
+## Path Parameters
+
+<ParamField type="string">
+  The Webhook ID.
+</ParamField>
+
+<ParamField type="string">
+  The Webhook Event ID.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `webhook_event`.
+</ParamField>
+
+<ParamField type="string">
+  The event ID.
+</ParamField>
+
+<ParamField type="string">
+  The event type, for example `email.sent`.
+</ParamField>
+
+<ParamField type="string">
+  When the event was created.
+</ParamField>
+
+<ParamField type="string">
+  Delivery status of the event to this webhook: `success`, `failed`,
+  `attempting`, or `pending`.
+</ParamField>
+
+<ParamField type="string | null">
+  When the next delivery attempt is scheduled. `null` once the event reaches
+  `success` or `failed`.
+</ParamField>
+
+<ParamField type="object">
+  The event payload that was sent to your endpoint.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "webhook_event",
+    "id": "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+    "type": "email.sent",
+    "created_at": "2026-08-22T15:28:00.000Z",
+    "status": "attempting",
+    "next_attempt_at": "2026-08-22T15:33:00.000Z",
+    "payload": {
+      "type": "email.sent",
+      "created_at": "2026-08-22T15:28:00.000Z",
+      "data": {
+        "email_id": "571f1f42-1c2d-4b1f-8f8e-8b3b5b3b5b3b",
+        "from": "onboarding@resend.dev",
+        "to": ["delivered@resend.dev"],
+        "subject": "Welcome",
+        "created_at": "2026-08-22T15:27:59.000Z"
+      }
+    }
+  }
+  ```
+</ResponseExample>
+
+
 # Retrieve Webhook
 Source: https://resend.com/docs/api-reference/webhooks/get-webhook
 
@@ -14946,6 +15026,186 @@ Retrieve a single webhook for the authenticated user.
     "endpoint": "https://example.com/handler",
     "events": ["email.sent"],
     "signing_secret": "whsec_xxxxxxxxxx"
+  }
+  ```
+</ResponseExample>
+
+
+# List Attempts
+Source: https://resend.com/docs/api-reference/webhooks/list-event-attempts
+
+GET /webhooks/:webhook_id/events/:event_id/attempts
+Retrieve the delivery attempts for a single webhook event.
+
+## Path Parameters
+
+<ParamField type="string">
+  The Webhook ID.
+</ParamField>
+
+<ParamField type="string">
+  The Webhook Event ID.
+</ParamField>
+
+## Query Parameters
+
+<ParamField type="number">
+  Number of attempts to return. Between `1` and `100`. Defaults to `20`.
+</ParamField>
+
+<ParamField type="string">
+  The attempt ID to fetch the next page after.
+
+  The `before` parameter is not supported for this endpoint.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="boolean">
+  Whether more attempts exist beyond this page.
+</ParamField>
+
+<ParamField type="array">
+  The delivery attempts for this event, most recent first.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The attempt ID.
+    </ParamField>
+
+    <ParamField type="number">
+      The HTTP status code your endpoint returned for this attempt.
+    </ParamField>
+
+    <ParamField type="string">
+      The response body your endpoint returned for this attempt.
+    </ParamField>
+
+    <ParamField type="string">
+      When this attempt was sent.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2/attempts' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "atmpt_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+        "http_status_code": 200,
+        "response": "{\"ok\":true}",
+        "sent_at": "2026-08-22T15:33:12.000Z"
+      },
+      {
+        "id": "atmpt_2ZbUCwvGmIT4mLIN6d3Yz0Ainbd",
+        "http_status_code": 500,
+        "response": "Internal Server Error",
+        "sent_at": "2026-08-22T15:28:05.000Z"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List Events
+Source: https://resend.com/docs/api-reference/webhooks/list-events
+
+GET /webhooks/:webhook_id/events
+Retrieve a list of events delivered to a webhook.
+
+## Path Parameters
+
+<ParamField type="string">
+  The Webhook ID.
+</ParamField>
+
+## Query Parameters
+
+<ParamField type="number">
+  Number of events to return. Between `1` and `100`. Defaults to `20`.
+</ParamField>
+
+<ParamField type="string">
+  The event ID to fetch the next page after.
+
+  The `before` parameter is not supported for this endpoint.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="boolean">
+  Whether more events exist beyond this page.
+</ParamField>
+
+<ParamField type="array">
+  The events delivered to this webhook, most recent first.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The event ID. Use this to [retrieve its details](/docs/api-reference/webhooks/get-event)
+      or [list its attempts](/docs/api-reference/webhooks/list-event-attempts).
+    </ParamField>
+
+    <ParamField type="string">
+      The event type, for example `email.sent`.
+    </ParamField>
+
+    <ParamField type="string">
+      When the event was created.
+    </ParamField>
+
+    <ParamField type="string">
+      Delivery status of the event to this webhook: `success`, `failed`,
+      `attempting`, or `pending`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "msg_1srOrx2ZWZBpBUvZwXKQmoEYga2",
+        "type": "email.sent",
+        "created_at": "2026-08-22T15:28:00.000Z",
+        "status": "success"
+      },
+      {
+        "id": "msg_1srOsB4mXhCqCVwAxYRNnpFZhb3",
+        "type": "email.delivered",
+        "created_at": "2026-08-22T15:27:42.000Z",
+        "status": "failed"
+      }
+    ]
   }
   ```
 </ResponseExample>

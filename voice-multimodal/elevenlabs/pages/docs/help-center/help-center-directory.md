@@ -8,35 +8,35 @@ path: docs/help-center/help-center-directory
 
 # Help Center Directory
 
-#### [Account](/help-center/account)
+#### [Account](/docs/help-center/account)
 
 Account, billing, payment, cancellations, and refunds
 
-#### [Website](/help-center/website)
+#### [Website](/docs/help-center/website)
 
 Website and accessibility
 
-#### [Product](/help-center/product)
+#### [Product](/docs/help-center/product)
 
 Anything about Text to speech, Voice Changer, Projects, Dubbing or any of our other tools and
 features
 
-#### [Technical](/help-center/technical)
+#### [Technical](/docs/help-center/technical)
 
 Anything related to the API and coding
 
-#### [Legal](/help-center/legal)
+#### [Legal](/docs/help-center/legal)
 
 Anything related to legal inquiries
 
-#### [Partnerships](/help-center/partnerships)
+#### [Partnerships](/docs/help-center/partnerships)
 
 Partnerships, voice actors, educational institutions, creators & affiliates
 
-#### [Troubleshooting](/help-center/troubleshooting)
+#### [Troubleshooting](/docs/help-center/troubleshooting)
 
 Common questions and best practices
 
-#### [Other](/help-center/other)
+#### [Other](/docs/help-center/other)
 
 Anything else

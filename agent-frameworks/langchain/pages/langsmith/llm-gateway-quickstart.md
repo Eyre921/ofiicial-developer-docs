@@ -42,10 +42,19 @@ To preserve a provider's native API without format translation, use a [direct pr
 
 [LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview) (including [Deep Agents Code](/oss/deepagents/code/overview)) support the gateway through two convenience environment variables:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
-```
+<CodeGroup>
+  ```bash Bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  export LANGSMITH_GATEWAY="true"
+  export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+  ```
+
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  os.environ["LANGSMITH_GATEWAY"] = "true"
+  os.environ["LANGSMITH_GATEWAY_API_KEY"] = os.environ["LANGSMITH_API_KEY"]
+  ```
+</CodeGroup>
 
 This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`. To use a different gateway (for example, the EU instance), set its URL instead of `true`:
 

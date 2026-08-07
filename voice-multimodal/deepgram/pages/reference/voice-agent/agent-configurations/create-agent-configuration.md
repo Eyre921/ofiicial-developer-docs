@@ -17,168 +17,39 @@ Creates a new reusable agent configuration. The `config` field must be a valid J
 
 Reference: https://developers.deepgram.com/reference/voice-agent/agent-configurations/create-agent-configuration
 
-## OpenAPI Specification
+## Authentication
 
-```yaml
-openapi: 3.1.0
-info:
-  title: Deepgram API Specification
-  version: 1.0.0
-paths:
-  /v1/projects/{project_id}/agents:
-    post:
-      operationId: create
-      summary: Create an Agent Configuration
-      description: >-
-        Creates a new reusable agent configuration. The `config` field must be a
-        valid JSON string representing the `agent` block of a Settings message.
-        The returned `agent_id` can be passed in place of the full `agent`
-        object in future Settings messages.
-      tags:
-        - configurations
-      parameters:
-        - name: project_id
-          in: path
-          description: The unique identifier of the project
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Agent configuration created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateAgentConfigurationV1Response'
-        '400':
-          description: Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      requestBody:
-        description: Agent configuration details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateAgentConfigurationV1Request'
-servers:
-  - url: https://api.deepgram.com
-    description: Base
-components:
-  schemas:
-    CreateAgentConfigurationV1Request:
-      type: object
-      properties:
-        config:
-          type: string
-          description: >-
-            A valid JSON string representing the agent block of a Settings
-            message
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            A map of arbitrary key-value pairs for labeling or organizing the
-            agent configuration
-        api_version:
-          type: integer
-          default: 1
-          description: API version. Defaults to 1
-      required:
-        - config
-      description: Request body for creating an agent configuration
-      title: CreateAgentConfigurationV1Request
-    CreateAgentConfigurationV1ResponseConfig:
-      type: object
-      properties: {}
-      description: The parsed agent configuration object
-      title: CreateAgentConfigurationV1ResponseConfig
-    CreateAgentConfigurationV1Response:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The unique identifier of the newly created agent configuration
-        config:
-          $ref: '#/components/schemas/CreateAgentConfigurationV1ResponseConfig'
-          description: The parsed agent configuration object
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: Metadata associated with the agent configuration
-      required:
-        - agent_id
-        - config
-      title: CreateAgentConfigurationV1Response
-    ErrorResponseTextError:
-      type: string
-      title: ErrorResponseTextError
-    ErrorResponseLegacyError:
-      type: object
-      properties:
-        err_code:
-          type: string
-          description: The error code
-        err_msg:
-          type: string
-          description: The error message
-        request_id:
-          type: string
-          description: The request ID
-      title: ErrorResponseLegacyError
-    ErrorResponseModernError:
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the error
-        message:
-          type: string
-          description: A message about the error
-        details:
-          type: string
-          description: A description of the error
-        request_id:
-          type: string
-          description: The unique identifier of the request
-      title: ErrorResponseModernError
-    ErrorResponse:
-      oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
-      title: ErrorResponse
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        Use `Authorization: Token <API_KEY>`
-        Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
-```
+## Request
+
+### Path parameters
+
+- `project_id` (string, required) — The unique identifier of the project
+
+### Body (application/json)
+
+- `config` (string, required) — A valid JSON string representing the agent block of a Settings message
+- `metadata` (map from string to string, optional) — A map of arbitrary key-value pairs for labeling or organizing the agent configuration
+- `api_version` (integer, optional, default: 1) — API version. Defaults to 1
+
+## Response
+
+### 200
+
+Agent configuration created successfully
+
+- `agent_id` (string, required) — The unique identifier of the newly created agent configuration
+- `config` (object, required) — The parsed agent configuration object
+- `metadata` (map from string to string, optional) — Metadata associated with the agent configuration
 
 ## Examples
-
-
 
 **Request**
 
 ```json
 {
-  "config": "string"
+  "config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"
 }
 ```
 
@@ -186,7 +57,7 @@ components:
 
 ```json
 {
-  "agent_id": "string",
+  "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
   "config": {},
   "metadata": {}
 }
@@ -199,7 +70,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents"
 
-payload = { "config": "string" }
+payload = { "config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}" }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -215,7 +86,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"config":"string"}'
+  body: '{"config":"{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"}'
 };
 
 try {
@@ -241,7 +112,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents"
 
-	payload := strings.NewReader("{\n  \"config\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -271,7 +142,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"config\": \"string\"\n}"
+request.body = "{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -284,7 +155,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"config\": \"string\"\n}")
+  .body("{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}")
   .asString();
 ```
 
@@ -296,7 +167,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents', [
   'body' => '{
-  "config": "string"
+  "config": "{\\"language\\":\\"en-US\\",\\"model\\":\\"general\\",\\"punctuate\\":true,\\"profanity_filter\\":false}"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -314,7 +185,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"config\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -325,7 +196,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = ["config": "string"] as [String : Any]
+let parameters = ["config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

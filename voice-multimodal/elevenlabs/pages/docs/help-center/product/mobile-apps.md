@@ -8,6 +8,6 @@ path: docs/help-center/product/mobile-apps
 
 # Mobile & Apps
 
-#### [ElevenLabs for iOS and Android](/help-center/product/mobile-apps/eleven-labs-for-ios-and-android)
+#### [ElevenLabs for iOS and Android](/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android)
 
 Use ElevenLabs on your mobile device with our iOS and Android apps

@@ -15,143 +15,34 @@ Updates attributes of a workspace member. Apart from the email identifier, all p
 
 Reference: https://elevenlabs.io/docs/api-reference/workspace/members/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/members:
-    post:
-      operationId: update
-      summary: Update member
-      description: >-
-        Updates attributes of a workspace member. Apart from the email
-        identifier, all parameters will remain unchanged unless specified. This
-        endpoint may only be called by workspace administrators.
-      tags:
-        - members
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateWorkspaceMemberResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Update_member_v1_workspace_members_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    SeatType:
-      type: string
-      enum:
-        - workspace_admin
-        - workspace_member
-        - workspace_lite_member
-      description: Seat types for workspace members.
-      title: SeatType
-    Body_Update_member_v1_workspace_members_post:
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email of the target user.
-        is_locked:
-          type:
-            - boolean
-            - 'null'
-          description: Whether to lock or unlock the user account.
-        workspace_role:
-          oneOf:
-            - $ref: '#/components/schemas/SeatType'
-            - type: 'null'
-          description: >-
-            The workspace role of the user. This is deprecated, use
-            `workspace_seat_type` instead.
-        workspace_seat_type:
-          oneOf:
-            - $ref: '#/components/schemas/SeatType'
-            - type: 'null'
-          description: The workspace seat type
-      required:
-        - email
-      title: Body_Update_member_v1_workspace_members_post
-    UpdateWorkspaceMemberResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the workspace member update request. If the request
-            was successful, the status will be 'ok'. Otherwise an error message
-            with status 500 will be returned.
-      required:
-        - status
-      title: UpdateWorkspaceMemberResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `email` (string, required) — Email of the target user.
+- `is_locked` (boolean, optional, nullable) — Whether to lock or unlock the user account.
+- `workspace_seat_type` (enum, optional, nullable) — The workspace seat type
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+- `workspace_role` (enum, optional, nullable, deprecated) — The workspace role of the user. This is deprecated, use `workspace_seat_type` instead.
+  - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the workspace member update request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

@@ -12,13 +12,14 @@ Fireworks operates on a **pre-paid credits** billing system. You purchase credit
 
 * Add a valid payment method and billing address, then purchase credits.
 * Usage across serverless, on-demand deployments, and fine-tuning deducts from your credit balance.
-* If your balance reaches zero and auto top-up is not enabled, usage pauses until you add credits.
-* You can configure auto top-up and a monthly budget cap in the billing dashboard.
+* If your balance reaches zero and Auto Reload is not enabled, usage pauses until you add credits.
+* You can configure Auto Reload to purchase credits when your balance is low.
+* Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
 
 <Note>
   Enterprise accounts do not have the same self-serve limits. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
 </Note>
 
 <Tip>
-  For details on spend limits, budget caps, and quota controls, see our [Account quotas guide](/guides/quotas_usage/account-quotas#view-and-adjust-your-spend-limit).
+  For details on spend limits and quota controls, see our [Account quotas guide](/guides/quotas_usage/account-quotas#view-and-adjust-your-spend-limit).
 </Tip>

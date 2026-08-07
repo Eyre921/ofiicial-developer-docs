@@ -14,6 +14,13 @@ The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/c
   production workloads.
 </Warning>
 
+For the shared serverless pool, use the experimental
+[`async_rl_loop_serverless` sibling](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
+It keeps the rollout and scheduling contract described here but publishes
+session-scoped snapshots instead of hotloading an inference deployment. See
+[Serverless Training](/fine-tuning/training-api/serverless) for lifecycle and
+limits.
+
 ## Responsibilities
 
 | You provide                                                | The recipe owns                                                                    |

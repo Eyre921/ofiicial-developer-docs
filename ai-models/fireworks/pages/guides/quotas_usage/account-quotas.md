@@ -4,11 +4,11 @@ source: https://docs.fireworks.ai/guides/quotas_usage/account-quotas
 path: guides/quotas_usage/account-quotas
 ---
 
-Account-wide request limits, spending tiers, budget controls, and on-demand GPU quotas
+Account-wide request limits, spending tiers, spend limits, and on-demand GPU quotas
 
 <a />
 
-Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, budget controls, on-demand GPU quotas, and account-wide request limits.
+Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, monthly spend limits, on-demand GPU quotas, and account-wide request limits.
 
 For serverless TPM and adaptive limits, see [Serverless rate limits](/serverless/rate-limits).
 
@@ -24,22 +24,22 @@ This shows your rate limits, GPU quotas, spend limits, and usage across serverle
 
 ## Spending tiers
 
-Your account tier determines the maximum budget you can set:
+Your spend tier controls available quotas and capacity. For legacy self-serve postpaid accounts, it also determines the maximum monthly spend limit. Prepaid accounts can set a monthly spend limit independently of tier.
 
-| Tier      | Criteria                                                                 | Max Monthly Budget |
-| --------- | ------------------------------------------------------------------------ | ------------------ |
-| Tier 1    | [Valid payment method and billing profile](https://fireworks.ai/billing) | \$50               |
-| Tier 2    | Spend or add \$50 in credits                                             | \$500              |
-| Tier 3    | Spend or add \$500 in credits                                            | \$5,000            |
-| Tier 4    | Spend or add \$5,000 in credits                                          | \$50,000           |
-| Unlimited | [Contact us](https://fireworks.ai/company/contact-us)                    | Unlimited          |
+| Tier      | Criteria                                                                 | Legacy Postpaid Max Monthly Spend Limit |
+| --------- | ------------------------------------------------------------------------ | --------------------------------------- |
+| Tier 1    | [Valid payment method and billing profile](https://fireworks.ai/billing) | \$50                                    |
+| Tier 2    | Spend or add \$50 in credits                                             | \$500                                   |
+| Tier 3    | Spend or add \$500 in credits                                            | \$5,000                                 |
+| Tier 4    | Spend or add \$5,000 in credits                                          | \$50,000                                |
+| Unlimited | [Contact us](https://fireworks.ai/company/contact-us)                    | Unlimited                               |
 
 <Tip>
   Add prepaid credits to unlock a higher tier. For example, adding \$100 moves you from Tier 1 to Tier 2. Your new tier activates within minutes.
 </Tip>
 
 <Note>
-  These spending tiers control both your maximum monthly budget and the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach.
+  These spending tiers control the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
 
   Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 </Note>
@@ -65,13 +65,11 @@ Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) i
 
 ### Enterprise accounts
 
-Enterprise accounts do not have the same spend limits. If you have an Enterprise account, the spending tiers and budget controls described on this page do not apply to you. For information about Enterprise quotas and resource allocation, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your enterprise account representative.
+Enterprise accounts do not have the same spend limits. If you have an Enterprise account, the spending tiers and spend-limit controls described on this page do not apply to you. For information about Enterprise quotas and resource allocation, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your enterprise account representative.
 
 ## Manage your quotas
 
-<h3>
-  Account-wide request limits
-</h3>
+### Account-wide request limits
 
 All API usage on your account shares a single request-throughput envelope:
 
@@ -82,9 +80,15 @@ All API usage on your account shares a single request-throughput envelope:
 
 The **6,000 RPM** cap applies account-wide—it is **not** a separate serverless-only limit—and it is a **fixed** ceiling, not adaptive. Per-minute request volume above this cap is rejected (for example HTTP 429), regardless of your spending tier.
 
-### Budget control
+### Monthly spend limit
 
-Control your monthly spending with flexible budget limits. Set a limit that fits your needs and adjust it anytime.
+Set a monthly spend limit that fits your needs and adjust it anytime.
+
+For prepaid accounts, the limit tracks the dollar value of your usage regardless of whether credits pay for that usage. Adding credits increases your available balance, but does not raise or reset your monthly spend limit.
+
+Auto Reload is separate from the spend limit. Auto Reload purchases credits when your balance is low; it does not change how much usage your account can accrue during the month.
+
+Contracted postpaid accounts may have different billing terms. Contact your account representative if you have questions about how a postpaid limit is calculated.
 
 ### View and adjust your spend limit
 
@@ -94,24 +98,26 @@ Check your current spend limit:
 firectl quota list
 ```
 
-Set a custom monthly budget:
+Set a custom monthly spend limit:
 
 ```bash theme={null}
 firectl quota update monthly-spend-usd --value <AMOUNT>
 ```
 
-For example, to set a \$200 monthly budget:
+For example, to set a \$200 monthly spend limit:
 
 ```bash theme={null}
 firectl quota update monthly-spend-usd --value 200
 ```
 
-### When you reach your budget
+### Warnings and suspension
 
-When you reach your spending limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. To resume, [add credits](https://fireworks.ai/billing) and/or raise your budget cap.
+By default, Fireworks sends a warning email when usage reaches 80% of your monthly spend limit. You can add other notification amounts from the Billing page.
+
+When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
 <Note>
-  This does not apply to Enterprise accounts. Enterprise accounts do not have the same spend limits and will not be paused due to spending.
+  The self-serve spend-limit behavior described here does not apply to Enterprise accounts. Refer to your contract or contact your account representative for your account's billing and suspension terms.
 </Note>
 
 ### On-demand deployment quotas

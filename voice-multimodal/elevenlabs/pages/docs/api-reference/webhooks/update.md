@@ -15,159 +15,38 @@ Update the specified workspace webhook
 
 Reference: https://elevenlabs.io/docs/api-reference/webhooks/update
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/workspace/webhooks/{webhook_id}:
-    patch:
-      operationId: update
-      summary: Update Workspace Webhook
-      description: Update the specified workspace webhook
-      tags:
-        - webhooks
-      parameters:
-        - name: webhook_id
-          in: path
-          description: The unique ID for the webhook
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PatchWorkspaceWebhookResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Update_workspace_webhook_v1_workspace_webhooks__webhook_id__patch
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    WorkspaceWebhookEventType:
-      type: string
-      enum:
-        - voice_library_removal_notice
-        - speech_to_text
-        - agent_qa
-      title: WorkspaceWebhookEventType
-    Body_Update_workspace_webhook_v1_workspace_webhooks__webhook_id__patch:
-      type: object
-      properties:
-        is_disabled:
-          type: boolean
-          description: Whether to disable or enable the webhook
-        name:
-          type: string
-          description: The display name of the webhook (used for display purposes only).
-        retry_enabled:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether to enable automatic retries for transient failures (5xx,
-            429, timeout)
-        request_headers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            type: string
-          description: >-
-            A list of request headers to include with the webhook delivery
-            (optional)
-        events:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/WorkspaceWebhookEventType'
-          description: >-
-            The complete set of workspace-level events this webhook should be
-            subscribed to. The webhook is added to the events in the list and
-            removed from any not in the list. Omit to leave the current event
-            subscriptions unchanged.
-      required:
-        - is_disabled
-        - name
-      title: Body_Update_workspace_webhook_v1_workspace_webhooks__webhook_id__patch
-    PatchWorkspaceWebhookResponseModel:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the workspace webhook patch request. If the request
-            was successful, the status will be 'ok'. Otherwise an error message
-            with status 500 will be returned.
-      required:
-        - status
-      title: PatchWorkspaceWebhookResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `webhook_id` (string, required) — The unique ID for the webhook
+
+### Body (application/json)
+
+- `is_disabled` (boolean, required) — Whether to disable or enable the webhook
+- `name` (string, required) — The display name of the webhook (used for display purposes only).
+- `retry_enabled` (boolean, optional, nullable) — Whether to enable automatic retries for transient failures (5xx, 429, timeout)
+- `request_headers` (map from string to string, optional, nullable) — A list of request headers to include with the webhook delivery (optional)
+- `events` (list of enum, optional, nullable) — The complete set of workspace-level events this webhook should be subscribed to. The webhook is added to the events in the list and removed from any not in the list. Omit to leave the current event subscriptions unchanged.
+  - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the workspace webhook patch request. If the request was successful, the status will be 'ok'. Otherwise an error message with status 500 will be returned.
 
 ## Examples
-
-
 
 **Request**
 

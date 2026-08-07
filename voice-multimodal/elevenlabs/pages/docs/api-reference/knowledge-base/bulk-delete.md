@@ -15,164 +15,37 @@ Delete multiple documents or folders from the knowledge base. Each id succeeds o
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/bulk-delete:
-    post:
-      operationId: bulk_delete
-      summary: Bulk Delete Knowledge Base Documents
-      description: >-
-        Delete multiple documents or folders from the knowledge base. Each id
-        succeeds or fails independently.
-      tags:
-        - documents
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: >-
-                    #/components/schemas/V1ConvaiKnowledgeBaseBulkDeletePostResponsesContentApplicationJsonSchema
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Bulk_delete_knowledge_base_documents_v1_convai_knowledge_base_bulk_delete_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Bulk_delete_knowledge_base_documents_v1_convai_knowledge_base_bulk_delete_post:
-      type: object
-      properties:
-        document_ids:
-          type: array
-          items:
-            type: string
-          description: The ids of documents or folders from the knowledge base.
-        force:
-          type: boolean
-          default: false
-          description: >-
-            If set to true, documents or folders will be deleted regardless of
-            whether they are used by any agents and will be removed from the
-            dependent agents. For non-empty folders, this will also delete all
-            child documents and folders.
-      required:
-        - document_ids
-      title: >-
-        Body_Bulk_delete_knowledge_base_documents_v1_convai_knowledge_base_bulk_delete_post
-    KnowledgeBaseDeletedResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-        - id
-      title: KnowledgeBaseDeletedResponseModel
-    V1ConvaiKnowledgeBaseBulkDeletePostResponsesContentApplicationJsonSchema:
-      oneOf:
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - success
-              description: 'Discriminator value: success'
-            data:
-              $ref: '#/components/schemas/KnowledgeBaseDeletedResponseModel'
-          required:
-            - status
-            - data
-          description: KnowledgeBaseBulkDeleteSuccessfulResponseModel variant
-        - type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - failure
-              description: 'Discriminator value: failure'
-            error_code:
-              type: integer
-            error_status:
-              type: string
-            error_message:
-              type: string
-          required:
-            - status
-            - error_code
-            - error_status
-            - error_message
-          description: BatchFailureResponseModel variant
-      discriminator:
-        propertyName: status
-      title: V1ConvaiKnowledgeBaseBulkDeletePostResponsesContentApplicationJsonSchema
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `document_ids` (list of string, required) — The ids of documents or folders from the knowledge base.
+- `force` (boolean, optional, default: false) — If set to true, documents or folders will be deleted regardless of whether they are used by any agents and will be removed from the dependent agents. For non-empty folders, this will also delete all child documents and folders.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `map from string to object`
+  - `status`: `success` (KnowledgeBaseBulkDeleteSuccessfulResponseModel)
+    - `data` (object, required)
+      - `id` (string, required)
+  - `status`: `failure` (BatchFailureResponseModel)
+    - `error_code` (integer, required)
+    - `error_message` (string, required)
+    - `error_status` (string, required)
 
 ## Examples
-
-
 
 **Request**
 

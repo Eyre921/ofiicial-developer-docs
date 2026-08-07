@@ -15,179 +15,39 @@ Turn text into sound effects for your videos, voice-overs or video games using t
 
 Reference: https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/sound-generation:
-    post:
-      operationId: convert
-      summary: Create sound effect
-      description: >-
-        Turn text into sound effects for your videos, voice-overs or video games
-        using the most advanced sound effects models in the world.
-      tags:
-        - textToSoundEffects
-      parameters:
-        - name: output_format
-          in: query
-          description: >-
-            Output format of the generated audio. Formatted as
-            codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at
-            32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate
-            requires you to be subscribed to Creator tier or above. PCM with
-            44.1kHz sample rate requires you to be subscribed to Pro tier or
-            above. Note that the μ-law format (sometimes written mu-law, often
-            approximated as u-law) is commonly used for Twilio audio inputs.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AllowedOutputFormats'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The generated sound effect as an MP3 file
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Sound_Generation_v1_sound_generation_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    AllowedOutputFormats:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_24000_48
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_32000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-        - alaw_8000
-        - opus_48000_32
-        - opus_48000_64
-        - opus_48000_96
-        - opus_48000_128
-        - opus_48000_192
-      title: AllowedOutputFormats
-    SFXModelId:
-      type: string
-      enum:
-        - eleven_text_to_sound_v2
-      default: eleven_text_to_sound_v2
-      title: SFXModelId
-    Body_Sound_Generation_v1_sound_generation_post:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text that will get converted into a sound effect.
-        loop:
-          type: boolean
-          default: false
-          description: >-
-            Whether to create a sound effect that loops smoothly. Only available
-            for the 'eleven_text_to_sound_v2 model'.
-        duration_seconds:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            The duration of the sound which will be generated in seconds. Must
-            be at least 0.5 and at most 30. If set to None we will guess the
-            optimal duration using the prompt. Defaults to None.
-        prompt_influence:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0.3
-          description: >-
-            A higher prompt influence makes your generation follow the prompt
-            more closely while also making generations less variable. Must be a
-            value between 0 and 1. Defaults to 0.3.
-        model_id:
-          $ref: '#/components/schemas/SFXModelId'
-          default: eleven_text_to_sound_v2
-          description: The model ID to use for the sound generation.
-      required:
-        - text
-      title: Body_Sound_Generation_v1_sound_generation_post
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `output_format` (enum, optional) — Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
+  - Allowed values: `mp3_22050_32`, `mp3_24000_48`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`, `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_32000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`, `alaw_8000`, `opus_48000_32`, `opus_48000_64`, `opus_48000_96`, `opus_48000_128`, `opus_48000_192`
+
+### Body (application/json)
+
+- `text` (string, required) — The text that will get converted into a sound effect.
+- `loop` (boolean, optional, default: false) — Whether to create a sound effect that loops smoothly. Only available for the 'eleven_text_to_sound_v2 model'.
+- `duration_seconds` (double, optional, nullable) — The duration of the sound which will be generated in seconds. Must be at least 0.5 and at most 30. If set to None we will guess the optimal duration using the prompt. Defaults to None.
+- `prompt_influence` (double, optional, nullable, default: 0.3) — A higher prompt influence makes your generation follow the prompt more closely while also making generations less variable. Must be a value between 0 and 1. Defaults to 0.3.
+- `model_id` (enum, optional, default: eleven_text_to_sound_v2) — The model ID to use for the sound generation.
+  - Allowed values: `eleven_text_to_sound_v2`
+
+## Response
+
+### 200
+
+The generated sound effect as an MP3 file
+
+- File download.
 
 ## Examples
-
-
 
 **Request**
 

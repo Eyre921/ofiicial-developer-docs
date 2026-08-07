@@ -14,118 +14,31 @@ Retrieve the visual waveform of a voice sample.
 
 Reference: https://elevenlabs.io/docs/api-reference/voices/pvc/samples/get-waveform
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/voices/pvc/{voice_id}/samples/{sample_id}/waveform:
-    get:
-      operationId: get
-      summary: Retrieve Voice Sample Visual Waveform
-      description: Retrieve the visual waveform of a voice sample.
-      tags:
-        - waveform
-      parameters:
-        - name: voice_id
-          in: path
-          description: >-
-            Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices
-            to list all the available voices.
-          required: true
-          schema:
-            type: string
-        - name: sample_id
-          in: path
-          description: Sample ID to be used
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoiceSampleVisualWaveformResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    VoiceSampleVisualWaveformResponseModel:
-      type: object
-      properties:
-        sample_id:
-          type: string
-          description: The ID of the sample.
-        visual_waveform:
-          type: array
-          items:
-            type: number
-            format: double
-          description: The visual waveform of the sample, represented as a list of floats.
-      required:
-        - sample_id
-        - visual_waveform
-      title: VoiceSampleVisualWaveformResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `voice_id` (string, required) — Voice ID to be used, you can use https://api.elevenlabs.io/v1/voices to list all the available voices.
+- `sample_id` (string, required) — Sample ID to be used
+
+## Response
+
+### 200
+
+Successful Response
+
+- `sample_id` (string, required) — The ID of the sample.
+- `visual_waveform` (list of double, required) — The visual waveform of the sample, represented as a list of floats.
 
 ## Examples
-
-
 
 **Response**
 

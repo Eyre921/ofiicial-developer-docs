@@ -14,137 +14,33 @@ Get a WebRTC session token for real-time communication.
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/get-webrtc-token
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/conversation/token:
-    get:
-      operationId: get_webrtc_token
-      summary: >-
-        Get a webrtc token to start a conversation with an agent that requires
-        authorization
-      description: Get a WebRTC session token for real-time communication.
-      tags:
-        - conversations
-      parameters:
-        - name: agent_id
-          in: query
-          description: >-
-            Agent id (agent_…) or speech engine external id (seng_), resolved to
-            the same underlying resource.
-          required: true
-          schema:
-            type: string
-        - name: participant_name
-          in: query
-          description: >-
-            Optional custom participant name. If not provided, user ID will be
-            used
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: branch_id
-          in: query
-          description: The ID of the branch to use
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: environment
-          in: query
-          description: >-
-            The environment to use for resolving environment variables (e.g.
-            'production', 'staging'). Defaults to 'production'.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    TokenResponseModel:
-      type: object
-      properties:
-        token:
-          type: string
-        conversation_id:
-          type: string
-      required:
-        - token
-        - conversation_id
-      title: TokenResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `agent_id` (string, required) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
+- `participant_name` (string, optional, nullable) — Optional custom participant name. If not provided, user ID will be used
+- `branch_id` (string, optional, nullable) — The ID of the branch to use
+- `environment` (string, optional, nullable) — The environment to use for resolving environment variables (e.g. 'production', 'staging'). Defaults to 'production'.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `token` (string, required)
+- `conversation_id` (string, required)
 
 ## Examples
-
-
 
 **Response**
 

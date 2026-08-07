@@ -15,159 +15,41 @@ In case the document is not RAG indexed, it triggers rag indexing task, otherwis
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/{documentation_id}/rag-index:
-    post:
-      operationId: compute_rag_index
-      summary: Compute Rag Index.
-      description: >-
-        In case the document is not RAG indexed, it triggers rag indexing task,
-        otherwise it just returns the current status.
-      tags:
-        - document
-      parameters:
-        - name: documentation_id
-          in: path
-          description: >-
-            The id of a document from the knowledge base. This is returned on
-            document addition.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RAGDocumentIndexResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RAGIndexRequestModel'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    RAGIndexRequestModel:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/EmbeddingModelEnum'
-      required:
-        - model
-      title: RAGIndexRequestModel
-    RAGIndexStatus:
-      type: string
-      enum:
-        - new
-        - created
-        - processing
-        - failed
-        - succeeded
-        - rag_limit_exceeded
-        - document_too_small
-        - cannot_index_folder
-      title: RAGIndexStatus
-    RAGDocumentIndexUsage:
-      type: object
-      properties:
-        used_bytes:
-          type: integer
-      required:
-        - used_bytes
-      title: RAGDocumentIndexUsage
-    RAGDocumentIndexResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        model:
-          $ref: '#/components/schemas/EmbeddingModelEnum'
-        status:
-          $ref: '#/components/schemas/RAGIndexStatus'
-        progress_percentage:
-          type: number
-          format: double
-        document_model_index_usage:
-          $ref: '#/components/schemas/RAGDocumentIndexUsage'
-      required:
-        - id
-        - model
-        - status
-        - progress_percentage
-        - document_model_index_usage
-      title: RAGDocumentIndexResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `documentation_id` (string, required) — The id of a document from the knowledge base. This is returned on document addition.
+
+### Body (application/json)
+
+- `model` (enum, required, default: e5_mistral_7b_instruct)
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `model` (enum, required, default: e5_mistral_7b_instruct)
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+- `status` (enum, required)
+  - Allowed values: `new`, `created`, `processing`, `failed`, `succeeded`, `rag_limit_exceeded`, `document_too_small`, `cannot_index_folder`
+- `progress_percentage` (double, required)
+- `document_model_index_usage` (object, required)
+  - `used_bytes` (integer, required)
 
 ## Examples
-
-
 
 **Request**
 

@@ -14,131 +14,37 @@ Get details about a specific documentation part used by RAG.
 
 Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunk
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/knowledge-base/{documentation_id}/chunk/{chunk_id}:
-    get:
-      operationId: get
-      summary: Get Documentation Chunk From Knowledge Base
-      description: Get details about a specific documentation part used by RAG.
-      tags:
-        - chunk
-      parameters:
-        - name: documentation_id
-          in: path
-          description: >-
-            The id of a document from the knowledge base. This is returned on
-            document addition.
-          required: true
-          schema:
-            type: string
-        - name: chunk_id
-          in: path
-          description: The id of a document RAG chunk from the knowledge base.
-          required: true
-          schema:
-            type: string
-        - name: embedding_model
-          in: query
-          description: The embedding model used to retrieve the chunk.
-          required: false
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/EmbeddingModelEnum'
-              - type: 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KnowledgeBaseDocumentChunkResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    KnowledgeBaseDocumentChunkResponseModel:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        content:
-          type: string
-      required:
-        - id
-        - name
-        - content
-      title: KnowledgeBaseDocumentChunkResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `documentation_id` (string, required) — The id of a document from the knowledge base. This is returned on document addition.
+- `chunk_id` (string, required) — The id of a document RAG chunk from the knowledge base.
+
+### Query parameters
+
+- `embedding_model` (enum, optional, nullable, default: e5_mistral_7b_instruct) — The embedding model used to retrieve the chunk.
+  - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `id` (string, required)
+- `name` (string, required)
+- `content` (string, required)
 
 ## Examples
-
-
 
 **Response**
 

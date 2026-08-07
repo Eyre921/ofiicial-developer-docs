@@ -14,319 +14,58 @@ List the dubs you have access to.
 
 Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/dubbing:
-    get:
-      operationId: list
-      summary: List Dubs
-      description: List the dubs you have access to.
-      tags:
-        - dubbing
-      parameters:
-        - name: cursor
-          in: query
-          description: Used for fetching next page. Cursor is returned in the response.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: >-
-            How many dubs to return at maximum. Can not exceed 200, defaults to
-            100.
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: dubbing_status
-          in: query
-          description: What state the dub is currently in.
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1DubbingGetParametersDubbingStatus'
-        - name: dubbing_statuses
-          in: query
-          description: Filter by dubbing status.
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              $ref: >-
-                #/components/schemas/V1DubbingGetParametersDubbingStatusesSchemaItems
-        - name: dubbing_models
-          in: query
-          description: Filter by dubbing model generation.
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              $ref: >-
-                #/components/schemas/V1DubbingGetParametersDubbingModelsSchemaItems
-        - name: target_language_codes
-          in: query
-          description: Filter by target language code.
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              type: string
-        - name: creation_sources
-          in: query
-          description: Filter by dubbing creation source.
-          required: false
-          schema:
-            type:
-              - array
-              - 'null'
-            items:
-              $ref: >-
-                #/components/schemas/V1DubbingGetParametersCreationSourcesSchemaItems
-        - name: filter_by_creator
-          in: query
-          description: >-
-            Filters who created the resources being listed, whether it was the
-            user running the request or someone else that shared the resource
-            with them.
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1DubbingGetParametersFilterByCreator'
-            default: all
-        - name: order_by
-          in: query
-          description: The field to use for ordering results from this query.
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1DubbingGetParametersOrderBy'
-            default: created_at
-        - name: order_direction
-          in: query
-          description: The order direction to use for results from this query.
-          required: false
-          schema:
-            $ref: '#/components/schemas/V1DubbingGetParametersOrderDirection'
-            default: DESCENDING
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DubbingMetadataPageResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1DubbingGetParametersDubbingStatus:
-      type: string
-      enum:
-        - dubbing
-        - dubbed
-        - failed
-      description: What state the dub is currently in.
-      title: V1DubbingGetParametersDubbingStatus
-    V1DubbingGetParametersDubbingStatusesSchemaItems:
-      type: string
-      enum:
-        - queued
-        - preparing
-        - dubbing
-        - dubbed
-        - failed
-      title: V1DubbingGetParametersDubbingStatusesSchemaItems
-    V1DubbingGetParametersDubbingModelsSchemaItems:
-      type: string
-      enum:
-        - dubbing_v1
-        - dubbing_v2
-      title: V1DubbingGetParametersDubbingModelsSchemaItems
-    V1DubbingGetParametersCreationSourcesSchemaItems:
-      type: string
-      enum:
-        - flow_node
-        - dubbing_ui
-        - dubbing_api
-      title: V1DubbingGetParametersCreationSourcesSchemaItems
-    V1DubbingGetParametersFilterByCreator:
-      type: string
-      enum:
-        - personal
-        - others
-        - all
-      default: all
-      description: >-
-        Filters who created the resources being listed, whether it was the user
-        running the request or someone else that shared the resource with them.
-      title: V1DubbingGetParametersFilterByCreator
-    V1DubbingGetParametersOrderBy:
-      type: string
-      enum:
-        - created_at
-        - name
-      default: created_at
-      description: The field to use for ordering results from this query.
-      title: V1DubbingGetParametersOrderBy
-    V1DubbingGetParametersOrderDirection:
-      type: string
-      enum:
-        - DESCENDING
-        - ASCENDING
-      default: DESCENDING
-      description: The order direction to use for results from this query.
-      title: V1DubbingGetParametersOrderDirection
-    DubbingMediaMetadata:
-      type: object
-      properties:
-        content_type:
-          type: string
-          description: The content type of the media.
-        duration:
-          type: number
-          format: double
-          description: The duration of the media in seconds.
-      required:
-        - content_type
-        - duration
-      title: DubbingMediaMetadata
-    DubbingMetadataResponse:
-      type: object
-      properties:
-        dubbing_id:
-          type: string
-          description: The ID of the dubbing project.
-        name:
-          type: string
-          description: The name of the dubbing project.
-        status:
-          type: string
-          description: The state this dub is in.
-        source_language:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Once dubbing has completed, the ISO-639-1 code of the original
-            media's source language.
-        target_languages:
-          type: array
-          items:
-            type: string
-          description: The ISO-639-1 code of the languages this media has been dubbed into.
-        editable:
-          type: boolean
-          default: false
-          description: Whether this dubbing project is editable in Dubbing Studio.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp this dub was created.
-        media_metadata:
-          oneOf:
-            - $ref: '#/components/schemas/DubbingMediaMetadata'
-            - type: 'null'
-          description: >-
-            Metadata, such as the length in seconds and content type, of the
-            dubbed content.
-        error:
-          type:
-            - string
-            - 'null'
-          description: Error message indicate, if this dub has failed, what happened.
-      required:
-        - dubbing_id
-        - name
-        - status
-        - source_language
-        - target_languages
-        - created_at
-      title: DubbingMetadataResponse
-    DubbingMetadataPageResponseModel:
-      type: object
-      properties:
-        dubs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DubbingMetadataResponse'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-        has_more:
-          type: boolean
-      required:
-        - dubs
-        - next_cursor
-        - has_more
-      title: DubbingMetadataPageResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+- `page_size` (integer, optional, default: 100) — How many dubs to return at maximum. Can not exceed 200, defaults to 100.
+- `dubbing_status` (enum, optional) — What state the dub is currently in.
+  - Allowed values: `dubbing`, `dubbed`, `failed`
+- `dubbing_statuses` (list of enum, optional, nullable) — Filter by dubbing status.
+  - Allowed values: `queued`, `preparing`, `dubbing`, `dubbed`, `failed`
+- `dubbing_models` (list of enum, optional, nullable) — Filter by dubbing model generation.
+  - Allowed values: `dubbing_v1`, `dubbing_v2`
+- `target_language_codes` (list of string, optional, nullable) — Filter by target language code.
+- `creation_sources` (list of enum, optional, nullable) — Filter by dubbing creation source.
+  - Allowed values: `flow_node`, `dubbing_ui`, `dubbing_api`
+- `filter_by_creator` (enum, optional, default: all) — Filters who created the resources being listed, whether it was the user running the request or someone else that shared the resource with them.
+  - Allowed values: `personal`, `others`, `all`
+- `order_by` (enum, optional, default: created_at) — The field to use for ordering results from this query.
+  - Allowed values: `created_at`, `name`
+- `order_direction` (enum, optional, default: DESCENDING) — The order direction to use for results from this query.
+  - Allowed values: `DESCENDING`, `ASCENDING`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `dubs` (list of object, required)
+  - `dubbing_id` (string, required) — The ID of the dubbing project.
+  - `name` (string, required) — The name of the dubbing project.
+  - `status` (string, required) — The state this dub is in.
+  - `source_language` (string, required, nullable) — Once dubbing has completed, the ISO-639-1 code of the original media's source language.
+  - `target_languages` (list of string, required) — The ISO-639-1 code of the languages this media has been dubbed into.
+  - `created_at` (string, required) — Timestamp this dub was created.
+  - `editable` (boolean, optional, default: false) — Whether this dubbing project is editable in Dubbing Studio.
+  - `media_metadata` (object, optional, nullable) — Metadata, such as the length in seconds and content type, of the dubbed content.
+    - `content_type` (string, required) — The content type of the media.
+    - `duration` (double, required) — The duration of the media in seconds.
+  - `error` (string, optional, nullable) — Error message indicate, if this dub has failed, what happened.
+- `next_cursor` (string, required, nullable)
+- `has_more` (boolean, required)
 
 ## Examples
-
-
 
 **Response**
 

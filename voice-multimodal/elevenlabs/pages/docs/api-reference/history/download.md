@@ -15,134 +15,30 @@ Download one or more history items. If one history item ID is provided, we will 
 
 Reference: https://elevenlabs.io/docs/api-reference/history/download
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/history/download:
-    post:
-      operationId: download
-      summary: Download history items
-      description: >-
-        Download one or more history items. If one history item ID is provided,
-        we will return a single audio file. If more than one history item IDs
-        are provided, we will provide the history items packed into a .zip file.
-      tags:
-        - history
-      parameters:
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >-
-            The requested audio file, or a zip file containing multiple audio
-            files when multiple history items are requested.
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/Download_speech_history_itemsRequestBadRequestError
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/Body_Download_history_items_v1_history_download_post
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    Body_Download_history_items_v1_history_download_post:
-      type: object
-      properties:
-        history_item_ids:
-          type: array
-          items:
-            type: string
-          description: >-
-            A list of history items to download, you can get IDs of history
-            items and other metadata using the GET
-            https://api.elevenlabs.io/v1/history endpoint.
-        output_format:
-          type:
-            - string
-            - 'null'
-          description: Output format to transcode the audio file, can be wav or default.
-      required:
-        - history_item_ids
-      title: Body_Download_history_items_v1_history_download_post
-    Download_speech_history_itemsRequestBadRequestError:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-      title: Download_speech_history_itemsRequestBadRequestError
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Body (application/json)
+
+- `history_item_ids` (list of string, required) — A list of history items to download, you can get IDs of history items and other metadata using the GET https://api.elevenlabs.io/v1/history endpoint.
+- `output_format` (string, optional, nullable) — Output format to transcode the audio file, can be wav or default.
+
+## Response
+
+### 200
+
+The requested audio file, or a zip file containing multiple audio files when multiple history items are requested.
+
+- File download.
 
 ## Examples
-
-
 
 **Request**
 

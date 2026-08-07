@@ -14,109 +14,29 @@ Delete a history item by its ID
 
 Reference: https://elevenlabs.io/docs/api-reference/history/delete
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/history/{history_item_id}:
-    delete:
-      operationId: delete
-      summary: Delete history item
-      description: Delete a history item by its ID
-      tags:
-        - history
-      parameters:
-        - name: history_item_id
-          in: path
-          description: >-
-            ID of the history item to be used. You can use the [Get generated
-            items](/docs/api-reference/history/list) endpoint to retrieve a list
-            of history items.
-          required: true
-          schema:
-            type: string
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteHistoryItemResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    DeleteHistoryItemResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The status of the deletion request. If the request was successful,
-            the status will be 'ok'. Otherwise an error message with http code
-            500 will be returned.
-      required:
-        - status
-      title: DeleteHistoryItemResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Path parameters
+
+- `history_item_id` (string, required) — ID of the history item to be used. You can use the [Get generated items](/docs/api-reference/history/list) endpoint to retrieve a list of history items.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `status` (string, required) — The status of the deletion request. If the request was successful, the status will be 'ok'. Otherwise an error message with http code 500 will be returned.
 
 ## Examples
-
-
 
 **Response**
 

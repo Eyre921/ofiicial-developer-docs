@@ -14,9195 +14,1550 @@ Returns the result of merging the source branch into the target branch without p
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/branches/preview-merge
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview:
-    get:
-      operationId: preview_merge
-      summary: Preview Merged Configuration
-      description: >-
-        Returns the result of merging the source branch into the target branch
-        without performing the merge. Useful for showing an accurate diff before
-        confirming.
-      tags:
-        - branches
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: source_branch_id
-          in: path
-          description: Unique identifier for the source branch to merge from.
-          required: true
-          schema:
-            type: string
-        - name: target_branch_id
-          in: query
-          description: The ID of the target branch to merge into.
-          required: true
-          schema:
-            type: string
-        - name: force
-          in: query
-          description: >-
-            When true, source branch changes always win conflicts regardless of
-            timestamps
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MergePreviewResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ASRQuality:
-      type: string
-      enum:
-        - high
-      default: high
-      title: ASRQuality
-    ASRProvider:
-      type: string
-      enum:
-        - elevenlabs
-        - scribe_realtime
-      default: scribe_realtime
-      title: ASRProvider
-    ASRInputFormat:
-      type: string
-      enum:
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-      default: pcm_16000
-      title: ASRInputFormat
-    ASRConversationalConfig:
-      type: object
-      properties:
-        quality:
-          $ref: '#/components/schemas/ASRQuality'
-          default: high
-          description: The quality of the transcription
-        provider:
-          $ref: '#/components/schemas/ASRProvider'
-          default: scribe_realtime
-          description: The provider of the transcription service
-        user_input_audio_format:
-          $ref: '#/components/schemas/ASRInputFormat'
-          default: pcm_16000
-          description: The format of the audio to be transcribed
-        keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfig
-    TurnEagerness:
-      type: string
-      enum:
-        - patient
-        - normal
-        - eager
-      default: normal
-      description: >-
-        Agent's eagerness to respond. Higher values make agent wait for higher
-        turn probability.
-      title: TurnEagerness
-    SpellingPatience:
-      type: string
-      enum:
-        - auto
-        - 'off'
-      default: auto
-      description: >-
-        Controls if the agent should be more patient when user is spelling
-        numbers and named entities.
-      title: SpellingPatience
-    TurnModel:
-      type: string
-      enum:
-        - turn_v2
-        - turn_v3
-      default: turn_v3
-      description: Version of the turn detection model to use.
-      title: TurnModel
-    SoftTimeoutConfig:
-      type: object
-      properties:
-        timeout_seconds:
-          type: number
-          format: double
-          default: -1
-          description: >-
-            Time in seconds before showing the predefined message while waiting
-            for LLM response. Set to -1 to disable.
-        message:
-          type: string
-          default: Hhmmmm...yeah.
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-        additional_soft_timeout_messages:
-          type: array
-          items:
-            type: string
-          description: >-
-            Extra static filler messages for subsequent soft timeouts in the
-            same LLM generation. The first timeout uses `message`. If fewer
-            messages are configured than `max_soft_timeouts_per_generation`, the
-            last configured message is repeated; otherwise a built-in filler is
-            used.
-        use_llm_generated_message:
-          type: boolean
-          default: false
-          description: >-
-            If enabled, the soft timeout message will be generated dynamically
-            instead of using the static message.
-        randomize_fillers:
-          type: boolean
-          default: false
-          description: >-
-            If enabled, shuffle the order of static soft timeout messages once
-            at the start of each turn. Only applies when
-            use_llm_generated_message is false.
-        max_soft_timeouts_per_generation:
-          type: integer
-          default: 1
-          description: >-
-            Maximum filler messages while waiting for a single LLM response.
-            Fires every timeout_seconds until the LLM streams content or this
-            limit is reached.
-        llm_generated_message_prompt_override:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Custom prompt for generating the soft timeout filler message when
-            use_llm_generated_message is enabled. Recent conversation context is
-            provided as a separate user message. If not set, the default prompt
-            will be used. Supports dynamic variables (e.g., {{system__time}},
-            {{custom_variable}}).
-      description: >-
-        Configuration for soft timeout functionality during LLM response
-        generation.
-      title: SoftTimeoutConfig
-    TurnConfig:
-      type: object
-      properties:
-        turn_timeout:
-          type: number
-          format: double
-          default: 7
-          description: Maximum wait time for the user's reply before re-engaging the user
-        initial_wait_time:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            How long the agent will wait for the user to start the conversation
-            if the first message is empty. If not set, uses the regular
-            turn_timeout.
-        silence_end_call_timeout:
-          type: number
-          format: double
-          default: -1
-          description: >-
-            Maximum wait time since the user last spoke before terminating the
-            call
-        turn_eagerness:
-          $ref: '#/components/schemas/TurnEagerness'
-          default: normal
-          description: >-
-            Controls how eager the agent is to respond. Low = less eager (waits
-            longer), Standard = default eagerness, High = more eager (responds
-            sooner)
-        spelling_patience:
-          $ref: '#/components/schemas/SpellingPatience'
-          default: auto
-          description: >-
-            Controls if the agent should be more patient when user is spelling
-            numbers and named entities. Auto = model based, Off = never wait
-            extra
-        speculative_turn:
-          type: boolean
-          default: false
-          description: >-
-            When enabled, starts generating LLM responses during silence before
-            full turn confidence is reached, reducing perceived latency. May
-            increase LLM costs.
-        retranscribe_on_turn_timeout:
-          type: boolean
-          default: false
-          description: >-
-            When enabled, if VAD detects no speech, attempts to re-transcribe
-            accumulated audio at turn timeout. Disables silence discount billing
-            for affected turns.
-        turn_model:
-          $ref: '#/components/schemas/TurnModel'
-          default: turn_v3
-        interruption_ignore_terms:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of terms that should not trigger an interruption when spoken by
-            the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
-            matching.
-        interruption_ignore_term_languages:
-          type: array
-          items:
-            type: string
-          description: >-
-            Language codes for which preset ignore-term categories have been
-            activated. Stored explicitly so display is not inferred from term
-            overlap.
-        transcribe_on_disabled_interruptions:
-          type: boolean
-          default: false
-          description: >-
-            When interruptions are disabled, still transcribe what the user says
-            so it can carry into the next turn. When off, user speech during a
-            non-interruptible turn is ignored and won't trigger a turn.
-        soft_timeout_config:
-          $ref: '#/components/schemas/SoftTimeoutConfig'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfig
-    TTSConversationalModel:
-      type: string
-      enum:
-        - eleven_turbo_v2
-        - eleven_turbo_v2_5
-        - eleven_flash_v2
-        - eleven_flash_v2_5
-        - eleven_multilingual_v2
-        - eleven_v3_conversational
-      default: eleven_flash_v2
-      title: TTSConversationalModel
-    TTSModelFamily:
-      type: string
-      enum:
-        - turbo
-        - flash
-        - multilingual
-        - v3_conversational
-      title: TTSModelFamily
-    TTSOptimizeStreamingLatency:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-      title: TTSOptimizeStreamingLatency
-    SupportedVoice:
-      type: object
-      properties:
-        label:
-          type: string
-        voice_id:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        language:
-          type:
-            - string
-            - 'null'
-        model_family:
-          oneOf:
-            - $ref: '#/components/schemas/TTSModelFamily'
-            - type: 'null'
-        optimize_streaming_latency:
-          oneOf:
-            - $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-            - type: 'null'
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-      required:
-        - label
-        - voice_id
-      title: SupportedVoice
-    SuggestedAudioTag:
-      type: object
-      properties:
-        tag:
-          type: string
-          description: >-
-            Audio tag to use (for best performance, 1-2 words, e.g., 'happy',
-            'excited')
-        description:
-          type:
-            - string
-            - 'null'
-          description: Optional description of when to use this tag
-      required:
-        - tag
-      title: SuggestedAudioTag
-    TTSOutputFormat:
-      type: string
-      enum:
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-      default: pcm_16000
-      title: TTSOutputFormat
-    TextNormalisationType:
-      type: string
-      enum:
-        - system_prompt
-        - elevenlabs
-      default: system_prompt
-      description: Method for converting numbers to words before sending to TTS
-      title: TextNormalisationType
-    PydanticPronunciationDictionaryVersionLocator:
-      type: object
-      properties:
-        pronunciation_dictionary_id:
-          type: string
-          description: The ID of the pronunciation dictionary
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the version of the pronunciation dictionary
-      required:
-        - pronunciation_dictionary_id
-        - version_id
-      description: >-
-        A locator for other documents to be able to reference a specific
-        dictionary and it's version.
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-        This is a pydantic version of
-        PronunciationDictionaryVersionLocatorDBModel.
+## Request
 
-        Required to ensure compat with the rest of the agent data models.
-      title: PydanticPronunciationDictionaryVersionLocator
-    TTSConversationalConfig-Output:
-      type: object
-      properties:
-        model_id:
-          $ref: '#/components/schemas/TTSConversationalModel'
-          default: eleven_flash_v2
-          description: The model to use for TTS
-        voice_id:
-          type: string
-          default: cjVigY5qzO86Huf0OWal
-          description: The voice ID to use for TTS
-        supported_voices:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupportedVoice'
-          description: Additional supported voices for the agent
-        expressive_mode:
-          type: boolean
-          default: true
-          description: >-
-            When enabled, applies expressive audio tags prompt. Automatically
-            disabled for non-v3 models.
-        suggested_audio_tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/SuggestedAudioTag'
-          description: >-
-            Suggested audio tags to boost expressive speech (for eleven_v3 and
-            eleven_v3_conversational models). The agent can still use other tags
-            not listed here.
-        agent_output_audio_format:
-          $ref: '#/components/schemas/TTSOutputFormat'
-          default: pcm_16000
-          description: The audio format to use for TTS
-        optimize_streaming_latency:
-          $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-          description: 'Deprecated: this field is a no-op and is ignored.'
-        stability:
-          type: number
-          format: double
-          default: 0.5
-          description: The stability of generated speech
-        speed:
-          type: number
-          format: double
-          default: 1
-          description: The speed of generated speech
-        similarity_boost:
-          type: number
-          format: double
-          default: 0.8
-          description: The similarity boost for generated speech
-        text_normalisation_type:
-          $ref: '#/components/schemas/TextNormalisationType'
-          default: system_prompt
-          description: >-
-            Method for converting numbers to words before converting text to
-            speech. If set to SYSTEM_PROMPT, the system prompt will be updated
-            to include normalization instructions. If set to ELEVENLABS, the
-            text will be normalized after generation, incurring slight
-            additional latency.
-        pronunciation_dictionary_locators:
-          type: array
-          items:
-            $ref: '#/components/schemas/PydanticPronunciationDictionaryVersionLocator'
-          description: The pronunciation dictionary locators
-        enable_phoneme_tags:
-          type: boolean
-          default: true
-          description: >-
-            Opt-in to SSML phoneme tag handling for V3 models. When enabled,
-            phoneme tags (inline and from pronunciation dictionaries) are parsed
-            into inline IPA before being sent to the model.
-      title: TTSConversationalConfig-Output
-    ClientEvent:
-      type: string
-      enum:
-        - conversation_initiation_metadata
-        - asr_initiation_metadata
-        - ping
-        - audio
-        - interruption
-        - user_transcript
-        - tentative_user_transcript
-        - agent_response
-        - agent_response_correction
-        - client_tool_call
-        - mcp_tool_call
-        - mcp_connection_status
-        - agent_tool_request
-        - agent_tool_response
-        - agent_tool_response_full_payload
-        - agent_response_metadata
-        - vad_score
-        - agent_chat_response_part
-        - client_error
-        - guardrail_triggered
-        - dtmf_request
-        - agent_response_complete
-        - internal_turn_probability
-        - internal_tentative_agent_response
-      title: ClientEvent
-    FileInputConfig:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-          description: >-
-            When enabled, users may attach images or PDFs in chat when the LLM
-            supports multimodal input.
-        max_files_in_memory:
-          type: integer
-          default: 10
-          description: >-
-            Number of most-recent files kept in memory during a conversation.
-            Older files are summarized and their bytes freed.
-        max_files_per_conversation:
-          type: integer
-          default: 10
-          description: >-
-            Total files a user can upload in one conversation. Uploads are
-            billed per file. Use -1 for no limit, or a value >=
-            max_files_in_memory.
-      title: FileInputConfig
-    BackgroundSoundSourceType:
-      type: string
-      enum:
-        - preset
-      description: The type of background sound source.
-      title: BackgroundSoundSourceType
-    BackgroundSoundPresetId:
-      type: string
-      enum:
-        - office2
-        - office1
-        - restaurant
-        - city
-        - typing
-        - elevator1
-        - elevator2
-        - elevator3
-        - elevator4
-      description: Predefined background sound preset identifiers.
-      title: BackgroundSoundPresetId
-    BackgroundSoundConfig:
-      type: object
-      properties:
-        source_type:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundSourceType'
-            - type: 'null'
-          description: The type of background sound source.
-        source_id:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundPresetId'
-            - type: 'null'
-          description: Identifier for the sound source.
-        volume:
-          type: number
-          format: double
-          default: 0.6
-          description: Volume level for background sound (0.01 to 1.0).
-        crossfade_loop:
-          type: boolean
-          default: false
-          description: >-
-            Apply a crossfade at the loop boundary to avoid audible pops when
-            the sound loops.
-      title: BackgroundSoundConfig
-    ConversationConfig-Output:
-      type: object
-      properties:
-        text_only:
-          type: boolean
-          default: false
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-        max_duration_seconds:
-          type: integer
-          default: 600
-          description: The maximum duration of a conversation in seconds
-        client_events:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to the client
-        file_input:
-          $ref: '#/components/schemas/FileInputConfig'
-          description: >-
-            Configuration for file input (image/PDF uploads) during
-            conversations.
-        monitoring_enabled:
-          type: boolean
-          default: false
-          description: Enable real-time monitoring of conversations via WebSocket
-        monitoring_events:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to monitoring connections.
-        background_sound:
-          $ref: '#/components/schemas/BackgroundSoundConfig'
-          description: Configuration for background sound during conversations.
-        source_attribution:
-          type: boolean
-          default: false
-          description: >-
-            When enabled and knowledge base content is present, the LLM is
-            instructed to report which sources it used.
-      title: ConversationConfig-Output
-    ASRConversationalConfigOverride:
-      type: object
-      properties:
-        keywords:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfigOverride
-    SoftTimeoutConfigOverride:
-      type: object
-      properties:
-        message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-      title: SoftTimeoutConfigOverride
-    TurnConfigOverride:
-      type: object
-      properties:
-        soft_timeout_config:
-          oneOf:
-            - $ref: '#/components/schemas/SoftTimeoutConfigOverride'
-            - type: 'null'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfigOverride
-    TTSConversationalConfigOverride:
-      type: object
-      properties:
-        model_id:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalModel'
-            - type: 'null'
-          description: The model to use for TTS
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The voice ID to use for TTS
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The stability of generated speech
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The speed of generated speech
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The similarity boost for generated speech
-      title: TTSConversationalConfigOverride
-    ConversationConfigOverride:
-      type: object
-      properties:
-        text_only:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-      title: ConversationConfigOverride
-    LLM:
-      type: string
-      enum:
-        - gpt-4o-mini
-        - gpt-4o
-        - gpt-4
-        - gpt-4-turbo
-        - gpt-4.1
-        - gpt-4.1-mini
-        - gpt-4.1-nano
-        - gpt-5
-        - gpt-5.1
-        - gpt-5.2
-        - gpt-5.2-chat-latest
-        - gpt-5.4
-        - gpt-5.4-mini
-        - gpt-5.4-nano
-        - gpt-5.5
-        - gpt-5.6-sol
-        - gpt-5.6-terra
-        - gpt-5.6-luna
-        - gpt-5-mini
-        - gpt-5-nano
-        - gpt-3.5-turbo
-        - gemini-1.5-pro
-        - gemini-1.5-flash
-        - gemini-2.0-flash
-        - gemini-2.0-flash-lite
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3-pro-preview
-        - gemini-3-flash-preview
-        - gemini-3.1-pro-preview
-        - gemini-3.1-flash-lite-preview
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - gemini-3.5-flash-lite
-        - claude-sonnet-4-5
-        - claude-opus-4-7
-        - claude-opus-4-8
-        - claude-sonnet-4-6
-        - claude-sonnet-5
-        - claude-sonnet-4
-        - claude-haiku-4-5
-        - claude-3-7-sonnet
-        - claude-3-5-sonnet
-        - claude-3-5-sonnet-v1
-        - claude-3-haiku
-        - grok-beta
-        - custom-llm
-        - qwen3-4b
-        - qwen3-30b-a3b
-        - qwen36-35b-a3b
-        - qwen35-397b-a17b
-        - gpt-oss-20b
-        - gpt-oss-120b
-        - glm-45-air-fp8
-        - gemini-2.5-flash-preview-09-2025
-        - gemini-2.5-flash-lite-preview-09-2025
-        - gemini-2.5-flash-preview-05-20
-        - gemini-2.5-flash-preview-04-17
-        - gemini-2.5-flash-lite-preview-06-17
-        - gemini-2.0-flash-lite-001
-        - gemini-2.0-flash-001
-        - gemini-1.5-flash-002
-        - gemini-1.5-flash-001
-        - gemini-1.5-pro-002
-        - gemini-1.5-pro-001
-        - claude-sonnet-4@20250514
-        - claude-sonnet-4-5@20250929
-        - claude-haiku-4-5@20251001
-        - claude-3-7-sonnet@20250219
-        - claude-3-5-sonnet@20240620
-        - claude-3-5-sonnet-v2@20241022
-        - claude-3-haiku@20240307
-        - gpt-5-2025-08-07
-        - gpt-5.1-2025-11-13
-        - gpt-5.2-2025-12-11
-        - gpt-5.4-2026-03-05
-        - gpt-5.4-mini-2026-03-17
-        - gpt-5.4-nano-2026-03-17
-        - gpt-5.5-2026-04-23
-        - gpt-5-mini-2025-08-07
-        - gpt-5-nano-2025-08-07
-        - gpt-4.1-2025-04-14
-        - gpt-4.1-mini-2025-04-14
-        - gpt-4.1-nano-2025-04-14
-        - gpt-4o-mini-2024-07-18
-        - gpt-4o-2024-11-20
-        - gpt-4o-2024-08-06
-        - gpt-4o-2024-05-13
-        - gpt-4-0613
-        - gpt-4-0314
-        - gpt-4-turbo-2024-04-09
-        - gpt-3.5-turbo-0125
-        - gpt-3.5-turbo-1106
-        - watt-tool-8b
-        - watt-tool-70b
-      title: LLM
-    KnowledgeBaseDocumentType:
-      type: string
-      enum:
-        - file
-        - url
-        - text
-        - folder
-      title: KnowledgeBaseDocumentType
-    DocumentUsageModeEnum:
-      type: string
-      enum:
-        - prompt
-        - auto
-      default: auto
-      title: DocumentUsageModeEnum
-    KnowledgeBaseLocator:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/KnowledgeBaseDocumentType'
-          description: The type of the knowledge base
-        name:
-          type: string
-          description: The name of the knowledge base
-        id:
-          type: string
-          description: The ID of the knowledge base
-        usage_mode:
-          $ref: '#/components/schemas/DocumentUsageModeEnum'
-          default: auto
-          description: The usage mode of the knowledge base
-      required:
-        - type
-        - name
-        - id
-      title: KnowledgeBaseLocator
-    PromptAgentAPIModelOverride-Output:
-      type: object
-      properties:
-        prompt:
-          type:
-            - string
-            - 'null'
-          description: The prompt for the agent
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            The LLM to query with the prompt and the chat history. If using data
-            residency, the LLM must be supported in the data residency
-            environment
-        tool_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of IDs of tools used by the agent
-        native_mcp_server_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of Native MCP server ids to be used by the agent
-        knowledge_base:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseLocator'
-          description: A list of knowledge bases to be used by the agent
-      title: PromptAgentAPIModelOverride-Output
-    AgentConfigOverride-Output:
-      type: object
-      properties:
-        first_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the first message the agent will say. If empty, the
-            agent waits for the user to start the discussion.
-        language:
-          type:
-            - string
-            - 'null'
-          description: Language of the agent - used for ASR and TTS
-        max_conversation_duration_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the message the agent will send when max conversation
-            duration is reached.
-        prompt:
-          oneOf:
-            - $ref: '#/components/schemas/PromptAgentAPIModelOverride-Output'
-            - type: 'null'
-          description: The prompt for the agent
-      title: AgentConfigOverride-Output
-    ConversationConfigClientOverride-Output:
-      type: object
-      properties:
-        asr:
-          oneOf:
-            - $ref: '#/components/schemas/ASRConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational transcription
-        turn:
-          oneOf:
-            - $ref: '#/components/schemas/TurnConfigOverride'
-            - type: 'null'
-          description: Configuration for turn detection
-        tts:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational text to speech
-        conversation:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational events
-        agent:
-          oneOf:
-            - $ref: '#/components/schemas/AgentConfigOverride-Output'
-            - type: 'null'
-          description: Agent specific configuration
-      title: ConversationConfigClientOverride-Output
-    LanguagePresetTranslation:
-      type: object
-      properties:
-        source_hash:
-          type: string
-        text:
-          type: string
-      required:
-        - source_hash
-        - text
-      title: LanguagePresetTranslation
-    LanguagePreset-Output:
-      type: object
-      properties:
-        overrides:
-          $ref: '#/components/schemas/ConversationConfigClientOverride-Output'
-          description: The overrides for the language preset
-        first_message_translation:
-          oneOf:
-            - $ref: '#/components/schemas/LanguagePresetTranslation'
-            - type: 'null'
-          description: The translation of the first message
-        soft_timeout_translation:
-          oneOf:
-            - $ref: '#/components/schemas/LanguagePresetTranslation'
-            - type: 'null'
-          description: The translation of the soft timeout message
-      required:
-        - overrides
-      title: LanguagePreset-Output
-    VADConfig:
-      type: object
-      properties: {}
-      title: VADConfig
-    Verbosity:
-      type: string
-      enum:
-        - auto
-        - concise
-        - thorough
-      title: Verbosity
-    OutputFormat:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - ulaw_8000
-      title: OutputFormat
-    InteractionBudget:
-      type: string
-      enum:
-        - realtime
-        - 5_minutes
-        - 10_minutes
-        - 1_hour
-      title: InteractionBudget
-    BehaviorOverride:
-      type: object
-      properties:
-        verbosity:
-          oneOf:
-            - $ref: '#/components/schemas/Verbosity'
-            - type: 'null'
-          description: Verbosity override. Underlying default applies when unset.
-        output_format:
-          oneOf:
-            - $ref: '#/components/schemas/OutputFormat'
-            - type: 'null'
-          description: Output format override. Underlying default applies when unset.
-        interaction_budget:
-          oneOf:
-            - $ref: '#/components/schemas/InteractionBudget'
-            - type: 'null'
-          description: Interaction budget override. Underlying default applies when unset.
-      title: BehaviorOverride
-    LLMReasoningEffort:
-      type: string
-      enum:
-        - none
-        - minimal
-        - low
-        - medium
-        - high
-        - xhigh
-        - max
-      title: LLMReasoningEffort
-    ToolInterruptionMode:
-      type: string
-      enum:
-        - allow
-        - disable_during_tool
-        - disable_during_tool_and_turn
-      default: allow
-      title: ToolInterruptionMode
-    PreToolSpeechMode:
-      type: string
-      enum:
-        - auto
-        - force
-        - 'off'
-      default: auto
-      title: PreToolSpeechMode
-    DynamicVariableAssignment:
-      type: object
-      properties:
-        source:
-          type: string
-          enum:
-            - response
-          default: response
-          description: >-
-            The source to extract the value from. Currently only 'response' is
-            supported.
-        dynamic_variable:
-          type: string
-          description: The name of the dynamic variable to assign the extracted value to
-        value_path:
-          type: string
-          description: >-
-            Dot notation path to extract the value from the source (e.g.,
-            'user.name' or 'data.0.id')
-        sanitize:
-          type: boolean
-          default: false
-          description: >-
-            If true, this assignment's value will be removed from the tool
-            response before sending to the LLM and transcript, but still
-            processed for variable assignment.
-        preserve_native_type:
-          type: boolean
-          default: false
-          description: >-
-            If true, non-scalar values (lists, objects) extracted from the tool
-            response are stored as their native type instead of being
-            stringified to JSON. Enable this to use extracted arrays directly as
-            list dynamic variables.
-      required:
-        - dynamic_variable
-        - value_path
-      description: >-
-        Configuration for extracting values from tool responses and assigning
-        them to dynamic variables.
-      title: DynamicVariableAssignment
-    ToolCallSoundType:
-      type: string
-      enum:
-        - typing
-        - elevator1
-        - elevator2
-        - elevator3
-        - elevator4
-      description: Predefined tool call sounds; ``None`` means no sound.
-      title: ToolCallSoundType
-    ToolCallSoundBehavior:
-      type: string
-      enum:
-        - auto
-        - always
-      default: auto
-      description: Determines how the tool call sound should be played.
-      title: ToolCallSoundBehavior
-    ToolErrorHandlingMode:
-      type: string
-      enum:
-        - auto
-        - summarized
-        - passthrough
-        - hide
-      default: auto
-      description: >-
-        Controls how tool errors are processed before being shared with the
-        agent.
-      title: ToolErrorHandlingMode
-    ProcedureType:
-      type: string
-      enum:
-        - free_form
-        - deterministic
-      default: free_form
-      title: ProcedureType
-    GuardrailExecutionMode:
-      type: string
-      enum:
-        - streaming
-        - blocking
-      default: streaming
-      title: GuardrailExecutionMode
-    CustomGuardrailConfigModel:
-      type: string
-      enum:
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - claude-haiku-4-5
-        - claude-sonnet-4-6
-        - gpt-5.4-nano
-        - gpt-5.4-mini
-      default: gemini-2.5-flash-lite
-      description: LLM model to use for custom guardrail evaluation
-      title: CustomGuardrailConfigModel
-    CustomGuardrailConfigTriggerAction:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
- > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+### Path parameters
 
-# Preview merged configuration
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+- `source_branch_id` (string, required) — Unique identifier for the source branch to merge from.
 
-GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview
+### Query parameters
 
-Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+- `target_branch_id` (string, required) — The ID of the target branch to merge into.
+- `force` (boolean, optional, default: false) — When true, source branch changes always win conflicts regardless of timestamps
 
-Reference: https://elevenlabs.io/docs/api-reference/agents/branches/preview-merge
+## Response
 
-## OpenAPI Specification
+### 200
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview:
-    get:
-      operationId: preview_merge
-      summary: Preview Merged Configuration
-      description: >-
-        Returns the result of merging the source branch into the target branch
-        without performing the merge. Useful for showing an accurate diff before
-        confirming.
-      tags:
-        - branches
-      parameters:
-        - name: agent_id
-          in: path
-          description: The id of an agent. This is returned on agent creation.
-          required: true
-          schema:
-            type: string
-        - name: source_branch_id
-          in: path
-          description: Unique identifier for the source branch to merge from.
-          required: true
-          schema:
-            type: string
-        - name: target_branch_id
-          in: query
-          description: The ID of the target branch to merge into.
-          required: true
-          schema:
-            type: string
-        - name: force
-          in: query
-          description: >-
-            When true, source branch changes always win conflicts regardless of
-            timestamps
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MergePreviewResponseModel'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    ASRQuality:
-      type: string
-      enum:
-        - high
-      default: high
-      title: ASRQuality
-    ASRProvider:
-      type: string
-      enum:
-        - elevenlabs
-        - scribe_realtime
-      default: scribe_realtime
-      title: ASRProvider
-    ASRInputFormat:
-      type: string
-      enum:
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-      default: pcm_16000
-      title: ASRInputFormat
-    ASRConversationalConfig:
-      type: object
-      properties:
-        quality:
-          $ref: '#/components/schemas/ASRQuality'
-          default: high
-          description: The quality of the transcription
-        provider:
-          $ref: '#/components/schemas/ASRProvider'
-          default: scribe_realtime
-          description: The provider of the transcription service
-        user_input_audio_format:
-          $ref: '#/components/schemas/ASRInputFormat'
-          default: pcm_16000
-          description: The format of the audio to be transcribed
-        keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfig
-    TurnEagerness:
-      type: string
-      enum:
-        - patient
-        - normal
-        - eager
-      default: normal
-      description: >-
-        Agent's eagerness to respond. Higher values make agent wait for higher
-        turn probability.
-      title: TurnEagerness
-    SpellingPatience:
-      type: string
-      enum:
-        - auto
-        - 'off'
-      default: auto
-      description: >-
-        Controls if the agent should be more patient when user is spelling
-        numbers and named entities.
-      title: SpellingPatience
-    TurnModel:
-      type: string
-      enum:
-        - turn_v2
-        - turn_v3
-      default: turn_v3
-      description: Version of the turn detection model to use.
-      title: TurnModel
-    SoftTimeoutConfig:
-      type: object
-      properties:
-        timeout_seconds:
-          type: number
-          format: double
-          default: -1
-          description: >-
-            Time in seconds before showing the predefined message while waiting
-            for LLM response. Set to -1 to disable.
-        message:
-          type: string
-          default: Hhmmmm...yeah.
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-        additional_soft_timeout_messages:
-          type: array
-          items:
-            type: string
-          description: >-
-            Extra static filler messages for subsequent soft timeouts in the
-            same LLM generation. The first timeout uses `message`. If fewer
-            messages are configured than `max_soft_timeouts_per_generation`, the
-            last configured message is repeated; otherwise a built-in filler is
-            used.
-        use_llm_generated_message:
-          type: boolean
-          default: false
-          description: >-
-            If enabled, the soft timeout message will be generated dynamically
-            instead of using the static message.
-        randomize_fillers:
-          type: boolean
-          default: false
-          description: >-
-            If enabled, shuffle the order of static soft timeout messages once
-            at the start of each turn. Only applies when
-            use_llm_generated_message is false.
-        max_soft_timeouts_per_generation:
-          type: integer
-          default: 1
-          description: >-
-            Maximum filler messages while waiting for a single LLM response.
-            Fires every timeout_seconds until the LLM streams content or this
-            limit is reached.
-        llm_generated_message_prompt_override:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Custom prompt for generating the soft timeout filler message when
-            use_llm_generated_message is enabled. Recent conversation context is
-            provided as a separate user message. If not set, the default prompt
-            will be used. Supports dynamic variables (e.g., {{system__time}},
-            {{custom_variable}}).
-      description: >-
-        Configuration for soft timeout functionality during LLM response
-        generation.
-      title: SoftTimeoutConfig
-    TurnConfig:
-      type: object
-      properties:
-        turn_timeout:
-          type: number
-          format: double
-          default: 7
-          description: Maximum wait time for the user's reply before re-engaging the user
-        initial_wait_time:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            How long the agent will wait for the user to start the conversation
-            if the first message is empty. If not set, uses the regular
-            turn_timeout.
-        silence_end_call_timeout:
-          type: number
-          format: double
-          default: -1
-          description: >-
-            Maximum wait time since the user last spoke before terminating the
-            call
-        turn_eagerness:
-          $ref: '#/components/schemas/TurnEagerness'
-          default: normal
-          description: >-
-            Controls how eager the agent is to respond. Low = less eager (waits
-            longer), Standard = default eagerness, High = more eager (responds
-            sooner)
-        spelling_patience:
-          $ref: '#/components/schemas/SpellingPatience'
-          default: auto
-          description: >-
-            Controls if the agent should be more patient when user is spelling
-            numbers and named entities. Auto = model based, Off = never wait
-            extra
-        speculative_turn:
-          type: boolean
-          default: false
-          description: >-
-            When enabled, starts generating LLM responses during silence before
-            full turn confidence is reached, reducing perceived latency. May
-            increase LLM costs.
-        retranscribe_on_turn_timeout:
-          type: boolean
-          default: false
-          description: >-
-            When enabled, if VAD detects no speech, attempts to re-transcribe
-            accumulated audio at turn timeout. Disables silence discount billing
-            for affected turns.
-        turn_model:
-          $ref: '#/components/schemas/TurnModel'
-          default: turn_v3
-        interruption_ignore_terms:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of terms that should not trigger an interruption when spoken by
-            the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
-            matching.
-        interruption_ignore_term_languages:
-          type: array
-          items:
-            type: string
-          description: >-
-            Language codes for which preset ignore-term categories have been
-            activated. Stored explicitly so display is not inferred from term
-            overlap.
-        transcribe_on_disabled_interruptions:
-          type: boolean
-          default: false
-          description: >-
-            When interruptions are disabled, still transcribe what the user says
-            so it can carry into the next turn. When off, user speech during a
-            non-interruptible turn is ignored and won't trigger a turn.
-        soft_timeout_config:
-          $ref: '#/components/schemas/SoftTimeoutConfig'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfig
-    TTSConversationalModel:
-      type: string
-      enum:
-        - eleven_turbo_v2
-        - eleven_turbo_v2_5
-        - eleven_flash_v2
-        - eleven_flash_v2_5
-        - eleven_multilingual_v2
-        - eleven_v3_conversational
-      default: eleven_flash_v2
-      title: TTSConversationalModel
-    TTSModelFamily:
-      type: string
-      enum:
-        - turbo
-        - flash
-        - multilingual
-        - v3_conversational
-      title: TTSModelFamily
-    TTSOptimizeStreamingLatency:
-      type: string
-      enum:
-        - '0'
-        - '1'
-        - '2'
-        - '3'
-        - '4'
-      title: TTSOptimizeStreamingLatency
-    SupportedVoice:
-      type: object
-      properties:
-        label:
-          type: string
-        voice_id:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        language:
-          type:
-            - string
-            - 'null'
-        model_family:
-          oneOf:
-            - $ref: '#/components/schemas/TTSModelFamily'
-            - type: 'null'
-        optimize_streaming_latency:
-          oneOf:
-            - $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-            - type: 'null'
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-      required:
-        - label
-        - voice_id
-      title: SupportedVoice
-    SuggestedAudioTag:
-      type: object
-      properties:
-        tag:
-          type: string
-          description: >-
-            Audio tag to use (for best performance, 1-2 words, e.g., 'happy',
-            'excited')
-        description:
-          type:
-            - string
-            - 'null'
-          description: Optional description of when to use this tag
-      required:
-        - tag
-      title: SuggestedAudioTag
-    TTSOutputFormat:
-      type: string
-      enum:
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - pcm_48000
-        - ulaw_8000
-      default: pcm_16000
-      title: TTSOutputFormat
-    TextNormalisationType:
-      type: string
-      enum:
-        - system_prompt
-        - elevenlabs
-      default: system_prompt
-      description: Method for converting numbers to words before sending to TTS
-      title: TextNormalisationType
-    PydanticPronunciationDictionaryVersionLocator:
-      type: object
-      properties:
-        pronunciation_dictionary_id:
-          type: string
-          description: The ID of the pronunciation dictionary
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the version of the pronunciation dictionary
-      required:
-        - pronunciation_dictionary_id
-        - version_id
-      description: >-
-        A locator for other documents to be able to reference a specific
-        dictionary and it's version.
+Successful Response
 
-        This is a pydantic version of
-        PronunciationDictionaryVersionLocatorDBModel.
-
-        Required to ensure compat with the rest of the agent data models.
-      title: PydanticPronunciationDictionaryVersionLocator
-    TTSConversationalConfig-Output:
-      type: object
-      properties:
-        model_id:
-          $ref: '#/components/schemas/TTSConversationalModel'
-          default: eleven_flash_v2
-          description: The model to use for TTS
-        voice_id:
-          type: string
-          default: cjVigY5qzO86Huf0OWal
-          description: The voice ID to use for TTS
-        supported_voices:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupportedVoice'
-          description: Additional supported voices for the agent
-        expressive_mode:
-          type: boolean
-          default: true
-          description: >-
-            When enabled, applies expressive audio tags prompt. Automatically
-            disabled for non-v3 models.
-        suggested_audio_tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/SuggestedAudioTag'
-          description: >-
-            Suggested audio tags to boost expressive speech (for eleven_v3 and
-            eleven_v3_conversational models). The agent can still use other tags
-            not listed here.
-        agent_output_audio_format:
-          $ref: '#/components/schemas/TTSOutputFormat'
-          default: pcm_16000
-          description: The audio format to use for TTS
-        optimize_streaming_latency:
-          $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-          description: 'Deprecated: this field is a no-op and is ignored.'
-        stability:
-          type: number
-          format: double
-          default: 0.5
-          description: The stability of generated speech
-        speed:
-          type: number
-          format: double
-          default: 1
-          description: The speed of generated speech
-        similarity_boost:
-          type: number
-          format: double
-          default: 0.8
-          description: The similarity boost for generated speech
-        text_normalisation_type:
-          $ref: '#/components/schemas/TextNormalisationType'
-          default: system_prompt
-          description: >-
-            Method for converting numbers to words before converting text to
-            speech. If set to SYSTEM_PROMPT, the system prompt will be updated
-            to include normalization instructions. If set to ELEVENLABS, the
-            text will be normalized after generation, incurring slight
-            additional latency.
-        pronunciation_dictionary_locators:
-          type: array
-          items:
-            $ref: '#/components/schemas/PydanticPronunciationDictionaryVersionLocator'
-          description: The pronunciation dictionary locators
-        enable_phoneme_tags:
-          type: boolean
-          default: true
-          description: >-
-            Opt-in to SSML phoneme tag handling for V3 models. When enabled,
-            phoneme tags (inline and from pronunciation dictionaries) are parsed
-            into inline IPA before being sent to the model.
-      title: TTSConversationalConfig-Output
-    ClientEvent:
-      type: string
-      enum:
-        - conversation_initiation_metadata
-        - asr_initiation_metadata
-        - ping
-        - audio
-        - interruption
-        - user_transcript
-        - tentative_user_transcript
-        - agent_response
-        - agent_response_correction
-        - client_tool_call
-        - mcp_tool_call
-        - mcp_connection_status
-        - agent_tool_request
-        - agent_tool_response
-        - agent_tool_response_full_payload
-        - agent_response_metadata
-        - vad_score
-        - agent_chat_response_part
-        - client_error
-        - guardrail_triggered
-        - dtmf_request
-        - agent_response_complete
-        - internal_turn_probability
-        - internal_tentative_agent_response
-      title: ClientEvent
-    FileInputConfig:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-          description: >-
-            When enabled, users may attach images or PDFs in chat when the LLM
-            supports multimodal input.
-        max_files_in_memory:
-          type: integer
-          default: 10
-          description: >-
-            Number of most-recent files kept in memory during a conversation.
-            Older files are summarized and their bytes freed.
-        max_files_per_conversation:
-          type: integer
-          default: 10
-          description: >-
-            Total files a user can upload in one conversation. Uploads are
-            billed per file. Use -1 for no limit, or a value >=
-            max_files_in_memory.
-      title: FileInputConfig
-    BackgroundSoundSourceType:
-      type: string
-      enum:
-        - preset
-      description: The type of background sound source.
-      title: BackgroundSoundSourceType
-    BackgroundSoundPresetId:
-      type: string
-      enum:
-        - office2
-        - office1
-        - restaurant
-        - city
-        - typing
-        - elevator1
-        - elevator2
-        - elevator3
-        - elevator4
-      description: Predefined background sound preset identifiers.
-      title: BackgroundSoundPresetId
-    BackgroundSoundConfig:
-      type: object
-      properties:
-        source_type:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundSourceType'
-            - type: 'null'
-          description: The type of background sound source.
-        source_id:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundPresetId'
-            - type: 'null'
-          description: Identifier for the sound source.
-        volume:
-          type: number
-          format: double
-          default: 0.6
-          description: Volume level for background sound (0.01 to 1.0).
-        crossfade_loop:
-          type: boolean
-          default: false
-          description: >-
-            Apply a crossfade at the loop boundary to avoid audible pops when
-            the sound loops.
-      title: BackgroundSoundConfig
-    ConversationConfig-Output:
-      type: object
-      properties:
-        text_only:
-          type: boolean
-          default: false
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-        max_duration_seconds:
-          type: integer
-          default: 600
-          description: The maximum duration of a conversation in seconds
-        client_events:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to the client
-        file_input:
-          $ref: '#/components/schemas/FileInputConfig'
-          description: >-
-            Configuration for file input (image/PDF uploads) during
-            conversations.
-        monitoring_enabled:
-          type: boolean
-          default: false
-          description: Enable real-time monitoring of conversations via WebSocket
-        monitoring_events:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to monitoring connections.
-        background_sound:
-          $ref: '#/components/schemas/BackgroundSoundConfig'
-          description: Configuration for background sound during conversations.
-        source_attribution:
-          type: boolean
-          default: false
-          description: >-
-            When enabled and knowledge base content is present, the LLM is
-            instructed to report which sources it used.
-      title: ConversationConfig-Output
-    ASRConversationalConfigOverride:
-      type: object
-      properties:
-        keywords:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfigOverride
-    SoftTimeoutConfigOverride:
-      type: object
-      properties:
-        message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-      title: SoftTimeoutConfigOverride
-    TurnConfigOverride:
-      type: object
-      properties:
-        soft_timeout_config:
-          oneOf:
-            - $ref: '#/components/schemas/SoftTimeoutConfigOverride'
-            - type: 'null'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfigOverride
-    TTSConversationalConfigOverride:
-      type: object
-      properties:
-        model_id:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalModel'
-            - type: 'null'
-          description: The model to use for TTS
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The voice ID to use for TTS
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The stability of generated speech
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The speed of generated speech
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The similarity boost for generated speech
-      title: TTSConversationalConfigOverride
-    ConversationConfigOverride:
-      type: object
-      properties:
-        text_only:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-      title: ConversationConfigOverride
-    LLM:
-      type: string
-      enum:
-        - gpt-4o-mini
-        - gpt-4o
-        - gpt-4
-        - gpt-4-turbo
-        - gpt-4.1
-        - gpt-4.1-mini
-        - gpt-4.1-nano
-        - gpt-5
-        - gpt-5.1
-        - gpt-5.2
-        - gpt-5.2-chat-latest
-        - gpt-5.4
-        - gpt-5.4-mini
-        - gpt-5.4-nano
-        - gpt-5.5
-        - gpt-5.6-sol
-        - gpt-5.6-terra
-        - gpt-5.6-luna
-        - gpt-5-mini
-        - gpt-5-nano
-        - gpt-3.5-turbo
-        - gemini-1.5-pro
-        - gemini-1.5-flash
-        - gemini-2.0-flash
-        - gemini-2.0-flash-lite
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3-pro-preview
-        - gemini-3-flash-preview
-        - gemini-3.1-pro-preview
-        - gemini-3.1-flash-lite-preview
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - gemini-3.5-flash-lite
-        - claude-sonnet-4-5
-        - claude-opus-4-7
-        - claude-opus-4-8
-        - claude-sonnet-4-6
-        - claude-sonnet-5
-        - claude-sonnet-4
-        - claude-haiku-4-5
-        - claude-3-7-sonnet
-        - claude-3-5-sonnet
-        - claude-3-5-sonnet-v1
-        - claude-3-haiku
-        - grok-beta
-        - custom-llm
-        - qwen3-4b
-        - qwen3-30b-a3b
-        - qwen36-35b-a3b
-        - qwen35-397b-a17b
-        - gpt-oss-20b
-        - gpt-oss-120b
-        - glm-45-air-fp8
-        - gemini-2.5-flash-preview-09-2025
-        - gemini-2.5-flash-lite-preview-09-2025
-        - gemini-2.5-flash-preview-05-20
-        - gemini-2.5-flash-preview-04-17
-        - gemini-2.5-flash-lite-preview-06-17
-        - gemini-2.0-flash-lite-001
-        - gemini-2.0-flash-001
-        - gemini-1.5-flash-002
-        - gemini-1.5-flash-001
-        - gemini-1.5-pro-002
-        - gemini-1.5-pro-001
-        - claude-sonnet-4@20250514
-        - claude-sonnet-4-5@20250929
-        - claude-haiku-4-5@20251001
-        - claude-3-7-sonnet@20250219
-        - claude-3-5-sonnet@20240620
-        - claude-3-5-sonnet-v2@20241022
-        - claude-3-haiku@20240307
-        - gpt-5-2025-08-07
-        - gpt-5.1-2025-11-13
-        - gpt-5.2-2025-12-11
-        - gpt-5.4-2026-03-05
-        - gpt-5.4-mini-2026-03-17
-        - gpt-5.4-nano-2026-03-17
-        - gpt-5.5-2026-04-23
-        - gpt-5-mini-2025-08-07
-        - gpt-5-nano-2025-08-07
-        - gpt-4.1-2025-04-14
-        - gpt-4.1-mini-2025-04-14
-        - gpt-4.1-nano-2025-04-14
-        - gpt-4o-mini-2024-07-18
-        - gpt-4o-2024-11-20
-        - gpt-4o-2024-08-06
-        - gpt-4o-2024-05-13
-        - gpt-4-0613
-        - gpt-4-0314
-        - gpt-4-turbo-2024-04-09
-        - gpt-3.5-turbo-0125
-        - gpt-3.5-turbo-1106
-        - watt-tool-8b
-        - watt-tool-70b
-      title: LLM
-    KnowledgeBaseDocumentType:
-      type: string
-      enum:
-        - file
-        - url
-        - text
-        - folder
-      title: KnowledgeBaseDocumentType
-    DocumentUsageModeEnum:
-      type: string
-      enum:
-        - prompt
-        - auto
-      default: auto
-      title: DocumentUsageModeEnum
-    KnowledgeBaseLocator:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/KnowledgeBaseDocumentType'
-          description: The type of the knowledge base
-        name:
-          type: string
-          description: The name of the knowledge base
-        id:
-          type: string
-          description: The ID of the knowledge base
-        usage_mode:
-          $ref: '#/components/schemas/DocumentUsageModeEnum'
-          default: auto
-          description: The usage mode of the knowledge base
-      required:
-        - type
-        - name
-        - id
-      title: KnowledgeBaseLocator
-    PromptAgentAPIModelOverride-Output:
-      type: object
-      properties:
-        prompt:
-          type:
-            - string
-            - 'null'
-          description: The prompt for the agent
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            The LLM to query with the prompt and the chat history. If using data
-            residency, the LLM must be supported in the data residency
-            environment
-        tool_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of IDs of tools used by the agent
-        native_mcp_server_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of Native MCP server ids to be used by the agent
-        knowledge_base:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseLocator'
-          description: A list of knowledge bases to be used by the agent
-      title: PromptAgentAPIModelOverride-Output
-    AgentConfigOverride-Output:
-      type: object
-      properties:
-        first_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the first message the agent will say. If empty, the
-            agent waits for the user to start the discussion.
-        language:
-          type:
-            - string
-            - 'null'
-          description: Language of the agent - used for ASR and TTS
-        max_conversation_duration_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the message the agent will send when max conversation
-            duration is reached.
-        prompt:
-          oneOf:
-            - $ref: '#/components/schemas/PromptAgentAPIModelOverride-Output'
-            - type: 'null'
-          description: The prompt for the agent
-      title: AgentConfigOverride-Output
-    ConversationConfigClientOverride-Output:
-      type: object
-      properties:
-        asr:
-          oneOf:
-            - $ref: '#/components/schemas/ASRConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational transcription
-        turn:
-          oneOf:
-            - $ref: '#/components/schemas/TurnConfigOverride'
-            - type: 'null'
-          description: Configuration for turn detection
-        tts:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational text to speech
-        conversation:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationConfigOverride'
-            - type: 'null'
-          description: Configuration for conversational events
-        agent:
-          oneOf:
-            - $ref: '#/components/schemas/AgentConfigOverride-Output'
-            - type: 'null'
-          description: Agent specific configuration
-      title: ConversationConfigClientOverride-Output
-    LanguagePresetTranslation:
-      type: object
-      properties:
-        source_hash:
-          type: string
-        text:
-          type: string
-      required:
-        - source_hash
-        - text
-      title: LanguagePresetTranslation
-    LanguagePreset-Output:
-      type: object
-      properties:
-        overrides:
-          $ref: '#/components/schemas/ConversationConfigClientOverride-Output'
-          description: The overrides for the language preset
-        first_message_translation:
-          oneOf:
-            - $ref: '#/components/schemas/LanguagePresetTranslation'
-            - type: 'null'
-          description: The translation of the first message
-        soft_timeout_translation:
-          oneOf:
-            - $ref: '#/components/schemas/LanguagePresetTranslation'
-            - type: 'null'
-          description: The translation of the soft timeout message
-      required:
-        - overrides
-      title: LanguagePreset-Output
-    VADConfig:
-      type: object
-      properties: {}
-      title: VADConfig
-    Verbosity:
-      type: string
-      enum:
-        - auto
-        - concise
-        - thorough
-      title: Verbosity
-    OutputFormat:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - ulaw_8000
-      title: OutputFormat
-    InteractionBudget:
-      type: string
-      enum:
-        - realtime
-        - 5_minutes
-        - 10_minutes
-        - 1_hour
-      title: InteractionBudget
-    BehaviorOverride:
-      type: object
-      properties:
-        verbosity:
-          oneOf:
-            - $ref: '#/components/schemas/Verbosity'
-            - type: 'null'
-          description: Verbosity override. Underlying default applies when unset.
-        output_format:
-          oneOf:
-            - $ref: '#/components/schemas/OutputFormat'
-            - type: 'null'
-          description: Output format override. Underlying default applies when unset.
-        interaction_budget:
-          oneOf:
-            - $ref: '#/components/schemas/InteractionBudget'
-            - type: 'null'
-          description: Interaction budget override. Underlying default applies when unset.
-      title: BehaviorOverride
-    LLMReasoningEffort:
-      type: string
-      enum:
-        - none
-        - minimal
-        - low
-        - medium
-        - high
-        - xhigh
-        - max
-      title: LLMReasoningEffort
-    ToolInterruptionMode:
-      type: string
-      enum:
-        - allow
-        - disable_during_tool
-        - disable_during_tool_and_turn
-      default: allow
-      title: ToolInterruptionMode
-    PreToolSpeechMode:
-      type: string
-      enum:
-        - auto
-        - force
-        - 'off'
-      default: auto
-      title: PreToolSpeechMode
-    DynamicVariableAssignment:
-      type: object
-      properties:
-        source:
-          type: string
-          enum:
-            - response
-          default: response
-          description: >-
-            The source to extract the value from. Currently only 'response' is
-            supported.
-        dynamic_variable:
-          type: string
-          description: The name of the dynamic variable to assign the extracted value to
-        value_path:
-          type: string
-          description: >-
-            Dot notation path to extract the value from the source (e.g.,
-            'user.name' or 'data.0.id')
-        sanitize:
-          type: boolean
-          default: false
-          description: >-
-            If true, this assignment's value will be removed from the tool
-            response before sending to the LLM and transcript, but still
-            processed for variable assignment.
-        preserve_native_type:
-          type: boolean
-          default: false
-          description: >-
-            If true, non-scalar values (lists, objects) extracted from the tool
-            response are stored as their native type instead of being
-            stringified to JSON. Enable this to use extracted arrays directly as
-            list dynamic variables.
-      required:
-        - dynamic_variable
-        - value_path
-      description: >-
-        Configuration for extracting values from tool responses and assigning
-        them to dynamic variables.
-      title: DynamicVariableAssignment
-    ToolCallSoundType:
-      type: string
-      enum:
-        - typing
-        - elevator1
-        - elevator2
-        - elevator3
-        - elevator4
-      description: Predefined tool call sounds; ``None`` means no sound.
-      title: ToolCallSoundType
-    ToolCallSoundBehavior:
-      type: string
-      enum:
-        - auto
-        - always
-      default: auto
-      description: Determines how the tool call sound should be played.
-      title: ToolCallSoundBehavior
-    ToolErrorHandlingMode:
-      type: string
-      enum:
-        - auto
-        - summarized
-        - passthrough
-        - hide
-      default: auto
-      description: >-
-        Controls how tool errors are processed before being shared with the
-        agent.
-      title: ToolErrorHandlingMode
-    ProcedureType:
-      type: string
-      enum:
-        - free_form
-        - deterministic
-      default: free_form
-      title: ProcedureType
-    GuardrailExecutionMode:
-      type: string
-      enum:
-        - streaming
-        - blocking
-      default: streaming
-      title: GuardrailExecutionMode
-    CustomGuardrailConfigModel:
-      type: string
-      enum:
-        - gemini-2.5-flash-lite
-        - gemini-2.5-flash
-        - gemini-3.1-flash-lite
-        - gemini-3.5-flash
-        - claude-haiku-4-5
-        - claude-sonnet-4-6
-        - gpt-5.4-nano
-        - gpt-5.4-mini
-      default: gemini-2.5-flash-lite
-      description: LLM model to use for custom guardrail evaluation
-      title: CustomGuardrailConfigModel
-    CustomGuardrailConfigTriggerAction:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - end_call
-              default: end_call
-          required:
-            - type
-          description: EndCallTriggerAction variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - retry
-              default: retry
-            feedback:
-              type: string
-              default: >-
-                Your response was blocked by a guardrail that blocks content
-                that matches this condition/category: '{{trigger_reason}}'
-                During your next turn you must tell the user "I'm sorry but I
-                can't answer that question, would you like to know something
-                else?".
-              description: >-
-                Custom feedback to inject into the agent when retrying after
-                guardrail trigger.
-          required:
-            - type
-          description: RetryTriggerAction variant
-      discriminator:
-        propertyName: type
-      title: CustomGuardrailConfigTriggerAction
-    CustomGuardrailConfig:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-          default: false
-        name:
-          type: string
-          description: User-facing name for this guardrail
-        prompt:
-          type: string
-          description: >-
-            Instruction describing what to block, e.g. 'don't talk about
-            politics'
-        execution_mode:
-          $ref: '#/components/schemas/GuardrailExecutionMode'
-          default: streaming
-        model:
-          $ref: '#/components/schemas/CustomGuardrailConfigModel'
-          default: gemini-2.5-flash-lite
-          description: LLM model to use for custom guardrail evaluation
-        history_message_count:
-          type: integer
-          default: 0
-          description: >-
-            How much recent history the guardrail sees before the reply it
-            evaluates, counted in user messages (the agent replies between them
-            are included too). The guardrail always gets a single
-            <conversation_history> transcript ending in the evaluated reply,
-            marked 'AGENT [current reply]:'. 0 (default) adds no prior history
-            (just that line); 1 adds the latest user message onward.
-        trigger_action:
-          $ref: '#/components/schemas/CustomGuardrailConfigTriggerAction'
-        evaluate_full_response_only:
-          type: boolean
-          default: false
-          description: >-
-            Evaluate once against the complete non-TTS response instead of
-            cumulative partials. Requires blocking mode.
-      required:
-        - name
-        - prompt
-      description: Single custom guardrail configuration
-      title: CustomGuardrailConfig
-    ProcedureAtVersion-Output:
-      type: object
-      properties:
-        procedure_id:
-          type: string
-          description: Procedure ID
-        name:
-          type: string
-          description: Procedure name
-        type:
-          $ref: '#/components/schemas/ProcedureType'
-          default: free_form
-        trigger:
-          type: string
-          default: ''
-          description: >-
-            When the agent should use this procedure. Empty string means this is
-            a sub-procedure that should only start when another procedure
-            references it.
-        referenced_tool_ids:
-          type: array
-          items:
-            type: string
-          description: Tool IDs referenced in the procedure content
-        referenced_kb_ids:
-          type: array
-          items:
-            type: string
-          description: Knowledge base IDs referenced in the procedure content
-        referenced_procedure_ids:
-          type: array
-          items:
-            type: string
-          description: Procedure IDs referenced in the procedure content
-        referenced_dynamic_variables:
-          type: array
-          items:
-            type: string
-          description: Dynamic variable names used in the procedure content
-        content:
-          type: string
-          description: Procedure content
-        guardrails:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomGuardrailConfig'
-        agent_id:
-          type: string
-          description: Agent ID of the procedure
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Version ID of a version of the procedure. None for a procedure never
-            versioned.
-      required:
-        - procedure_id
-        - name
-        - content
-        - agent_id
-      title: ProcedureAtVersion-Output
-    SearchStrategy:
-      type: string
-      enum:
-        - cat
-        - keyword
-        - semantic
-        - ls
-      title: SearchStrategy
-    LiteralJsonSchemaPropertyType0:
-      type: string
-      enum:
-        - boolean
-        - string
-        - integer
-        - number
-      title: LiteralJsonSchemaPropertyType0
-    LiteralJsonSchemaPropertyType:
-      oneOf:
-        - $ref: '#/components/schemas/LiteralJsonSchemaPropertyType0'
-        - type: array
-          items:
-            type: string
-      title: LiteralJsonSchemaPropertyType
-    LiteralJsonSchemaPropertyConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      description: >-
-        A constant value to use for this property. Mutually exclusive with
-        description, dynamic_variable, is_system_provided, and is_omitted.
-      title: LiteralJsonSchemaPropertyConstantValue
-    LiteralJsonSchemaProperty:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/LiteralJsonSchemaPropertyType'
-        description:
-          type: string
-          default: ''
-          description: >-
-            The description of the property. When set, the LLM will provide the
-            value based on this description. Mutually exclusive with
-            dynamic_variable, is_system_provided, constant_value, and
-            is_omitted.
-        enum:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of allowed string values for string type parameters
-        is_system_provided:
-          type: boolean
-          default: false
-          description: >-
-            If true, the value will be populated by the system at runtime. Used
-            by API Integration Webhook tools for templating. Mutually exclusive
-            with description, dynamic_variable, constant_value, and is_omitted.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            The name of the dynamic variable to use for this property's value.
-            Mutually exclusive with description, is_system_provided,
-            constant_value, and is_omitted.
-        allowed_values_dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the LLM provides the value but the runtime rejects any
-            value not present in the list held by this dynamic variable. Use to
-            let the LLM pick from a server-verified set (e.g. the IDs the
-            current user is allowed to access). Requires description; mutually
-            exclusive with dynamic_variable, is_system_provided, constant_value,
-            and is_omitted.
-        constant_value:
-          $ref: '#/components/schemas/LiteralJsonSchemaPropertyConstantValue'
-          default: ''
-          description: >-
-            A constant value to use for this property. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and
-            constant_value.
-      required:
-        - type
-      description: >-
-        Schema property for literal JSON types. IMPORTANT: Only ONE of the
-        following fields can be set: description (LLM provides value),
-        dynamic_variable (value from variable), is_system_provided (system
-        provides value), constant_value (fixed value), or is_omitted (parameter
-        is omitted). These are mutually exclusive.
-      title: LiteralJsonSchemaProperty
-    ArrayJsonSchemaPropertyOutputItems:
-      oneOf:
-        - $ref: '#/components/schemas/LiteralJsonSchemaProperty'
-        - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-        - $ref: '#/components/schemas/ArrayJsonSchemaProperty-Output'
-      description: Schema for array elements.
-      title: ArrayJsonSchemaPropertyOutputItems
-    ArrayJsonSchemaProperty-Output:
-      type: object
-      properties:
-        description:
-          type: string
-          default: ''
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the entire parameter is populated from this dynamic
-            variable at runtime. Mutually exclusive with description
-            (LLM-provided value), constant_value, and is_omitted.
-        constant_value:
-          type:
-            - array
-            - 'null'
-          items:
-            description: Any type
-          description: >-
-            When set, the entire array uses this constant value at runtime.
-            Mutually exclusive with description (LLM-provided array),
-            dynamic_variable, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, and constant_value.
-        type:
-          type: string
-          enum:
-            - array
-          default: array
-        items:
-          $ref: '#/components/schemas/ArrayJsonSchemaPropertyOutputItems'
-          default:
-            allowed_values_dynamic_variable: ''
-            constant_value: ''
-            description: Array element
-            dynamic_variable: ''
-            is_omitted: false
-            is_system_provided: false
-            type: string
-          description: Schema for array elements.
-      title: ArrayJsonSchemaProperty-Output
-    ObjectJsonSchemaPropertyOutput:
-      oneOf:
-        - $ref: '#/components/schemas/LiteralJsonSchemaProperty'
-        - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-        - $ref: '#/components/schemas/ArrayJsonSchemaProperty-Output'
-      title: ObjectJsonSchemaPropertyOutput
-    RequiredConstraint:
-      type: object
-      properties:
-        required:
-          type: array
-          items:
-            type: string
-      required:
-        - required
-      description: A set of fields that must all be present to satisfy this constraint.
-      title: RequiredConstraint
-    RequiredConstraints:
-      type: object
-      properties:
-        any_of:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequiredConstraint'
-        all_of:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequiredConstraint'
-      description: >-
-        Wrapper for anyOf/allOf composition constraints scoped to required
-        fields.
-      title: RequiredConstraints
-    ObjectJsonSchemaProperty-Output:
-      type: object
-      properties:
-        description:
-          type: string
-          default: ''
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the entire parameter is populated from this dynamic
-            variable at runtime. Mutually exclusive with description
-            (LLM-provided value), constant_value, and is_omitted.
-        constant_value:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: >-
-            When set, the entire object uses this constant JSON value at
-            runtime. Mutually exclusive with description (LLM-provided object),
-            dynamic_variable, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, and constant_value.
-        type:
-          type: string
-          enum:
-            - object
-          default: object
-        required:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ObjectJsonSchemaPropertyOutput'
-        required_constraints:
-          oneOf:
-            - $ref: '#/components/schemas/RequiredConstraints'
-            - type: 'null'
-      title: ObjectJsonSchemaProperty-Output
-    SubAgent-Output:
-      type: object
-      properties:
-        agent_id:
-          type: string
-        branch_id:
-          type:
-            - string
-            - 'null'
-        description:
-          type: string
-        parameters:
-          oneOf:
-            - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-            - type: 'null'
-      required:
-        - agent_id
-        - description
-      title: SubAgent-Output
-    AgentTransfer-Output:
-      type: object
-      properties:
-        agent_id:
-          type:
-            - string
-            - 'null'
-        node_id:
-          type:
-            - string
-            - 'null'
-        condition:
-          type: string
-        delay_ms:
-          type: integer
-          default: 0
-        transfer_message:
-          type:
-            - string
-            - 'null'
-        enable_transferred_agent_first_message:
-          type: boolean
-          default: false
-        is_workflow_node_transfer:
-          type: boolean
-          default: false
-        preserve_client_tts_overrides:
-          type: boolean
-          default: false
-          description: >-
-            Defines whether TTS client overrides should be carried over to the
-            transferred agent.
-      required:
-        - condition
-      title: AgentTransfer-Output
-    PhoneNumberTransferCustomSipHeadersItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - dynamic
-              description: 'Discriminator value: dynamic'
-            key:
-              type: string
-              description: The SIP header name (e.g., 'X-Customer-ID')
-            value:
-              type: string
-              description: The dynamic variable name to resolve
-          required:
-            - type
-            - key
-            - value
-          description: >-
-            Custom SIP header for phone transfers with a dynamic variable
-            reference.
-
-            The value is a variable name that will be resolved at runtime.
-
-            Value is not validated here since it will be substituted with actual
-            value later.
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - static
-              description: 'Discriminator value: static'
-            key:
-              type: string
-              description: The SIP header name (e.g., 'X-Customer-ID')
-            value:
-              type: string
-              description: The header value
-          required:
-            - type
-            - key
-            - value
-          description: >-
-            Custom SIP header for phone transfers with a static (validated)
-            value.
-      discriminator:
-        propertyName: type
-      title: PhoneNumberTransferCustomSipHeadersItems
-    PhoneNumberTransferTransferDestination:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - phone
-              description: 'Discriminator value: phone'
-            phone_number:
-              type: string
-          required:
-            - type
-            - phone_number
-          description: PhoneNumberTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - phone_dynamic_variable
-              description: 'Discriminator value: phone_dynamic_variable'
-            phone_number:
-              type: string
-          required:
-            - type
-            - phone_number
-          description: PhoneNumberDynamicVariableTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sip_uri
-              description: 'Discriminator value: sip_uri'
-            sip_uri:
-              type: string
-          required:
-            - type
-            - sip_uri
-          description: SIPUriTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sip_uri_dynamic_variable
-              description: 'Discriminator value: sip_uri_dynamic_variable'
-            sip_uri:
-              type: string
-          required:
-            - type
-            - sip_uri
-          description: SIPUriDynamicVariableTransferDestination variant
-      discriminator:
-        propertyName: type
-      title: PhoneNumberTransferTransferDestination
-    TransferTypeEnum:
-      type: string
-      enum:
-        - blind
-        - conference
-        - sip_refer
-      default: conference
-      title: TransferTypeEnum
-    UuiTransferConfigProtocolDiscriminatorMode:
-      type: string
-      enum:
-        - prefix
-        - pd_parameter
-      default: prefix
-      description: >-
-        How to attach protocol_discriminator. 'prefix' prepends the octet to the
-        hex payload (User-to-User=XX<hex>;encoding=hex). 'pd_parameter' sends it
-        as a separate parameter (User-to-User=<hex>;pd=XX;encoding=hex). Ignored
-        when protocol_discriminator is unset.
-      title: UuiTransferConfigProtocolDiscriminatorMode
-    UUITransferConfig:
-      type: object
-      properties:
-        data:
-          type: string
-          description: >-
-            UUI payload to send on SIP REFER transfers. Supports inline dynamic
-            variables and is hex-encoded at transfer time.
-        protocol_discriminator:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Optional one-octet protocol discriminator (two hex digits, e.g.
-            '00'). Required by platforms such as Genesys Cloud, which otherwise
-            strip the first octet of the payload. Leave unset for platforms like
-            Talkdesk that expect a bare hex payload.
-        protocol_discriminator_mode:
-          $ref: '#/components/schemas/UuiTransferConfigProtocolDiscriminatorMode'
-          default: prefix
-          description: >-
-            How to attach protocol_discriminator. 'prefix' prepends the octet to
-            the hex payload (User-to-User=XX<hex>;encoding=hex). 'pd_parameter'
-            sends it as a separate parameter
-            (User-to-User=<hex>;pd=XX;encoding=hex). Ignored when
-            protocol_discriminator is unset.
-      required:
-        - data
-      description: >-
-        User-to-User Information envelope for SIP REFER transfers (RFC 7433).
-
-
-        Outbound payloads are hex-encoded (the only encoding RFC 7433 defines).
-        The
-
-        protocol discriminator axis lets per-platform formats (Talkdesk,
-        Genesys, ...)
-
-        be expressed by configuration rather than scattered transfer flags.
-        Further
-
-        axes (ASCII encoding, header name, purpose/content parameters) can be
-        added
-
-        here without touching the transfer model.
-      title: UUITransferConfig
-    PhoneNumberTransferPostDialDigits:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - dynamic
-              description: 'Discriminator value: dynamic'
-            value:
-              type: string
-              description: The dynamic variable name to resolve
-          required:
-            - type
-            - value
-          description: PostDialDigitsDynamicVariable variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - static
-              description: 'Discriminator value: static'
-            value:
-              type: string
-              description: >-
-                DTMF digits to send after call connects (e.g., 'ww1234' for
-                extension)
-          required:
-            - type
-            - value
-          description: PostDialDigitsStatic variant
-      discriminator:
-        propertyName: type
-      description: >-
-        DTMF digits to send after call connects (e.g., 'ww1234' for extension).
-        Can be either a static value or a dynamic variable reference. Use 'w'
-        for 0.5s pause. Only supported for Twilio transfers.
-      title: PhoneNumberTransferPostDialDigits
-    PhoneNumberTransfer:
-      type: object
-      properties:
-        custom_sip_headers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneNumberTransferCustomSipHeadersItems'
-          description: >-
-            Custom SIP headers to include when transferring the call. Each
-            header can be either a static value or a dynamic variable reference.
-        transfer_destination:
-          $ref: '#/components/schemas/PhoneNumberTransferTransferDestination'
-        transfer_type:
-          $ref: '#/components/schemas/TransferTypeEnum'
-          default: conference
-        uui:
-          oneOf:
-            - $ref: '#/components/schemas/UUITransferConfig'
-            - type: 'null'
-          description: >-
-            User-to-User Information (RFC 7433) to attach to SIP REFER
-            transfers. Carries call context such as CRM identifiers or
-            escalation reason across the transfer boundary.
-        post_dial_digits:
-          oneOf:
-            - $ref: '#/components/schemas/PhoneNumberTransferPostDialDigits'
-            - type: 'null'
-          description: >-
-            DTMF digits to send after call connects (e.g., 'ww1234' for
-            extension). Can be either a static value or a dynamic variable
-            reference. Use 'w' for 0.5s pause. Only supported for Twilio
-            transfers.
-        phone_number:
-          type:
-            - string
-            - 'null'
-        condition:
-          type: string
-      required:
-        - transfer_destination
-        - condition
-      title: PhoneNumberTransfer
-    ToolResponseModelToolConfigDiscriminatorMappingSystemParams:
-      oneOf:
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - end_call
-              description: 'Discriminator value: end_call'
-          required:
-            - system_tool_type
-          description: EndCallToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - end_procedure
-              description: 'Discriminator value: end_procedure'
-            procedures:
-              type: object
-              additionalProperties:
-                $ref: '#/components/schemas/ProcedureAtVersion-Output'
-          required:
-            - system_tool_type
-          description: EndProcedureToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - knowledge_base
-              description: 'Discriminator value: knowledge_base'
-            enabled_strategies:
-              type: array
-              items:
-                $ref: '#/components/schemas/SearchStrategy'
-          required:
-            - system_tool_type
-          description: KnowledgeBaseToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - knowledge_base_rag
-              description: 'Discriminator value: knowledge_base_rag'
-          required:
-            - system_tool_type
-          description: KnowledgeBaseRagToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - language_detection
-              description: 'Discriminator value: language_detection'
-            only_at_conversation_start:
-              type: boolean
-              default: false
-              description: >-
-                If no language switch happens in the first 2 user turns, later
-                attempts fail and the conversation stays in the current
-                language. If the language switches during those turns, later
-                switching stays available. Enable to reduce the possibility of
-                false switching.
-          required:
-            - system_tool_type
-          description: LanguageDetectionToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - play_keypad_touch_tone
-              description: 'Discriminator value: play_keypad_touch_tone'
-            use_out_of_band_dtmf:
-              type: boolean
-              default: true
-              description: >-
-                Send DTMF tones as out-of-band RTP events (RFC 4733) instead of
-                in-band audio. Only effective for SIP trunk imported numbers.
-            suppress_turn_after_dtmf:
-              type: boolean
-              default: false
-              description: >-
-                If true, the agent will not generate further speech after
-                playing DTMF tones. This prevents the agent's speech from
-                interfering with IVR systems.
-          required:
-            - system_tool_type
-          description: >-
-            Allows the agent to play DTMF tones during a phone call.
-
-
-            This tool can be used to interact with automated phone systems, such
-            as
-
-            navigating phone menus, entering extensions, or inputting numeric
-            codes.
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - run_subagent
-              description: 'Discriminator value: run_subagent'
-            agents:
-              type: array
-              items:
-                $ref: '#/components/schemas/SubAgent-Output'
-          required:
-            - system_tool_type
-            - agents
-          description: RunSubagentToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - skip_turn
-              description: 'Discriminator value: skip_turn'
-          required:
-            - system_tool_type
-          description: >-
-            Allows the agent to explicitly skip its turn.
-
-
-            This tool should be invoked by the LLM when the user indicates they
-            would like
-
-            to think or take a short pause before continuing the
-            conversation—e.g. when
-
-            they say: "Give me a second", "Let me think", or "One moment
-            please".  After
-
-            calling this tool, the assistant should not speak until the user
-            speaks
-
-            again, or another normal turn-taking condition is met.  The tool
-            itself has
-
-            no parameters and performs no side-effects other than informing the
-            backend
-
-            that the current turn generation is complete.
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - start_procedure
-              description: 'Discriminator value: start_procedure'
-            procedures:
-              type: object
-              additionalProperties:
-                $ref: '#/components/schemas/ProcedureAtVersion-Output'
-          required:
-            - system_tool_type
-          description: StartProcedureToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - transfer_to_agent
-              default: transfer_to_agent
-            transfers:
-              type: array
-              items:
-                $ref: '#/components/schemas/AgentTransfer-Output'
-          required:
-            - system_tool_type
-            - transfers
-          description: TransferToAgentToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - transfer_to_number
-              default: transfer_to_number
-            transfers:
-              type: array
-              items:
-                $ref: '#/components/schemas/PhoneNumberTransfer'
-            enable_client_message:
-              type: boolean
-              default: true
-              description: >-
-                Whether to play a message to the client while they wait for
-                transfer. Defaults to true for backward compatibility.
-          required:
-            - system_tool_type
-            - transfers
-          description: TransferToNumberToolConfig variant
-        - type: object
-          properties:
-            system_tool_type:
-              type: string
-              enum:
-                - voicemail_detection
-              default: voicemail_detection
-            voicemail_message:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional message to leave on voicemail when detected. If not
-                provided, the call will end immediately when voicemail is
-                detected. Supports dynamic variables (e.g., {{system__time}},
-                {{system__call_duration_secs}}, {{custom_variable}}).
-          required:
-            - system_tool_type
-          description: >-
-            Allows the agent to detect when a voicemail system is encountered.
-
-
-            This tool should be invoked by the LLM when it detects that the call
-            has been
-
-            answered by a voicemail system rather than a human. If a voicemail
-            message
-
-            is configured, it will be played; otherwise the call will end
-            immediately.
-      discriminator:
-        propertyName: system_tool_type
-      title: ToolResponseModelToolConfigDiscriminatorMappingSystemParams
-    SystemToolConfig-Output:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-          default: ''
-          description: >-
-            Description of when the tool should be used and what it does. Leave
-            empty to use the default description that's optimized for the
-            specific tool type.
-        response_timeout_secs:
-          type: integer
-          default: 20
-          description: The maximum time in seconds to wait for the tool call to complete.
-        disable_interruptions:
-          type: boolean
-          default: false
-          description: >-
-            DEPRECATED: use `interruption_mode` instead. If true, the user will
-            not be able to interrupt the agent while this tool is running.
-        interruption_mode:
-          $ref: '#/components/schemas/ToolInterruptionMode'
-          default: allow
-          description: >-
-            Controls whether the user can interrupt the agent around this tool
-            call. 'allow' (default) lets the user interrupt at any time,
-            'disable_during_tool' suppresses interruptions only while the tool
-            is running, 'disable_during_tool_and_turn' suppresses interruptions
-            while the tool runs and for the agent response that follows it.
-        force_pre_tool_speech:
-          type: boolean
-          default: false
-          description: >-
-            DEPRECATED: use `pre_tool_speech` instead. If true, the agent will
-            speak before the tool call.
-        pre_tool_speech:
-          $ref: '#/components/schemas/PreToolSpeechMode'
-          default: auto
-          description: >-
-            Controls whether the agent speaks before this tool is called. 'auto'
-            (default) decides based on recent tool latency, 'force' always asks
-            the agent to speak, 'off' fully opts out regardless of latency.
-        assignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DynamicVariableAssignment'
-          description: >-
-            Configuration for extracting values from tool responses and
-            assigning them to dynamic variables
-        tool_call_sound:
-          oneOf:
-            - $ref: '#/components/schemas/ToolCallSoundType'
-            - type: 'null'
-          description: >-
-            Predefined tool call sound type to play during tool execution. If
-            not specified, no tool call sound will be played.
-        tool_call_sound_behavior:
-          $ref: '#/components/schemas/ToolCallSoundBehavior'
-          default: auto
-          description: >-
-            Determines when the tool call sound should play. 'auto' only plays
-            when there's pre-tool speech, 'always' plays for every tool call.
-        tool_error_handling_mode:
-          $ref: '#/components/schemas/ToolErrorHandlingMode'
-          default: auto
-          description: >-
-            Controls how tool errors are processed before being shared with the
-            agent. 'auto' determines handling based on tool type (summarized for
-            native integrations, hide for others), 'summarized' sends an
-            LLM-generated summary, 'passthrough' sends the raw error, 'hide'
-            does not share the error with the agent.
-        params:
-          $ref: >-
-            #/components/schemas/ToolResponseModelToolConfigDiscriminatorMappingSystemParams
-      required:
-        - name
-        - params
-      description: >-
-        A system tool is a tool that is used to call a system method in the
-        server
-      title: SystemToolConfig-Output
-    BuiltInTools-Output:
-      type: object
-      properties:
-        end_call:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The end call tool
-        language_detection:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The language detection tool
-        transfer_to_agent:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The transfer to agent tool
-        transfer_to_number:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The transfer to number tool
-        skip_turn:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The skip turn tool
-        play_keypad_touch_tone:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The play DTMF tool
-        voicemail_detection:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The voicemail detection tool
-      title: BuiltInTools-Output
-    ConvAISecretLocator:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      description: Used to reference a secret from the agent's secret store.
-      title: ConvAISecretLocator
-    ConvAIEnvVarLocator:
-      type: object
-      properties:
-        env_var_label:
-          type: string
-      required:
-        - env_var_label
-      description: Used to reference an environment variable by label.
-      title: ConvAIEnvVarLocator
-    CustomLlmApiKey:
-      oneOf:
-        - $ref: '#/components/schemas/ConvAISecretLocator'
-        - $ref: '#/components/schemas/ConvAIEnvVarLocator'
-      description: >-
-        The API key for authentication. Either a workspace secret reference
-        {'secret_id': '...'} or an environment variable reference
-        {'env_var_label': '...'}.
-      title: CustomLlmApiKey
-    AuthConnectionLocator:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      description: >-
-        Used to reference an auth connection from the workspace's auth
-        connection store.
-      title: AuthConnectionLocator
-    EnvironmentAuthConnectionLocator:
-      type: object
-      properties:
-        env_var_label:
-          type: string
-      required:
-        - env_var_label
-      description: |-
-        References an environment variable of type 'auth_connection' by label.
-        At runtime, resolves to the auth connection for the current environment,
-        falling back to the default environment.
-      title: EnvironmentAuthConnectionLocator
-    CustomLlmAuthConnection:
-      oneOf:
-        - $ref: '#/components/schemas/AuthConnectionLocator'
-        - $ref: '#/components/schemas/EnvironmentAuthConnectionLocator'
-      description: >-
-        Optional workspace auth connection for authentication. Only auth
-        connections that produce an Authorization Bearer token are supported;
-        Basic auth, mTLS, custom header, and URL secret auth connections are not
-        supported.
-      title: CustomLlmAuthConnection
-    ConvAIDynamicVariable:
-      type: object
-      properties:
-        variable_name:
-          type: string
-      required:
-        - variable_name
-      description: Used to reference a dynamic variable.
-      title: ConvAIDynamicVariable
-    CustomLlmRequestHeaders:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/ConvAISecretLocator'
-        - $ref: '#/components/schemas/ConvAIDynamicVariable'
-        - $ref: '#/components/schemas/ConvAIEnvVarLocator'
-      title: CustomLlmRequestHeaders
-    CustomLLMAPIType:
-      type: string
-      enum:
-        - chat_completions
-        - responses
-        - websocket
-      default: chat_completions
-      title: CustomLLMAPIType
-    CustomLLM:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL of the Chat Completions compatible endpoint
-        model_id:
-          type:
-            - string
-            - 'null'
-          description: The model ID to be used if URL serves multiple models
-        api_key:
-          oneOf:
-            - $ref: '#/components/schemas/CustomLlmApiKey'
-            - type: 'null'
-          description: >-
-            The API key for authentication. Either a workspace secret reference
-            {'secret_id': '...'} or an environment variable reference
-            {'env_var_label': '...'}.
-        auth_connection:
-          oneOf:
-            - $ref: '#/components/schemas/CustomLlmAuthConnection'
-            - type: 'null'
-          description: >-
-            Optional workspace auth connection for authentication. Only auth
-            connections that produce an Authorization Bearer token are
-            supported; Basic auth, mTLS, custom header, and URL secret auth
-            connections are not supported.
-        request_headers:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CustomLlmRequestHeaders'
-          description: Headers that should be included in the request
-        api_version:
-          type:
-            - string
-            - 'null'
-          description: The API version to use for the request
-        api_type:
-          $ref: '#/components/schemas/CustomLLMAPIType'
-          default: chat_completions
-          description: The API type to use (chat_completions, responses or websocket)
-      required:
-        - url
-      title: CustomLLM
-    EmbeddingModelEnum:
-      type: string
-      enum:
-        - e5_mistral_7b_instruct
-        - multilingual_e5_large_instruct
-      default: e5_mistral_7b_instruct
-      title: EmbeddingModelEnum
-    RagConfig-Output:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        embedding_model:
-          $ref: '#/components/schemas/EmbeddingModelEnum'
-          default: e5_mistral_7b_instruct
-        max_vector_distance:
-          type: number
-          format: double
-          default: 0.6
-          description: Maximum vector distance of retrieved chunks.
-        max_documents_length:
-          type: integer
-          default: 50000
-          description: Maximum total length of document chunks retrieved from RAG.
-        max_retrieved_rag_chunks_count:
-          type: integer
-          default: 20
-          description: >-
-            Maximum number of RAG document chunks to initially retrieve from the
-            vector store. These are then further filtered by vector distance and
-            total length.
-        num_candidates:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Number of candidates evaluated in ANN vector search. Higher number
-            means better results, but higher latency. Minimum recommended value
-            is 100. If disabled, the default value is used.
-        query_rewrite_prompt_override:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Custom prompt for rewriting user queries before RAG retrieval. The
-            conversation history will be automatically appended at the end. If
-            not set, the default prompt will be used.
-      title: RagConfig-Output
-    PromptAgentApiModelOutputBackupLlmConfig:
-      oneOf:
-        - type: object
-          properties:
-            preference:
-              type: string
-              enum:
-                - default
-              description: 'Discriminator value: default'
-          required:
-            - preference
-          description: BackupLLMDefault variant
-        - type: object
-          properties:
-            preference:
-              type: string
-              enum:
-                - disabled
-              description: 'Discriminator value: disabled'
-          required:
-            - preference
-          description: BackupLLMDisabled variant
-        - type: object
-          properties:
-            preference:
-              type: string
-              enum:
-                - override
-              description: 'Discriminator value: override'
-            order:
-              type: array
-              items:
-                $ref: '#/components/schemas/LLM'
-          required:
-            - preference
-            - order
-          description: BackupLLMOverride variant
-      discriminator:
-        propertyName: preference
-      description: >-
-        Configuration for backup LLM cascading. Can be disabled, use system
-        defaults, or specify custom order.
-      title: PromptAgentApiModelOutputBackupLlmConfig
-    DynamicVariablesConfig:
-      type: object
-      properties:
-        dynamic_variable_placeholders:
-          type: object
-          additionalProperties:
-            description: Any type
-          description: A dictionary of dynamic variable placeholders and their values
-      title: DynamicVariablesConfig
-    ToolExecutionMode:
-      type: string
-      enum:
-        - immediate
-        - post_tool_speech
-        - async
-      default: immediate
-      title: ToolExecutionMode
-    McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-        - type: array
-          items:
-            description: Any type
-        - type: object
-          additionalProperties:
-            description: Any type
-      description: The constant value to use
-      title: >-
-        McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue
-    ApiIntegrationWebhookOverridesSchemaOverrides:
-      oneOf:
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - constant
-              description: 'Discriminator value: constant'
-            constant_value:
-              $ref: >-
-                #/components/schemas/McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue
-              description: The constant value to use
-          required:
-            - source
-            - constant_value
-          description: ConstantSchemaOverride variant
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - dynamic_variable
-              description: 'Discriminator value: dynamic_variable'
-            dynamic_variable:
-              type: string
-              description: The name of the dynamic variable to use
-          required:
-            - source
-            - dynamic_variable
-          description: DynamicVariableSchemaOverride variant
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            prompt:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Prompt override for the LLM. If not provided, the original
-                schema description is used.
-          required:
-            - source
-          description: LLMSchemaOverride variant
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - omit
-              default: omit
-          required:
-            - source
-          description: OmitSchemaOverride variant
-      discriminator:
-        propertyName: source
-      title: ApiIntegrationWebhookOverridesSchemaOverrides
-    ApiIntegrationWebhookOverridesRequestHeaders:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/ConvAIDynamicVariable'
-      title: ApiIntegrationWebhookOverridesRequestHeaders
-    ResponseFilterMode:
-      type: string
-      enum:
-        - all
-        - allow
-        - hide_all
-      default: all
-      description: >-
-        Controls how tool responses are filtered before being visible to the
-        agent.
-      title: ResponseFilterMode
-    ApiIntegrationWebhookOverrides:
-      type: object
-      properties:
-        schema_overrides:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/ApiIntegrationWebhookOverridesSchemaOverrides'
-        request_headers:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/ApiIntegrationWebhookOverridesRequestHeaders'
-        response_filter_mode:
-          oneOf:
-            - $ref: '#/components/schemas/ResponseFilterMode'
-            - type: 'null'
-        response_filters:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-      description: |-
-        A whitelist of fields that can be overridden by users when
-        configuring an API Integration Webhook Tool.
-      title: ApiIntegrationWebhookOverrides
-    WebhookToolApiSchemaConfigOutputRequestHeaders:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/ConvAISecretLocator'
-        - $ref: '#/components/schemas/ConvAIDynamicVariable'
-        - $ref: '#/components/schemas/ConvAIEnvVarLocator'
-      title: WebhookToolApiSchemaConfigOutputRequestHeaders
-    WebhookToolApiSchemaConfigOutputMethod:
-      type: string
-      enum:
-        - GET
-        - POST
-        - PUT
-        - PATCH
-        - DELETE
-      default: GET
-      description: The HTTP method to use for the webhook
-      title: WebhookToolApiSchemaConfigOutputMethod
-    QueryParamsJsonSchema:
-      type: object
-      properties:
-        properties:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LiteralJsonSchemaProperty'
-        required:
-          type: array
-          items:
-            type: string
-      required:
-        - properties
-      title: QueryParamsJsonSchema
-    ResponseFilter:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/ResponseFilterMode'
-          default: all
-          description: >-
-            Controls how tool responses are filtered. 'all' returns entire
-            response, 'allow' returns only specified paths, 'hide_all' hides the
-            entire response.
-        filters:
-          type: array
-          items:
-            type: string
-          description: >-
-            Dot notation paths to include when mode is 'allow' (e.g.,
-            ['ticket.id', 'ticket.status']).
-        content_type:
-          type: string
-          enum:
-            - application/json
-          default: application/json
-          description: >-
-            Content type for response filtering. Only 'application/json'
-            responses are filtered.
-      description: >-
-        Configuration for filtering tool responses before they are visible to
-        the agent.
-      title: ResponseFilter
-    WebhookToolApiSchemaConfigOutputContentType:
-      type: string
-      enum:
-        - application/json
-        - application/x-www-form-urlencoded
-      default: application/json
-      description: >-
-        Content type for the request body. Only applies to POST/PUT/PATCH
-        requests.
-      title: WebhookToolApiSchemaConfigOutputContentType
-    WebhookToolApiSchemaConfigOutputAuthConnection:
-      oneOf:
-        - $ref: '#/components/schemas/AuthConnectionLocator'
-        - $ref: '#/components/schemas/EnvironmentAuthConnectionLocator'
-      description: Optional auth connection to use for authentication with this webhook
-      title: WebhookToolApiSchemaConfigOutputAuthConnection
-    WebhookToolApiSchemaConfig-Output:
-      type: object
-      properties:
-        request_headers:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/WebhookToolApiSchemaConfigOutputRequestHeaders
-          description: Headers that should be included in the request
-        url:
-          type: string
-          description: >-
-            The URL that the webhook will be sent to. May include path
-            parameters, e.g. https://example.com/agents/{agent_id}
-        method:
-          $ref: '#/components/schemas/WebhookToolApiSchemaConfigOutputMethod'
-          default: GET
-          description: The HTTP method to use for the webhook
-        path_params_schema:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LiteralJsonSchemaProperty'
-          description: >-
-            Schema for path parameters, if any. The keys should match the
-            placeholders in the URL.
-        query_params_schema:
-          oneOf:
-            - $ref: '#/components/schemas/QueryParamsJsonSchema'
-            - type: 'null'
-          description: >-
-            Schema for any query params, if any. These will be added to end of
-            the URL as query params. Note: properties in a query param must all
-            be literal types
-        request_body_schema:
-          oneOf:
-            - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-            - type: 'null'
-          description: >-
-            Schema for the body parameters, if any. Used for POST/PATCH/PUT
-            requests. The schema should be an object which will be sent as the
-            json body
-        response_body_schema:
-          oneOf:
-            - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-            - type: 'null'
-          description: >-
-            Schema describing the expected response body structure. For
-            documentation only; not surfaced to the LLM.
-        response_filter:
-          oneOf:
-            - $ref: '#/components/schemas/ResponseFilter'
-            - type: 'null'
-          description: >-
-            Optional allow-list filter applied to the response before the LLM
-            sees it, so large responses don't pollute the context. Defaults to
-            the full response.
-        content_type:
-          $ref: '#/components/schemas/WebhookToolApiSchemaConfigOutputContentType'
-          default: application/json
-          description: >-
-            Content type for the request body. Only applies to POST/PUT/PATCH
-            requests.
-        auth_resolved_params:
-          type: array
-          items:
-            type: string
-          description: >-
-            URL placeholders resolved from the auth connection (e.g. secrets
-            injected via UrlSecretAuthConnection) rather than from
-            path_params_schema.
-        auth_connection:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/WebhookToolApiSchemaConfigOutputAuthConnection
-            - type: 'null'
-          description: Optional auth connection to use for authentication with this webhook
-      required:
-        - url
-      title: WebhookToolApiSchemaConfig-Output
-    PromptAgentApiModelOutputToolsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 300 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-            tool_version:
-              type: string
-              default: 1.0.0
-              description: The version of the API integration tool
-            api_integration_id:
-              type: string
-            api_integration_connection_id:
-              type: string
-            api_schema_overrides:
-              oneOf:
-                - $ref: '#/components/schemas/ApiIntegrationWebhookOverrides'
-                - type: 'null'
-              description: User overrides applied on top of the base api_schema
-          required:
-            - type
-            - name
-            - description
-            - response_timeout_secs
-            - disable_interruptions
-            - interruption_mode
-            - force_pre_tool_speech
-            - pre_tool_speech
-            - assignments
-            - tool_call_sound
-            - tool_call_sound_behavior
-            - tool_error_handling_mode
-            - dynamic_variables
-            - execution_mode
-            - tool_version
-            - api_integration_id
-            - api_integration_connection_id
-            - api_schema_overrides
-          description: ApiIntegrationWebhookToolConfig variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 1 and 120 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            parameters:
-              oneOf:
-                - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-                - type: 'null'
-              description: Schema for any parameters to pass to the client
-            expects_response:
-              type: boolean
-              default: false
-              description: >-
-                If true, calling this tool should block the conversation until
-                the client responds with some response which is passed to the
-                llm. If false then we will continue the conversation without
-                waiting for the client to respond, this is useful to show
-                content to a user but not block the conversation
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              default: immediate
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-          required:
-            - type
-            - name
-            - description
-          description: >-
-            A client tool is one that sends an event to the user's client to
-            trigger something client side
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-          required:
-            - type
-          description: mcp variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - smb
-              description: 'Discriminator value: smb'
-          required:
-            - type
-          description: smb variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - system
-              description: 'Discriminator value: system'
-            name:
-              type: string
-            description:
-              type: string
-              default: ''
-              description: >-
-                Description of when the tool should be used and what it does.
-                Leave empty to use the default description that's optimized for
-                the specific tool type.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete.
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            params:
-              $ref: >-
-                #/components/schemas/ToolResponseModelToolConfigDiscriminatorMappingSystemParams
-          required:
-            - type
-            - name
-            - params
-          description: >-
-            A system tool is a tool that is used to call a system method in the
-            server
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-              default: webhook
-              description: The type of tool
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 300 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              default: immediate
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-            api_schema:
-              $ref: '#/components/schemas/WebhookToolApiSchemaConfig-Output'
-              description: >-
-                The schema for the outgoing webhoook, including parameters and
-                URL specification
-          required:
-            - type
-            - name
-            - description
-            - api_schema
-          description: >-
-            A webhook tool is a tool that calls an external webhook from our
-            server
-      discriminator:
-        propertyName: type
-      description: The type of tool
-      title: PromptAgentApiModelOutputToolsItems
-    PromptAgentAPIModel-Output:
-      type: object
-      properties:
-        prompt:
-          type: string
-          default: ''
-          description: The prompt for the agent
-        llm:
-          $ref: '#/components/schemas/LLM'
-          description: >-
-            The LLM to query with the prompt and the chat history. If using data
-            residency, the LLM must be supported in the data residency
-            environment
-        reasoning_effort:
-          oneOf:
-            - $ref: '#/components/schemas/LLMReasoningEffort'
-            - type: 'null'
-          description: Reasoning effort of the model. Only available for some models.
-        thinking_budget:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Max number of tokens used for thinking. Use 0 to turn off if
-            supported by the model.
-        enable_reasoning_summary:
-          type: boolean
-          default: false
-          description: >-
-            Enable model reasoning summaries. When disabled, we do not request
-            summaries from provider if possible for faster TTFB. Not ZRM
-            compatible.
-        temperature:
-          type:
-            - number
-            - 'null'
-          format: double
-          default: 0
-          description: >-
-            The temperature for the LLM. Defaults to 0. Set to null to omit the
-            parameter from the LLM request entirely (useful for custom LLMs that
-            reject the temperature field).
-        max_tokens:
-          type: integer
-          default: -1
-          description: If greater than 0, maximum number of tokens the LLM can predict
-        tool_ids:
-          type: array
-          items:
-            type: string
-          description: A list of IDs of tools used by the agent
-        built_in_tools:
-          $ref: '#/components/schemas/BuiltInTools-Output'
-          description: Built-in system tools to be used by the agent
-        mcp_server_ids:
-          type: array
-          items:
-            type: string
-          description: A list of MCP server ids to be used by the agent
-        native_mcp_server_ids:
-          type: array
-          items:
-            type: string
-          description: A list of Native MCP server ids to be used by the agent
-        knowledge_base:
-          type: array
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseLocator'
-          description: A list of knowledge bases to be used by the agent
-        custom_llm:
-          oneOf:
-            - $ref: '#/components/schemas/CustomLLM'
-            - type: 'null'
-          description: Definition for a custom LLM if LLM field is set to 'CUSTOM_LLM'
-        ignore_default_personality:
-          type:
-            - boolean
-            - 'null'
-          default: false
-          description: >-
-            Whether to remove the default personality lines from the system
-            prompt
-        rag:
-          $ref: '#/components/schemas/RagConfig-Output'
-          description: Configuration for RAG
-        timezone:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Timezone for displaying current time in system prompt. If set, the
-            current time will be included in the system prompt using this
-            timezone. Must be a valid timezone name (e.g., 'America/New_York',
-            'Europe/London', 'UTC'). Recommended for accurate time-aware
-            responses; without this, the agent has no knowledge of the current
-            date/time unless you provide it via dynamic variables or tools,
-            which can lead to incorrect or hallucinated time references.
-        backup_llm_config:
-          $ref: '#/components/schemas/PromptAgentApiModelOutputBackupLlmConfig'
-          description: >-
-            Configuration for backup LLM cascading. Can be disabled, use system
-            defaults, or specify custom order.
-        cascade_timeout_seconds:
-          type: number
-          format: double
-          default: 4
-          description: >-
-            Time in seconds before cascading to backup LLM. Must be between 2
-            and 15 seconds.
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/PromptAgentApiModelOutputToolsItems'
-          description: >-
-            A list of tools that the agent can use over the course of the
-            conversation, use tool_ids instead
-      title: PromptAgentAPIModel-Output
-    AgentConfigAPIModel-Output:
-      type: object
-      properties:
-        first_message:
-          type: string
-          default: ''
-          description: >-
-            If non-empty, the first message the agent will say. If empty, the
-            agent waits for the user to start the discussion.
-        language:
-          type: string
-          default: en
-          description: Language of the agent - used for ASR and TTS
-        hinglish_mode:
-          type: boolean
-          default: false
-          description: >-
-            When enabled and language is Hindi, the agent will respond in
-            Hinglish
-        dynamic_variables:
-          description: Configuration for dynamic variables
-        disable_first_message_interruptions:
-          type: boolean
-          default: false
-          description: >-
-            If true, the user will not be able to interrupt the agent while the
-            first message is being delivered.
-        max_conversation_duration_message:
-          type: string
-          default: ''
-          description: >-
-            If non-empty, the message the agent will send when max conversation
-            duration is reached.
-        text_behavior_overrides:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/BehaviorOverride'
-          description: >-
-            Per-channel response behavior overrides for text conversations.
-            Built-in channel defaults apply when unset.
-        prompt:
-          $ref: '#/components/schemas/PromptAgentAPIModel-Output'
-          description: The prompt for the agent
-      title: AgentConfigAPIModel-Output
-    ConversationalConfigAPIModel-Output:
-      type: object
-      properties:
-        asr:
-          $ref: '#/components/schemas/ASRConversationalConfig'
-          description: Configuration for conversational transcription
-        turn:
-          $ref: '#/components/schemas/TurnConfig'
-          description: Configuration for turn detection
-        tts:
-          $ref: '#/components/schemas/TTSConversationalConfig-Output'
-          description: Configuration for conversational text to speech
-        conversation:
-          $ref: '#/components/schemas/ConversationConfig-Output'
-          description: Configuration for conversational events
-        language_presets:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LanguagePreset-Output'
-          description: Language presets for conversations
-        vad:
-          $ref: '#/components/schemas/VADConfig'
-          description: Configuration for voice activity detection
-        agent:
-          $ref: '#/components/schemas/AgentConfigAPIModel-Output'
-          description: Agent specific configuration
-      title: ConversationalConfigAPIModel-Output
-    AgentMetadataResponseModel:
-      type: object
-      properties:
-        created_at_unix_secs:
-          type: integer
-          description: The creation time of the agent in unix seconds
-        updated_at_unix_secs:
-          type: integer
-          description: The last update time of the agent in unix seconds
-      required:
-        - created_at_unix_secs
-        - updated_at_unix_secs
-      title: AgentMetadataResponseModel
-    AnalysisScope:
-      type: string
-      enum:
-        - conversation
-        - agent
-      default: conversation
-      title: AnalysisScope
-    CriteriaScoringMode:
-      type: string
-      enum:
-        - binary
-        - numeric_uniform
-      default: binary
-      title: CriteriaScoringMode
-    PromptEvaluationCriteria:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the evaluation criteria
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - prompt
-          default: prompt
-          description: The type of evaluation criteria
-        conversation_goal_prompt:
-          type: string
-          description: The prompt that the agent should use to evaluate the conversation
-        use_knowledge_base:
-          type: boolean
-          default: false
-          description: >-
-            When evaluating the prompt, should the agent's knowledge base be
-            used.
-        scope:
-          $ref: '#/components/schemas/AnalysisScope'
-          default: conversation
-          description: >-
-            The scope of transcript context used when evaluating this criterion.
-            'conversation' uses the full transcript; 'agent' uses only the
-            portion where the defining agent was active.
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            LLM model to use for this evaluation criteria. If not set, uses
-            agent's analysis_llm default.
-        scoring_mode:
-          $ref: '#/components/schemas/CriteriaScoringMode'
-          default: binary
-          description: >-
-            How this criterion is scored. 'binary' resolves to
-            success/failure/unknown. 'numeric_uniform' returns a number on the
-            [0, max_score] scale which is normalized into the aggregate
-            conversation success percentage.
-        max_score:
-          type: integer
-          default: 100
-          description: >-
-            Maximum value of the numeric score scale (minimum is always 0). Only
-            used when scoring_mode is 'numeric_uniform'.
-        score_instructions:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Optional free-text instructions describing how to assign values on
-            the numeric scale. Only used when scoring_mode is 'numeric_uniform'.
-      required:
-        - id
-        - name
-        - conversation_goal_prompt
-      description: >-
-        An evaluation using the transcript and a prompt for a yes/no achieved
-        answer
-      title: PromptEvaluationCriteria
-    EvaluationSettings-Output:
-      type: object
-      properties:
-        criteria:
-          type: array
-          items:
-            $ref: '#/components/schemas/PromptEvaluationCriteria'
-          description: Individual criteria that the agent should be evaluated against
-      description: >-
-        Settings to evaluate an agent's performance.
-
-        Agents are evaluated against a set of criteria, with success being
-        defined as meeting some combination of those criteria.
-      title: EvaluationSettings-Output
-    EmbedVariant:
-      type: string
-      enum:
-        - tiny
-        - compact
-        - full
-        - expandable
-      default: full
-      title: EmbedVariant
-    WidgetPlacement:
-      type: string
-      enum:
-        - top-left
-        - top
-        - top-right
-        - bottom-left
-        - bottom
-        - bottom-right
-      default: bottom-right
-      title: WidgetPlacement
-    WidgetExpandable:
-      type: string
-      enum:
-        - never
-        - mobile
-        - desktop
-        - always
-      default: never
-      title: WidgetExpandable
-    OrbAvatar:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - orb
-          default: orb
-          description: The type of the avatar
-        color_1:
-          type: string
-          default: '#2792dc'
-          description: The first color of the avatar
-        color_2:
-          type: string
-          default: '#9ce6e6'
-          description: The second color of the avatar
-      title: OrbAvatar
-    URLAvatar:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - url
-          default: url
-          description: The type of the avatar
-        custom_url:
-          type: string
-          default: ''
-          description: The custom URL of the avatar
-      title: URLAvatar
-    ImageAvatar:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - image
-          default: image
-          description: The type of the avatar
-        url:
-          type: string
-          default: ''
-          description: The URL of the avatar
-      title: ImageAvatar
-    WidgetConfigOutputAvatar:
-      oneOf:
-        - $ref: '#/components/schemas/OrbAvatar'
-        - $ref: '#/components/schemas/URLAvatar'
-        - $ref: '#/components/schemas/ImageAvatar'
-      description: The avatar of the widget
-      title: WidgetConfigOutputAvatar
-    WidgetFeedbackMode:
-      type: string
-      enum:
-        - none
-        - during
-        - end
-      default: none
-      title: WidgetFeedbackMode
-    WidgetEndFeedbackType:
-      type: string
-      enum:
-        - rating
-      default: rating
-      title: WidgetEndFeedbackType
-    WidgetEndFeedbackConfig:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/WidgetEndFeedbackType'
-          default: rating
-          description: The type of feedback to collect at the end of the conversation
-      title: WidgetEndFeedbackConfig
-    AllowlistItem:
-      type: object
-      properties:
-        hostname:
-          type: string
-          description: The hostname of the allowed origin
-      required:
-        - hostname
-      title: AllowlistItem
-    WidgetConfigOutputSyntaxHighlightTheme:
-      type: string
-      enum:
-        - light
-        - dark
-      description: >-
-        Theme for code block syntax highlighting. Defaults to auto-detection by
-        the widget when not set.
-      title: WidgetConfigOutputSyntaxHighlightTheme
-    WidgetTextContents:
-      type: object
-      properties:
-        main_label:
-          type:
-            - string
-            - 'null'
-          description: Call to action displayed inside the compact and full variants.
-        start_call:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the start call button.
-        start_chat:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the start chat button (text only)
-        new_call:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Text and ARIA label for the new call button. Displayed when the
-            caller already finished at least one call in order ot start the next
-            one.
-        end_call:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the end call button.
-        mute_microphone:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the mute microphone button.
-        change_language:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the change language dropdown.
-        collapse:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the collapse button.
-        expand:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the expand button.
-        copied:
-          type:
-            - string
-            - 'null'
-          description: Text displayed when the user copies a value using the copy button.
-        accept_terms:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the accept terms button.
-        dismiss_terms:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the cancel terms button.
-        listening_status:
-          type:
-            - string
-            - 'null'
-          description: Status displayed when the agent is listening.
-        speaking_status:
-          type:
-            - string
-            - 'null'
-          description: Status displayed when the agent is speaking.
-        connecting_status:
-          type:
-            - string
-            - 'null'
-          description: Status displayed when the agent is connecting.
-        chatting_status:
-          type:
-            - string
-            - 'null'
-          description: Status displayed when the agent is chatting (text only)
-        input_label:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the text message input.
-        input_placeholder:
-          type:
-            - string
-            - 'null'
-          description: Placeholder text for the text message input.
-        input_placeholder_text_only:
-          type:
-            - string
-            - 'null'
-          description: Placeholder text for the text message input (text only)
-        input_placeholder_new_conversation:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Placeholder text for the text message input when starting a new
-            conversation (text only)
-        user_ended_conversation:
-          type:
-            - string
-            - 'null'
-          description: Information message displayed when the user ends the conversation.
-        agent_ended_conversation:
-          type:
-            - string
-            - 'null'
-          description: Information message displayed when the agent ends the conversation.
-        conversation_id:
-          type:
-            - string
-            - 'null'
-          description: Text label used next to the conversation ID.
-        error_occurred:
-          type:
-            - string
-            - 'null'
-          description: Text label used when an error occurs.
-        copy_id:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label used for the copy ID button.
-        initiate_feedback:
-          type:
-            - string
-            - 'null'
-          description: Text displayed to prompt the user for feedback.
-        request_follow_up_feedback:
-          type:
-            - string
-            - 'null'
-          description: Text displayed to request additional feedback details.
-        thanks_for_feedback:
-          type:
-            - string
-            - 'null'
-          description: Text displayed to thank the user for providing feedback.
-        thanks_for_feedback_details:
-          type:
-            - string
-            - 'null'
-          description: Additional text displayed explaining the value of user feedback.
-        follow_up_feedback_placeholder:
-          type:
-            - string
-            - 'null'
-          description: Placeholder text for the follow-up feedback input field.
-        submit:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the submit button.
-        go_back:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the go back button.
-        send_message:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the send message button.
-        text_mode:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the switch to text mode button.
-        voice_mode:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the switch to voice mode button.
-        switched_to_text_mode:
-          type:
-            - string
-            - 'null'
-          description: Toast notification displayed when switching to text mode.
-        switched_to_voice_mode:
-          type:
-            - string
-            - 'null'
-          description: Toast notification displayed when switching to voice mode.
-        copy:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the copy button.
-        download:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the download button.
-        wrap:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the wrap toggle button.
-        agent_working:
-          type:
-            - string
-            - 'null'
-          description: Status text displayed when the agent is processing a tool call.
-        agent_done:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Status text displayed when the agent finishes processing a tool
-            call.
-        agent_error:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Status text displayed when the agent encounters an error during a
-            tool call.
-        attach_file:
-          type:
-            - string
-            - 'null'
-          description: Text and ARIA label for the attach file button.
-        remove_file:
-          type:
-            - string
-            - 'null'
-          description: ARIA label for the remove file button.
-        file_upload_error:
-          type:
-            - string
-            - 'null'
-          description: Error message displayed when a file fails to upload.
-        file_type_unsupported:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Error message displayed when an unsupported file type is selected.
-            Followed by the list of accepted types.
-        file_too_large:
-          type:
-            - string
-            - 'null'
-          description: Error message displayed when a file exceeds the maximum size limit.
-        file_limit_reached:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Error message displayed when the maximum number of files for a
-            conversation is reached.
-        typing_indicator:
-          type:
-            - string
-            - 'null'
-          description: Status text displayed while the agent is typing.
-      title: WidgetTextContents
-    WidgetStyles:
-      type: object
-      properties:
-        base:
-          type:
-            - string
-            - 'null'
-          description: The base background color.
-        base_hover:
-          type:
-            - string
-            - 'null'
-          description: The color of the base background when hovered.
-        base_active:
-          type:
-            - string
-            - 'null'
-          description: The color of the base background when active (clicked).
-        base_border:
-          type:
-            - string
-            - 'null'
-          description: The color of the border against the base background.
-        base_subtle:
-          type:
-            - string
-            - 'null'
-          description: The color of subtle text against the base background.
-        base_primary:
-          type:
-            - string
-            - 'null'
-          description: The color of primary text against the base background.
-        base_error:
-          type:
-            - string
-            - 'null'
-          description: The color of error text against the base background.
-        accent:
-          type:
-            - string
-            - 'null'
-          description: The accent background color.
-        accent_hover:
-          type:
-            - string
-            - 'null'
-          description: The color of the accent background when hovered.
-        accent_active:
-          type:
-            - string
-            - 'null'
-          description: The color of the accent background when active (clicked).
-        accent_border:
-          type:
-            - string
-            - 'null'
-          description: The color of the border against the accent background.
-        accent_subtle:
-          type:
-            - string
-            - 'null'
-          description: The color of subtle text against the accent background.
-        accent_primary:
-          type:
-            - string
-            - 'null'
-          description: The color of primary text against the accent background.
-        overlay_padding:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The padding around the edges of the viewport.
-        button_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The radius of the buttons.
-        input_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The radius of the input fields.
-        bubble_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The radius of the chat bubbles.
-        sheet_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The default radius of sheets.
-        compact_sheet_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The radius of the sheet in compact mode.
-        dropdown_sheet_radius:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The radius of the dropdown sheet.
-      title: WidgetStyles
-    WidgetTextContentsTranslation:
-      type: object
-      properties:
-        source:
-          type: object
-          additionalProperties:
-            type: string
-          description: The source text each translated field was derived from
-        text:
-          type: object
-          additionalProperties:
-            type: string
-          description: The last auto-translated output for each translated field
-      title: WidgetTextContentsTranslation
-    WidgetTermsTranslation:
-      type: object
-      properties:
-        source_hash:
-          type: string
-        text:
-          type: string
-      required:
-        - source_hash
-        - text
-      title: WidgetTermsTranslation
-    WidgetLanguagePreset:
-      type: object
-      properties:
-        text_contents:
-          oneOf:
-            - $ref: '#/components/schemas/WidgetTextContents'
-            - type: 'null'
-          description: The text contents for the selected language
-        text_contents_translation:
-          oneOf:
-            - $ref: '#/components/schemas/WidgetTextContentsTranslation'
-            - type: 'null'
-          description: The translation cache for the text contents
-        terms_text:
-          type:
-            - string
-            - 'null'
-          description: The text to display for terms and conditions in this language
-        terms_html:
-          type:
-            - string
-            - 'null'
-          description: The HTML to display for terms and conditions in this language
-        terms_key:
-          type:
-            - string
-            - 'null'
-          description: The key to display for terms and conditions in this language
-        terms_translation:
-          oneOf:
-            - $ref: '#/components/schemas/WidgetTermsTranslation'
-            - type: 'null'
-          description: The translation cache for the terms
-      title: WidgetLanguagePreset
-    WidgetConfig-Output:
-      type: object
-      properties:
-        variant:
-          $ref: '#/components/schemas/EmbedVariant'
-          default: full
-          description: The variant of the widget
-        placement:
-          $ref: '#/components/schemas/WidgetPlacement'
-          default: bottom-right
-          description: The placement of the widget on the screen
-        expandable:
-          $ref: '#/components/schemas/WidgetExpandable'
-          default: never
-          description: Whether the widget is expandable
-        avatar:
-          $ref: '#/components/schemas/WidgetConfigOutputAvatar'
-          description: The avatar of the widget
-        feedback_mode:
-          $ref: '#/components/schemas/WidgetFeedbackMode'
-          default: none
-          description: The feedback mode of the widget
-        end_feedback:
-          oneOf:
-            - $ref: '#/components/schemas/WidgetEndFeedbackConfig'
-            - type: 'null'
-          description: Configuration for feedback collected at the end of the conversation
-        bg_color:
-          type: string
-          default: '#ffffff'
-          description: The background color of the widget
-        text_color:
-          type: string
-          default: '#000000'
-          description: The text color of the widget
-        btn_color:
-          type: string
-          default: '#000000'
-          description: The button color of the widget
-        btn_text_color:
-          type: string
-          default: '#ffffff'
-          description: The button text color of the widget
-        border_color:
-          type: string
-          default: '#e1e1e1'
-          description: The border color of the widget
-        focus_color:
-          type: string
-          default: '#000000'
-          description: The focus color of the widget
-        border_radius:
-          type:
-            - integer
-            - 'null'
-          description: The border radius of the widget
-        btn_radius:
-          type:
-            - integer
-            - 'null'
-          description: The button radius of the widget
-        action_text:
-          type:
-            - string
-            - 'null'
-          description: The action text of the widget
-        start_call_text:
-          type:
-            - string
-            - 'null'
-          description: The start call text of the widget
-        end_call_text:
-          type:
-            - string
-            - 'null'
-          description: The end call text of the widget
-        expand_text:
-          type:
-            - string
-            - 'null'
-          description: The expand text of the widget
-        listening_text:
-          type:
-            - string
-            - 'null'
-          description: The text to display when the agent is listening
-        speaking_text:
-          type:
-            - string
-            - 'null'
-          description: The text to display when the agent is speaking
-        shareable_page_text:
-          type:
-            - string
-            - 'null'
-          description: The text to display when sharing
-        shareable_page_show_terms:
-          type: boolean
-          default: true
-          description: Whether to show terms and conditions on the shareable page
-        terms_text:
-          type:
-            - string
-            - 'null'
-          description: The text to display for terms and conditions
-        terms_html:
-          type:
-            - string
-            - 'null'
-          description: The HTML to display for terms and conditions
-        terms_key:
-          type:
-            - string
-            - 'null'
-          description: The key to display for terms and conditions
-        show_avatar_when_collapsed:
-          type:
-            - boolean
-            - 'null'
-          default: false
-          description: Whether to show the avatar when the widget is collapsed
-        disable_banner:
-          type: boolean
-          default: false
-          description: Whether to disable the banner
-        override_link:
-          type:
-            - string
-            - 'null'
-          description: The override link for the widget
-        markdown_link_allowed_hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowlistItem'
-          description: >-
-            List of allowed hostnames for clickable markdown links. Use {
-            hostname: '*' } to allow any domain. Empty means no links are
-            allowed.
-        markdown_link_include_www:
-          type: boolean
-          default: true
-          description: Whether to automatically include www. variants of allowed hosts
-        markdown_link_allow_http:
-          type: boolean
-          default: true
-          description: Whether to allow http:// in addition to https:// for allowed hosts
-        mic_muting_enabled:
-          type: boolean
-          default: false
-          description: Whether to enable mic muting
-        transcript_enabled:
-          type: boolean
-          default: false
-          description: >-
-            Whether the widget should show the conversation transcript as it
-            goes on
-        text_input_enabled:
-          type: boolean
-          default: true
-          description: Whether the user should be able to send text messages
-        conversation_mode_toggle_enabled:
-          type: boolean
-          default: false
-          description: Whether to enable the conversation mode toggle in the widget
-        default_expanded:
-          type: boolean
-          default: false
-          description: Whether the widget should be expanded by default
-        always_expanded:
-          type: boolean
-          default: false
-          description: Whether the widget should always be expanded
-        dismissible:
-          type: boolean
-          default: false
-          description: Whether the widget can be dismissed by the user
-        show_agent_status:
-          type: boolean
-          default: false
-          description: Whether to show agent working/done/error status during tool use
-        show_conversation_id:
-          type: boolean
-          default: true
-          description: Whether to show the conversation ID after disconnection.
-        strip_audio_tags:
-          type: boolean
-          default: true
-          description: Whether to strip audio markup from messages.
-        syntax_highlight_theme:
-          oneOf:
-            - $ref: '#/components/schemas/WidgetConfigOutputSyntaxHighlightTheme'
-            - type: 'null'
-          description: >-
-            Theme for code block syntax highlighting. Defaults to auto-detection
-            by the widget when not set.
-        text_contents:
-          $ref: '#/components/schemas/WidgetTextContents'
-          description: Text contents of the widget
-        styles:
-          $ref: '#/components/schemas/WidgetStyles'
-          description: Styles for the widget
-        show_resize_button:
-          type: boolean
-          default: true
-          description: Whether to show the resize button
-        language_selector:
-          type: boolean
-          default: false
-          description: Whether to show the language selector
-        supports_text_only:
-          type: boolean
-          default: true
-          description: Whether the widget can switch to text only mode
-        custom_avatar_path:
-          type:
-            - string
-            - 'null'
-          description: The custom avatar path
-        language_presets:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/WidgetLanguagePreset'
-          description: Language presets for the widget
-      title: WidgetConfig-Output
-    AnalysisPropertyType:
-      type: string
-      enum:
-        - boolean
-        - string
-        - integer
-        - number
-      title: AnalysisPropertyType
-    AnalysisPropertyConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      description: >-
-        A constant value to use for this property. Mutually exclusive with
-        description, dynamic_variable, is_system_provided, and is_omitted.
-      title: AnalysisPropertyConstantValue
-    AnalysisProperty:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/AnalysisPropertyType'
-        description:
-          type: string
-          default: ''
-          description: >-
-            The description of the property. When set, the LLM will provide the
-            value based on this description. Mutually exclusive with
-            dynamic_variable, is_system_provided, constant_value, and
-            is_omitted.
-        enum:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of allowed string values for string type parameters
-        is_system_provided:
-          type: boolean
-          default: false
-          description: >-
-            If true, the value will be populated by the system at runtime. Used
-            by API Integration Webhook tools for templating. Mutually exclusive
-            with description, dynamic_variable, constant_value, and is_omitted.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            The name of the dynamic variable to use for this property's value.
-            Mutually exclusive with description, is_system_provided,
-            constant_value, and is_omitted.
-        allowed_values_dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the LLM provides the value but the runtime rejects any
-            value not present in the list held by this dynamic variable. Use to
-            let the LLM pick from a server-verified set (e.g. the IDs the
-            current user is allowed to access). Requires description; mutually
-            exclusive with dynamic_variable, is_system_provided, constant_value,
-            and is_omitted.
-        constant_value:
-          $ref: '#/components/schemas/AnalysisPropertyConstantValue'
-          default: ''
-          description: >-
-            A constant value to use for this property. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and
-            constant_value.
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            LLM model to use for this analysis item. If not set, uses agent's
-            analysis_llm default.
-      required:
-        - type
-      description: >-
-        Data collection property with optional per-item LLM override for
-        post-call analysis.
-
-
-        TODO: migrate to composition (value_schema: LiteralJsonSchemaProperty +
-        llm) instead of
-
-        inheritance, so this generalizes cleanly to object/array schemas in the
-        future.
-      title: AnalysisProperty
-    AttachedSystemEvaluationRefAnalysisItemId:
-      type: string
-      enum:
-        - __system_eval_criteria_sentiment
-        - __system_eval_criteria_frustration
-      description: Id of the referenced built-in system evaluation.
-      title: AttachedSystemEvaluationRefAnalysisItemId
-    AgentAnalysisItemsOutputEvaluationCriteriaItems:
-      oneOf:
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - system
-            analysis_item_id:
-              $ref: '#/components/schemas/AttachedSystemEvaluationRefAnalysisItemId'
-              description: Id of the referenced built-in system evaluation.
-            scope:
-              $ref: '#/components/schemas/AnalysisScope'
-              default: conversation
-              description: >-
-                Transcript context ('conversation' or 'agent') used when running
-                this item.
-            weight:
-              type:
-                - number
-                - 'null'
-              format: double
-              description: Optional relative weight for aggregate scoring.
-          required:
-            - source
-            - analysis_item_id
-          description: AttachedSystemEvaluationRef variant
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - user
-            analysis_item_id:
-              type: string
-              description: Id of the referenced user evaluation item.
-            version_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Primary item version whose result feeds scoring. None tracks the
-                item's latest published version.
-            additional_version_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                Extra item versions to also run for comparison (A/B). These are
-                executed and stored but excluded from scoring; the primary
-                version_id is the one that scores.
-            scope:
-              $ref: '#/components/schemas/AnalysisScope'
-              default: conversation
-              description: >-
-                Transcript context ('conversation' or 'agent') used when running
-                this item.
-            weight:
-              type:
-                - number
-                - 'null'
-              format: double
-              description: Optional relative weight for aggregate scoring.
-          required:
-            - source
-            - analysis_item_id
-          description: AttachedUserEvaluationRef variant
-      discriminator:
-        propertyName: source
-      title: AgentAnalysisItemsOutputEvaluationCriteriaItems
-    AgentAnalysisItemsOutputDataCollectionItems:
-      oneOf:
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - system
-            analysis_item_id:
-              type: string
-              enum:
-                - __system_data_collection_topic
-              description: Id of the referenced built-in system data-collection item.
-            scope:
-              $ref: '#/components/schemas/AnalysisScope'
-              default: conversation
-              description: >-
-                Transcript context ('conversation' or 'agent') used when running
-                this item.
-          required:
-            - source
-            - analysis_item_id
-          description: AttachedSystemDataCollectionRef variant
-        - type: object
-          properties:
-            source:
-              type: string
-              enum:
-                - user
-            analysis_item_id:
-              type: string
-              description: Id of the referenced user data-collection item.
-            version_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Pinned item version. None tracks the item's latest published
-                version.
-            scope:
-              $ref: '#/components/schemas/AnalysisScope'
-              default: conversation
-              description: >-
-                Transcript context ('conversation' or 'agent') used when running
-                this item.
-          required:
-            - source
-            - analysis_item_id
-          description: AttachedUserDataCollectionRef variant
-      discriminator:
-        propertyName: source
-      title: AgentAnalysisItemsOutputDataCollectionItems
-    AgentAnalysisItems-Output:
-      type: object
-      properties:
-        evaluation_criteria:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/AgentAnalysisItemsOutputEvaluationCriteriaItems
-        data_collection:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentAnalysisItemsOutputDataCollectionItems'
-      title: AgentAnalysisItems-Output
-    ASRConversationalConfigOverrideConfig:
-      type: object
-      properties:
-        keywords:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the keywords field.
-      title: ASRConversationalConfigOverrideConfig
-    SoftTimeoutConfigOverrideConfig:
-      type: object
-      properties:
-        message:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the message field.
-      title: SoftTimeoutConfigOverrideConfig
-    TurnConfigOverrideConfig:
-      type: object
-      properties:
-        soft_timeout_config:
-          $ref: '#/components/schemas/SoftTimeoutConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-      title: TurnConfigOverrideConfig
-    TTSConversationalConfigOverrideConfig:
-      type: object
-      properties:
-        model_id:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the model_id field.
-        voice_id:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the voice_id field.
-        stability:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the stability field.
-        speed:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the speed field.
-        similarity_boost:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the similarity_boost field.
-      title: TTSConversationalConfigOverrideConfig
-    ConversationConfigOverrideConfig:
-      type: object
-      properties:
-        text_only:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the text_only field.
-      title: ConversationConfigOverrideConfig
-    PromptAgentAPIModelOverrideConfig:
-      type: object
-      properties:
-        prompt:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the prompt field.
-        llm:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the llm field.
-        tool_ids:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the tool_ids field.
-        native_mcp_server_ids:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the native_mcp_server_ids field.
-        knowledge_base:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the knowledge_base field.
-      title: PromptAgentAPIModelOverrideConfig
-    AgentConfigOverrideConfig:
-      type: object
-      properties:
-        first_message:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the first_message field.
-        language:
-          type: boolean
-          default: false
-          description: Whether to allow overriding the language field.
-        max_conversation_duration_message:
-          type: boolean
-          default: false
-          description: >-
-            Whether to allow overriding the max_conversation_duration_message
-            field.
-        prompt:
-          $ref: '#/components/schemas/PromptAgentAPIModelOverrideConfig'
-          description: Configures overrides for nested fields.
-      title: AgentConfigOverrideConfig
-    ConversationConfigClientOverrideConfig-Output:
-      type: object
-      properties:
-        asr:
-          $ref: '#/components/schemas/ASRConversationalConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-        turn:
-          $ref: '#/components/schemas/TurnConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-        tts:
-          $ref: '#/components/schemas/TTSConversationalConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-        conversation:
-          $ref: '#/components/schemas/ConversationConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-        agent:
-          $ref: '#/components/schemas/AgentConfigOverrideConfig'
-          description: Configures overrides for nested fields.
-      title: ConversationConfigClientOverrideConfig-Output
-    ConversationInitiationClientDataConfig-Output:
-      type: object
-      properties:
-        conversation_config_override:
-          $ref: '#/components/schemas/ConversationConfigClientOverrideConfig-Output'
-          description: Overrides for the conversation configuration
-        custom_llm_extra_body:
-          type: boolean
-          default: false
-          description: Whether to include custom LLM extra body
-        enable_conversation_initiation_client_data_from_webhook:
-          type: boolean
-          default: false
-          description: Whether to enable conversation initiation client data from webhooks
-        enable_starting_workflow_node_id_from_client:
-          type: boolean
-          default: false
-          description: >-
-            Whether clients may pass starting_workflow_node_id in initiation
-            client data; if false, sending it fails conversation start.
-      title: ConversationInitiationClientDataConfig-Output
-    ConversationInitiationClientDataWebhookRequestHeaders:
-      oneOf:
-        - type: string
-        - $ref: '#/components/schemas/ConvAISecretLocator'
-      title: ConversationInitiationClientDataWebhookRequestHeaders
-    ConversationInitiationClientDataWebhook:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL to send the webhook to
-        request_headers:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/ConversationInitiationClientDataWebhookRequestHeaders
-          description: The headers to send with the webhook request
-      required:
-        - url
-        - request_headers
-      title: ConversationInitiationClientDataWebhook
-    WebhookEventType:
-      type: string
-      enum:
-        - transcript
-        - audio
-        - call_initiation_failure
-        - unredacted_transcript
-        - unredacted_audio
-      title: WebhookEventType
-    WebhookTranscriptFormat:
-      type: string
-      enum:
-        - json
-        - opentelemetry
-      default: json
-      title: WebhookTranscriptFormat
-    ConvAIWebhooks:
-      type: object
-      properties:
-        post_call_webhook_id:
-          type:
-            - string
-            - 'null'
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEventType'
-          description: >-
-            List of event types to send via webhook. Options: transcript, audio,
-            call_initiation_failure, unredacted_transcript, unredacted_audio.
-        transcript_format:
-          $ref: '#/components/schemas/WebhookTranscriptFormat'
-          default: json
-          description: Format for transcript webhooks.
-        send_audio:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            DEPRECATED: Use 'events' field instead. Whether to send audio data
-            with post-call webhooks for ConvAI conversations
-      title: ConvAIWebhooks
-    AgentWorkspaceOverrides-Output:
-      type: object
-      properties:
-        conversation_initiation_client_data_webhook:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationInitiationClientDataWebhook'
-            - type: 'null'
-          description: The webhook to send conversation initiation client data to
-        webhooks:
-          $ref: '#/components/schemas/ConvAIWebhooks'
-      title: AgentWorkspaceOverrides-Output
-    AttachedTestModel:
-      type: object
-      properties:
-        test_id:
-          type: string
-        workflow_node_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - test_id
-      title: AttachedTestModel
-    AgentTestingSettings:
-      type: object
-      properties:
-        attached_tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttachedTestModel'
-          description: List of test IDs that should be run for this agent
-      description: Settings for agent testing configuration.
-      title: AgentTestingSettings
-    FocusGuardrail:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-          default: false
-      title: FocusGuardrail
-    PromptInjectionGuardrail:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-          default: false
-      title: PromptInjectionGuardrail
-    ContentThresholdGuardrailThreshold1:
-      type: string
-      enum:
-        - low
-        - medium
-        - high
-      title: ContentThresholdGuardrailThreshold1
-    ContentThresholdGuardrailThreshold:
-      oneOf:
-        - type: number
-          format: double
-        - $ref: '#/components/schemas/ContentThresholdGuardrailThreshold1'
-      title: ContentThresholdGuardrailThreshold
-    ContentThresholdGuardrail:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-          default: false
-        threshold:
-          $ref: '#/components/schemas/ContentThresholdGuardrailThreshold'
-          default: 0.3
-      title: ContentThresholdGuardrail
-    ContentConfig:
-      type: object
-      properties:
-        sexual:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        violence:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        harassment:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        self_harm:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        profanity:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        religion_or_politics:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-        medical_and_legal_information:
-          $ref: '#/components/schemas/ContentThresholdGuardrail'
-      title: ContentConfig
-    ContentGuardrailOutputTriggerAction:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - end_call
-              default: end_call
-          required:
-            - type
-          description: EndCallTriggerAction variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - retry
-              default: retry
-            feedback:
-              type: string
-              default: >-
-                Your response was blocked by a guardrail that blocks content
-                that matches this condition/category: '{{trigger_reason}}'
-                During your next turn you must tell the user "I'm sorry but I
-                can't answer that question, would you like to know something
-                else?".
-              description: >-
-                Custom feedback to inject into the agent when retrying after
-                guardrail trigger.
-          required:
-            - type
-          description: RetryTriggerAction variant
-      discriminator:
-        propertyName: type
-      title: ContentGuardrailOutputTriggerAction
-    ContentGuardrail-Output:
-      type: object
-      properties:
-        execution_mode:
-          $ref: '#/components/schemas/GuardrailExecutionMode'
-          default: streaming
-        config:
-          $ref: '#/components/schemas/ContentConfig'
-        trigger_action:
-          $ref: '#/components/schemas/ContentGuardrailOutputTriggerAction'
-      title: ContentGuardrail-Output
-    CustomGuardrailsConfig-Output:
-      type: object
-      properties:
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomGuardrailConfig'
-      description: Config container for custom guardrails list
-      title: CustomGuardrailsConfig-Output
-    CustomGuardrail-Output:
-      type: object
-      properties:
-        config:
-          $ref: '#/components/schemas/CustomGuardrailsConfig-Output'
-      description: Container for custom guardrails, matching ModerationGuardrail pattern
-      title: CustomGuardrail-Output
-    GuardrailsV1-Output:
-      type: object
-      properties:
-        version:
-          type: string
-          enum:
-            - '1'
-          default: '1'
-        focus:
-          $ref: '#/components/schemas/FocusGuardrail'
-        prompt_injection:
-          $ref: '#/components/schemas/PromptInjectionGuardrail'
-        content:
-          $ref: '#/components/schemas/ContentGuardrail-Output'
-        custom:
-          $ref: '#/components/schemas/CustomGuardrail-Output'
-      title: GuardrailsV1-Output
-    AuthSettings:
-      type: object
-      properties:
-        enable_auth:
-          type: boolean
-          default: false
-          description: >-
-            If set to true, starting a conversation with an agent will require a
-            signed token
-        allowlist:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowlistItem'
-          description: >-
-            A list of hosts that are allowed to start conversations with the
-            agent
-        require_origin_header:
-          type: boolean
-          default: false
-          description: >-
-            When enabled, connections with no origin header will be rejected. If
-            the allowlist is empty, this option has no effect.
-        shareable_token:
-          type:
-            - string
-            - 'null'
-          description: >-
-            A shareable token that can be used to start a conversation with the
-            agent
-      title: AuthSettings
-    AgentCallLimits:
-      type: object
-      properties:
-        agent_concurrency_limit:
-          type: integer
-          default: -1
-          description: >-
-            The maximum number of concurrent conversations. -1 indicates that
-            there is no maximum
-        daily_limit:
-          type: integer
-          default: 100000
-          description: The maximum number of conversations per day
-        bursting_enabled:
-          type: boolean
-          default: true
-          description: >-
-            Whether to enable bursting. If true, exceeding workspace concurrency
-            limit will be allowed up to 3 times the limit. Calls will be charged
-            at double rate when exceeding the limit.
-      title: AgentCallLimits
-    ConfigEntityType:
-      type: string
-      enum:
-        - name
-        - name.name_given
-        - name.name_family
-        - name.name_other
-        - email_address
-        - contact_number
-        - dob
-        - age
-        - religious_belief
-        - political_opinion
-        - sexual_orientation
-        - ethnicity_race
-        - marital_status
-        - occupation
-        - physical_attribute
-        - language
-        - username
-        - password
-        - url
-        - organization
-        - financial_id
-        - financial_id.payment_card
-        - financial_id.payment_card.payment_card_number
-        - financial_id.payment_card.payment_card_expiration_date
-        - financial_id.payment_card.payment_card_cvv
-        - financial_id.bank_account
-        - financial_id.bank_account.bank_account_number
-        - financial_id.bank_account.bank_routing_number
-        - financial_id.bank_account.swift_bic_code
-        - financial_id.financial_id_other
-        - location
-        - location.location_address
-        - location.location_city
-        - location.location_postal_code
-        - location.location_coordinate
-        - location.location_state
-        - location.location_country
-        - location.location_other
-        - date
-        - date_interval
-        - unique_id
-        - unique_id.government_issued_id
-        - unique_id.account_number
-        - unique_id.vehicle_id
-        - unique_id.healthcare_number
-        - unique_id.healthcare_number.medical_record_number
-        - unique_id.healthcare_number.health_plan_beneficiary_number
-        - unique_id.device_id
-        - unique_id.unique_id_other
-        - medical
-        - medical.medical_condition
-        - medical.medication
-        - medical.medical_procedure
-        - medical.medical_measurement
-        - medical.medical_other
-      description: >-
-        Entity types for the API configuration.
-
-
-        This enum contains all valid entity type configurations that users can
-        specify:
-
-        - Parent types (e.g., "name", "financial_id") that expand to all
-        subtypes
-
-        - Specific subtypes using dot notation (e.g., "name.full_name")
-
-        - Standalone terminal types (e.g., "email_address")
-
-
-        When converted for service use, parent types expand to all their
-        terminal subtypes.
-      title: ConfigEntityType
-    ConversationHistoryRedactionConfig:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-          description: Whether conversation history redaction is enabled
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigEntityType'
-          description: >-
-            The entities to redact from the conversation transcript, audio and
-            analysis. Use top-level types like 'name', 'email_address', or dot
-            notation for specific subtypes like 'name.full_name'.
-      title: ConversationHistoryRedactionConfig
-    PrivacyConfig-Output:
-      type: object
-      properties:
-        record_voice:
-          type: boolean
-          default: true
-          description: Whether to record the conversation
-        retention_days:
-          type: integer
-          default: -1
-          description: >-
-            The number of days to retain the conversation. -1 indicates there is
-            no retention limit
-        delete_transcript_and_pii:
-          type: boolean
-          default: false
-          description: Whether to delete the transcript and PII
-        delete_audio:
-          type: boolean
-          default: false
-          description: Whether to delete the audio
-        apply_to_existing_conversations:
-          type: boolean
-          default: false
-          description: Whether to apply the privacy settings to existing conversations
-        zero_retention_mode:
-          type: boolean
-          default: false
-          description: Whether to enable zero retention mode - no PII data is stored
-        conversation_history_redaction:
-          $ref: '#/components/schemas/ConversationHistoryRedactionConfig'
-          description: Config for PII redaction in the conversation history
-      title: PrivacyConfig-Output
-    AgentTrustContext:
-      type: string
-      enum:
-        - unknown
-        - low
-        - high
-      default: unknown
-      description: >-
-        The trust context in which the agent operates.
-
-
-        UNKNOWN: not yet classified (existing agents created before this
-        feature).
-
-        LOW: serves untrusted external participants (e.g. customer support,
-        sales) —
-             outputs should be vetted and tool access scoped.
-        HIGH: serves the owner (e.g. personal assistant) — full tool access is
-        appropriate.
-      title: AgentTrustContext
-    TopicDiscoverySettings:
-      type: object
-      properties: {}
-      description: |-
-        Per-agent topic-discovery configuration. Cadence and analysis window are
-        managed internally; this only exposes the customer-facing on/off toggle.
-      title: TopicDiscoverySettings
-    SentimentAnalysisSettings:
-      type: object
-      properties: {}
-      title: SentimentAnalysisSettings
-    AlertingMonitorConfig:
-      type: object
-      properties:
-        threshold:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Failure rate threshold at which this monitor can notify.
-        auto_resolve_after_inactive_minutes:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            How many minutes an alert can stay inactive before it is
-            auto-resolved.
-      title: AlertingMonitorConfig
-    AlertingWebhookNotifierResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - webhook
-          default: webhook
-        webhook_id:
-          type: string
-      required:
-        - webhook_id
-      title: AlertingWebhookNotifierResponse
-    AlertingSettingsResponse:
-      type: object
-      properties:
-        monitor_configs:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AlertingMonitorConfig'
-        auto_resolve_after_inactive_minutes:
-          type:
-            - integer
-            - 'null'
-        notifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertingWebhookNotifierResponse'
-      description: >-
-        Customer-facing view of alerting settings. Unlike
-        AdminAlertingSettingsResponse,
-
-        it has no internal_notifiers field: those are ElevenLabs-internal
-        delivery
-
-        channels whose URLs must never be returned outside the admin API.
-      title: AlertingSettingsResponse
-    SafetyResponseModel:
-      type: object
-      properties:
-        is_blocked_ivc:
-          type: boolean
-          default: false
-        is_blocked_non_ivc:
-          type: boolean
-          default: false
-        ignore_safety_evaluation:
-          type: boolean
-          default: false
-      title: SafetyResponseModel
-    AgentPlatformSettingsResponseModel:
-      type: object
-      properties:
-        evaluation:
-          $ref: '#/components/schemas/EvaluationSettings-Output'
-          description: Settings for evaluation
-        widget:
-          $ref: '#/components/schemas/WidgetConfig-Output'
-          description: Configuration for the widget
-        data_collection:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AnalysisProperty'
-          description: Data collection settings
-        data_collection_scopes:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AnalysisScope'
-          description: >-
-            Scope per data collection item ID. Missing keys default to
-            conversation scope.
-        analysis_items:
-          oneOf:
-            - $ref: '#/components/schemas/AgentAnalysisItems-Output'
-            - type: 'null'
-          description: >-
-            Evaluation + data-collection items attached by reference. None means
-            the agent has not been migrated onto analysis items yet (distinct
-            from an empty, migrated set); reads fall back to the legacy
-            evaluation/data_collection fields in that case.
-        overrides:
-          $ref: '#/components/schemas/ConversationInitiationClientDataConfig-Output'
-          description: Additional overrides for the agent during conversation initiation
-        workspace_overrides:
-          $ref: '#/components/schemas/AgentWorkspaceOverrides-Output'
-          description: Workspace overrides for the agent
-        testing:
-          $ref: '#/components/schemas/AgentTestingSettings'
-          description: Testing configuration for the agent
-        archived:
-          type: boolean
-          default: false
-          description: Whether the agent is archived
-        guardrails:
-          $ref: '#/components/schemas/GuardrailsV1-Output'
-          description: Guardrails configuration for the agent
-        summary_language:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Language for all conversation analysis outputs (summaries, titles,
-            evaluation rationales, data collection rationales). If not set, the
-            language will be inferred from the conversation. Must be one of the
-            supported conversation languages.
-        auto_translate_transcript_to_app_language:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled, a conversation transcript is automatically translated
-            to the viewer's application language when they open the transcript
-            page. If not set or false, transcripts are shown in their original
-            language unless the viewer manually selects a translation.
-        auth:
-          $ref: '#/components/schemas/AuthSettings'
-          description: Settings for authentication
-        call_limits:
-          $ref: '#/components/schemas/AgentCallLimits'
-          description: Call limits for the agent
-        privacy:
-          $ref: '#/components/schemas/PrivacyConfig-Output'
-          description: Privacy settings for the agent
-        trust_context:
-          $ref: '#/components/schemas/AgentTrustContext'
-          default: unknown
-          description: The trust context in which the agent operates.
-        analysis_llm:
-          $ref: '#/components/schemas/LLM'
-          description: >-
-            Default LLM model for post-call analysis (evaluation and data
-            collection)
-        topic_discovery:
-          $ref: '#/components/schemas/TopicDiscoverySettings'
-          description: Per-agent topic discovery configuration
-        sentiment_analysis:
-          $ref: '#/components/schemas/SentimentAnalysisSettings'
-          description: Per-agent post-call sentiment analysis configuration
-        alerting:
-          oneOf:
-            - $ref: '#/components/schemas/AlertingSettingsResponse'
-            - type: 'null'
-          description: Agent-level alerting configuration overriding workspace settings.
-        safety:
-          $ref: '#/components/schemas/SafetyResponseModel'
-      title: AgentPlatformSettingsResponseModel
-    PhoneNumberAgentInfo:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        agent_name:
-          type: string
-          description: The name of the agent
-        environment:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Environment to use for resolving environment variables on calls to
-            this number.
-        branch_id:
-          type:
-            - string
-            - 'null'
-          description: Agent branch to use for calls to this number.
-      required:
-        - agent_id
-        - agent_name
-      title: PhoneNumberAgentInfo
-    SIPTrunkTransportEnum:
-      type: string
-      enum:
-        - auto
-        - udp
-        - tcp
-        - tls
-      default: auto
-      title: SIPTrunkTransportEnum
-    SIPMediaEncryptionEnum:
-      type: string
-      enum:
-        - disabled
-        - allowed
-        - required
-      default: allowed
-      title: SIPMediaEncryptionEnum
-    MediaCodec:
-      type: string
-      enum:
-        - G722/8000
-        - PCMU/8000
-        - PCMA/8000
-      title: MediaCodec
-    GetPhoneNumberOutboundSIPTrunkConfigResponseModel:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Hostname or IP the SIP INVITE is sent to
-        transport:
-          $ref: '#/components/schemas/SIPTrunkTransportEnum'
-          description: Protocol to use for SIP transport
-        media_encryption:
-          $ref: '#/components/schemas/SIPMediaEncryptionEnum'
-          description: Whether or not to encrypt media (data layer).
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: SIP headers for INVITE request
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-        has_auth_credentials:
-          type: boolean
-          description: Whether authentication credentials are configured
-        username:
-          type:
-            - string
-            - 'null'
-          description: SIP trunk username (if available)
-        has_outbound_trunk:
-          type: boolean
-          default: false
-          description: Whether a LiveKit SIP outbound trunk is configured
-        enabled_codecs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MediaCodec'
-          description: >-
-            Media codecs that are offered in the SDP for outbound calls. If
-            empty, all supported codecs are offered.
-      required:
-        - address
-        - transport
-        - media_encryption
-        - has_auth_credentials
-      description: SIP Trunk configuration details for a phone number
-      title: GetPhoneNumberOutboundSIPTrunkConfigResponseModel
-    GetPhoneNumberInboundSIPTrunkConfigResponseModel:
-      type: object
-      properties:
-        allowed_addresses:
-          type: array
-          items:
-            type: string
-          description: >-
-            List of IP addresses that are allowed to use the trunk. Each item in
-            the list can be an individual IP address or a Classless Inter-Domain
-            Routing notation representing a CIDR block.
-        allowed_numbers:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of phone numbers that are allowed to use the trunk.
-        media_encryption:
-          $ref: '#/components/schemas/SIPMediaEncryptionEnum'
-        has_auth_credentials:
-          type: boolean
-          description: Whether authentication credentials are configured
-        username:
-          type:
-            - string
-            - 'null'
-          description: SIP trunk username (if available)
-        remote_domains:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Domains of remote SIP servers used to validate TLS certificates.
-        attributes_to_headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: >-
-            Map of dynamic variable name to header name for
-            attributes_to_headers
-      required:
-        - allowed_addresses
-        - allowed_numbers
-        - media_encryption
-        - has_auth_credentials
-      title: GetPhoneNumberInboundSIPTrunkConfigResponseModel
-    LivekitStackType:
-      type: string
-      enum:
-        - standard
-        - static
-      default: standard
-      title: LivekitStackType
-    MergePreviewResponseModelPhoneNumbersItems:
-      oneOf:
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - exotel
-              description: 'Discriminator value: exotel'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              oneOf:
-                - $ref: '#/components/schemas/PhoneNumberAgentInfo'
-                - type: 'null'
-              description: The agent that is assigned to the phone number
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-          description: GetPhoneNumberExotelResponseModel variant
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - sip_trunk
-              description: 'Discriminator value: sip_trunk'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              oneOf:
-                - $ref: '#/components/schemas/PhoneNumberAgentInfo'
-                - type: 'null'
-              description: The agent that is assigned to the phone number
-            provider_config:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/GetPhoneNumberOutboundSIPTrunkConfigResponseModel
-                - type: 'null'
-            outbound_trunk:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/GetPhoneNumberOutboundSIPTrunkConfigResponseModel
-                - type: 'null'
-              description: Configuration of the Outbound SIP trunk - if configured.
-            inbound_trunk:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/GetPhoneNumberInboundSIPTrunkConfigResponseModel
-                - type: 'null'
-              description: Configuration of the Inbound SIP trunk - if configured.
-            livekit_stack:
-              $ref: '#/components/schemas/LivekitStackType'
-              description: Type of Livekit stack used for this number.
-            store_sip_messages:
-              type: boolean
-              default: true
-              description: Whether to store SIP messages for this phone number.
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-            - livekit_stack
-          description: GetPhoneNumberSIPTrunkResponseModel variant
-        - type: object
-          properties:
-            provider:
-              type: string
-              enum:
-                - twilio
-              description: 'Discriminator value: twilio'
-            phone_number:
-              type: string
-              description: Phone number
-            label:
-              type: string
-              description: Label for the phone number
-            supports_inbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports inbound calls
-            supports_outbound:
-              type: boolean
-              default: true
-              description: >-
-                This field is deprecated and will be removed in the future.
-                Whether this phone number supports outbound calls
-            phone_number_id:
-              type: string
-              description: The ID of the phone number
-            assigned_agent:
-              oneOf:
-                - $ref: '#/components/schemas/PhoneNumberAgentInfo'
-                - type: 'null'
-              description: The agent that is assigned to the phone number
-          required:
-            - provider
-            - phone_number
-            - label
-            - phone_number_id
-          description: GetPhoneNumberTwilioResponseModel variant
-      discriminator:
-        propertyName: provider
-      title: MergePreviewResponseModelPhoneNumbersItems
-    GetWhatsAppAccountResponse:
-      type: object
-      properties:
-        business_account_id:
-          type: string
-        phone_number_id:
-          type: string
-        business_account_name:
-          type: string
-        phone_number_name:
-          type: string
-        phone_number:
-          type: string
-        assigned_agent_id:
-          type:
-            - string
-            - 'null'
-        enable_messaging:
-          type: boolean
-          default: true
-        enable_audio_message_response:
-          type: boolean
-          default: true
-        enable_typing_indicator:
-          type: boolean
-          default: true
-        assigned_agent_name:
-          type:
-            - string
-            - 'null'
-        is_token_expired:
-          type: boolean
-          default: false
-      required:
-        - business_account_id
-        - phone_number_id
-        - business_account_name
-        - phone_number_name
-        - phone_number
-        - assigned_agent_name
-      title: GetWhatsAppAccountResponse
-    LlmLiteralJsonSchemaPropertyType0:
-      type: string
-      enum:
-        - boolean
-        - string
-        - integer
-        - number
-      title: LlmLiteralJsonSchemaPropertyType0
-    LlmLiteralJsonSchemaPropertyType:
-      oneOf:
-        - $ref: '#/components/schemas/LlmLiteralJsonSchemaPropertyType0'
-        - type: array
-          items:
-            type: string
-      title: LlmLiteralJsonSchemaPropertyType
-    LLMLiteralJsonSchemaProperty:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/LlmLiteralJsonSchemaPropertyType'
-        description:
-          type: string
-        enum:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: List of allowed string values for string type parameters
-      required:
-        - type
-        - description
-      title: LLMLiteralJsonSchemaProperty
-    ASTNode-Output:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - add_operator
-              description: 'Discriminator value: add_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTAdditionOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - and_operator
-              description: 'Discriminator value: and_operator'
-            children:
-              type: array
-              items:
-                $ref: '#/components/schemas/ASTNode-Output'
-              description: Child nodes of the logical operator.
-          required:
-            - type
-            - children
-          description: ASTAndOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - boolean_literal
-              description: 'Discriminator value: boolean_literal'
-            value:
-              type: boolean
-              description: Value of this literal.
-          required:
-            - type
-            - value
-          description: ASTBooleanNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - conditional_operator
-              description: 'Discriminator value: conditional_operator'
-            condition:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Condition deciding which expression should be selected.
-            trueExpression:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Expression selected if the condition is true.
-            falseExpression:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Expression selected if the condition is false.
-          required:
-            - type
-            - condition
-            - trueExpression
-            - falseExpression
-          description: ASTConditionalOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - div_operator
-              description: 'Discriminator value: div_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTDivisionOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - dynamic_variable
-              description: 'Discriminator value: dynamic_variable'
-            name:
-              type: string
-              description: The name of the dynamic variable.
-          required:
-            - type
-            - name
-          description: ASTDynamicVariableNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - eq_operator
-              description: 'Discriminator value: eq_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTEqualsOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - gt_operator
-              description: 'Discriminator value: gt_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTGreaterThanOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - gte_operator
-              description: 'Discriminator value: gte_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTGreaterThanOrEqualsOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-              description: 'Discriminator value: llm'
-            value_schema:
-              $ref: '#/components/schemas/LLMLiteralJsonSchemaProperty'
-              description: JSON schema describing the value that the LLM should extract.
-            prompt:
-              type: string
-              description: >-
-                The prompt to evaluate to a boolean value. Deprecated. Use a
-                boolean schema instead.
-          required:
-            - type
-            - value_schema
-            - prompt
-          description: ASTLLMNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - lt_operator
-              description: 'Discriminator value: lt_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTLessThanOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - lte_operator
-              description: 'Discriminator value: lte_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTLessThanOrEqualsOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mul_operator
-              description: 'Discriminator value: mul_operator'
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTMultiplicationOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - neq_operator
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTNotEqualsOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - null_literal
-          required:
-            - type
-          description: ASTNullNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - number_literal
-            value:
-              type: number
-              format: double
-              description: Value of this literal.
-          required:
-            - type
-            - value
-          description: ASTNumberNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - or_operator
-            children:
-              type: array
-              items:
-                $ref: '#/components/schemas/ASTNode-Output'
-              description: Child nodes of the logical operator.
-          required:
-            - type
-            - children
-          description: ASTOrOperatorNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - string_literal
-            value:
-              type: string
-              description: Value of this literal.
-          required:
-            - type
-            - value
-          description: ASTStringNode variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sub_operator
-            left:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Left operand of the binary operator.
-            right:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Right operand of the binary operator.
-          required:
-            - type
-            - left
-            - right
-          description: ASTSubtractionOperatorNode variant
-      discriminator:
-        propertyName: type
-      title: ASTNode-Output
-    WorkflowEdgeModelOutputForwardCondition:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - expression
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            expression:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Expression to evaluate.
-          required:
-            - type
-            - label
-            - expression
-          description: WorkflowExpressionConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            condition:
-              type: string
-              description: Condition to evaluate
-          required:
-            - type
-            - label
-            - condition
-          description: WorkflowLLMConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - result
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            successful:
-              type: boolean
-              description: >-
-                Whether all tools in the previously executed tool node were
-                executed successfully.
-          required:
-            - type
-            - label
-            - successful
-          description: WorkflowResultConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unconditional
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-          required:
-            - type
-            - label
-          description: WorkflowUnconditionalModel variant
-      discriminator:
-        propertyName: type
-      description: >-
-        Condition that must be met for the edge to be traversed in the forward
-        direction (source to target).
-      title: WorkflowEdgeModelOutputForwardCondition
-    WorkflowEdgeModelOutputBackwardCondition:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - expression
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            expression:
-              $ref: '#/components/schemas/ASTNode-Output'
-              description: Expression to evaluate.
-          required:
-            - type
-            - label
-            - expression
-          description: WorkflowExpressionConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - llm
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            condition:
-              type: string
-              description: Condition to evaluate
-          required:
-            - type
-            - label
-            - condition
-          description: WorkflowLLMConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - result
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-            successful:
-              type: boolean
-              description: >-
-                Whether all tools in the previously executed tool node were
-                executed successfully.
-          required:
-            - type
-            - label
-            - successful
-          description: WorkflowResultConditionModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - unconditional
-            label:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional human-readable label for the condition used throughout
-                the UI.
-          required:
-            - type
-            - label
-          description: WorkflowUnconditionalModel variant
-      discriminator:
-        propertyName: type
-      description: >-
-        Condition that must be met for the edge to be traversed in the backward
-        direction (target to source).
-      title: WorkflowEdgeModelOutputBackwardCondition
-    WorkflowEdgeModel-Output:
-      type: object
-      properties:
-        source:
-          type: string
-          description: ID of the source node.
-        target:
-          type: string
-          description: ID of the target node.
-        forward_condition:
-          oneOf:
-            - $ref: '#/components/schemas/WorkflowEdgeModelOutputForwardCondition'
-            - type: 'null'
-          description: >-
-            Condition that must be met for the edge to be traversed in the
-            forward direction (source to target).
-        backward_condition:
-          oneOf:
-            - $ref: '#/components/schemas/WorkflowEdgeModelOutputBackwardCondition'
-            - type: 'null'
-          description: >-
-            Condition that must be met for the edge to be traversed in the
-            backward direction (target to source).
-      required:
-        - source
-        - target
-        - forward_condition
-        - backward_condition
-      title: WorkflowEdgeModel-Output
-    Position-Output:
-      type: object
-      properties:
-        x:
-          type: number
-          format: double
-          default: 0
-        'y':
-          type: number
-          format: double
-          default: 0
-      required:
-        - x
-        - 'y'
-      title: Position-Output
-    ASRConversationalConfigWorkflowOverride:
-      type: object
-      properties:
-        quality:
-          oneOf:
-            - $ref: '#/components/schemas/ASRQuality'
-            - type: 'null'
-          description: The quality of the transcription
-        provider:
-          oneOf:
-            - $ref: '#/components/schemas/ASRProvider'
-            - type: 'null'
-          description: The provider of the transcription service
-        user_input_audio_format:
-          oneOf:
-            - $ref: '#/components/schemas/ASRInputFormat'
-            - type: 'null'
-          description: The format of the audio to be transcribed
-        keywords:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: Keywords to boost prediction probability for
-      title: ASRConversationalConfigWorkflowOverride
-    SoftTimeoutConfigWorkflowOverride:
-      type: object
-      properties:
-        timeout_seconds:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            Time in seconds before showing the predefined message while waiting
-            for LLM response. Set to -1 to disable.
-        message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Message to show when the first soft timeout is reached while waiting
-            for LLM response. Supports dynamic variables (e.g.,
-            {{system__time}}, {{custom_variable}}).
-        additional_soft_timeout_messages:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            Extra static filler messages for subsequent soft timeouts in the
-            same LLM generation. The first timeout uses `message`. If fewer
-            messages are configured than `max_soft_timeouts_per_generation`, the
-            last configured message is repeated; otherwise a built-in filler is
-            used.
-        use_llm_generated_message:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled, the soft timeout message will be generated dynamically
-            instead of using the static message.
-        randomize_fillers:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled, shuffle the order of static soft timeout messages once
-            at the start of each turn. Only applies when
-            use_llm_generated_message is false.
-        max_soft_timeouts_per_generation:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Maximum filler messages while waiting for a single LLM response.
-            Fires every timeout_seconds until the LLM streams content or this
-            limit is reached.
-        llm_generated_message_prompt_override:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Custom prompt for generating the soft timeout filler message when
-            use_llm_generated_message is enabled. Recent conversation context is
-            provided as a separate user message. If not set, the default prompt
-            will be used. Supports dynamic variables (e.g., {{system__time}},
-            {{custom_variable}}).
-      title: SoftTimeoutConfigWorkflowOverride
-    TurnConfigWorkflowOverride:
-      type: object
-      properties:
-        turn_timeout:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Maximum wait time for the user's reply before re-engaging the user
-        initial_wait_time:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            How long the agent will wait for the user to start the conversation
-            if the first message is empty. If not set, uses the regular
-            turn_timeout.
-        silence_end_call_timeout:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            Maximum wait time since the user last spoke before terminating the
-            call
-        turn_eagerness:
-          oneOf:
-            - $ref: '#/components/schemas/TurnEagerness'
-            - type: 'null'
-          description: >-
-            Controls how eager the agent is to respond. Low = less eager (waits
-            longer), Standard = default eagerness, High = more eager (responds
-            sooner)
-        spelling_patience:
-          oneOf:
-            - $ref: '#/components/schemas/SpellingPatience'
-            - type: 'null'
-          description: >-
-            Controls if the agent should be more patient when user is spelling
-            numbers and named entities. Auto = model based, Off = never wait
-            extra
-        speculative_turn:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled, starts generating LLM responses during silence before
-            full turn confidence is reached, reducing perceived latency. May
-            increase LLM costs.
-        retranscribe_on_turn_timeout:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled, if VAD detects no speech, attempts to re-transcribe
-            accumulated audio at turn timeout. Disables silence discount billing
-            for affected turns.
-        turn_model:
-          oneOf:
-            - $ref: '#/components/schemas/TurnModel'
-            - type: 'null'
-          description: Version of the turn detection model to use.
-        interruption_ignore_terms:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            List of terms that should not trigger an interruption when spoken by
-            the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
-            matching.
-        interruption_ignore_term_languages:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: >-
-            Language codes for which preset ignore-term categories have been
-            activated. Stored explicitly so display is not inferred from term
-            overlap.
-        transcribe_on_disabled_interruptions:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When interruptions are disabled, still transcribe what the user says
-            so it can carry into the next turn. When off, user speech during a
-            non-interruptible turn is ignored and won't trigger a turn.
-        soft_timeout_config:
-          oneOf:
-            - $ref: '#/components/schemas/SoftTimeoutConfigWorkflowOverride'
-            - type: 'null'
-          description: >-
-            Configuration for soft timeout functionality. Provides immediate
-            feedback during longer LLM responses.
-      title: TurnConfigWorkflowOverride
-    TTSConversationalConfigWorkflowOverride-Output:
-      type: object
-      properties:
-        model_id:
-          oneOf:
-            - $ref: '#/components/schemas/TTSConversationalModel'
-            - type: 'null'
-          description: The model to use for TTS
-        voice_id:
-          type:
-            - string
-            - 'null'
-          description: The voice ID to use for TTS
-        supported_voices:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SupportedVoice'
-          description: Additional supported voices for the agent
-        expressive_mode:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled, applies expressive audio tags prompt. Automatically
-            disabled for non-v3 models.
-        suggested_audio_tags:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/SuggestedAudioTag'
-          description: >-
-            Suggested audio tags to boost expressive speech (for eleven_v3 and
-            eleven_v3_conversational models). The agent can still use other tags
-            not listed here.
-        agent_output_audio_format:
-          oneOf:
-            - $ref: '#/components/schemas/TTSOutputFormat'
-            - type: 'null'
-          description: The audio format to use for TTS
-        optimize_streaming_latency:
-          oneOf:
-            - $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-            - type: 'null'
-          description: 'Deprecated: this field is a no-op and is ignored.'
-        stability:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The stability of generated speech
-        speed:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The speed of generated speech
-        similarity_boost:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: The similarity boost for generated speech
-        text_normalisation_type:
-          oneOf:
-            - $ref: '#/components/schemas/TextNormalisationType'
-            - type: 'null'
-          description: >-
-            Method for converting numbers to words before converting text to
-            speech. If set to SYSTEM_PROMPT, the system prompt will be updated
-            to include normalization instructions. If set to ELEVENLABS, the
-            text will be normalized after generation, incurring slight
-            additional latency.
-        pronunciation_dictionary_locators:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/PydanticPronunciationDictionaryVersionLocator'
-          description: The pronunciation dictionary locators
-        enable_phoneme_tags:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Opt-in to SSML phoneme tag handling for V3 models. When enabled,
-            phoneme tags (inline and from pronunciation dictionaries) are parsed
-            into inline IPA before being sent to the model.
-      title: TTSConversationalConfigWorkflowOverride-Output
-    FileInputConfigWorkflowOverride:
-      type: object
-      properties:
-        enabled:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled, users may attach images or PDFs in chat when the LLM
-            supports multimodal input.
-        max_files_in_memory:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Number of most-recent files kept in memory during a conversation.
-            Older files are summarized and their bytes freed.
-        max_files_per_conversation:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Total files a user can upload in one conversation. Uploads are
-            billed per file. Use -1 for no limit, or a value >=
-            max_files_in_memory.
-      title: FileInputConfigWorkflowOverride
-    BackgroundSoundConfigWorkflowOverride:
-      type: object
-      properties:
-        source_type:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundSourceType'
-            - type: 'null'
-          description: The type of background sound source.
-        source_id:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundPresetId'
-            - type: 'null'
-          description: Identifier for the sound source.
-        volume:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Volume level for background sound (0.01 to 1.0).
-        crossfade_loop:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Apply a crossfade at the loop boundary to avoid audible pops when
-            the sound loops.
-      title: BackgroundSoundConfigWorkflowOverride
-    ConversationConfigWorkflowOverride-Output:
-      type: object
-      properties:
-        text_only:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If enabled audio will not be processed and only text will be used,
-            use to avoid audio pricing.
-        max_duration_seconds:
-          type:
-            - integer
-            - 'null'
-          description: The maximum duration of a conversation in seconds
-        client_events:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to the client
-        file_input:
-          oneOf:
-            - $ref: '#/components/schemas/FileInputConfigWorkflowOverride'
-            - type: 'null'
-          description: >-
-            Configuration for file input (image/PDF uploads) during
-            conversations.
-        monitoring_enabled:
-          type:
-            - boolean
-            - 'null'
-          description: Enable real-time monitoring of conversations via WebSocket
-        monitoring_events:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/ClientEvent'
-          description: The events that will be sent to monitoring connections.
-        background_sound:
-          oneOf:
-            - $ref: '#/components/schemas/BackgroundSoundConfigWorkflowOverride'
-            - type: 'null'
-          description: Configuration for background sound during conversations.
-        source_attribution:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled and knowledge base content is present, the LLM is
-            instructed to report which sources it used.
-      title: ConversationConfigWorkflowOverride-Output
-    VADConfigWorkflowOverride:
-      type: object
-      properties: {}
-      title: VADConfigWorkflowOverride
-    DynamicVariablesConfigWorkflowOverride:
-      type: object
-      properties:
-        dynamic_variable_placeholders:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: A dictionary of dynamic variable placeholders and their values
-      title: DynamicVariablesConfigWorkflowOverride
-    BuiltInToolsWorkflowOverride-Output:
-      type: object
-      properties:
-        end_call:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The end call tool
-        language_detection:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The language detection tool
-        transfer_to_agent:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The transfer to agent tool
-        transfer_to_number:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The transfer to number tool
-        skip_turn:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The skip turn tool
-        play_keypad_touch_tone:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The play DTMF tool
-        voicemail_detection:
-          oneOf:
-            - $ref: '#/components/schemas/SystemToolConfig-Output'
-            - type: 'null'
-          description: The voicemail detection tool
-      title: BuiltInToolsWorkflowOverride-Output
-    RagConfigWorkflowOverride-Output:
-      type: object
-      properties:
-        enabled:
-          type:
-            - boolean
-            - 'null'
-        embedding_model:
-          oneOf:
-            - $ref: '#/components/schemas/EmbeddingModelEnum'
-            - type: 'null'
-        max_vector_distance:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: Maximum vector distance of retrieved chunks.
-        max_documents_length:
-          type:
-            - integer
-            - 'null'
-          description: Maximum total length of document chunks retrieved from RAG.
-        max_retrieved_rag_chunks_count:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Maximum number of RAG document chunks to initially retrieve from the
-            vector store. These are then further filtered by vector distance and
-            total length.
-        num_candidates:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Number of candidates evaluated in ANN vector search. Higher number
-            means better results, but higher latency. Minimum recommended value
-            is 100. If disabled, the default value is used.
-        query_rewrite_prompt_override:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Custom prompt for rewriting user queries before RAG retrieval. The
-            conversation history will be automatically appended at the end. If
-            not set, the default prompt will be used.
-      title: RagConfigWorkflowOverride-Output
-    BackupLLMDefault:
-      type: object
-      properties: {}
-      title: BackupLLMDefault
-    BackupLLMDisabled:
-      type: object
-      properties: {}
-      title: BackupLLMDisabled
-    BackupLLMOverride:
-      type: object
-      properties:
-        order:
-          type: array
-          items:
-            $ref: '#/components/schemas/LLM'
-      required:
-        - order
-      title: BackupLLMOverride
-    PromptAgentApiModelWorkflowOverrideOutputBackupLlmConfig:
-      oneOf:
-        - $ref: '#/components/schemas/BackupLLMDefault'
-        - $ref: '#/components/schemas/BackupLLMDisabled'
-        - $ref: '#/components/schemas/BackupLLMOverride'
-      description: >-
-        Configuration for backup LLM cascading. Can be disabled, use system
-        defaults, or specify custom order.
-      title: PromptAgentApiModelWorkflowOverrideOutputBackupLlmConfig
-    PromptAgentApiModelWorkflowOverrideOutputToolsItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - api_integration_webhook
-              description: 'Discriminator value: api_integration_webhook'
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 300 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-            tool_version:
-              type: string
-              default: 1.0.0
-              description: The version of the API integration tool
-            api_integration_id:
-              type: string
-            api_integration_connection_id:
-              type: string
-            api_schema_overrides:
-              oneOf:
-                - $ref: '#/components/schemas/ApiIntegrationWebhookOverrides'
-                - type: 'null'
-              description: User overrides applied on top of the base api_schema
-          required:
-            - type
-            - name
-            - description
-            - response_timeout_secs
-            - disable_interruptions
-            - interruption_mode
-            - force_pre_tool_speech
-            - pre_tool_speech
-            - assignments
-            - tool_call_sound
-            - tool_call_sound_behavior
-            - tool_error_handling_mode
-            - dynamic_variables
-            - execution_mode
-            - tool_version
-            - api_integration_id
-            - api_integration_connection_id
-            - api_schema_overrides
-          description: ApiIntegrationWebhookToolConfig variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - client
-              description: 'Discriminator value: client'
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 1 and 120 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            parameters:
-              oneOf:
-                - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
-                - type: 'null'
-              description: Schema for any parameters to pass to the client
-            expects_response:
-              type: boolean
-              default: false
-              description: >-
-                If true, calling this tool should block the conversation until
-                the client responds with some response which is passed to the
-                llm. If false then we will continue the conversation without
-                waiting for the client to respond, this is useful to show
-                content to a user but not block the conversation
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              default: immediate
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-          required:
-            - type
-            - name
-            - description
-          description: >-
-            A client tool is one that sends an event to the user's client to
-            trigger something client side
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - mcp
-              description: 'Discriminator value: mcp'
-          required:
-            - type
-          description: mcp variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - smb
-              description: 'Discriminator value: smb'
-          required:
-            - type
-          description: smb variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - system
-              description: 'Discriminator value: system'
-            name:
-              type: string
-            description:
-              type: string
-              default: ''
-              description: >-
-                Description of when the tool should be used and what it does.
-                Leave empty to use the default description that's optimized for
-                the specific tool type.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete.
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            params:
-              $ref: >-
-                #/components/schemas/ToolResponseModelToolConfigDiscriminatorMappingSystemParams
-          required:
-            - type
-            - name
-            - params
-          description: >-
-            A system tool is a tool that is used to call a system method in the
-            server
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webhook
-              default: webhook
-              description: The type of tool
-            name:
-              type: string
-            description:
-              type: string
-              description: Description of when the tool should be used and what it does.
-            response_timeout_secs:
-              type: integer
-              default: 20
-              description: >-
-                The maximum time in seconds to wait for the tool call to
-                complete. Must be between 5 and 300 seconds (inclusive).
-            disable_interruptions:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `interruption_mode` instead. If true, the user
-                will not be able to interrupt the agent while this tool is
-                running.
-            interruption_mode:
-              $ref: '#/components/schemas/ToolInterruptionMode'
-              default: allow
-              description: >-
-                Controls whether the user can interrupt the agent around this
-                tool call. 'allow' (default) lets the user interrupt at any
-                time, 'disable_during_tool' suppresses interruptions only while
-                the tool is running, 'disable_during_tool_and_turn' suppresses
-                interruptions while the tool runs and for the agent response
-                that follows it.
-            force_pre_tool_speech:
-              type: boolean
-              default: false
-              description: >-
-                DEPRECATED: use `pre_tool_speech` instead. If true, the agent
-                will speak before the tool call.
-            pre_tool_speech:
-              $ref: '#/components/schemas/PreToolSpeechMode'
-              default: auto
-              description: >-
-                Controls whether the agent speaks before this tool is called.
-                'auto' (default) decides based on recent tool latency, 'force'
-                always asks the agent to speak, 'off' fully opts out regardless
-                of latency.
-            assignments:
-              type: array
-              items:
-                $ref: '#/components/schemas/DynamicVariableAssignment'
-              description: >-
-                Configuration for extracting values from tool responses and
-                assigning them to dynamic variables
-            tool_call_sound:
-              oneOf:
-                - $ref: '#/components/schemas/ToolCallSoundType'
-                - type: 'null'
-              description: >-
-                Predefined tool call sound type to play during tool execution.
-                If not specified, no tool call sound will be played.
-            tool_call_sound_behavior:
-              $ref: '#/components/schemas/ToolCallSoundBehavior'
-              default: auto
-              description: >-
-                Determines when the tool call sound should play. 'auto' only
-                plays when there's pre-tool speech, 'always' plays for every
-                tool call.
-            tool_error_handling_mode:
-              $ref: '#/components/schemas/ToolErrorHandlingMode'
-              default: auto
-              description: >-
-                Controls how tool errors are processed before being shared with
-                the agent. 'auto' determines handling based on tool type
-                (summarized for native integrations, hide for others),
-                'summarized' sends an LLM-generated summary, 'passthrough' sends
-                the raw error, 'hide' does not share the error with the agent.
-            dynamic_variables:
-              $ref: '#/components/schemas/DynamicVariablesConfig'
-              description: Configuration for dynamic variables
-            execution_mode:
-              $ref: '#/components/schemas/ToolExecutionMode'
-              default: immediate
-              description: >-
-                Determines when and how the tool executes: 'immediate' executes
-                the tool right away when requested by the LLM,
-                'post_tool_speech' waits for the agent to finish speaking before
-                executing, 'async' runs the tool in the background without
-                blocking - best for long-running operations.
-            api_schema:
-              $ref: '#/components/schemas/WebhookToolApiSchemaConfig-Output'
-              description: >-
-                The schema for the outgoing webhoook, including parameters and
-                URL specification
-          required:
-            - type
-            - name
-            - description
-            - api_schema
-          description: >-
-            A webhook tool is a tool that calls an external webhook from our
-            server
-      discriminator:
-        propertyName: type
-      description: The type of tool
-      title: PromptAgentApiModelWorkflowOverrideOutputToolsItems
-    PromptAgentAPIModelWorkflowOverride-Output:
-      type: object
-      properties:
-        prompt:
-          type:
-            - string
-            - 'null'
-          description: The prompt for the agent
-        llm:
-          oneOf:
-            - $ref: '#/components/schemas/LLM'
-            - type: 'null'
-          description: >-
-            The LLM to query with the prompt and the chat history. If using data
-            residency, the LLM must be supported in the data residency
-            environment
-        reasoning_effort:
-          oneOf:
-            - $ref: '#/components/schemas/LLMReasoningEffort'
-            - type: 'null'
-          description: Reasoning effort of the model. Only available for some models.
-        thinking_budget:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Max number of tokens used for thinking. Use 0 to turn off if
-            supported by the model.
-        enable_reasoning_summary:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Enable model reasoning summaries. When disabled, we do not request
-            summaries from provider if possible for faster TTFB. Not ZRM
-            compatible.
-        temperature:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            The temperature for the LLM. Defaults to 0. Set to null to omit the
-            parameter from the LLM request entirely (useful for custom LLMs that
-            reject the temperature field).
-        max_tokens:
-          type:
-            - integer
-            - 'null'
-          description: If greater than 0, maximum number of tokens the LLM can predict
-        tool_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of IDs of tools used by the agent
-        built_in_tools:
-          oneOf:
-            - $ref: '#/components/schemas/BuiltInToolsWorkflowOverride-Output'
-            - type: 'null'
-          description: Built-in system tools to be used by the agent
-        mcp_server_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of MCP server ids to be used by the agent
-        native_mcp_server_ids:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-          description: A list of Native MCP server ids to be used by the agent
-        knowledge_base:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/KnowledgeBaseLocator'
-          description: A list of knowledge bases to be used by the agent
-        custom_llm:
-          oneOf:
-            - $ref: '#/components/schemas/CustomLLM'
-            - type: 'null'
-          description: Definition for a custom LLM if LLM field is set to 'CUSTOM_LLM'
-        ignore_default_personality:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            Whether to remove the default personality lines from the system
-            prompt
-        rag:
-          oneOf:
-            - $ref: '#/components/schemas/RagConfigWorkflowOverride-Output'
-            - type: 'null'
-          description: Configuration for RAG
-        timezone:
-          type:
-            - string
-            - 'null'
-          description: >-
-            Timezone for displaying current time in system prompt. If set, the
-            current time will be included in the system prompt using this
-            timezone. Must be a valid timezone name (e.g., 'America/New_York',
-            'Europe/London', 'UTC'). Recommended for accurate time-aware
-            responses; without this, the agent has no knowledge of the current
-            date/time unless you provide it via dynamic variables or tools,
-            which can lead to incorrect or hallucinated time references.
-        backup_llm_config:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/PromptAgentApiModelWorkflowOverrideOutputBackupLlmConfig
-            - type: 'null'
-          description: >-
-            Configuration for backup LLM cascading. Can be disabled, use system
-            defaults, or specify custom order.
-        cascade_timeout_seconds:
-          type:
-            - number
-            - 'null'
-          format: double
-          description: >-
-            Time in seconds before cascading to backup LLM. Must be between 2
-            and 15 seconds.
-        tools:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: >-
-              #/components/schemas/PromptAgentApiModelWorkflowOverrideOutputToolsItems
-          description: >-
-            A list of tools that the agent can use over the course of the
-            conversation, use tool_ids instead
-      title: PromptAgentAPIModelWorkflowOverride-Output
-    AgentConfigAPIModelWorkflowOverride-Output:
-      type: object
-      properties:
-        first_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the first message the agent will say. If empty, the
-            agent waits for the user to start the discussion.
-        language:
-          type:
-            - string
-            - 'null'
-          description: Language of the agent - used for ASR and TTS
-        hinglish_mode:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            When enabled and language is Hindi, the agent will respond in
-            Hinglish
-        dynamic_variables:
-          oneOf:
-            - $ref: '#/components/schemas/DynamicVariablesConfigWorkflowOverride'
-            - type: 'null'
-          description: Configuration for dynamic variables
-        disable_first_message_interruptions:
-          type:
-            - boolean
-            - 'null'
-          description: >-
-            If true, the user will not be able to interrupt the agent while the
-            first message is being delivered.
-        max_conversation_duration_message:
-          type:
-            - string
-            - 'null'
-          description: >-
-            If non-empty, the message the agent will send when max conversation
-            duration is reached.
-        text_behavior_overrides:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/BehaviorOverride'
-          description: >-
-            Per-channel response behavior overrides for text conversations.
-            Built-in channel defaults apply when unset.
-        prompt:
-          oneOf:
-            - $ref: '#/components/schemas/PromptAgentAPIModelWorkflowOverride-Output'
-            - type: 'null'
-          description: The prompt for the agent
-      title: AgentConfigAPIModelWorkflowOverride-Output
-    ConversationalConfigAPIModelWorkflowOverride-Output:
-      type: object
-      properties:
-        asr:
-          oneOf:
-            - $ref: '#/components/schemas/ASRConversationalConfigWorkflowOverride'
-            - type: 'null'
-          description: Configuration for conversational transcription
-        turn:
-          oneOf:
-            - $ref: '#/components/schemas/TurnConfigWorkflowOverride'
-            - type: 'null'
-          description: Configuration for turn detection
-        tts:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/TTSConversationalConfigWorkflowOverride-Output
-            - type: 'null'
-          description: Configuration for conversational text to speech
-        conversation:
-          oneOf:
-            - $ref: '#/components/schemas/ConversationConfigWorkflowOverride-Output'
-            - type: 'null'
-          description: Configuration for conversational events
-        language_presets:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            $ref: '#/components/schemas/LanguagePreset-Output'
-          description: Language presets for conversations
-        vad:
-          oneOf:
-            - $ref: '#/components/schemas/VADConfigWorkflowOverride'
-            - type: 'null'
-          description: Configuration for voice activity detection
-        agent:
-          oneOf:
-            - $ref: '#/components/schemas/AgentConfigAPIModelWorkflowOverride-Output'
-            - type: 'null'
-          description: Agent specific configuration
-      title: ConversationalConfigAPIModelWorkflowOverride-Output
-    EntryBehavior:
-      type: string
-      enum:
-        - generate_immediately
-        - wait_for_user
-        - auto
-      default: auto
-      title: EntryBehavior
-    WorkflowPhoneNumberNodeModelOutputCustomSipHeadersItems:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - dynamic
-              description: 'Discriminator value: dynamic'
-            key:
-              type: string
-              description: The SIP header name (e.g., 'X-Customer-ID')
-            value:
-              type: string
-              description: The dynamic variable name to resolve
-          required:
-            - type
-            - key
-            - value
-          description: >-
-            Custom SIP header for phone transfers with a dynamic variable
-            reference.
-
-            The value is a variable name that will be resolved at runtime.
-
-            Value is not validated here since it will be substituted with actual
-            value later.
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - static
-              description: 'Discriminator value: static'
-            key:
-              type: string
-              description: The SIP header name (e.g., 'X-Customer-ID')
-            value:
-              type: string
-              description: The header value
-          required:
-            - type
-            - key
-            - value
-          description: >-
-            Custom SIP header for phone transfers with a static (validated)
-            value.
-      discriminator:
-        propertyName: type
-      title: WorkflowPhoneNumberNodeModelOutputCustomSipHeadersItems
-    WorkflowPhoneNumberNodeModelOutputTransferDestination:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - phone
-              description: 'Discriminator value: phone'
-            phone_number:
-              type: string
-          required:
-            - type
-            - phone_number
-          description: PhoneNumberTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - phone_dynamic_variable
-              description: 'Discriminator value: phone_dynamic_variable'
-            phone_number:
-              type: string
-          required:
-            - type
-            - phone_number
-          description: PhoneNumberDynamicVariableTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sip_uri
-              description: 'Discriminator value: sip_uri'
-            sip_uri:
-              type: string
-          required:
-            - type
-            - sip_uri
-          description: SIPUriTransferDestination variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - sip_uri_dynamic_variable
-              description: 'Discriminator value: sip_uri_dynamic_variable'
-            sip_uri:
-              type: string
-          required:
-            - type
-            - sip_uri
-          description: SIPUriDynamicVariableTransferDestination variant
-      discriminator:
-        propertyName: type
-      title: WorkflowPhoneNumberNodeModelOutputTransferDestination
-    WorkflowPhoneNumberNodeModelOutputPostDialDigits:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - dynamic
-              description: 'Discriminator value: dynamic'
-            value:
-              type: string
-              description: The dynamic variable name to resolve
-          required:
-            - type
-            - value
-          description: PostDialDigitsDynamicVariable variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - static
-              description: 'Discriminator value: static'
-            value:
-              type: string
-              description: >-
-                DTMF digits to send after call connects (e.g., 'ww1234' for
-                extension)
-          required:
-            - type
-            - value
-          description: PostDialDigitsStatic variant
-      discriminator:
-        propertyName: type
-      description: >-
-        DTMF digits to send after call connects (e.g., 'ww1234' for extension).
-        Can be either a static value or a dynamic variable reference. Use 'w'
-        for 0.5s pause. Only supported for Twilio transfers.
-      title: WorkflowPhoneNumberNodeModelOutputPostDialDigits
-    WorkflowToolLocator:
-      type: object
-      properties:
-        tool_id:
-          type: string
-      required:
-        - tool_id
-      title: WorkflowToolLocator
-    AgentWorkflowResponseModelNodes:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - end
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-          required:
-            - type
-            - position
-            - edge_order
-          description: WorkflowEndNodeModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - override_agent
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-            conversation_config:
-              $ref: >-
-                #/components/schemas/ConversationalConfigAPIModelWorkflowOverride-Output
-              description: >-
-                Configuration overrides applied while the subagent is conducting
-                the conversation.
-            additional_prompt:
-              type: string
-              description: >-
-                Specific goal for this subagent. It will be added to the system
-                prompt and can be used to further refine the agent's behavior in
-                this specific context.
-            additional_knowledge_base:
-              type: array
-              items:
-                $ref: '#/components/schemas/KnowledgeBaseLocator'
-              description: >-
-                Additional knowledge base documents that the subagent has access
-                to. These will be used in addition to the main agent's
-                documents.
-            additional_tool_ids:
-              type: array
-              items:
-                type: string
-              description: >-
-                IDs of additional tools that the subagent has access to. These
-                will be used in addition to the main agent's tools.
-            label:
-              type: string
-              description: Human-readable label for the node used throughout the UI.
-            entry_behavior:
-              $ref: '#/components/schemas/EntryBehavior'
-              description: >-
-                Dictates whether this node should immediately generate a
-                response upon entry or wait for the user input. When set to
-                "auto", the behavior will be decided based on the type of the
-                preceding node: "wait_for_user" after the "say" and "start"
-                nodes and "generate_immediately" otherwise.
-          required:
-            - type
-            - position
-            - edge_order
-            - conversation_config
-            - additional_prompt
-            - additional_knowledge_base
-            - additional_tool_ids
-            - label
-            - entry_behavior
-          description: WorkflowOverrideAgentNodeModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - phone_number
-            custom_sip_headers:
-              type: array
-              items:
-                $ref: >-
-                  #/components/schemas/WorkflowPhoneNumberNodeModelOutputCustomSipHeadersItems
-              description: >-
-                Custom SIP headers to include when transferring the call. Each
-                header can be either a static value or a dynamic variable
-                reference.
-            transfer_destination:
-              $ref: >-
-                #/components/schemas/WorkflowPhoneNumberNodeModelOutputTransferDestination
-            transfer_type:
-              $ref: '#/components/schemas/TransferTypeEnum'
-            uui:
-              oneOf:
-                - $ref: '#/components/schemas/UUITransferConfig'
-                - type: 'null'
-              description: >-
-                User-to-User Information (RFC 7433) to attach to SIP REFER
-                transfers. Carries call context such as CRM identifiers or
-                escalation reason across the transfer boundary.
-            post_dial_digits:
-              oneOf:
-                - $ref: >-
-                    #/components/schemas/WorkflowPhoneNumberNodeModelOutputPostDialDigits
-                - type: 'null'
-              description: >-
-                DTMF digits to send after call connects (e.g., 'ww1234' for
-                extension). Can be either a static value or a dynamic variable
-                reference. Use 'w' for 0.5s pause. Only supported for Twilio
-                transfers.
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-          required:
-            - type
-            - custom_sip_headers
-            - transfer_destination
-            - transfer_type
-            - uui
-            - post_dial_digits
-            - position
-            - edge_order
-          description: WorkflowPhoneNumberNodeModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - standalone_agent
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-            agent_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                The ID of the agent to transfer the conversation to. None means
-                transfer within the current agent.
-            node_id:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional target node ID in the destination agent's workflow.
-                When set, the transfer starts at this node instead of the
-                default entry node.
-            delay_ms:
-              type: integer
-              default: 0
-              description: >-
-                Artificial delay in milliseconds applied before transferring the
-                conversation.
-            transfer_message:
-              type:
-                - string
-                - 'null'
-              description: >-
-                Optional message sent to the user before the transfer is
-                initiated.
-            enable_transferred_agent_first_message:
-              type: boolean
-              default: false
-              description: >-
-                Whether to enable the transferred agent to send its configured
-                first message after the transfer.
-            preserve_client_tts_overrides:
-              type: boolean
-              default: false
-              description: >-
-                Defines whether TTS client overrides should be carried over to
-                the transferred agent.
-          required:
-            - type
-            - position
-            - edge_order
-            - agent_id
-            - node_id
-            - delay_ms
-            - transfer_message
-            - enable_transferred_agent_first_message
-            - preserve_client_tts_overrides
-          description: WorkflowStandaloneAgentNodeModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - start
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-          required:
-            - type
-            - position
-            - edge_order
-          description: WorkflowStartNodeModel variant
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - tool
-            position:
-              $ref: '#/components/schemas/Position-Output'
-              description: Position of the node in the workflow.
-            edge_order:
-              type: array
-              items:
-                type: string
-              description: The ids of outgoing edges in the order they should be evaluated.
-            tools:
-              type: array
-              items:
-                $ref: '#/components/schemas/WorkflowToolLocator'
-              description: >-
-                List of tools to execute in parallel. The entire node is
-                considered successful if all tools are executed successfully.
-          required:
-            - type
-            - position
-            - edge_order
-            - tools
-          description: WorkflowToolNodeModel variant
-      discriminator:
-        propertyName: type
-      title: AgentWorkflowResponseModelNodes
-    AgentWorkflowResponseModel:
-      type: object
-      properties:
-        edges:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/WorkflowEdgeModel-Output'
-        nodes:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AgentWorkflowResponseModelNodes'
-        prevent_subagent_loops:
-          type: boolean
-          default: false
-          description: Whether to prevent loops in the workflow execution.
-      required:
-        - edges
-        - nodes
-        - prevent_subagent_loops
-      title: AgentWorkflowResponseModel
-    ResourceAccessInfoRole:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: The role of the user making the request
-      title: ResourceAccessInfoRole
-    ResourceAccessInfoAnonymousAccessLevelOverride:
-      type: string
-      enum:
-        - admin
-        - editor
-        - commenter
-        - viewer
-      description: >-
-        The access level for anonymous users. If None, the resource is not
-        shared publicly.
-      title: ResourceAccessInfoAnonymousAccessLevelOverride
-    ResourceAccessInfoAccessSource:
-      type: string
-      enum:
-        - creator
-        - explicit
-        - workspace_admin
-        - workspace_default
-      description: >-
-        Why the requesting user has access to this resource. 'creator' = caller
-        is the owner. 'explicit' = caller (or one of their workspace groups) is
-        listed in role_to_group_ids beyond the workspace-wide everyone group.
-        'workspace_default' = the workspace-wide everyone group is listed in
-        role_to_group_ids (every non-anon workspace member, including admins,
-        sees this resource). 'workspace_admin' = caller is a workspace admin and
-        the admin seat is the *only* path to access; reserved for docs nobody
-        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
-        that wasn't explicitly shared with them.
-      title: ResourceAccessInfoAccessSource
-    ResourceAccessInfo:
-      type: object
-      properties:
-        is_creator:
-          type: boolean
-          description: Whether the user making the request is the creator of the agent
-        creator_name:
-          type: string
-          description: Name of the agent's creator
-        creator_email:
-          type: string
-          description: Email of the agent's creator
-        role:
-          $ref: '#/components/schemas/ResourceAccessInfoRole'
-          description: The role of the user making the request
-        anonymous_access_level_override:
-          oneOf:
-            - $ref: >-
-                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
-            - type: 'null'
-          description: >-
-            The access level for anonymous users. If None, the resource is not
-            shared publicly.
-        access_source:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
-            - type: 'null'
-          description: >-
-            Why the requesting user has access to this resource. 'creator' =
-            caller is the owner. 'explicit' = caller (or one of their workspace
-            groups) is listed in role_to_group_ids beyond the workspace-wide
-            everyone group. 'workspace_default' = the workspace-wide everyone
-            group is listed in role_to_group_ids (every non-anon workspace
-            member, including admins, sees this resource). 'workspace_admin' =
-            caller is a workspace admin and the admin seat is the *only* path to
-            access; reserved for docs nobody else can see. Lets the UI disclose
-            why an admin-bypass viewer sees a doc that wasn't explicitly shared
-            with them.
-      required:
-        - is_creator
-        - creator_name
-        - creator_email
-        - role
-      title: ResourceAccessInfo
-    ConflictSection:
-      type: string
-      enum:
-        - conversation_config
-        - platform_settings
-        - procedures
-        - workflow
-      title: ConflictSection
-    FieldConflict:
-      type: object
-      properties:
-        path:
-          type: string
-          description: >-
-            Identifier of the conflicting field relative to its section: a
-            dot-path within conversation_config/platform_settings, or a
-            procedure id.
-        section:
-          $ref: '#/components/schemas/ConflictSection'
-          description: Which config section this path belongs to.
-        base_value:
-          description: Value at the common ancestor (merge base).
-        source_value:
-          description: Value on the source branch tip.
-        target_value:
-          description: Value on the target branch tip.
-      required:
-        - path
-        - section
-      title: FieldConflict
-    MergePreviewResponseModel:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: The ID of the agent
-        name:
-          type: string
-          description: The name of the agent
-        conversation_config:
-          $ref: '#/components/schemas/ConversationalConfigAPIModel-Output'
-          description: The conversation configuration of the agent
-        metadata:
-          $ref: '#/components/schemas/AgentMetadataResponseModel'
-          description: The metadata of the agent
-        platform_settings:
-          $ref: '#/components/schemas/AgentPlatformSettingsResponseModel'
-          description: The platform settings of the agent
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/MergePreviewResponseModelPhoneNumbersItems'
-          description: The phone numbers of the agent
-        whatsapp_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/GetWhatsAppAccountResponse'
-          description: WhatsApp accounts assigned to the agent
-        workflow:
-          $ref: '#/components/schemas/AgentWorkflowResponseModel'
-          description: The workflow of the agent
-        access_info:
-          oneOf:
-            - $ref: '#/components/schemas/ResourceAccessInfo'
-            - type: 'null'
-          description: The access information of the agent for the user
-        tags:
-          type: array
-          items:
-            type: string
-          description: Agent tags used to categorize the agent
-        version_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the version the agent is on
-        branch_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the branch the agent is on
-        main_branch_id:
-          type:
-            - string
-            - 'null'
-          description: The ID of the main branch for this agent
-        overridden_fields:
-          type: array
-          items:
-            type: string
-          description: >-
-            Dot-paths of config fields where both branches modified the same
-            field relative to their common ancestor (conflicts). Present
-            regardless of which side wins the conflict.
-        conflicts:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldConflict'
-          description: >-
-            Structured view of the same conflicts as overridden_fields, each
-            carrying the value on the base (common ancestor), source branch, and
-            target branch so the divergence can be presented and resolved
-            field-by-field.
-        source_identical_to_target:
-          type: boolean
-          default: false
-          description: >-
-            True when the merge/rebase would be a no-op, i.e. the merged result
-            is identical to the source branch tip. The rebase endpoint rejects
-            in this case.
-      required:
-        - agent_id
-        - name
-        - conversation_config
-        - metadata
-      title: MergePreviewResponseModel
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-
-```
+- `agent_id` (string, required) — The ID of the agent
+- `name` (string, required) — The name of the agent
+- `conversation_config` (object, required) — The conversation configuration of the agent
+  - `asr` (object, optional) — Configuration for conversational transcription
+    - `quality` (enum, optional, default: high) — The quality of the transcription
+      - Allowed values: `high`
+    - `provider` (enum, optional, default: scribe_realtime) — The provider of the transcription service
+      - Allowed values: `elevenlabs`, `scribe_realtime`
+    - `user_input_audio_format` (enum, optional, default: pcm_16000) — The format of the audio to be transcribed
+      - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
+    - `keywords` (list of string, optional) — Keywords to boost prediction probability for
+  - `turn` (object, optional) — Configuration for turn detection
+    - `turn_timeout` (double, optional, default: 7) — Maximum wait time for the user's reply before re-engaging the user
+    - `initial_wait_time` (double, optional, nullable) — How long the agent will wait for the user to start the conversation if the first message is empty. If not set, uses the regular turn_timeout.
+    - `silence_end_call_timeout` (double, optional, default: -1) — Maximum wait time since the user last spoke before terminating the call
+    - `turn_eagerness` (enum, optional, default: normal) — Controls how eager the agent is to respond. Low = less eager (waits longer), Standard = default eagerness, High = more eager (responds sooner)
+      - Allowed values: `patient`, `normal`, `eager`
+    - `spelling_patience` (enum, optional, default: auto) — Controls if the agent should be more patient when user is spelling numbers and named entities. Auto = model based, Off = never wait extra
+      - Allowed values: `auto`, `off`
+    - `speculative_turn` (boolean, optional, default: false) — When enabled, starts generating LLM responses during silence before full turn confidence is reached, reducing perceived latency. May increase LLM costs.
+    - `retranscribe_on_turn_timeout` (boolean, optional, default: false) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing for affected turns.
+    - `turn_model` (enum, optional, default: turn_v3) — Version of the turn detection model to use.
+      - Allowed values: `turn_v2`, `turn_v3`
+    - `interruption_ignore_terms` (list of string, optional) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
+    - `interruption_ignore_term_languages` (list of string, optional) — Language codes for which preset ignore-term categories have been activated. Stored explicitly so display is not inferred from term overlap.
+    - `transcribe_on_disabled_interruptions` (boolean, optional, default: false) — When interruptions are disabled, still transcribe what the user says so it can carry into the next turn. When off, user speech during a non-interruptible turn is ignored and won't trigger a turn.
+    - `soft_timeout_config` (object, optional) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
+      - `timeout_seconds` (double, optional, default: -1) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.
+      - `message` (string, optional, default: Hhmmmm...yeah.) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+      - `additional_soft_timeout_messages` (list of string, optional) — Extra static filler messages for subsequent soft timeouts in the same LLM generation. The first timeout uses `message`. If fewer messages are configured than `max_soft_timeouts_per_generation`, the last configured message is repeated; otherwise a built-in filler is used.
+      - `use_llm_generated_message` (boolean, optional, default: false) — If enabled, the soft timeout message will be generated dynamically instead of using the static message.
+      - `randomize_fillers` (boolean, optional, default: false) — If enabled, shuffle the order of static soft timeout messages once at the start of each turn. Only applies when use_llm_generated_message is false.
+      - `max_soft_timeouts_per_generation` (integer, optional, default: 1) — Maximum filler messages while waiting for a single LLM response. Fires every timeout_seconds until the LLM streams content or this limit is reached.
+      - `llm_generated_message_prompt_override` (string, optional, nullable) — Custom prompt for generating the soft timeout filler message when use\_llm\_generated\_message is enabled. Recent conversation context is provided as a separate user message. If not set, the default prompt will be used. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+  - `tts` (object, optional) — Configuration for conversational text to speech
+    - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
+      - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+    - `voice_id` (string, optional, default: cjVigY5qzO86Huf0OWal) — The voice ID to use for TTS
+    - `supported_voices` (list of object, optional) — Additional supported voices for the agent
+      - `label` (string, required)
+      - `voice_id` (string, required)
+      - `description` (string, optional, nullable)
+      - `language` (string, optional, nullable)
+      - `model_family` (enum, optional, nullable)
+        - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`
+      - `optimize_streaming_latency` (enum, optional, nullable)
+        - Allowed values: `0`, `1`, `2`, `3`, `4`
+      - `stability` (double, optional, nullable)
+      - `speed` (double, optional, nullable)
+      - `similarity_boost` (double, optional, nullable)
+    - `expressive_mode` (boolean, optional, default: true) — When enabled, applies expressive audio tags prompt. Automatically disabled for non-v3 models.
+    - `suggested_audio_tags` (list of object, optional) — Suggested audio tags to boost expressive speech (for eleven_v3 and eleven_v3_conversational models). The agent can still use other tags not listed here.
+      - `tag` (string, required) — Audio tag to use (for best performance, 1-2 words, e.g., 'happy', 'excited')
+      - `description` (string, optional, nullable) — Optional description of when to use this tag
+    - `agent_output_audio_format` (enum, optional, default: pcm_16000) — The audio format to use for TTS
+      - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
+    - `optimize_streaming_latency` (enum, optional) — Deprecated: this field is a no-op and is ignored.
+      - Allowed values: `0`, `1`, `2`, `3`, `4`
+    - `stability` (double, optional, default: 0.5) — The stability of generated speech
+    - `speed` (double, optional, default: 1) — The speed of generated speech
+    - `similarity_boost` (double, optional, default: 0.8) — The similarity boost for generated speech
+    - `text_normalisation_type` (enum, optional, default: system_prompt) — Method for converting numbers to words before converting text to speech. If set to SYSTEM_PROMPT, the system prompt will be updated to include normalization instructions. If set to ELEVENLABS, the text will be normalized after generation, incurring slight additional latency.
+      - Allowed values: `system_prompt`, `elevenlabs`
+    - `pronunciation_dictionary_locators` (list of object, optional) — The pronunciation dictionary locators
+      - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+      - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
+    - `enable_phoneme_tags` (boolean, optional, default: true) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+  - `conversation` (object, optional) — Configuration for conversational events
+    - `text_only` (boolean, optional, default: false) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+    - `max_duration_seconds` (integer, optional, default: 600) — The maximum duration of a conversation in seconds
+    - `client_events` (list of enum, optional) — The events that will be sent to the client
+      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+    - `file_input` (object, optional) — Configuration for file input (image/PDF uploads) during conversations.
+      - `enabled` (boolean, optional, default: true) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
+      - `max_files_in_memory` (integer, optional, default: 10) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
+      - `max_files_per_conversation` (integer, optional, default: 10) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
+    - `monitoring_enabled` (boolean, optional, default: false) — Enable real-time monitoring of conversations via WebSocket
+    - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
+      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+    - `background_sound` (object, optional) — Configuration for background sound during conversations.
+      - `source_type` (enum, optional, nullable) — The type of background sound source.
+        - Allowed values: `preset`
+      - `source_id` (enum, optional, nullable) — Identifier for the sound source.
+        - Allowed values: `office2`, `office1`, `restaurant`, `city`, `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+      - `volume` (double, optional, default: 0.6) — Volume level for background sound (0.01 to 1.0).
+      - `crossfade_loop` (boolean, optional, default: false) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
+    - `source_attribution` (boolean, optional, default: false) — When enabled and knowledge base content is present, the LLM is instructed to report which sources it used.
+  - `language_presets` (map from string to object, optional) — Language presets for conversations
+    - `overrides` (object, required) — The overrides for the language preset
+      - `asr` (object, optional, nullable) — Configuration for conversational transcription
+        - `keywords` (list of string, optional, nullable) — Keywords to boost prediction probability for
+      - `turn` (object, optional, nullable) — Configuration for turn detection
+        - `soft_timeout_config` (object, optional, nullable) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
+          - `message` (string, optional, nullable) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+      - `tts` (object, optional, nullable) — Configuration for conversational text to speech
+        - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
+          - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+        - `voice_id` (string, optional, nullable) — The voice ID to use for TTS
+        - `stability` (double, optional, nullable) — The stability of generated speech
+        - `speed` (double, optional, nullable) — The speed of generated speech
+        - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+      - `conversation` (object, optional, nullable) — Configuration for conversational events
+        - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+      - `agent` (object, optional, nullable) — Agent specific configuration
+        - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
+        - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
+        - `max_conversation_duration_message` (string, optional, nullable) — If non-empty, the message the agent will send when max conversation duration is reached.
+        - `prompt` (object, optional, nullable) — The prompt for the agent
+          - `prompt` (string, optional, nullable) — The prompt for the agent
+          - `llm` (enum, optional, nullable) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
+            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+          - `tool_ids` (list of string, optional, nullable) — A list of IDs of tools used by the agent
+          - `native_mcp_server_ids` (list of string, optional, nullable) — A list of Native MCP server ids to be used by the agent
+          - `knowledge_base` (list of object, optional, nullable) — A list of knowledge bases to be used by the agent
+            - `type` (enum, required) — The type of the knowledge base
+            - `name` (string, required) — The name of the knowledge base
+            - `id` (string, required) — The ID of the knowledge base
+            - `usage_mode` (enum, optional, default: auto) — The usage mode of the knowledge base
+    - `first_message_translation` (object, optional, nullable) — The translation of the first message
+      - `source_hash` (string, required)
+      - `text` (string, required)
+    - `soft_timeout_translation` (object, optional, nullable) — The translation of the soft timeout message
+      - `source_hash` (string, required)
+      - `text` (string, required)
+  - `vad` (object, optional) — Configuration for voice activity detection
+  - `agent` (object, optional) — Agent specific configuration
+    - `first_message` (string, optional, default: ) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
+    - `language` (string, optional, default: en) — Language of the agent - used for ASR and TTS
+    - `hinglish_mode` (boolean, optional, default: false) — When enabled and language is Hindi, the agent will respond in Hinglish
+    - `dynamic_variables` (any, optional) — Configuration for dynamic variables
+    - `disable_first_message_interruptions` (boolean, optional, default: false) — If true, the user will not be able to interrupt the agent while the first message is being delivered.
+    - `max_conversation_duration_message` (string, optional, default: ) — If non-empty, the message the agent will send when max conversation duration is reached.
+    - `text_behavior_overrides` (map from string to object, optional, nullable) — Per-channel response behavior overrides for text conversations. Built-in channel defaults apply when unset.
+      - `verbosity` (enum, optional, nullable) — Verbosity override. Underlying default applies when unset.
+        - Allowed values: `auto`, `concise`, `thorough`
+      - `output_format` (enum, optional, nullable) — Output format override. Underlying default applies when unset.
+        - Allowed values: `mp3_22050_32`, `mp3_44100_32`, `mp3_44100_64`, `mp3_44100_96`, `mp3_44100_128`, `mp3_44100_192`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `ulaw_8000`
+      - `interaction_budget` (enum, optional, nullable) — Interaction budget override. Underlying default applies when unset.
+        - Allowed values: `realtime`, `5_minutes`, `10_minutes`, `1_hour`
+    - `prompt` (object, optional) — The prompt for the agent
+      - `prompt` (string, optional, default: ) — The prompt for the agent
+      - `llm` (enum, optional) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
+        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+      - `reasoning_effort` (enum, optional, nullable) — Reasoning effort of the model. Only available for some models.
+        - Allowed values: `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
+      - `thinking_budget` (integer, optional, nullable) — Max number of tokens used for thinking. Use 0 to turn off if supported by the model.
+      - `enable_reasoning_summary` (boolean, optional, default: false) — Enable model reasoning summaries. When disabled, we do not request summaries from provider if possible for faster TTFB. Not ZRM compatible.
+      - `temperature` (double, optional, nullable, default: 0) — The temperature for the LLM. Defaults to 0. Set to null to omit the parameter from the LLM request entirely (useful for custom LLMs that reject the temperature field).
+      - `max_tokens` (integer, optional, default: -1) — If greater than 0, maximum number of tokens the LLM can predict
+      - `tool_ids` (list of string, optional) — A list of IDs of tools used by the agent
+      - `built_in_tools` (object, optional) — Built-in system tools to be used by the agent
+        - `end_call` (object, optional, nullable) — The end call tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `language_detection` (object, optional, nullable) — The language detection tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `transfer_to_agent` (object, optional, nullable) — The transfer to agent tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `transfer_to_number` (object, optional, nullable) — The transfer to number tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `skip_turn` (object, optional, nullable) — The skip turn tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `play_keypad_touch_tone` (object, optional, nullable) — The play DTMF tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `voicemail_detection` (object, optional, nullable) — The voicemail detection tool
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+      - `mcp_server_ids` (list of string, optional) — A list of MCP server ids to be used by the agent
+      - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
+      - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent
+        - `type` (enum, required) — The type of the knowledge base
+          - Allowed values: `file`, `url`, `text`, `folder`
+        - `name` (string, required) — The name of the knowledge base
+        - `id` (string, required) — The ID of the knowledge base
+        - `usage_mode` (enum, optional, default: auto) — The usage mode of the knowledge base
+          - Allowed values: `prompt`, `auto`
+      - `custom_llm` (object, optional, nullable) — Definition for a custom LLM if LLM field is set to 'CUSTOM_LLM'
+        - `url` (string, required) — The URL of the Chat Completions compatible endpoint
+        - `model_id` (string, optional, nullable) — The model ID to be used if URL serves multiple models
+        - `api_key` (object or object, optional, nullable) — The API key for authentication. Either a workspace secret reference \{'secret\_id': '...'} or an environment variable reference \{'env\_var\_label': '...'}.
+          - ConvAISecretLocator
+            - `secret_id` (string, required)
+          - ConvAIEnvVarLocator
+            - `env_var_label` (string, required)
+        - `auth_connection` (object or object, optional, nullable) — Optional workspace auth connection for authentication. Only auth connections that produce an Authorization Bearer token are supported; Basic auth, mTLS, custom header, and URL secret auth connections are not supported.
+          - AuthConnectionLocator
+            - `auth_connection_id` (string, required)
+          - EnvironmentAuthConnectionLocator
+            - `env_var_label` (string, required)
+        - `request_headers` (map from string to string or object or object or object, optional) — Headers that should be included in the request
+          - ConvAISecretLocator
+            - `secret_id` (string, required)
+          - ConvAIDynamicVariable
+            - `variable_name` (string, required)
+          - ConvAIEnvVarLocator
+            - `env_var_label` (string, required)
+        - `api_version` (string, optional, nullable) — The API version to use for the request
+        - `api_type` (enum, optional, default: chat_completions) — The API type to use (chat_completions, responses or websocket)
+          - Allowed values: `chat_completions`, `responses`, `websocket`
+      - `ignore_default_personality` (boolean, optional, nullable, default: false) — Whether to remove the default personality lines from the system prompt
+      - `rag` (object, optional) — Configuration for RAG
+        - `enabled` (boolean, optional, default: false)
+        - `embedding_model` (enum, optional, default: e5_mistral_7b_instruct)
+          - Allowed values: `e5_mistral_7b_instruct`, `multilingual_e5_large_instruct`
+        - `max_vector_distance` (double, optional, default: 0.6) — Maximum vector distance of retrieved chunks.
+        - `max_documents_length` (integer, optional, default: 50000) — Maximum total length of document chunks retrieved from RAG.
+        - `max_retrieved_rag_chunks_count` (integer, optional, default: 20) — Maximum number of RAG document chunks to initially retrieve from the vector store. These are then further filtered by vector distance and total length.
+        - `num_candidates` (integer, optional, nullable) — Number of candidates evaluated in ANN vector search. Higher number means better results, but higher latency. Minimum recommended value is 100. If disabled, the default value is used.
+        - `query_rewrite_prompt_override` (string, optional, nullable) — Custom prompt for rewriting user queries before RAG retrieval. The conversation history will be automatically appended at the end. If not set, the default prompt will be used.
+      - `timezone` (string, optional, nullable) — Timezone for displaying current time in system prompt. If set, the current time will be included in the system prompt using this timezone. Must be a valid timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Recommended for accurate time-aware responses; without this, the agent has no knowledge of the current date/time unless you provide it via dynamic variables or tools, which can lead to incorrect or hallucinated time references.
+      - `backup_llm_config` (object, optional) — Configuration for backup LLM cascading. Can be disabled, use system defaults, or specify custom order.
+        - `preference`: `default` (BackupLLMDefault)
+        - `preference`: `disabled` (BackupLLMDisabled)
+        - `preference`: `override` (BackupLLMOverride)
+          - `order` (list of enum, required)
+            - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+      - `cascade_timeout_seconds` (double, optional, default: 4) — Time in seconds before cascading to backup LLM. Must be between 2 and 15 seconds.
+      - `tools` (list of object, optional, deprecated) — A list of tools that the agent can use over the course of the conversation, use tool_ids instead
+        - `type`: `api_integration_webhook` (ApiIntegrationWebhookToolConfig)
+          - `api_integration_connection_id` (string, required)
+          - `api_integration_id` (string, required)
+          - `api_schema_overrides` (object, required, nullable) — User overrides applied on top of the base api_schema
+            - `schema_overrides` (map from string to object, optional, nullable)
+            - `request_headers` (map from string to string or object, optional, nullable)
+            - `response_filter_mode` (enum, optional, nullable, default: all) — Controls how tool responses are filtered before being visible to the agent.
+            - `response_filters` (list of string, optional, nullable)
+          - `assignments` (list of object, required) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `description` (string, required) — Description of when the tool should be used and what it does.
+          - `dynamic_variables` (object, required) — Configuration for dynamic variables
+            - `dynamic_variable_placeholders` (map from string to any, optional) — A dictionary of dynamic variable placeholders and their values
+          - `execution_mode` (enum, required, default: immediate) — Determines when and how the tool executes: 'immediate' executes the tool right away when requested by the LLM, 'post_tool_speech' waits for the agent to finish speaking before executing, 'async' runs the tool in the background without blocking - best for long-running operations.
+            - Allowed values: `immediate`, `post_tool_speech`, `async`
+          - `interruption_mode` (enum, required, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `name` (string, required)
+          - `pre_tool_speech` (enum, required, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `response_timeout_secs` (integer, required, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 5 and 300 seconds (inclusive).
+          - `tool_call_sound` (enum, required, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, required, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, required, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `tool_version` (string, required, default: 1.0.0) — The version of the API integration tool
+          - `disable_interruptions` (boolean, required, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, required, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `type`: `client` (ClientToolConfig)
+          - `description` (string, required) — Description of when the tool should be used and what it does.
+          - `name` (string, required)
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `dynamic_variables` (object, optional) — Configuration for dynamic variables
+            - `dynamic_variable_placeholders` (map from string to any, optional) — A dictionary of dynamic variable placeholders and their values
+          - `execution_mode` (enum, optional, default: immediate) — Determines when and how the tool executes: 'immediate' executes the tool right away when requested by the LLM, 'post_tool_speech' waits for the agent to finish speaking before executing, 'async' runs the tool in the background without blocking - best for long-running operations.
+            - Allowed values: `immediate`, `post_tool_speech`, `async`
+          - `expects_response` (boolean, optional, default: false) — If true, calling this tool should block the conversation until the client responds with some response which is passed to the llm. If false then we will continue the conversation without waiting for the client to respond, this is useful to show content to a user but not block the conversation
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `parameters` (object, optional, nullable) — Schema for any parameters to pass to the client
+            - `description` (string, optional, default: )
+            - `dynamic_variable` (string, optional, default: ) — When set, the entire parameter is populated from this dynamic variable at runtime. Mutually exclusive with description (LLM-provided value), constant_value, and is_omitted.
+            - `constant_value` (map from string to any, optional, nullable) — When set, the entire object uses this constant JSON value at runtime. Mutually exclusive with description (LLM-provided object), dynamic_variable, and is_omitted.
+            - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, and constant_value.
+            - `type` ("object", optional, default: object)
+            - `required` (list of string, optional)
+            - `properties` (map from string to object or object or object, optional)
+            - `required_constraints` (object, optional, nullable) — Wrapper for anyOf/allOf composition constraints scoped to required fields.
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive).
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `type`: `mcp` (mcp)
+        - `type`: `smb` (smb)
+        - `type`: `system` (SystemToolConfig)
+          - `name` (string, required)
+          - `params` (object, required)
+            - `system_tool_type`: `end_call` (EndCallToolConfig)
+            - `system_tool_type`: `end_procedure` (EndProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `knowledge_base` (KnowledgeBaseToolConfig)
+              - `enabled_strategies` (list of enum, optional)
+            - `system_tool_type`: `knowledge_base_rag` (KnowledgeBaseRagToolConfig)
+            - `system_tool_type`: `language_detection` (LanguageDetectionToolConfig)
+              - `only_at_conversation_start` (boolean, optional, default: false) — If no language switch happens in the first 2 user turns, later attempts fail and the conversation stays in the current language. If the language switches during those turns, later switching stays available. Enable to reduce the possibility of false switching.
+            - `system_tool_type`: `play_keypad_touch_tone` (PlayDTMFToolConfig)
+              - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
+              - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
+            - `system_tool_type`: `run_subagent` (RunSubagentToolConfig)
+              - `agents` (list of object, required)
+            - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+            - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
+              - `procedures` (map from string to object, optional)
+            - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
+              - `transfers` (list of object, required)
+            - `system_tool_type`: `transfer_to_number` (TransferToNumberToolConfig)
+              - `transfers` (list of object, required)
+              - `enable_client_message` (boolean, optional, default: true) — Whether to play a message to the client while they wait for transfer. Defaults to true for backward compatibility.
+            - `system_tool_type`: `voicemail_detection` (VoicemailDetectionToolConfig)
+              - `voicemail_message` (string, optional, nullable) — Optional message to leave on voicemail when detected. If not provided, the call will end immediately when voicemail is detected. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{system\_\_call\_duration\_secs}}, \{\{custom\_variable}}).
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `description` (string, optional, default: ) — Description of when the tool should be used and what it does. Leave empty to use the default description that's optimized for the specific tool type.
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete.
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+        - `type`: `webhook` (WebhookToolConfig)
+          - `api_schema` (object, required) — The schema for the outgoing webhoook, including parameters and URL specification
+            - `url` (string, required) — The URL that the webhook will be sent to. May include path parameters, e.g. [https://example.com/agents/\{agent\_id}](https://example.com/agents/\{agent_id})
+            - `request_headers` (map from string to string or object or object or object, optional) — Headers that should be included in the request
+            - `method` (enum, optional, default: GET) — The HTTP method to use for the webhook
+            - `path_params_schema` (map from string to object, optional) — Schema for path parameters, if any. The keys should match the placeholders in the URL.
+            - `query_params_schema` (object, optional, nullable) — Schema for any query params, if any. These will be added to end of the URL as query params. Note: properties in a query param must all be literal types
+            - `request_body_schema` (object, optional, nullable) — Schema for the body parameters, if any. Used for POST/PATCH/PUT requests. The schema should be an object which will be sent as the json body
+            - `response_body_schema` (object, optional, nullable) — Schema describing the expected response body structure. For documentation only; not surfaced to the LLM.
+            - `response_filter` (object, optional, nullable) — Optional allow-list filter applied to the response before the LLM sees it, so large responses don't pollute the context. Defaults to the full response.
+            - `content_type` (enum, optional, default: application/json) — Content type for the request body. Only applies to POST/PUT/PATCH requests.
+            - `auth_resolved_params` (list of string, optional) — URL placeholders resolved from the auth connection (e.g. secrets injected via UrlSecretAuthConnection) rather than from path_params_schema.
+            - `auth_connection` (object or object, optional, nullable) — Optional auth connection to use for authentication with this webhook
+          - `description` (string, required) — Description of when the tool should be used and what it does.
+          - `name` (string, required)
+          - `assignments` (list of object, optional) — Configuration for extracting values from tool responses and assigning them to dynamic variables
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to assign the extracted value to
+            - `value_path` (string, required) — Dot notation path to extract the value from the source (e.g., 'user.name' or 'data.0.id')
+            - `source` ("response", optional, default: response) — The source to extract the value from. Currently only 'response' is supported.
+            - `sanitize` (boolean, optional, default: false) — If true, this assignment's value will be removed from the tool response before sending to the LLM and transcript, but still processed for variable assignment.
+            - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
+          - `dynamic_variables` (object, optional) — Configuration for dynamic variables
+            - `dynamic_variable_placeholders` (map from string to any, optional) — A dictionary of dynamic variable placeholders and their values
+          - `execution_mode` (enum, optional, default: immediate) — Determines when and how the tool executes: 'immediate' executes the tool right away when requested by the LLM, 'post_tool_speech' waits for the agent to finish speaking before executing, 'async' runs the tool in the background without blocking - best for long-running operations.
+            - Allowed values: `immediate`, `post_tool_speech`, `async`
+          - `interruption_mode` (enum, optional, default: allow) — Controls whether the user can interrupt the agent around this tool call. 'allow' (default) lets the user interrupt at any time, 'disable_during_tool' suppresses interruptions only while the tool is running, 'disable_during_tool_and_turn' suppresses interruptions while the tool runs and for the agent response that follows it.
+            - Allowed values: `allow`, `disable_during_tool`, `disable_during_tool_and_turn`
+          - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
+            - Allowed values: `auto`, `force`, `off`
+          - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 5 and 300 seconds (inclusive).
+          - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
+            - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+          - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
+            - Allowed values: `auto`, `always`
+          - `tool_error_handling_mode` (enum, optional, default: auto) — Controls how tool errors are processed before being shared with the agent. 'auto' determines handling based on tool type (summarized for native integrations, hide for others), 'summarized' sends an LLM-generated summary, 'passthrough' sends the raw error, 'hide' does not share the error with the agent.
+            - Allowed values: `auto`, `summarized`, `passthrough`, `hide`
+          - `disable_interruptions` (boolean, optional, default: false, deprecated) — DEPRECATED: use `interruption_mode` instead. If true, the user will not be able to interrupt the agent while this tool is running.
+          - `force_pre_tool_speech` (boolean, optional, default: false, deprecated) — DEPRECATED: use `pre_tool_speech` instead. If true, the agent will speak before the tool call.
+- `metadata` (object, required) — The metadata of the agent
+  - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+  - `updated_at_unix_secs` (integer, required) — The last update time of the agent in unix seconds
+- `platform_settings` (object, optional) — The platform settings of the agent
+  - `evaluation` (object, optional) — Settings for evaluation
+    - `criteria` (list of object, optional) — Individual criteria that the agent should be evaluated against
+      - `id` (string, required) — The unique identifier for the evaluation criteria
+      - `name` (string, required)
+      - `conversation_goal_prompt` (string, required) — The prompt that the agent should use to evaluate the conversation
+      - `type` ("prompt", optional, default: prompt) — The type of evaluation criteria
+      - `use_knowledge_base` (boolean, optional, default: false) — When evaluating the prompt, should the agent's knowledge base be used.
+      - `scope` (enum, optional, default: conversation) — The scope of transcript context used when evaluating this criterion. 'conversation' uses the full transcript; 'agent' uses only the portion where the defining agent was active.
+        - Allowed values: `conversation`, `agent`
+      - `llm` (enum, optional, nullable) — LLM model to use for this evaluation criteria. If not set, uses agent's analysis_llm default.
+        - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+      - `scoring_mode` (enum, optional, default: binary) — How this criterion is scored. 'binary' resolves to success/failure/unknown. 'numeric_uniform' returns a number on the [0, max_score] scale which is normalized into the aggregate conversation success percentage.
+        - Allowed values: `binary`, `numeric_uniform`
+      - `max_score` (integer, optional, default: 100) — Maximum value of the numeric score scale (minimum is always 0). Only used when scoring_mode is 'numeric_uniform'.
+      - `score_instructions` (string, optional, nullable) — Optional free-text instructions describing how to assign values on the numeric scale. Only used when scoring_mode is 'numeric_uniform'.
+  - `widget` (object, optional) — Configuration for the widget
+    - `variant` (enum, optional, default: full) — The variant of the widget
+      - Allowed values: `tiny`, `compact`, `full`, `expandable`
+    - `placement` (enum, optional, default: bottom-right) — The placement of the widget on the screen
+      - Allowed values: `top-left`, `top`, `top-right`, `bottom-left`, `bottom`, `bottom-right`
+    - `expandable` (enum, optional, default: never) — Whether the widget is expandable
+      - Allowed values: `never`, `mobile`, `desktop`, `always`
+    - `avatar` (object or object or object, optional) — The avatar of the widget
+      - OrbAvatar
+        - `type` ("orb", optional, default: orb) — The type of the avatar
+        - `color_1` (string, optional, default: #2792dc) — The first color of the avatar
+        - `color_2` (string, optional, default: #9ce6e6) — The second color of the avatar
+      - URLAvatar
+        - `type` ("url", optional, default: url) — The type of the avatar
+        - `custom_url` (string, optional, default: ) — The custom URL of the avatar
+      - ImageAvatar
+        - `type` ("image", optional, default: image) — The type of the avatar
+        - `url` (string, optional, default: ) — The URL of the avatar
+    - `feedback_mode` (enum, optional, default: none) — The feedback mode of the widget
+      - Allowed values: `none`, `during`, `end`
+    - `end_feedback` (object, optional, nullable) — Configuration for feedback collected at the end of the conversation
+      - `type` (enum, optional, default: rating) — The type of feedback to collect at the end of the conversation
+        - Allowed values: `rating`
+    - `bg_color` (string, optional, default: #ffffff) — The background color of the widget
+    - `text_color` (string, optional, default: #000000) — The text color of the widget
+    - `btn_color` (string, optional, default: #000000) — The button color of the widget
+    - `btn_text_color` (string, optional, default: #ffffff) — The button text color of the widget
+    - `border_color` (string, optional, default: #e1e1e1) — The border color of the widget
+    - `focus_color` (string, optional, default: #000000) — The focus color of the widget
+    - `border_radius` (integer, optional, nullable) — The border radius of the widget
+    - `btn_radius` (integer, optional, nullable) — The button radius of the widget
+    - `action_text` (string, optional, nullable) — The action text of the widget
+    - `start_call_text` (string, optional, nullable) — The start call text of the widget
+    - `end_call_text` (string, optional, nullable) — The end call text of the widget
+    - `expand_text` (string, optional, nullable) — The expand text of the widget
+    - `listening_text` (string, optional, nullable) — The text to display when the agent is listening
+    - `speaking_text` (string, optional, nullable) — The text to display when the agent is speaking
+    - `shareable_page_text` (string, optional, nullable) — The text to display when sharing
+    - `shareable_page_show_terms` (boolean, optional, default: true) — Whether to show terms and conditions on the shareable page
+    - `terms_text` (string, optional, nullable) — The text to display for terms and conditions
+    - `terms_html` (string, optional, nullable) — The HTML to display for terms and conditions
+    - `terms_key` (string, optional, nullable) — The key to display for terms and conditions
+    - `show_avatar_when_collapsed` (boolean, optional, nullable, default: false) — Whether to show the avatar when the widget is collapsed
+    - `disable_banner` (boolean, optional, default: false) — Whether to disable the banner
+    - `override_link` (string, optional, nullable) — The override link for the widget
+    - `markdown_link_allowed_hosts` (list of object, optional) — List of allowed hostnames for clickable markdown links. Use \{ hostname: '\*' } to allow any domain. Empty means no links are allowed.
+      - `hostname` (string, required) — The hostname of the allowed origin
+    - `markdown_link_include_www` (boolean, optional, default: true) — Whether to automatically include www. variants of allowed hosts
+    - `markdown_link_allow_http` (boolean, optional, default: true) — Whether to allow http:// in addition to https:// for allowed hosts
+    - `mic_muting_enabled` (boolean, optional, default: false) — Whether to enable mic muting
+    - `transcript_enabled` (boolean, optional, default: false) — Whether the widget should show the conversation transcript as it goes on
+    - `text_input_enabled` (boolean, optional, default: true) — Whether the user should be able to send text messages
+    - `conversation_mode_toggle_enabled` (boolean, optional, default: false) — Whether to enable the conversation mode toggle in the widget
+    - `default_expanded` (boolean, optional, default: false) — Whether the widget should be expanded by default
+    - `always_expanded` (boolean, optional, default: false) — Whether the widget should always be expanded
+    - `dismissible` (boolean, optional, default: false) — Whether the widget can be dismissed by the user
+    - `show_agent_status` (boolean, optional, default: false) — Whether to show agent working/done/error status during tool use
+    - `show_conversation_id` (boolean, optional, default: true) — Whether to show the conversation ID after disconnection.
+    - `strip_audio_tags` (boolean, optional, default: true) — Whether to strip audio markup from messages.
+    - `syntax_highlight_theme` (enum, optional, nullable) — Theme for code block syntax highlighting. Defaults to auto-detection by the widget when not set.
+      - Allowed values: `light`, `dark`
+    - `text_contents` (object, optional) — Text contents of the widget
+      - `main_label` (string, optional, nullable) — Call to action displayed inside the compact and full variants.
+      - `start_call` (string, optional, nullable) — Text and ARIA label for the start call button.
+      - `start_chat` (string, optional, nullable) — Text and ARIA label for the start chat button (text only)
+      - `new_call` (string, optional, nullable) — Text and ARIA label for the new call button. Displayed when the caller already finished at least one call in order ot start the next one.
+      - `end_call` (string, optional, nullable) — Text and ARIA label for the end call button.
+      - `mute_microphone` (string, optional, nullable) — ARIA label for the mute microphone button.
+      - `change_language` (string, optional, nullable) — ARIA label for the change language dropdown.
+      - `collapse` (string, optional, nullable) — ARIA label for the collapse button.
+      - `expand` (string, optional, nullable) — ARIA label for the expand button.
+      - `copied` (string, optional, nullable) — Text displayed when the user copies a value using the copy button.
+      - `accept_terms` (string, optional, nullable) — Text and ARIA label for the accept terms button.
+      - `dismiss_terms` (string, optional, nullable) — Text and ARIA label for the cancel terms button.
+      - `listening_status` (string, optional, nullable) — Status displayed when the agent is listening.
+      - `speaking_status` (string, optional, nullable) — Status displayed when the agent is speaking.
+      - `connecting_status` (string, optional, nullable) — Status displayed when the agent is connecting.
+      - `chatting_status` (string, optional, nullable) — Status displayed when the agent is chatting (text only)
+      - `input_label` (string, optional, nullable) — ARIA label for the text message input.
+      - `input_placeholder` (string, optional, nullable) — Placeholder text for the text message input.
+      - `input_placeholder_text_only` (string, optional, nullable) — Placeholder text for the text message input (text only)
+      - `input_placeholder_new_conversation` (string, optional, nullable) — Placeholder text for the text message input when starting a new conversation (text only)
+      - `user_ended_conversation` (string, optional, nullable) — Information message displayed when the user ends the conversation.
+      - `agent_ended_conversation` (string, optional, nullable) — Information message displayed when the agent ends the conversation.
+      - `conversation_id` (string, optional, nullable) — Text label used next to the conversation ID.
+      - `error_occurred` (string, optional, nullable) — Text label used when an error occurs.
+      - `copy_id` (string, optional, nullable) — Text and ARIA label used for the copy ID button.
+      - `initiate_feedback` (string, optional, nullable) — Text displayed to prompt the user for feedback.
+      - `request_follow_up_feedback` (string, optional, nullable) — Text displayed to request additional feedback details.
+      - `thanks_for_feedback` (string, optional, nullable) — Text displayed to thank the user for providing feedback.
+      - `thanks_for_feedback_details` (string, optional, nullable) — Additional text displayed explaining the value of user feedback.
+      - `follow_up_feedback_placeholder` (string, optional, nullable) — Placeholder text for the follow-up feedback input field.
+      - `submit` (string, optional, nullable) — Text and ARIA label for the submit button.
+      - `go_back` (string, optional, nullable) — Text and ARIA label for the go back button.
+      - `send_message` (string, optional, nullable) — Text and ARIA label for the send message button.
+      - `text_mode` (string, optional, nullable) — Text and ARIA label for the switch to text mode button.
+      - `voice_mode` (string, optional, nullable) — Text and ARIA label for the switch to voice mode button.
+      - `switched_to_text_mode` (string, optional, nullable) — Toast notification displayed when switching to text mode.
+      - `switched_to_voice_mode` (string, optional, nullable) — Toast notification displayed when switching to voice mode.
+      - `copy` (string, optional, nullable) — Text and ARIA label for the copy button.
+      - `download` (string, optional, nullable) — Text and ARIA label for the download button.
+      - `wrap` (string, optional, nullable) — Text and ARIA label for the wrap toggle button.
+      - `agent_working` (string, optional, nullable) — Status text displayed when the agent is processing a tool call.
+      - `agent_done` (string, optional, nullable) — Status text displayed when the agent finishes processing a tool call.
+      - `agent_error` (string, optional, nullable) — Status text displayed when the agent encounters an error during a tool call.
+      - `attach_file` (string, optional, nullable) — Text and ARIA label for the attach file button.
+      - `remove_file` (string, optional, nullable) — ARIA label for the remove file button.
+      - `file_upload_error` (string, optional, nullable) — Error message displayed when a file fails to upload.
+      - `file_type_unsupported` (string, optional, nullable) — Error message displayed when an unsupported file type is selected. Followed by the list of accepted types.
+      - `file_too_large` (string, optional, nullable) — Error message displayed when a file exceeds the maximum size limit.
+      - `file_limit_reached` (string, optional, nullable) — Error message displayed when the maximum number of files for a conversation is reached.
+      - `typing_indicator` (string, optional, nullable) — Status text displayed while the agent is typing.
+    - `styles` (object, optional) — Styles for the widget
+      - `base` (string, optional, nullable) — The base background color.
+      - `base_hover` (string, optional, nullable) — The color of the base background when hovered.
+      - `base_active` (string, optional, nullable) — The color of the base background when active (clicked).
+      - `base_border` (string, optional, nullable) — The color of the border against the base background.
+      - `base_subtle` (string, optional, nullable) — The color of subtle text against the base background.
+      - `base_primary` (string, optional, nullable) — The color of primary text against the base background.
+      - `base_error` (string, optional, nullable) — The color of error text against the base background.
+      - `accent` (string, optional, nullable) — The accent background color.
+      - `accent_hover` (string, optional, nullable) — The color of the accent background when hovered.
+      - `accent_active` (string, optional, nullable) — The color of the accent background when active (clicked).
+      - `accent_border` (string, optional, nullable) — The color of the border against the accent background.
+      - `accent_subtle` (string, optional, nullable) — The color of subtle text against the accent background.
+      - `accent_primary` (string, optional, nullable) — The color of primary text against the accent background.
+      - `overlay_padding` (double, optional, nullable) — The padding around the edges of the viewport.
+      - `button_radius` (double, optional, nullable) — The radius of the buttons.
+      - `input_radius` (double, optional, nullable) — The radius of the input fields.
+      - `bubble_radius` (double, optional, nullable) — The radius of the chat bubbles.
+      - `sheet_radius` (double, optional, nullable) — The default radius of sheets.
+      - `compact_sheet_radius` (double, optional, nullable) — The radius of the sheet in compact mode.
+      - `dropdown_sheet_radius` (double, optional, nullable) — The radius of the dropdown sheet.
+    - `show_resize_button` (boolean, optional, default: true) — Whether to show the resize button
+    - `language_selector` (boolean, optional, default: false) — Whether to show the language selector
+    - `supports_text_only` (boolean, optional, default: true) — Whether the widget can switch to text only mode
+    - `custom_avatar_path` (string, optional, nullable) — The custom avatar path
+    - `language_presets` (map from string to object, optional) — Language presets for the widget
+      - `text_contents` (object, optional, nullable) — The text contents for the selected language
+        - `main_label` (string, optional, nullable) — Call to action displayed inside the compact and full variants.
+        - `start_call` (string, optional, nullable) — Text and ARIA label for the start call button.
+        - `start_chat` (string, optional, nullable) — Text and ARIA label for the start chat button (text only)
+        - `new_call` (string, optional, nullable) — Text and ARIA label for the new call button. Displayed when the caller already finished at least one call in order ot start the next one.
+        - `end_call` (string, optional, nullable) — Text and ARIA label for the end call button.
+        - `mute_microphone` (string, optional, nullable) — ARIA label for the mute microphone button.
+        - `change_language` (string, optional, nullable) — ARIA label for the change language dropdown.
+        - `collapse` (string, optional, nullable) — ARIA label for the collapse button.
+        - `expand` (string, optional, nullable) — ARIA label for the expand button.
+        - `copied` (string, optional, nullable) — Text displayed when the user copies a value using the copy button.
+        - `accept_terms` (string, optional, nullable) — Text and ARIA label for the accept terms button.
+        - `dismiss_terms` (string, optional, nullable) — Text and ARIA label for the cancel terms button.
+        - `listening_status` (string, optional, nullable) — Status displayed when the agent is listening.
+        - `speaking_status` (string, optional, nullable) — Status displayed when the agent is speaking.
+        - `connecting_status` (string, optional, nullable) — Status displayed when the agent is connecting.
+        - `chatting_status` (string, optional, nullable) — Status displayed when the agent is chatting (text only)
+        - `input_label` (string, optional, nullable) — ARIA label for the text message input.
+        - `input_placeholder` (string, optional, nullable) — Placeholder text for the text message input.
+        - `input_placeholder_text_only` (string, optional, nullable) — Placeholder text for the text message input (text only)
+        - `input_placeholder_new_conversation` (string, optional, nullable) — Placeholder text for the text message input when starting a new conversation (text only)
+        - `user_ended_conversation` (string, optional, nullable) — Information message displayed when the user ends the conversation.
+        - `agent_ended_conversation` (string, optional, nullable) — Information message displayed when the agent ends the conversation.
+        - `conversation_id` (string, optional, nullable) — Text label used next to the conversation ID.
+        - `error_occurred` (string, optional, nullable) — Text label used when an error occurs.
+        - `copy_id` (string, optional, nullable) — Text and ARIA label used for the copy ID button.
+        - `initiate_feedback` (string, optional, nullable) — Text displayed to prompt the user for feedback.
+        - `request_follow_up_feedback` (string, optional, nullable) — Text displayed to request additional feedback details.
+        - `thanks_for_feedback` (string, optional, nullable) — Text displayed to thank the user for providing feedback.
+        - `thanks_for_feedback_details` (string, optional, nullable) — Additional text displayed explaining the value of user feedback.
+        - `follow_up_feedback_placeholder` (string, optional, nullable) — Placeholder text for the follow-up feedback input field.
+        - `submit` (string, optional, nullable) — Text and ARIA label for the submit button.
+        - `go_back` (string, optional, nullable) — Text and ARIA label for the go back button.
+        - `send_message` (string, optional, nullable) — Text and ARIA label for the send message button.
+        - `text_mode` (string, optional, nullable) — Text and ARIA label for the switch to text mode button.
+        - `voice_mode` (string, optional, nullable) — Text and ARIA label for the switch to voice mode button.
+        - `switched_to_text_mode` (string, optional, nullable) — Toast notification displayed when switching to text mode.
+        - `switched_to_voice_mode` (string, optional, nullable) — Toast notification displayed when switching to voice mode.
+        - `copy` (string, optional, nullable) — Text and ARIA label for the copy button.
+        - `download` (string, optional, nullable) — Text and ARIA label for the download button.
+        - `wrap` (string, optional, nullable) — Text and ARIA label for the wrap toggle button.
+        - `agent_working` (string, optional, nullable) — Status text displayed when the agent is processing a tool call.
+        - `agent_done` (string, optional, nullable) — Status text displayed when the agent finishes processing a tool call.
+        - `agent_error` (string, optional, nullable) — Status text displayed when the agent encounters an error during a tool call.
+        - `attach_file` (string, optional, nullable) — Text and ARIA label for the attach file button.
+        - `remove_file` (string, optional, nullable) — ARIA label for the remove file button.
+        - `file_upload_error` (string, optional, nullable) — Error message displayed when a file fails to upload.
+        - `file_type_unsupported` (string, optional, nullable) — Error message displayed when an unsupported file type is selected. Followed by the list of accepted types.
+        - `file_too_large` (string, optional, nullable) — Error message displayed when a file exceeds the maximum size limit.
+        - `file_limit_reached` (string, optional, nullable) — Error message displayed when the maximum number of files for a conversation is reached.
+        - `typing_indicator` (string, optional, nullable) — Status text displayed while the agent is typing.
+      - `text_contents_translation` (object, optional, nullable) — The translation cache for the text contents
+        - `source` (map from string to string, optional) — The source text each translated field was derived from
+        - `text` (map from string to string, optional) — The last auto-translated output for each translated field
+      - `terms_text` (string, optional, nullable) — The text to display for terms and conditions in this language
+      - `terms_html` (string, optional, nullable) — The HTML to display for terms and conditions in this language
+      - `terms_key` (string, optional, nullable) — The key to display for terms and conditions in this language
+      - `terms_translation` (object, optional, nullable) — The translation cache for the terms
+        - `source_hash` (string, required)
+        - `text` (string, required)
+  - `data_collection` (map from string to object, optional) — Data collection settings
+    - `type` (enum, required)
+      - Allowed values: `boolean`, `string`, `integer`, `number`
+    - `description` (string, optional, default: ) — The description of the property. When set, the LLM will provide the value based on this description. Mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+    - `enum` (list of string, optional, nullable) — List of allowed string values for string type parameters
+    - `is_system_provided` (boolean, optional, default: false) — If true, the value will be populated by the system at runtime. Used by API Integration Webhook tools for templating. Mutually exclusive with description, dynamic_variable, constant_value, and is_omitted.
+    - `dynamic_variable` (string, optional, default: ) — The name of the dynamic variable to use for this property's value. Mutually exclusive with description, is_system_provided, constant_value, and is_omitted.
+    - `allowed_values_dynamic_variable` (string, optional, default: ) — When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable. Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
+    - `constant_value` (string or integer or double or boolean, optional, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+    - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
+    - `llm` (enum, optional, nullable) — LLM model to use for this analysis item. If not set, uses agent's analysis_llm default.
+      - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+  - `data_collection_scopes` (map from string to enum, optional) — Scope per data collection item ID. Missing keys default to conversation scope.
+    - Allowed values: `conversation`, `agent`
+  - `analysis_items` (object, optional, nullable) — Evaluation + data-collection items attached by reference. None means the agent has not been migrated onto analysis items yet (distinct from an empty, migrated set); reads fall back to the legacy evaluation/data_collection fields in that case.
+    - `evaluation_criteria` (list of object, optional)
+      - `source`: `system` (AttachedSystemEvaluationRef)
+        - `analysis_item_id` (enum, required) — Id of the referenced built-in system evaluation.
+          - Allowed values: `__system_eval_criteria_sentiment`, `__system_eval_criteria_frustration`
+        - `scope` (enum, optional, default: conversation) — Transcript context ('conversation' or 'agent') used when running this item.
+          - Allowed values: `conversation`, `agent`
+        - `weight` (double, optional, nullable) — Optional relative weight for aggregate scoring.
+      - `source`: `user` (AttachedUserEvaluationRef)
+        - `analysis_item_id` (string, required) — Id of the referenced user evaluation item.
+        - `additional_version_ids` (list of string, optional) — Extra item versions to also run for comparison (A/B). These are executed and stored but excluded from scoring; the primary version_id is the one that scores.
+        - `scope` (enum, optional, default: conversation) — Transcript context ('conversation' or 'agent') used when running this item.
+          - Allowed values: `conversation`, `agent`
+        - `version_id` (string, optional, nullable) — Primary item version whose result feeds scoring. None tracks the item's latest published version.
+        - `weight` (double, optional, nullable) — Optional relative weight for aggregate scoring.
+    - `data_collection` (list of object, optional)
+      - `source`: `system` (AttachedSystemDataCollectionRef)
+        - `analysis_item_id` ("__system_data_collection_topic", required) — Id of the referenced built-in system data-collection item.
+        - `scope` (enum, optional, default: conversation) — Transcript context ('conversation' or 'agent') used when running this item.
+          - Allowed values: `conversation`, `agent`
+      - `source`: `user` (AttachedUserDataCollectionRef)
+        - `analysis_item_id` (string, required) — Id of the referenced user data-collection item.
+        - `scope` (enum, optional, default: conversation) — Transcript context ('conversation' or 'agent') used when running this item.
+          - Allowed values: `conversation`, `agent`
+        - `version_id` (string, optional, nullable) — Pinned item version. None tracks the item's latest published version.
+  - `overrides` (object, optional) — Additional overrides for the agent during conversation initiation
+    - `conversation_config_override` (object, optional) — Overrides for the conversation configuration
+      - `asr` (object, optional) — Configures overrides for nested fields.
+        - `keywords` (boolean, optional, default: false) — Whether to allow overriding the keywords field.
+      - `turn` (object, optional) — Configures overrides for nested fields.
+        - `soft_timeout_config` (object, optional) — Configures overrides for nested fields.
+          - `message` (boolean, optional, default: false) — Whether to allow overriding the message field.
+      - `tts` (object, optional) — Configures overrides for nested fields.
+        - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
+        - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
+        - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
+        - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
+        - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.
+      - `conversation` (object, optional) — Configures overrides for nested fields.
+        - `text_only` (boolean, optional, default: false) — Whether to allow overriding the text_only field.
+      - `agent` (object, optional) — Configures overrides for nested fields.
+        - `first_message` (boolean, optional, default: false) — Whether to allow overriding the first_message field.
+        - `language` (boolean, optional, default: false) — Whether to allow overriding the language field.
+        - `max_conversation_duration_message` (boolean, optional, default: false) — Whether to allow overriding the max_conversation_duration_message field.
+        - `prompt` (object, optional) — Configures overrides for nested fields.
+          - `prompt` (boolean, optional, default: false) — Whether to allow overriding the prompt field.
+          - `llm` (boolean, optional, default: false) — Whether to allow overriding the llm field.
+          - `tool_ids` (boolean, optional, default: false) — Whether to allow overriding the tool_ids field.
+          - `native_mcp_server_ids` (boolean, optional, default: false) — Whether to allow overriding the native_mcp_server_ids field.
+          - `knowledge_base` (boolean, optional, default: false) — Whether to allow overriding the knowledge_base field.
+    - `custom_llm_extra_body` (boolean, optional, default: false) — Whether to include custom LLM extra body
+    - `enable_conversation_initiation_client_data_from_webhook` (boolean, optional, default: false) — Whether to enable conversation initiation client data from webhooks
+    - `enable_starting_workflow_node_id_from_client` (boolean, optional, default: false) — Whether clients may pass starting_workflow_node_id in initiation client data; if false, sending it fails conversation start.
+  - `workspace_overrides` (object, optional) — Workspace overrides for the agent
+    - `conversation_initiation_client_data_webhook` (object, optional, nullable) — The webhook to send conversation initiation client data to
+      - `url` (string, required) — The URL to send the webhook to
+      - `request_headers` (map from string to string or object, required) — The headers to send with the webhook request
+        - ConvAISecretLocator
+          - `secret_id` (string, required)
+    - `webhooks` (object, optional)
+      - `post_call_webhook_id` (string, optional, nullable)
+      - `events` (list of enum, optional) — List of event types to send via webhook. Options: transcript, audio, call_initiation_failure, unredacted_transcript, unredacted_audio.
+        - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `unredacted_transcript`, `unredacted_audio`
+      - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
+        - Allowed values: `json`, `opentelemetry`
+      - `send_audio` (boolean, optional, nullable, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
+  - `testing` (object, optional) — Testing configuration for the agent
+    - `attached_tests` (list of object, optional) — List of test IDs that should be run for this agent
+      - `test_id` (string, required)
+      - `workflow_node_id` (string, optional, nullable)
+  - `archived` (boolean, optional, default: false) — Whether the agent is archived
+  - `guardrails` (object, optional) — Guardrails configuration for the agent
+    - `version` ("1", optional, default: 1)
+    - `focus` (object, optional)
+      - `is_enabled` (boolean, optional, default: false)
+    - `prompt_injection` (object, optional)
+      - `is_enabled` (boolean, optional, default: false)
+    - `content` (object, optional)
+      - `execution_mode` (enum, optional, default: streaming)
+        - Allowed values: `streaming`, `blocking`
+      - `config` (object, optional)
+        - `sexual` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `violence` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `harassment` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `self_harm` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `profanity` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `religion_or_politics` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+        - `medical_and_legal_information` (object, optional)
+          - `is_enabled` (boolean, optional, default: false)
+          - `threshold` (double or enum, optional, default: 0.3)
+      - `trigger_action` (object, optional)
+        - `type`: `end_call` (EndCallTriggerAction)
+        - `type`: `retry` (RetryTriggerAction)
+          - `feedback` (string, optional, default: Your response was blocked by a guardrail that blocks content that matches this condition/category: '{{trigger_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?".) — Custom feedback to inject into the agent when retrying after guardrail trigger.
+    - `custom` (object, optional) — Container for custom guardrails, matching ModerationGuardrail pattern
+      - `config` (object, optional) — Config container for custom guardrails list
+        - `configs` (list of object, optional)
+          - `name` (string, required) — User-facing name for this guardrail
+          - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
+          - `is_enabled` (boolean, optional, default: false)
+          - `execution_mode` (enum, optional, default: streaming)
+            - Allowed values: `streaming`, `blocking`
+          - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - Allowed values: `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `claude-haiku-4-5`, `claude-sonnet-4-6`, `gpt-5.4-nano`, `gpt-5.4-mini`
+          - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
+          - `trigger_action` (object, optional)
+            - `type`: `end_call` (EndCallTriggerAction)
+            - `type`: `retry` (RetryTriggerAction)
+              - `feedback` (string, optional, default: Your response was blocked by a guardrail that blocks content that matches this condition/category: '{{trigger_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?".) — Custom feedback to inject into the agent when retrying after guardrail trigger.
+          - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
+  - `summary_language` (string, optional, nullable) — Language for all conversation analysis outputs (summaries, titles, evaluation rationales, data collection rationales). If not set, the language will be inferred from the conversation. Must be one of the supported conversation languages.
+  - `auto_translate_transcript_to_app_language` (boolean, optional, nullable) — When enabled, a conversation transcript is automatically translated to the viewer's application language when they open the transcript page. If not set or false, transcripts are shown in their original language unless the viewer manually selects a translation.
+  - `auth` (object, optional) — Settings for authentication
+    - `enable_auth` (boolean, optional, default: false) — If set to true, starting a conversation with an agent will require a signed token
+    - `allowlist` (list of object, optional) — A list of hosts that are allowed to start conversations with the agent
+      - `hostname` (string, required) — The hostname of the allowed origin
+    - `require_origin_header` (boolean, optional, default: false) — When enabled, connections with no origin header will be rejected. If the allowlist is empty, this option has no effect.
+    - `shareable_token` (string, optional, nullable) — A shareable token that can be used to start a conversation with the agent
+  - `call_limits` (object, optional) — Call limits for the agent
+    - `agent_concurrency_limit` (integer, optional, default: -1) — The maximum number of concurrent conversations. -1 indicates that there is no maximum
+    - `daily_limit` (integer, optional, default: 100000) — The maximum number of conversations per day
+    - `bursting_enabled` (boolean, optional, default: true) — Whether to enable bursting. If true, exceeding workspace concurrency limit will be allowed up to 3 times the limit. Calls will be charged at double rate when exceeding the limit.
+  - `privacy` (object, optional) — Privacy settings for the agent
+    - `record_voice` (boolean, optional, default: true) — Whether to record the conversation
+    - `retention_days` (integer, optional, default: -1) — The number of days to retain the conversation. -1 indicates there is no retention limit
+    - `delete_transcript_and_pii` (boolean, optional, default: false) — Whether to delete the transcript and PII
+    - `delete_audio` (boolean, optional, default: false) — Whether to delete the audio
+    - `apply_to_existing_conversations` (boolean, optional, default: false) — Whether to apply the privacy settings to existing conversations
+    - `zero_retention_mode` (boolean, optional, default: false) — Whether to enable zero retention mode - no PII data is stored
+    - `conversation_history_redaction` (object, optional) — Config for PII redaction in the conversation history
+      - `enabled` (boolean, optional, default: false) — Whether conversation history redaction is enabled
+      - `entities` (list of enum, optional) — The entities to redact from the conversation transcript, audio and analysis. Use top-level types like 'name', 'email_address', or dot notation for specific subtypes like 'name.full_name'.
+        - Allowed values: `name`, `name.name_given`, `name.name_family`, `name.name_other`, `email_address`, `contact_number`, `dob`, `age`, `religious_belief`, `political_opinion`, `sexual_orientation`, `ethnicity_race`, `marital_status`, `occupation`, `physical_attribute`, `language`, `username`, `password`, `url`, `organization`, `financial_id`, `financial_id.payment_card`, `financial_id.payment_card.payment_card_number`, `financial_id.payment_card.payment_card_expiration_date`, `financial_id.payment_card.payment_card_cvv`, `financial_id.bank_account`, `financial_id.bank_account.bank_account_number`, `financial_id.bank_account.bank_routing_number`, `financial_id.bank_account.swift_bic_code`, `financial_id.financial_id_other`, `location`, `location.location_address`, `location.location_city`, `location.location_postal_code`, `location.location_coordinate`, `location.location_state`, `location.location_country`, `location.location_other`, `date`, `date_interval`, `unique_id`, `unique_id.government_issued_id`, `unique_id.account_number`, `unique_id.vehicle_id`, `unique_id.healthcare_number`, `unique_id.healthcare_number.medical_record_number`, `unique_id.healthcare_number.health_plan_beneficiary_number`, `unique_id.device_id`, `unique_id.unique_id_other`, `medical`, `medical.medical_condition`, `medical.medication`, `medical.medical_procedure`, `medical.medical_measurement`, `medical.medical_other`
+  - `trust_context` (enum, optional, default: unknown) — The trust context in which the agent operates.
+    - Allowed values: `unknown`, `low`, `high`
+  - `analysis_llm` (enum, optional) — Default LLM model for post-call analysis (evaluation and data collection)
+    - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+  - `topic_discovery` (object, optional) — Per-agent topic discovery configuration
+  - `sentiment_analysis` (object, optional) — Per-agent post-call sentiment analysis configuration
+  - `alerting` (object, optional, nullable) — Agent-level alerting configuration overriding workspace settings.
+    - `monitor_configs` (map from string to object, optional)
+      - `threshold` (double, optional, nullable) — Failure rate threshold at which this monitor can notify.
+      - `auto_resolve_after_inactive_minutes` (integer, optional, nullable) — How many minutes an alert can stay inactive before it is auto-resolved.
+    - `auto_resolve_after_inactive_minutes` (integer, optional, nullable)
+    - `notifiers` (list of object, optional)
+      - `webhook_id` (string, required)
+      - `type` ("webhook", optional, default: webhook)
+  - `safety` (object, optional)
+    - `is_blocked_ivc` (boolean, optional, default: false)
+    - `is_blocked_non_ivc` (boolean, optional, default: false)
+    - `ignore_safety_evaluation` (boolean, optional, default: false)
+- `phone_numbers` (list of object, optional) — The phone numbers of the agent
+  - `provider`: `exotel` (GetPhoneNumberExotelResponseModel)
+    - `label` (string, required) — Label for the phone number
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional, nullable) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional, nullable) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional, nullable) — Agent branch to use for calls to this number.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - `provider`: `sip_trunk` (GetPhoneNumberSIPTrunkResponseModel)
+    - `label` (string, required) — Label for the phone number
+    - `livekit_stack` (enum, required, default: standard) — Type of Livekit stack used for this number.
+      - Allowed values: `standard`, `static`
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional, nullable) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional, nullable) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional, nullable) — Agent branch to use for calls to this number.
+    - `inbound_trunk` (object, optional, nullable) — Configuration of the Inbound SIP trunk - if configured.
+      - `allowed_addresses` (list of string, required) — List of IP addresses that are allowed to use the trunk. Each item in the list can be an individual IP address or a Classless Inter-Domain Routing notation representing a CIDR block.
+      - `allowed_numbers` (list of string, required, nullable) — List of phone numbers that are allowed to use the trunk.
+      - `media_encryption` (enum, required, default: allowed)
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `username` (string, optional, nullable) — SIP trunk username (if available)
+      - `remote_domains` (list of string, optional, nullable) — Domains of remote SIP servers used to validate TLS certificates.
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+    - `outbound_trunk` (object, optional, nullable) — Configuration of the Outbound SIP trunk - if configured.
+      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to
+      - `transport` (enum, required, default: auto) — Protocol to use for SIP transport
+        - Allowed values: `auto`, `udp`, `tcp`, `tls`
+      - `media_encryption` (enum, required, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `headers` (map from string to string, optional) — SIP headers for INVITE request
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+      - `username` (string, optional, nullable) — SIP trunk username (if available)
+      - `has_outbound_trunk` (boolean, optional, default: false) — Whether a LiveKit SIP outbound trunk is configured
+      - `enabled_codecs` (list of enum, optional) — Media codecs that are offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+    - `store_sip_messages` (boolean, optional, default: true) — Whether to store SIP messages for this phone number.
+    - `provider_config` (object, optional, nullable, deprecated) — SIP Trunk configuration details for a phone number
+      - `address` (string, required) — Hostname or IP the SIP INVITE is sent to
+      - `transport` (enum, required, default: auto) — Protocol to use for SIP transport
+        - Allowed values: `auto`, `udp`, `tcp`, `tls`
+      - `media_encryption` (enum, required, default: allowed) — Whether or not to encrypt media (data layer).
+        - Allowed values: `disabled`, `allowed`, `required`
+      - `has_auth_credentials` (boolean, required) — Whether authentication credentials are configured
+      - `headers` (map from string to string, optional) — SIP headers for INVITE request
+      - `attributes_to_headers` (map from string to string, optional) — Map of dynamic variable name to header name for attributes_to_headers
+      - `username` (string, optional, nullable) — SIP trunk username (if available)
+      - `has_outbound_trunk` (boolean, optional, default: false) — Whether a LiveKit SIP outbound trunk is configured
+      - `enabled_codecs` (list of enum, optional) — Media codecs that are offered in the SDP for outbound calls. If empty, all supported codecs are offered.
+        - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+  - `provider`: `twilio` (GetPhoneNumberTwilioResponseModel)
+    - `label` (string, required) — Label for the phone number
+    - `phone_number` (string, required) — Phone number
+    - `phone_number_id` (string, required) — The ID of the phone number
+    - `assigned_agent` (object, optional, nullable) — The agent that is assigned to the phone number
+      - `agent_id` (string, required) — The ID of the agent
+      - `agent_name` (string, required) — The name of the agent
+      - `environment` (string, optional, nullable) — Environment to use for resolving environment variables on calls to this number.
+      - `branch_id` (string, optional, nullable) — Agent branch to use for calls to this number.
+    - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+    - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+- `whatsapp_accounts` (list of object, optional) — WhatsApp accounts assigned to the agent
+  - `business_account_id` (string, required)
+  - `phone_number_id` (string, required)
+  - `business_account_name` (string, required)
+  - `phone_number_name` (string, required)
+  - `phone_number` (string, required)
+  - `assigned_agent_name` (string, required, nullable)
+  - `assigned_agent_id` (string, optional, nullable)
+  - `enable_messaging` (boolean, optional, default: true)
+  - `enable_audio_message_response` (boolean, optional, default: true)
+  - `enable_typing_indicator` (boolean, optional, default: true)
+  - `is_token_expired` (boolean, optional, default: false)
+- `workflow` (object, optional) — The workflow of the agent
+  - `edges` (map from string to object, required)
+    - `source` (string, required) — ID of the source node.
+    - `target` (string, required) — ID of the target node.
+    - `forward_condition` (object, required, nullable) — Condition that must be met for the edge to be traversed in the forward direction (source to target).
+      - `type`: `expression` (WorkflowExpressionConditionModel)
+        - `expression` (object, required) — Expression to evaluate.
+          - `type`: `add_operator` (ASTAdditionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `and_operator` (ASTAndOperatorNode)
+            - `children` (list of object, required) — Child nodes of the logical operator.
+          - `type`: `boolean_literal` (ASTBooleanNode)
+            - `value` (boolean, required) — Value of this literal.
+          - `type`: `conditional_operator` (ASTConditionalOperatorNode)
+            - `condition` (object, required) — Condition deciding which expression should be selected.
+            - `falseExpression` (object, required) — Expression selected if the condition is false.
+            - `trueExpression` (object, required) — Expression selected if the condition is true.
+          - `type`: `div_operator` (ASTDivisionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `dynamic_variable` (ASTDynamicVariableNode)
+            - `name` (string, required) — The name of the dynamic variable.
+          - `type`: `eq_operator` (ASTEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `gt_operator` (ASTGreaterThanOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `gte_operator` (ASTGreaterThanOrEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `llm` (ASTLLMNode)
+            - `value_schema` (object, required) — JSON schema describing the value that the LLM should extract.
+            - `prompt` (string, required, deprecated) — The prompt to evaluate to a boolean value. Deprecated. Use a boolean schema instead.
+          - `type`: `lt_operator` (ASTLessThanOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `lte_operator` (ASTLessThanOrEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `mul_operator` (ASTMultiplicationOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `neq_operator` (ASTNotEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `null_literal` (ASTNullNode)
+          - `type`: `number_literal` (ASTNumberNode)
+            - `value` (double, required) — Value of this literal.
+          - `type`: `or_operator` (ASTOrOperatorNode)
+            - `children` (list of object, required) — Child nodes of the logical operator.
+          - `type`: `string_literal` (ASTStringNode)
+            - `value` (string, required) — Value of this literal.
+          - `type`: `sub_operator` (ASTSubtractionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+      - `type`: `llm` (WorkflowLLMConditionModel)
+        - `condition` (string, required) — Condition to evaluate
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+      - `type`: `result` (WorkflowResultConditionModel)
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+        - `successful` (boolean, required) — Whether all tools in the previously executed tool node were executed successfully.
+      - `type`: `unconditional` (WorkflowUnconditionalModel)
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+    - `backward_condition` (object, required, nullable) — Condition that must be met for the edge to be traversed in the backward direction (target to source).
+      - `type`: `expression` (WorkflowExpressionConditionModel)
+        - `expression` (object, required) — Expression to evaluate.
+          - `type`: `add_operator` (ASTAdditionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `and_operator` (ASTAndOperatorNode)
+            - `children` (list of object, required) — Child nodes of the logical operator.
+          - `type`: `boolean_literal` (ASTBooleanNode)
+            - `value` (boolean, required) — Value of this literal.
+          - `type`: `conditional_operator` (ASTConditionalOperatorNode)
+            - `condition` (object, required) — Condition deciding which expression should be selected.
+            - `falseExpression` (object, required) — Expression selected if the condition is false.
+            - `trueExpression` (object, required) — Expression selected if the condition is true.
+          - `type`: `div_operator` (ASTDivisionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `dynamic_variable` (ASTDynamicVariableNode)
+            - `name` (string, required) — The name of the dynamic variable.
+          - `type`: `eq_operator` (ASTEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `gt_operator` (ASTGreaterThanOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `gte_operator` (ASTGreaterThanOrEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `llm` (ASTLLMNode)
+            - `value_schema` (object, required) — JSON schema describing the value that the LLM should extract.
+            - `prompt` (string, required, deprecated) — The prompt to evaluate to a boolean value. Deprecated. Use a boolean schema instead.
+          - `type`: `lt_operator` (ASTLessThanOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `lte_operator` (ASTLessThanOrEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `mul_operator` (ASTMultiplicationOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `neq_operator` (ASTNotEqualsOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+          - `type`: `null_literal` (ASTNullNode)
+          - `type`: `number_literal` (ASTNumberNode)
+            - `value` (double, required) — Value of this literal.
+          - `type`: `or_operator` (ASTOrOperatorNode)
+            - `children` (list of object, required) — Child nodes of the logical operator.
+          - `type`: `string_literal` (ASTStringNode)
+            - `value` (string, required) — Value of this literal.
+          - `type`: `sub_operator` (ASTSubtractionOperatorNode)
+            - `left` (object, required) — Left operand of the binary operator.
+            - `right` (object, required) — Right operand of the binary operator.
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+      - `type`: `llm` (WorkflowLLMConditionModel)
+        - `condition` (string, required) — Condition to evaluate
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+      - `type`: `result` (WorkflowResultConditionModel)
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+        - `successful` (boolean, required) — Whether all tools in the previously executed tool node were executed successfully.
+      - `type`: `unconditional` (WorkflowUnconditionalModel)
+        - `label` (string, required, nullable) — Optional human-readable label for the condition used throughout the UI.
+  - `nodes` (map from string to object, required)
+    - `type`: `end` (WorkflowEndNodeModel)
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+    - `type`: `override_agent` (WorkflowOverrideAgentNodeModel)
+      - `additional_knowledge_base` (list of object, required) — Additional knowledge base documents that the subagent has access to. These will be used in addition to the main agent's documents.
+        - `type` (enum, required) — The type of the knowledge base
+          - Allowed values: `file`, `url`, `text`, `folder`
+        - `name` (string, required) — The name of the knowledge base
+        - `id` (string, required) — The ID of the knowledge base
+        - `usage_mode` (enum, optional, default: auto) — The usage mode of the knowledge base
+          - Allowed values: `prompt`, `auto`
+      - `additional_prompt` (string, required) — Specific goal for this subagent. It will be added to the system prompt and can be used to further refine the agent's behavior in this specific context.
+      - `additional_tool_ids` (list of string, required) — IDs of additional tools that the subagent has access to. These will be used in addition to the main agent's tools.
+      - `conversation_config` (object, required) — Configuration overrides applied while the subagent is conducting the conversation.
+        - `asr` (object, optional, nullable) — Configuration for conversational transcription
+          - `quality` (enum, optional, nullable, default: high) — The quality of the transcription
+            - Allowed values: `high`
+          - `provider` (enum, optional, nullable, default: scribe_realtime) — The provider of the transcription service
+            - Allowed values: `elevenlabs`, `scribe_realtime`
+          - `user_input_audio_format` (enum, optional, nullable, default: pcm_16000) — The format of the audio to be transcribed
+            - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
+          - `keywords` (list of string, optional, nullable) — Keywords to boost prediction probability for
+        - `turn` (object, optional, nullable) — Configuration for turn detection
+          - `turn_timeout` (double, optional, nullable) — Maximum wait time for the user's reply before re-engaging the user
+          - `initial_wait_time` (double, optional, nullable) — How long the agent will wait for the user to start the conversation if the first message is empty. If not set, uses the regular turn_timeout.
+          - `silence_end_call_timeout` (double, optional, nullable) — Maximum wait time since the user last spoke before terminating the call
+          - `turn_eagerness` (enum, optional, nullable, default: normal) — Controls how eager the agent is to respond. Low = less eager (waits longer), Standard = default eagerness, High = more eager (responds sooner)
+            - Allowed values: `patient`, `normal`, `eager`
+          - `spelling_patience` (enum, optional, nullable, default: auto) — Controls if the agent should be more patient when user is spelling numbers and named entities. Auto = model based, Off = never wait extra
+            - Allowed values: `auto`, `off`
+          - `speculative_turn` (boolean, optional, nullable) — When enabled, starts generating LLM responses during silence before full turn confidence is reached, reducing perceived latency. May increase LLM costs.
+          - `retranscribe_on_turn_timeout` (boolean, optional, nullable) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing for affected turns.
+          - `turn_model` (enum, optional, nullable, default: turn_v3) — Version of the turn detection model to use.
+            - Allowed values: `turn_v2`, `turn_v3`
+          - `interruption_ignore_terms` (list of string, optional, nullable) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
+          - `interruption_ignore_term_languages` (list of string, optional, nullable) — Language codes for which preset ignore-term categories have been activated. Stored explicitly so display is not inferred from term overlap.
+          - `transcribe_on_disabled_interruptions` (boolean, optional, nullable) — When interruptions are disabled, still transcribe what the user says so it can carry into the next turn. When off, user speech during a non-interruptible turn is ignored and won't trigger a turn.
+          - `soft_timeout_config` (object, optional, nullable) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
+            - `timeout_seconds` (double, optional, nullable) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.
+            - `message` (string, optional, nullable) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+            - `additional_soft_timeout_messages` (list of string, optional, nullable) — Extra static filler messages for subsequent soft timeouts in the same LLM generation. The first timeout uses `message`. If fewer messages are configured than `max_soft_timeouts_per_generation`, the last configured message is repeated; otherwise a built-in filler is used.
+            - `use_llm_generated_message` (boolean, optional, nullable) — If enabled, the soft timeout message will be generated dynamically instead of using the static message.
+            - `randomize_fillers` (boolean, optional, nullable) — If enabled, shuffle the order of static soft timeout messages once at the start of each turn. Only applies when use_llm_generated_message is false.
+            - `max_soft_timeouts_per_generation` (integer, optional, nullable) — Maximum filler messages while waiting for a single LLM response. Fires every timeout_seconds until the LLM streams content or this limit is reached.
+            - `llm_generated_message_prompt_override` (string, optional, nullable) — Custom prompt for generating the soft timeout filler message when use\_llm\_generated\_message is enabled. Recent conversation context is provided as a separate user message. If not set, the default prompt will be used. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+        - `tts` (object, optional, nullable) — Configuration for conversational text to speech
+          - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
+            - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+          - `voice_id` (string, optional, nullable) — The voice ID to use for TTS
+          - `supported_voices` (list of object, optional, nullable) — Additional supported voices for the agent
+            - `label` (string, required)
+            - `voice_id` (string, required)
+            - `description` (string, optional, nullable)
+            - `language` (string, optional, nullable)
+            - `model_family` (enum, optional, nullable)
+            - `optimize_streaming_latency` (enum, optional, nullable)
+            - `stability` (double, optional, nullable)
+            - `speed` (double, optional, nullable)
+            - `similarity_boost` (double, optional, nullable)
+          - `expressive_mode` (boolean, optional, nullable) — When enabled, applies expressive audio tags prompt. Automatically disabled for non-v3 models.
+          - `suggested_audio_tags` (list of object, optional, nullable) — Suggested audio tags to boost expressive speech (for eleven_v3 and eleven_v3_conversational models). The agent can still use other tags not listed here.
+            - `tag` (string, required) — Audio tag to use (for best performance, 1-2 words, e.g., 'happy', 'excited')
+            - `description` (string, optional, nullable) — Optional description of when to use this tag
+          - `agent_output_audio_format` (enum, optional, nullable, default: pcm_16000) — The audio format to use for TTS
+            - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
+          - `optimize_streaming_latency` (enum, optional, nullable) — Deprecated: this field is a no-op and is ignored.
+            - Allowed values: `0`, `1`, `2`, `3`, `4`
+          - `stability` (double, optional, nullable) — The stability of generated speech
+          - `speed` (double, optional, nullable) — The speed of generated speech
+          - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+          - `text_normalisation_type` (enum, optional, nullable, default: system_prompt) — Method for converting numbers to words before converting text to speech. If set to SYSTEM_PROMPT, the system prompt will be updated to include normalization instructions. If set to ELEVENLABS, the text will be normalized after generation, incurring slight additional latency.
+            - Allowed values: `system_prompt`, `elevenlabs`
+          - `pronunciation_dictionary_locators` (list of object, optional, nullable) — The pronunciation dictionary locators
+            - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+            - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
+          - `enable_phoneme_tags` (boolean, optional, nullable) — Opt-in to SSML phoneme tag handling for V3 models. When enabled, phoneme tags (inline and from pronunciation dictionaries) are parsed into inline IPA before being sent to the model.
+        - `conversation` (object, optional, nullable) — Configuration for conversational events
+          - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+          - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds
+          - `client_events` (list of enum, optional, nullable) — The events that will be sent to the client
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+          - `file_input` (object, optional, nullable) — Configuration for file input (image/PDF uploads) during conversations.
+            - `enabled` (boolean, optional, nullable) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
+            - `max_files_in_memory` (integer, optional, nullable) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
+            - `max_files_per_conversation` (integer, optional, nullable) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
+          - `monitoring_enabled` (boolean, optional, nullable) — Enable real-time monitoring of conversations via WebSocket
+          - `monitoring_events` (list of enum, optional, nullable) — The events that will be sent to monitoring connections.
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+          - `background_sound` (object, optional, nullable) — Configuration for background sound during conversations.
+            - `source_type` (enum, optional, nullable) — The type of background sound source.
+            - `source_id` (enum, optional, nullable) — Identifier for the sound source.
+            - `volume` (double, optional, nullable) — Volume level for background sound (0.01 to 1.0).
+            - `crossfade_loop` (boolean, optional, nullable) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
+          - `source_attribution` (boolean, optional, nullable) — When enabled and knowledge base content is present, the LLM is instructed to report which sources it used.
+        - `language_presets` (map from string to object, optional, nullable) — Language presets for conversations
+          - `overrides` (object, required) — The overrides for the language preset
+            - `asr` (object, optional, nullable) — Configuration for conversational transcription
+            - `turn` (object, optional, nullable) — Configuration for turn detection
+            - `tts` (object, optional, nullable) — Configuration for conversational text to speech
+            - `conversation` (object, optional, nullable) — Configuration for conversational events
+            - `agent` (object, optional, nullable) — Agent specific configuration
+          - `first_message_translation` (object, optional, nullable) — The translation of the first message
+            - `source_hash` (string, required)
+            - `text` (string, required)
+          - `soft_timeout_translation` (object, optional, nullable) — The translation of the soft timeout message
+            - `source_hash` (string, required)
+            - `text` (string, required)
+        - `vad` (object, optional, nullable) — Configuration for voice activity detection
+        - `agent` (object, optional, nullable) — Agent specific configuration
+          - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
+          - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
+          - `hinglish_mode` (boolean, optional, nullable) — When enabled and language is Hindi, the agent will respond in Hinglish
+          - `dynamic_variables` (object, optional, nullable) — Configuration for dynamic variables
+            - `dynamic_variable_placeholders` (map from string to any, optional, nullable) — A dictionary of dynamic variable placeholders and their values
+          - `disable_first_message_interruptions` (boolean, optional, nullable) — If true, the user will not be able to interrupt the agent while the first message is being delivered.
+          - `max_conversation_duration_message` (string, optional, nullable) — If non-empty, the message the agent will send when max conversation duration is reached.
+          - `text_behavior_overrides` (map from string to object, optional, nullable) — Per-channel response behavior overrides for text conversations. Built-in channel defaults apply when unset.
+            - `verbosity` (enum, optional, nullable) — Verbosity override. Underlying default applies when unset.
+            - `output_format` (enum, optional, nullable) — Output format override. Underlying default applies when unset.
+            - `interaction_budget` (enum, optional, nullable) — Interaction budget override. Underlying default applies when unset.
+          - `prompt` (object, optional, nullable) — The prompt for the agent
+            - `prompt` (string, optional, nullable) — The prompt for the agent
+            - `llm` (enum, optional, nullable) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
+            - `reasoning_effort` (enum, optional, nullable) — Reasoning effort of the model. Only available for some models.
+            - `thinking_budget` (integer, optional, nullable) — Max number of tokens used for thinking. Use 0 to turn off if supported by the model.
+            - `enable_reasoning_summary` (boolean, optional, nullable) — Enable model reasoning summaries. When disabled, we do not request summaries from provider if possible for faster TTFB. Not ZRM compatible.
+            - `temperature` (double, optional, nullable) — The temperature for the LLM. Defaults to 0. Set to null to omit the parameter from the LLM request entirely (useful for custom LLMs that reject the temperature field).
+            - `max_tokens` (integer, optional, nullable) — If greater than 0, maximum number of tokens the LLM can predict
+            - `tool_ids` (list of string, optional, nullable) — A list of IDs of tools used by the agent
+            - `built_in_tools` (object, optional, nullable) — Built-in system tools to be used by the agent
+            - `mcp_server_ids` (list of string, optional, nullable) — A list of MCP server ids to be used by the agent
+            - `native_mcp_server_ids` (list of string, optional, nullable) — A list of Native MCP server ids to be used by the agent
+            - `knowledge_base` (list of object, optional, nullable) — A list of knowledge bases to be used by the agent
+            - `custom_llm` (object, optional, nullable) — Definition for a custom LLM if LLM field is set to 'CUSTOM_LLM'
+            - `ignore_default_personality` (boolean, optional, nullable) — Whether to remove the default personality lines from the system prompt
+            - `rag` (object, optional, nullable) — Configuration for RAG
+            - `timezone` (string, optional, nullable) — Timezone for displaying current time in system prompt. If set, the current time will be included in the system prompt using this timezone. Must be a valid timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Recommended for accurate time-aware responses; without this, the agent has no knowledge of the current date/time unless you provide it via dynamic variables or tools, which can lead to incorrect or hallucinated time references.
+            - `backup_llm_config` (object or object or object, optional, nullable) — Configuration for backup LLM cascading. Can be disabled, use system defaults, or specify custom order.
+            - `cascade_timeout_seconds` (double, optional, nullable) — Time in seconds before cascading to backup LLM. Must be between 2 and 15 seconds.
+            - `tools` (list of object, optional, nullable) — A list of tools that the agent can use over the course of the conversation, use tool_ids instead
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `entry_behavior` (enum, required, default: auto) — Dictates whether this node should immediately generate a response upon entry or wait for the user input. When set to "auto", the behavior will be decided based on the type of the preceding node: "wait_for_user" after the "say" and "start" nodes and "generate_immediately" otherwise.
+        - Allowed values: `generate_immediately`, `wait_for_user`, `auto`
+      - `label` (string, required) — Human-readable label for the node used throughout the UI.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+    - `type`: `phone_number` (WorkflowPhoneNumberNodeModel)
+      - `custom_sip_headers` (list of object, required) — Custom SIP headers to include when transferring the call. Each header can be either a static value or a dynamic variable reference.
+        - `type`: `dynamic` (CustomSIPHeaderWithDynamicVariable)
+          - `key` (string, required) — The SIP header name (e.g., 'X-Customer-ID')
+          - `value` (string, required) — The dynamic variable name to resolve
+        - `type`: `static` (CustomSIPHeader)
+          - `key` (string, required) — The SIP header name (e.g., 'X-Customer-ID')
+          - `value` (string, required) — The header value
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+      - `post_dial_digits` (object, required, nullable) — DTMF digits to send after call connects (e.g., 'ww1234' for extension). Can be either a static value or a dynamic variable reference. Use 'w' for 0.5s pause. Only supported for Twilio transfers.
+        - `type`: `dynamic` (PostDialDigitsDynamicVariable)
+          - `value` (string, required) — The dynamic variable name to resolve
+        - `type`: `static` (PostDialDigitsStatic)
+          - `value` (string, required) — DTMF digits to send after call connects (e.g., 'ww1234' for extension)
+      - `transfer_destination` (object, required)
+        - `type`: `phone` (PhoneNumberTransferDestination)
+          - `phone_number` (string, required)
+        - `type`: `phone_dynamic_variable` (PhoneNumberDynamicVariableTransferDestination)
+          - `phone_number` (string, required)
+        - `type`: `sip_uri` (SIPUriTransferDestination)
+          - `sip_uri` (string, required)
+        - `type`: `sip_uri_dynamic_variable` (SIPUriDynamicVariableTransferDestination)
+          - `sip_uri` (string, required)
+      - `transfer_type` (enum, required, default: conference)
+        - Allowed values: `blind`, `conference`, `sip_refer`
+      - `uui` (object, required, nullable) — User-to-User Information (RFC 7433) to attach to SIP REFER transfers. Carries call context such as CRM identifiers or escalation reason across the transfer boundary.
+        - `data` (string, required) — UUI payload to send on SIP REFER transfers. Supports inline dynamic variables and is hex-encoded at transfer time.
+        - `protocol_discriminator` (string, optional, nullable) — Optional one-octet protocol discriminator (two hex digits, e.g. '00'). Required by platforms such as Genesys Cloud, which otherwise strip the first octet of the payload. Leave unset for platforms like Talkdesk that expect a bare hex payload.
+        - `protocol_discriminator_mode` (enum, optional, default: prefix) — How to attach protocol\_discriminator. 'prefix' prepends the octet to the hex payload (User-to-User=XX\<hex>;encoding=hex). 'pd\_parameter' sends it as a separate parameter (User-to-User=\<hex>;pd=XX;encoding=hex). Ignored when protocol\_discriminator is unset.
+          - Allowed values: `prefix`, `pd_parameter`
+    - `type`: `standalone_agent` (WorkflowStandaloneAgentNodeModel)
+      - `agent_id` (string, required, nullable) — The ID of the agent to transfer the conversation to. None means transfer within the current agent.
+      - `delay_ms` (integer, required, default: 0) — Artificial delay in milliseconds applied before transferring the conversation.
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `enable_transferred_agent_first_message` (boolean, required, default: false) — Whether to enable the transferred agent to send its configured first message after the transfer.
+      - `node_id` (string, required, nullable) — Optional target node ID in the destination agent's workflow. When set, the transfer starts at this node instead of the default entry node.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+      - `preserve_client_tts_overrides` (boolean, required, default: false) — Defines whether TTS client overrides should be carried over to the transferred agent.
+      - `transfer_message` (string, required, nullable) — Optional message sent to the user before the transfer is initiated.
+    - `type`: `start` (WorkflowStartNodeModel)
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+    - `type`: `tool` (WorkflowToolNodeModel)
+      - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+      - `position` (object, required) — Position of the node in the workflow.
+        - `x` (double, required, default: 0)
+        - `y` (double, required, default: 0)
+      - `tools` (list of object, required) — List of tools to execute in parallel. The entire node is considered successful if all tools are executed successfully.
+        - `tool_id` (string, required)
+  - `prevent_subagent_loops` (boolean, required, default: false) — Whether to prevent loops in the workflow execution.
+- `access_info` (object, optional, nullable) — The access information of the agent for the user
+  - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent
+  - `creator_name` (string, required) — Name of the agent's creator
+  - `creator_email` (string, required) — Email of the agent's creator
+  - `role` (enum, required) — The role of the user making the request
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `anonymous_access_level_override` (enum, optional, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `access_source` (enum, optional, nullable) — Why the requesting user has access to this resource. 'creator' = caller is the owner. 'explicit' = caller (or one of their workspace groups) is listed in role_to_group_ids beyond the workspace-wide everyone group. 'workspace_default' = the workspace-wide everyone group is listed in role_to_group_ids (every non-anon workspace member, including admins, sees this resource). 'workspace_admin' = caller is a workspace admin and the admin seat is the *only* path to access; reserved for docs nobody else can see. Lets the UI disclose why an admin-bypass viewer sees a doc that wasn't explicitly shared with them.
+    - Allowed values: `creator`, `explicit`, `workspace_admin`, `workspace_default`
+- `tags` (list of string, optional) — Agent tags used to categorize the agent
+- `version_id` (string, optional, nullable) — The ID of the version the agent is on
+- `branch_id` (string, optional, nullable) — The ID of the branch the agent is on
+- `main_branch_id` (string, optional, nullable) — The ID of the main branch for this agent
+- `overridden_fields` (list of string, optional) — Dot-paths of config fields where both branches modified the same field relative to their common ancestor (conflicts). Present regardless of which side wins the conflict.
+- `conflicts` (list of object, optional) — Structured view of the same conflicts as overridden_fields, each carrying the value on the base (common ancestor), source branch, and target branch so the divergence can be presented and resolved field-by-field.
+  - `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation_config/platform_settings, or a procedure id.
+  - `section` (enum, required) — Which config section this path belongs to.
+    - Allowed values: `conversation_config`, `platform_settings`, `procedures`, `workflow`
+  - `base_value` (any, optional) — Value at the common ancestor (merge base).
+  - `source_value` (any, optional) — Value on the source branch tip.
+  - `target_value` (any, optional) — Value on the target branch tip.
+- `source_identical_to_target` (boolean, optional, default: false) — True when the merge/rebase would be a no-op, i.e. the merged result is identical to the source branch tip. The rebase endpoint rejects in this case.
 
 ## Examples
-
-
 
 **Response**
 

@@ -14,233 +14,45 @@ List all environment variables for the workspace with optional filtering
 
 Reference: https://elevenlabs.io/docs/api-reference/environment-variables/list
 
-## OpenAPI Specification
+## Servers
 
-```yaml
-openapi: 3.1.0
-info:
-  title: api
-  version: 1.0.0
-paths:
-  /v1/convai/environment-variables:
-    get:
-      operationId: list
-      summary: List Environment Variables
-      description: List all environment variables for the workspace with optional filtering
-      tags:
-        - environmentVariables
-      parameters:
-        - name: cursor
-          in: query
-          description: Pagination cursor from previous response
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: page_size
-          in: query
-          description: Number of items to return (1-100)
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: label
-          in: query
-          description: Filter by exact label match
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: environment
-          in: query
-          description: >-
-            Filter to only return variables that have this environment. When
-            specified, the values dict in the response will only contain this
-            environment.
-          required: false
-          schema:
-            type:
-              - string
-              - 'null'
-        - name: type
-          in: query
-          description: Filter by variable type
-          required: false
-          schema:
-            oneOf:
-              - $ref: >-
-                  #/components/schemas/V1ConvaiEnvironmentVariablesGetParametersTypeSchema
-              - type: 'null'
-        - name: xi-api-key
-          in: header
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EnvironmentVariablesListResponse'
-        '400':
-          description: Invalid environment filter
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-servers:
-  - url: https://api.elevenlabs.io
-    description: Production
-  - url: https://api.us.elevenlabs.io
-    description: Production US
-  - url: https://api.eu.residency.elevenlabs.io
-    description: Production EU
-  - url: https://api.in.residency.elevenlabs.io
-    description: Production India
-  - url: https://api.sg.residency.elevenlabs.io
-    description: Production Singapore
-components:
-  schemas:
-    V1ConvaiEnvironmentVariablesGetParametersTypeSchema:
-      type: string
-      enum:
-        - string
-        - secret
-        - auth_connection
-      description: Filter by variable type
-      title: V1ConvaiEnvironmentVariablesGetParametersTypeSchema
-    EnvironmentVariableResponseType:
-      type: string
-      enum:
-        - string
-        - secret
-        - auth_connection
-      title: EnvironmentVariableResponseType
-    EnvironmentVariableSecretValue:
-      type: object
-      properties:
-        secret_id:
-          type: string
-      required:
-        - secret_id
-      title: EnvironmentVariableSecretValue
-    EnvironmentVariableResponseValues1:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableSecretValue'
-      title: EnvironmentVariableResponseValues1
-    EnvironmentVariableAuthConnectionValue:
-      type: object
-      properties:
-        auth_connection_id:
-          type: string
-      required:
-        - auth_connection_id
-      title: EnvironmentVariableAuthConnectionValue
-    EnvironmentVariableResponseValues2:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/EnvironmentVariableAuthConnectionValue'
-      title: EnvironmentVariableResponseValues2
-    EnvironmentVariableResponseValues:
-      oneOf:
-        - type: object
-          additionalProperties:
-            type: string
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues1'
-        - $ref: '#/components/schemas/EnvironmentVariableResponseValues2'
-      title: EnvironmentVariableResponseValues
-    EnvironmentVariableResponse:
-      type: object
-      properties:
-        label:
-          type: string
-        created_at_unix_secs:
-          type: integer
-        updated_at_unix_secs:
-          type: integer
-        created_by_user_id:
-          type:
-            - string
-            - 'null'
-        type:
-          $ref: '#/components/schemas/EnvironmentVariableResponseType'
-        id:
-          type: string
-        workspace_id:
-          type: string
-        values:
-          $ref: '#/components/schemas/EnvironmentVariableResponseValues'
-      required:
-        - label
-        - created_at_unix_secs
-        - updated_at_unix_secs
-        - type
-        - id
-        - workspace_id
-        - values
-      title: EnvironmentVariableResponse
-    EnvironmentVariablesListResponse:
-      type: object
-      properties:
-        environment_variables:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentVariableResponse'
-        next_cursor:
-          type:
-            - string
-            - 'null'
-        has_more:
-          type: boolean
-      required:
-        - environment_variables
-        - has_more
-      title: EnvironmentVariablesListResponse
-    ValidationErrorLocItems:
-      oneOf:
-        - type: string
-        - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
 
-```
+## Request
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Pagination cursor from previous response
+- `page_size` (integer, optional, default: 100) — Number of items to return (1-100)
+- `label` (string, optional, nullable) — Filter by exact label match
+- `environment` (string, optional, nullable) — Filter to only return variables that have this environment. When specified, the values dict in the response will only contain this environment.
+- `type` (enum, optional, nullable) — Filter by variable type
+  - Allowed values: `string`, `secret`, `auth_connection`
+
+## Response
+
+### 200
+
+Successful Response
+
+- `environment_variables` (list of object, required)
+  - `label` (string, required)
+  - `created_at_unix_secs` (integer, required)
+  - `updated_at_unix_secs` (integer, required)
+  - `type` (enum, required)
+    - Allowed values: `string`, `secret`, `auth_connection`
+  - `id` (string, required)
+  - `workspace_id` (string, required)
+  - `values` (map from string to string or map from string to object or map from string to object, required)
+  - `created_by_user_id` (string, optional, nullable)
+- `has_more` (boolean, required)
+- `next_cursor` (string, optional, nullable)
 
 ## Examples
-
-
 
 **Response**
 

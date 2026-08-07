@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1527 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1538 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -1190,6 +1190,7 @@
 - `oss/javascript/deepagents/memory` — [Memory](pages/oss/javascript/deepagents/memory.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/memory)
 - `oss/javascript/deepagents/models` — [Models](pages/oss/javascript/deepagents/models.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/models)
 - `oss/javascript/deepagents/multimodal` — [Multimodal inputs and outputs](pages/oss/javascript/deepagents/multimodal.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/multimodal)
+- `oss/javascript/deepagents/openwiki` — [OpenWiki](pages/oss/javascript/deepagents/openwiki.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/openwiki)
 - `oss/javascript/deepagents/overview` — [Deep Agents overview](pages/oss/javascript/deepagents/overview.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/overview)
 - `oss/javascript/deepagents/permissions` — [Permissions](pages/oss/javascript/deepagents/permissions.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/permissions)
 - `oss/javascript/deepagents/profiles` — [Profiles](pages/oss/javascript/deepagents/profiles.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/profiles)
@@ -1349,6 +1350,15 @@
 - `oss/javascript/security-policy` — [Security policy](pages/oss/javascript/security-policy.md) · [原文](https://docs.langchain.com/oss/javascript/security-policy)
 - `oss/javascript/studio` — [Studio](pages/oss/javascript/studio.md) · [原文](https://docs.langchain.com/oss/javascript/studio)
 - `oss/javascript/versioning` — [Versioning](pages/oss/javascript/versioning.md) · [原文](https://docs.langchain.com/oss/javascript/versioning)
+- `oss/openwiki/automate-updates` — [Automate updates](pages/oss/openwiki/automate-updates.md) · [原文](https://docs.langchain.com/oss/openwiki/automate-updates)
+- `oss/openwiki/changelog` — [Changelog](pages/oss/openwiki/changelog.md) · [原文](https://docs.langchain.com/oss/openwiki/changelog)
+- `oss/openwiki/cli-reference` — [Command reference](pages/oss/openwiki/cli-reference.md) · [原文](https://docs.langchain.com/oss/openwiki/cli-reference)
+- `oss/openwiki/code-mode` — [Code mode](pages/oss/openwiki/code-mode.md) · [原文](https://docs.langchain.com/oss/openwiki/code-mode)
+- `oss/openwiki/customize` — [Customize OpenWiki](pages/oss/openwiki/customize.md) · [原文](https://docs.langchain.com/oss/openwiki/customize)
+- `oss/openwiki/overview` — [OpenWiki](pages/oss/openwiki/overview.md) · [原文](https://docs.langchain.com/oss/openwiki/overview)
+- `oss/openwiki/personal-mode` — [Personal mode](pages/oss/openwiki/personal-mode.md) · [原文](https://docs.langchain.com/oss/openwiki/personal-mode)
+- `oss/openwiki/providers` — [Model providers](pages/oss/openwiki/providers.md) · [原文](https://docs.langchain.com/oss/openwiki/providers)
+- `oss/openwiki/quickstart` — [Quickstart](pages/oss/openwiki/quickstart.md) · [原文](https://docs.langchain.com/oss/openwiki/quickstart)
 - `oss/python/common-errors` — [Errors](pages/oss/python/common-errors.md) · [原文](https://docs.langchain.com/oss/python/common-errors)
 - `oss/python/concepts/context` — [Context overview](pages/oss/python/concepts/context.md) · [原文](https://docs.langchain.com/oss/python/concepts/context)
 - `oss/python/concepts/memory` — [Memory overview](pages/oss/python/concepts/memory.md) · [原文](https://docs.langchain.com/oss/python/concepts/memory)
@@ -1388,6 +1398,7 @@
 - `oss/python/deepagents/memory` — [Memory](pages/oss/python/deepagents/memory.md) · [原文](https://docs.langchain.com/oss/python/deepagents/memory)
 - `oss/python/deepagents/models` — [Models](pages/oss/python/deepagents/models.md) · [原文](https://docs.langchain.com/oss/python/deepagents/models)
 - `oss/python/deepagents/multimodal` — [Multimodal inputs and outputs](pages/oss/python/deepagents/multimodal.md) · [原文](https://docs.langchain.com/oss/python/deepagents/multimodal)
+- `oss/python/deepagents/openwiki` — [OpenWiki](pages/oss/python/deepagents/openwiki.md) · [原文](https://docs.langchain.com/oss/python/deepagents/openwiki)
 - `oss/python/deepagents/overview` — [Deep Agents overview](pages/oss/python/deepagents/overview.md) · [原文](https://docs.langchain.com/oss/python/deepagents/overview)
 - `oss/python/deepagents/permissions` — [Permissions](pages/oss/python/deepagents/permissions.md) · [原文](https://docs.langchain.com/oss/python/deepagents/permissions)
 - `oss/python/deepagents/profiles` — [Profiles](pages/oss/python/deepagents/profiles.md) · [原文](https://docs.langchain.com/oss/python/deepagents/profiles)

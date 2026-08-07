@@ -25,14 +25,14 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
 </Info>
 
 <Tip>
-  **Using a code agent?** A complete, forkable serverless RL loop lives in the cookbook at [`training/examples/serverless_rl/`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl). It runs out of the box against the serverless gateway.
+  **Using a code agent?** Start with the self-contained [`serverless_rl` Countdown example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl), or fork the experimental [`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) when you need rollout functions, rollout/training overlap, or agentic trajectories. Both run against the serverless gateway.
 </Tip>
 
 ## What is serverless training?
 
 You write the training loop, for supervised fine-tuning, preference optimization, or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
-The [quickstart](#quickstart) shows the exact client setup and operation order. The complete implementation lives in the cookbook's [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl).
+The [quickstart](#quickstart) shows the exact client setup and operation order. The cookbook provides a compact [`serverless_rl` implementation](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) and an experimental [`async_rl_loop_serverless` recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) with the same rollout contract as the dedicated async RL recipe.
 
 ### Serverless lifecycle
 
@@ -179,7 +179,7 @@ sampler.close()
 
 The end-to-end serverless RL pattern is the standard GRPO / importance-sampling loop: each step saves the current adapter, rolls out a batch of prompts through a sampler bound to that snapshot, scores completions with your reward function, turns group-relative advantages into training datums, and takes one optimizer step.
 
-Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
+Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) for a compact synchronous loop, or [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) for experimental async scheduling and custom rollout functions. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
 ## Saving and loading checkpoints
 
@@ -370,9 +370,10 @@ This walkthrough fine-tunes Qwen 3.5 9B with LoRA SFT to classify prompts and ro
 
 ## Next steps
 
-* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): runnable serverless loop
+* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): compact synchronous Countdown loop
+* [Async serverless RL recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py): experimental rollout-function loop with rollout/training overlap
 * [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure): compare serverless and dedicated
 * [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
 * [Training and Sampling](/fine-tuning/training-api/training-and-sampling): dedicated lifecycle internals
 * [Loss Functions](/fine-tuning/training-api/loss-functions): built-in and custom losses
-* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl)
+* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run and experimental training recipes
