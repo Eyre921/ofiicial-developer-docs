@@ -6,128 +6,24 @@ path: payments/afterpay-clearpay
 
 # Afterpay and Clearpay payments
 
-Offer your customers flexible financing while getting paid upfront with Afterpay (also known as Clearpay in the UK).
+Offer your customers flexible financing while getting paid upfront with Afterpay (also known as Clearpay in the UK)..
 
+[Afterpay](https://www.afterpay.com/) is a buy now, pay later (BNPL) payment method that allows customers to split purchases into interest-free installments. When customers select Afterpay as their payment method, Stripe redirects them to complete authentication and approval. You’re paid immediately while customers pay over time.
+Payment method family: Buy Now, Pay Later
+Usability: Single-use
+Access type: Instant provisional access
+Payment confirmation timing: Immediate
+Settlement timing: Standard payout schedule
+Pricing: https://stripe.com/en-us/pricing/local-payment-methods#cash-app-afterpay
 > Afterpay has rebranded to Cash App Afterpay in the US. This update gives your business access to Cash App users without requiring any changes, unless you have custom Afterpay components. For more information about the change, see the [Cash App Afterpay support page](https://support.stripe.com/questions/afterpay-is-now-branded-as-cash-app-afterpay-in-the-us).
 
-Afterpay is a global payment method that allows your customers to split purchases into 4 interest-free installments, or longer term interest-bearing monthly installments (US only).
+## Eligibility and availability 
 
-For information on payment method transaction fees, refer to [pricing details](https://stripe.com/pricing/local-payment-methods#cash-app-afterpay).
-
-To pay with Afterpay, customers are redirected to Afterpay’s site, where they authorize the payment by agreeing to the terms of a payment plan, then return to your website to complete the order. Afterpay offers payment options based on factors such as customer credit, prior account history, order amount, and the type of goods or services being underwritten. After payment acceptance, the full amount of the order (minus fees) is made available to your Stripe account upfront, and Afterpay collects the purchase amount from your customer, who repays Afterpay directly over time. For more information, see [Payment options and limits](https://docs.stripe.com/payments/afterpay-clearpay.md#collection-schedule).
-
-#### Payment method properties
-
-- **Customer locations**
-
-  United States, Canada, United Kingdom, Australia, New Zealand
-
-- **Presentment currency**
-
-  USD, CAD, GBP, AUD, or NZD
-
-- **Payment confirmation**
-
-  Customer-initiated
-
-- **Payment method family**
-
-  Buy now, pay later
-
-- **Recurring payments**
-
-  No
-
-- **Payout timing**
-
-  Standard payout timing applies
-
-- **Connect support**
-
-  Yes
-
-- **Dispute support**
-
-  [Yes](https://docs.stripe.com/payments/afterpay-clearpay.md#disputed-payments)
-
-- **Manual capture support**
-
-  Yes
-
-- **Refunds / Partial refunds**
-
-  [Yes / Yes](https://docs.stripe.com/payments/afterpay-clearpay.md#refunds)
-
-#### Business locations
-
-Stripe accounts in the following countries can accept Afterpay payments:
-
-- AU
-- CA
-- GB
-- NZ
-- US
-
-#### Product support
-
-- Connect
-- Payment Links
-- Checkout1
-
-- Elements2
-
-- Invoicing3
-
-1Not supported when using Checkout in subscription mode or setup mode.2Express Checkout Element doesn’t support Afterpay or Clearpay.3Private preview for one-time invoices. Not supported for subscription invoices.
-
-> Afterpay and Clearpay only support domestic transactions, meaning you can only sell to customers in the same country as your business. If you’re using [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md), Stripe handles a customer’s payment method eligibility automatically. If you use [payment_method_types](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-payment_method_types), you must either configure your integration so that it only presents Afterpay and Clearpay to eligible customers, or use dynamic payment methods.
-
-## Payment flow 
-![](https://d37ugbyn3rpeym.cloudfront.net/videos/afterpay_clearpay_payment_demo.mp4)
-## Get started 
-
-You don’t have to integrate Afterpay and other payment methods individually. If you use our front-end products, Stripe automatically determines the most relevant payment methods to display. Go to the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) and enable Afterpay. To get started with one of our hosted UIs, follow a quickstart:
-
-- [Checkout](https://docs.stripe.com/checkout/quickstart.md): Our prebuilt, hosted checkout page.
-- [Elements](https://docs.stripe.com/payments/quickstart-checkout-sessions.md): Our drop-in UI components.
-
-[Payment Links](https://docs.stripe.com/payment-links.md) also supports adding Afterpay from the Dashboard.
-
-If you prefer to manually list payment methods, learn how to [manually configure Afterpay as a payment](https://docs.stripe.com/payments/afterpay-clearpay/accept-a-payment.md).
-
-You can also let customers know Afterpay payments are available by including the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your product, cart, and payment pages. We recommend adding a site messaging Element to help drive conversion.
-
-## Payment options and limits 
-
-Payment options vary by cart order size and country. In the US, Afterpay presents customers with Pay in 4, monthly installments, or both options. For all other markets, Afterpay presents customers with Pay in 4 only.
-
-- **Pay in 4**: customers pay for purchases in four or fewer interest-free, bi-weekly payments over a 6 week term.
-- **Monthly installments**: (US only) customers pay for purchases over a 6 or 12 month term that includes capped interest.
-
-Afterpay collects the first installment from the customer immediately, and the next installment either 2 weeks or 1 month after, depending on the payment schedule. You can accept payments from customers in the same country that you registered your Stripe account. Payments must also match the local currency of the country.
-
-The following table lists total transaction limits and installment schedules by country.
-
-| Stripe account and customer country | Currency | Transaction limits |
-| --- | --- | --- |
-| Australia | AUD | 1 - 4,000 AUD |
-| Canada | CAD | 1 - 2,000 CAD |
-| New Zealand | NZD | 1 - 4,000 NZD |
-| United Kingdom | GBP | 1 - 1,200 GBP |
-| United States | USD | 1 - 4,000 USD |
-
-### United States
-
-In the US, a customer can be presented with both Pay in 4 and monthly installments, depending on the order amount:
-
-| Cart order range | Pay in 4 | Monthly Installments |
-| --- | --- | --- |
-| 1 - 399.99 USD | Yes | No |
-| 400 - 2,000 USD | Yes | Interest-bearing 6 or 12 month loans |
-| 2,000.01 - 4,000 USD | No | Interest-bearing 6 or 12 month loans |
-
-## Prohibited business categories
-
+### Account eligibility
+Business location: AU, CA, GB, NZ
+Account type: ✓ Merchant, ✓ Platform or marketplace (Connect)
+Business model: ✗ B2B, ✓ B2C
+Business category: View list of prohibited and restricted business categories
 For more information about Afterpay eligibility for your account, go to your [Payment methods settings](https://dashboard.stripe.com/settings/payment_methods).
 
 In addition to the categories of [businesses restricted from using Stripe overall](https://stripe.com/restricted-businesses), the following categories are prohibited from using Afterpay.
@@ -140,58 +36,270 @@ In addition to the categories of [businesses restricted from using Stripe overal
 
 For the complete list, see the [terms of service](https://stripe.com/afterpay-clearpay/legal#restricted-businesses).
 
-## Add Afterpay branding to your website
+Your account might be reviewed after activation to confirm eligibility. While Afterpay doesn’t enforce any additional website requirements, make sure that you provide a website that meets the [Stripe account activation requirements](https://support.stripe.com/questions/business-website-for-account-activation-faq). You can contact [Stripe support](https://support.stripe.com/) to appeal any Afterpay capability restrictions.
 
-Let your customers know you accept payments with Afterpay by including the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your product and cart pages.
+Review the list of *merchant category codes* (A Merchant Category Code (MCC) is a four-digit number that classifies the type of goods or services a business offers) that are prohibited or restricted for Afterpay.
 
-Afterpay also provides static [visual assets and branding guidance](https://www.afterpay.com/retailer-resources). In AU, CA, NZ and the US, consumers know Afterpay as ‘Afterpay’. In the UK, they know it as ‘Clearpay’. Make sure you pick the right location (see the footer in the [Afterpay documentation](https://www.afterpay.com/retailer-resources)) so that you get the appropriate assets. For Clearpay, see the [UK assets and branding guidance](https://www.clearpay.co.uk/en-GB/retailer-resources).
+- **Prohibited** MCCs are not supported by this payment method.
+- **Restricted** MCCs may be supported, but require additional information at account creation.
 
-## Disputes 
+| MCC | Description | Type |
+| --- | --- | --- |
+| 2842 | Specialty Cleaning | Restricted |
+| 4411 | Cruise Lines | Prohibited |
+| 4829 | Money Orders - Wire Transfers | Prohibited |
+| 4900 | Utilities | Restricted |
+| 5122 | Drugs, Drug Proprietaries, and Druggist Sundries | Prohibited |
+| 5169 | Chemicals and Allied Products (Not Elsewhere Classified) | Restricted |
+| 5172 | Petroleum and Petroleum Products | Restricted |
+| 5199 | Nondurable Goods (Not Elsewhere Classified) | Restricted |
+| 5521 | Car and Truck Dealers (Used Only) | Prohibited |
+| 5592 | Motor Homes Dealers | Restricted |
+| 5933 | Pawn Shops | Prohibited |
+| 5960 | Direct Marketing - Insurance Services | Restricted |
+| 5962 | Direct Marketing - Travel | Prohibited |
+| 5963 | Door-To-Door Sales | Prohibited |
+| 5964 | Direct Marketing - Catalog Merchant | Restricted |
+| 5965 | Direct Marketing - Combination Catalog and Retail Merchant | Restricted |
+| 5966 | Direct Marketing - Outbound Telemarketing | Prohibited |
+| 5967 | Adult Content and Services | Prohibited |
+| 5968 | Direct Marketing - Subscription | Restricted |
+| 5969 | Direct Marketing - Other | Restricted |
+| 5993 | Cigar Stores and Stands | Prohibited |
+| 6010 | Manual Cash Disburse | Prohibited |
+| 6011 | Financial Service | Prohibited |
+| 6012 | Financial Institutions | Prohibited |
+| 6051 | Cryptocurrency exchanges and wallets | Prohibited |
+| 6211 | Security Brokers/Dealers | Prohibited |
+| 6300 | Insurance Underwriting, Premiums | Prohibited |
+| 6540 | Non-FI, Stored Value Card Purchase/Load | Prohibited |
+| 7011 | Hotels, Motels, and Resorts | Restricted |
+| 7012 | Timeshares | Restricted |
+| 7321 | Credit Reporting Agencies | Restricted |
+| 7394 | Equipment Rental | Restricted |
+| 7800 | Government-Owned Lotteries (US Region only) | Prohibited |
+| 7801 | Government Licensed On-line Casinos (On-Line Gambling) | Prohibited |
+| 7802 | Government-Licensed Horse/Dog Racing | Prohibited |
+| 7829 | Picture/Video Production | Restricted |
+| 7841 | Video Tape Rental Stores | Prohibited |
+| 7995 | Betting/Casino Gambling | Prohibited |
+| 8111 | Legal Services, Attorneys | Restricted |
+| 8398 | Charitable and Social Service Organizations - Fundraising | Restricted |
+| 8641 | Civic, Social, Fraternal Associations | Restricted |
+| 8651 | Political Organizations | Restricted |
+| 8661 | Religious Organizations | Restricted |
+| 8999 | Professional Services | Restricted |
+| 9211 | Court Costs | Prohibited |
+| 9222 | Fines - Government Administrative Entities | Prohibited |
+| 9223 | Bail and Bond Payments | Prohibited |
+| 9311 | Tax Payments - Government Agencies | Prohibited |
+| 9405 | US Federal Govt Agencies or Departments | Restricted |
+| 9950 | Intra-Company Purchases | Prohibited |
 
-Customers must authenticate Afterpay payments by logging into their Afterpay account. This requirement helps reduce the risk of fraud or unrecognized payments. Afterpay covers losses incurred from customer fraud or the inability to repay installments. However, Stripe might contact you on behalf of Afterpay and request to stop or pause a shipment before any losses are incurred. It’s important to comply promptly with these requests.
+Stripe accounts in the following countries can accept Afterpay payments with local currency settlement.
 
-Customers can dispute Afterpay payments in certain cases—for example, if they don’t receive the goods they paid for. Customers have up to 120 calendar days from the date of purchase to file a dispute. The dispute process works like this:
+AMER: CA, US
 
-After the customer initiates a dispute, Stripe notifies you using:
+EMEA: GB
 
-- Email
-- The Stripe Dashboard
-- An API `charge.dispute.created` event (if your integration is set up to receive [webhooks](https://docs.stripe.com/webhooks.md))
+APAC: AU, NZ
 
-Stripe holds back the disputed amount from your balance until Afterpay resolves the dispute.
+Customers in the following countries can use Afterpay.
 
-Stripe requests that you upload compelling evidence that you fulfilled the purchase order [using the Stripe Dashboard](https://docs.stripe.com/disputes/responding.md#respond). This evidence can include:
+AMER: CA, US
 
-- A received return confirmation (for shipped goods returned from the customer to you)
-- The tracking ID
-- The shipping date
-- A record of purchase for intangible goods, such as IP address or email receipt
-- A record of purchase for services or physical goods, such as phone number or proof of receipt
+EMEA: GB
 
-If you prefer to handle disputes programmatically, you can [respond to disputes using the API](https://docs.stripe.com/disputes/api.md).
+APAC: AU, NZ
 
-This information helps Afterpay determine if a dispute is valid or if they should reject it. Make sure the evidence you provide contains as much detail as possible from what the customer provided at checkout. You must submit the requested information within 14 calendar days. Afterpay makes a decision within 30 calendar days of evidence submission. If Afterpay resolves the dispute with you winning, Stripe returns the disputed amount to your Stripe balance. If Afterpay rules in favor of the customer, the balance charge becomes permanent.
+### Payment support
+Buyer location: AU, CA, GB, NZ
+Presentment currency: AUD, NZD, GBP, USD, CAD
+Geographic coverage: ✓ Domestic, ✓ Crossborder
+Transaction limits: Minimum amount: 1.00 USD
 
-## Refunds 
+Maximum amount: 4,000.00 USD
+> Afterpay only supports domestic transactions in general availability, meaning you can only sell to customers in the same country as your business. Cross-border transactions are available in private preview. If you’re using [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md), Stripe handles a customer’s payment method eligibility automatically. If you use [payment_method_types](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-payment_method_types), you must either configure your integration so that it only presents Afterpay to eligible customers, or use dynamic payment methods.
 
-You can refund Afterpay charges up to 120 days after the original payment. Refunds for Afterpay payments are asynchronous.
+### Payment options
 
-## Connect 
+### AU
 
-You can use [Stripe Connect](https://docs.stripe.com/connect/how-connect-works.md) with Afterpay to process payments on behalf of a connected account. *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) users can use Afterpay with the following charge types:
+| Payment option | Description | Amount range |
+| --- | --- | --- |
+| Pay in 4 | 4 interest-free bi-weekly payments | AUD&nbsp;1–AUD&nbsp;4,000 |
 
-- [Direct](https://docs.stripe.com/connect/direct-charges.md)
-- [Destination](https://docs.stripe.com/connect/destination-charges.md)
-- [Separate Charges and Transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md)
+### CA
 
-Stripe and Afterpay rely on merchant category codes (MCC) to determine eligibility of the connected accounts against the Afterpay [prohibited business categories](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-business-categories). Make sure that you set [correct MCCs](https://docs.stripe.com/connect/setting-mcc.md) for your connected accounts that use the Express Dashboard or a dashboard that isn’t hosted by Stripe.
+| Payment option | Description | Amount range |
+| --- | --- | --- |
+| Pay in 4 | 4 interest-free bi-weekly payments | CAD&nbsp;1–CAD&nbsp;2,000 |
 
-## Customer country filtering
+### NZ
+
+| Payment option | Description | Amount range |
+| --- | --- | --- |
+| Pay in 4 | 4 interest-free bi-weekly payments | NZD&nbsp;1–NZD&nbsp;4,000 |
+
+### GB
+
+| Payment option | Description | Amount range |
+| --- | --- | --- |
+| Pay in 4 | 4 interest-free bi-weekly payments | GBP&nbsp;1–GBP&nbsp;1,200 |
+
+### US
+
+| Payment option | Description | Amount range |
+| --- | --- | --- |
+| Pay in 4 | 4 interest-free bi-weekly payments | USD&nbsp;1–USD&nbsp;2,000 |
+| Monthly installments | 6 or 12 month interest-bearing installments | USD&nbsp;400–USD&nbsp;4,000 |
+
+### Customer country filtering 
 
 Customer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Afterpay only displays as a payment method option if the customer’s country is supported.
 
 We determine the customer’s country in the following priority order:
 
-1. Shipping address country - The two-letter country code, not the full name of the country.
-2. Geocoded country - The country based on the client-side IP address.
+1. Shipping address country: The two-letter country code, not the full name of the country.
+2. Geocoded country: The country based on the client-side IP address.
+
+## Capabilities 
+Recurring payments: ✗ Not supported
+
+Payment authorizations:
+  ✗ Extended authorizations
+  ✗ Flexible extended authorizations
+  ✗ Incremental authorizations
+  ✗ Decremental authorizations
+  ✗ Re-authorizations
+
+Payment captures:
+  ✓ Manual capture
+  ✓ Partial capture
+  ✗ Multi-capture
+  ✗ Over-capture
+
+Refunds:
+  ✓ Partial refunds
+  ✓ Full refunds
+  Submission window: 120 days
+  Processing time: 10 business days
+
+Disputes:
+  ✗ Partial disputes
+  ✓ Full disputes
+  Submission window: 120 days
+### Refunds 
+
+You have up to 120 days from the original payment to submit a refund using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API.](https://docs.stripe.com/api/refunds/create.md) This is the maximum the payment method allows-your return policy determines what you offer customers.
+
+Refunds for Afterpay payments are asynchronous and take up to 10 business days to complete. Afterpay refunds can’t be canceled. 
+
+#### Refund process 
+
+
+
+Afterpay refunds are never processed as reversals. When you issue a refund, Afterpay cancels any remaining scheduled payments and returns any amounts the customer has already paid. The customer sees the update reflected in their Afterpay account.
+
+#### Tracking refunds 
+
+You can view refund status in the [Dashboard](https://dashboard.stripe.com/payments). Open the payment and click **View Details** on the refund entry, or [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field. Stripe also notifies you of the final refund status using the `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the status of the [Refund](https://docs.stripe.com/api/refunds/object.md) object transitions to `succeeded`. If a refund fails, the status transitions to `failed`, Stripe returns the amount to your Stripe balance, and you must arrange an alternative way to provide your customer with a refund.
+
+### Disputes 
+
+Customers have up to 120 calendar days from the date of purchase to file Afterpay disputes.
+
+Afterpay payments can only be disputed once.
+
+#### Dispute process 
+
+1. **Dispute opened**: Afterpay opens a dispute. Stripe immediately withholds the disputed amount from your balance. You have 14 calendar days to submit evidence.
+2. **Decision**: Afterpay reviews your evidence and issues a final decision within 30 calendar days of dispute creation.
+
+#### Dispute notifications 
+
+When a Afterpay dispute is opened, Stripe notifies you through:
+
+- Email
+- The [Stripe Dashboard](https://dashboard.stripe.com/disputes)
+- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) webhook event
+
+The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_due_by` field of the Dispute object.
+
+#### Responding to disputes 
+
+You have 14 calendar days from dispute creation to submit evidence.
+
+Stripe requests that you upload compelling evidence that you fulfilled the purchase order using the Stripe Dashboard. This evidence can include: a received return confirmation, the tracking ID, the shipping date, a record of purchase for intangible goods (such as an IP address or email receipt), or a record of purchase for services or physical goods (such as a phone number or proof of receipt).
+
+You can submit evidence and manage Afterpay disputes in the [Dashboard](https://dashboard.stripe.com/disputes) or programmatically using the [Disputes API](https://docs.stripe.com/api/disputes/update.md). In the Dashboard, go to the **Needs Response** tab, click the disputed payment, then click **Counter dispute** to submit your evidence, or **Accept dispute** to accept the loss. To submit evidence through the API, upload supporting files using the [Files API](https://docs.stripe.com/api/files/create.md) and include the returned file IDs when you update the [Dispute Evidence object](https://docs.stripe.com/api/disputes/update.md).
+
+#### Dispute outcomes 
+
+If Afterpay resolves the dispute in your favor, Stripe returns the disputed amount to your Stripe balance.
+
+If they rule in favor of the customer, the balance charge becomes permanent.
+
+#### Fraud and liability 
+
+Customers must authenticate Afterpay payments by logging into their Afterpay account. This requirement helps reduce the risk of fraud or unrecognized payments. Afterpay covers losses incurred from customer fraud or the inability to repay installments. However, Stripe might contact you on behalf of Afterpay and request to stop or pause a shipment before any losses are incurred. It’s important to comply promptly with these requests.
+
+## Stripe product support 
+Products:
+  ✓ Checkout
+  ✓ Payment Links
+  ✓ Payment Element
+  ✗ Express Checkout Element
+  ✓ Mobile Payment Element
+  ✓ Managed Payments
+  ✗ Billing
+  ✗ Invoicing
+  ✓ Adaptive Pricing
+  ✗ Customer Portal
+  ✗ Radar
+  ✗ Terminal
+  ✓ Connect
+
+APIs:
+  ✓ PaymentIntents
+  ✗ PaymentIntents with setup_future_usage
+  ✗ SetupIntents
+  ✓ CheckoutSessions
+### Add Afterpay branding to your website 
+
+Let your customers know you accept payments with Afterpay by including the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your product and cart pages.
+
+Afterpay also provides static [visual assets and branding guidance](https://www.afterpay.com/retailer-resources). In AU, CA, NZ and the US, consumers know Afterpay as ‘Afterpay’. In the UK, they know it as ‘Clearpay’. Make sure you pick the right location (see the footer in the [Afterpay documentation](https://www.afterpay.com/retailer-resources)) so that you get the appropriate assets. For Clearpay, see the [UK assets and branding guidance](https://www.clearpay.co.uk/en-GB/retailer-resources).
+
+## Customer experience 
+
+#### 1. Select payment method
+
+The customer selects Afterpay at checkout.
+
+#### 2. Redirect to Afterpay
+
+On desktop, the customer is redirected to Afterpay to create or log in to their account. On mobile, the customer is redirected to the Afterpay app if it is installed, otherwise to Afterpay's website.
+
+#### 3. Select payment plan
+
+The customer selects a payment plan and accepts the repayment terms. Customers have 3 hours to complete authorization.
+
+#### 4. Payment Complete
+
+The customer is redirected back to the checkout page once the payment is authorized. Afterpay collects repayment directly from the customer over time.
+
+### Transaction identifiers 
+
+After a customer completes an Afterpay payment, the transactions that appear on the customer’s bank or card statement show *AFTERPAY* along with the merchant statement descriptor.
+
+Set a custom [statement descriptor](https://docs.stripe.com/payments/payment-intents.md#dynamic-statement-descriptor) on the PaymentIntent before confirming the payment. If you don’t set one, the descriptor defaults to the [account level statement descriptor](https://docs.stripe.com/get-started/account/statement-descriptors.md). For connect scenarios, learn more about how [statement descriptors are set with Connect](https://docs.stripe.com/connect/statement-descriptors.md).
+
+After the payment completes, expand `latest_charge` on the PaymentIntent to retrieve the Afterpay order ID from `latest_charge.payment_method_details.afterpay_clearpay.order_id`. Share it with customers to help them locate the payment in their Afterpay account or when contacting Afterpay support.
+
+## Enable Afterpay 
+
+If you use our front-end products, you can enable Afterpay directly from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe then automatically determines the most relevant payment methods to display to your customers.
+
+If your integration requires manually listing payment methods, learn how to [manually configure Afterpay as a payment](https://docs.stripe.com/payments/afterpay-clearpay/accept-a-payment.md).
 

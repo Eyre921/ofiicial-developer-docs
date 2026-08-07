@@ -122,6 +122,12 @@ You can always add [embedded components](https://docs.stripe.com/connect/get-sta
 
 Provide access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md) for connected accounts to manage their account.
 
+> #### Preview API version required with the Express Dashboard
+> 
+> Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-07-29.preview`) in your Stripe SDK configuration when you create connected accounts.
+> 
+> The generated code and prompt on this page use the current generally available API version. Replace that version with the preview version string if you use this combination.
+
 The Express Dashboard enables connected accounts to view their available balance, see upcoming payouts, and track their earnings in real time. You can enable users to manage refunds or disputes through their Express Dashboard in the [Express Dashboard settings](https://dashboard.stripe.com/settings/connect/express-dashboard/features). Users have access to Stripe support and Stripe can reach out and communicate with users about their account.
 
 Use the Express Dashboard when your connected accounts:

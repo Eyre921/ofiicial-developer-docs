@@ -44162,6 +44162,1304 @@ Source: https://docs.together.ai/external-link-02
 
 
 
+# Choosing a deployment option
+Source: https://docs.together.ai/learn/choosing-a-deployment-option
+
+Deploy your model with serverless, dedicated endpoints, or dedicated containers.
+
+**TL;DR:** There are three ways to run a model in production on Together AI.
+
+* **[Serverless](/docs/serverless/models):** Pay per token to use shared infrastructure, with instant startups and no setup.
+* **[Dedicated endpoints](/docs/dedicated-endpoints/overview):** Reserve GPUs for yourself, get predictable performance, pay by the GPU-hour whether you're using the GPU or not.
+* **[Dedicated containers](/docs/dedicated-container-inference):** Bring your own inference logic on top of reserved GPUs.
+
+The right choice for a workload depends on your volume, your latency budget, and how much control you need over the inference stack.
+
+## Serverless
+
+Serverless is the default starting point for most workloads. Together AI runs a big shared pool of GPUs hosting popular models, and when you make a serverless request, it gets routed to whichever GPU has capacity. You pay per token of input and output, usually quoted in dollars per million tokens.
+
+Pros:
+
+* **No idle cost:** No requests, no charges. A weekend with zero traffic costs you nothing.
+* **Instant start:** No cold-starts, no wait time while the model loads. Send a request and get tokens back immediately.
+* **No capacity planning:** Togther automatically handles batching, autoscaling, and load balancing. You just call the API.
+
+Cons:
+
+* **Latency variance:** When the shared pool is busy, your TTFT goes up. At peak times you might see two to three times the average TTFT. This rarely matters for batch jobs but it matters a lot for interactive UIs.
+* **Limited model selection:** You can only use models the platform currently has provisioned on its shared pool. Custom fine-tunes, prior model generations, or niche model offerings typically do not have enough demand for providers to warrant offering them on the platform.
+* **Less control over throughput:** If you suddenly need to send ten times your usual traffic, the platform might apply [rate limits](/docs/serverless/rate-limits) to keep the shared pool stable and fairly share the capacity with all other users.
+
+Serverless is a great starting point for prototypes, demos, internal tools, and any workloads where you can tolerate high performance variability. See [serverless models](/docs/serverless/models) for the list of available models and per-token pricing.
+
+## Dedicated endpoints
+
+A dedicated endpoint is a copy of a model running on GPUs reserved for you. You pay by the GPU-hour regardless of how many tokens you actually use. At high volume, dedicated hardware can be cheaper than serverless. At low volume, you're paying a flat cost for a GPU that's mostly idle.
+
+Pros:
+
+* **Predictable latency:** You'll never be impacted by other users' traffic. Your TTFT is whatever the model plus your prompt size produces, every single time.
+* **Higher sustained throughput:** If you are pushing many tokens per second, dedicated capacity often delivers better total throughput than waiting in a shared queue.
+* **Custom weights:** If you have fine-tuned a model, this is usually where you'd host it.
+* **Pinned model version:** The platform will never swap out your model or deprecate older models.
+* **Optimizations you can opt into:** Things like speculative decoding (a small draft model that proposes ahead while the big model verifies), quantization, prompt caching, and aggressive batching are easier to enable when the endpoint is yours.
+
+Cons:
+
+* **Flat cost when idle:** If your traffic drops to zero, you're still paying for the GPU unless your endpoint supports autoscaling to zero.
+* **Capacity planning:** You pick the hardware, so if you pick the wrong size/amount, you'll either waste money on idle GPUs, or experience slowdowns when traffic gets too high.
+* **Cold start times:** Bringing an endpoint online from zero takes minutes, not milliseconds. Plan your deploy schedules accordingly.
+
+See [Dedicated endpoints](/docs/dedicated-endpoints/overview) for deployment instructions on Together AI, and [Endpoint settings](/docs/dedicated-endpoints/settings) for details on hardware, autoscaling, and prompt caching.
+
+## Dedicated containers
+
+Dedicated containers go one level deeper. You package the inference logic yourself: your own Docker image, your own inference code and APIs, your own pre- and post-processing. The platform runs your container on dedicated GPUs.
+
+Pros:
+
+* **Full control:** You own the inference code, the Docker image, the inference logic, and the API.
+* **Customization:** You can add your own pre- and post-processing, custom batching, custom streaming, mixed workloads, or a model that takes inputs the standard API cannot represent.
+
+Cons:
+
+* **Operational complexity:** You're responsible for the entire inference stack, from the code to the hardware. You'll need to manage your own scaling, monitoring, and logging.
+* **Cost:** You're responsible for the cost of the hardware, the container, and the inference code. It's more expensive than serverless, but it's also more flexible and gives you the most control over the inference stack.
+
+## The cost crossover
+
+When it comes to cost, serverless generally beats paying for dedicated hardware until you reach a point when you're keeping your dedicated GPUs busy most of the time. The exact crossover depends on your model size, your input-output token mix, cache hit rate, and the GPU you are paying for, but the shape of the curve is always the same:
+
+<CostCrossoverDiagram />
+
+For a back-of-the-envelope calculation, suppose a dedicated H100 at around \$3 per hour costs \$72 per day. With serverless at \$1 per 1M tokens, the crossover sits at roughly 72M tokens per day, or \~3M tokens per hour sustained. Below that volume, serverless is more cost-effective. Above it, dedicated hardware becomes cheaper. On newer hardware (H200, B200) the per-hour rate goes up but so does the per-GPU throughput, so the token-volume crossover stays roughly similar. Your numbers will differ based on the actual rates and the GPU type.
+
+## Rent, lease, or build
+
+It helps to think of this decision the same way you'd think about office space:
+
+You can **co-work**, paying by the desk-hour. You walk in when you need a desk, walk out when you don't, and share the kitchen with strangers. Co-working is cheap when you barely use it, but it's first-come, first-served, and on busy days you compete with everyone else for space. This is the **serverless** model.
+
+You can **rent an office**, paying a flat monthly rent. The space is yours, nobody else uses your desk, and you don't have to share the space with anyone else even on busy days. Renting is more expensive when your utilization is low, but it gives you predictability and reliability that co-working cannot. This is the **dedicated endpoint** model.
+
+You can **build out the floor yourself**: the space is yours, the layout is yours, the wiring is yours. You get the most control of any option and you take on the most operational ownership. This is the **dedicated container** model.
+
+You pick between these based on how much you use the space, how predictable that usage is, and how custom your workflow needs to be. All three are ways to draw on GPU capacity, and you can employ a mixture. For example, you might run a dedicated endpoint that scales up for peak-hour traffic, with an overflow spilling onto serverless when the endpoint runs out of capacity.
+
+## Defaults that work
+
+Some reasonable defaults for common use cases:
+
+* **Prototype, demo, or internal tool:** Use serverless, almost always. The latency variance will not matter for tens or hundreds of calls a day, and you're spared all the provisioning work.
+* **Customer-facing chat with a strict TTFT requirement:** Try serverless first and measure the tail latency. If P95 is fine, stick with that. If it's not, switch the latency-sensitive paths to a dedicated endpoint.
+* **High-volume batch jobs:** Use dedicated. Above a certain throughput, you're paying for one GPU's worth of tokens anyway, and paying flat is cheaper than paying per token.
+* **Fine-tuned model:** Dedicated endpoint, or dedicated container if your platform does not support serverless for custom models.
+* **Custom model with a non-standard pipeline:** Dedicated container.
+
+<Info>
+  You don't have to pick one option and stick with it across your entire stack. Many teams run serverless for everything they can, and a small dedicated endpoint for the parts that need it. A mixed approach often works out to be cheaper than going all-in on either side.
+</Info>
+
+## Next steps
+
+<CardGroup>
+  <Card title="Quantization" icon="zoom-in" href="/learn/quantization">
+    The other major lever on inference cost.
+  </Card>
+
+  <Card title="Inference metrics: TTFT & TPS" icon="dashboard" href="/learn/ttft-and-tps">
+    The latency numbers you'll be comparing across options.
+  </Card>
+
+  <Card title="Fine-tune vs. prompt" icon="git-branch" href="/learn/finetune-vs-prompt">
+    What determines whether you'll need dedicated hardware at all.
+  </Card>
+</CardGroup>
+
+
+# Context windows
+Source: https://docs.together.ai/learn/context-windows
+
+The model's working memory. A hard limit on the way in, a soft constraint inside it.
+
+**TL;DR:** The context window is the maximum number of tokens the model can utilize in a single request. Both the input you send and the output the model generates must fit inside that this budget when combined. The context window is a hard limit, meaning that if you exceed it, the request will fail before completion.
+
+## The model's working memory
+
+It helps to think about the context window in terms of your own working memory. You can hold a phone number in your head for about a minute, maybe two. If you try to remember a grocery list and do some mental arithmetic at the same time, something starts to slip. Your brain has a fixed capacity for how much it can keep track of at once, and the more you try to hold, the harder it is to think clearly and attend to everything.
+
+A model has a similar ceiling, except its size is published on the model's spec sheet. Every model has a number called the **max context length**, the maximum number of tokens it can take in a single request. The system prompt, every prior conversation turn, the each new user message, reasoning traces, prior tool calls, tool results, and the reply the model is about to generate all share the same budget, and must be smaller than the max context length. Once a request exceeds the limit, it fails unless you summarize the history down to fit (often called "compacting").
+
+Context windows have been getting bigger and currently run anywhere between 250K and 1M tokens. Over the last few years, the practical implication of this number has shifted from "I can fit one document" to "I can fit an entire codebase or a whole book" in a single call. A bigger window opens up new use cases—but it's not free, as you'll see below.
+
+## What different platforms do
+
+Different platforms handle context window overflow in different ways:
+
+* **Reject the request:** The API returns an error telling you that you exceeded the window. This is the most direct option and the easiest one to debug, because you immediately know that you have a problem to fix.
+* **Truncate the input:** Some platforms silently drop the oldest messages until the input fits. This is fast to ship from the platform's side, but it can make the model act amnesic in long conversations because the model has no way to know that something was cut from earlier in the history.
+* **Truncate the output:** If the input fits but the model runs out of room to reply, generation stops mid-token. You'll see a response with `finish_reason: "length"`, which tells you the response was cut off before the model decided it was finished.
+
+On Together, the `max_tokens` parameter caps the output, and the input plus `max_tokens` must fit within the model's context window. See [inference parameters](/docs/inference/chat/parameters) for the full list of request parameters.
+
+<WindowSliderDiagram />
+
+## Why bigger windows are not free
+
+There are two costs that grow with the size of your input:
+
+### Prefill compute (scales roughly quadratically)
+
+Before the model can generate anything, it has to process the entire input you gave it in a single forward pass. The attention step in that forward pass has every token look at every other token, which is roughly *N × N* work for an input of *N* tokens. If you double the size of your prompt, you more than double the amount of time the model spends before the first output token appears. This time-to-first-token effect is covered in detail in [TTFT & TPS](/learn/ttft-and-tps).
+
+### KV cache memory (scales linearly with length)
+
+While the model is generating output, it keeps a small per-layer state for every token it has already seen. That state is called the **key-value (KV) cache**, and its size grows linearly with the total number of tokens in the request. Long contexts eat GPU memory, and the amount of GPU memory available limits how many concurrent requests a server can run at once. That, in turn, affects throughput and price.
+
+<Info>
+  Modern long-context models use a number of attention variants (sliding window, sparse attention, grouped-query attention, compressed sparse attention, etc.) to bend that quadratic curve. Even with these optimizations, however, the fundamental rule still holds: long inputs cost more compute, and long histories cost more memory. A 100K-token prompt is genuinely about ten times more expensive than a 10K-token one, even when you are running it on the same model.
+</Info>
+
+## The "lost in the middle" effect
+
+Having a 1M-token window does not mean the model uses every one of those tokens equally well. Models are known to pay more attention to the beginning and end of a long input than to the middle. [Liu et al. (2023)](https://arxiv.org/abs/2307.03172) named this the "lost in the middle" effect. If you put the most important context at the top of the prompt and again near the bottom, the quality of the model's response tends to hold up better than if you bury that information in the middle of 150K tokens of background. See [context engineering](/learn/prompt-engineering) for more details.
+
+<img alt="A line chart from Liu et al. 2023 showing GPT-3.5-turbo accuracy on a 20-document QA task as a function of where the answer-containing document is placed. Accuracy is ~76% when the answer is in the 1st document, drops to a low of ~54% around the 10th position, then rises back to ~63% at the 20th. A horizontal dashed line shows the closed-book baseline of ~56%, which the in-context model dips below in the middle range." />
+
+<p>
+  Source: <a href="https://arxiv.org/abs/2307.03172">Liu et al., "Lost in the Middle: How Language Models Use Long Contexts" (2023)</a>. Accuracy is highest when the answer sits at the very start or very end of the context, and dips below the closed-book baseline when it's buried in the middle.
+</p>
+
+<Info>
+  Newer "needle in a haystack" benchmarks measure whether a model can reliably retrieve a single fact placed at various depths in a long context. Frontier models in 2026 do well on simple needles, but they degrade significantly on multi-fact retrieval and reasoning that spans different parts of the context.
+</Info>
+
+## Long-context optimizations
+
+Plain attention does work proportional to the square of the input length (the *N × N* cost from above). If a model claims a 1M context window and still runs efficiently (such as DeepSeek-V4), something else is going on under the hood. The main tricks that long-context models use are:
+
+* **Sliding-window attention:** Each token only looks at the most recent *W* tokens (for example, *W* = 4K) instead of all previous tokens. This cuts the math from quadratic to linear at the cost of weaker long-range dependencies. To recover some of that range, sliding-window attention is often mixed with a few full-attention layers in the same model.
+* **Grouped-query attention (GQA):** Multiple attention heads share the same keys and values, which shrinks the KV cache by a meaningful factor. GQA is cheap to implement and widely used.
+* **Mixture-of-Experts (MoE):** Only a fraction of the model's parameters are run/active per token. This does not shrink the context, but it makes long-context calls dramatically cheaper to compute because the model is doing less work per token.
+* **Position interpolation / RoPE scaling:** These are mathematical tricks that let a model trained on a 4K context generalize to 32K or more without retraining from scratch.
+
+You usually do not need to think about which technique a given model is using, but it explains why two models with the same nominal window size can have very different latencies and qualities.
+
+## Strategies for handling excess context
+
+At some point you will have more relevant text than fits in the window. There are a few options for handling this:
+
+* **Retrieval-augmented generation (RAG):** Index your data in a vector store. At query time, look up the chunks most relevant to the user's question, and only include those chunks in the prompt. Retrieval scales to arbitrary corpora because you are only ever putting a small relevant slice in front of the model.
+* **Summarization and compaction:** As the conversation grows, you can compress old turns into a shorter summary that takes their place. You lose some fidelity to the exact wording of earlier turns, but the window stays manageable.
+* **Caching:** If you keep sending the same system prompt or the same background document across many calls, prompt caching lets the model skip the prefill work for the cached portion. This does not shrink the context, but it makes long-prompt calls faster and cheaper. On Together, prompt caching is enabled by default on [dedicated endpoints](/docs/dedicated-endpoints/settings).
+* **Bigger model:** When all else fails, switch to a model with a larger window. Windows keep growing, with models such as DeepSeek-V4 pushing toward 1M tokens.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Inference metrics: TTFT & TPS" icon="dashboard" href="/learn/ttft-and-tps">
+    How the prefill / decode split shows up as latency.
+  </Card>
+
+  <Card title="Tokens & tokenization" icon="scissors" href="/learn/tokens-and-tokenization">
+    How to estimate token counts before you call.
+  </Card>
+
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    What to put in (and what to cut) when the window matters.
+  </Card>
+</CardGroup>
+
+
+# When to fine-tune vs. prompt
+Source: https://docs.together.ai/learn/finetune-vs-prompt
+
+Prompting steers an existing model. Fine-tuning changes its weights. You should almost always try prompting first.
+
+**TL;DR:** Prompting steers a model with the text you put in front of it. Fine-tuning continues training the model on your examples and actually changes its weights. You should almost always try prompting first, because it is faster, cheaper, and instantly reversible. Try reaching for fine-tuning only when you've hit a hard ceiling in your efforts to improve prompt quality, when you have enough data from prompts and outputs to train on, and when the behavior you need is a *pattern* the model can learn from examples rather than a *fact* it needs to look up.
+
+## Try prompting first
+
+Prompting has four huge advantages, which taken together should always make it your default starting point. First off, it's basically **free**, because you are already paying for inference and there is no extra training run or labeled dataset you need to build. Second, it's **fast**, because changing the prompt and running it again takes seconds, while fine-tuning a model takes hours, or even days. Third, it's **reversible**, because a bad prompt costs you only the tokens you wasted, while a bad fine-tune costs you the wasted time and compute of an entire training run. And lastly it **composes**, because each request can have a different prompt for a different task, while a fine-tuned model creates one new behavioral shape and applies it to every request.
+
+For almost all cases in which a model is not doing what you want, the right tool is [better prompting](/learn/prompt-engineering)—better instructions, more examples, more structure, tighter constraints. If iterating on the prompt gets you to an acceptable quality threshold, you should stop there.
+
+## Where fine-tuning wins
+
+Fine-tuning is the right tool for a narrow set of problems. There are roughly four types of issues it can help you solve:
+
+### Consistent style or format that prompts cannot lock in
+
+If you've written three pages of system prompt trying to explain your brand voice, and the model still drifts into generic assistant-speak by turn four, you can either fine-tune or switch to a model with stronger instruction following out of the box. Style is something a model picks up from many examples more reliably than from explicit instructions.
+
+### Smaller and cheaper inference
+
+Suppose you can get frontier-model quality on your task using a 20-page prompt. That long prompt is expensive on every call. A fine-tuned smaller model (e.g. Qwen3.5 9B) can often hit the same quality with a one-line prompt—cheaper per call, faster TTFT, less context used per request. At high call volumes, fine-tuning quickly becomes worth the cost in these cases.
+
+### A behavior the base model resists
+
+Sometimes the base model has been trained against the behavior you want (also known as refusal training). The model might be too cautious about a particular domain and refuse to respond, too verbose, or too quick to add disclaimers. Prompting can soften these tendencies. Fine-tuning on examples of the behavior you actually want provides more direct leverage.
+
+### Patterns, not facts
+
+Fine-tuning is not the way to teach a model new facts. If the problem is "the model does not know our product catalog", the right answer is retrieval-augmented generation (RAG), not training. But if the gap is about *patterns* rather than *looked-up facts* (e.g. "the model does not know how our internal ticketing taxonomy works"), fine-tuning can help.
+
+## The real costs of fine-tuning
+
+The most visible downside of fine-tuning is the cost of the training run itself, which is often not actually all that expensive. But there are some less-visible costs that can be much more significant:
+
+* **The dataset:** You need labeled examples to train a fine-tune, hundreds at minimum, usually thousands. Building a good dataset can take longer than the rest of your entire project, and a bad dataset will produce a model that confidently does the wrong thing.
+* **The evaluation set:** Without a witheld dataset for evaluation, you have no way to know whether the fine-tune actually improved or degraded the model behavior. You need an eval set regardless of whether you fine-tune, but most teams discover this the hard way after their first run.
+* **Iteration cycles:** Tweaking the prompt and re-running takes seconds. Tweaking the data/hyperparameters and re-training can take hours to days. Mistakes are more expensive for fine-tuning than context engineering.
+* **Base model drift:** When the base model for your fine-tune gets upgraded to a new version, your fine-tune will still be stuck on the old base. You either re-train from the new base (more work) or stay on the old base and miss out on the improvements.
+* **Hosting:** A fine-tuned model needs somewhere to run. On Together, you can [deploy a fine-tuned model](/docs/deploying-a-fine-tuned-model) to a [dedicated endpoint](/learn/choosing-a-deployment-option).
+
+## Flavors of fine-tuning
+
+Modern fine-tuning is not a single technique but a small family of them. Here are the ones you'll likely see in the wild:
+
+* **Supervised fine-tuning (SFT):** The classic approach. You give the model input/output pairs and it learns to imitate the outputs. Good for style, format, and pattern-matching tasks.
+* **LoRA / QLoRA:** Parameter-efficient fine-tuning. Instead of updating all of the model's weights, you train a small "adapter" alongside the base model. Much cheaper to train, much smaller artifact, and you can swap adapters for different behaviors without re-hosting the base. Most production fine-tuning today is actually LoRA.
+* **Preference fine-tuning (DPO / RPO / KTO):** Trains on pairs of "better" and "worse" outputs instead of single targets. Useful for shaping tone, formatting, refusal behavior, anything where you can rank outputs more easily than write ideal ones from scratch.
+* **Reinforcement fine-tuning (RFT) / RLVR:** Used for tasks where the answer can be checked automatically (math, code that passes tests, structured extraction). The model gets a reward signal based on whether it was right, not on whether it sounded right. This is the family of techniques behind modern reasoning models.
+
+For most teams, LoRA SFT is the right starting point. You only need to reach for preference tuning or RFT if SFT does not give you what you want. To start a run on Together, see [fine-tuning](/docs/fine-tuning-overview).
+
+## Before you train
+
+Before you kick off a fine-tune, you should have:
+
+1. **A specific failure mode:** "The model is worse than I'd like" is not enough. "It drifts off-brand after turn 3" or "it adds disclaimers we don't want" is specific enough to actually fix.
+2. **A prompt-only baseline you have genuinely pushed on:** Spend a day on the prompt before spending a week on data.
+3. **An eval set:** 50–200 examples with the expected behavior labeled. Without this, you cannot tell whether the fine-tune helped, hurt, or did nothing.
+4. **A budget:** Dollars, plus willingness to maintain the fine-tune through base-model upgrades, dataset drift, and edge cases.
+5. **Volume:** At 50 calls a day, the per-call savings from a fine-tune will not pay back the work. At 50,000 calls a day, they will.
+
+<Info>
+  A rough rule of thumb: If a clever person on your team can write a prompt that gets you 90% of the way in a week, fine-tuning will buy you the last 10% at roughly 10× the cost in time and ongoing maintenance—but that trade is sometimes worth it.
+</Info>
+
+## Next steps
+
+<CardGroup>
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    Try this before fine-tuning.
+  </Card>
+
+  <Card title="Choosing a deployment option" icon="server" href="/learn/choosing-a-deployment-option">
+    How to host a fine-tuned model.
+  </Card>
+
+  <Card title="Quantization" icon="zoom-in" href="/learn/quantization">
+    How to make a fine-tuned model cheaper to serve.
+  </Card>
+</CardGroup>
+
+
+# Function calling & tool use
+Source: https://docs.together.ai/learn/function-calling-and-tool-use
+
+The model plans, your code runs the tool. How structured tool calls and agent loops actually work.
+
+**TL;DR:** A model can't actually call functions or APIs to do things in the real world, only output tokens. Instead, you ask the model to output a structured message that says "I want to call this function with these arguments." The software around the LLM is the part that actually runs the call, gets the result, and feeds it back to the model as the next message in the conversation. The model picks things back up from there. Function calling is a structured multi-turn conversation where some of the turns happen to be machine-readable JSON or executable functions instead of natural language. This is the mechanism that every coding agent (Claude Code, Cursor, Codex) and agentic workflow is built on top of.
+
+## The model plans, your code runs the tool
+
+"Function calling" is one of those names that slightly exaggerates: the model can't *actually* execute functions. The model itself has no internet, no shell, no file system, and no way to execute code. It can't run Python, query a database, or call an API on its own. The only thing the model can produce is text.
+
+The cleanest way to think about what's going on is in terms of roles:
+
+* **The model is the planner.** It looks at the conversation, reasons about what should happen next, and either writes a reply to the user or asks for a tool to be run. The model itself can't actually run anything.
+* **Your code is the worker.** It sees the model's request, decides whether to honor it, and if so, runs the function, handing the result back as the next message in the conversation.
+
+Completing long, complex tasks takes many turns of reasoning and function calls.
+
+## The loop
+
+One complete tool-using interaction usually looks something like this:
+
+```text theme={null}
+USER:       What's the weather in Tokyo right now?
+
+MODEL:      tool_calls: [
+              { name: "get_weather",
+                arguments: {"city":"Tokyo","units":"celsius"} }
+            ]
+
+YOUR CODE:  → fetch https://api.weather.example/v1/Tokyo
+            ← { "temp": 12, "conditions": "cloudy" }
+
+TOOL MSG:   { "temp": 12, "conditions": "cloudy" }
+
+MODEL:      It's 12°C and cloudy in Tokyo right now.
+```
+
+The model never runs the weather API itself. It asks your code to run it, then waits. Your code runs the API call, and the result becomes a new message in the conversation. The model sees that result and picks up from there to write the final reply.
+
+<ToolLoopDiagram />
+
+## How to tell the model what tools are available
+
+Tools are declared in the API request alongside the messages. Each tool has a name, a description, and a JSON schema for its arguments:
+
+```json theme={null}
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "description": "Get the current weather in a city.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city":  { "type": "string", "description": "City name" },
+          "units": { "type": "string", "enum": ["celsius","fahrenheit"] }
+        },
+        "required": ["city"]
+      }
+    }
+  }
+]
+```
+
+The model sees these declarations as part of its prompt. The descriptions you write matter quite a bit, because they are how the model decides which tool is right for a given question. A description like "Get the current weather" is much more useful to the model than something like "Weather function". A useful rule of thumb is to write the description as if you were writing a one-line manual page for another developer.
+
+You can declare as many tools as you want, but more is not always better. With dozens of tools available, the model often starts picking the wrong one or stalling. If you have a lot of capabilities, it usually helps to group them. One `search` tool that takes a query argument tends to work better than twenty narrow tools that each cover a single search type.
+
+<Tip>
+  See [Function calling](/docs/inference/function-calling/overview) for the request format and the list of models that support tool calls on Together AI.
+</Tip>
+
+## What the model emits
+
+When the model wants to call a tool, the API response includes a `tool_calls` field instead of (or in addition to) a text answer:
+
+```json theme={null}
+{
+  "role": "assistant",
+  "content": null,
+  "tool_calls": [
+    {
+      "id": "call_abc123",
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "arguments": "{\"city\":\"Tokyo\",\"units\":\"celsius\"}"
+      }
+    }
+  ]
+}
+```
+
+Two things worth noticing here. The arguments come back as a JSON string, not as an already-parsed object. You parse the string yourself, and you should also validate it, because the model can hallucinate fields or incorrect types. Each call also has an `id`. When you send the results back to the model, you include the same `id` so the model knows which call the result belongs to. This matters when the model emits multiple parallel tool calls in a single turn.
+
+After your code has run the tool, you send the result back as a new message with `role: "tool"`:
+
+```json theme={null}
+{
+  "role": "tool",
+  "tool_call_id": "call_abc123",
+  "content": "{\"temp\":12,\"conditions\":\"cloudy\"}"
+}
+```
+
+Then you call the model again with the full message history. The model sees the tool result and produces the next message, which is either another tool call or the final answer to the user.
+
+## Multi-step agent loops
+
+Real tasks can rarely be completed with a single tool call. A coding agent task like "fix the failing test in `auth.py`" unfolds across many rounds:
+
+1. The model calls `read_file("auth.py")` and `read_file("test_auth.py")`.
+2. Your code returns the file contents.
+3. The model calls `run_tests("test_auth.py")` to see the failure.
+4. Your code returns the failure output.
+5. The model reasons about the bug, then calls `edit_file("auth.py", ...)`.
+6. Your code applies the edit and returns confirmation.
+7. The model re-runs the tests to verify.
+8. Your code returns the passing test output.
+9. The model writes a final summary message to the user.
+
+This sequence is what people typically call an **agent loop,** and is the basic underlying process for coding agents like Claude Code. Your application keeps calling the model in a loop, and each time it does, it passes in the full message history plus any new tool results. The loop continues until the model decides it is done, which is the point at which it produces a normal text reply with no tool calls in it.
+
+There are two important guardrails for any agent loop:
+
+* **Step limit:** Cap the number of times the loop will iterate before giving up. Models can sometimes spiral into tool-call loops if they get confused. A ceiling of 20–50 steps is reasonable for most tasks, but coding agents often go higher.
+* **Tool authorization:** A tool request is not authorization. Even when the model asks for a tool to be run, your code does not have to comply. For anything irreversible (sending money, deleting data, force-pushing to main), your code should require human confirmation before honoring the call.
+
+<Info>
+  The **Model Context Protocol (MCP)** has emerged as the standard way to expose tools to any compatible model without redeclaring them per-provider. Tools live as standalone MCP servers, and any MCP-aware model can pick them up via a single connection. Most production coding agents and chat clients now speak MCP, which means you can write a tool once and use it from Claude, ChatGPT, Cursor, and others without changes.
+</Info>
+
+## How it goes wrong
+
+There are five common ways tool use breaks in practice:
+
+* **Hallucinated arguments:** The model produces arguments that do not match the schema. There might be a missing field, a wrong type, or a city that does not actually exist. You should always validate the arguments before executing the call, rather than blindly trusting what the model produces.
+* **Tool-call loops:** The model keeps calling the same tool with slightly different arguments and getting back the same kind of answer. The common cause is a tool result that is vague or unhelpful, which leads the model to think it didn't get what it asked for. The fix is to make tool outputs explicit ("Found 0 results matching 'cat photos' uploaded after 2024-01-01") or to set a step limit on the loop.
+* **Picked the wrong tool:** Two tools have overlapping descriptions and the model picks the wrong one. The fix is to disambiguate the descriptions or merge the two tools into one.
+* **Skipped a tool when it should have used one:** The model answers from its training knowledge when fresh data was needed. The fix is to strengthen the system prompt with something like "Always use `lookup_price` before quoting a price".
+* **Parallel calls when serial was intended:** Modern models often emit multiple tool calls in a single turn. Make sure your executor can handle them in parallel and that it matches results back to calls using the `id` field.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Structured outputs & JSON mode" icon="braces" href="/learn/structured-outputs">
+    The same constrained-decoding plumbing, but for non-tool outputs.
+  </Card>
+
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    How the system prompt steers tool selection.
+  </Card>
+
+  <Card title="Context windows" icon="layout-board" href="/learn/context-windows">
+    Agent loops grow the message history fast.
+  </Card>
+</CardGroup>
+
+
+# How LLMs work
+Source: https://docs.together.ai/learn/how-llms-work
+
+How a large language model produces text from a prompt, one token at a time.
+
+**TL;DR:** An LLM is a series of calculations that, when applied to input text, produce output text. You give it some text, it turns the text into numbers, runs the numbers through a big stack of matrix multiplications, and gives you back a probability for every possible next word. Then it picks one and adds it to the end of the output. To produce a longer reply, it repeats this in a loop.
+
+That's the whole top-level picture. Everything else on this page is detail on what makes this interesting: how text becomes numbers, what the matrix multiplications actually are, how to think about what a transformer does to input text, and what "training" a model actually means.
+
+## What an LLM is trying to do
+
+An LLM is, at its core, trying to build a statistical model of the language data it was trained on. The cleanest way to imagine what this means is to picture yourself in a familiar place:
+
+<img alt="A Wheel of Fortune puzzle board showing 'ANOTHER FEATHER _N YO_R _A_' under the category PHRASE." />
+
+Almost everyone fills in the missing letters instantly, spelling out: "another feather **in your cap**". But let's play devil's advocate for a second—why not "another feather **on your cat**"? It's a perfectly grammatical English sentence. Why does that completion not even occur to us?
+
+Because you've heard the first phrase countless times, and never the second; because you know feathers go in caps and not on cats; because one has a known meaning and the other is nonsense. All of these factors contribute to the former being much more probable than the latter.
+
+An LLM has direct access only to the first of these factors: raw frequency. The LLM has seen "feather in your cap" repeated in its training data orders of magnitude more often than "feather on your cat", and the probabilities it assigns to the next token reflect that. It does not *know* that feathers don't go on cats, but it was trained on enormous quantities of text written by humans who did, and the statistics it absorbed into its weights inherit that knowledge by proxy. The model approximates understanding by reproducing the statistical patterns of writers who actually had it.
+
+## Calling an LLM API
+
+Here is about the simplest call you can make on Together AI. We hand a text model the start of a sentence and ask it to continue, capped at a single token of output:
+
+```python theme={null}
+from together import Together
+
+client = Together()
+
+# Call the model
+response = client.completions.create(
+    model="Qwen/Qwen3.5-9B",  # Model ID
+    prompt="The largest city in France is",  # Input text
+    max_tokens=1,  # Maximum number of tokens to generate
+)
+
+print(response.choices[0].text)  # Print the output text
+```
+
+On the way in, your input text becomes a list of integers. A module called the **tokenizer** chops the prompt into *tokens*, chunks of text about four characters long, and looks up a fixed integer ID for each one. So `"The largest city in France is"` turns into something like:
+
+```text theme={null}
+[ 791, 7928, 3363, 304, 9822, 374 ]
+```
+
+This is a deterministic table lookup, not something the model learns at inference time. The model itself only ever maps integers to probabilities. It takes that list of indices and returns a probability for every possible *next* index:
+
+```text theme={null}
+input:  a list of integer indices  [ 791, 7928, 3363, 304, 9822, 374 ]
+output: a probability for every possible next index
+```
+
+The output is a vector with one slot per token in the model's vocabulary (typically between 50,000 and 200,000 tokens). Each number in that vector represents the model's guess for how likely that token is to come next.
+
+Because we asked for `max_tokens=1`, the inference engine takes the single most likely index, decodes it back to text, and hands you `" Paris"`. (In practice, you might need more than one token to reliably finish the sentence.)
+
+To produce a longer reply, the inference engine repeats these steps in a loop:
+
+1. Convert the current input into a list of integer indices (token IDs).
+2. Run the model on the current input.
+3. Look at the probabilities for the next token.
+4. Pick the next token.
+5. Add it to the end of the input.
+6. Repeat until the model produces a stop signal or you hit a length limit.
+
+The model itself is stateless—it doesn't remember anything between two separate questions unless you repeat yourself. Whatever it appears to "remember" is only because the inference loop keeps feeding the previous outputs back into the next call. The "memory" lives in the repeated turns of back-and-forth conversation, not in the model itself.
+
+Let's break down the steps in more detail:
+
+## Text becomes tokens, tokens become vectors
+
+When the model receives your input text, it first converts it into a list of token IDs (integer indices). After that, it turns each ID into a **vector** or **embedding**: a list of floats, typically 1,024 to 16,384 long. The model has a learned lookup table that maps each token ID to a vector. That vector is the model's working representation of the token, or its "embedding".
+
+Why is each token represented as a vector? Two reasons:
+
+1. First, you can't do useful math on raw token IDs, ID 5279 and ID 5280 are arbitrary. With vectors, the model can express that "Paris" and "Lyon" are similar in some directions and different in others, literally by placing their vectors close together along the "city" axis and far apart along the "size" axis.
+2. Second, the main operation throughout the model is a **matrix multiplication** (matmul): you multiply a vector by a **matrix** (a grid of numbers) to get a new, transformed vector, and that only works on vectors, not raw integer IDs. The numbers filling those matrices are the model's weights, so a "learned matrix" (a term that comes up later) just means one of these grids, with values found by training rather than set by hand.
+
+## The transformer block
+
+After the embedding step, every token is a vector, but that vector still only reflects the token in isolation. The embedding for "bank" is identical whether the sentence is "river bank" or "savings bank." The job of the transformer is to refine each vector until it captures what the token means *in this particular context*.
+
+It does that by passing the vectors through *N* identical layers (blocks), where *N* is usually between 32 (small models) and 120+ (frontier models). Every block runs the same two steps:
+
+1. **Attention:** Each token gathers information from the earlier tokens in the sequence and folds the relevant parts into its own vector. This is the only step where tokens exchange information.
+2. **Feed-forward network (FFN/MLP):** Each token's vector is then processed on its own, with no reference to the others. This is where the model applies the knowledge stored in its weights to the now-contextualized vector.
+
+A useful shorthand is "communicate, then compute": attention moves information *between* tokens, the feed-forward network does the heavy processing *within* each token. The next block repeats both steps on the result, and the next, and so on through all *N* layers.
+
+The vector that flows down this stack is often called the **residual stream**, because each block doesn't overwrite it but *adds* a correction to it (a **residual connection**). So the representation of "bank" isn't rewritten from scratch at every layer; it accumulates. Early blocks tend to resolve local, surface-level structure (which word attaches to which, basic grammar), and later blocks build up the more abstract, meaning-level features the final prediction depends on. By the last block, the vector at each position is a context-aware summary of everything the model needs in order to predict what comes next.
+
+## Attention
+
+For each token, the attention step computes three things from the token's current vector by multiplying it with three different learned matrices:
+
+* A **query (Q)**, "what am I looking for?"
+* A **key (K)**, "what do I look like to others?"
+* A **value (V)**, "what do I have to share?"
+
+Then, for each token's query, the model measures how closely it matches every earlier token's key using a dot product. Those match scores are normalized into weights that sum to 1, so the closest matches get the most weight. The token then pulls in a weighted average of those tokens' values, and that blend is the update attention adds to its vector.
+
+Three things to know about attention:
+
+1. **Causal mask:** A token at position 5 can only look at positions 0-4. Never the future. That's what makes the model autoregressive: At training time, it can't peek at the next word it's supposed to predict, and at inference time, it can't look at tokens that haven't been generated yet.
+2. **Multi-head:** This whole process runs in parallel many times (typically 32-96 "heads"), with different learned matrices each. Different heads end up specializing in different patterns—one might track the most recent noun, another might find matching brackets in code, another the subject of the current clause.
+3. **Q, K, and V are learned matrices:** The interpretation of Q, K, and V above is a useful analogy for explaining what attention does, but in practice it's all matrix multiplication. The model figures out what to put in those matrices during training, purely from the process of trying to predict the next word.
+
+Below is an example of what this might look like for the sentence "The cat sat on the mat." Each row represents one query position. Colored cells are the earlier tokens it pays the most attention to.
+
+Click on any row to see the attention weights for that token:
+
+<AttentionMatrixDiagram />
+
+The pattern you see demonstrates what one head might learn during the attention step. A real model has many of these running in parallel per layer, each picking up something different.
+
+## Feed forward network (FFN)
+
+After attention has mixed information across tokens, the feed forward network (FFN) (AKA multilayer perceptron, or MLP) processes each token's vector on its own. It widens the vector (typically to 4× its size) by multiplying it with one matrix, applies a nonlinear function, then narrows it back down with another matrix.
+
+This is where most of the parameters in the model actually live. By raw count, the feed forward network layers dwarf the attention layers. A useful way to think about it is that this is where the model stores all of its knowledge about the world. The widening step is like asking many questions about the token's current state in parallel, while the narrowing step writes back the answers.
+
+Most of the model's "world knowledge"—what cities are capitals, which functions Python has, that one programming language uses curly braces and another uses indentation—is stored in the feed forward network weights. Nobody has a clean understanding of which weight stores what exactly, because the patterns are distributed across millions of neurons in ways no one fully understands. The entire field of **interpretability** is trying to answer exactly this question.
+
+## Picking a token
+
+After the last block, each position holds a vector that summarizes everything the model thinks up to that point. To turn this into a prediction for the next token, one final linear layer projects the vector back to the vocabulary, producing one number for each possible next token. These numbers are called **logits**.
+
+Logits are raw scores, not probabilities, and they can be any real number, including negative ones. To turn them into probabilities, you apply a **softmax** operation: exponentiate each logit and normalize. This ensures that the probabilities are all positive and sum to 1 (which is a requirement for a valid probability distribution).
+
+Then you pick / sample a token. The most basic choice is to pick the highest-probability token (greedy decoding), but several controls—temperature, top-k, and top-p—shape the distribution before sampling. See [inference parameters & sampling](/learn/inference-parameters-and-sampling) for more details.
+
+## What training actually does
+
+Everything covered above—the matmuls, the attention, the FFN / MLPs, the softmax—is fixed and constant. The model's behavior comes from the numbers inside those matrices. Those numbers are called **weights**. They start off random, and during the training process, the model searches for useful values for each weight. This process of taking the weights from random initializations to useful values is called **pretraining**, and it costs millions of dollars in compute, can take months to complete.
+
+Pretraining works like this:
+
+1. Take a document from the training data (anything from Wikipedia to GitHub to chat logs).
+2. For every position in that document, ask the model what comes next.
+3. Compare its prediction to the actual next token. The mismatch between the prediction and the actual next token is called the **loss**.
+4. Compute how much each weight contributed to the loss.
+5. Nudge each weight a tiny bit in the direction that would have reduced the loss. This is called **backpropagation**.
+
+Repeat this process over trillions of token-positions (DeepSeek V4, for example, is trained on 32 trillion tokens) across most of the public internet. The model isn't memorizing the training set, it's adjusting its weights so the statistical patterns that show up across all those documents get reproduced when it generates.
+
+Pretraining is usually followed by three more stages:
+
+* **Instruction tuning:** Training the pretrained model on examples of "good behavior" (helpful answers, polite refusals, structured output) so it stops continuing text and starts responding to instructions.
+* **Preference tuning:** Approaches like reinforcement learning from human feedback (RLHF) and direct preference optimization (DPO) run a feedback loop where pairs of "good" and "bad" outputs nudge the model toward outputs people actually want.
+* **Reinforcement learning with verifiable rewards (RLVR):** Training on tasks whose answers can be checked automatically (math problems, code that passes tests, puzzles with a known solution), so the model gets rewarded for actually being right rather than for sounding right. This is the trick behind modern "reasoning" models that think out loud before answering.
+
+By the end, what you have is a few billion to a few trillion weights. The architecture is primarily the same for all models (with small modifications here or there) and the intelligence is in those numbers. This is what you can download from Hugging Face for open-weight models.
+
+This is also what people mean when they say a model is "just" matrix multiplications. The compute all happens through matmuls, and the behavior is defined by the values inside those matrices. The architecture is compact enough to fit in a few hundred lines of Python. The behavior is rich because every weight has been tuned by hundreds of thousands of GPU-hours of next-token prediction.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Tokens & tokenization" icon="scissors" href="/learn/tokens-and-tokenization">
+    What happens to the input text before the model sees it.
+  </Card>
+
+  <Card title="Context windows" icon="layout-board" href="/learn/context-windows">
+    How much input the model can take in a single request (and why there's a hard limit).
+  </Card>
+
+  <Card title="Inference parameters & sampling" icon="adjustments" href="/learn/inference-parameters-and-sampling">
+    Available controls for shaping the output.
+  </Card>
+</CardGroup>
+
+
+# Introduction
+Source: https://docs.together.ai/learn/index
+
+Explore the fundamental concepts of the Together AI platform: Tokens, context windows, when to use serverless vs. dedicated inference, and how the stack works in practice.
+
+The [reference docs](/intro) cover *how* to use the platform. This section covers the *why* behind what you're calling. Each topic starts broad and then layers in details, so you can form an accurate high-level mental model of the complete system.
+
+You can read everything in order or cherry-pick whatever's relevant to what you're building:
+
+## Fundamentals
+
+<CardGroup>
+  <Card title="How LLMs work" icon="cpu" href="/learn/how-llms-work">
+    Text in, probabilities out, repeat in a loop.
+  </Card>
+
+  <Card title="Tokens & tokenization" icon="scissors" href="/learn/tokens-and-tokenization">
+    Subword chunks of input and output.
+  </Card>
+
+  <Card title="Context windows" icon="layout-board" href="/learn/context-windows">
+    The model's working memory and hard limits.
+  </Card>
+
+  <Card title="Inference parameters & sampling" icon="adjustments" href="/learn/inference-parameters-and-sampling">
+    How to produce predictable or creative outputs.
+  </Card>
+
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    Structuring prompts for optimal results.
+  </Card>
+
+  <Card title="Inference metrics" icon="dashboard" href="/learn/ttft-and-tps">
+    TTFT and TPS, how fast an LLM feels.
+  </Card>
+</CardGroup>
+
+## Core capabilities
+
+<CardGroup>
+  <Card title="Function calling & tool use" icon="tools" href="/learn/function-calling-and-tool-use">
+    Model plans, your code runs the tool.
+  </Card>
+
+  <Card title="Structured outputs & JSON mode" icon="braces" href="/learn/structured-outputs">
+    Force schema-valid output via constrained decoding.
+  </Card>
+</CardGroup>
+
+## Customization & deployment
+
+<CardGroup>
+  <Card title="Fine-tune vs. prompt" icon="git-branch" href="/learn/finetune-vs-prompt">
+    Hone a model for a particular task.
+  </Card>
+
+  <Card title="Choosing a deployment option" icon="server" href="/learn/choosing-a-deployment-option">
+    Serverless, dedicated endpoints, or containers.
+  </Card>
+
+  <Card title="Quantization" icon="zoom-in" href="/learn/quantization">
+    The JPEG quality slider for a model.
+  </Card>
+</CardGroup>
+
+
+# Inference parameters & sampling
+Source: https://docs.together.ai/learn/inference-parameters-and-sampling
+
+Temperature, top-k, top-p, and the other knobs that shape how a model picks each next token.
+
+**TL;DR:** At every step of generation, the model produces a probability for every possible next token in its vocabulary. Sampling is the process of picking one of those tokens to actually use. Temperature, top-k, top-p, and a few penalty controls are different ways of shaping that probability distribution before you pick from it. They do not change the model itself, they only change how you draw a token from the model's output distribution.
+
+## Why sampling exists at all
+
+Imagine the model is choosing the next word in this sentence: "The capital of France is \_\_\_". The model assigns very high probability to "Paris", lower probability to "France", "Lyon", "Marseille", and "Brussels", and very small slivers of probability to the rest of its \~200,000-token vocabulary.
+
+You could pick "Paris" every single time. This works perfectly well for factual questions where there is one obvious correct answer. But if you try the same strategy on a prompt like "Write me a poem about loneliness \_\_\_", you will get the same stale rhymes that the model assigns the highest probability to, every single time. The "right" word in creative or open-ended writing is rarely the highest-probability word, because the highest-probability word is the most predictable one and predictable writing is usually boring.
+
+Sampling lets you choose between two extremes. On one end is textbook mode, where you always pick the most probable word. On the other is a more creative mode, where you sometimes pick a less expected word to get more variety. The controls in this section move you between those two ends.
+
+<SamplingDistributionDiagram />
+
+## Greedy decoding
+
+The most basic sampling strategy is to pick the highest-probability token every single time. This is called **greedy decoding** and on most APIs it is equivalent to setting `temperature = 0`. Greedy decoding can be repetitive or bland. Because you always pick the top option, the model never tries any of the moderately likely alternatives, and the output can read as generic.
+
+Greedy decoding is the right default for tasks like information extraction, classification, and any task where there is clear single correct answer.
+
+## Temperature
+
+Temperature is the most commonly used sampling parameter. It works by dividing the logits by a temperature value before the softmax converts them into probabilities. The effect on the resulting distribution looks like this:
+
+* `temperature = 0` is equivalent to greedy decoding. The model always picks the maximum value token.
+* `temperature = 1.0` gives you the model's unaltered distribution. This is the distribution the model would naturally produce based on its training.
+* `temperature < 1` sharpens the distribution. The most likely tokens become even more likely, and the long tail of unlikely tokens gets suppressed. The output becomes more focused and less surprising.
+* `temperature > 1` flattens the distribution toward uniform. The output becomes more creative and more random, but also more likely to go off the rails.
+
+As a rough starting point, you might use `0` for anything factual, `0.7` for general chat, and `0.9 to 1.2` for creative writing. Above about `1.5`, the model tends to produce strange outputs regardless of the prompt, so it is rarely worth going any higher. Model providers usually publish recommended defaults for temperature and the controls below—when they do, stick to those values for optimal results.
+
+## Top-k and top-p
+
+Even with a sensible temperature, a 200K-token vocabulary has a very long tail of very unlikely tokens. Sampling can occasionally land on one of those tail tokens, which might make the output go somewhere strange. Top-k and top-p are two different ways to ignore the tail before sampling, so that the model can only pick from a reasonable shortlist.
+
+### Top-k
+
+Top-k works by sorting all of the tokens by probability, keeping the top *k* of them, and throwing away the rest. After truncating to the top *k* tokens, the remaining probabilities are renormalized to sum to 1, and you sample from that shortened distribution. Setting `top_k = 20` means "only ever consider the 20 most likely next tokens".
+
+Top-k is straightforward and reliable. The downside is that the "right" number of plausible tokens varies a lot from step to step. Sometimes there are only 3 obvious candidates and many noisy ones, in which case top-k is keeping more than you need. Other times there are 200 reasonable candidates and your top-k of 20 has thrown away 180 of them.
+
+### Top-p (nucleus sampling)
+
+Top-p works a little differently. You sort the tokens by probability, then keep the smallest set of tokens whose probabilities together add up to *p*. You sample from that set. Setting `top_p = 0.9` means "consider the smallest group of tokens that together hold 90% of the probability".
+
+Top-p adapts to the shape of the distribution at each step. When the model is very sure about the next token, the set that adds up to 90% is small. When the model is uncertain, the set grows to include more candidates. This adaptive behavior often makes top-p a better default than top-k.
+
+You can use both together. Most APIs let you set either parameter independently, and some platforms apply top-k first and then top-p.
+
+## Repetition, presence, frequency penalties, and logit bias
+
+Models sometimes get stuck repeating the same phrase or word over and over. There are several controls that let you influence the token distribution during generation, including penalties and direct logit biasing:
+
+* **Frequency penalty:** Each occurrence of a token in the output so far reduces that token's logit a little. The more times you have used the word "however", the less likely "however" is to come up again on the next step.
+* **Presence penalty:** Any token that has appeared at all gets its logit reduced by a fixed amount. Presence penalty does not care how many times the token appeared—it only checks whether it's appeared at all.
+* **Repetition penalty:** This is the same idea applied multiplicatively to the logits rather than additively. Repetition penalty is more common in open-source models than in OpenAI-style APIs.
+* **Logit bias:** This parameter lets you directly adjust the likelihood of specific tokens appearing in the generated output. For example, you can strongly encourage or almost entirely ban certain words or pieces of text from appearing by pushing their probabilities up or down before sampling. This can be done alongside penalties or on its own.
+
+All of these controls should be used sparingly. If you apply too much penalty or bias, the model will strain to avoid common or important words, hurting fluency in ways worse than the original repetition. For logit bias, start with small adjustments unless you are intentionally trying to force or block a token entirely. If the output starts feeling forced or unnatural, dial the penalties and biases back.
+
+## Seed and determinism
+
+Sampling uses a random number generator under the hood. If you fix the seed, the same input produces the same output across runs. This is useful for testing, debugging, and reproducible evaluation runs.
+
+An important caveat worth knowing is that even with a fixed seed, hardware and batching can introduce small amounts of non-determinism. Different concurrent requests can subtly affect floating-point order, which means "deterministic" in practice means "deterministic most of the time but not always". In practice, the same call repeated several times can return slightly different logits.
+
+## What changes for reasoning models
+
+Modern **reasoning/hybrid models** produce a long internal chain of thought before they give you a final answer. Most of these models ship with recommended sampling settings, which you should almost certainly use. Performance degrades noticeably when you override the provider's recommendations.
+
+The exact behavior varies significantly across models, so it is worth checking the model card before you tune these controls on a hybrid or reasoning model.
+
+## What to pick for what
+
+Here are reasonable starting points by task. For the exact request fields, see [inference parameters](/docs/inference/chat/parameters).
+
+* **Extraction, classification, structured output:** Use `temperature = 0`. You want one right answer and you want it to be reproducible.
+* **General chat or assistant tasks:** Use `temperature = 0.7` and `top_p = 0.9`. This is a safe middle ground for most use cases.
+* **Creative writing or brainstorming:** Use `temperature = 0.9 to 1.1` and `top_p = 0.95`. Let the model breathe a bit and explore less predictable options.
+* **Code generation:** Use `temperature = 0.1 to 0.3`. Coding demands precision. A little randomness can help when the model is stuck, but most of the time you want the model's best guess rather than a creative one.
+* **Reasoning/hybrid models:** Check to see if the model provider recommends a setting for the sampling parameters in reasoning and non-reasoning modes.
+
+<Tip>
+  If your output is bad, the first thing to check is the prompt, not the sampling. Sampling controls are a small intervention compared to the prompt itself. You should get the prompt right first, then tune sampling only if you have a specific complaint about the output (too repetitive, too random, too generic).
+</Tip>
+
+## Next steps
+
+<CardGroup>
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    The biggest lever on output quality.
+  </Card>
+
+  <Card title="Structured outputs & JSON mode" icon="braces" href="/learn/structured-outputs">
+    Constrain outputs to a schema.
+  </Card>
+
+  <Card title="How LLMs work" icon="cpu" href="/learn/how-llms-work">
+    Where logits come from in the first place.
+  </Card>
+</CardGroup>
+
+
+# Context engineering
+Source: https://docs.together.ai/learn/prompt-engineering
+
+How to structure context for chat, RAG, and coding agents.
+
+**TL;DR:** The prompt you submit to a model is all that can see for a given call. Besides its weights, the model does not have any outside memory, or any hidden context. What you put in the prompt is the entire context for that call. Structuring that context so it carries every relevant detail and instruction is the main lever you have to impact output quality. For chat applications this includes the system prompt, previous `user` and `assistant` turns, as well as retrieved chunks in the case of retrieval-augmented generation (RAG). For coding agents, this includes the system prompt, your `AGENTS.md`, tools, memory, skills, previous turns of reasoning, tool calls, and user and assistant responses.
+
+## What a prompt actually is
+
+For a chat model, a "prompt" is the full list of messages you send to the API:
+
+```text theme={null}
+messages = [
+  { role: "system",    content: "You are a helpful assistant..." },
+  { role: "user",      content: "How do I revert a Git commit?" },
+  { role: "assistant", content: "..." },
+  { role: "user",      content: "And what if I already pushed?" }
+]
+```
+
+Internally, all of those messages get concatenated into one long stream of tokens using the chat template, with role boundaries marked by special tokens (see [Tokens & tokenization](/learn/tokens-and-tokenization) for what those special tokens are). The model sees a single stream, not three separate messages. There is no memory or state between API calls; if you want the model to remember something from an earlier conversation, you have to include that information in the messages list.
+
+By default, the model also has no live access to anything outside the prompt. It can't browse the web, read your files, see your screen, or check the current date. Everything the model knows comes either from its training data or from the current prompt. If you need the model to access context outside the immediate prompt, you give it tools (see [Function calling & tool use](/learn/function-calling-and-tool-use)).
+
+## Specificity
+
+The model cannot read your mind. If your prompt is vague, the model fills the gaps with plausible defaults, and those defaults will probably not be the ones you wanted. This is a common failure people experience when they give coding agents unspecific instructions.
+
+Consider the difference between these two prompts:
+
+<VagueVsSpecificDiagram />
+
+The vague version will give you a summary of some length, in some tone, with some level of detail. The model chooses all of those for itself, and you have no way of predicting which choice it will make. The specific version, on the other hand, has a much smaller failure surface. The format is specified, the audience, length, and style are all specified, and the model should stay within those guardrails.
+
+## Showing examples
+
+Telling the model exactly what you want is good, but *showing* the model what you want, by including example inputs and outputs in the prompt, is even better. This technique is called **few-shot prompting**.
+
+```text theme={null}
+Classify the sentiment of each review as POSITIVE, NEGATIVE, or NEUTRAL.
+
+Review: "Took forever to ship and the box was crushed."
+Sentiment: NEGATIVE
+
+Review: "Does exactly what it says on the tin."
+Sentiment: POSITIVE
+
+Review: "I bought it last Tuesday."
+Sentiment: NEUTRAL
+
+Review: "Was hoping for more but it works fine."
+Sentiment:
+```
+
+A few examples can be more effective than a lot of instructions. The model picks up on patterns in the examples (format, tone, edge cases) and replicates those patterns in its own response. Two to five examples is enough for most tasks; you rarely need more than ten unless you are dealing with a complex extraction task with many possible structures.
+
+This type of prompting will often work better for instruct/non-reasoning models, while specificity works better for reasoning models.
+
+## Adding structure
+
+For long prompts, adding some structure to the prompt helps the model find the right piece of context at the right time. There are two patterns that tend to pay off in practice.
+
+### Use headings and delimiters
+
+```text theme={null}
+### CONTEXT
+The user has uploaded a CSV with 3 columns: name, age, city.
+
+### TASK
+Write a Python function that returns a dict mapping city to the
+average age in that city.
+
+### CONSTRAINTS
+- Use only the standard library.
+- Handle empty input by returning {}.
+- No type hints.
+```
+
+Heading-style sections, or XML tags like `<context>...</context>`, help the model treat instructions, examples, and data as distinct sections rather than as one continuous block of text. Structured prompts are also easier for *you* to maintain over time, because you can find and update the right section without rereading the whole thing.
+
+### Put critical context near the top and the bottom
+
+Models tend to pay more attention to the beginning and end of a long input than to the middle (see [Context windows](/learn/context-windows) for more on this). If there's something that has to be true about every output, it's worth mentioning that constraint in the system prompt, and also restating it right before the user's question. This redundancy is annoying when you write the prompt, but it tends to produce more reliable outputs.
+
+## Ordering content for cache hits
+
+Coding agents like Claude Code live inside long-running sessions and rack up many prompts per task. Each of those prompts is mostly the same: the same system prompt, the same tools, the same `AGENTS.md`, the same project files. The only thing that really grows is the conversation. This is exactly the thing that **prompt caching** is built for. Providers cache the prefix of the prompt, and as long as the prefix is identical to a previous call, you skip recomputing it and pay a fraction of the cost. When done well, 90–95% of the context can be a cache hit and thus cost less time and money. On Together, prompt caching is enabled by default for [dedicated endpoints](/docs/dedicated-endpoints/settings).
+
+The trick is putting everything in the right order: **static content first, dynamic content last**. For a coding agent this usually looks like:
+
+1. **Static system prompt** and tool definitions
+2. **`AGENTS.md` / `CLAUDE.md`**, project-level instructions
+3. **Session context**, skills, open files, recent edits, current working directory
+4. **Conversation**, messages, reasoning traces, and tool calls
+
+Anything that almost never changes goes at the top, so it can be cached across every session in the workspace. Anything that changes every turn goes at the bottom. The further down the prompt a change happens, the more of the prefix survives in the cache, and the more sessions end up sharing a cache hit.
+
+This ordering is easy to break. Common pitfalls include:
+
+* **Timestamps in the static prompt:** Including the current date/time at the top makes every call unique, killing cache hits. Put timestamps near the bottom if needed.
+* **Unordered tools:** If tools are not sorted, their order can vary and break the prefix. Always sort tools by name before serializing.
+* **Changing tool definitions:** Modifying or reordering tools changes the prefix for everyone. Only append new tools; don't alter or insert into the static list.
+
+<Info>
+  The most important thing to keep in mind is that the *earliest change* to your prompt invalidates all cached tokens afterwards. You want to keep the prefix as stable as possible to maximize the cache hit ratio. Only put volatile info (time, user message, current file) in the dynamic tail, not the static, cached head/prefix.
+</Info>
+
+## Next steps
+
+<CardGroup>
+  <Card title="Structured outputs & JSON mode" icon="braces" href="/learn/structured-outputs">
+    For when "output JSON" in the prompt is not enough.
+  </Card>
+
+  <Card title="Function calling & tool use" icon="tools" href="/learn/function-calling-and-tool-use">
+    For letting the model access data beyond the prompt.
+  </Card>
+
+  <Card title="Fine-tune vs. prompt" icon="git-branch" href="/learn/finetune-vs-prompt">
+    The next step when prompt engineering hits a ceiling in performance.
+  </Card>
+</CardGroup>
+
+
+# Quantization
+Source: https://docs.together.ai/learn/quantization
+
+What quantization is, how lower precision speeds up inference, and the quality tradeoff.
+
+**TL;DR:** Quantization is the process of storing and using a model's weights such that it uses fewer bits per number. Going from fp16 (16 bits) down to fp8 (8 bits) down to int4/fp4 (4 bits) makes inference faster and reduces model's memory requirements, at the cost of a small hit to quality. For most chat workloads, fp8 is nearly free, i.e. the quality drop is so small that it's unmeasurable. Going down to int4/fp4 can save a lot of money, and if done right, the quality drop is barely noticeable (depending on the task). Frontier open-weight models like DeepSeek-V4 are now trained natively in fp8/fp4 rather than being quantized after the fact, which closes the quality gap even further.
+
+## A JPEG quality slider for models
+
+The mental model for quantization is something you already know from photos. A digital camera stores every pixel as three numbers, one each for red, green, and blue. The standard is 8 bits per channel (24 bits per pixel), which gives you \~16.7 million possible colors and smooth gradients without any visible banding. Drop the encoding to 4 bits per channel and most photos still look essentially fine at first glance. Drop again to 2 bits per channel and the image visibly posterizes: smooth skies break into discrete bands, subtle gradients collapse into chunks of solid color. The scene is the same, but the encoding has gotten coarser.
+
+<Frame>
+  <img alt="A high-resolution landscape photograph of a fireweed flower spike in sharp focus against a softly blurred background of forested mountains and a partly cloudy sky." />
+</Frame>
+
+<Frame>
+  <img alt="The same landscape photo of fireweed against a mountain backdrop, rendered at 8-bit/channel (24-bit total), 4-bit/channel (12-bit total), and 2-bit/channel (6-bit total). The 8-bit and 4-bit versions look nearly identical; the 2-bit version is heavily posterized with visible color banding." />
+</Frame>
+
+Quantization is the same trick applied to a model. The model's weights are real numbers, and quantization stores each one using fewer bits. 16 bits per weight is the pristine, uncompressed version. 8 bits per weight is the analogue of dropping the photo to 4 bits per channel: a meaningful reduction in storage that, for most workloads, you can't tell apart from the original. 4 bits per weight is closer to the 2-bits-per-channel photo—aggressive enough that artifacts start showing up in subtle places, and you have to actually evaluate the quantized model to know whether they matter for your specific task.
+
+The bigger the model is to start with, the more headroom you have to compress and quantize. A 70B model at 4 bits per weight will generally outperform a 13B model at 16 bits per weight, the same way a 12-megapixel photo at 4 bits per channel still beats a 4-megapixel photo at 8 bits per channel.
+
+## Why precision matters
+
+A model's weights are real numbers, and at inference time the GPU spends most of its work reading those weights from memory and multiplying them with inputs. The more bits per weight, the more memory bandwidth you burn per token of output you generate. The total memory budget for a model and its activations also scales directly with bits per weight, which determines what hardware you can fit it on in the first place.
+
+Quantization is the family of techniques for storing the same weights using fewer bits each. You end up with the same number of weights, but each one is smaller. Less memory used overall, more weights read per second, faster inference, lower hosting cost. The cost you pay is precision: the weights become slightly approximate, and that approximation translates into a small drop in model quality if done naively.
+
+## Quantization formats
+
+These are the formats you'll likely encounter, in approximate order of decreasing precision:
+
+* **fp32:** 32-bit float. The full-precision format from textbook training. Almost never used for inference because it uses too much memory for not enough quality gain.
+* **fp16 / bf16:** 16-bit floats. The standard format that models are trained and shipped in. bf16 has more range while fp16 has more precision. Modern GPUs prefer bf16.
+* **fp8 (E4M3 / E5M2):** 8-bit float. Supported natively on H100 and later GPUs. Usually near-indistinguishable from bf16 in quality, while requiring half the memory and bandwidth.
+* **int8:** 8-bit integer. An older approach to 8-bit quantization, slightly more involved than fp8 because it requires per-channel scaling. Still common on GPUs that do not have native fp8 support.
+* **fp4 (MXFP4 / NVFP4):** 4-bit float. The newer 4-bit format supported natively on Blackwell (B100/B200) GPUs. Closer in quality to fp8 than int4, because it preserves the exponent range.
+* **int4:** 4-bit integer. Aggressive enough that quality starts to be impacted. Most modern int4 implementations (AWQ, GPTQ, GGUF) include calibration on a sample dataset to choose quantization parameters that minimize the performance hit.
+
+On Together, many models are served in fp8 or fp4 variants (visible in the [model list](/docs/serverless/models)), and quantization is one of the decoding options you can choose from when configuring a [dedicated endpoint](/docs/dedicated-endpoints/settings).
+
+## How quantization actually works
+
+Take the weights in a single layer. They have some distribution: most are small, a few are large. Suppose the range of values is roughly -1.5 to +1.5. To store these weights in int4 (only 16 possible distinct values), you:
+
+1. Pick a scale factor. For example, 0.2.
+2. For each weight, round it to the nearest multiple of the scale factor.
+3. Store the integer that corresponds to the rounded value. For scale 0.2 and range -1.5 to +1.5, this gives you the integers -7 through +7, plus 0.
+4. At inference time, multiply each stored integer by the scale factor to recover the (approximate) original weight.
+
+That's essentially all there is to it conceptually. The integer takes 4 bits instead of 16, which is a 4× memory reduction. The scale factor is one float per group of weights (usually one per channel or per block), which is negligible for the overall storage cost.
+
+<QuantizationSnapDiagram />
+
+The art is in deciding *which* weights to round, and how. Different layers, different channels, and different blocks within a layer can use different scale factors. Calibrated approaches like AWQ and GPTQ run a small sample of real data through the model to find scales that minimize the effect of rounding on the activations that matter most. The naming conventions you'll see:
+
+* **AWQ (Activation-aware Weight Quantization):** Common for int4.
+* **GPTQ (Generalized Post-Training Quantization):** Another int4 family.
+* **GGUF:** A file format used by llama.cpp that supports multiple quantization schemes.
+* **SmoothQuant:** Targets int8 by smoothing activation outliers before quantizing.
+* **MXFP4 / NVFP4:** The microscaling 4-bit floating-point formats used on Blackwell GPUs.
+
+## Native quantization
+
+Most quantization is **post-training quantization (PTQ)**, where you take a model trained in bf16 and compress it after the fact. PTQ works well down to fp8, gets noisier at int4.
+
+The newer pattern is **native quantization**, where the model is *trained* in the low-precision format from the start. DeepSeek-V3 was the first major frontier model to train natively in fp8. DeepSeek-V4 trains natively in fp4. The advantage is that the model never has to be approximated. It was trained at the same precision it will be served in, so there's no quality gap to close. Native quantization is rapidly becoming the default for new open-weight models.
+
+## Weights vs. activations
+
+There are two different things that can be quantized in a model. The weights are fixed once training is done, while the intermediate activations are computed at inference time. Most public discussion of quantization focuses on weights because they account for the bulk of the memory footprint.
+
+Quantizing activations is harder. Activations have wider dynamic ranges than weights, with occasional huge outliers, and they cannot be calibrated as easily because they depend on the current input to the model. When you see formats labeled `W8A8` or `W4A16`, that's Weight-bits / Activation-bits. The right combination depends on hardware support: GPUs that natively support fp8 in both weights and activations can run W8A8 fast, while older hardware often runs W4A16 (quantized weights and fp16 activations).
+
+## Next steps
+
+<CardGroup>
+  <Card title="Inference metrics: TTFT & TPS" icon="dashboard" href="/learn/ttft-and-tps">
+    Quantization mostly buys you TPS.
+  </Card>
+
+  <Card title="Choosing a deployment option" icon="server" href="/learn/choosing-a-deployment-option">
+    Your choice of deployment determines which quantization options are available to you.
+  </Card>
+
+  <Card title="How LLMs work" icon="cpu" href="/learn/how-llms-work">
+    Which weights are getting quantized, and why model size matters.
+  </Card>
+</CardGroup>
+
+
+# Structured outputs & JSON mode
+Source: https://docs.together.ai/learn/structured-outputs
+
+Force the model to produce schema-valid output.
+
+**TL;DR:** Structured outputs let you force a model to produce valid JSON as output (or any other schema you specify). The mechanism works at the [sampler level](/learn/inference-parameters-and-sampling): at every generation step, any token that would break the schema has its probability zeroed out, which means the model literally cannot pick those tokens. The output you get back is guaranteed to be parseable in the shape you asked for. This is the same constrained-decoding machinery that's used under the hood for tool/function calling.
+
+## How it works
+
+Structured decoding works by combining two mechanisms: prompting the model to produce a particular response shape, and making the inference engine enforce that shape one token at a time during generation. The model still has freedom for the parts that aren't constrained, but the *structure* of the output is no longer up for negotiation.
+
+This distinction matters most when you're processing multiple responses programmatically. If your pipeline depends on the LLM always outputting JSON, the only scalable solution is to constrain the decoding space of tokens so that generating outputs with an incorrect structure is literally impossible. Prior to constrained decoding libraries like Outlines and XGrammar becoming popular, the common (and much less performant) approach was to prompt and retry until the model output matched the correct structure, or you hit your budget for retries.
+
+## Constrained decoding
+
+Language model generation happens one token at a time. At each step, the model produces a logit for every token in the vocabulary, softmax converts those logits into probabilities, and the sampler picks one of the tokens to add to the output (see [Inference parameters & sampling](/learn/inference-parameters-and-sampling) for the details).
+
+Constrained decoding adds an extra step in between the logits and the sampler. The constraint engine looks at the output the model has produced so far, figures out which tokens would still produce valid JSON (or schema-valid JSON), and sets the logits for all the other tokens to `-∞`. A logit of `-∞` becomes a probability of zero after the softmax, which means the sampler cannot pick that token. Because the constraint is enforced at the sampler rather than asked for in the prompt, the invalid-output failure mode literally cannot happen.
+
+See [Structured outputs](/docs/inference/chat/structured-outputs) for details on how to enable this for your requests on Together AI.
+
+<LogitMaskDiagram />
+
+## When constraints can hurt the result
+
+Constraining the output can be extremely powerful and useful, but is not always ideal. There are two things worth watching for.
+
+The first is **over-constraint**. If your schema only allows three enum values, but the correct answer for the input is actually a fourth value, the model has no choice but to give you a wrong answer. The constraint engine will produce *something* that is valid against the schema, because it cannot produce "none of these". You can avoid this by always including an escape hatch in your schemas, such as an `"other"` value, for classifications you might not have fully enumerated.
+
+The second is **tunnel vision**. Forcing the model into JSON shape from the very first token can hurt the quality of its reasoning. For complex tasks, the best results often come from a structure where the model thinks in natural language first ("Let me consider the options...") and then produces the structured answer at the end. For this purpose, reasoning models have their reasoning tokens unconstrained and the structured outputs only apply to their output content tokens.
+
+<Info>
+  Structured output is not magic. It's a constraint at the sampler level, not a quality booster. If the underlying model does not know the answer to your question, no amount of schema enforcement will fix that. You'll get a confidently wrong answer that happens to come in a schema-valid shape.
+</Info>
+
+## When to use it
+
+Structured outputs can be use in a number of common production patterns:
+
+* **Extraction:** Tasks like "pull the name, email, and order total out of this support ticket". You define a schema for the fields you want, and the model fills it in. This pattern skips the parsing-regex hell that extraction usually entails.
+* **Classification with confidence:** A schema like `{ category: enum, confidence: number }` gives you both a label and a way to threshold low-confidence predictions before acting on them.
+* **Routing:** A question like "which of these 8 tools should handle this query?" is well-suited to enum-typed output, which is guaranteed to produce a valid option.
+* **Form-filling agents:** You can step through a structured response in stages (intent → fields → action). Each step uses a schema appropriate for that turn of the conversation.
+* **Function calling under the hood:** [Function calling](/learn/function-calling-and-tool-use) is actually built on the same constrained-decoding machinery. The schema in that case is the parameter spec for the function being called.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Function calling & tool use" icon="tools" href="/learn/function-calling-and-tool-use">
+    Same constraint engine, different purpose.
+  </Card>
+
+  <Card title="Inference parameters & sampling" icon="adjustments" href="/learn/inference-parameters-and-sampling">
+    What sampling looks like before constraints are applied.
+  </Card>
+
+  <Card title="Context engineering" icon="messages" href="/learn/prompt-engineering">
+    When a schema isn't enough and the prompt is your real constraint. When a schema isn't enough, the prompt be w more. When a schema isn't enough, the prompt be w more.
+  </Card>
+</CardGroup>
+
+
+# Tokens & tokenization
+Source: https://docs.together.ai/learn/tokens-and-tokenization
+
+How tokenization works, what the model reads, and why tokens drive cost and context usage.
+
+**TL;DR:** A model never reads actual words or characters. It reads tokens, subword chunks of about four characters each, where every chunk has a fixed integer ID. Tokenization is the deterministic step that turns your text into those IDs before the model ever sees it. Understanding this step matters because you pay per token, and filling your LLM's context window with the right tokens makes all the difference for generating useful outputs.
+
+<a href="https://tiktokenizer.vercel.app/">
+  <img alt="Tokenized example: &#x22;What are the top 3 things to do in NYC?&#x22; split into 12 tokens with integer IDs shown. Click to open tiktokenizer.vercel.app." />
+</a>
+
+<p>
+  Try it yourself at <a href="https://tiktokenizer.vercel.app/">tiktokenizer.vercel.app</a>.
+</p>
+
+## How a model "reads"
+
+When you read English fluently, you don't sound out every letter. You see "the" and "have" and "tokenization" as single shapes, and your brain pulls up the meaning in one go. The rare and unfamiliar parts, like "antidisestablishmentarianism" or "solidgoldmagickarp", you slow down and parse in chunks: *anti-dis-establish-ment-arian-ism* or *solid-gold-magic-karp*.
+
+A tokenizer does roughly the same thing for an LLM. Common strings get a single ID, rare ones get broken into a handful of subword pieces, and anything weirder than that falls back to individual bytes. Every model's vocabulary is fixed and determined by the tokenizer—once the tokenizer is trained, nothing more about it is learned at inference time.
+
+The trade-off between token length and vocabulary size is straightforward: Using characters as tokens give you a tiny vocabulary but absurdly long sequences, and the model has to re-derive "h-e-l-l-o means hello" every single time. Using whole words as tokens gives you short sequences but a vocabulary of millions, including separate tokens for typos, novel words, URLs, and rare names. Subwords strike a sweet spot between these two extremes: models typically have \~50,000 to 200,000 tokens in their vocabulary, so every possible input is representable, but common text stays short.
+
+A rough rule of thumb for English is that one token ≈ 4 characters ≈ ¾ of a word. So 1,000 tokens is roughly 750 words, or one short page.
+
+## What tokenization actually does
+
+Tokenization is a two-step process: first, splitting the text into chunks, then looking each chunk up in a table to get an integer ID.
+
+```text theme={null}
+"Hello, world!"  →  ["Hello", ",", " world", "!"]  →  [9906, 11, 1917, 0]
+```
+
+Notice three things about this example:
+
+* `Hello` and ` world` (with a leading space) are each one token. The space matters and travels with the word.
+* `,` and `!` are their own tokens. Punctuation almost always is, because it's common enough to warrant its own token ID.
+* The IDs are lookup indices into a fixed vocabulary. There's no math here, no learning. The same text always produces the same IDs, every time.
+
+Different models use different tokenizers, so the same string can produce different IDs across model families like GPT-5.5, Claude Opus 4.8, and DeepSeek-V4. Within one model family, the tokenizer is typically fixed and baked in at pretraining time.
+
+## Byte pair encoding (BPE)
+
+Almost every modern tokenizer is built using an algorithm called **byte pair encoding (BPE)**. The training procedure is as follows:
+
+1. Start with a vocabulary of every distinct byte (or character).
+2. Across the training corpus, count every pair of adjacent tokens.
+3. Take the most common pair, merge it into a new token, and add it to the vocabulary.
+4. Re-tokenize the corpus using the new vocabulary.
+5. Repeat until the vocabulary reaches the target size (typically anywhere between 50,000 and 200,000 unique tokens).
+
+The list of merges is saved in order. At inference time, encoding a new piece of text means applying the same merges in the same order. Fast, deterministic, no model required.
+
+<BpeDiagram />
+
+## Special tokens
+
+Beside the BPE-trained vocabulary, every model reserves a few IDs for special tokens. These tokens never come from user text. The model has been trained to treat them as boundaries:
+
+* `<|bos|>`, `<|eos|>`: start and end of the stream.
+* `<|user_start|>` & `<|user_end|>`: plus the assistant pair, turn boundaries.
+* `<|tool_call|>`, `<|tool_response|>`: tool boundaries (different models name them differently).
+
+A multi-turn chat ends up laid out for the model like this:
+
+```text theme={null}
+<|bos|>
+<|user_start|>What are the top 3 things to do in NYC?<|user_end|>
+<|assistant_start|>Visit the Met, walk the High Line, and...<|assistant_end|>
+<|user_start|>What about Brooklyn?<|user_end|>
+<|assistant_start|>
+```
+
+Notice the last line. It opens an assistant turn and doesn't close it. That trailing special token is the cue that tells the model "it's your turn to generate tokens until you emit `<|assistant_end|>`." Almost the entire chat UX is two special tokens and a streaming loop.
+
+<Warning>
+  Special tokens are why you should never paste raw user input directly between role markers. If a user message literally contains the bytes `<|user_end|>`, a careless tokenizer might honor them and the user has impersonated the system role. Production tokenizers treat these as ordinary text unless you explicitly ask them to parse.
+</Warning>
+
+## The same word is not always the same token(s)
+
+When converting text to tokens, details like casing, whitespace, and punctuation all matter. The tokenizer doesn't make semantic judgments. It does a greedy lookup against a fixed table, and that table was trained on whatever happened to appear in the corpus. So the strings below, which a human reads as variants of one word, become different sequences of token IDs:
+
+```text theme={null}
+"apple"   → [28202]
+" apple"  → [24149]
+"Apple"   → [27665]
+" Apple"  → [8325]
+"APPLE"   → [8193, 877]
+" apples" → [24149, 82]
+"apples." → [680, 645, 13]
+```
+
+The model usually handles this gracefully because these variants co-occur in training, but it's also why the model can respond slightly differently to different prompt phrasing. If you move a single space, the model is conditioning on a different token sequence, which can lead to different outputs.
+
+<VariantsDiagram />
+
+## Cost and context
+
+Two of the most important numbers in any model specification are quoted in token counts, not words:
+
+* **Context window:** The maximum number of tokens the model can see in one request (input + output combined). To give you an idea, \~8K tokens is a long email, 200K tokens is a small book, and 10M tokens is a small library. See [context windows](/learn/context-windows) to learn more.
+* **Price:** This is usually quoted per million tokens, with separate rates for input, output, and cached tokens. Output is typically 3-4× more expensive than input because generating tokens one at a time is the slow phase of inference. See [TTFT & TPS](/learn/ttft-and-tps) and our [serverless model pricing](/docs/serverless/models) page to learn more.
+
+Here's a rough guide for token counts:
+
+```text theme={null}
+1 token    ≈  ¾ of a word     ≈  4 characters
+100 tokens ≈  75 words        ≈  half a paragraph
+1K tokens  ≈  750 words       ≈  one page
+8K tokens  ≈  6,000 words     ≈  a long article
+128K       ≈  96,000 words    ≈  a short novel
+1M         ≈  750,000 words   ≈  Lord of the Rings + appendices
+```
+
+<TokenBudgetDiagram />
+
+## Where tokenization gets weird
+
+Once you start counting tokens, you'll notice some quirks:
+
+* **Numbers:** "1234" may be one token, "12345" two, and "9999999999" several. The model can't reliably see digit positions because they aren't single tokens. This is one of the reasons large arithmetic is unreliable without chain-of-thought or a tool call to a calculator function.
+* **Code:** Common keywords (`def`, `return`) are single tokens, but unusual identifiers fragment. Indentation, brackets, and newlines each cost a token, which is why code prompts are surprisingly token-heavy.
+* **Non-English text:** Most tokenizers were trained on corpora that are 70-90% English. A Korean or Hindi sentence can take 2-4× more tokens than its English translation, which means higher cost and smaller effective context. Newer tokenizers have improved this meaningfully, but the gap still exists.
+* **Repeated whitespace:** JSON pretty-printed with indentation can be meaningfully more expensive than the same JSON minified.
+* **Emoji and rare Unicode:** Most emoji are multi-byte. Less common ones can take 4-6 tokens for a single emoji.
+
+<Tip>
+  When a prompt feels too long or a reply stops mid-thought, paste the input into a [tokenizer playground](https://tiktokenizer.vercel.app/) and look at the actual count. It's almost always 1.3-2× what you expected, especially with system prompts, JSON, or non-English content.
+</Tip>
+
+## Next steps
+
+<CardGroup>
+  <Card title="How LLMs work" icon="cpu" href="/learn/how-llms-work">
+    What the model does with these IDs once it has them.
+  </Card>
+
+  <Card title="Context windows" icon="layout-board" href="/learn/context-windows">
+    The consequences of a finite token budget.
+  </Card>
+
+  <Card title="Inference metrics: TTFT & TPS" icon="dashboard" href="/learn/ttft-and-tps">
+    Why long inputs are slow to start, and long outputs are slow overall.
+  </Card>
+</CardGroup>
+
+
+# Inference metrics: TTFT & TPS
+Source: https://docs.together.ai/learn/ttft-and-tps
+
+Two numbers that describe how fast an LLM feels.
+
+**TL;DR:** There are two numbers that describe how fast an LLM feels in practice. The first is **TTFT** (time to first token), which is how long you wait between sending your request and seeing the first word of the response appear. The second is **TPS** (tokens per second), which is how fast each word appears after that. These two numbers are affected by different things, and you usually want to optimize them differently depending on the application.
+
+## Why TTFT and TPS matter
+
+The two most important metrics when it comes to LLM inference are time to first token (TTFT) and tokens per second (TPS). Other metrics such as tokens per minute (TPM) per GPU, time between tokens (TBT), and more can be understood as functions of these.
+
+When you call an LLM, there is a pause before tokens stream back to you. This initial wait time is the TTFT: the pause between sending your request and the model showing you the first word of its reply.
+
+Once the tokens start streaming, how fast they're generated is measured using TPS. This is the rate at which tokens stream in once the model has actually started generating.
+
+You can have the same total time across two different combinations of TTFT and TPS and the experience will feel very different. A 5-second TTFT followed by 100 TPS feels sluggish to start and then snappy once it gets going. A 200ms TTFT followed by 20 TPS feels responsive at first and then laggy. Users perceive these two flavors of "slow" differently, which is why the system has to be tuned with both numbers in mind. Voice applications require a very low TTFT, while coding agent applications can have a slightly more relaxed TTFT but benefit from higher TPS.
+
+<TimingDiagram />
+
+## Two phases of inference: prefill and decode
+
+Inference happens in two phases, and TTFT and TPS each correspond to one of them:
+
+* **Prefill:** The model processes your entire prompt in one pass. The compute in this phase is parallel across positions, which means the prefill is essentially a single big matrix multiplication that the GPU is well-suited to handle. The cost of prefill scales with prompt length.
+* **Decode:** The model generates output tokens one at a time, with each token depending on the previous one. The cost of decode scales with output length.
+
+TTFT is mostly prefill latency plus a little overhead from the network and platform. TPS is mostly decode speed. The two phases share a model and a GPU, but the bottleneck for each is different:
+
+* Prefill is **compute-bound**, meaning the GPU is multiplying matrices flat-out, and the limiting factor is how fast it can do the math.
+* Decode is **memory-bound**, meaning the GPU spends most of its time reading model weights and the cached state from memory rather than actually multiplying.
+
+For more on the forward-pass details that produce these two phases, see [How LLMs work](/learn/how-llms-work).
+
+## What affects TTFT
+
+A handful of things affect how long you wait for the first token:
+
+* **Prompt length:** This is the single biggest factor. A 16K-token prompt takes meaningfully longer to prefill than a 1K-token prompt.
+* **Model size:** A 70B-parameter model has more matmuls to do per token than an 8B-parameter model does. Larger models have higher TTFT on the same prompt, all other things being equal.
+* **Prompt caching:** If you reuse the same system prompt or the same document across many calls, the platform can cache the prefill state and skip that work on a cache hit. When this happens, TTFT and compute cost drop to near-zero for the cached portion. On Together, prompt caching is enabled by default on [dedicated endpoints](/docs/dedicated-endpoints/settings).
+* **Server load and queueing:** On shared serverless infrastructure, if the GPU is busy when your request arrives, you wait in the queue. Quiet times have lower TTFT than peak times for this reason.
+* **Cold starts:** If a model has to be loaded fresh into GPU memory (rare on serverless, more common on dedicated endpoints that scale to zero), TTFT can be several seconds because the model has to be moved from disk into VRAM before any inference can happen. Consecutive calls thereafter should be much faster.
+
+## What affects TPS
+
+A different set of things affects how fast each token streams in:
+
+* **Model size:** Bigger models have more weights to read per token. A 405B model has lower TPS than an 8B model, all other things being equal.
+* **Quantization:** If you store the weights using fewer bits (fp8 instead of fp16, int4 instead of int8), the memory bandwidth needed to read them goes down. Lower memory bandwidth means higher TPS, sometimes by a meaningful amount. See [Quantization](/learn/quantization) for more on this.
+* **Batching:** Servers run many requests at once to amortize the cost of reading model weights from memory. More requests in a batch means more total throughput across the GPU, but the per-request TPS can dip slightly because the GPU is doing more work per cycle.
+* **Speculative decoding:** A small "draft" model guesses ahead and the big model verifies. When the guesses are right, you get 2 to 3 times the TPS for the same model. (This is mostly a server-side concern.)
+* **Context length:** As the response grows, decoding gets a little bit slower per token, because the KV cache the model has to read from grows as well. The effect is usually small unless the output is very long.
+* **Mixture-of-Experts (MoE):** MoE models split the feed-forward layers into many small "experts" and route each token through only a handful of them. That means the *active* parameters per token are a small fraction of the total. A 400B MoE with \~17B active params decodes closer to the speed of a 17B dense model than a 400B dense one. The total VRAM footprint still matches the full model (all experts have to be resident in memory in case they get routed to), but per-token TPS scales with active params rather than total params. Most modern frontier open models (DeepSeek-V3, Llama 4, Qwen3-Coder, Kimi K2) are MoE for exactly this reason.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Context windows" icon="layout-board" href="/learn/context-windows">
+    Why long inputs get slow before they get expensive.
+  </Card>
+
+  <Card title="Quantization" icon="zoom-in" href="/learn/quantization">
+    The most-bang-for-your-buck TPS lever.
+  </Card>
+
+  <Card title="Choosing a deployment option" icon="server" href="/learn/choosing-a-deployment-option">
+    When serverless variance is hurting your latency budget.
+  </Card>
+</CardGroup>
+
+
 # Create audio generation request
 Source: https://docs.together.ai/reference/audio-speech
 
@@ -44322,6 +45620,30 @@ Transcribes audio into text
 
 
 
+# Create audio translation request
+Source: https://docs.together.ai/reference/audio-translations
+
+openapi.yaml POST /audio/translations
+Translates audio into English
+
+
+
+# Create chat completion
+Source: https://docs.together.ai/reference/chat-completions
+
+openapi.yaml POST /chat/completions
+Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
+
+
+
+# Create image
+Source: https://docs.together.ai/reference/post-images-generations
+
+openapi.yaml POST /images/generations
+Use an image model to generate an image for a given prompt.
+
+
+
 # Real-time audio transcription via WebSocket
 Source: https://docs.together.ai/reference/audio-transcriptions-realtime
 
@@ -44461,14 +45783,6 @@ All parameters are Omitted fields use their defaults.
 
 
 
-# Create audio translation request
-Source: https://docs.together.ai/reference/audio-translations
-
-openapi.yaml POST /audio/translations
-Translates audio into English
-
-
-
 # Cancel a batch job
 Source: https://docs.together.ai/reference/batch-cancel
 
@@ -44498,81 +45812,6 @@ Source: https://docs.together.ai/reference/batch-list
 
 openapi.yaml GET /batches
 List all batch jobs for the authenticated user
-
-
-
-# Create chat completion
-Source: https://docs.together.ai/reference/chat-completions
-
-openapi.yaml POST /chat/completions
-Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
-
-
-
-# Create completion
-Source: https://docs.together.ai/reference/completions
-
-openapi.yaml POST /completions
-Generate text completions for a given prompt using a language, code, or image model.
-
-
-
-# Create video
-Source: https://docs.together.ai/reference/create-videos
-
-openapi.yaml POST /videos
-Create a video
-
-
-
-# Create embedding
-Source: https://docs.together.ai/reference/embeddings
-
-openapi.yaml POST /embeddings
-Generate vector embeddings for one or more text inputs. Returns numerical arrays representing semantic meaning, useful for search, classification, and retrieval.
-
-
-
-# Fetch video metadata
-Source: https://docs.together.ai/reference/get-videos-id
-
-openapi.yaml GET /videos/{id}
-Fetch video metadata
-
-
-
-# Create image
-Source: https://docs.together.ai/reference/post-images-generations
-
-openapi.yaml POST /images/generations
-Use an image model to generate an image for a given prompt.
-
-
-
-# Create a rerank request
-Source: https://docs.together.ai/reference/rerank
-
-openapi.yaml POST /rerank
-Rerank a list of documents by relevance to a query. Returns a relevance score and ordering index for each document.
-
-
-
-# Execute code
-Source: https://docs.together.ai/reference/tci-execute
-
-openapi.yaml POST /tci/execute
-Executes the given code snippet and returns the output. Without a session_id, a new session is created to run the code. If you pass a valid session_id, the code runs in that session. This is useful for running multiple code snippets in the same environment, because dependencies and similar things are persisted
-between calls to the same session.
-
-
-
-
-# List active sessions
-Source: https://docs.together.ai/reference/tci-sessions
-
-openapi.yaml GET /tci/sessions
-Lists all your currently active sessions.
-
 
 
 
@@ -44672,10 +45911,26 @@ Update the configuration of an existing shared volume.
 
 
 
+# Create completion
+Source: https://docs.together.ai/reference/completions
+
+openapi.yaml POST /completions
+Generate text completions for a given prompt using a language, code, or image model.
+
+
+
 # Create an evaluation job
 Source: https://docs.together.ai/reference/create-evaluation
 
 openapi.yaml POST /evaluation
+
+
+
+# Create video
+Source: https://docs.together.ai/reference/create-videos
+
+openapi.yaml POST /videos
+Create a video
 
 
 
@@ -45047,99 +46302,11 @@ Lists reusable, project-visible placement policies that control the regions wher
 
 
 
-# Create a shadow experiment target
-Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-create
+# Create embedding
+Source: https://docs.together.ai/reference/embeddings
 
-openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
-Adds a deployment under the same endpoint as a target for mirrored requests.
-
-
-
-# Delete a shadow experiment target
-Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-delete
-
-openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
-Removes a target from a shadow experiment without deleting the underlying deployment.
-
-
-
-# Get a shadow experiment target
-Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-get
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
-Retrieves one target configured to receive mirrored requests from a shadow experiment.
-
-
-
-# List shadow experiment targets
-Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-list
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
-Lists the deployments that receive mirrored requests from a shadow experiment.
-
-
-
-# Update a shadow experiment target
-Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-update
-
-openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
-Updates a shadow target's name, deployment, or description. `updateMask` is required and must select at least one mutable field.
-
-
-
-# Create a shadow experiment
-Source: https://docs.together.ai/reference/dmi/shadow-experiments-create
-
-openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
-Creates an experiment that mirrors a sampled portion of endpoint traffic to one or more target deployments without returning their responses to clients. Add a description with the update operation after creation.
-
-
-
-# Delete a shadow experiment
-Source: https://docs.together.ai/reference/dmi/shadow-experiments-delete
-
-openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
-Deletes a shadow experiment and its target records. The underlying deployments are not deleted.
-
-
-
-# Get a shadow experiment
-Source: https://docs.together.ai/reference/dmi/shadow-experiments-get
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
-Retrieves a shadow experiment, including its sampling strategy and target deployments.
-
-
-
-# List shadow experiments
-Source: https://docs.together.ai/reference/dmi/shadow-experiments-list
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
-Lists experiments that mirror sampled endpoint traffic to target deployments without affecting client responses. Set `includeTargets=true` to include target details inline.
-
-
-
-# Update a shadow experiment
-Source: https://docs.together.ai/reference/dmi/shadow-experiments-update
-
-openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
-Updates a shadow experiment's description or source sampling strategy. `updateMask` is required; source changes also require the current `etag` in the request body.
-
-
-
-# Get a supported model
-Source: https://docs.together.ai/reference/dmi/supported-models-get
-
-openapi.yaml GET /supported-models/{id}
-Retrieves a Together-hosted base model and the certified model, configuration, hardware, and performance profiles available for deployment.
-
-
-
-# List supported models
-Source: https://docs.together.ai/reference/dmi/supported-models-list
-
-openapi.yaml GET /supported-models
-Lists Together-hosted base models that can be deployed for dedicated inference, together with their capabilities and certified deployment profiles.
+openapi.yaml POST /embeddings
+Generate vector embeddings for one or more text inputs. Returns numerical arrays representing semantic meaning, useful for search, classification, and retrieval.
 
 
 
@@ -45235,6 +46402,14 @@ Source: https://docs.together.ai/reference/get-finetune-download
 
 openapi.yaml GET /finetune/download
 Receive a compressed fine-tuned model or checkpoint.
+
+
+
+# Fetch video metadata
+Source: https://docs.together.ai/reference/get-videos-id
+
+openapi.yaml GET /videos/{id}
+Fetch video metadata
 
 
 
@@ -45390,6 +46565,33 @@ Only remediations with state PENDING_APPROVAL can be rejected.
 On REJECT: state changes to CANCELLED.
 The reviewed_by, review_time, and review_comment fields are populated
 on the remediation after rejection.
+
+
+
+
+# Create a rerank request
+Source: https://docs.together.ai/reference/rerank
+
+openapi.yaml POST /rerank
+Rerank a list of documents by relevance to a query. Returns a relevance score and ordering index for each document.
+
+
+
+# Execute code
+Source: https://docs.together.ai/reference/tci-execute
+
+openapi.yaml POST /tci/execute
+Executes the given code snippet and returns the output. Without a session_id, a new session is created to run the code. If you pass a valid session_id, the code runs in that session. This is useful for running multiple code snippets in the same environment, because dependencies and similar things are persisted
+between calls to the same session.
+
+
+
+
+# List active sessions
+Source: https://docs.together.ai/reference/tci-sessions
+
+openapi.yaml GET /tci/sessions
+Lists all your currently active sessions.
 
 
 
@@ -50044,6 +51246,102 @@ Source: https://docs.together.ai/reference/dmi/models-update
 
 openapi.yaml PATCH /projects/{projectId}/models/{id}
 Updates mutable model metadata such as its inference name, description, base model, or visibility.
+
+
+
+# Create a shadow experiment target
+Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-create
+
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
+Adds a deployment under the same endpoint as a target for mirrored requests.
+
+
+
+# Delete a shadow experiment target
+Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-delete
+
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+Removes a target from a shadow experiment without deleting the underlying deployment.
+
+
+
+# Get a shadow experiment target
+Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-get
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+Retrieves one target configured to receive mirrored requests from a shadow experiment.
+
+
+
+# List shadow experiment targets
+Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-list
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
+Lists the deployments that receive mirrored requests from a shadow experiment.
+
+
+
+# Update a shadow experiment target
+Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-update
+
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+Updates a shadow target's name, deployment, or description. `updateMask` is required and must select at least one mutable field.
+
+
+
+# Create a shadow experiment
+Source: https://docs.together.ai/reference/dmi/shadow-experiments-create
+
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
+Creates an experiment that mirrors a sampled portion of endpoint traffic to one or more target deployments without returning their responses to clients. Add a description with the update operation after creation.
+
+
+
+# Delete a shadow experiment
+Source: https://docs.together.ai/reference/dmi/shadow-experiments-delete
+
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+Deletes a shadow experiment and its target records. The underlying deployments are not deleted.
+
+
+
+# Get a shadow experiment
+Source: https://docs.together.ai/reference/dmi/shadow-experiments-get
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+Retrieves a shadow experiment, including its sampling strategy and target deployments.
+
+
+
+# List shadow experiments
+Source: https://docs.together.ai/reference/dmi/shadow-experiments-list
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
+Lists experiments that mirror sampled endpoint traffic to target deployments without affecting client responses. Set `includeTargets=true` to include target details inline.
+
+
+
+# Update a shadow experiment
+Source: https://docs.together.ai/reference/dmi/shadow-experiments-update
+
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+Updates a shadow experiment's description or source sampling strategy. `updateMask` is required; source changes also require the current `etag` in the request body.
+
+
+
+# Get a supported model
+Source: https://docs.together.ai/reference/dmi/supported-models-get
+
+openapi.yaml GET /supported-models/{id}
+Retrieves a Together-hosted base model and the certified model, configuration, hardware, and performance profiles available for deployment.
+
+
+
+# List supported models
+Source: https://docs.together.ai/reference/dmi/supported-models-list
+
+openapi.yaml GET /supported-models
+Lists Together-hosted base models that can be deployed for dedicated inference, together with their capabilities and certified deployment profiles.
 
 
 

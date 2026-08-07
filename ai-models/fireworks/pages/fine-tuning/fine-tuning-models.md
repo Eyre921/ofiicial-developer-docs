@@ -6,7 +6,7 @@ path: fine-tuning/fine-tuning-models
 
 This guide will focus on using supervised fine-tuning to fine-tune a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving fine-tuned models.
 
-For the full list of base models supported by managed fine-tuning (SFT, DPO, and RFT) and their max context lengths, see [Managed Fine-Tuning Overview → Supported base models](/fine-tuning/managed-finetuning-intro#supported-base-models).
+For the full list of base models supported by managed fine-tuning (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
 
 ## Fine-tuning a model using SFT
 

@@ -8,10 +8,10 @@ path: docs/help-center/product/speech-synthesis
 
 # Speech Synthesis
 
-#### [Speech to Text](/help-center/product/speech-synthesis/speech-to-text)
+#### [Speech to Text](/docs/help-center/product/speech-synthesis/speech-to-text)
 
 Transcribe audio files into accurate text
 
-#### [Text to Speech](/help-center/product/speech-synthesis/text-to-speech)
+#### [Text to Speech](/docs/help-center/product/speech-synthesis/text-to-speech)
 
 Convert written text into natural-sounding speech

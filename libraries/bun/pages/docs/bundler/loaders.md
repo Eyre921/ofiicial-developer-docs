@@ -213,6 +213,57 @@ If a `.yaml` or `.yml` file is passed as an entrypoint, it is converted to a `.j
 
 ***
 
+### `xml`
+
+**XML loader.** Default for `.xml`.
+
+XML files can be directly imported. Bun parses them with its native XML 1.0 parser into the compact object shape of [`Bun.XML.parse`](/docs/runtime/xml): one key for the root element, `"@name"` keys for attributes, arrays for repeated child elements, `"#text"` for text next to attributes or children, and every value a string.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+import doc from "./config.xml";
+console.log(doc.config["@version"]);
+
+// via import attribute:
+import feed from "./export.rss" with { type: "xml" };
+```
+
+During bundling, the parsed XML is inlined into the bundle as a JavaScript object.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+var doc = {
+  config: {
+    "@version": "2",
+    // ...other fields
+  },
+};
+```
+
+If a `.xml` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the parsed object.
+
+<CodeGroup>
+  ```xml Input theme={"theme":{"light":"github-light","dark":"dracula"}}
+  <user id="1">
+    <name>John Doe</name>
+    <email>johndoe@example.com</email>
+    <role>admin</role>
+    <role>editor</role>
+  </user>
+  ```
+
+  ```ts Output theme={"theme":{"light":"github-light","dark":"dracula"}}
+  export default {
+    user: {
+      "@id": "1",
+      name: "John Doe",
+      email: "johndoe@example.com",
+      role: ["admin", "editor"],
+    },
+  };
+  ```
+</CodeGroup>
+
+***
+
 ### `text`
 
 **Text loader.** Default for `.txt`.

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 312 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 313 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -188,6 +188,7 @@
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
 - `docs/cookbook/evaluate-and-optimize/red-teaming` — [Red Teaming](pages/docs/cookbook/evaluate-and-optimize/red-teaming.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/red-teaming.md)
+- `docs/cookbook/get-started/enterprise-onboarding-journey` — [Enterprise Onboarding Journey](pages/docs/cookbook/get-started/enterprise-onboarding-journey.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/enterprise-onboarding-journey.md)
 - `docs/cookbook/get-started/enterprise-quickstart` — [Enterprise Quickstart](pages/docs/cookbook/get-started/enterprise-quickstart.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/enterprise-quickstart.md)
 - `docs/cookbook/get-started/free-models-router-playground` — [Free Models Router](pages/docs/cookbook/get-started/free-models-router-playground.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/free-models-router-playground.md)
 - `docs/cookbook/get-started/migrate-to-openrouter` — [Migrate to OpenRouter in One Prompt](pages/docs/cookbook/get-started/migrate-to-openrouter.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/migrate-to-openrouter.md)

@@ -8,16 +8,16 @@ path: docs/help-center/product/monetization-business
 
 # Monetization & Business
 
-#### [Payouts](/help-center/product/monetization-business/payouts)
+#### [Payouts](/docs/help-center/product/monetization-business/payouts)
 
 Manage earnings from Voice Library and ElevenReader Publishing
 
 {" "}
 
-#### [Workspaces](/help-center/product/monetization-business/workspaces)
+#### [Workspaces](/docs/help-center/product/monetization-business/workspaces)
 
 Collaborate with team members and manage shared resources
 
-#### [Music Marketplace](/help-center/product/monetization-business/music-marketplace)
+#### [Music Marketplace](/docs/help-center/product/monetization-business/music-marketplace)
 
 Buy, sell, and license music on the Eleven Music Marketplace

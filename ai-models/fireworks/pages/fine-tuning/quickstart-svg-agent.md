@@ -6,10 +6,6 @@ path: fine-tuning/quickstart-svg-agent
 
 Train an SVG drawing agent running in a remote environment
 
-<Tip>
-  **Reinforcement Fine-Tuning (RFT)** is free for models under 16B parameters. When creating an RFT job in the UI, filter for free tuning models in the model selection area on the [fine-tuning creation page](https://app.fireworks.ai/dashboard/fine-tuning/create). If kicking off jobs from the terminal, you can find the model ID from the [Model Library](https://app.fireworks.ai/models?filter=LLM\&tunable=true). Note: SFT and DPO jobs are billed per training token for all model sizes—see the [pricing page](https://fireworks.ai/pricing) for details.
-</Tip>
-
 <Note>
   **Following the [RFT Overview](/fine-tuning/reinforcement-fine-tuning-models)?** This is the **Remote Agent Training** path—for training agents that run in your production infrastructure.
 </Note>

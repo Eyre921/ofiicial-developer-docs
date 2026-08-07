@@ -227,7 +227,7 @@ Collaborating with other members on projects is available on the [Pro](/docs/pla
 
 Upgrade from the [Hobby](/docs/plans/hobby) plan to [Pro](/docs/plans/hobby#upgrading-to-pro) to add team members.
 
-After [creating a new trial](/docs/plans/pro-plan/trials), you'll have 14 days of Pro premium features and collaboration for free.
+After [creating a new trial](/docs/plans/pro-plan/trials), you'll have 14 days of Pro premium features and collaboration for free, except for features limited to paid Pro such as the free first-year custom domain offer (see [trial limitations](/docs/plans/pro-plan/trials#trial-limitations)).
 
 ### Team membership
 
@@ -6866,7 +6866,7 @@ Choose a quickstart to set up a project and make your first request:
 
 **Image Generation**: Create images from text prompts or edit existing images with Flux 2 Flex, Recraft V3, Imagen, and more. [Learn more →](/docs/ai-gateway/getting-started/image)
 
-**Video Generation**: Create videos from text prompts, images, or video input with Veo 3.1, KlingAI, Wan, Grok Imagine Video, and more. [Learn more →](/docs/ai-gateway/getting-started/video)
+**Video Generation**: Create videos from text prompts, images, or video input with Veo 3.1, KlingAI, Wan, Grok Imagine Video, and more. Run them over a single request or as background jobs. [Learn more →](/docs/ai-gateway/getting-started/video)
 
 **Realtime**: Build low-latency, speech-to-speech voice agents that listen and respond over WebSockets. [Learn more →](/docs/ai-gateway/getting-started/realtime)
 
@@ -6884,8 +6884,8 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/realtime"
 
 This quickstart gets you to a working realtime session two ways with the AI SDK: a Node.js script you can run right away, or a browser voice agent for live, two-way conversations.
 
-> **💡 Note:** Realtime support in the AI Gateway provider is available on the canary
-> releases of the AI SDK. Install them with `pnpm add @ai-sdk/gateway@canary`.
+> **💡 Note:** Realtime support ships in the stable AI Gateway provider releases. Install it
+> with `pnpm add @ai-sdk/gateway`.
 
 The script below uses `xai/grok-voice-think-fast-1.0` and the browser agent uses `openai/gpt-realtime-2`. Both are realtime speech-to-speech models, so swap the model ID to switch between them. `xai/grok-voice-think-fast-1.0` supports speech-to-speech only, so it does not handle transcription or translation.
 
@@ -6902,22 +6902,22 @@ The fastest way to try realtime is a Node.js script, no framework and no browser
   ```
 
 - ### Install dependencies
-  Install the canary AI Gateway provider, a WebSocket client, and development dependencies:
+  Install the AI Gateway provider, a WebSocket client, and development dependencies:
   #### npm
   ```bash filename="Terminal"
-  npm install @ai-sdk/gateway@canary ws dotenv tsx typescript @types/ws @types/node
+  npm install @ai-sdk/gateway ws dotenv tsx typescript @types/ws @types/node
   ```
   #### yarn
   ```bash filename="Terminal"
-  yarn add @ai-sdk/gateway@canary ws dotenv tsx typescript @types/ws @types/node
+  yarn add @ai-sdk/gateway ws dotenv tsx typescript @types/ws @types/node
   ```
   #### pnpm
   ```bash filename="Terminal"
-  pnpm add @ai-sdk/gateway@canary ws dotenv tsx typescript @types/ws @types/node
+  pnpm add @ai-sdk/gateway ws dotenv tsx typescript @types/ws @types/node
   ```
   #### bun
   ```bash filename="Terminal"
-  bun add @ai-sdk/gateway@canary ws dotenv tsx typescript @types/ws @types/node
+  bun add @ai-sdk/gateway ws dotenv tsx typescript @types/ws @types/node
   ```
 
 - ### Set up your API key
@@ -7028,8 +7028,8 @@ The fastest way to try realtime is a Node.js script, no framework and no browser
 
 For a live, two-way voice agent, use the AI SDK in a browser app. Your server mints a short-lived token, and the `useRealtime` hook handles the microphone, playback, and WebSocket connection.
 
-> **💡 Note:** The browser voice agent also needs the canary React bindings. Install them
-> with `pnpm add ai@canary @ai-sdk/gateway@canary @ai-sdk/react@canary`.
+> **💡 Note:** The browser voice agent also needs the React bindings. Install them with
+> `pnpm add ai @ai-sdk/gateway @ai-sdk/react`.
 
 - ### Set up a Next.js app
   Realtime needs both a server (to mint a token) and a browser (to capture and play audio). Create a new app:
@@ -7037,9 +7037,9 @@ For a live, two-way voice agent, use the AI SDK in a browser app. Your server mi
   pnpm create next-app@latest ai-realtime-agent
   cd ai-realtime-agent
   ```
-  Then install the canary AI SDK, the AI Gateway provider, and the React bindings:
+  Then install the AI SDK, the AI Gateway provider, and the React bindings:
   ```bash filename="Terminal"
-  pnpm add ai@canary @ai-sdk/gateway@canary @ai-sdk/react@canary
+  pnpm add ai @ai-sdk/gateway @ai-sdk/react
   ```
 
 - ### Set up your API key
@@ -7143,9 +7143,8 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/speech"
 
 Text to speech and speech to text are two halves of the same workflow: one turns text into spoken audio, the other turns audio back into text. They feed into each other, so this quickstart runs both as a round-trip. You generate speech from a sentence, then transcribe that audio and check the text comes back.
 
-> **💡 Note:** Speech and transcription support in the AI Gateway provider is available on
-> the canary releases of the AI SDK. Install them with `pnpm add ai@canary
->   @ai-sdk/gateway@canary`.
+> **💡 Note:** Speech and transcription support ships in the stable AI SDK releases. Install
+> them with `pnpm add ai @ai-sdk/gateway`.
 
 - ### Set up your project
   Create a new directory and initialize a Node.js project:
@@ -7156,22 +7155,22 @@ Text to speech and speech to text are two halves of the same workflow: one turns
   ```
 
 - ### Install dependencies
-  Install the canary AI SDK, the AI Gateway provider, and development dependencies:
+  Install the AI SDK, the AI Gateway provider, and development dependencies:
   #### npm
   ```bash filename="Terminal"
-  npm install ai@canary @ai-sdk/gateway@canary dotenv @types/node tsx typescript
+  npm install ai @ai-sdk/gateway dotenv @types/node tsx typescript
   ```
   #### yarn
   ```bash filename="Terminal"
-  yarn add ai@canary @ai-sdk/gateway@canary dotenv @types/node tsx typescript
+  yarn add ai @ai-sdk/gateway dotenv @types/node tsx typescript
   ```
   #### pnpm
   ```bash filename="Terminal"
-  pnpm add ai@canary @ai-sdk/gateway@canary dotenv @types/node tsx typescript
+  pnpm add ai @ai-sdk/gateway dotenv @types/node tsx typescript
   ```
   #### bun
   ```bash filename="Terminal"
-  bun add ai@canary @ai-sdk/gateway@canary dotenv @types/node tsx typescript
+  bun add ai @ai-sdk/gateway dotenv @types/node tsx typescript
   ```
 
 - ### Set up your API key
@@ -7533,7 +7532,7 @@ Learn more in the [OpenResponses API docs](/docs/ai-gateway/sdks-and-apis/openre
 
 --------------------------------------------------------------------------------
 title: "Video Generation Quickstart"
-description: "Generate videos from text prompts, images, or video input using AI Gateway."
+description: "Generate videos from text prompts, images, or video input using AI Gateway, either over a single request or as a background job."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/ai-gateway/getting-started/video"
 --------------------------------------------------------------------------------
@@ -7541,6 +7540,8 @@ source: "https://vercel.com/docs/ai-gateway/getting-started/video"
 # Video Generation Quickstart
 
 This quickstart walks you through generating your first video with AI Gateway. Supported models include Veo, Kling, Wan, Grok Imagine Video, and Seedance.
+
+Generations can take minutes. The quickstart below holds one request open for the whole generation, which is fine for scripts and long-lived servers. If you run somewhere with request timeouts, use [asynchronous video generation](#asynchronous-video-generation) instead and let AI Gateway run the generation as a background job.
 
 > **💡 Note:** Video generation requires the latest version of AI SDK v6. Check your `ai` package version with `npm list ai`.
 
@@ -7612,13 +7613,83 @@ This quickstart walks you through generating your first video with AI Gateway. S
   pnpm tsx index.ts
   ```
   > **💡 Note:** Video generation can take several minutes.
-  > If you hit timeout issues, see [extending timeouts for Node.js](/docs/ai-gateway/modalities/video-generation#extending-timeouts-for-node.js).
+  > If you hit timeout issues, see [extending timeouts for Node.js](/docs/ai-gateway/modalities/video-generation#extending-timeouts-for-node.js), or switch to [asynchronous video generation](#asynchronous-video-generation) so no single request stays open.
   The generated video will be saved as `output.mp4` in your project directory.
 
 - ### Next steps
   - See [supported video generation models](/ai-gateway/models?capabilities=video-generation)
   - Learn about [image-to-video generation](/docs/ai-gateway/modalities/video-generation/image-to-video) to animate images
   - Explore [KlingAI motion control](/docs/ai-gateway/modalities/video-generation/motion-control) for character animation
+  - Run generations as background jobs with [asynchronous video generation](#asynchronous-video-generation)
+
+## Asynchronous video generation
+
+The quickstart above holds one HTTP request open for the whole generation. The asynchronous flow splits that into a start call and a series of status checks: AI Gateway tracks the generation as a background job, and the AI SDK polls it to completion for you. Your process can disconnect or retry, and the generation keeps running either way.
+
+> **💡 Note:** Asynchronous video generation requires AI SDK 7. Install or upgrade with
+> `pnpm add ai@latest`.
+
+### Generate a video asynchronously
+
+Passing the `poll` option is what opts you into the asynchronous flow. The same `experimental_generateVideo` call otherwise behaves like the quickstart above:
+
+```typescript filename="async-video.ts"
+import { experimental_generateVideo as generateVideo } from 'ai';
+import fs from 'node:fs';
+import 'dotenv/config';
+
+async function main() {
+  const result = await generateVideo({
+    model: 'google/veo-3.1-generate-001',
+    prompt: 'A serene mountain landscape at sunset with clouds drifting by',
+    aspectRatio: '16:9',
+    duration: 8,
+    // Run as an asynchronous AI Gateway job: start the generation, then
+    // poll its status until it completes.
+    poll: {
+      intervalMs: 5000, // time between status checks (default: 5000)
+      timeoutMs: 600000, // give up after 10 minutes (default: 600000)
+    },
+  });
+
+  // Save the generated video
+  fs.writeFileSync('output.mp4', result.videos[0].uint8Array);
+
+  console.log('Video saved to output.mp4');
+}
+
+main().catch(console.error);
+```
+
+Behind the scenes, the SDK sends one start request, AI Gateway accepts the generation as a job, and each status check is a short request of its own, so no single connection stays open for the full generation. Raise `timeoutMs` for models or settings that take longer than 10 minutes.
+
+`poll` also takes a `delay` function, which replaces the timer the SDK waits on between status checks. Pass your workflow's own sleep to keep a durable run from holding a live timer for the whole generation. See [asynchronous generation](/docs/ai-gateway/modalities/video-generation#asynchronous-generation) for the full option list.
+
+Every input style in [More ways to generate video](#more-ways-to-generate-video) works with `poll` as well — use hosted URLs for image/video inputs; inline file data on the asynchronous flow is limited to ~300KB.
+
+### When to use the asynchronous flow
+
+Both flows produce the same result. Choose based on how your code runs:
+
+- **Use `poll`** when you run in serverless functions or other environments with request timeouts, when generations run long (higher resolutions, longer durations), or when you want each network request to be short and retryable.
+- **Skip `poll`** for scripts and long-lived servers where holding one request open for a few minutes is fine.
+
+### Safe retries
+
+Starting a video generation costs money, so the SDK makes the start call idempotent. It sends an `idempotency-key` header that stays stable across its internal retries, and AI Gateway deduplicates on it, so a retried start never creates or bills a second generation. If you build your own retry loop around `generateVideo`, pass your own key so your retries deduplicate too:
+
+```typescript filename="retry.ts"
+const result = await generateVideo({
+  model: 'google/veo-3.1-generate-001',
+  prompt: 'A serene mountain landscape at sunset',
+  headers: { 'idempotency-key': 'order-1234-video' },
+  poll: {},
+});
+```
+
+> **💡 Note:** The asynchronous flow is polling-first. AI Gateway does not currently deliver
+> completion webhooks to the SDK, so the `webhook` option of
+> `experimental_generateVideo` has no effect with AI Gateway models.
 
 > **💡 Note:** Video models vary in their input formats and required parameters. Some accept buffers while others require URLs. Always check the [Video Generation docs](/docs/ai-gateway/modalities/video-generation) for model-specific requirements.
 
@@ -9179,9 +9250,8 @@ For a step-by-step setup, see the [Realtime quickstart](/docs/ai-gateway/getting
 
 Realtime is for live conversation. To transcribe recorded audio, see [Speech to Text](/docs/ai-gateway/modalities/speech-to-text); to generate spoken audio from text, see [Text to Speech](/docs/ai-gateway/modalities/text-to-speech).
 
-> **💡 Note:** Realtime support in the AI Gateway provider is available on the canary
-> releases of the AI SDK. Install them with `pnpm add ai@canary
->   @ai-sdk/gateway@canary @ai-sdk/react@canary`.
+> **💡 Note:** Realtime support ships in the stable AI SDK releases. Install it with `pnpm
+>   add ai @ai-sdk/gateway @ai-sdk/react`.
 
 These examples use `openai/gpt-realtime-2` and `xai/grok-voice-think-fast-1.0`. Swap the model ID to switch between them. `xai/grok-voice-think-fast-1.0` supports speech-to-speech only, so it does not handle transcription or translation.
 
@@ -9721,8 +9791,8 @@ const result = await generateSpeech({
 await writeFile('greeting.mp3', result.audio.uint8Array);
 ```
 
-> **💡 Note:** Speech support in the AI Gateway provider is available on the canary releases
-> of the AI SDK. Install them with `pnpm add ai@canary @ai-sdk/gateway@canary`.
+> **💡 Note:** Speech support ships in the stable AI SDK releases. Install it with `pnpm add
+>   ai @ai-sdk/gateway`.
 
 ### Request options
 
@@ -10600,6 +10670,7 @@ These parameters work across all video models, though support varies by provider
 | `generateAudio`   | `boolean`                                | Whether to generate audio alongside the video. Support varies by model                                                                             |
 | `frameImages`     | `Array<{ image, frameType }>`            | Role-tagged start and end frames for [image-to-video](/docs/ai-gateway/modalities/video-generation/image-to-video). Support varies by provider     |
 | `inputReferences` | `Array<image \| video>`                  | Reference images or videos for [reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video). Support varies by provider   |
+| `poll`            | `{ intervalMs?, timeoutMs? }`            | Run the generation as an [asynchronous job](#asynchronous-generation) instead of one long-lived request                                            |
 
 ## Frame and reference images
 
@@ -10664,9 +10735,49 @@ const result = await generateVideo({
 fs.writeFileSync('output.mp4', result.videos[0].uint8Array);
 ```
 
+## Asynchronous generation
+
+By default, `experimental_generateVideo` holds one HTTP request open until the video is ready. Pass a `poll` option to run the generation as an AI Gateway job instead: the SDK sends a start request, the gateway tracks the generation in the background, and the SDK checks its status until it finishes. Each network request stays short, so the flow suits serverless functions and anywhere else with request timeouts.
+
+> **💡 Note:** Asynchronous video generation requires AI SDK 7. Install or upgrade with
+> `pnpm add ai@latest`.
+
+```typescript filename="async-video.ts"
+const result = await generateVideo({
+  model: 'google/veo-3.1-generate-001',
+  prompt: 'A serene mountain landscape at sunset',
+  duration: 8,
+  poll: {
+    intervalMs: 5000,
+    timeoutMs: 600000,
+  },
+});
+```
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `poll.intervalMs` | `number` | How often the SDK checks job status. Defaults to `5000` |
+| `poll.timeoutMs` | `number` | How long to wait before giving up. Defaults to `600000` (10 minutes) |
+| `poll.delay` | `(delayInMs, { abortSignal }) => PromiseLike<void>` | Replaces the timer the SDK waits on between status checks. Pass a durable workflow's sleep function so a long run doesn't hold a live timer. Defaults to a built-in timer |
+
+Passing `poll` is what opts you in. Without it, gateway models keep using the single-request flow. Everything else works the same, so the parameters and modes documented on these pages apply to both flows.
+
+> **💡 Note:** Top-level `poll` is not the same as the `providerOptions.<provider>.pollIntervalMs`
+> and `pollTimeoutMs` options documented on the mode pages. Those control how a
+> provider polls its own upstream task inside a single request. Top-level `poll`
+> controls whether AI Gateway runs the generation as a background job at all.
+
+Starting a generation costs money, so the SDK sends a stable `idempotency-key` header on the start request and AI Gateway deduplicates on it, which keeps its internal retries from billing a second generation. Pass your own key through `headers` to make your own retry loop deduplicate too.
+
+The flow is polling-first. AI Gateway does not currently deliver completion webhooks to the SDK, so the `webhook` option of `experimental_generateVideo` has no effect with AI Gateway models.
+
+For a walkthrough, see [asynchronous video generation](/docs/ai-gateway/getting-started/video#asynchronous-video-generation) in the quickstart.
+
 ## Extending timeouts for Node.js
 
 Video generation can take several minutes. In Node.js, the default `fetch` implementation (via Undici) enforces a 5-minute timeout. This can cause requests to fail before the video finishes generating.
+
+This section applies to the single-request flow. [Asynchronous generation](#asynchronous-generation) avoids the problem instead, since no single request stays open for the whole generation.
 
 To extend these timeouts, create a custom gateway instance with a longer Undici `Agent` timeout:
 
@@ -68089,6 +68200,66 @@ curl https://vercel.com/api/domain-connect/v2/domainTemplates/providers/{provide
 
 
 --------------------------------------------------------------------------------
+title: "Free Domain with Pro"
+description: "New Pro upgrades include one free first-year custom domain. Claim an eligible TLD within 30 days of upgrading."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/domains/free-domain-with-pro"
+--------------------------------------------------------------------------------
+
+# Free Domain with Pro
+
+New Pro upgrades include one free first-year custom domain. You choose an [eligible domain](#which-domains-tlds-are-eligible) as part of your upgrade, Vercel covers the first year of registration, and the domain is managed alongside your other [Vercel-registered domains](/docs/domains/working-with-domains).
+
+## Which domains (TLDs) are eligible?
+
+The offer covers these top-level domains (TLDs):
+
+- `.online`
+- `.site`
+- `.space`
+- `.store`
+- `.tech`
+- `.website`
+
+`.com` is not eligible. For the full list of TLDs you can register and use on Vercel, see [Supported domains](/docs/domains/supported-domains).
+
+## How do I claim my free domain?
+
+You claim the free domain during the upgrade to Pro or from your dashboard after upgrading. Search for an [eligible TLD](#which-domains-tlds-are-eligible), select it, and complete the upgrade to register it. For more on registering and connecting domains, see [Working with domains](/docs/domains/working-with-domains) and [Adding a custom domain to a project](/docs/domains/working-with-domains/add-a-domain).
+
+## How long do I have to claim it?
+
+You have 30 days from the date you upgrade to Pro. If you do not claim an eligible domain within that window, the offer expires.
+
+## How many free domains do I get?
+
+One free domain per Pro upgrade.
+
+## What happens after the first year?
+
+Vercel covers the first year of registration. After the first year, the domain renews at the standard rate, which you pay. Renewals are automatic by default, and you can manage them from your dashboard. See [Managing domain renewals and redemptions](/docs/domains/working-with-domains/renew-a-domain).
+
+## Am I eligible if I'm already on Pro or on a Pro trial?
+
+No. The offer applies only to new Pro upgrades. It is not available to existing Pro users, and it is not available during a [Pro trial](/docs/plans/pro-plan/trials).
+
+## What happens to the domain if I downgrade or cancel Pro?
+
+The domain registration is yours and is managed like any other [Vercel-registered domain](/docs/domains/working-with-domains). The free first year is a billing benefit of the upgrade. After the first year, the standard renewal rate applies, which you pay. See [Managing domain renewals and redemptions](/docs/domains/working-with-domains/renew-a-domain).
+
+## Related
+
+Use these pages to manage your plan, domains, and renewals:
+
+- [Vercel Pro plan](/docs/plans/pro-plan)
+- [Pro trial](/docs/plans/pro-plan/trials)
+- [Working with domains](/docs/domains/working-with-domains)
+- [Managing domain renewals and redemptions](/docs/domains/working-with-domains/renew-a-domain)
+- [Supported domains](/docs/domains/supported-domains)
+- [Adding a custom domain to a project](/docs/domains/working-with-domains/add-a-domain)
+
+
+--------------------------------------------------------------------------------
 title: "Managing DNS Records"
 description: "Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -68748,7 +68919,7 @@ When working with DNS records, you may make minor errors in the syntax. These er
 
 When you add a new DNS record to a domain, the **Name** field should use the prefix or location of the record. For `www.example.com`, the name argument would be `www`.
 
-If you have already added a record with this, [remove the record](/docs/domains/managing-dns-records#removing-dns-records) from the **DNS Records** section of the **Domains** tab, and add the record again **without** the domain as the **Name** argument.
+If you have already added a record with this, [remove the record](/docs/domains/managing-dns-records#removing-dns-records) from the **DNS Records** section of the **Domains** tab, and add the record again **without** the domain as the **Name** argument.
 
 #### Absolute CNAME records
 
@@ -68778,6 +68949,8 @@ When you add your custom domain to a project and use Vercel's nameservers, you w
 ### Purchasing a domain through Vercel
 
 All domain purchases and renewals through Vercel are final once processed. For more information, see [Can I get a refund for a domain purchased or renewed with Vercel?](/kb/guide/can-i-get-a-refund-for-a-domain-purchased-or-renewed-with-vercel)
+
+For a [free first-year domain](/docs/plans/pro-plan#free-first-year-domain-for-new-pro-upgrades) claimed as part of an eligible new Pro upgrade, the domain renews at the standard rate after year one.
 
 ### Pending domain purchases
 
@@ -69199,6 +69372,14 @@ More often than not, you will want to assign a domain to a project that reflects
 ### Buying a domain through Vercel
 
 When you buy a domain through Vercel, we configure and set the nameservers, which means you do not need to set any DNS records or make any configurations. It just works. In addition, if you choose to make configurations, such as setting up email, it's all maintained from the [**Domains** section in your team dashboard sidebar](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Go+to+team%27s+domains+page). Finally, all renewals, including domain and SSL certificate renewals are automatically handled by Vercel.
+
+> **💡 Note:** New monthly Pro subscriptions include one free first-year domain on an
+> eligible TLD (`.online`, `.site`, `.space`, `.store`, `.tech`, or
+> `.website`), claimed within 30 days of upgrading. The offer covers one
+> domain per Pro upgrade and excludes
+> teams on a [Pro trial](/docs/plans/pro-plan/trials). After the first year,
+> the domain renews at the standard rate. See
+> [eligibility details](/docs/plans/pro-plan#free-first-year-domain-for-new-pro-upgrades).
 
 > **💡 Note:** For the ICANN registrant information:
 
@@ -116240,6 +116421,17 @@ After a revalidation, the next request will serve the last generated content and
 
 If revalidation fails, Vercel keeps serving the existing shell from the global ISR cache and regional CDN caches, and retries shortly after. For the full failure behavior, see [how ISR works](/docs/incremental-static-regeneration#on-failure).
 
+## Observability
+
+You can observe how your PPR routes behave from the [**Observability**](https://vercel.com/d?to=%2F%5Bteam%5D%2F~%2Fobservability\&title=Try+Observability) tab in the Vercel dashboard.
+
+The PPR observability page displays
+
+- **Shell hit rate**: See the hit rates for the static shell portion of the page. A high shell hit rate means most visitors get an instant first paint.
+- **Dynamic invocations**: The number of requests that required executing a function to fill in the dynamic portions of the page.
+
+> **💡 Note:** PPR uses Incremental Static Regeneration (ISR) for the static shell portion of the page and Vercel Functions for the dynamic portion, so additional observability details are available from the ISR and Functions observability pages.
+
 ## Usage and pricing
 
 When you use PPR with a framework on Vercel, you incur usage for:
@@ -117458,6 +117650,8 @@ The Pro plan offers more resources and advanced features compared to the Hobby p
 
 You can take advantage of Vercel's Pro trial to explore [Pro features](/docs/plans/pro-plan) for free during the trial period, with some [limitations](/docs/plans/pro-plan/trials#trial-limitations).
 
+The [free first-year domain offer](/docs/plans/pro-plan#free-first-year-domain-for-new-pro-upgrades) for new Pro upgrades is not available during the Pro trial. It applies only after an eligible new paid Pro upgrade and must be claimed within 30 days.
+
 To upgrade from a Hobby plan:
 
 1. Go to your [dashboard](/dashboard). If you're upgrading a team, make sure to select the team you want to upgrade
@@ -117498,6 +117692,8 @@ The Pro plan is designed for professional developers, freelancers, and businesse
 Pro introduces a flexible credit-based system that provides transparent, usage-based billing. You get enhanced team collaboration with viewer roles, advanced analytics, and the option to add enterprise features through add-ons.
 
 Key features include team roles and permissions, credit-based resource management, enhanced monitoring, and email support with optional priority support upgrades.
+
+New monthly Pro subscriptions also include a [free first-year domain on an eligible TLD](/docs/plans/pro-plan#free-first-year-domain-for-new-pro-upgrades) when claimed within 30 days of upgrading. The offer is not available to existing Pro teams or during the Pro trial.
 
 See the [Pro plan](/docs/plans/pro-plan) page for more details.
 
@@ -117725,8 +117921,21 @@ The Vercel Pro plan is designed for professional developers, freelancers, and bu
 - **[Free viewer seats](#viewer-team-seat)**: Unlimited read-only access to the Vercel dashboard so that project collaborators can view deployments, check analytics, and comment on previews
 - **[Elastic build machines](/docs/builds/managing-builds#elastic-build-machines)**: New teams use Elastic build machines by default. Elastic automatically selects a machine for each project based on its build workload
 - **[Paid add-ons](#paid-add-ons)**: Additional enterprise-grade features are available as add-ons
+- **[Free first-year domain for new Pro upgrades](#free-first-year-domain-for-new-pro-upgrades)**: One eligible Radix TLD (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`) when claimed within 30 days. Renews at the standard rate after year one
 
 For a full breakdown of the features included in the Pro plan, see the [pricing page](https://vercel.com/pricing).
+
+## Free first-year domain for new Pro upgrades
+
+New monthly Pro subscriptions include one free first-year domain on an eligible TLD (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). Claim the domain within 30 days of upgrading. After the first year, the domain renews at the standard rate.
+
+The offer is limited to one domain per Pro upgrade and excludes:
+
+- Existing Pro teams
+- Teams on a [Pro trial](/docs/plans/pro-plan/trials)
+- Additional domains beyond the one included with the upgrade
+
+See the [docs page](/docs/domains/free-domain-with-pro#how-do-i-claim-my-free-domain) for more information on how to claim your free domain.
 
 ## Monthly credit
 
@@ -117868,6 +118077,9 @@ The following Pro features are **not available** on the trial:
 
 - [Log drains](/docs/log-drains)
 - [Account webhooks](/docs/webhooks#account-webhooks)
+- [Free first-year domain for new Pro upgrades](/docs/plans/pro-plan#free-first-year-domain-for-new-pro-upgrades)
+
+The free first-year domain offer becomes available only for eligible new paid Pro subscriptions and must be claimed within 30 days of upgrading.
 
 Once your usage of [Active CPU](/docs/functions/usage-and-pricing), [Provisioned Memory](/docs/functions/usage-and-pricing), or [Function Invocations](/docs/functions/usage-and-pricing) exceeds or reaches 100% of the Pro trial usage, your trial will be paused.
 
@@ -128053,6 +128265,17 @@ To automatically pause your projects when you reach your spend amount:
 
 To learn more, see the [Spend Management documentation](/docs/spend-management#pausing-projects).
 
+### Pause a project from the dashboard
+
+> **💡 Note:** To pause or resume a project from the dashboard, you need an [Owner](/docs/rbac/access-roles#owner-role) or [Member](/docs/rbac/access-roles#member-role) role, or the [Project Administrator](/docs/rbac/access-roles#project-administrators) role on that project. For more information, see [Access Roles](/docs/rbac/access-roles).
+
+To pause a single project manually:
+
+1. On the Vercel [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), ensure you have selected the correct team from the team switcher and select the project you want to pause.
+2. Open **Settings** in the sidebar.
+3. On the **General** page, find the **Pause Project** section above **Delete Project** and select the **Pause Project** button.
+4. In the dialog that appears, review the effects of pausing, type the project name to confirm, then select **Pause Project**.
+
 ### Pause a project using the REST API
 
 To pause a project manually or with a webhook you can use the [REST API](/docs/rest-api/reference/endpoints/projects/pause-a-project):
@@ -128084,9 +128307,9 @@ Resuming a project can either be done through the [REST API](/docs/rest-api/refe
 
 1. Go to your team's [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard) and select your project. When you select it, you should notice it has a **paused** icon in the team switcher.
 2. Open **Settings** in the sidebar.
-3. You'll be presented with a banner notifying you that your project is paused and your production deployment is unavailable.
-4. Select the **Resume Service** button.
-5. In the dialog that appears, confirm that you want to resume service of your project's production deployment by selecting the **Resume** button.
+3. On the **General** page, find the **Pause Project** section above **Delete Project** and select the **Resume Project** button.
+
+You can also select **Resume Project** in the banner at the top of the same page, or in the banner on the project overview page. Resuming takes effect immediately and does not ask for confirmation.
 
 Your production deployment will resume service within a few minutes. You do not need to redeploy it.
 
@@ -164623,7 +164846,7 @@ reorderRules();
 
 WAF system bypass rules allow specific IP addresses or CIDRs to bypass system-level mitigations such as DDoS Mitigation. For more complex filters, you can use the REST API directly. This example creates a custom rule to allow mobile applications to bypass system-level mitigations.
 
-Note: Bypassing system-level mitigations with the API is currently in beta. Contact support if you would like to use it.
+Note: Bypassing system-level mitigations with the API is currently in beta. Request access in the Vercel Community at community.vercel.com if you would like to use it.
 
 ```typescript
 import { Vercel } from "@vercel/sdk";

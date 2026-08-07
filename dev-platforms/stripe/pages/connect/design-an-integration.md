@@ -211,6 +211,18 @@ For most software as a service platforms, this is the best default choice, espec
 
 #### Item 1
 
+> #### Preview API version required with the Express Dashboard
+> 
+> Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-07-29.preview`) in your Stripe SDK configuration when you create connected accounts.
+> 
+> The generated code and prompt on this page use the current generally available API version. Replace that version with the preview version string if you use this combination.
+
+#### Item 2
+
+#### Item 3
+
+#### Item 1
+
 #### Required embedded components
 
 When Stripe is responsible for negative balances on your connected accounts, you must integrate embedded components for onboarding, account management, and the notification banner.

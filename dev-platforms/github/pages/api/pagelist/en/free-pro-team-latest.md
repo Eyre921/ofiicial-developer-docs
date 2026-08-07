@@ -1183,6 +1183,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/reference/security-incident-response/investigation-areas
 /en/code-security/tutorials
 /en/code-security/tutorials/secret-protection-adoption-path
+/en/code-security/tutorials/code-quality-adoption-path
 /en/code-security/tutorials/trialing-github-advanced-security
 /en/code-security/tutorials/trialing-github-advanced-security/planning-a-trial-of-ghas
 /en/code-security/tutorials/trialing-github-advanced-security/trial-advanced-security
@@ -1994,8 +1995,9 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/enable-custom-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage
+/en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-enterprise-allowlist
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-mcp-registry
-/en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-mcp-server-access
+/en/copilot/how-tos/administer-copilot/manage-mcp-usage/restrict-based-on-registry
 /en/copilot/how-tos/administer-copilot/download-activity-report
 /en/copilot/how-tos/administer-copilot/view-usage-and-adoption
 /en/copilot/how-tos/administer-copilot/view-code-generation
@@ -2056,7 +2058,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/enterprise-administrators/agent-session-filters
 /en/copilot/reference/enterprise-administrators/agentic-audit-log-events
 /en/copilot/reference/enterprise-administrators/enterprise-managed-settings
-/en/copilot/reference/enterprise-administrators/mcp-allowlist-enforcement
+/en/copilot/reference/enterprise-administrators/mcp-private-registry-enforcement
 /en/copilot/reference/enterprise-administrators/policy-conflicts
 /en/copilot/tutorials
 /en/copilot/tutorials/copilot-cookbook
@@ -2172,6 +2174,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/write-tests
 /en/copilot/tutorials/refactor-code
 /en/copilot/tutorials/optimize-ai-usage
+/en/copilot/tutorials/optimize-chat-usage
 /en/copilot/tutorials/optimize-code-reviews
 /en/copilot/tutorials/reduce-technical-debt
 /en/copilot/tutorials/stack-ai-generated-code-in-pull-requests

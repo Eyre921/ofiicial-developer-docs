@@ -8,22 +8,22 @@ path: docs/help-center/product/distribution-publishing
 
 # Distribution & Publishing
 
-#### [Audio Native](/help-center/product/distribution-publishing/audio-native)
+#### [Audio Native](/docs/help-center/product/distribution-publishing/audio-native)
 
 Embed audio players on your website or blog
 
 {" "}
 
-#### [ElevenReader](/help-center/product/distribution-publishing/eleven-reader)
+#### [ElevenReader](/docs/help-center/product/distribution-publishing/eleven-reader)
 
 Listen to articles, PDFs, and ePubs with AI narration
 
 {" "}
 
-#### [ElevenReader Publishing](/help-center/product/distribution-publishing/eleven-reader-publishing)
+#### [ElevenReader Publishing](/docs/help-center/product/distribution-publishing/eleven-reader-publishing)
 
 Publish your books and content on the ElevenReader platform
 
-#### [GenFM](/help-center/product/distribution-publishing/gen-fm)
+#### [GenFM](/docs/help-center/product/distribution-publishing/gen-fm)
 
 Generate podcast-style content from any source material

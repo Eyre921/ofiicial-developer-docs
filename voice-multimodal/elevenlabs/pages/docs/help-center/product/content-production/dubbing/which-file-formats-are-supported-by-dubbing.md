@@ -8,13 +8,15 @@ path: docs/help-center/product/content-production/dubbing/which-file-formats-are
 
 # Which file formats are supported by Dubbing?
 
-You can output in the following formats:
+Dubbing Studio can output in the following formats:
 
 * MP4 (Video)
 * AAC (Audio)
 * AAF (Timeline data)
 * SRT (Captions)
 * WAV (Audio - separate tracks for each speaker, downloaded as zip file)
+
+Dubbing v2 returns a single lossless audio file.
 
 You can upload audio and video files in the following formats for Dubbing:
 

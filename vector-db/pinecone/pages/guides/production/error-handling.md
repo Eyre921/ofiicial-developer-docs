@@ -185,6 +185,33 @@ except Exception as e:
     print(f"Failed after retries: {e}")
 ```
 
+### Go SDK
+
+The Go SDK has built-in retries with exponential backoff. Set a `RetryPolicy` on the client and it applies to both the REST (control/data/inference) and gRPC (data plane) clients. Retries cover 429 and transient 5xx / gRPC `UNAVAILABLE` errors; other 4xx errors are never retried.
+
+```go theme={null}
+package main
+
+import (
+	"os"
+
+	"github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
+
+func main() {
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+		ApiKey:      os.Getenv("PINECONE_API_KEY"),
+		RetryPolicy: pinecone.DefaultRetryPolicy(), // 3 retries, 500ms base, 30s cap, 2x backoff
+	})
+	if err != nil {
+		panic(err)
+	}
+	_ = pc
+}
+```
+
+To customize the behavior, construct a `RetryPolicy` with your own `MaxRetries`, `BaseDelay`, `MaxDelay`, and `BackoffMultiplier`. See the [Go SDK documentation](/reference/sdks/go/overview) for details.
+
 ### Key retry principles
 
 1. **Add jitter**: Random variation in retry timing helps avoid thundering herd problems.

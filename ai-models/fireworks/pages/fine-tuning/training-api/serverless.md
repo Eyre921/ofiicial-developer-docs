@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 path: fine-tuning/training-api/serverless
 ---
 
-Run LoRA fine-tuning and RL on a shared pooled trainer, with no provisioning and per-token pricing.
+Run LoRA fine-tuning, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
   Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and select "Serverless Training API."
@@ -30,7 +30,7 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
 
 ## What is serverless training?
 
-You write the training loop, for supervised fine-tuning or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
+You write the training loop, for supervised fine-tuning, preference optimization, or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
 The [quickstart](#quickstart) shows the exact client setup and operation order. The complete implementation lives in the cookbook's [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl).
 
@@ -71,16 +71,20 @@ You do not create or delete a trainer job or inference deployment. Close each sa
     Run the loop with a cross-entropy loss over your labeled data.
   </Card>
 
+  <Card title="Direct Preference Optimization (DPO)" icon="arrows-left-right">
+    Train from chosen/rejected preference pairs. LoRA DPO uses the policy session's shared base reference, so there is no separate reference trainer to provision.
+  </Card>
+
   <Card title="Reinforcement Learning (RL)" icon="brain">
     Sample completions from the current adapter, score them with your own reward function, and train with an importance-sampling loss (GRPO-style). This is the primary serverless use case.
   </Card>
 </CardGroup>
 
-Both run as LoRA on the shared pool. For full-parameter training, DPO, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro).
+All three run as LoRA on the shared pool. For full-parameter training, ORPO, distillation, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro).
 
 ## When to use dedicated
 
-Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
+Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support such as ORPO or distillation, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
 
 ## Core concepts
 
@@ -175,7 +179,7 @@ sampler.close()
 
 The end-to-end serverless RL pattern is the standard GRPO / importance-sampling loop: each step saves the current adapter, rolls out a batch of prompts through a sampler bound to that snapshot, scores completions with your reward function, turns group-relative advantages into training datums, and takes one optimizer step.
 
-Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
+Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
 ## Saving and loading checkpoints
 
@@ -322,12 +326,12 @@ Serverless training is billed per token, across three meters: prefill, sample, a
 
 ### Models
 
-Serverless models are not selected by shape. You attach to a shared, always-on trainer pool with a base model and your own `max_seq_len`, and pay only for the tokens you prefill, sample, and train. Serverless is LoRA only, for SFT and RL.
+Serverless models are not selected by shape. You attach to a shared, always-on trainer pool with a base model and your own `max_seq_len`, and pay only for the tokens you prefill, sample, and train. Serverless is LoRA only, for SFT, DPO, and RL.
 
 <ServerlessModelsTable />
 
 * Checkpoint storage for serverless models is included during private preview.
-* The serverless model catalog evolves, and other frontier models are coming soon. For full-parameter training or a model not on that list, use [Dedicated Training](/fine-tuning/training-api/dedicated).
+* The serverless model catalog evolves, and other frontier models are coming soon. For full-parameter training, ORPO, distillation, or a model not on that list, use [Dedicated Training](/fine-tuning/training-api/dedicated).
 * For per-model availability across all training surfaces, see the [Models](/fine-tuning/models) catalog.
 
 #### What the meters mean

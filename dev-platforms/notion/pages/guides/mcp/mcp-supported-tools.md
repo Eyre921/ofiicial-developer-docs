@@ -47,6 +47,48 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Fetch `self` to see which workspace and user this connection is for"
   </Accordion>
 
+  <Accordion title="Create a file upload URL">
+    `notion-create-file-upload`
+
+    Creates a short-lived URL for uploading one local file directly to Notion. After calling the tool, the MCP client sends the file as a `multipart/form-data` POST request using the returned URL, headers, and form field. The upload response includes `suggested_markdown`, which can be passed directly to `notion-create-pages` or `notion-update-page`, or included on a separate line in `notion-create-comment` markdown to attach the file.
+
+    Files are limited to 20 MiB for this single-part upload flow, and workspace file-size limits still apply. For larger files, use the [file upload API](/guides/data-apis/working-with-files-and-media).
+
+    **Example prompts:**
+
+    * "Upload `diagram.png` and add it to the project plan"
+    * "Attach `report.pdf` to a new page"
+    * "Upload this file and include it in my comment"
+  </Accordion>
+
+  <Accordion title="Create an attachment">
+    `notion-create-attachment`
+
+    Creates a Notion attachment from exactly one source: inline UTF-8 text, a file at a direct public HTTPS URL, or a completed file upload created by the same integration. The result includes `suggested_markdown`, which can be passed directly to `notion-create-pages` or `notion-update-page`, or included on a separate line in `notion-create-comment` markdown to attach the file.
+
+    Inline content supports text formats such as HTML, Markdown, CSV, JSON, and SVG, up to 200 KiB. URL downloads support binary files, must complete within one minute, and are limited to 5 MiB on free workspaces or 50 MiB on paid workspaces. URLs must not redirect, require request headers or cookies, or resolve to a private network address. For local files, use `notion-create-file-upload` when available. For files that exceed these limits or downloads that require redirects or authentication, use the [file upload API](/guides/data-apis/working-with-files-and-media) and pass the resulting upload ID as `source_file_id`.
+
+    **Example prompts:**
+
+    * "Create an HTML attachment from this report and add it to the project page"
+    * "Attach the PDF at this direct download URL to my meeting notes"
+    * "Add the file I just uploaded to a comment"
+  </Accordion>
+
+  <Accordion title="Download a text attachment">
+    `notion-download-attachment`
+
+    Downloads the complete UTF-8 text content of an attachment created by `notion-create-attachment`. Pass the `file_upload_id` returned when the attachment was created. The attachment must belong to the same integration, have completed uploading, and use a supported text format such as HTML, Markdown, plain text, CSV, JSON, XML, CSS, YAML, TSV, calendar, GPX, or SVG.
+
+    Downloads are limited to 200 KiB. This tool does not fetch arbitrary URLs or return binary files. For larger or binary attachments, use the signed file URL returned when reading the page that contains the attachment.
+
+    **Example prompts:**
+
+    * "Download the HTML attachment I just created so I can edit it"
+    * "Read the contents of this Markdown attachment"
+    * "Retrieve the text attachment with this file upload ID"
+  </Accordion>
+
   <Accordion title="Create pages">
     `notion-create-pages`
 

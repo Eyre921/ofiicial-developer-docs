@@ -36,7 +36,13 @@ When you click on an issue on the main **Issues** page, the **Issue Details** pa
 
 ## [Issue Categories](https://docs.sentry.io/product/issues.md#issue-categories)
 
-There are two categories of issues: [*error issues*](https://docs.sentry.io/product/issues/issue-details/error-issues.md) and [*performance issues*](https://docs.sentry.io/product/issues/issue-details/performance-issues.md). An error issue is a grouping of error events; a performance issue is a grouping of poorly-performing transactions. To learn more about each issue category and what kind of information is captured in their detailed view, check out our full [Error Issues](https://docs.sentry.io/product/issues/issue-details/error-issues.md) and [Performance Issues](https://docs.sentry.io/product/issues/issue-details/performance-issues.md) documentation.
+Sentry creates issues for more than just errors. The **Issues** page sidebar groups them by the kind of problem they represent:
+
+* **Errors & Outages** — Things that break functionality: [runtime errors and exceptions](https://docs.sentry.io/product/issues/issue-details/error-issues.md), [failed cron jobs](https://docs.sentry.io/product/monitors-and-alerts/monitors/crons.md), and [uptime outages](https://docs.sentry.io/product/issues/issue-details/uptime-issues.md).
+* **Breached Metrics** — Degraded behavior over time, such as [endpoint latency regressions](https://docs.sentry.io/product/issues/issue-details/performance-issues/endpoint-regressions.md) or a metric crossing a threshold you've set.
+* **Warnings** — Code that works but inefficiently, like [N+1 queries, render-blocking assets, or file I/O on the main thread](https://docs.sentry.io/product/issues/issue-details/performance-issues.md). These degrade performance and user experience.
+* **Configuration** (beta) — SDK or tooling setup problems that make your data harder to debug, such as [low-value spans](https://docs.sentry.io/product/issues/issue-details/low-value-span-issues.md).
+* **User Feedback** — Reports your users submit directly through [User Feedback](https://docs.sentry.io/product/user-feedback.md).
 
 ## [Issue Triage](https://docs.sentry.io/product/issues.md#issue-triage)
 

@@ -31,7 +31,7 @@ Use the Python SDK directly when you need full control over Training API behavio
 
 After choosing the Training API, decide how compute is provided:
 
-* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT or RL on supported models, no provisioning, per-token billing.
+* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT, DPO, or RL on supported models, no provisioning, per-token billing.
 * [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and method support, explicit checkpoint/resume/deployment control.
 
 Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrastructure) before adapting a recipe.
@@ -111,11 +111,9 @@ Your Python process stays on your laptop throughout the run. It sends model oper
 
 ### Minimal training step lifecycle
 
-1. Create an SDK-managed service and connect a training client.
-2. Send tokenized datums (with loss weights).
-3. Run `forward_backward_custom(...).result()`.
-4. Run `optim_step(...).result()`.
-5. Save sampler weights and refresh the SDK-managed sampler.
+The shape of the loop is the same on both infrastructures. Toggle between them to see what changes at each stage:
+
+<TrainingLifecycle />
 
 ### Datums
 

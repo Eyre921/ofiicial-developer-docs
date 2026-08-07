@@ -139,22 +139,22 @@ mgr.delete(endpoint.job_id)
 
 Returned by `resolve_training_profile`:
 
-| Field                          | Type          | Description                                                                                                  |
-| ------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------ |
-| `training_shape_version`       | `str`         | Resolved shape version                                                                                       |
-| `trainer_image_tag`            | `str`         | Docker image tag for the trainer                                                                             |
-| `max_supported_context_length` | `int`         | Maximum supported context length                                                                             |
-| `node_count`                   | `int`         | Number of trainer nodes                                                                                      |
-| `deployment_shape_version`     | `str`         | Linked deployment shape                                                                                      |
-| `deployment_image_tag`         | `str`         | Docker image tag for the linked deployment                                                                   |
-| `accelerator_type`             | `str`         | GPU type                                                                                                     |
-| `accelerator_count`            | `int`         | Number of GPUs per node                                                                                      |
-| `base_model_weight_precision`  | `str`         | Model weight precision                                                                                       |
-| `pipeline_parallelism`         | `int`         | Pipeline parallelism degree                                                                                  |
-| `trainer_mode`                 | `str`         | Shape mode, such as `POLICY_TRAINER`, `FORWARD_ONLY`, or `LORA_TRAINER`                                      |
-| `training_shape`               | `str`         | Training shape name (without `/versions/...` suffix)                                                         |
-| `deployment_shape`             | `str \| None` | Full versioned deployment shape resource name; pass as-is to `DeploymentConfig.deployment_shape` for pinning |
-| `supports_lora`                | `bool`        | Whether the shape is LoRA-capable (`trainer_mode == "LORA_TRAINER"`)                                         |
+| Field                          | Type          | Description                                                                                                                                  |
+| ------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `training_shape_version`       | `str`         | Resolved shape version                                                                                                                       |
+| `trainer_image_tag`            | `str`         | Docker image tag for the trainer                                                                                                             |
+| `max_supported_context_length` | `int`         | Maximum supported context length                                                                                                             |
+| `node_count`                   | `int`         | Number of trainer nodes                                                                                                                      |
+| `deployment_shape_version`     | `str`         | Linked deployment shape                                                                                                                      |
+| `deployment_image_tag`         | `str`         | Docker image tag for the linked deployment                                                                                                   |
+| `accelerator_type`             | `str`         | GPU type                                                                                                                                     |
+| `accelerator_count`            | `int`         | Number of GPUs per node                                                                                                                      |
+| `base_model_weight_precision`  | `str`         | Model weight precision                                                                                                                       |
+| `pipeline_parallelism`         | `int`         | Pipeline parallelism degree                                                                                                                  |
+| `trainer_mode`                 | `str`         | Shape mode: `POLICY_TRAINER` or `LORA_TRAINER`. The legacy `FORWARD_ONLY` mode is deprecated and is no longer surfaced in the shape catalog. |
+| `training_shape`               | `str`         | Training shape name (without `/versions/...` suffix)                                                                                         |
+| `deployment_shape`             | `str \| None` | Full versioned deployment shape resource name; pass as-is to `DeploymentConfig.deployment_shape` for pinning                                 |
+| `supports_lora`                | `bool`        | Whether the shape is LoRA-capable (`trainer_mode == "LORA_TRAINER"`)                                                                         |
 
 ## Related guides
 

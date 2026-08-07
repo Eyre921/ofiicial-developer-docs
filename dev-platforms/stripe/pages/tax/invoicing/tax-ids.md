@@ -373,11 +373,9 @@ Clicking the **Add tax ID** link adds a row to the tax ID list, where you can se
 
 #### API
 
-#### Accounts v2
-
-You can add or delete tax IDs using the API.
-
 > To update a tax ID, delete the old ID and create ​​another one.
+
+#### Accounts v2
 
 The following example shows how to [create a tax ID](https://docs.stripe.com/api/tax_ids/create.md) for a VAT number and assign it to an `Account` object.
 
@@ -390,33 +388,9 @@ curl https://api.stripe.com/v1/tax_ids \
   -d "owner[customer_account]={{CUSTOMERACCOUNT_ID}}"
 ```
 
-The following example [deletes a tax ID](https://docs.stripe.com/api/tax_ids/delete.md):
-
-```curl
-curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAXID_ID}} \
-  -u "<<YOUR_SECRET_KEY>>:"
-```
-
 #### Customers v1
 
-You can add or delete tax IDs using the API.
-
-> To update a tax ID, delete the old ID and create ​​another one.
-
-The following example shows how to [create a tax ID](https://docs.stripe.com/api/tax_ids/create.md) for a VAT number and assign it to a `Customer` object.
-
-#### Accounts v2
-
-```curl
-curl https://api.stripe.com/v1/tax_ids \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d type=eu_vat \
-  -d value=DE123456789 \
-  -d "owner[type]=customer" \
-  -d "owner[customer_account]={{CUSTOMERACCOUNT_ID}}"
-```
-
-#### Customers v1
+The following example shows how to [create a tax ID](https://docs.stripe.com/api/tax_ids/create.md) for a VAT number and assign it to an `Customer` object.
 
 ```curl
 curl https://api.stripe.com/v1/tax_ids \

@@ -225,7 +225,7 @@ To add a tax ID:
 
 The following example shows how to [create a new tax ID](https://docs.stripe.com/api/tax_ids/create.md) on a customer storing their VAT number:
 
-> To update a tax ID, delete the old ID and create ​​another one.
+> To update a tax ID, delete the old ID and create another one.
 
 #### Accounts v2
 

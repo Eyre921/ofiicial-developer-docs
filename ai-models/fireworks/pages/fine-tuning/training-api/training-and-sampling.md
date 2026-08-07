@@ -153,7 +153,7 @@ ref = reference_client.forward(datums, "cross_entropy").result()
 The SDK chooses the backing automatically:
 
 * LoRA policy with no explicit `reference_training_shape_id` reuses the policy trainer session with adapters disabled.
-* Full-parameter policy, or any explicit `reference_training_shape_id`, uses a separate forward-only reference trainer owned by the service.
+* Full-parameter policy, or any explicit `reference_training_shape_id`, uses a separate reference trainer owned by the service, backed by the model's LoRA shape with the adapter disabled.
 
 ## Reconnecting to a running trainer
 

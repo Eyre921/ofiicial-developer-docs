@@ -6,87 +6,34 @@ path: fine-tuning/choose-training-path
 
 Choose the Fireworks workflow, infrastructure, and interaction surface for your training task.
 
-Make three choices independently:
+Pick a **method**, then a **surface** (managed or Training API, serverless or dedicated). The surface decides how much of the model you can update and which **interfaces** are available to you.
 
-1. **Workflow:** Managed Fine-Tuning or Training API.
-2. **Infrastructure:** Serverless or dedicated, only when you choose Training API.
-3. **Interface:** Your agent, the Fireworks UI, CLI or API, or Python SDK.
+## Choose a method
 
-## Step 1: Choose the workflow
+All three run as standard workflows on [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
-| Choose Managed Fine-Tuning when                                      | Choose the Training API when                                                               |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| You need a standard SFT, DPO, ORPO, or RFT job                       | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
-| You want Fireworks to own the training loop and checkpoint lifecycle | You want to fork or write Python training logic                                            |
-| A supported model and managed configuration cover the task           | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
-| You want to launch through the UI, CLI or API, or your agent         | You want to launch through the Python SDK or your agent                                    |
+|                              | SFT                                                                                                                                   | DPO                                                                                                         | RL                                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                               | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
+| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                          | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
+| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                   | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety.     | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
+| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                         | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick fine-tuning experiment            |
+| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-vlm) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
 
-<CardGroup>
-  <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
-    Standard jobs with a platform-managed loop.
-  </Card>
+## Choose a surface
 
-  <Card title="Training API" icon="code" href="/fine-tuning/training-api/introduction">
-    Programmable loops built from cookbook recipes or the SDK.
-  </Card>
-</CardGroup>
+Answer the question below and the flow takes you to your surface, which links to its guide. Click any answered question to change it, or show every path at once.
 
-## Step 2: If Training API, choose infrastructure
+<TrainingDecisionFlow />
 
-| Choose Serverless Training when                                                   | Choose Dedicated Training when                                                     |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Supported LoRA SFT or RL covers the workload                                      | You need full-parameter, DPO, ORPO, distillation, or broader model support         |
-| You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
-| Per-token billing fits a small or bursty experiment                               | A sustained, highly utilized time-based run fits the workload                      |
-| In-session sampling is sufficient                                                 | You need provisioned rollout or evaluation deployments                             |
+Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/training-api/choose-infrastructure), and check per-model support on [Models](/fine-tuning/models).
 
-<CardGroup>
-  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
-    Shared pooled trainer, no provisioning, per-token billing.
-  </Card>
+## Choose how to interact
 
-  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
-    Provisioned trainer and deployment resources with explicit lifecycle control.
-  </Card>
-</CardGroup>
-
-See the detailed [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
-
-## Step 3: Choose how to interact
-
-The interface does not determine the workflow or infrastructure:
-
-| Interface        | What it does                                                                   |
-| ---------------- | ------------------------------------------------------------------------------ |
-| **Your agent**   | Uses the Fireworks training skill to configure, run, and troubleshoot training |
-| **Fireworks UI** | Guided creation and monitoring for managed jobs                                |
-| **CLI or API**   | Reproducible managed job and resource automation                               |
-| **Python SDK**   | Custom Training API loops on serverless or dedicated infrastructure            |
-
-The Fireworks CLI is called `firectl`. [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) are recommended starting points for the Python SDK and can also be used by your agent.
-
-[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent.
-
-## Examples
-
-### Standard SFT from labeled JSONL
-
-* **Workflow:** Managed Fine-Tuning
-* **Infrastructure:** Managed by the platform; no Training API infrastructure choice
-* **Interface:** Your agent, UI, CLI, or API
-
-### First custom GRPO experiment
-
-* **Workflow:** Training API
-* **Infrastructure:** Serverless when the model and LoRA workload are supported
-* **Interface:** Python SDK with a Cookbook recipe, or your agent
-
-### Sustained full-parameter RL
-
-* **Workflow:** Training API
-* **Infrastructure:** Dedicated
-* **Interface:** Python SDK with a Cookbook recipe, optionally orchestrated by your agent
+* **Skill** — the only interface that drives both surfaces. Your coding agent configures, runs, and troubleshoots training through the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents).
+* **Fireworks UI, `firectl`, or the REST API** — managed jobs only. Guided creation and monitoring in the UI, reproducible job and resource automation from the CLI or API.
+* **Python SDK** — Training API loops only, on serverless or dedicated. Start from a [cookbook recipe](/fine-tuning/training-api/cookbook/overview).
 
 ## Before launch
 
-Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before upload, registration, paid inference, job creation, promotion, deployment, or another mutation. Material changes require approval again; promotion and deployment are confirmed separately.
+Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before any mutation — upload, registration, paid inference, job creation, promotion, or deployment — and again after material changes.

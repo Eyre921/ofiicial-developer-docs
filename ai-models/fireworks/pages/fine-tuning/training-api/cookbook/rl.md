@@ -51,6 +51,11 @@ main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 
 The example rollout above expects rows with `prompt_token_ids`. Fork the [single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in) or [multi-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multi_turn_message_in) for your environment.
 
+For multi-turn agents, tools, sandboxes, token ancestry, and session design, read
+[Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl).
+Agentic RL is a rollout integration concern; it does not change the async
+loop's scheduling contract.
+
 ## Rollout contract
 
 The factory receives `RolloutSetup` once and returns an async function:
@@ -107,6 +112,7 @@ The stock recipe has one direct client-side GRPO path and no `policy_loss` or `l
 Keep implementation and tuning detail out of the recipe page:
 
 * [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Agentic RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
 * [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
 * [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
 * [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler

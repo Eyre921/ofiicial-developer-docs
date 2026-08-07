@@ -19,7 +19,7 @@ Pricing: https://stripe.com/en-us/pricing/local-payment-methods#affirm
 
 ### Account eligibility
 Business location: CA, US; Private preview: GB
-Account type: ✓ Merchant, ✓ Platform/Marketplace (Connect)
+Account type: ✓ Merchant, ✓ Platform or marketplace (Connect)
 Business model: ✗ B2B, ✓ B2C
 Business category: View list of prohibited and restricted business categories
 The following categories are prohibited from using Affirm in all countries or are subject to additional requirements.
@@ -191,23 +191,23 @@ Maximum amount: 30,000.00 USD
 
 | Payment option | Description | Amount range |
 | --- | --- | --- |
-| Pay in 30 | Single payment in 30 days, interest-free | $35–$50 |
-| Pay in 4 | 4 interest-free biweekly payments | $50–$700 |
-| Monthly installments | 3 to 36 months, which might include interest | $100–$30,000 |
+| Pay in 30 | Single payment in 30 days, interest-free | USD&nbsp;35–USD&nbsp;50 |
+| Pay in 4 | 4 interest-free biweekly payments | USD&nbsp;50–USD&nbsp;700 |
+| Monthly installments | 3 to 36 months, which might include interest | USD&nbsp;100–USD&nbsp;30,000 |
 
 ### GB
 
 | Payment option | Description | Amount range |
 | --- | --- | --- |
-| Pay in 3 | 3 interest-free biweekly payments | £50–£700 |
-| Monthly installments | 3 to 36 months, which might include interest | £100–£30,000 |
+| Pay in 3 | 3 interest-free biweekly payments | GBP&nbsp;50–GBP&nbsp;700 |
+| Monthly installments | 3 to 36 months, which might include interest | GBP&nbsp;100–GBP&nbsp;30,000 |
 
 ### CA
 
 | Payment option | Description | Amount range |
 | --- | --- | --- |
-| Pay in 4 | 4 interest-free biweekly payments | CA$50–CA$700 |
-| Monthly installments | 3 to 36 months, which might include interest | CA$100–CA$30,000 |
+| Pay in 4 | 4 interest-free biweekly payments | CAD&nbsp;50–CAD&nbsp;700 |
+| Monthly installments | 3 to 36 months, which might include interest | CAD&nbsp;100–CAD&nbsp;30,000 |
 
 ### Financing packages 
 
@@ -324,7 +324,7 @@ When a Affirm dispute is opened, Stripe notifies you through:
 
 - Email
 - The [Stripe Dashboard](https://dashboard.stripe.com/disputes)
-- A [`charge.dispute.created`](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) webhook event
+- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) webhook event
 
 The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_due_by` field of the Dispute object.
 

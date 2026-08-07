@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  <p>Get started with your GitHub account.</p>
+  Get started with your GitHub account.
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -20,11 +20,11 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
-  <p>Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.</p>
+  Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
+  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
@@ -36,7 +36,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
@@ -44,7 +44,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 
-  You can see a history of your contributions on your profile.
+  <p>You can see a history of your contributions on your profile.</p>
 
 ## Links
 

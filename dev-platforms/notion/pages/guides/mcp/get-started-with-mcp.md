@@ -344,7 +344,9 @@ You can also start the connection from Notion:
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
-    Image and file uploads are not currently supported in Notion MCP, but this is on our roadmap. In the meantime, you can use the [file upload API](/guides/data-apis/working-with-files-and-media) to upload files such as images and PDFs to your workspace.
+    Yes. Use the [`notion-create-file-upload` tool](/guides/mcp/mcp-supported-tools#create-a-file-upload-url) to upload images and other files up to 20 MiB. Workspace file-size limits still apply.
+
+    The tool returns a short-lived upload URL and the headers and form field that the MCP client must use to send the file. After the upload succeeds, pass the response's `suggested_markdown` directly to `notion-create-pages` or `notion-update-page`, or include it on a separate line in `notion-create-comment` markdown to attach the file. For larger files, use the [file upload API](/guides/data-apis/working-with-files-and-media).
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">

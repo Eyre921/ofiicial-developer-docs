@@ -8,40 +8,40 @@ path: docs/help-center/product
 
 # Product
 
-#### [Content Production](product/content-production)
+#### [Content Production](/docs/help-center/product/content-production)
 
 Questions about Studio, Voiceover Studio, Music, Sound Effects, Dubbing, and Image & Video
 
 {" "}
 
-#### [Voice Customization](product/voice-customization)
+#### [Voice Customization](/docs/help-center/product/voice-customization)
 
 Questions about My Voices, Voice Library, Voice Cloning, and Voice Design
 
 {" "}
 
-#### [Speech Synthesis](product/speech-synthesis)
+#### [Speech Synthesis](/docs/help-center/product/speech-synthesis)
 
 Questions about Text to Speech, Speech to Text, and Voice Changer
 
 {" "}
 
-#### [Conversational Agents](product/conversational-agents)
+#### [Conversational Agents](/docs/help-center/product/conversational-agents)
 
 Questions about ElevenLabs Agents and Voice Isolator
 
 {" "}
 
-#### [Distribution & Publishing](product/distribution-publishing)
+#### [Distribution & Publishing](/docs/help-center/product/distribution-publishing)
 
 Questions about ElevenReader, ElevenReader Publishing, GenFM, and Audio Native
 
 {" "}
 
-#### [Mobile & Apps](product/mobile-apps)
+#### [Mobile & Apps](/docs/help-center/product/mobile-apps)
 
 Questions about ElevenLabs mobile apps for iOS and Android
 
-#### [Monetization & Business](product/monetization-business)
+#### [Monetization & Business](/docs/help-center/product/monetization-business)
 
 Questions about Payouts and Workspaces

@@ -1175,6 +1175,1177 @@ components:
             type:
               type: string
               enum:
+ > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Preview merged configuration
+
+GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview
+
+Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+
+Reference: https://elevenlabs.io/docs/api-reference/agents/branches/preview-merge
+
+## OpenAPI Specification
+
+```yaml
+openapi: 3.1.0
+info:
+  title: api
+  version: 1.0.0
+paths:
+  /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview:
+    get:
+      operationId: preview_merge
+      summary: Preview Merged Configuration
+      description: >-
+        Returns the result of merging the source branch into the target branch
+        without performing the merge. Useful for showing an accurate diff before
+        confirming.
+      tags:
+        - branches
+      parameters:
+        - name: agent_id
+          in: path
+          description: The id of an agent. This is returned on agent creation.
+          required: true
+          schema:
+            type: string
+        - name: source_branch_id
+          in: path
+          description: Unique identifier for the source branch to merge from.
+          required: true
+          schema:
+            type: string
+        - name: target_branch_id
+          in: query
+          description: The ID of the target branch to merge into.
+          required: true
+          schema:
+            type: string
+        - name: force
+          in: query
+          description: >-
+            When true, source branch changes always win conflicts regardless of
+            timestamps
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: xi-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MergePreviewResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+servers:
+  - url: https://api.elevenlabs.io
+    description: Production
+  - url: https://api.us.elevenlabs.io
+    description: Production US
+  - url: https://api.eu.residency.elevenlabs.io
+    description: Production EU
+  - url: https://api.in.residency.elevenlabs.io
+    description: Production India
+  - url: https://api.sg.residency.elevenlabs.io
+    description: Production Singapore
+components:
+  schemas:
+    ASRQuality:
+      type: string
+      enum:
+        - high
+      default: high
+      title: ASRQuality
+    ASRProvider:
+      type: string
+      enum:
+        - elevenlabs
+        - scribe_realtime
+      default: scribe_realtime
+      title: ASRProvider
+    ASRInputFormat:
+      type: string
+      enum:
+        - pcm_8000
+        - pcm_16000
+        - pcm_22050
+        - pcm_24000
+        - pcm_44100
+        - pcm_48000
+        - ulaw_8000
+      default: pcm_16000
+      title: ASRInputFormat
+    ASRConversationalConfig:
+      type: object
+      properties:
+        quality:
+          $ref: '#/components/schemas/ASRQuality'
+          default: high
+          description: The quality of the transcription
+        provider:
+          $ref: '#/components/schemas/ASRProvider'
+          default: scribe_realtime
+          description: The provider of the transcription service
+        user_input_audio_format:
+          $ref: '#/components/schemas/ASRInputFormat'
+          default: pcm_16000
+          description: The format of the audio to be transcribed
+        keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords to boost prediction probability for
+      title: ASRConversationalConfig
+    TurnEagerness:
+      type: string
+      enum:
+        - patient
+        - normal
+        - eager
+      default: normal
+      description: >-
+        Agent's eagerness to respond. Higher values make agent wait for higher
+        turn probability.
+      title: TurnEagerness
+    SpellingPatience:
+      type: string
+      enum:
+        - auto
+        - 'off'
+      default: auto
+      description: >-
+        Controls if the agent should be more patient when user is spelling
+        numbers and named entities.
+      title: SpellingPatience
+    TurnModel:
+      type: string
+      enum:
+        - turn_v2
+        - turn_v3
+      default: turn_v3
+      description: Version of the turn detection model to use.
+      title: TurnModel
+    SoftTimeoutConfig:
+      type: object
+      properties:
+        timeout_seconds:
+          type: number
+          format: double
+          default: -1
+          description: >-
+            Time in seconds before showing the predefined message while waiting
+            for LLM response. Set to -1 to disable.
+        message:
+          type: string
+          default: Hhmmmm...yeah.
+          description: >-
+            Message to show when the first soft timeout is reached while waiting
+            for LLM response. Supports dynamic variables (e.g.,
+            {{system__time}}, {{custom_variable}}).
+        additional_soft_timeout_messages:
+          type: array
+          items:
+            type: string
+          description: >-
+            Extra static filler messages for subsequent soft timeouts in the
+            same LLM generation. The first timeout uses `message`. If fewer
+            messages are configured than `max_soft_timeouts_per_generation`, the
+            last configured message is repeated; otherwise a built-in filler is
+            used.
+        use_llm_generated_message:
+          type: boolean
+          default: false
+          description: >-
+            If enabled, the soft timeout message will be generated dynamically
+            instead of using the static message.
+        randomize_fillers:
+          type: boolean
+          default: false
+          description: >-
+            If enabled, shuffle the order of static soft timeout messages once
+            at the start of each turn. Only applies when
+            use_llm_generated_message is false.
+        max_soft_timeouts_per_generation:
+          type: integer
+          default: 1
+          description: >-
+            Maximum filler messages while waiting for a single LLM response.
+            Fires every timeout_seconds until the LLM streams content or this
+            limit is reached.
+        llm_generated_message_prompt_override:
+          type:
+            - string
+            - 'null'
+          description: >-
+            Custom prompt for generating the soft timeout filler message when
+            use_llm_generated_message is enabled. Recent conversation context is
+            provided as a separate user message. If not set, the default prompt
+            will be used. Supports dynamic variables (e.g., {{system__time}},
+            {{custom_variable}}).
+      description: >-
+        Configuration for soft timeout functionality during LLM response
+        generation.
+      title: SoftTimeoutConfig
+    TurnConfig:
+      type: object
+      properties:
+        turn_timeout:
+          type: number
+          format: double
+          default: 7
+          description: Maximum wait time for the user's reply before re-engaging the user
+        initial_wait_time:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: >-
+            How long the agent will wait for the user to start the conversation
+            if the first message is empty. If not set, uses the regular
+            turn_timeout.
+        silence_end_call_timeout:
+          type: number
+          format: double
+          default: -1
+          description: >-
+            Maximum wait time since the user last spoke before terminating the
+            call
+        turn_eagerness:
+          $ref: '#/components/schemas/TurnEagerness'
+          default: normal
+          description: >-
+            Controls how eager the agent is to respond. Low = less eager (waits
+            longer), Standard = default eagerness, High = more eager (responds
+            sooner)
+        spelling_patience:
+          $ref: '#/components/schemas/SpellingPatience'
+          default: auto
+          description: >-
+            Controls if the agent should be more patient when user is spelling
+            numbers and named entities. Auto = model based, Off = never wait
+            extra
+        speculative_turn:
+          type: boolean
+          default: false
+          description: >-
+            When enabled, starts generating LLM responses during silence before
+            full turn confidence is reached, reducing perceived latency. May
+            increase LLM costs.
+        retranscribe_on_turn_timeout:
+          type: boolean
+          default: false
+          description: >-
+            When enabled, if VAD detects no speech, attempts to re-transcribe
+            accumulated audio at turn timeout. Disables silence discount billing
+            for affected turns.
+        turn_model:
+          $ref: '#/components/schemas/TurnModel'
+          default: turn_v3
+        interruption_ignore_terms:
+          type: array
+          items:
+            type: string
+          description: >-
+            List of terms that should not trigger an interruption when spoken by
+            the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
+            matching.
+        interruption_ignore_term_languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            Language codes for which preset ignore-term categories have been
+            activated. Stored explicitly so display is not inferred from term
+            overlap.
+        transcribe_on_disabled_interruptions:
+          type: boolean
+          default: false
+          description: >-
+            When interruptions are disabled, still transcribe what the user says
+            so it can carry into the next turn. When off, user speech during a
+            non-interruptible turn is ignored and won't trigger a turn.
+        soft_timeout_config:
+          $ref: '#/components/schemas/SoftTimeoutConfig'
+          description: >-
+            Configuration for soft timeout functionality. Provides immediate
+            feedback during longer LLM responses.
+      title: TurnConfig
+    TTSConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TTSConversationalModel
+    TTSModelFamily:
+      type: string
+      enum:
+        - turbo
+        - flash
+        - multilingual
+        - v3_conversational
+      title: TTSModelFamily
+    TTSOptimizeStreamingLatency:
+      type: string
+      enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+      title: TTSOptimizeStreamingLatency
+    SupportedVoice:
+      type: object
+      properties:
+        label:
+          type: string
+        voice_id:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        language:
+          type:
+            - string
+            - 'null'
+        model_family:
+          oneOf:
+            - $ref: '#/components/schemas/TTSModelFamily'
+            - type: 'null'
+        optimize_streaming_latency:
+          oneOf:
+            - $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
+            - type: 'null'
+        stability:
+          type:
+            - number
+            - 'null'
+          format: double
+        speed:
+          type:
+            - number
+            - 'null'
+          format: double
+        similarity_boost:
+          type:
+            - number
+            - 'null'
+          format: double
+      required:
+        - label
+        - voice_id
+      title: SupportedVoice
+    SuggestedAudioTag:
+      type: object
+      properties:
+        tag:
+          type: string
+          description: >-
+            Audio tag to use (for best performance, 1-2 words, e.g., 'happy',
+            'excited')
+        description:
+          type:
+            - string
+            - 'null'
+          description: Optional description of when to use this tag
+      required:
+        - tag
+      title: SuggestedAudioTag
+    TTSOutputFormat:
+      type: string
+      enum:
+        - pcm_8000
+        - pcm_16000
+        - pcm_22050
+        - pcm_24000
+        - pcm_44100
+        - pcm_48000
+        - ulaw_8000
+      default: pcm_16000
+      title: TTSOutputFormat
+    TextNormalisationType:
+      type: string
+      enum:
+        - system_prompt
+        - elevenlabs
+      default: system_prompt
+      description: Method for converting numbers to words before sending to TTS
+      title: TextNormalisationType
+    PydanticPronunciationDictionaryVersionLocator:
+      type: object
+      properties:
+        pronunciation_dictionary_id:
+          type: string
+          description: The ID of the pronunciation dictionary
+        version_id:
+          type:
+            - string
+            - 'null'
+          description: The ID of the version of the pronunciation dictionary
+      required:
+        - pronunciation_dictionary_id
+        - version_id
+      description: >-
+        A locator for other documents to be able to reference a specific
+        dictionary and it's version.
+
+        This is a pydantic version of
+        PronunciationDictionaryVersionLocatorDBModel.
+
+        Required to ensure compat with the rest of the agent data models.
+      title: PydanticPronunciationDictionaryVersionLocator
+    TTSConversationalConfig-Output:
+      type: object
+      properties:
+        model_id:
+          $ref: '#/components/schemas/TTSConversationalModel'
+          default: eleven_flash_v2
+          description: The model to use for TTS
+        voice_id:
+          type: string
+          default: cjVigY5qzO86Huf0OWal
+          description: The voice ID to use for TTS
+        supported_voices:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportedVoice'
+          description: Additional supported voices for the agent
+        expressive_mode:
+          type: boolean
+          default: true
+          description: >-
+            When enabled, applies expressive audio tags prompt. Automatically
+            disabled for non-v3 models.
+        suggested_audio_tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/SuggestedAudioTag'
+          description: >-
+            Suggested audio tags to boost expressive speech (for eleven_v3 and
+            eleven_v3_conversational models). The agent can still use other tags
+            not listed here.
+        agent_output_audio_format:
+          $ref: '#/components/schemas/TTSOutputFormat'
+          default: pcm_16000
+          description: The audio format to use for TTS
+        optimize_streaming_latency:
+          $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
+          description: 'Deprecated: this field is a no-op and is ignored.'
+        stability:
+          type: number
+          format: double
+          default: 0.5
+          description: The stability of generated speech
+        speed:
+          type: number
+          format: double
+          default: 1
+          description: The speed of generated speech
+        similarity_boost:
+          type: number
+          format: double
+          default: 0.8
+          description: The similarity boost for generated speech
+        text_normalisation_type:
+          $ref: '#/components/schemas/TextNormalisationType'
+          default: system_prompt
+          description: >-
+            Method for converting numbers to words before converting text to
+            speech. If set to SYSTEM_PROMPT, the system prompt will be updated
+            to include normalization instructions. If set to ELEVENLABS, the
+            text will be normalized after generation, incurring slight
+            additional latency.
+        pronunciation_dictionary_locators:
+          type: array
+          items:
+            $ref: '#/components/schemas/PydanticPronunciationDictionaryVersionLocator'
+          description: The pronunciation dictionary locators
+        enable_phoneme_tags:
+          type: boolean
+          default: true
+          description: >-
+            Opt-in to SSML phoneme tag handling for V3 models. When enabled,
+            phoneme tags (inline and from pronunciation dictionaries) are parsed
+            into inline IPA before being sent to the model.
+      title: TTSConversationalConfig-Output
+    ClientEvent:
+      type: string
+      enum:
+        - conversation_initiation_metadata
+        - asr_initiation_metadata
+        - ping
+        - audio
+        - interruption
+        - user_transcript
+        - tentative_user_transcript
+        - agent_response
+        - agent_response_correction
+        - client_tool_call
+        - mcp_tool_call
+        - mcp_connection_status
+        - agent_tool_request
+        - agent_tool_response
+        - agent_tool_response_full_payload
+        - agent_response_metadata
+        - vad_score
+        - agent_chat_response_part
+        - client_error
+        - guardrail_triggered
+        - dtmf_request
+        - agent_response_complete
+        - internal_turn_probability
+        - internal_tentative_agent_response
+      title: ClientEvent
+    FileInputConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: >-
+            When enabled, users may attach images or PDFs in chat when the LLM
+            supports multimodal input.
+        max_files_in_memory:
+          type: integer
+          default: 10
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
+        max_files_per_conversation:
+          type: integer
+          default: 10
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
+      title: FileInputConfig
+    BackgroundSoundSourceType:
+      type: string
+      enum:
+        - preset
+      description: The type of background sound source.
+      title: BackgroundSoundSourceType
+    BackgroundSoundPresetId:
+      type: string
+      enum:
+        - office2
+        - office1
+        - restaurant
+        - city
+        - typing
+        - elevator1
+        - elevator2
+        - elevator3
+        - elevator4
+      description: Predefined background sound preset identifiers.
+      title: BackgroundSoundPresetId
+    BackgroundSoundConfig:
+      type: object
+      properties:
+        source_type:
+          oneOf:
+            - $ref: '#/components/schemas/BackgroundSoundSourceType'
+            - type: 'null'
+          description: The type of background sound source.
+        source_id:
+          oneOf:
+            - $ref: '#/components/schemas/BackgroundSoundPresetId'
+            - type: 'null'
+          description: Identifier for the sound source.
+        volume:
+          type: number
+          format: double
+          default: 0.6
+          description: Volume level for background sound (0.01 to 1.0).
+        crossfade_loop:
+          type: boolean
+          default: false
+          description: >-
+            Apply a crossfade at the loop boundary to avoid audible pops when
+            the sound loops.
+      title: BackgroundSoundConfig
+    ConversationConfig-Output:
+      type: object
+      properties:
+        text_only:
+          type: boolean
+          default: false
+          description: >-
+            If enabled audio will not be processed and only text will be used,
+            use to avoid audio pricing.
+        max_duration_seconds:
+          type: integer
+          default: 600
+          description: The maximum duration of a conversation in seconds
+        client_events:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientEvent'
+          description: The events that will be sent to the client
+        file_input:
+          $ref: '#/components/schemas/FileInputConfig'
+          description: >-
+            Configuration for file input (image/PDF uploads) during
+            conversations.
+        monitoring_enabled:
+          type: boolean
+          default: false
+          description: Enable real-time monitoring of conversations via WebSocket
+        monitoring_events:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientEvent'
+          description: The events that will be sent to monitoring connections.
+        background_sound:
+          $ref: '#/components/schemas/BackgroundSoundConfig'
+          description: Configuration for background sound during conversations.
+        source_attribution:
+          type: boolean
+          default: false
+          description: >-
+            When enabled and knowledge base content is present, the LLM is
+            instructed to report which sources it used.
+      title: ConversationConfig-Output
+    ASRConversationalConfigOverride:
+      type: object
+      properties:
+        keywords:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: Keywords to boost prediction probability for
+      title: ASRConversationalConfigOverride
+    SoftTimeoutConfigOverride:
+      type: object
+      properties:
+        message:
+          type:
+            - string
+            - 'null'
+          description: >-
+            Message to show when the first soft timeout is reached while waiting
+            for LLM response. Supports dynamic variables (e.g.,
+            {{system__time}}, {{custom_variable}}).
+      title: SoftTimeoutConfigOverride
+    TurnConfigOverride:
+      type: object
+      properties:
+        soft_timeout_config:
+          oneOf:
+            - $ref: '#/components/schemas/SoftTimeoutConfigOverride'
+            - type: 'null'
+          description: >-
+            Configuration for soft timeout functionality. Provides immediate
+            feedback during longer LLM responses.
+      title: TurnConfigOverride
+    TTSConversationalConfigOverride:
+      type: object
+      properties:
+        model_id:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalModel'
+            - type: 'null'
+          description: The model to use for TTS
+        voice_id:
+          type:
+            - string
+            - 'null'
+          description: The voice ID to use for TTS
+        stability:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: The stability of generated speech
+        speed:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: The speed of generated speech
+        similarity_boost:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: The similarity boost for generated speech
+      title: TTSConversationalConfigOverride
+    ConversationConfigOverride:
+      type: object
+      properties:
+        text_only:
+          type:
+            - boolean
+            - 'null'
+          description: >-
+            If enabled audio will not be processed and only text will be used,
+            use to avoid audio pricing.
+      title: ConversationConfigOverride
+    LLM:
+      type: string
+      enum:
+        - gpt-4o-mini
+        - gpt-4o
+        - gpt-4
+        - gpt-4-turbo
+        - gpt-4.1
+        - gpt-4.1-mini
+        - gpt-4.1-nano
+        - gpt-5
+        - gpt-5.1
+        - gpt-5.2
+        - gpt-5.2-chat-latest
+        - gpt-5.4
+        - gpt-5.4-mini
+        - gpt-5.4-nano
+        - gpt-5.5
+        - gpt-5.6-sol
+        - gpt-5.6-terra
+        - gpt-5.6-luna
+        - gpt-5-mini
+        - gpt-5-nano
+        - gpt-3.5-turbo
+        - gemini-1.5-pro
+        - gemini-1.5-flash
+        - gemini-2.0-flash
+        - gemini-2.0-flash-lite
+        - gemini-2.5-flash-lite
+        - gemini-2.5-flash
+        - gemini-3-pro-preview
+        - gemini-3-flash-preview
+        - gemini-3.1-pro-preview
+        - gemini-3.1-flash-lite-preview
+        - gemini-3.1-flash-lite
+        - gemini-3.5-flash
+        - gemini-3.5-flash-lite
+        - claude-sonnet-4-5
+        - claude-opus-4-7
+        - claude-opus-4-8
+        - claude-sonnet-4-6
+        - claude-sonnet-5
+        - claude-sonnet-4
+        - claude-haiku-4-5
+        - claude-3-7-sonnet
+        - claude-3-5-sonnet
+        - claude-3-5-sonnet-v1
+        - claude-3-haiku
+        - grok-beta
+        - custom-llm
+        - qwen3-4b
+        - qwen3-30b-a3b
+        - qwen36-35b-a3b
+        - qwen35-397b-a17b
+        - gpt-oss-20b
+        - gpt-oss-120b
+        - glm-45-air-fp8
+        - gemini-2.5-flash-preview-09-2025
+        - gemini-2.5-flash-lite-preview-09-2025
+        - gemini-2.5-flash-preview-05-20
+        - gemini-2.5-flash-preview-04-17
+        - gemini-2.5-flash-lite-preview-06-17
+        - gemini-2.0-flash-lite-001
+        - gemini-2.0-flash-001
+        - gemini-1.5-flash-002
+        - gemini-1.5-flash-001
+        - gemini-1.5-pro-002
+        - gemini-1.5-pro-001
+        - claude-sonnet-4@20250514
+        - claude-sonnet-4-5@20250929
+        - claude-haiku-4-5@20251001
+        - claude-3-7-sonnet@20250219
+        - claude-3-5-sonnet@20240620
+        - claude-3-5-sonnet-v2@20241022
+        - claude-3-haiku@20240307
+        - gpt-5-2025-08-07
+        - gpt-5.1-2025-11-13
+        - gpt-5.2-2025-12-11
+        - gpt-5.4-2026-03-05
+        - gpt-5.4-mini-2026-03-17
+        - gpt-5.4-nano-2026-03-17
+        - gpt-5.5-2026-04-23
+        - gpt-5-mini-2025-08-07
+        - gpt-5-nano-2025-08-07
+        - gpt-4.1-2025-04-14
+        - gpt-4.1-mini-2025-04-14
+        - gpt-4.1-nano-2025-04-14
+        - gpt-4o-mini-2024-07-18
+        - gpt-4o-2024-11-20
+        - gpt-4o-2024-08-06
+        - gpt-4o-2024-05-13
+        - gpt-4-0613
+        - gpt-4-0314
+        - gpt-4-turbo-2024-04-09
+        - gpt-3.5-turbo-0125
+        - gpt-3.5-turbo-1106
+        - watt-tool-8b
+        - watt-tool-70b
+      title: LLM
+    KnowledgeBaseDocumentType:
+      type: string
+      enum:
+        - file
+        - url
+        - text
+        - folder
+      title: KnowledgeBaseDocumentType
+    DocumentUsageModeEnum:
+      type: string
+      enum:
+        - prompt
+        - auto
+      default: auto
+      title: DocumentUsageModeEnum
+    KnowledgeBaseLocator:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/KnowledgeBaseDocumentType'
+          description: The type of the knowledge base
+        name:
+          type: string
+          description: The name of the knowledge base
+        id:
+          type: string
+          description: The ID of the knowledge base
+        usage_mode:
+          $ref: '#/components/schemas/DocumentUsageModeEnum'
+          default: auto
+          description: The usage mode of the knowledge base
+      required:
+        - type
+        - name
+        - id
+      title: KnowledgeBaseLocator
+    PromptAgentAPIModelOverride-Output:
+      type: object
+      properties:
+        prompt:
+          type:
+            - string
+            - 'null'
+          description: The prompt for the agent
+        llm:
+          oneOf:
+            - $ref: '#/components/schemas/LLM'
+            - type: 'null'
+          description: >-
+            The LLM to query with the prompt and the chat history. If using data
+            residency, the LLM must be supported in the data residency
+            environment
+        tool_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: A list of IDs of tools used by the agent
+        native_mcp_server_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: A list of Native MCP server ids to be used by the agent
+        knowledge_base:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/KnowledgeBaseLocator'
+          description: A list of knowledge bases to be used by the agent
+      title: PromptAgentAPIModelOverride-Output
+    AgentConfigOverride-Output:
+      type: object
+      properties:
+        first_message:
+          type:
+            - string
+            - 'null'
+          description: >-
+            If non-empty, the first message the agent will say. If empty, the
+            agent waits for the user to start the discussion.
+        language:
+          type:
+            - string
+            - 'null'
+          description: Language of the agent - used for ASR and TTS
+        max_conversation_duration_message:
+          type:
+            - string
+            - 'null'
+          description: >-
+            If non-empty, the message the agent will send when max conversation
+            duration is reached.
+        prompt:
+          oneOf:
+            - $ref: '#/components/schemas/PromptAgentAPIModelOverride-Output'
+            - type: 'null'
+          description: The prompt for the agent
+      title: AgentConfigOverride-Output
+    ConversationConfigClientOverride-Output:
+      type: object
+      properties:
+        asr:
+          oneOf:
+            - $ref: '#/components/schemas/ASRConversationalConfigOverride'
+            - type: 'null'
+          description: Configuration for conversational transcription
+        turn:
+          oneOf:
+            - $ref: '#/components/schemas/TurnConfigOverride'
+            - type: 'null'
+          description: Configuration for turn detection
+        tts:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalConfigOverride'
+            - type: 'null'
+          description: Configuration for conversational text to speech
+        conversation:
+          oneOf:
+            - $ref: '#/components/schemas/ConversationConfigOverride'
+            - type: 'null'
+          description: Configuration for conversational events
+        agent:
+          oneOf:
+            - $ref: '#/components/schemas/AgentConfigOverride-Output'
+            - type: 'null'
+          description: Agent specific configuration
+      title: ConversationConfigClientOverride-Output
+    LanguagePresetTranslation:
+      type: object
+      properties:
+        source_hash:
+          type: string
+        text:
+          type: string
+      required:
+        - source_hash
+        - text
+      title: LanguagePresetTranslation
+    LanguagePreset-Output:
+      type: object
+      properties:
+        overrides:
+          $ref: '#/components/schemas/ConversationConfigClientOverride-Output'
+          description: The overrides for the language preset
+        first_message_translation:
+          oneOf:
+            - $ref: '#/components/schemas/LanguagePresetTranslation'
+            - type: 'null'
+          description: The translation of the first message
+        soft_timeout_translation:
+          oneOf:
+            - $ref: '#/components/schemas/LanguagePresetTranslation'
+            - type: 'null'
+          description: The translation of the soft timeout message
+      required:
+        - overrides
+      title: LanguagePreset-Output
+    VADConfig:
+      type: object
+      properties: {}
+      title: VADConfig
+    Verbosity:
+      type: string
+      enum:
+        - auto
+        - concise
+        - thorough
+      title: Verbosity
+    OutputFormat:
+      type: string
+      enum:
+        - mp3_22050_32
+        - mp3_44100_32
+        - mp3_44100_64
+        - mp3_44100_96
+        - mp3_44100_128
+        - mp3_44100_192
+        - pcm_16000
+        - pcm_22050
+        - pcm_24000
+        - pcm_44100
+        - ulaw_8000
+      title: OutputFormat
+    InteractionBudget:
+      type: string
+      enum:
+        - realtime
+        - 5_minutes
+        - 10_minutes
+        - 1_hour
+      title: InteractionBudget
+    BehaviorOverride:
+      type: object
+      properties:
+        verbosity:
+          oneOf:
+            - $ref: '#/components/schemas/Verbosity'
+            - type: 'null'
+          description: Verbosity override. Underlying default applies when unset.
+        output_format:
+          oneOf:
+            - $ref: '#/components/schemas/OutputFormat'
+            - type: 'null'
+          description: Output format override. Underlying default applies when unset.
+        interaction_budget:
+          oneOf:
+            - $ref: '#/components/schemas/InteractionBudget'
+            - type: 'null'
+          description: Interaction budget override. Underlying default applies when unset.
+      title: BehaviorOverride
+    LLMReasoningEffort:
+      type: string
+      enum:
+        - none
+        - minimal
+        - low
+        - medium
+        - high
+        - xhigh
+        - max
+      title: LLMReasoningEffort
+    ToolInterruptionMode:
+      type: string
+      enum:
+        - allow
+        - disable_during_tool
+        - disable_during_tool_and_turn
+      default: allow
+      title: ToolInterruptionMode
+    PreToolSpeechMode:
+      type: string
+      enum:
+        - auto
+        - force
+        - 'off'
+      default: auto
+      title: PreToolSpeechMode
+    DynamicVariableAssignment:
+      type: object
+      properties:
+        source:
+          type: string
+          enum:
+            - response
+          default: response
+          description: >-
+            The source to extract the value from. Currently only 'response' is
+            supported.
+        dynamic_variable:
+          type: string
+          description: The name of the dynamic variable to assign the extracted value to
+        value_path:
+          type: string
+          description: >-
+            Dot notation path to extract the value from the source (e.g.,
+            'user.name' or 'data.0.id')
+        sanitize:
+          type: boolean
+          default: false
+          description: >-
+            If true, this assignment's value will be removed from the tool
+            response before sending to the LLM and transcript, but still
+            processed for variable assignment.
+        preserve_native_type:
+          type: boolean
+          default: false
+          description: >-
+            If true, non-scalar values (lists, objects) extracted from the tool
+            response are stored as their native type instead of being
+            stringified to JSON. Enable this to use extracted arrays directly as
+            list dynamic variables.
+      required:
+        - dynamic_variable
+        - value_path
+      description: >-
+        Configuration for extracting values from tool responses and assigning
+        them to dynamic variables.
+      title: DynamicVariableAssignment
+    ToolCallSoundType:
+      type: string
+      enum:
+        - typing
+        - elevator1
+        - elevator2
+        - elevator3
+        - elevator4
+      description: Predefined tool call sounds; ``None`` means no sound.
+      title: ToolCallSoundType
+    ToolCallSoundBehavior:
+      type: string
+      enum:
+        - auto
+        - always
+      default: auto
+      description: Determines how the tool call sound should be played.
+      title: ToolCallSoundBehavior
+    ToolErrorHandlingMode:
+      type: string
+      enum:
+        - auto
+        - summarized
+        - passthrough
+        - hide
+      default: auto
+      description: >-
+        Controls how tool errors are processed before being shared with the
+        agent.
+      title: ToolErrorHandlingMode
+    ProcedureType:
+      type: string
+      enum:
+        - free_form
+        - deterministic
+      default: free_form
+      title: ProcedureType
+    GuardrailExecutionMode:
+      type: string
+      enum:
+        - streaming
+        - blocking
+      default: streaming
+      title: GuardrailExecutionMode
+    CustomGuardrailConfigModel:
+      type: string
+      enum:
+        - gemini-2.5-flash-lite
+        - gemini-2.5-flash
+        - gemini-3.1-flash-lite
+        - gemini-3.5-flash
+        - claude-haiku-4-5
+        - claude-sonnet-4-6
+        - gpt-5.4-nano
+        - gpt-5.4-mini
+      default: gemini-2.5-flash-lite
+      description: LLM model to use for custom guardrail evaluation
+      title: CustomGuardrailConfigModel
+    CustomGuardrailConfigTriggerAction:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
                 - end_call
               default: end_call
           required:

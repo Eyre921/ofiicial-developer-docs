@@ -100,7 +100,7 @@ In the following table, the **All business types supported** column indicates th
 `affirm_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/affirm.md#prohibited-and-restricted-business-categories). | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/affirm.md?pm-info=business-locations). | Yes |
 | [Afterpay Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md)
 
-`afterpay_clearpay_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-business-categories). | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/afterpay-clearpay.md?pm-info=business-locations). | Yes |
+`afterpay_clearpay_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-and-restricted-business-categories). | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/afterpay-clearpay.md?pm-info=business-locations). | Yes |
 | [Alipay](https://docs.stripe.com/payments/alipay.md)
 
 `alipay_payments` | No, see [prohibited businesses](https://support.stripe.com/questions/alipay-prohibited-businesses). | The payment method must be activated on the Dashboard settings page. Also, request [an invite](https://docs.stripe.com/payments/alipay.md) to create charges on behalf of other accounts. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/alipay.md?pm-info=business-locations). | No |
@@ -232,7 +232,7 @@ For connected accounts that don’t have access to the full Stripe Dashboard, wh
 `affirm_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/affirm.md#prohibited-and-restricted-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/affirm.md?pm-info=business-locations). | Yes |
 | [Afterpay Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md)
 
-`afterpay_clearpay_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/afterpay-clearpay.md?pm-info=business-locations). | Yes |
+`afterpay_clearpay_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-and-restricted-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/afterpay-clearpay.md?pm-info=business-locations). | Yes |
 | [Alipay](https://docs.stripe.com/payments/alipay.md)
 
 `alipay_payments` | No, request [an invite](https://docs.stripe.com/payments/alipay.md) to create charges on behalf of other accounts. | No, see [prohibited businesses](https://support.stripe.com/questions/alipay-prohibited-businesses). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/alipay.md?pm-info=business-locations). | No |

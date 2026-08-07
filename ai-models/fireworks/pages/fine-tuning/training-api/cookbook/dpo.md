@@ -80,10 +80,10 @@ DPO expects preference pairs. Supported formats:
 
 ### Provision trainers with `build_service_client`
 
-DPO always needs reference logprobs. Full-parameter DPO uses a policy trainer and a forward-only reference trainer; LoRA DPO uses one policy trainer and the policy session's shared base reference. Provisioning is owned by the SDK-managed service client — `build_service_client` resolves shapes, attaches or creates the trainer(s), and decides the reference strategy for you:
+DPO always needs reference logprobs. Full-parameter DPO uses a policy trainer plus a separate reference trainer backed by the model's LoRA shape with the adapter disabled; LoRA DPO uses one policy trainer and the policy session's shared base reference. Provisioning is owned by the SDK-managed service client — `build_service_client` resolves shapes, attaches or creates the trainer(s), and decides the reference strategy for you:
 
 * **LoRA** (`lora_rank > 0`) with no `reference_training_shape_id` → `create_reference_client` reuses the policy session (no second trainer).
-* **Full-parameter**, or an explicit `reference_training_shape_id` → a separate forward-only reference trainer is provisioned and its lifecycle is owned by the service client.
+* **Full-parameter**, or an explicit `reference_training_shape_id` → a separate reference trainer is provisioned from the model's LoRA shape (adapter disabled) and its lifecycle is owned by the service client.
 
 ```python theme={null}
 import os
@@ -205,7 +205,7 @@ for idx in ref_cache:
 ## Operational guidance
 
 * **Set `trainer.training_shape_id` when you need an explicit policy shape** — otherwise supported recipes auto-select a validated policy shape.
-* **Leave `trainer.reference_training_shape_id` unset unless you need a specific reference shape** — full-parameter DPO auto-selects a forward-only reference shape; LoRA DPO uses a shared-session reference by default.
+* **Leave `trainer.reference_training_shape_id` unset unless you need a specific reference shape** — full-parameter DPO auto-selects the model's validated LoRA shape as the reference; LoRA DPO uses a shared-session reference by default.
 * **DPO does not provision a deployment** — there are no rollout samples or deployment weight syncs in the recipe.
 * **Keep a versioned reference cache** tied to tokenizer + base model revision. If the base model changes, recompute reference logprobs.
 * **Monitor margin statistics**: increasing margins indicate the policy is learning preferences.

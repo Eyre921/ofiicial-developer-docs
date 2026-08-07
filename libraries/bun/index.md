@@ -1,6 +1,6 @@
 # libraries/bun 文档索引
 
-> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 318 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -137,6 +137,7 @@
 - `docs/guides/runtime/import-json` — [Import a JSON file](pages/docs/guides/runtime/import-json.md) · [原文](https://bun.com/docs/guides/runtime/import-json)
 - `docs/guides/runtime/import-json5` — [Import a JSON5 file](pages/docs/guides/runtime/import-json5.md) · [原文](https://bun.com/docs/guides/runtime/import-json5)
 - `docs/guides/runtime/import-toml` — [Import a TOML file](pages/docs/guides/runtime/import-toml.md) · [原文](https://bun.com/docs/guides/runtime/import-toml)
+- `docs/guides/runtime/import-xml` — [Import an XML file](pages/docs/guides/runtime/import-xml.md) · [原文](https://bun.com/docs/guides/runtime/import-xml)
 - `docs/guides/runtime/import-yaml` — [Import a YAML file](pages/docs/guides/runtime/import-yaml.md) · [原文](https://bun.com/docs/guides/runtime/import-yaml)
 - `docs/guides/runtime/read-env` — [Read environment variables](pages/docs/guides/runtime/read-env.md) · [原文](https://bun.com/docs/guides/runtime/read-env)
 - `docs/guides/runtime/set-env` — [Set environment variables](pages/docs/guides/runtime/set-env.md) · [原文](https://bun.com/docs/guides/runtime/set-env)
@@ -305,6 +306,7 @@
 - `docs/runtime/web-apis` — [Web APIs](pages/docs/runtime/web-apis.md) · [原文](https://bun.com/docs/runtime/web-apis)
 - `docs/runtime/webview` — [WebView](pages/docs/runtime/webview.md) · [原文](https://bun.com/docs/runtime/webview)
 - `docs/runtime/workers` — [Workers](pages/docs/runtime/workers.md) · [原文](https://bun.com/docs/runtime/workers)
+- `docs/runtime/xml` — [XML](pages/docs/runtime/xml.md) · [原文](https://bun.com/docs/runtime/xml)
 - `docs/runtime/yaml` — [YAML](pages/docs/runtime/yaml.md) · [原文](https://bun.com/docs/runtime/yaml)
 - `docs/test/code-coverage` — [Code coverage](pages/docs/test/code-coverage.md) · [原文](https://bun.com/docs/test/code-coverage)
 - `docs/test/configuration` — [Test configuration](pages/docs/test/configuration.md) · [原文](https://bun.com/docs/test/configuration)

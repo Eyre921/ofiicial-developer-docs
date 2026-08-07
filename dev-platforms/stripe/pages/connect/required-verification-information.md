@@ -364,7 +364,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [identity.attestations.ownership_declaration](https://docs.stripe.com/api/v2/core/accounts/update.md?lang=curl#v2_update_accounts-identity-attestations-ownership_declaration) hash.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
@@ -398,7 +398,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [identity.attestations.ownership_declaration](https://docs.stripe.com/api/v2/core/accounts/update.md?lang=curl#v2_update_accounts-identity-attestations-ownership_declaration) hash.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
@@ -539,7 +539,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [identity.attestations.ownership_declaration](https://docs.stripe.com/api/v2/core/accounts/update.md?lang=curl#v2_update_accounts-identity-attestations-ownership_declaration) hash.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
@@ -637,7 +637,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [identity.attestations.ownership_declaration](https://docs.stripe.com/api/v2/core/accounts/update.md?lang=curl#v2_update_accounts-identity-attestations-ownership_declaration) hash.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
@@ -1273,7 +1273,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [company.ownership_declaration](https://docs.stripe.com/api/accounts/object.md#account_object-company-ownership_declaration) hash.
 
 ```curl
-curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "company[ownership_declaration][date]=1609798905" \
   -d "company[ownership_declaration][ip]=8.8.8.8" \
@@ -1295,7 +1295,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [company.ownership_declaration](https://docs.stripe.com/api/accounts/object.md#account_object-company-ownership_declaration) hash.
 
 ```curl
-curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "company[ownership_declaration][date]=1609798905" \
   -d "company[ownership_declaration][ip]=8.8.8.8" \
@@ -1431,7 +1431,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [company.ownership_declaration](https://docs.stripe.com/api/accounts/object.md#account_object-company-ownership_declaration) hash.
 
 ```curl
-curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "company[ownership_declaration][date]=1609798905" \
   -d "company[ownership_declaration][ip]=8.8.8.8" \
@@ -1501,7 +1501,7 @@ After supplying the beneficial owner information, it’s checked against the Nat
 In the case where the business isn’t found in the NRB, provide the attestation by setting the `date`, `ip_address`, and `user_agent` in the `Account`’s [company.ownership_declaration](https://docs.stripe.com/api/accounts/object.md#account_object-company-ownership_declaration) hash.
 
 ```curl
-curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
+curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "company[ownership_declaration][date]=1609798905" \
   -d "company[ownership_declaration][ip]=8.8.8.8" \

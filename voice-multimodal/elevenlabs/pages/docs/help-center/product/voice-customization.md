@@ -8,30 +8,30 @@ path: docs/help-center/product/voice-customization
 
 # Voice Customization
 
-#### [My Voices](/help-center/product/voice-customization/my-voices)
+#### [My Voices](/docs/help-center/product/voice-customization/my-voices)
 
 Manage and organize your personal voice collection
 
-#### [Voice Changer](/help-center/product/voice-customization/voice-changer)
+#### [Voice Changer](/docs/help-center/product/voice-customization/voice-changer)
 
 Transform existing audio into different voices
 
 {" "}
 
-#### [Voice Cloning](/help-center/product/voice-customization/voice-cloning)
+#### [Voice Cloning](/docs/help-center/product/voice-customization/voice-cloning)
 
 Clone voices with Instant or Professional Voice Cloning
 
 {" "}
 
-#### [Voice Design](/help-center/product/voice-customization/voice-design)
+#### [Voice Design](/docs/help-center/product/voice-customization/voice-design)
 
 Create unique synthetic voices from text descriptions
 
-#### [Voice Isolator](/help-center/product/voice-customization/voice-isolator)
+#### [Voice Isolator](/docs/help-center/product/voice-customization/voice-isolator)
 
 Remove background noise and isolate voice from audio
 
-#### [Voice Library](/help-center/product/voice-customization/voice-library)
+#### [Voice Library](/docs/help-center/product/voice-customization/voice-library)
 
 Browse and use voices shared by the community and ElevenLabs

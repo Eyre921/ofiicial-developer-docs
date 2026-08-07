@@ -25,7 +25,7 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
     <strong>Start with Serverless Training</strong>
 
     <div>
-      The model is supported, LoRA SFT or RL covers the task, and you want pooled compute with per-token billing.
+      The model is supported, LoRA SFT, DPO, or RL covers the task, and you want pooled compute with per-token billing.
     </div>
   </div>
 
@@ -33,39 +33,39 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
     <strong>Choose Dedicated Training</strong>
 
     <div>
-      You need full-parameter training, DPO, explicit resume or deployment control, or sustained provisioned compute.
+      You need full-parameter training, ORPO or distillation, explicit resume or deployment control, or sustained provisioned compute.
     </div>
   </div>
 </div>
 
 ## Comparison
 
-| Dimension         | Serverless                                                                            | Dedicated                                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation                      | SDK provisions trainer and deployment resources                                               |
-| Billing           | Per token; no idle GPU charge                                                         | Time-based trainer and deployment billing                                                     |
-| Parameter mode    | LoRA only                                                                             | LoRA and full-parameter                                                                       |
-| Methods           | SFT and RL on the supported serverless surface                                        | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
-| Models            | [Serverless-enabled models](/fine-tuning/models)                                      | Models with an enabled dedicated training shape                                               |
-| Capacity          | Shared pool and per-account limits                                                    | Resources allocated to the run, subject to account quota and platform availability            |
-| Checkpoint resume | In-run and cross-run train-state resume; session-scoped checkpoint list and promotion | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
-| Sampling          | In-session sampler, no deployment to create                                           | SDK-managed rollout or evaluation deployment                                                  |
-| Teardown          | Session lifecycle is managed by the service                                           | You must close trainers and delete or scale down deployments                                  |
-| Best fit          | Fast LoRA experiments and first RL iterations                                         | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
+| Dimension         | Serverless                                                                            | Dedicated                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation                      | SDK provisions trainer and deployment resources                                                        |
+| Billing           | Per token; no idle GPU charge                                                         | Time-based trainer and deployment billing                                                              |
+| Parameter mode    | LoRA only                                                                             | LoRA and full-parameter                                                                                |
+| Methods           | SFT, DPO, and RL on the supported serverless surface                                  | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe          |
+| Models            | [Serverless-enabled models](/fine-tuning/models)                                      | Models with an enabled dedicated training shape                                                        |
+| Capacity          | Shared pool and per-account limits                                                    | Resources allocated to the run, subject to account quota and platform availability                     |
+| Checkpoint resume | In-run and cross-run train-state resume; session-scoped checkpoint list and promotion | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                                    |
+| Sampling          | In-session sampler, no deployment to create                                           | SDK-managed rollout or evaluation deployment                                                           |
+| Teardown          | Session lifecycle is managed by the service                                           | You must close trainers and delete or scale down deployments                                           |
+| Best fit          | Fast LoRA experiments and first RL iterations                                         | Full-parameter work, ORPO and distillation, sustained RL, larger workloads, explicit lifecycle control |
 
 Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
 
 ## Choose serverless when
 
 * The base model is marked as serverless-enabled on [Models](/fine-tuning/models).
-* LoRA SFT or RL covers the task.
+* LoRA SFT, DPO, or RL covers the task.
 * You want to start without provisioning trainer or inference resources.
 * Per-token billing fits a small or bursty experiment.
 * In-session sampling is sufficient.
 
 ## Choose dedicated when
 
-* You need full-parameter training, DPO, ORPO, distillation, or a model not on the serverless list.
+* You need full-parameter training, ORPO, distillation, or a model not on the serverless list.
 * You need explicit trainer, rollout deployment, checkpoint, reconnect, or promotion control.
 * You need sustained throughput or long-running rollouts.
 * A highly utilized time-based deployment is more economical for the workload.

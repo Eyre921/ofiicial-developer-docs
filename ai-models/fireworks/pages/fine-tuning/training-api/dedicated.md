@@ -10,9 +10,9 @@ Run Training API workloads with provisioned trainer and deployment resources, ex
   The Training API is currently in **private preview**. [Request access](https://fireworks.ai/contact-training) before running this guide.
 </Info>
 
-Dedicated training provisions trainer and deployment resources for your run. Use it when you need broader model or method support, full-parameter training, DPO, sustained RL, explicit checkpoint resume, or control over rollout and evaluation deployments.
+Dedicated training provisions trainer and deployment resources for your run. Use it when you need broader model or method support, full-parameter training, ORPO or distillation, sustained RL, explicit checkpoint resume, or control over rollout and evaluation deployments.
 
-If LoRA SFT or RL on the shared pool is sufficient, compare this path with [Serverless Training](/fine-tuning/training-api/serverless) before provisioning resources.
+If LoRA SFT, DPO, or RL on the shared pool is sufficient, compare this path with [Serverless Training](/fine-tuning/training-api/serverless) before provisioning resources.
 
 <Tip>
   **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), then fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes). Recipes own provisioning, checkpoints, reconnect, and sampling where applicable. Cleanup is configuration-specific; review and set each recipe's cleanup flags before launch.

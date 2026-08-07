@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 322 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 334 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -185,6 +185,21 @@
 - `docs/volcano-on-gpu-clusters` — [Gang-schedule GPU jobs with Volcano](pages/docs/volcano-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/volcano-on-gpu-clusters)
 - `docs/wan2.7-quickstart` — [Wan 2.7 quickstart](pages/docs/wan2.7-quickstart.md) · [原文](https://docs.together.ai/docs/wan2.7-quickstart)
 - `docs/workflows` — [Agent workflows](pages/docs/workflows.md) · [原文](https://docs.together.ai/docs/workflows)
+
+## learn
+
+- `learn/choosing-a-deployment-option` — [Choosing a deployment option](pages/learn/choosing-a-deployment-option.md) · [原文](https://docs.together.ai/learn/choosing-a-deployment-option)
+- `learn/context-windows` — [Context windows](pages/learn/context-windows.md) · [原文](https://docs.together.ai/learn/context-windows)
+- `learn/finetune-vs-prompt` — [When to fine-tune vs. prompt](pages/learn/finetune-vs-prompt.md) · [原文](https://docs.together.ai/learn/finetune-vs-prompt)
+- `learn/function-calling-and-tool-use` — [Function calling & tool use](pages/learn/function-calling-and-tool-use.md) · [原文](https://docs.together.ai/learn/function-calling-and-tool-use)
+- `learn/how-llms-work` — [How LLMs work](pages/learn/how-llms-work.md) · [原文](https://docs.together.ai/learn/how-llms-work)
+- `learn/index` — [Introduction](pages/learn/index.md) · [原文](https://docs.together.ai/learn/index)
+- `learn/inference-parameters-and-sampling` — [Inference parameters & sampling](pages/learn/inference-parameters-and-sampling.md) · [原文](https://docs.together.ai/learn/inference-parameters-and-sampling)
+- `learn/prompt-engineering` — [Context engineering](pages/learn/prompt-engineering.md) · [原文](https://docs.together.ai/learn/prompt-engineering)
+- `learn/quantization` — [Quantization](pages/learn/quantization.md) · [原文](https://docs.together.ai/learn/quantization)
+- `learn/structured-outputs` — [Structured outputs & JSON mode](pages/learn/structured-outputs.md) · [原文](https://docs.together.ai/learn/structured-outputs)
+- `learn/tokens-and-tokenization` — [Tokens & tokenization](pages/learn/tokens-and-tokenization.md) · [原文](https://docs.together.ai/learn/tokens-and-tokenization)
+- `learn/ttft-and-tps` — [Inference metrics: TTFT & TPS](pages/learn/ttft-and-tps.md) · [原文](https://docs.together.ai/learn/ttft-and-tps)
 
 ## reference
 

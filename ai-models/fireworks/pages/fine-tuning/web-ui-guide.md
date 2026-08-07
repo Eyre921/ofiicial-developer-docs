@@ -6,10 +6,6 @@ path: fine-tuning/web-ui-guide
 
 Launch RFT jobs using the Fireworks dashboard
 
-<Tip>
-  **Reinforcement Fine-Tuning (RFT)** is free for models under 16B parameters. When creating an RFT job in the UI, filter for free tuning models in the model selection area on the [fine-tuning creation page](https://app.fireworks.ai/dashboard/fine-tuning/create). If kicking off jobs from the terminal, you can find the model ID from the [Model Library](https://app.fireworks.ai/models?filter=LLM\&tunable=true). Note: SFT and DPO jobs are billed per training token for all model sizes—see the [pricing page](https://fireworks.ai/pricing) for details.
-</Tip>
-
 The Fireworks RFT UI provides a visual interface for creating RFT jobs, with guided parameter selection. Results for all jobs can also be found in the UI.
 
 ## When to use Web UI

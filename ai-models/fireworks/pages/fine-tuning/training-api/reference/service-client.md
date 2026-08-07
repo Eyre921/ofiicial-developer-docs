@@ -54,7 +54,7 @@ Core managed config fields:
 | `tokenizer_model`                    | `str \| None`                         | `None`                     | HuggingFace tokenizer name used by `get_tokenizer()` and sampler setup.                                  |
 | `lora_rank`                          | `int`                                 | `0`                        | `0` for full-parameter training; positive value for LoRA.                                                |
 | `training_shape_id`                  | `str \| None`                         | `None`                     | User-facing training shape ID. The SDK resolves the pinned version.                                      |
-| `reference_training_shape_id`        | `str \| None`                         | `None`                     | Optional separate forward-only reference trainer shape.                                                  |
+| `reference_training_shape_id`        | `str \| None`                         | `None`                     | Optional separate reference trainer shape. Use the model's LoRA shape.                                   |
 | `trainer_job_id`                     | `str \| None`                         | `None`                     | Reattach to an existing trainer instead of creating one.                                                 |
 | `reference_trainer_job_id`           | `str \| None`                         | `None`                     | Reattach to an existing reference trainer.                                                               |
 | `create_deployment`                  | `bool`                                | `True`                     | Whether to create or reattach an inference deployment. Set `False` for trainer-only SFT/DPO-style loops. |
@@ -124,7 +124,7 @@ training_client = service.create_training_client(
 
 ### `create_base_training_client(base_model, user_metadata=None)`
 
-Creates a base-only client on the same trainer session. Use this as a frozen reference for LoRA KL/reference logprobs without launching a separate forward-only trainer:
+Creates a base-only client on the same trainer session. Use this as a frozen reference for LoRA KL/reference logprobs without launching a separate reference trainer:
 
 ```python theme={null}
 reference_client = service.create_base_training_client(base_model=base_model)
@@ -142,7 +142,7 @@ reference_client = service.create_reference_client(base_model, lora_rank=0)
 ref = reference_client.forward(datums, "cross_entropy").result()
 ```
 
-The SDK chooses the backing automatically. LoRA policies without an explicit reference shape reuse the policy trainer with the adapter disabled. Full-parameter policies, explicit `reference_training_shape_id`, or explicit `reference_trainer_job_id` use a separate forward-only reference trainer owned by the service.
+The SDK chooses the backing automatically. LoRA policies without an explicit reference shape reuse the policy trainer with the adapter disabled. Full-parameter policies, explicit `reference_training_shape_id`, or explicit `reference_trainer_job_id` use a separate reference trainer owned by the service, backed by the model's LoRA shape with the adapter disabled.
 
 ### `create_sampling_client(model_path=None, ...)`
 

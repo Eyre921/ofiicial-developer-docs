@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 395 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 396 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -237,6 +237,7 @@
 - `fine-tuning/rl-rollout-integration` — [RL Rollouts with Your Own Trainer](pages/fine-tuning/rl-rollout-integration.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-integration)
 - `fine-tuning/secure-fine-tuning` — [Secure Training Overview](pages/fine-tuning/secure-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/secure-fine-tuning)
 - `fine-tuning/training-api/choose-infrastructure` — [Choose Serverless or Dedicated Training](pages/fine-tuning/training-api/choose-infrastructure.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/choose-infrastructure)
+- `fine-tuning/training-api/cookbook/agentic-rl` — [Cookbook: Agentic Reinforcement Learning](pages/fine-tuning/training-api/cookbook/agentic-rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl)
 - `fine-tuning/training-api/cookbook/checkpoints` — [Checkpoints and Resume](pages/fine-tuning/training-api/cookbook/checkpoints.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/checkpoints)
 - `fine-tuning/training-api/cookbook/distillation` — [Cookbook: Distillation](pages/fine-tuning/training-api/cookbook/distillation.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation)
 - `fine-tuning/training-api/cookbook/dpo` — [Cookbook: DPO](pages/fine-tuning/training-api/cookbook/dpo.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo)

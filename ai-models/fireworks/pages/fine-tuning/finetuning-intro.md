@@ -7,7 +7,7 @@ path: fine-tuning/finetuning-intro
 Fireworks helps you fine-tune models to improve quality and performance for your product use cases, without the burden of building & maintaining your own training infrastructure.
 
 <Info>
-  **Coming from OpenAI?** Fireworks uses the same [OpenAI-compatible chat completion format](/fine-tuning/fine-tuning-models#prepare-a-dataset) for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See our [OpenAI compatibility guide](/tools-sdks/openai-compatibility) for more details.
+  **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
 </Info>
 
 ## Before managed or dedicated training: account tier and GPU quota
@@ -44,44 +44,6 @@ Use [Choose a Training Path](/fine-tuning/choose-training-path) to select the ri
   </Card>
 </CardGroup>
 
-## When to use SFT vs. RFT
-
-In supervised fine-tuning, you provide a dataset with labeled examples of "good" outputs. In reinforcement fine-tuning, you provide a grader function that can be used to score the model's outputs. The model is iteratively trained to produce outputs that maximize this score.
-
-Supervised fine-tuning (SFT) works well for many common scenarios, especially when:
-
-* You have a sizable dataset (\~1000+ examples) with high-quality, ground-truth labels.
-* The dataset covers most possible input scenarios.
-* Tasks are relatively straightforward, such as:
-  * Classification
-  * Content extraction
-
-However, SFT may struggle in situations where:
-
-* Your dataset is small.
-* You lack ground-truth outputs (a.k.a. "golden generations").
-* The task requires multi-step reasoning.
-
-<div>
-  <div>
-    <strong>Start with SFT</strong>
-
-    <div>
-      You have high-quality labeled examples that cover the expected task.
-    </div>
-  </div>
-
-  <div>
-    <strong>Consider RFT</strong>
-
-    <div>
-      The task is verifiable, benefits from reasoning, or lacks complete ground-truth outputs.
-    </div>
-  </div>
-</div>
-
-<Tip>
-  `Verifiable` refers to whether it is relatively easy to make a judgement on the quality of the model generation.
-</Tip>
+For a side-by-side comparison of SFT, DPO, and RL — the data each needs and what each is good for — see [Choose a method](/fine-tuning/choose-training-path#choose-a-method).
 
 For custom losses, rollouts, per-step control, or algorithm research, continue to the [Training API overview](/fine-tuning/training-api/introduction).

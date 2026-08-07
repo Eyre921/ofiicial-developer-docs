@@ -6,7 +6,7 @@ path: fine-tuning/training-api/quickstart
 
 Provision a trainer and run a custom Training API loop on dedicated Fireworks resources.
 
-This quickstart uses [Dedicated Training](/fine-tuning/training-api/dedicated). For supported LoRA SFT or RL without provisioning, use [Serverless Training](/fine-tuning/training-api/serverless).
+This quickstart uses [Dedicated Training](/fine-tuning/training-api/dedicated). For supported LoRA SFT, DPO, or RL without provisioning, use [Serverless Training](/fine-tuning/training-api/serverless).
 
 ## Installation
 
