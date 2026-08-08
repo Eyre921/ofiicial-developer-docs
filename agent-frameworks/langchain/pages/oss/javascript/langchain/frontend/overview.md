@@ -144,8 +144,8 @@ Custom state keys are inferred automatically, no manual interface required.
     Display model thinking processes in collapsible blocks.
   </Card>
 
-  <Card title="Generative UI" icon="wand" href="/oss/javascript/langchain/frontend/generative-ui">
-    Render AI-generated user interfaces from natural language prompts using json-render.
+  <Card title="Generative UI" icon="wand" href="/oss/javascript/langchain/frontend/generative-ui-overview">
+    Render agent-generated interfaces across the spectrum from controlled to declarative to open-ended.
   </Card>
 </CardGroup>
 
@@ -193,14 +193,14 @@ Custom state keys are inferred automatically, no manual interface required.
 
 Start from the UX question your application needs to answer:
 
-| If users need to...                        | Start with                                                                                                                                                                                                                      |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Understand what the agent is doing         | [Tool calling](/oss/javascript/langchain/frontend/tool-calling) and [reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)                                                                                     |
-| Safely approve sensitive actions           | [Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop)                                                                                                                                                       |
-| Send work while a run is active            | [Message queues](/oss/javascript/langchain/frontend/message-queues)                                                                                                                                                             |
-| Leave and come back to long-running work   | [Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)                                                                                                                                                         |
-| Edit or retry from an earlier turn         | [Branching chat](/oss/javascript/langchain/frontend/branching-chat) and [time travel](/oss/javascript/langchain/frontend/time-travel)                                                                                           |
-| Render state as an application, not a chat | [Structured output](/oss/javascript/langchain/frontend/structured-output), [generative UI](/oss/javascript/langchain/frontend/generative-ui), and [Deep Agents frontend patterns](/oss/javascript/deepagents/frontend/overview) |
+| If users need to...                        | Start with                                                                                                                                                                                                                               |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Understand what the agent is doing         | [Tool calling](/oss/javascript/langchain/frontend/tool-calling) and [reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)                                                                                              |
+| Safely approve sensitive actions           | [Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop)                                                                                                                                                                |
+| Send work while a run is active            | [Message queues](/oss/javascript/langchain/frontend/message-queues)                                                                                                                                                                      |
+| Leave and come back to long-running work   | [Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)                                                                                                                                                                  |
+| Edit or retry from an earlier turn         | [Branching chat](/oss/javascript/langchain/frontend/branching-chat) and [time travel](/oss/javascript/langchain/frontend/time-travel)                                                                                                    |
+| Render state as an application, not a chat | [Structured output](/oss/javascript/langchain/frontend/structured-output), [generative UI](/oss/javascript/langchain/frontend/generative-ui-overview), and [Deep Agents frontend patterns](/oss/javascript/deepagents/frontend/overview) |
 
 ## Integrations
 

@@ -25,6 +25,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Portable, high-performance vector search for embedded, edge, and cloud AI applications.
   </Card>
 
+  <Card title="Aidress" href="https://aidress.ai" icon="link">
+    Discovery and trust registry tools for verifying counterpart AI agents before they transact.
+  </Card>
+
   <Card title="Alephant AI" href="https://alephant.io/" icon="link">
     AI gateway for cost control, BYOK routing, and multi-provider model access.
   </Card>
@@ -261,6 +265,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Distributed SQL database with native vector support and C-SPANN indexes.
   </Card>
 
+  <Card title="CosVectors" href="https://github.com/hushengquan/langchain-cos-vectors" icon="link">
+    Tencent Cloud COS vector storage bucket for similarity search and RAG workflows.
+  </Card>
+
   <Card title="Cognee" href="https://docs.cognee.ai/" icon="link">
     Memory layer for AI applications and agents.
   </Card>
@@ -493,6 +501,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Governance layer for AI agents with scoped sessions, encrypted secrets, hash-chained audit, and policy enforcement.
   </Card>
 
+  <Card title="Hashlock" href="https://hashlock.markets/docs" icon="link">
+    Cross-chain asset exchange toolkit with sealed-bid intents for crypto, RWAs, and stablecoins.
+  </Card>
+
   <Card title="Hlido" href="https://hlido.eu/docs/" icon="link">
     Independent, evidence-backed trust scores for AI agents.
   </Card>
@@ -531,6 +543,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
     Vector, BM25, and hybrid retrieval over one engine on object storage.
+  </Card>
+
+  <Card title="Inspeximus" href="https://dancenitra.github.io/inspeximus/" icon="link">
+    Bi-temporal ledger memory with LangGraph checkpointer and store integrations.
   </Card>
 
   <Card title="Instanode" href="https://instanode.dev/docs" icon="link">
@@ -635,6 +651,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="LiteLLM" href="/oss/python/integrations/providers/litellm" icon="link">
     Unified interface for 100+ LLM APIs.
+  </Card>
+
+  <Card title="Live Tennis API" href="https://docs.livetennisapi.com" icon="link">
+    Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
   </Card>
 
   <Card title="Log10" href="/oss/python/integrations/providers/log10" icon="link">
@@ -747,6 +767,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="NewsCatcher" href="https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain" icon="link">
     CatchAll web search for real-world business events as LangChain tools.
+  </Card>
+
+  <Card title="Nexus Shield" href="https://api.nexusshield.ai" icon="link">
+    Sub-10ms in-RAM PII sanitization and security guardrail proxy for LLM APIs.
   </Card>
 
   <Card title="Nia" href="https://github.com/nozomio-labs/nia-langchain" icon="link">
@@ -1239,6 +1263,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="TrueLens" href="/oss/python/integrations/providers/trulens" icon="link">
     Evaluation framework for LLM applications.
+  </Card>
+
+  <Card title="TrustedRouter" href="https://trustedrouter.com/" icon="link">
+    Privacy-preserving OpenAI-compatible LLM router.
   </Card>
 
   <Card title="TypeDB" href="https://typedb.com/docs" icon="link">

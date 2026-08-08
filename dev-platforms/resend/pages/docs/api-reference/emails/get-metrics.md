@@ -20,7 +20,7 @@ Retrieve account-level email metrics.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
@@ -54,7 +54,7 @@ Retrieve account-level email metrics.
   `period` is in `dimensions`.
 </ParamField>
 
-<ParamField type="hourly | daily | weekly">
+<ParamField type="hourly | daily | weekly | monthly">
   The bucket size used when `period` is in `dimensions`. Accepted but has no
   effect otherwise.
 </ParamField>
@@ -86,12 +86,12 @@ Retrieve account-level email metrics.
 
 <ParamField type="string[]">
   Comma-separated list of sending domain IDs to restrict the response to.
-  Unrecognized `filter[]` keys are ignored rather than rejected.
+  Unrecognized query params are ignored rather than rejected.
 </ParamField>
 
 <ParamField type="string[]">
   Comma-separated list of email IDs to restrict the response to. Cannot be
-  combined with the `domain` dimension. Unrecognized `filter[]` keys are ignored
+  combined with the `domain` dimension. Unrecognized query params are ignored
   rather than rejected.
 </ParamField>
 

@@ -31,7 +31,7 @@ LangSmith Deployment is framework-agnostic which means you can deploy agents bui
     Deploy Claude Agent SDK, Strands, CrewAI, AutoGen, and other agent frameworks with the Functional API or `deployments-wrap-sdk`.
   </Card>
 
-  <Card title="Looking to deploy Deep Agents?" href="/langsmith/managed-deep-agents-overview" type="tip">
+  <Card title="Looking to deploy Deep Agents?" href="/langsmith/python/managed-deep-agents-overview" type="tip">
     Use Managed Deep Agents: the managed runtime for deploying code-first Deep Agents.
   </Card>
 </CardGroup>

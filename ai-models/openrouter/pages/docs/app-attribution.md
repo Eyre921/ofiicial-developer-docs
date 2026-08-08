@@ -35,52 +35,52 @@ OpenRouter tracks app attribution through the following HTTP headers:
 
 ### HTTP-Referer (required)
 
-The `HTTP-Referer` header identifies your app's URL and is used as the primary identifier for rankings. **This header is required for app attribution** — without it, no app page will be created and your usage will not appear in rankings. Your app's URL becomes its unique identifier in the system.
+The `HTTP-Referer` header identifies your app's URL and is used as the primary identifier for rankings. **This header is required for app attribution.** Without it, no app page will be created and your usage will not appear in rankings. Your app's URL becomes its unique identifier in the system.
 
 ### X-OpenRouter-Title
 
 The `X-OpenRouter-Title` header sets or modifies your app's display name
-in rankings and analytics. `X-Title` is still supported for backwards compatibility. This header alone does not create an app page — it must be paired with `HTTP-Referer`.
+in rankings and analytics. `X-Title` is still supported for backwards compatibility. This header alone does not create an app page. It must be paired with `HTTP-Referer`.
 
 ### X-OpenRouter-Categories
 
-The `X-OpenRouter-Categories` header assigns your app to one or more marketplace categories. Pass a comma-separated list of up to {MAX_CATEGORIES_PER_REQUEST} categories per request. Categories must be lowercase, hyphen-separated, and each category is limited to 30 characters. Only recognized categories from the list below are accepted; unrecognized ones are silently ignored. Categories are merged with any existing ones (up to {MAX_CATEGORIES_PER_APP} total).
+The `X-OpenRouter-Categories` header assigns your app to one or more marketplace categories. Pass a comma-separated list of up to {MAX_CATEGORIES_PER_REQUEST} categories per request. Categories must be lowercase, hyphen-separated, and each category is limited to 30 characters. Only recognized categories from the list below are accepted; OpenRouter drops unrecognized ones without an error. Categories are merged with any existing ones (up to {MAX_CATEGORIES_PER_APP} total).
 
 #### Category groups
 
 Categories are organized into groups for the [marketplace](https://openrouter.ai/apps):
 
-**Coding** — Tools for software development:
+**Coding** (tools for software development):
 
-* `cli-agent` — Terminal-based coding assistants
-* `ide-extension` — Editor/IDE integrations
-* `cloud-agent` — Cloud-hosted coding agents
-* `programming-app` — Programming apps
-* `native-app-builder` — Mobile and desktop app builders
+* `cli-agent`: Terminal-based coding assistants
+* `ide-extension`: Editor/IDE integrations
+* `cloud-agent`: Cloud-hosted coding agents
+* `programming-app`: Programming apps
+* `native-app-builder`: Mobile and desktop app builders
 
-**Creative** — Creative apps:
+**Creative** (creative apps):
 
-* `creative-writing` — Creative writing tools
-* `video-gen` — Video generation apps
-* `image-gen` — Image generation apps
-* `audio-gen` — Audio generation apps
+* `creative-writing`: Creative writing tools
+* `video-gen`: Video generation apps
+* `image-gen`: Image generation apps
+* `audio-gen`: Audio generation apps
 
-**Productivity** — Writing and productivity tools:
+**Productivity** (writing and productivity tools):
 
-* `writing-assistant` — AI-powered writing tools
-* `general-chat` — General chat apps
-* `personal-agent` — Personal AI agents
-* `legal` — Legal tools and assistants
+* `writing-assistant`: AI-powered writing tools
+* `general-chat`: General chat apps
+* `personal-agent`: Personal AI agents
+* `legal`: Legal tools and assistants
 
-**Entertainment** — Entertainment apps:
+**Entertainment** (entertainment apps):
 
-* `roleplay` — Roleplay apps and other character-based chat apps
-* `game` — Gaming and interactive entertainment apps
+* `roleplay`: Roleplay apps and other character-based chat apps
+* `game`: Gaming and interactive entertainment apps
 
 #### Custom categories
 
 Only recognized categories from the list above are accepted.
-Unrecognized values are silently dropped. If you have a use case
+OpenRouter drops unrecognized values without an error. If you have a use case
 that doesn't fit the existing categories, reach out to us and
 we may add new categories in the future.
 
@@ -273,7 +273,7 @@ Once your app is tracked, you can access detailed analytics at `openrouter.ai/ap
 
 ### URL requirements
 
-* **Always include `HTTP-Referer`** — this is the minimum requirement for app attribution
+* **Always include `HTTP-Referer`.** It's the minimum requirement for app attribution.
 * Use your app's primary domain (e.g., `https://myapp.com`)
 * Avoid using subdomains unless they represent distinct apps
 * For localhost development, always include `X-OpenRouter-Title` as well

@@ -7,6 +7,24 @@ path: docs/api-reference/webhooks/list-event-attempts
 GET /webhooks/:webhook_id/events/:event_id/attempts
 Retrieve the delivery attempts for a single webhook event.
 
+<Warning>
+  Webhook events and delivery attempts are currently in private beta and only
+  available to a limited number of users. APIs might change before it is
+  generally available. [Get in touch](https://resend.com/contact) if you're
+  interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.4
+    ```
+  </CodeGroup>
+</Warning>
+
 ## Path Parameters
 
 <ParamField type="string">
@@ -62,6 +80,17 @@ Retrieve the delivery attempts for a single webhook event.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.webhooks.events.attempts.list({
+    eventId: 'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+    webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+  });
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2/attempts' \
        -H 'Authorization: Bearer re_xxxxxxxxx'

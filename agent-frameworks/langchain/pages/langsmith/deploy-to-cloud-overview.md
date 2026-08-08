@@ -26,7 +26,7 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
   </Card>
 </CardGroup>
 
-To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/managed-deep-agents-overview) offers a CLI-first managed runtime in private beta.
+To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) offers a CLI-first managed runtime in private beta.
 
 ## Next steps
 

@@ -227,6 +227,8 @@ even after that subagent's execution is complete. Those files will continue to b
 * CI sandboxes
 * Mounted persistent volumes
 
+For a durable repository wiki that agents can read with these filesystem tools (from `openwiki/`), see [OpenWiki](/oss/openwiki/overview).
+
 <Tip>
   **Wrap `FilesystemBackend` in a `CompositeBackend`** for most use cases. Deep Agents automatically write internal data to the backend, including offloaded large tool results (under `/large_tool_results/`) and conversation history (under `/conversation_history/`). When you use `FilesystemBackend` alone, these internal files are written to real disk under `root_dir`, mixing agent artifacts with your project files.
 
@@ -1221,6 +1223,12 @@ Backends implement `BackendProtocolV2`. All query methods return structured Resu
     The framework auto-adapts V1 backends passed to `createDeepAgent()`. Manual adaptation is only needed when calling protocol methods directly.
   </Note>
 </Accordion>
+
+## See also
+
+* [OpenWiki](/oss/openwiki/overview): Generate durable repository Markdown that agents read through filesystem tools
+* [Memory](/oss/javascript/deepagents/memory): Filesystem-backed long-term memory
+* [Sandboxes](/oss/javascript/deepagents/sandboxes): Isolated filesystem and shell execution
 
 ***
 

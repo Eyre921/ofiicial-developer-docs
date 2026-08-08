@@ -12,6 +12,15 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
 By default it issues a **public** client that authenticates at the token endpoint with PKCE alone. Register with a `client_secret_*` [authentication method](#param-token-endpoint-auth-method) to get a **confidential** client, which is issued a `client_secret` in the response. Confidential clients still complete PKCE on every authorization code exchange. The secret is an additional factor, not a replacement.
 
 <Note>
+  Prefer a [Client ID Metadata
+  Document](/docs/guides/building-a-resend-oauth-client#client-id-metadata-documents)
+  if the client can host a static JSON file. You pass the document's HTTPS URL
+  as the `client_id` and skip this endpoint, and the consent screen can name the
+  host that published it rather than a name the client picked for itself. DCR
+  stays supported for clients that can't publish a document.
+</Note>
+
+<Note>
   This endpoint is rate-limited to 20 registrations per hour per IP address.
   Requests over the limit get a `429` with `{"error": "too_many_requests"}`.
 </Note>

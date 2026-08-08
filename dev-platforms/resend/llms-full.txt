@@ -1679,7 +1679,7 @@ Retrieve aggregate metrics for a broadcast.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
@@ -1882,7 +1882,7 @@ Retrieve the recipients of a broadcast for a given event type.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
@@ -6966,7 +6966,7 @@ Retrieve account-level email metrics.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
@@ -7000,7 +7000,7 @@ Retrieve account-level email metrics.
   `period` is in `dimensions`.
 </ParamField>
 
-<ParamField type="hourly | daily | weekly">
+<ParamField type="hourly | daily | weekly | monthly">
   The bucket size used when `period` is in `dimensions`. Accepted but has no
   effect otherwise.
 </ParamField>
@@ -7032,12 +7032,12 @@ Retrieve account-level email metrics.
 
 <ParamField type="string[]">
   Comma-separated list of sending domain IDs to restrict the response to.
-  Unrecognized `filter[]` keys are ignored rather than rejected.
+  Unrecognized query params are ignored rather than rejected.
 </ParamField>
 
 <ParamField type="string[]">
   Comma-separated list of email IDs to restrict the response to. Cannot be
-  combined with the `domain` dimension. Unrecognized `filter[]` keys are ignored
+  combined with the `domain` dimension. Unrecognized query params are ignored
   rather than rejected.
 </ParamField>
 
@@ -9808,7 +9808,9 @@ The flow:
 ## Query Parameters
 
 <ParamField type="string">
-  The `client_id` from [registration](/docs/api-reference/oauth/register).
+  The `client_id` from [registration](/docs/api-reference/oauth/register), or the
+  HTTPS URL of a [Client ID Metadata Document](#client-id-metadata-documents).
+  Resend tells the two apart by the `https://` prefix.
 </ParamField>
 
 <ParamField type="string">
@@ -9856,6 +9858,12 @@ The flow:
   support resource indicators yet.
 </Info>
 
+### Client ID Metadata Documents
+
+A `client_id` that starts with `https://` is read as the URL of a JSON document describing the client, so the client never registers. This follows the [OAuth Client ID Metadata Document](https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/) draft.
+
+This is the only endpoint that fetches the document. See [Client ID Metadata Documents](/docs/guides/building-a-resend-oauth-client#client-id-metadata-documents) for the document fields and for how Resend fetches and caches it.
+
 <RequestExample>
   ```bash Browser navigation theme={"theme":{"light":"github-light","dark":"vesper"}}
   GET https://api.resend.com/oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&scope=emails%3Asend&state=STATE_VALUE&code_challenge=CODE_CHALLENGE_VALUE&code_challenge_method=S256
@@ -9871,11 +9879,14 @@ The flow:
 
 ## Errors
 
-Once Resend validates `client_id` and `redirect_uri`, every other error redirects (`302`) back to `redirect_uri` with `error`, `error_description`, and (if provided) `state` as query parameters. The error is not returned as a JSON body, since the user is mid-redirect in a browser. Before that point (unknown `client_id`, invalid or unregistered `redirect_uri`), Resend returns a `400` JSON body instead, since it can't safely redirect to an unvalidated URL.
+Before `client_id` and `redirect_uri` are validated (unknown `client_id`, invalid or unregistered `redirect_uri`), Resend returns a JSON error body, since it can't safely redirect to an unvalidated URL.
+
+Once Resend validates `client_id` and `redirect_uri`, errors redirect (`302`) back to `redirect_uri` with `error`, `error_description`, and (if provided) `state` as query parameters only when the `redirect_uri` is trusted: a loopback address, a private-use URI scheme, or a verified client. An unverified `https` callback gets a JSON error body instead, which prevents the endpoint from being used as an open redirect. Handle both.
 
 | `error`               | When                                                                                                       |
 | --------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `invalid_request`     | `response_type` isn't `code`, or `code_challenge_method` isn't `S256`.                                     |
+| `invalid_client`      | Unknown or disabled `client_id`. Also a metadata document that couldn't be fetched or didn't validate.     |
 | `unauthorized_client` | The client isn't registered for the `authorization_code` grant.                                            |
 | `invalid_scope`       | No scope requested, a scope isn't supported, or a scope isn't in the client's registered `scopes_allowed`. |
 | `server_error`        | Resend failed to persist the authorization request.                                                        |
@@ -9972,6 +9983,15 @@ Dynamically register an OAuth client for the authorization code + PKCE flow (RFC
 Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key).
 
 By default it issues a **public** client that authenticates at the token endpoint with PKCE alone. Register with a `client_secret_*` [authentication method](#param-token-endpoint-auth-method) to get a **confidential** client, which is issued a `client_secret` in the response. Confidential clients still complete PKCE on every authorization code exchange. The secret is an additional factor, not a replacement.
+
+<Note>
+  Prefer a [Client ID Metadata
+  Document](/docs/guides/building-a-resend-oauth-client#client-id-metadata-documents)
+  if the client can host a static JSON file. You pass the document's HTTPS URL
+  as the `client_id` and skip this endpoint, and the consent screen can name the
+  host that published it rather than a name the client picked for itself. DCR
+  stays supported for clients that can't publish a document.
+</Note>
 
 <Note>
   This endpoint is rate-limited to 20 registrations per hour per IP address.
@@ -11353,18 +11373,18 @@ Retrieve segment metrics.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
 
 Live contact counts for your account, optionally broken down by segment.
 Works across your whole account by default, or scoped to specific segments
-via `filter[segment_id]`.
+via `segment_id`.
 
 <Info>
   `totals` is always the live, current count for your account, or for the
-  segments in `filter[segment_id]`, if provided.
+  segments in `segment_id`, if provided.
 </Info>
 
 <Info>
@@ -14838,6 +14858,24 @@ Source: https://resend.com/docs/api-reference/webhooks/get-event
 GET /webhooks/:webhook_id/events/:event_id
 Retrieve the details of a single event delivered to a webhook.
 
+<Warning>
+  Webhook events and delivery attempts are currently in private beta and only
+  available to a limited number of users. APIs might change before it is
+  generally available. [Get in touch](https://resend.com/contact) if you're
+  interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.4
+    ```
+  </CodeGroup>
+</Warning>
+
 ## Path Parameters
 
 <ParamField type="string">
@@ -14881,6 +14919,17 @@ Retrieve the details of a single event delivered to a webhook.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.webhooks.events.get({
+    eventId: 'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+    webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+  });
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -15037,6 +15086,24 @@ Source: https://resend.com/docs/api-reference/webhooks/list-event-attempts
 GET /webhooks/:webhook_id/events/:event_id/attempts
 Retrieve the delivery attempts for a single webhook event.
 
+<Warning>
+  Webhook events and delivery attempts are currently in private beta and only
+  available to a limited number of users. APIs might change before it is
+  generally available. [Get in touch](https://resend.com/contact) if you're
+  interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.4
+    ```
+  </CodeGroup>
+</Warning>
+
 ## Path Parameters
 
 <ParamField type="string">
@@ -15092,6 +15159,17 @@ Retrieve the delivery attempts for a single webhook event.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.webhooks.events.attempts.list({
+    eventId: 'msg_1srOrx2ZWZBpBUvZwXKQmoEYga2',
+    webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+  });
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events/msg_1srOrx2ZWZBpBUvZwXKQmoEYga2/attempts' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -15127,6 +15205,24 @@ Source: https://resend.com/docs/api-reference/webhooks/list-events
 
 GET /webhooks/:webhook_id/events
 Retrieve a list of events delivered to a webhook.
+
+<Warning>
+  Webhook events and delivery attempts are currently in private beta and only
+  available to a limited number of users. APIs might change before it is
+  generally available. [Get in touch](https://resend.com/contact) if you're
+  interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-headless-dashboard.4
+    ```
+  </CodeGroup>
+</Warning>
 
 ## Path Parameters
 
@@ -15181,6 +15277,16 @@ Retrieve a list of events delivered to a webhook.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.webhooks.events.list({
+    webhookId: '4dd369bc-aa82-4ff3-97de-514ae3000ee0',
+  });
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/webhooks/4dd369bc-aa82-4ff3-97de-514ae3000ee0/events' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -15588,6 +15694,84 @@ If you do call the API directly, remember to set the required
     Give your AI agent access to Resend.
   </Card>
 </CardGroup>
+
+
+# Send emails with Appwrite and Resend
+Source: https://resend.com/docs/appwrite-integration
+
+Learn how to send emails through Resend using Appwrite Messaging.
+
+[Appwrite](https://appwrite.io) is an open-source development platform for building and scaling applications faster, offering Auth, Databases, Storage, Functions, Messaging, Realtime, and web hosting, all in one place.
+
+Appwrite Messaging includes a native Resend provider, so you can send emails to your app's users through Resend without writing any delivery code.
+
+## Prerequisites
+
+To get the most out of this guide, you'll need to:
+
+* [Create an API key](https://resend.com/api-keys)
+* [Verify your domain](https://resend.com/domains)
+
+You'll also need an [Appwrite project](https://cloud.appwrite.io) with at least one user.
+
+## 1. Add Resend as an email provider
+
+In the Appwrite Console, navigate to **Messaging** > **Providers** > **Add provider** > **Email**. Give your provider a name, choose **Resend**, and click **Save and continue**.
+
+<Note>
+  The provider will be saved to your project, but not enabled until you complete
+  its configuration.
+</Note>
+
+In the **Configure** step, you will need to provide details from your Resend dashboard to connect your Appwrite project:
+
+| Field          | Description                                                                                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API key        | Head to API Keys > Create API Key. You can also follow [Resend's instructions](/docs/dashboard/api-keys/introduction) to create an API key.                        |
+| Sender email   | The provider sends emails from this sender email. The sender email needs to be an email under a [verified domain](/docs/dashboard/domains/introduction) in Resend. |
+| Sender name    | The sender name that appears in the emails sent from this provider.                                                                                           |
+| Reply-to email | The reply-to email that appears in the emails sent from this provider.                                                                                        |
+| Reply-to name  | The reply-to name that appears in the emails sent from this provider.                                                                                         |
+
+After adding these details, click **Save and continue** to enable the provider.
+
+## 2. Add recipients
+
+Appwrite Messaging delivers messages to **targets**, the different ways a user can be reached: their email addresses, phone numbers, and devices with your app installed. Targets can subscribe to **topics**, so when a message is published to a topic, all subscribed targets receive it.
+
+Users with verified emails who signed up with [email password](https://appwrite.io/docs/products/auth/email-password), [magic URL](https://appwrite.io/docs/products/auth/magic-url), [email OTP](https://appwrite.io/docs/products/auth/email-otp), or [OAuth2](https://appwrite.io/docs/products/auth/oauth2) login already have an email target. You can also add targets to existing users by navigating to **Authentication** > **Users** > select a user > **Targets**.
+
+To message groups of users, navigate to **Messaging** > **Topics** > **Create topic** and subscribe their targets to the topic.
+
+Learn more about [topics](https://appwrite.io/docs/products/messaging/topics) and [targets](https://appwrite.io/docs/products/messaging/targets) in the Appwrite documentation.
+
+## 3. Send your first email
+
+To send a test email from the Appwrite Console, navigate to **Messaging** > **Messages** > **Create message** > **Email**. Add your message and in the targets step, select one of your test targets. Set the schedule to **Now** and click **Send**.
+
+Verify that you can receive the message in your inbox. If not, check for logs in the Appwrite Console or in your [Resend dashboard](https://resend.com/emails).
+
+To send emails programmatically, use an [Appwrite Server SDK](https://appwrite.io/docs/sdks#server):
+
+```js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Client, Messaging, ID } from 'node-appwrite';
+
+const client = new Client()
+  .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API endpoint
+  .setProject('<PROJECT_ID>') // Your project ID
+  .setKey('<API_KEY>'); // Your secret API key
+
+const messaging = new Messaging(client);
+
+const message = await messaging.createEmail({
+  messageId: ID.unique(),
+  subject: 'Welcome aboard!',
+  content: 'Thanks for signing up. We are happy to have you.',
+  topics: ['<TOPIC_ID>'],
+});
+```
+
+Emails can be sent immediately or scheduled for a later time.
 
 
 # Send emails with Base44 and Resend
@@ -35680,11 +35864,17 @@ Source: https://resend.com/docs/guides/building-a-resend-oauth-client
 
 Implement an OAuth 2.1 + PKCE client against the Resend API, from scratch or with a library.
 
-Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. Resend also supports Dynamic Client Registration (DCR), which lets a client register itself at runtime via POST /oauth/register. Use DCR when a client, such as a MCP host, can't know its deployment details in advance.
+Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. A client's `client_id` comes from one of three places:
+
+1. Pre-registration: Resend issues a fixed `client_id`, plus a `client_secret` if the client has a backend.
+2. [Client ID Metadata Document](#client-id-metadata-documents) (CIMD): the `client_id` is the HTTPS URL of a JSON document you host, which Resend fetches to read the client's metadata.
+3. Dynamic Client Registration (DCR): the client registers itself at runtime via POST /oauth/register and is issued a `client_id` then.
+
+**Prefer CIMD over DCR:** it gives the client one identity across every install instead of a new registration each time, and the consent screen can name the host that published the document rather than a name the client picked for itself.
 
 Resend supports both **public** and **confidential** clients. PKCE is required on every authorization code exchange regardless of type:
 
-* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default). Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps.
+* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default), or declare that value in the metadata document. Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps. A CIMD client is always public, since its document is world-readable and can't carry a secret.
 * **Confidential clients** additionally present a `client_secret` at the token and revocation endpoints. Register them with `token_endpoint_auth_method: "client_secret_basic"` (or `client_secret_post`) to have Resend issue the secret. Use a confidential client when it has a backend that can store the secret privately, such as a server-side web app.
 
 Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
@@ -35693,11 +35883,9 @@ The Resend dashboard hosts the login and consent screen. Your client only needs 
 
 ## Recommended implementation paths
 
-Before getting to the integration, decide between registering the client dynamically or registering it beforehand and reusing a fixed `client_id`.
+The standard case is registering beforehand, and the worked examples below use it. A metadata document is the next best thing for clients that can't predict their own deployment details ahead of time, like an MCP server: it works for hosted apps and local tools alike, and one document serves every install. Register dynamically only when the client can't host a document.
 
-Dynamic registration is for clients that can't predict their own deployment details ahead of time, like an MCP server. The standard case is registering beforehand, and the rest of this guide assumes that path.
-
-Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
+Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. That choice only applies to a registered client, since a CIMD client is always public. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
 ## Scopes
 
@@ -35706,11 +35894,11 @@ Use the smallest scope that works for your integration:
 * `emails:send` is enough for send-only routes, such as `POST /emails`, `POST /email`, `POST /emails/sending`, `POST /email/sending`, and `POST /broadcasts/:broadcastId/send`.
 * `full_access` is required for other API routes.
 
-If a dynamically registered client omits `scope`, Resend registers it with every supported scope. Pass `scope` explicitly during registration and authorization instead of relying on that default.
+A client that omits `scope` gets both scopes by default, whether it registered dynamically or declared no `scope` in its metadata document. Pass `scope` explicitly during registration and authorization instead of relying on that default.
 
 ## Request encoding and `resource`
 
-Dynamic client registration uses JSON. The token and revocation endpoints accept both JSON and `application/x-www-form-urlencoded`, but prefer form encoding for `/oauth/token` and `/oauth/revoke`, since that's what most OAuth libraries send by default.
+Dynamic client registration uses JSON, and so does a metadata document. The token and revocation endpoints accept both JSON and `application/x-www-form-urlencoded`, but prefer form encoding for `/oauth/token` and `/oauth/revoke`, since that's what most OAuth libraries send by default.
 
 Resend does not support RFC 8707 resource indicators yet. Don't send or rely on `resource` in authorization or token requests. It's accepted but ignored.
 
@@ -35718,7 +35906,9 @@ Resend does not support RFC 8707 resource indicators yet. Don't send or rely on 
 
 Before starting the authorization request, generate three values:
 
-* `code_verifier`: a high-entropy random string kept only by the client.
+* `code_verifier`: a high-entropy random string kept only by the client. See
+  [Token](/docs/api-reference/oauth/token#pkce) for the length and character set it
+  must use.
 * `code_challenge`: the base64url-encoded SHA-256 hash of the `code_verifier`.
 * `state`: a high-entropy random string used to bind the callback to the request that started the flow.
 
@@ -35739,6 +35929,87 @@ const state = base64url(randomBytes(24));
 ```
 
 For a remote client, store `state` and `codeVerifier` server-side before redirecting the user to us. For a local client, keep them in memory while the temporary callback server is running.
+
+## Client ID Metadata Documents
+
+Instead of registering, host a JSON document that describes the client and pass its HTTPS URL as the `client_id`:
+
+```
+GET /oauth/authorize?client_id=https%3A%2F%2Fexample.com%2Foauth%2Fclient.json&response_type=code&...
+```
+
+Resend fetches that URL, reads the client metadata from it, and runs the rest of the flow exactly as it does for a registered client. There's no registration call and no issued `client_id` to store. The client hardcodes its own document URL, and sends the same value as `client_id` at `/oauth/token` and `/oauth/revoke`.
+
+This follows the [OAuth Client ID Metadata Document](https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/) draft. The rules below are the parts specific to Resend.
+
+Host the document on a site you control, whatever the client is. A hosted app serves it next to the app and lists its own `https` callback. A CLI or desktop app serves it on the vendor's website and lists loopback callbacks, since the document only has to name the client, not run it.
+
+### The document
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "client_id": "https://example.com/oauth/client.json",
+  "client_name": "Example App",
+  "client_uri": "https://example.com",
+  "logo_uri": "https://example.com/logo.png",
+  "redirect_uris": ["https://example.com/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "scope": "emails:send"
+}
+```
+
+The fields are the [registration](/docs/api-reference/oauth/register) fields, with extra rules:
+
+| Field                        | Rule                                                                                                                                   |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `client_id`                  | Required. Must equal the document's own URL, character for character.                                                                  |
+| `client_name`                | Required, 1–200 characters.                                                                                                            |
+| `redirect_uris`              | Required, 1 to 10 entries. An `https` URI must be on the same host as the document. See [Redirect URIs](#redirect-uris-in-a-document). |
+| `token_endpoint_auth_method` | Must be `none`, or omitted. A document is public, so it can't authenticate with a secret.                                              |
+| `client_secret`              | Must be absent.                                                                                                                        |
+| `jwks`, `jwks_uri`           | Must be absent. Resend doesn't support `private_key_jwt`.                                                                              |
+| `grant_types`                | Must include `authorization_code`. Values Resend doesn't support are ignored rather than rejected.                                     |
+| `response_types`             | If present, `["code"]` only.                                                                                                           |
+| `scope`                      | Space-delimited, and every value must be [supported](#scopes). Pass it explicitly: an omitted `scope` gives the client both scopes.    |
+| `logo_uri`                   | Optional, `http` or `https`. Shown on the consent screen only when it's served from the same host as the document.                     |
+| `client_uri`                 | Optional. Read but not otherwise used.                                                                                                 |
+
+Apart from `grant_types`, a declaration Resend can't honor fails the whole document rather than being dropped from it. A client that declares `private_key_jwt`, for instance, gets an error rather than being downgraded to an unauthenticated one.
+
+### The document URL
+
+The URL is the client's identity, and it's compared as an exact string with no normalization. Serve the document at a URL that survives a parse-and-serialize round trip: lowercase host, no explicit `:443`, no `.` or `..` segments. It must use `https`, have a path (`https://example.com` alone won't do), and carry no fragment and no userinfo. Maximum 2048 characters.
+
+Treat the URL as permanent. Moving the document makes a different client, and every user has to authorize again.
+
+### Redirect URIs in a document
+
+A document proves that you control its host, and nothing else:
+
+* An `https` redirect URI must be on the same host as the document URL. A document at `https://example.com/oauth/client.json` can't name a callback on `app.example.net`.
+* Loopback `http` URIs (`127.0.0.1`, `localhost`, `[::1]`) are exempt. A loopback address names the user's own machine rather than a publisher, so there's nothing to compare. Port variance works the same way it does for a registered client.
+* Private-use URI schemes (e.g. `cursor://`) are exempt too, since they carry no web host at all.
+
+### Hosting and caching
+
+Resend fetches the document when a browser hits `/oauth/authorize`.
+
+* Redirects aren't followed. Serve the document at the exact URL with a `2xx`.
+* 5 KB maximum, 5 second timeout. A real document is a few hundred bytes.
+* The document must be reachable. A fetch that fails, or a document that doesn't validate, fails the authorization with `invalid_client`. Resend won't fall back to an older copy, since a stale document can name a redirect URI you no longer control.
+* `cache-control: max-age` is honored, clamped between 5 minutes and 24 hours. A document sent with `no-store` still gets the 5-minute floor.
+
+Only `/oauth/authorize` fetches. Token, refresh, and revoke requests use the copy Resend already holds, so a document that's briefly unreachable doesn't break clients that already have a grant.
+
+Because of the 5-minute floor, allow time for an edit to take effect. If a CDN caches the file too, the two windows stack.
+
+### On the consent screen
+
+Resend has no self-service verification yet, so a CIMD client is unverified. The consent screen headlines the document's host rather than `client_name`, since the host is the part Resend can check. `client_name` is shown as the client's own claim about itself.
+
+Being unverified affects errors too. Once `client_id` and `redirect_uri` are validated, `/oauth/authorize` redirects an error back to the callback only when the target is a loopback address, a private-use scheme, or a verified client. An unverified `https` callback gets a JSON error instead, which stops the endpoint from being used as an open redirect. Handle both.
 
 ## Pre-registered remote client
 
@@ -35822,9 +36093,11 @@ curl -X POST 'https://api.resend.com/oauth/token' \
 
 ## Local client
 
-A local client must use a loopback redirect URI. Prefer `127.0.0.1` with a random local port, for example `http://127.0.0.1:49152/oauth/callback`.
+A local client must use a loopback redirect URI or a private-use URI scheme, per RFC 8252. Prefer `127.0.0.1` with a random local port, for example `http://127.0.0.1:49152/oauth/callback`. A native app the operating system routes to can use its own scheme instead, such as `cursor://oauth/callback`.
 
-Registered loopback redirect URIs allow port variance. The host, path, and query string must still match. For example, a client can register `http://127.0.0.1/oauth/callback` and later authorize with `http://127.0.0.1:49152/oauth/callback`.
+Loopback redirect URIs allow port variance, whether they come from registration or from a metadata document. The host, path, and query string must still match, and `localhost` and `127.0.0.1` count as different hosts. For example, a client can declare `http://127.0.0.1/oauth/callback` and later authorize with `http://127.0.0.1:49152/oauth/callback`.
+
+The sequence below registers dynamically. With a [metadata document](#client-id-metadata-documents), skip the registration step: the `client_id` is the document's URL, and the loopback redirect URI is listed in the document.
 
 ```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
 sequenceDiagram
@@ -35863,9 +36136,11 @@ sequenceDiagram
     [above](#generating-pkce-values-and-state).
   </Step>
 
-  <Step title="Register the client">
-    Dynamically register with a loopback redirect URI and the minimum required
-    scope. See [Register Client](/docs/api-reference/oauth/register).
+  <Step title="Get a client_id">
+    Use the URL of a [metadata document](#client-id-metadata-documents) that
+    lists the loopback redirect URI and the minimum required scope. If the
+    client can't host one, register dynamically with the same values instead.
+    See [Register Client](/docs/api-reference/oauth/register).
   </Step>
 
   <Step title="Open the authorize URL in the user's browser">
@@ -35893,7 +36168,7 @@ Close the loopback server after success or timeout.
 
 ### Dynamic client registration
 
-Pass `scope` explicitly. If DCR omits `scope`, Resend registers the client with every supported scope by default.
+Pass `scope` explicitly. If DCR omits `scope`, Resend registers the client with both scopes by default.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/oauth/register' \
@@ -35975,7 +36250,9 @@ The response includes a JWT access token and an opaque refresh token:
 
 ### Refresh token exchange
 
-Refresh tokens rotate on every successful refresh. Serialize refresh operations for a grant, and store the new refresh token atomically with the rest of the response. If refresh succeeds but the new refresh token isn't persisted, you'll need to reauthorize. Retrying an old token from multiple workers can revoke the whole grant. See [Token](/docs/api-reference/oauth/token) for the reuse-detection details.
+Refresh tokens rotate on every successful refresh. Serialize refresh operations for a grant, and store the new refresh token atomically with the rest of the response. If refresh succeeds but the new refresh token isn't persisted, you'll need to reauthorize. Retrying an old token from multiple workers can revoke the whole grant: a replay fails with `invalid_grant` either way, and it also revokes the grant unless the rotation happened within the last minute. Don't rely on that window. See [Token](/docs/api-reference/oauth/token) for the reuse-detection details.
+
+Each refresh resets the new token's 60-day lifetime, so a client that refreshes regularly never has to reauthorize.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/oauth/token' \

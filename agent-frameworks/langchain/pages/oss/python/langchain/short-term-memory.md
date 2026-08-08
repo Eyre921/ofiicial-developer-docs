@@ -268,9 +268,19 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
 
 In production, use a checkpointer backed by a database:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langgraph-checkpoint-postgres
-```
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langgraph-checkpoint-postgres "psycopg[binary]"
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langgraph-checkpoint-postgres "psycopg[binary]"
+  ```
+</CodeGroup>
+
+<Note>
+  By default, `langgraph-checkpoint-postgres` installs `psycopg` (Psycopg 3) without extras. The install above adds `psycopg[binary]`, which is recommended for most users. For other options, see the [Psycopg installation docs](https://www.psycopg.org/psycopg3/docs/basic/install.html).
+</Note>
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent

@@ -20,18 +20,18 @@ Retrieve segment metrics.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.1
+    npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
 </Warning>
 
 Live contact counts for your account, optionally broken down by segment.
 Works across your whole account by default, or scoped to specific segments
-via `filter[segment_id]`.
+via `segment_id`.
 
 <Info>
   `totals` is always the live, current count for your account, or for the
-  segments in `filter[segment_id]`, if provided.
+  segments in `segment_id`, if provided.
 </Info>
 
 <Info>

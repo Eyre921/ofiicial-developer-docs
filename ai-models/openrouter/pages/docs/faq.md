@@ -96,7 +96,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
     of {openRouterBYOKFee.fraction}% of what the same
     model and provider would normally cost on OpenRouter. This fee is deducted
     from your OpenRouter credits. This allows you to manage your rate limits and
-    costs directly with the provider while still leveraging OpenRouter's unified
+    costs directly with the provider while still using OpenRouter's unified
     interface.
 
     [Learn more about BYOK](/docs/guides/overview/auth/byok).
@@ -285,9 +285,9 @@ Please see our [Terms of Service](https://openrouter.ai/terms) and [Privacy Poli
   </Accordion>
 
   <Accordion title="What free tier options exist?">
-    All new users receive a very small free allowance to be able to test out OpenRouter.
+    All new users receive a small free allowance to test out OpenRouter.
     There are many [free models](https://openrouter.ai/models?max_price=0) available
-    on OpenRouter, it is important to note that these models have low rate limits ({FREE_MODEL_NO_CREDITS_RPD} requests per day total)
+    on OpenRouter. These models have low rate limits ({FREE_MODEL_NO_CREDITS_RPD} requests per day total)
     and are usually not suitable for production use. If you have purchased at least {FREE_MODEL_CREDITS_THRESHOLD} credits,
     the free models will be limited to {FREE_MODEL_HAS_CREDITS_RPD} requests per day.
 

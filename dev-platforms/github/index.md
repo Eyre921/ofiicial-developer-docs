@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 100 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 107 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -46,17 +46,22 @@
 - `en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials` — [Recover an account with 2FA](pages/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials.md) · [原文](https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials.md)
 - `en/billing/concepts/product-billing/github-actions` — [GitHub Actions](pages/en/billing/concepts/product-billing/github-actions.md) · [原文](https://docs.github.com/en/billing/concepts/product-billing/github-actions.md)
 - `en/billing/how-tos/set-up-payment/manage-payment-info` — [Manage payment info](pages/en/billing/how-tos/set-up-payment/manage-payment-info.md) · [原文](https://docs.github.com/en/billing/how-tos/set-up-payment/manage-payment-info.md)
+- `en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries` — [Actions queries](pages/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md) · [原文](https://docs.github.com/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md)
 - `en/codespaces` — [Codespaces](pages/en/codespaces.md) · [原文](https://docs.github.com/en/codespaces.md)
-- `en/copilot` — [GitHub Copilot](pages/en/copilot.md) · [原文](https://docs.github.com/en/copilot.md)
 - `en/copilot/concepts/agents/cloud-agent/about-cloud-agent` — [About cloud agent](pages/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md)
 - `en/copilot/concepts/billing/individual-plans` — [Individual plans](pages/en/copilot/concepts/billing/individual-plans.md) · [原文](https://docs.github.com/en/copilot/concepts/billing/individual-plans.md)
 - `en/copilot/concepts/billing/usage-based-billing-for-individuals` — [Billing for individuals](pages/en/copilot/concepts/billing/usage-based-billing-for-individuals.md) · [原文](https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-individuals.md)
+- `en/copilot/concepts/models/auto-model-selection` — [Auto model selection](pages/en/copilot/concepts/models/auto-model-selection.md) · [原文](https://docs.github.com/en/copilot/concepts/models/auto-model-selection.md)
+- `en/copilot/get-started/best-practices` — [Best practices](pages/en/copilot/get-started/best-practices.md) · [原文](https://docs.github.com/en/copilot/get-started/best-practices.md)
+- `en/copilot/get-started/features` — [Features](pages/en/copilot/get-started/features.md) · [原文](https://docs.github.com/en/copilot/get-started/features.md)
 - `en/copilot/get-started/plans` — [Plans](pages/en/copilot/get-started/plans.md) · [原文](https://docs.github.com/en/copilot/get-started/plans.md)
 - `en/copilot/get-started/quickstart` — [Quickstart](pages/en/copilot/get-started/quickstart.md) · [原文](https://docs.github.com/en/copilot/get-started/quickstart.md)
+- `en/copilot/get-started/what-is-github-copilot` — [What is GitHub Copilot?](pages/en/copilot/get-started/what-is-github-copilot.md) · [原文](https://docs.github.com/en/copilot/get-started/what-is-github-copilot.md)
 - `en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli` — [Install Copilot CLI](pages/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md)
 - `en/copilot/how-tos/copilot-cli/use-copilot-cli/overview` — [Overview](pages/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md)
 - `en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions` — [Get IDE code suggestions](pages/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md) · [原文](https://docs.github.com/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md)
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
+- `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp` — [Extend Copilot Chat with MCP](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server` — [Set up the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server` — [Use the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md)
 - `en/copilot/how-tos/set-up/install-copilot-extension` — [Install Copilot extension](pages/en/copilot/how-tos/set-up/install-copilot-extension.md) · [原文](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-extension.md)
@@ -77,6 +82,7 @@
 - `en/get-started/start-your-journey/what-is-github` — [What is GitHub?](pages/en/get-started/start-your-journey/what-is-github.md) · [原文](https://docs.github.com/en/get-started/start-your-journey/what-is-github.md)
 - `en/get-started/using-github-docs/about-versions-of-github-docs` — [Docs versions](pages/en/get-started/using-github-docs/about-versions-of-github-docs.md) · [原文](https://docs.github.com/en/get-started/using-github-docs/about-versions-of-github-docs.md)
 - `en/get-started/using-github/github-mobile` — [GitHub Mobile](pages/en/get-started/using-github/github-mobile.md) · [原文](https://docs.github.com/en/get-started/using-github/github-mobile.md)
+- `en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax` — [Basic formatting syntax](pages/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax.md) · [原文](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax.md)
 - `en/github-cli/github-cli` — [GitHub CLI](pages/en/github-cli/github-cli.md) · [原文](https://docs.github.com/en/github-cli/github-cli.md)
 - `en/github-cli/github-cli/quickstart` — [Quickstart](pages/en/github-cli/github-cli/quickstart.md) · [原文](https://docs.github.com/en/github-cli/github-cli/quickstart.md)
 - `en/graphql` — [GraphQL API](pages/en/graphql.md) · [原文](https://docs.github.com/en/graphql.md)
@@ -107,4 +113,5 @@
 - `en/rest` — [REST API](pages/en/rest.md) · [原文](https://docs.github.com/en/rest.md)
 - `en/rest/apps/marketplace` — [Marketplace](pages/en/rest/apps/marketplace.md) · [原文](https://docs.github.com/en/rest/apps/marketplace.md)
 - `en/rest/authentication/authenticating-to-the-rest-api` — [Authenticating](pages/en/rest/authentication/authenticating-to-the-rest-api.md) · [原文](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api.md)
+- `en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens` — [Permissions for fine-grained PATs](pages/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md) · [原文](https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md)
 - `en/search-github/github-code-search/understanding-github-code-search-syntax` — [Code search syntax](pages/en/search-github/github-code-search/understanding-github-code-search-syntax.md) · [原文](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax.md)

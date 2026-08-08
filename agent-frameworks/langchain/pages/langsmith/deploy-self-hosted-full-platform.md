@@ -1,27 +1,18 @@
 ---
-title: "Enable LangSmith Deployment, Fleet, Insights, Chat, Sandboxes, and Engine"
+title: "Enable additional LangSmith features"
 source: https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform
 path: langsmith/deploy-self-hosted-full-platform
 ---
 
 Enable LangSmith Deployment, Fleet, Insights, Chat, Sandboxes, and Engine on a self-hosted LangSmith instance.
 
-In addition to the base [LangSmith](/langsmith/self-hosted) platform, you can enable the following features:
+In addition to the base [LangSmith](/langsmith/self-hosted) platform, you can enable the following features on LangSmith Self-hosted:
 
-* **[LangSmith Deployment](/langsmith/deployment)** adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) that let you deploy, scale, and manage agents and applications directly through the LangSmith UI.
-
-  <Note>
-    If you don't need the full UI-based setup, see [standalone servers](/langsmith/deploy-standalone-server) for a lightweight alternative.
-  </Note>
-
+* **[LangSmith Deployment](/langsmith/deployment)** adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) that let you deploy, scale, and manage agents and applications directly through the LangSmith UI. If you don't need the full UI-based setup, refer to [standalone servers](/langsmith/deploy-standalone-server) for a lightweight alternative.
 * **[Fleet](/langsmith/fleet/index)** allows you to create, deploy, and manage AI agents directly within LangSmith with no code.
-
 * **[Insights](/langsmith/insights)** provides AI-powered analysis of your traces and application data within LangSmith.
-
 * **[Chat](/langsmith/chat)** provides an in-workspace chat experience to help you analyze traces, threads, prompts, and experiment results.
-
 * **[Sandboxes](/langsmith/sandboxes)** let users run code, expose temporary services, and create memory snapshots from LangSmith.
-
 * **[Engine](/langsmith/engine-overview)** finds recurring issues in a tracing project, diagnoses them against your source code, and proposes fixes. Engine requires Sandboxes.
 
 <Info>
@@ -1168,7 +1159,7 @@ Engine requires Sandboxes and shares a runtime with Insights:
 * **[Sandboxes](#enable-sandboxes):** Every Engine run executes in one. Enable Sandboxes first. The chart refuses to render when `engine.enabled` is set without them.
 * **[Insights](#enable-fleet-insights-and-chat):** Engine and Insights are served by the same image and share one deployment. Insights is not an Engine prerequisite. On an install that already runs Insights, enabling Engine adds configuration rather than new pods.
 
-Unlike the other features on this page, Engine cannot run entirely inside your cluster. It depends on LangSmith Intelligence, a LangChain-managed zero data retention service, and authenticates with a short-lived license JWT obtained during LangSmith license verification. See [Engine on self-hosted](/langsmith/engine-self-hosted) for the data flow and retained billing metadata.
+Unlike the other features on this page, Engine cannot run entirely inside your cluster. It depends on LangSmith Intelligence, a LangChain-managed zero data retention service, and authenticates with a short-lived license JWT obtained during LangSmith license verification. For the data flow and retained billing metadata, refer to [Engine on self-hosted](/langsmith/engine-self-hosted).
 
 ### Components
 
@@ -1201,17 +1192,17 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
   </Step>
 
   <Step title="Allow egress to LangSmith Intelligence">
-    Allow outbound HTTPS from the cluster to the LangSmith Intelligence gateway for your cloud. This is the host in `engine.intelligenceBaseUrl` below.
+    Allow outbound HTTPS from the cluster to the LangSmith Intelligence gateway for your cloud. This is the host in `engine.intelligenceBaseUrl`.
 
     | Cloud | Gateway host               |
     | ----- | -------------------------- |
     | AWS   | `beacon.aws.langchain.com` |
     | GCP   | `beacon.langchain.com`     |
 
-    On GCP that is the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
+    On GCP, it is the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
 
     <Note>
-      Engine is currently available for self-hosted deployments in **AWS US** and **GCP US**. AWS EU and Azure are planned. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with your account team before planning a rollout.
+      Engine is available for self-hosted deployments in **AWS US** and **GCP US**. AWS EU and Azure are planned. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with your account team before planning a rollout.
     </Note>
 
     Add the gateway as a specific allowlist entry rather than opening general egress. Requests use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
@@ -1268,7 +1259,7 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
     Set the encryption key directly in your config file.
 
     <Warning>
-      This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret above.
+      This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret.
     </Warning>
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1320,13 +1311,13 @@ Confirm the shared Engine and Insights deployment is running:
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
-Both the API server and queue pods should be `Running`. Then confirm `platform-backend` is healthy, since it dispatches Engine runs:
+Both the API server and queue pods should be `Running`. Then, confirm `platform-backend` is healthy, since it dispatches Engine runs:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 ```
 
-If Engine does not appear in the LangSmith UI after this, the most common causes are a license without the Engine entitlement and the organization-level toggle described below.
+If Engine does not appear in the LangSmith UI after this, the most common causes are a license without the Engine entitlement and the organization-level toggle described in [Turn on Engine in LangSmith](#turn-on-engine-in-langsmith).
 
 After completing the in-product setup, start an Engine analysis and confirm that results appear for the tracing project. This verifies the complete path through Engine, Sandboxes, and LangSmith Intelligence. Running pods alone does not verify that path.
 
@@ -1348,7 +1339,7 @@ engine:
   enabled: false
 ```
 
-Engine stops dispatching runs. Existing issues remain in the database and reappear if you re-enable it. Because Insights shares the same deployment, the `standalone-insights` pods keep running when `insights.enabled` is `true`.
+Engine stops dispatching runs. Existing issues remain in the database and reappear if you re-enable it. Insights shares the same deployment, so the `standalone-insights` pods keep running when `insights.enabled` is `true`.
 
 ## Optional configuration
 

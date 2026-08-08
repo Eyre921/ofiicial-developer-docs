@@ -202,7 +202,7 @@ Each video model supports model-specific parameters that can be passed through v
 | `generateAudio`  | boolean | `false`  | Whether to generate audio alongside the video                    |
 | `pollIntervalMs` | number  | `2000`   | Polling interval in milliseconds when waiting for generation     |
 | `maxPollTimeMs`  | number  | `600000` | Maximum time in milliseconds to wait before timing out           |
-| `extraBody`      | object  | —        | Default body parameters merged into every request for this model |
+| `extraBody`      | object  | None     | Default body parameters merged into every request for this model |
 
 ### Image-to-Video
 

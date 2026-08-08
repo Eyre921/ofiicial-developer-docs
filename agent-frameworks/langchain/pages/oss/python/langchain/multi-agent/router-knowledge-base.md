@@ -105,9 +105,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="OpenAI">
     👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[openai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[openai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[openai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -133,9 +139,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="Anthropic">
     👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[anthropic]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[anthropic]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[anthropic]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -161,9 +173,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="Azure">
     👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[openai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[openai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[openai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -199,9 +217,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="Google Gemini">
     👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[google-genai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[google-genai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[google-genai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -227,9 +251,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="AWS Bedrock">
     👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[aws]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[aws]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[aws]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -255,9 +285,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="HuggingFace">
     👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[huggingface]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[huggingface]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[huggingface]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -293,9 +329,15 @@ Select a chat model from LangChain's suite of integrations:
   <Tab title="OpenRouter">
     👉 Read the [OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain-openrouter"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain-openrouter"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain-openrouter"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
