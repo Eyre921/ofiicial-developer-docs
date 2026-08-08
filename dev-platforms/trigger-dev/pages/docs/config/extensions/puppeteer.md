@@ -1,5 +1,5 @@
 ---
-title: "Puppeteer"
+title: "Puppeteer build extension"
 source: https://trigger.dev/docs/config/extensions/puppeteer
 path: docs/config/extensions/puppeteer
 ---

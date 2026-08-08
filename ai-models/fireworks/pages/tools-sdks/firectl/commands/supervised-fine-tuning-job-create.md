@@ -57,24 +57,25 @@ firectl supervised-fine-tuning-job create \
       --lora-rank int32                           The rank of the LoRA layers for the supervised fine-tuning job. Use --full-parameter for full parameter tuning. (default 8)
       --optimizer-weight-decay float32            Weight decay (L2 regularization) for the optimizer. Default in trainer is 0.01.
       --full-parameter                            Enable full parameter fine-tuning instead of LoRA. Equivalent to --lora-rank=0. Requires bf16 precision.
-                                                  
+
       --wandb-api-key string                      [WANDB_API_KEY] WandB API Key. (Required if any WandB flag is set)
       --wandb-project string                      [WANDB_PROJECT] WandB Project. (Required if any WandB flag is set)
       --wandb-entity string                       [WANDB_ENTITY] WandB Entity. (Required if any WandB flag is set)
       --wandb                                     Enable WandB
-                                                  
-                                                  
+
+
       --aws-credentials-secret string             [AWS_CREDENTIALS_SECRET] AWS credentials secret (mutually exclusive with --aws-iam-role)
       --aws-iam-role string                       [AWS_IAM_ROLE_ARN] AWS IAM role ARN (mutually exclusive with --aws-credentials-secret)
-                                                  
-                                                  
+
+
       --azure-credentials-secret string           [AZURE_CREDENTIALS_SECRET] Azure credentials secret
       --azure-managed-identity-client-id string   [AZURE_MANAGED_IDENTITY_CLIENT_ID] Azure managed identity client ID for Workload Identity Federation
       --azure-tenant-id string                    [AZURE_TENANT_ID] Azure tenant ID (required with --azure-managed-identity-client-id)
-                                                  
+
       --display-name string                       The display name of the supervised fine-tuning job.
       --quiet                                     If set, only errors will be printed.
       --eval-auto-carveout                        If set, the evaluation dataset will be auto-carved.
+      --use-reservation                           Try the account's reservation capacity before falling back to shared trainer capacity.
       --dry-run                                   Print the request proto without running it.
   -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
   -h, --help                                      help for create

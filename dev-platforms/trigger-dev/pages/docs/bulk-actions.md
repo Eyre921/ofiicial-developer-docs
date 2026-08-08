@@ -1,5 +1,5 @@
 ---
-title: "Bulk actions"
+title: "Bulk actions in the dashboard"
 source: https://trigger.dev/docs/bulk-actions
 path: docs/bulk-actions
 ---

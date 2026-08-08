@@ -17,7 +17,7 @@ Allow your customers to schedule their payments
 
 ## Get started 
 
-From the [Invoice template](https://dashboard.stripe.com/settings/billing/invoice), you can enable or disable scheduled payments for all invoices, including those that are outstanding. You can’t leverage the Stripe API to toggle the scheduled payments feature, or receive webhooks when an end merchant schedules a payment.
+From the [Invoice template](https://dashboard.stripe.com/settings/billing/invoice), you can enable or disable scheduled payments for all invoices, including those that are outstanding. You can’t use the Stripe API to toggle the scheduled payments feature, or receive webhooks when a business schedules a payment.
 ![Turn on the scheduled payments feature for your customers](https://b.stripecdn.com/docs-statics-srv/assets/settings-scheduled-payments.313042ca8b7e49ee4fa08a0c3c50b8cf.png)
 
 Turn on the scheduled payments feature for your customers

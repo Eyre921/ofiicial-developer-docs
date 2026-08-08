@@ -7955,6 +7955,10 @@ A render sample record looks like this:
 | `training_target_token_ids` | Shifted next-token targets passed to the trainer. This array is usually one shorter than `token_ids`.       |
 | `training_loss_weights`     | Loss weights aligned with `training_target_token_ids`. A positive value means that target token is trained. |
 
+<Note>
+  In the REST response, the render preview identifies each datum produced from a source row with `examples[].renderings[].renderedDatums[].datumIndex`. Downloaded **Render Samples** use the legacy `split_index` field shown above. The fields play corresponding roles in different schemas; `split_index` has not been renamed in the downloadable artifact.
+</Note>
+
 For quick inspection, `token_ids`, `decoded_tokens`, and `token_weights` are the easiest fields to scan. For exact trainer behavior, use `training_target_token_ids` and `training_loss_weights`; those are shifted for next-token prediction.
 
 ## Inspect a downloaded file
@@ -7990,14 +7994,15 @@ Replace `5` with the line number from the render sample.
 
 ## Common findings
 
-| What you see                                        | Likely cause                                                                                                               | What to do                                                                                                              |
-| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content. | Check the original JSONL row and remove unintended weights.                                                             |
-| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                            | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                      |
-| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                         | Check `split_index`, source line number, and the job's max context length.                                              |
-| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                               | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match. |
-| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                  | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                         |
-| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                      | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.    |
+| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                                  |
+| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                           |
+| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                   |
+| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                      |
+| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in fine-tuning](/fine-tuning/thinking-history). |
+| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                              |
+| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                         |
 
 ## Compare with a local tokenizer
 
@@ -8535,6 +8540,8 @@ Use either method for:
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
+
+        To try your account's reservation capacity before falling back to shared trainer capacity, add `--use-reservation`. For full-parameter DPO, policy and dedicated reference trainers try independently. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
 
         For ORPO, use the same preference dataset and select the ORPO objective:
 
@@ -9096,7 +9103,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     }
     ```
 
-    For the subset of models that supports thinking (e.g. DeepSeek R1, GPT OSS models and Qwen3 thinking models), we also support fine tuning with thinking traces. If you wish to fine tune with thinking traces, the dataset could also include thinking traces for assistant turns. Though optional, ideally each assistant turn includes a thinking trace. For example:
+    #### Thinking traces
+
+    For managed supervised fine-tuning (SFT), you can include thinking traces for assistant turns in `reasoning_content`. Thinking traces are optional, but ideally each assistant turn includes one. For example:
 
     ```json theme={null}
     {
@@ -9116,50 +9125,11 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     }
     ```
 
-    Note that when fine tuning with intermediate thinking traces, the number of total tuned tokens could exceed the number of total tokens in the dataset. This is because we unroll multi-turn conversations into multiple training examples to ensure train-inference consistency.
+    How earlier thinking appears in later training contexts depends on the base model and its thinking-history mode. This is separate from enabling or disabling thinking generation. Some models offer both Interleaved and Preserved history, some have one fixed mode, and DeepSeek V4 derives its behavior from whether each dataset row declares tools.
 
-    During inference, a model's thinking traces from previous turns are **not** visible in the conversation history — only the final `content` is retained. To match this behavior during training, we expand each multi-turn conversation into several single-turn training examples, where each example only tunes on one assistant turn and presents the conversation history exactly as it would appear at inference time (i.e., without previous thinking traces).
-
-    For example, consider this two-turn dataset entry:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "reasoning_content": "Simple arithmetic: 1+1=2."},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "Following up: 2+2=4."}
-      ]
-    }
-    ```
-
-    This gets expanded into two training examples:
-
-    **Example 1** — tunes on the first assistant turn:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "reasoning_content": "Simple arithmetic: 1+1=2."}
-      ]
-    }
-    ```
-
-    **Example 2** — tunes on the second assistant turn, with the first turn's thinking trace stripped to match inference behavior:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2"},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "Following up: 2+2=4."}
-      ]
-    }
-    ```
-
-    Because the conversation context is duplicated across these expanded examples, the total tuned token count will be larger than the raw dataset token count. The expansion grows with the number of assistant turns in each conversation: a conversation with *N* assistant turns produces *N* separate training examples.
+    <Card title="Thinking history in fine-tuning" icon="brain" href="/fine-tuning/thinking-history">
+      Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
+    </Card>
   </Step>
 
   <Step title="Create and upload a dataset">
@@ -9270,7 +9240,10 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 </Steps>
 
 <Tip>
-  For a complete Python SDK example that demonstrates the full workflow (creating datasets, uploading files, and launching a supervised fine-tuning job), see the [Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
+  For a complete Python SDK example that demonstrates the full workflow
+  (creating datasets, uploading files, and launching a supervised fine-tuning
+  job), see the [Python SDK workflow
+  example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
 </Tip>
 
 ## Deploying a fine-tuned model
@@ -9284,7 +9257,9 @@ firectl deployment create <FINE_TUNED_MODEL_ID>
 This creates a dedicated deployment with performance matching the base model.
 
 <Tip>
-  For more details on deploying fine-tuned models, including multi-LoRA deployments, see the [Deploying Fine Tuned Models guide](/fine-tuning/deploying-loras).
+  For more details on deploying fine-tuned models, including multi-LoRA
+  deployments, see the [Deploying Fine Tuned Models
+  guide](/fine-tuning/deploying-loras).
 </Tip>
 
 <a />
@@ -9460,12 +9435,29 @@ Additional tuning settings are available when starting an SFT or preference (DPO
       --output-model my-tuned-model
     ```
   </Accordion>
+
+  <Accordion title="Reservation placement">
+    Add `--use-reservation` to try your account's reservation capacity before falling back to shared trainer capacity:
+
+    ```shell theme={null}
+    firectl sftj create \
+      --use-reservation \
+      --base-model MY_BASE_MODEL \
+      --dataset cancerset \
+      --output-model my-tuned-model
+    ```
+
+    Omitting the flag preserves default placement. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
+  </Accordion>
 </AccordionGroup>
 
 ### Deprecated parameters
 
 <Warning>
-  These parameters are deprecated. Do not include them in new managed fine-tuning requests. The wire fields remain present so existing resources can still be read, but Training V2 rejects or ignores non-default values as described below.
+  These parameters are deprecated. Do not include them in new managed
+  fine-tuning requests. The wire fields remain present so existing resources can
+  still be read, but Training V2 rejects or ignores non-default values as
+  described below.
 </Warning>
 
 | Proto / Python field          | Former or legacy `firectl` flag           | Affected jobs                    | Migration behavior                                                                                                                                                                                                                         |
@@ -9478,7 +9470,6 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 | `mtp_num_draft_tokens`        | `--mtp-num-draft-tokens`                  | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`0`).                                                                                                                                                        |
 | `mtp_freeze_base_model`       | `--mtp-freeze-base-model`                 | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`false`).                                                                                                                                                    |
 | `extra_values`                | `--extra-values` (admin-only legacy flag) | Managed SFT                      | Legacy V1 Helm overrides. Training V2 rejects a non-empty map.                                                                                                                                                                             |
-| `use_reservation`             | `--use-reservation` (former admin flag)   | SFT, DPO/ORPO, RFT, RLOR trainer | The request value is ignored. Reservation placement is selected automatically from account policy, and the CLI flag was removed.                                                                                                           |
 
 ## Appendix
 
@@ -10051,6 +10042,34 @@ These interfaces create the same underlying managed jobs:
 | **Your agent**   | You want help configuring, running, and troubleshooting training |
 
 The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
+
+## Reservation-first placement
+
+Managed SFT and DPO jobs can try your account's reservation capacity before falling back to shared trainer capacity. Opt in with `--use-reservation` in `firectl`, `useReservation: true` in the REST request, or `use_reservation=True` in the Python SDK:
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+
+sft_job = client.supervised_fine_tuning_jobs.create(
+    dataset="accounts/my-account/datasets/sft-data",
+    base_model="accounts/fireworks/models/my-base-model",
+    output_model="my-sft-model",
+    use_reservation=True,
+)
+
+dpo_job = client.dpo_jobs.create(
+    dataset="accounts/my-account/datasets/dpo-data",
+    training_config={
+        "base_model": "accounts/fireworks/models/my-base-model",
+        "output_model": "my-dpo-model",
+    },
+    use_reservation=True,
+)
+```
+
+For full-parameter DPO, policy and dedicated reference trainers try independently. Omit the option to preserve default placement.
 
 ## Methods
 
@@ -13317,6 +13336,157 @@ For inference-side controls — disabling Response API storage (`store=False`) o
     Custom training loops that keep your data on your side
   </Card>
 </CardGroup>
+
+
+# Thinking history in fine-tuning
+Source: https://docs.fireworks.ai/fine-tuning/thinking-history
+
+Choose how historical reasoning is rendered for managed fine-tuning and match training behavior to inference.
+
+Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
+
+This setting does **not** enable or disable thinking generation. It only controls how reasoning already present in the dataset is rendered. Thinking enablement, context-length splitting, and truncation are separate concerns.
+
+## Interleaved and Preserved
+
+* **Interleaved** removes thinking across user-turn boundaries while retaining the complete assistant → tool → assistant trajectory for the current user turn.
+* **Preserved** retains thinking across user turns.
+
+These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the fine-tuned model.
+
+<Warning>
+  Do not interpret Interleaved as "keep only the final assistant's thinking." The boundary is the last real user query. If one user turn contains an assistant tool call, a tool result, and another assistant response, thinking from both assistant messages stays in that turn's trajectory.
+</Warning>
+
+## Model capabilities
+
+Models expose one of four capability shapes:
+
+* **Selectable:** the job can explicitly select Interleaved or Preserved.
+* **Fixed Interleaved:** only Interleaved is supported.
+* **Fixed Preserved:** only Preserved is supported.
+* **Automatic:** neither explicit mode describes the model-native behavior; the renderer selects behavior from each dataset row's input shape.
+
+| Base model                | Available modes                | Default                   | Interleaved boundary                                                       | Managed SFT datums                                                    |
+| ------------------------- | ------------------------------ | ------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| GLM 5.1                   | Interleaved, Preserved         | Interleaved               | Last real user query; keeps the complete current assistant/tool trajectory | Both modes unroll per user turn                                       |
+| GLM 5.2                   | Interleaved, Preserved         | Interleaved               | Same as GLM 5.1                                                            | Interleaved unrolls; Preserved keeps one complete datum               |
+| Qwen 3.5                  | Interleaved only               | Interleaved               | Last real user query; tool results do not reset the boundary               | Unrolls per user turn                                                 |
+| Qwen 3.6                  | Interleaved, Preserved         | Interleaved               | Same as Qwen 3.5                                                           | Interleaved unrolls; Preserved keeps one complete datum               |
+| Kimi K2.5                 | Interleaved only               | Interleaved               | Keeps thinking in the trailing/current assistant-tool trajectory           | Unrolls per user turn                                                 |
+| Kimi K2.6                 | Interleaved, Preserved         | Interleaved               | Same as Kimi K2.5                                                          | Interleaved unrolls; Preserved keeps one complete datum               |
+| Kimi K2.7 Code            | Preserved only                 | Preserved                 | Not applicable                                                             | Keeps one complete datum                                              |
+| DeepSeek V4 Flash and Pro | Automatic only; no mode toggle | Automatic (`UNSPECIFIED`) | Depends on whether the row declares tools                                  | Without tools, unrolls; with declared tools, keeps one complete datum |
+
+Base models not listed above keep their existing model-default renderer behavior and do not expose an explicit thinking-history choice.
+
+### GLM 5.1 compared with GLM 5.2
+
+Both versions expose the upstream `clear_thinking` template control. Fireworks maps Interleaved to `clear_thinking=true` and Preserved to `clear_thinking=false`. Both default to Interleaved, and both use the last real user query as the clearing boundary.
+
+The difference is in Preserved mode:
+
+* **GLM 5.1 still unrolls.** Its official template can change an earlier assistant turn's rendered think wrapper after a later assistant message is appended. The previously rendered sequence is therefore not always a prefix of the longer conversation.
+* **GLM 5.2 keeps one complete datum.** Its Preserved rendering is prefix-stable: appending a later turn does not rewrite tokens already rendered for earlier turns.
+
+GLM 5.1 unrolling does not remove preserved reasoning. It creates one training datum per user turn so that every target is rendered with the correct template context.
+
+### Qwen 3.5 compared with Qwen 3.6
+
+Both versions use the same Interleaved boundary: the last real user query, not the last assistant response. In a user → assistant tool call → tool result → assistant response trajectory, thinking from both assistant messages is retained.
+
+* **Qwen 3.5** has no supported history toggle and is fixed to Interleaved.
+* **Qwen 3.6** adds the upstream `preserve_thinking` control. Fireworks maps Interleaved to `preserve_thinking=false` and Preserved to `preserve_thinking=true`. Preserved is prefix-stable and stays one complete datum.
+
+For byte-level parity with the official Qwen 3.6 template, Preserved mode can emit an empty think wrapper for a historical assistant message that has no `reasoning_content`. This does not synthesize reasoning; it preserves the template's exact structure.
+
+### Kimi K2.5 compared with Kimi K2.6 and K2.7 Code
+
+* **Kimi K2.5** is fixed to Interleaved and unrolls per user turn.
+* **Kimi K2.6** adds the upstream `preserve_thinking` control. Fireworks maps Interleaved to `preserve_thinking=false` and Preserved to `preserve_thinking=true`; Preserved stays one complete datum.
+* **Kimi K2.7 Code** is fixed to Preserved and stays one complete datum.
+
+### DeepSeek V4 automatic behavior
+
+DeepSeek V4 Flash and Pro do not expose an Interleaved/Preserved toggle. Leave the job field omitted or `UNSPECIFIED`.
+
+The model-native renderer makes a deterministic choice for each row:
+
+* A row without declared tools removes thinking across user turns and unrolls per user turn.
+* A row with declared tools preserves thinking and remains one complete datum.
+
+This is determined by the row's input shape, not chosen autonomously or stochastically by the model. Render-preview clients should display one read-only automatic option.
+
+## Why some modes unroll
+
+Managed SFT trains all assistant messages. When a renderer removes historical thinking, Fireworks unrolls the conversation at **user boundaries** so every assistant response gets one opportunity to be the current target.
+
+Consider this conversation:
+
+```text theme={null}
+U1
+A1 (thinking 1, final answer)
+
+U2
+A2 (thinking 2, tool call)
+Tool result
+A3 (thinking 3, final answer)
+```
+
+For an Interleaved renderer that unrolls, Fireworks produces:
+
+* Datum 0 trains A1.
+* Datum 1 removes thinking 1 from the historical context and trains A2 and A3 together. Thinking 2 and thinking 3 both remain because they belong to the same user turn.
+
+For a prefix-stable Preserved renderer, the row remains one datum and thinking 1, 2, and 3 all remain. GLM 5.1 is the exception: its Preserved renderer keeps the reasoning but still unrolls because of its template's prefix behavior.
+
+Because unrolled datums duplicate conversation context, the tuned token count can exceed the raw dataset token count. Unrolling is independent of context-length truncation or splitting.
+
+## Configure a training job
+
+The optional, immutable REST field is `thinkingTraceHistoryMode`:
+
+* `THINKING_TRACE_HISTORY_MODE_UNSPECIFIED`: use the registered model's default behavior. For an unregistered model, keep its existing renderer fallback.
+* `THINKING_TRACE_HISTORY_MODE_INTERLEAVED`: explicitly request Interleaved when supported.
+* `THINKING_TRACE_HISTORY_MODE_PRESERVED`: explicitly request Preserved when supported.
+
+`UNSPECIFIED` is the default for clients that omit the field; it is not a third user-selectable history mode.
+
+```json theme={null}
+{
+  "thinkingTraceHistoryMode": "THINKING_TRACE_HISTORY_MODE_PRESERVED"
+}
+```
+
+An explicitly requested unsupported mode fails configuration validation before GPU training starts. Managed SFT, DPO, and ORPO use the same field and enum. The unrolling behavior described above applies to managed SFT; RFT does not expose this setting.
+
+## Preview before training
+
+A render-preview request does not select a thinking-history mode. It returns every available option for the base model in `thinkingTraceHistoryModeOptions` and one rendering per option for each example.
+
+* Selectable models return two options for a toggle.
+* Fixed and automatic models return one read-only option.
+* A rendering can contain multiple `renderedDatums` when that dataset row unrolls.
+* Within each datum, concatenate `segments[].text` in order. A `lossWeight` of `0` is masked context; a value greater than `0` is trained.
+
+Select one of the returned modes when creating the training job. After the job starts, use [Render Samples](/fine-tuning/debug-sft-tokenization) to inspect the exact token IDs and loss mask seen by the trainer.
+
+## How Fireworks verifies model behavior
+
+Fireworks treats the official model chat template as the behavior baseline and manually onboards supported model families. Capability is not inferred dynamically from arbitrary template text.
+
+Renderer tests pin upstream Hugging Face template revisions and verify token-for-token parity for single-turn, multi-turn, and tool-trajectory inputs. A shared regression fixture verifies all of the following:
+
+* Interleaved clears thinking before the last real user query.
+* Every assistant message after that query remains, including multiple assistants around a tool result.
+* Preserved retains every thinking trace.
+* Each renderer's prefix behavior produces the documented datum count.
+
+The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM-5.1/blob/main/chat_template.jinja), [GLM 5.2](https://huggingface.co/zai-org/GLM-5.2/blob/main/chat_template.jinja), [Qwen 3.5](https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/tokenizer_config.json), [Qwen 3.6](https://huggingface.co/Qwen/Qwen3.6-27B/blob/main/tokenizer_config.json), [Kimi K2.5](https://huggingface.co/moonshotai/Kimi-K2.5/blob/main/chat_template.jinja), [Kimi K2.6](https://huggingface.co/moonshotai/Kimi-K2.6/blob/main/chat_template.jinja), and [Kimi K2.7 Code](https://huggingface.co/moonshotai/Kimi-K2.7-Code/blob/main/chat_template.jinja).
+
+<Card title="Prepare an SFT dataset" icon="database" href="/fine-tuning/fine-tuning-models">
+  Add `reasoning_content` to assistant messages in your JSONL dataset.
+</Card>
 
 
 # Choose Serverless or Dedicated Training
@@ -24949,6 +25119,17 @@ You can preserve reasoning context in two ways:
   safe to use broadly.
 </Note>
 
+<Note>
+  **Fine-tuned models:** whether historical `reasoning_content` was visible during
+  training depends on the base model and the job's thinking-history mode.
+  Interleaved removes thinking across user-turn boundaries while retaining the
+  assistant/tool trajectory within the current turn; Preserved retains thinking
+  across user turns. Datum unrolling is model-specific. For reliable results,
+  serve a fine-tuned model consistently with how it was trained; see
+  [thinking history in fine-tuning](/fine-tuning/thinking-history)
+  for per-model behavior.
+</Note>
+
 Here's how to preserve reasoning context using both approaches:
 
 <Tabs>
@@ -30083,26 +30264,27 @@ firectl dpo-job create \
       --lora-rank int32                           The rank of the LoRA layers for the dpo job. Use --full-parameter for full parameter tuning. (default 8)
       --optimizer-weight-decay float32            Weight decay (L2 regularization) for the optimizer. Default in trainer is 0.01.
       --full-parameter                            Enable full parameter fine-tuning instead of LoRA. Equivalent to --lora-rank=0. Requires bf16 precision.
-                                                  
+
       --wandb-api-key string                      [WANDB_API_KEY] WandB API Key. (Required if any WandB flag is set)
       --wandb-project string                      [WANDB_PROJECT] WandB Project. (Required if any WandB flag is set)
       --wandb-entity string                       [WANDB_ENTITY] WandB Entity. (Required if any WandB flag is set)
       --wandb                                     Enable WandB
-                                                  
-                                                  
+
+
       --aws-credentials-secret string             [AWS_CREDENTIALS_SECRET] AWS credentials secret (mutually exclusive with --aws-iam-role)
       --aws-iam-role string                       [AWS_IAM_ROLE_ARN] AWS IAM role ARN (mutually exclusive with --aws-credentials-secret)
-                                                  
-                                                  
+
+
       --azure-credentials-secret string           [AZURE_CREDENTIALS_SECRET] Azure credentials secret
       --azure-managed-identity-client-id string   [AZURE_MANAGED_IDENTITY_CLIENT_ID] Azure managed identity client ID for Workload Identity Federation
       --azure-tenant-id string                    [AZURE_TENANT_ID] Azure tenant ID (required with --azure-managed-identity-client-id)
-                                                  
+
       --display-name string                       The display name of the dpo job.
       --quiet                                     If set, only errors will be printed.
       --loss-method string                        Loss method for the job (DPO, GRPO, or ORPO). Defaults to DPO for new jobs; when using --source-job, inherits the source job's method unless overridden.
       --dpo-beta float32                          Typed DPO beta override. Must be > 0 and < 0.5. Applies to loss_config.dpo.beta.
       --orpo-lambda float32                       Typed ORPO lambda override. Applies to loss_config.orpo.lambda.
+      --use-reservation                           Try the account's reservation capacity before falling back to shared trainer capacity.
       --dry-run                                   Print the request proto without running it.
   -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
   -h, --help                                      help for create
@@ -32081,24 +32263,25 @@ firectl supervised-fine-tuning-job create \
       --lora-rank int32                           The rank of the LoRA layers for the supervised fine-tuning job. Use --full-parameter for full parameter tuning. (default 8)
       --optimizer-weight-decay float32            Weight decay (L2 regularization) for the optimizer. Default in trainer is 0.01.
       --full-parameter                            Enable full parameter fine-tuning instead of LoRA. Equivalent to --lora-rank=0. Requires bf16 precision.
-                                                  
+
       --wandb-api-key string                      [WANDB_API_KEY] WandB API Key. (Required if any WandB flag is set)
       --wandb-project string                      [WANDB_PROJECT] WandB Project. (Required if any WandB flag is set)
       --wandb-entity string                       [WANDB_ENTITY] WandB Entity. (Required if any WandB flag is set)
       --wandb                                     Enable WandB
-                                                  
-                                                  
+
+
       --aws-credentials-secret string             [AWS_CREDENTIALS_SECRET] AWS credentials secret (mutually exclusive with --aws-iam-role)
       --aws-iam-role string                       [AWS_IAM_ROLE_ARN] AWS IAM role ARN (mutually exclusive with --aws-credentials-secret)
-                                                  
-                                                  
+
+
       --azure-credentials-secret string           [AZURE_CREDENTIALS_SECRET] Azure credentials secret
       --azure-managed-identity-client-id string   [AZURE_MANAGED_IDENTITY_CLIENT_ID] Azure managed identity client ID for Workload Identity Federation
       --azure-tenant-id string                    [AZURE_TENANT_ID] Azure tenant ID (required with --azure-managed-identity-client-id)
-                                                  
+
       --display-name string                       The display name of the supervised fine-tuning job.
       --quiet                                     If set, only errors will be printed.
       --eval-auto-carveout                        If set, the evaluation dataset will be auto-carved.
+      --use-reservation                           Try the account's reservation capacity before falling back to shared trainer capacity.
       --dry-run                                   Print the request proto without running it.
   -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
   -h, --help                                      help for create

@@ -1,5 +1,5 @@
 ---
-title: "Puppeteer"
+title: "Puppeteer examples with Trigger.dev"
 source: https://trigger.dev/docs/guides/examples/puppeteer
 path: docs/guides/examples/puppeteer
 ---

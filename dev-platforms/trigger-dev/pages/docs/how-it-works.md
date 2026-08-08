@@ -1,5 +1,5 @@
 ---
-title: "How it works"
+title: "How Trigger.dev works"
 source: https://trigger.dev/docs/how-it-works
 path: docs/how-it-works
 ---
@@ -150,7 +150,7 @@ Here's how the Checkpoint-Resume System works:
 
 2. **Subtask Handling**: If a task needs to trigger a subtask, it can do so and wait for its completion using `triggerAndWait`
 
-3. **State Checkpointing**: While waiting for a subtask or during a programmed pause (e.g., `wait.for({ seconds: 30 })`), the system uses CRIU (Checkpoint/Restore In Userspace) to create a checkpoint of the task's entire state, including memory, CPU registers, and open file descriptors.
+3. **State Checkpointing**: While waiting for a subtask or during a long programmed pause (e.g., `wait.for({ minutes: 5 })`), the system uses CRIU (Checkpoint/Restore In Userspace) to create a checkpoint of the task's entire state, including memory, CPU registers, and open file descriptors. A `wait.for()` or `wait.until()` shorter than 60 seconds doesn't checkpoint — see [Wait](/docs/wait).
 
 4. **Resource Release**: After checkpointing, the parent task's resources are released, freeing up the execution environment.
 
@@ -180,9 +180,9 @@ export const parentTask = task({
     console.log("Child task result:", result);
 
     // This will also cause the task to be checkpointed and suspended
-    await wait.for({ seconds: 30 });
+    await wait.for({ minutes: 5 });
 
-    console.log("Resumed after 30 seconds");
+    console.log("Resumed after 5 minutes");
 
     return "Parent task completed";
   },

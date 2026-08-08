@@ -7007,6 +7007,8 @@ The tables below list every model available through the fine-tuning API. Context
 
 | Organization | Model                                              | API ID                                               | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
 | ------------ | -------------------------------------------------- | ---------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
+| DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
+| DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
 | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
 | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
@@ -7025,7 +7027,6 @@ The tables below list every model available through the fine-tuning API. Context
 | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
-| DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
 | Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`      | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
 | Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
@@ -16886,7 +16887,7 @@ Process multiple audio files concurrently:
 * Ensure clear speech with good volume levels.
 * Use appropriate sample rates (16kHz or higher recommended).
 * For WebSocket streaming, use PCM format: `pcm_s16le_16000`.
-* Direct uploads are capped at 500 MB of audio per request, while URL uploads are capped at 1 GB or 4 hours of audio per request. See [Limits](/docs/inference/transcription/overview#limits).
+* Direct uploads are capped at 80 MB of audio per request, while URL uploads are capped at 1 GB or 4 hours of audio per request. See [Limits](/docs/inference/transcription/overview#limits).
 * For binary uploads, place the `model` form field before the `file` field in the multipart body so the server can route the request without buffering the audio.
 * For long audio files (over 4 hours), chunk the audio into ≤ 4 h segments and send each chunk as a separate URL request.
 * Use streaming for real-time applications when available.
@@ -16905,7 +16906,7 @@ Process multiple audio files concurrently:
 | `400 file_too_large`     | A URL-fetched audio download exceeded the 1 GB server-side cap. | Compress the source, or split into smaller files.                                                                                         |
 | `400 unsupported_format` | The audio container or codec could not be decoded.              | Re-encode to a [supported format](/docs/inference/transcription/overview#limits). Run `ffprobe` on the file to confirm it is valid audio. |
 | `400 invalid_params`     | Request parameters failed validation.                           | Check the [API reference](/reference/audio-transcriptions).                                                                               |
-| `413 Payload Too Large`  | A direct upload exceeded the 500 MB edge limit.                 | Submit the file via an HTTPS URL on the `file` field instead, or split the file.                                                          |
+| `413 request_too_large`  | A direct upload exceeded the 80 MB limit.                       | Submit the file via an HTTPS URL on the `file` field instead, or split the file.                                                          |
 | `429`                    | Rate limit exceeded.                                            | See [serverless rate limits](/docs/serverless/rate-limits).                                                                               |
 | `500 processing_failed`  | Internal decode failure after the file was accepted.            | Verify the file is valid audio with `ffprobe`. If it is, [contact support](mailto:support@together.ai) with the response `id`.            |
 
@@ -17032,14 +17033,14 @@ See the [serverless catalog](/docs/serverless/models) and the [dedicated model i
 
 ## Limits
 
-| Limit                            | Value                                                             | Notes                                                                                                                                                                                    |
-| -------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Max request size (direct upload) | **500 MB**                                                        | Requests above this are rejected at the edge with `HTTP 413 Payload Too Large`. For anything larger, host the audio at a public HTTPS URL and pass that URL as the `file` field instead. |
-| Max file size (URL fetch)        | **1 GB**                                                          | When you submit an HTTPS URL instead of binary, the server downloads up to 1 GB. Larger downloads fail with `400 file_too_large`.                                                        |
-| Max audio duration               | **4 hours** per request                                           | Longer audio is rejected with `400 audio_too_long`. Split into ≤ 4 h segments and submit separately.                                                                                     |
-| Supported formats                | `.wav`, `.mp3`, `.m4a`, `.webm`, `.flac`, `.ogg`, `.opus`, `.aac` |                                                                                                                                                                                          |
+| Limit                            | Value                                                             | Notes                                                                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Max request size (direct upload) | **80 MB**                                                         | Requests above this are rejected with `HTTP 413` and error type `request_too_large`. For anything larger, host the audio at a public HTTPS URL and pass that URL as the `file` field instead. |
+| Max file size (URL fetch)        | **1 GB**                                                          | When you submit an HTTPS URL instead of binary, the server downloads up to 1 GB. Larger downloads fail with `400 file_too_large`.                                                             |
+| Max audio duration               | **4 hours** per request                                           | Longer audio is rejected with `400 audio_too_long`. Split into ≤ 4 h segments and submit separately.                                                                                          |
+| Supported formats                | `.wav`, `.mp3`, `.m4a`, `.webm`, `.flac`, `.ogg`, `.opus`, `.aac` |                                                                                                                                                                                               |
 
-For payloads above 500 MB, host the file at a public HTTPS URL and pass that URL as the `file` field instead of a binary upload. The 500 MB edge cap only applies to direct uploads. See [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting) for the full list of error codes.
+For payloads above 80 MB, host the file at a public HTTPS URL and pass that URL as the `file` field instead of a binary upload. The 80 MB cap only applies to direct uploads. See [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting) for the full list of error codes.
 
 ## Audio transcription
 
@@ -17096,7 +17097,7 @@ The API supports the following audio formats:
 The same limits apply to both `/v1/audio/transcriptions` and `/v1/audio/translations`:
 
 * **Maximum duration:** 4 hours. Longer audio is rejected with an `audio_too_long` error.
-* **Binary uploads:** Capped at 500 MB. Larger uploads return HTTP 413. Submit the audio via an HTTPS URL on the `file` field instead.
+* **Binary uploads:** Capped at 80 MB. Larger uploads return HTTP 413 with error type `request_too_large`. Submit the audio via an HTTPS URL on the `file` field instead.
 * **URL-fetched audio:** Capped at 1 GB and 4 hours when you pass a public HTTPS URL as `file`.
 
 For longer recordings, chunk the audio into ≤ 4 h segments and submit each chunk as a separate URL request.
@@ -17796,7 +17797,7 @@ Audio translation converts speech from any language to English text:
 
 ## Limits and errors
 
-`/v1/audio/translations` shares the same code path as transcription: the 500 MB direct-upload cap, 1 GB URL-fetch cap, and 4-hour duration cap all apply, and the same error codes are returned. For audio above 500 MB, submit an HTTPS URL on the `file` field instead. See [Limits](/docs/inference/transcription/overview#limits) and [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting).
+`/v1/audio/translations` shares the same code path as transcription: the 80 MB direct-upload cap, 1 GB URL-fetch cap, and 4-hour duration cap all apply, and the same error codes are returned. For audio above 80 MB, submit an HTTPS URL on the `file` field instead. See [Limits](/docs/inference/transcription/overview#limits) and [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting).
 
 
 # Voice activity detection
@@ -21562,7 +21563,8 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
 | LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
-|                   | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
+| Thinking Machines | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
+| Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | Free                          | -                                    | Free                           | -            | -                | -                  |
 
 **Chat model examples**
 

@@ -1,5 +1,5 @@
 ---
-title: "Lightpanda"
+title: "Lightpanda examples with Trigger.dev"
 source: https://trigger.dev/docs/guides/examples/lightpanda
 path: docs/guides/examples/lightpanda
 ---

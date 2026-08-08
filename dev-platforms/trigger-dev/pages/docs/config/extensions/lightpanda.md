@@ -1,5 +1,5 @@
 ---
-title: "Lightpanda"
+title: "Lightpanda build extension"
 source: https://trigger.dev/docs/config/extensions/lightpanda
 path: docs/config/extensions/lightpanda
 ---

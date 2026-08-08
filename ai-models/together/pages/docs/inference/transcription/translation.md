@@ -46,4 +46,4 @@ Audio translation converts speech from any language to English text:
 
 ## Limits and errors
 
-`/v1/audio/translations` shares the same code path as transcription: the 500 MB direct-upload cap, 1 GB URL-fetch cap, and 4-hour duration cap all apply, and the same error codes are returned. For audio above 500 MB, submit an HTTPS URL on the `file` field instead. See [Limits](/docs/inference/transcription/overview#limits) and [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting).
+`/v1/audio/translations` shares the same code path as transcription: the 80 MB direct-upload cap, 1 GB URL-fetch cap, and 4-hour duration cap all apply, and the same error codes are returned. For audio above 80 MB, submit an HTTPS URL on the `file` field instead. See [Limits](/docs/inference/transcription/overview#limits) and [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting).

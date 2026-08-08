@@ -6434,6 +6434,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         parameters:
           $ref: '#/components/schemas/WebSearchConfig'
         search_context_size:
@@ -9236,7 +9238,7 @@ components:
             Maximum number of tool-calling steps each panelist (analysis model)
             and the analyst model may take during their agentic web-research
             loop. Models with web_search/web_fetch enabled iterate until they
-            produce a text response or hit this ceiling. Defaults to 8. Capped
+            produce a text response or hit this ceiling. Defaults to 4. Capped
             at 16.
           example: 12
           maximum: 16
@@ -9385,7 +9387,7 @@ components:
             Maximum number of tool-calling steps each panelist (analysis model)
             and the analyst model may take during their agentic web-research
             loop. Models with web_search/web_fetch enabled iterate until they
-            produce a text response or hit this ceiling. Defaults to 8. Capped
+            produce a text response or hit this ceiling. Defaults to 4. Capped
             at 16.
           example: 12
           maximum: 16
@@ -11656,7 +11658,8 @@ components:
       description: >-
         A reference asset used to guide video generation. Image references are
         supported by all providers; audio and video references are only honored
-        by providers that support them (currently BytePlus Seedance 2.0).
+        by providers that support them (including BytePlus Seedance generation 2
+        and newer).
       discriminator:
         mapping:
           audio_url: '#/components/schemas/ContentPartAudio'
@@ -12012,6 +12015,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -20797,6 +20802,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -20835,6 +20842,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -26230,8 +26239,9 @@ components:
           description: >-
             Reference assets to guide video generation. Accepts image, audio,
             and video references. Audio and video references are only honored by
-            providers that support them (currently BytePlus Seedance 2.0); other
-            providers use image references and ignore the rest.
+            providers that support them (including BytePlus Seedance generation
+            2 and newer); other providers use image references and ignore the
+            rest.
           items:
             $ref: '#/components/schemas/InputReference'
           type: array
@@ -26770,6 +26780,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
         user_location:
@@ -26831,6 +26843,24 @@ components:
         - auto
       example: auto
       type: string
+    WebSearchMode:
+      description: >-
+        Engine-native search mode. Exa supports instant, fast, auto (default),
+        deep-lite, deep, and deep-reasoning. Parallel supports turbo (default),
+        basic, and advanced. Modes unsupported by the selected engine are
+        ignored.
+      enum:
+        - instant
+        - fast
+        - auto
+        - deep-lite
+        - deep
+        - deep-reasoning
+        - turbo
+        - basic
+        - advanced
+      example: auto
+      type: string
     WebSearchPlugin:
       example:
         enabled: true
@@ -26880,6 +26910,8 @@ components:
             turn. Passed through to native providers that support it (e.g.
             Anthropic).
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_prompt:
           type: string
         user_location:
@@ -26931,6 +26963,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -27024,6 +27058,8 @@ components:
             equivalent parameter and ignore it.
           example: 3
           type: integer
+        mode:
+          $ref: '#/components/schemas/WebSearchMode'
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
         user_location:

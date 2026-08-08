@@ -117,14 +117,14 @@ See the [serverless catalog](/docs/serverless/models) and the [dedicated model i
 
 ## Limits
 
-| Limit                            | Value                                                             | Notes                                                                                                                                                                                    |
-| -------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Max request size (direct upload) | **500 MB**                                                        | Requests above this are rejected at the edge with `HTTP 413 Payload Too Large`. For anything larger, host the audio at a public HTTPS URL and pass that URL as the `file` field instead. |
-| Max file size (URL fetch)        | **1 GB**                                                          | When you submit an HTTPS URL instead of binary, the server downloads up to 1 GB. Larger downloads fail with `400 file_too_large`.                                                        |
-| Max audio duration               | **4 hours** per request                                           | Longer audio is rejected with `400 audio_too_long`. Split into ≤ 4 h segments and submit separately.                                                                                     |
-| Supported formats                | `.wav`, `.mp3`, `.m4a`, `.webm`, `.flac`, `.ogg`, `.opus`, `.aac` |                                                                                                                                                                                          |
+| Limit                            | Value                                                             | Notes                                                                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Max request size (direct upload) | **80 MB**                                                         | Requests above this are rejected with `HTTP 413` and error type `request_too_large`. For anything larger, host the audio at a public HTTPS URL and pass that URL as the `file` field instead. |
+| Max file size (URL fetch)        | **1 GB**                                                          | When you submit an HTTPS URL instead of binary, the server downloads up to 1 GB. Larger downloads fail with `400 file_too_large`.                                                             |
+| Max audio duration               | **4 hours** per request                                           | Longer audio is rejected with `400 audio_too_long`. Split into ≤ 4 h segments and submit separately.                                                                                          |
+| Supported formats                | `.wav`, `.mp3`, `.m4a`, `.webm`, `.flac`, `.ogg`, `.opus`, `.aac` |                                                                                                                                                                                               |
 
-For payloads above 500 MB, host the file at a public HTTPS URL and pass that URL as the `file` field instead of a binary upload. The 500 MB edge cap only applies to direct uploads. See [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting) for the full list of error codes.
+For payloads above 80 MB, host the file at a public HTTPS URL and pass that URL as the `file` field instead of a binary upload. The 80 MB cap only applies to direct uploads. See [Errors and troubleshooting](/docs/inference/transcription/features#errors-and-troubleshooting) for the full list of error codes.
 
 ## Audio transcription
 
@@ -181,7 +181,7 @@ The API supports the following audio formats:
 The same limits apply to both `/v1/audio/transcriptions` and `/v1/audio/translations`:
 
 * **Maximum duration:** 4 hours. Longer audio is rejected with an `audio_too_long` error.
-* **Binary uploads:** Capped at 500 MB. Larger uploads return HTTP 413. Submit the audio via an HTTPS URL on the `file` field instead.
+* **Binary uploads:** Capped at 80 MB. Larger uploads return HTTP 413 with error type `request_too_large`. Submit the audio via an HTTPS URL on the `file` field instead.
 * **URL-fetched audio:** Capped at 1 GB and 4 hours when you pass a public HTTPS URL as `file`.
 
 For longer recordings, chunk the audio into ≤ 4 h segments and submit each chunk as a separate URL request.

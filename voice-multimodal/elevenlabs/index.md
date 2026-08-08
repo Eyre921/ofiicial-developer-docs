@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1231 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1230 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -156,7 +156,6 @@
 - `docs/api-reference/mcp/approval-policies/create` — [Create MCP server tool approval](pages/docs/api-reference/mcp/approval-policies/create.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/create.md)
 - `docs/api-reference/mcp/approval-policies/delete` — [Delete MCP server tool approval](pages/docs/api-reference/mcp/approval-policies/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/delete.md)
 - `docs/api-reference/mcp/approval-policies/update` — [Update MCP server approval policy](pages/docs/api-reference/mcp/approval-policies/update.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/update.md)
-- `docs/api-reference/mcp/create` — [Create MCP server](pages/docs/api-reference/mcp/create.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/create.md)
 - `docs/api-reference/mcp/delete` — [Delete MCP server](pages/docs/api-reference/mcp/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/delete.md)
 - `docs/api-reference/mcp/get` — [Get MCP server](pages/docs/api-reference/mcp/get.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/get.md)
 - `docs/api-reference/mcp/list` — [List MCP servers](pages/docs/api-reference/mcp/list.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/list.md)

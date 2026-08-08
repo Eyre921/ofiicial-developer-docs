@@ -1,5 +1,5 @@
 ---
-title: "Bulk actions"
+title: "Bulk actions with the SDK"
 source: https://trigger.dev/docs/runs/bulk-actions
 path: docs/runs/bulk-actions
 ---

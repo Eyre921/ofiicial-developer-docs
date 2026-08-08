@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 313 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 314 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -225,6 +225,7 @@
 - `docs/guides/community/zapier` — [Zapier](pages/docs/guides/community/zapier.md) · [原文](https://openrouter.ai/docs/guides/community/zapier.md)
 - `docs/guides/features/broadcast` — [Broadcast](pages/docs/guides/features/broadcast.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast.md)
 - `docs/guides/features/broadcast/arize` — [Arize AX](pages/docs/guides/features/broadcast/arize.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/arize.md)
+- `docs/guides/features/broadcast/bigquery` — [Google BigQuery](pages/docs/guides/features/broadcast/bigquery.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/bigquery.md)
 - `docs/guides/features/broadcast/braintrust` — [Braintrust](pages/docs/guides/features/broadcast/braintrust.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/braintrust.md)
 - `docs/guides/features/broadcast/clickhouse` — [ClickHouse](pages/docs/guides/features/broadcast/clickhouse.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/clickhouse.md)
 - `docs/guides/features/broadcast/datadog` — [Datadog](pages/docs/guides/features/broadcast/datadog.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/datadog.md)

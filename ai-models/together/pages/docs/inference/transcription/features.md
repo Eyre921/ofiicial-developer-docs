@@ -330,7 +330,7 @@ Process multiple audio files concurrently:
 * Ensure clear speech with good volume levels.
 * Use appropriate sample rates (16kHz or higher recommended).
 * For WebSocket streaming, use PCM format: `pcm_s16le_16000`.
-* Direct uploads are capped at 500 MB of audio per request, while URL uploads are capped at 1 GB or 4 hours of audio per request. See [Limits](/docs/inference/transcription/overview#limits).
+* Direct uploads are capped at 80 MB of audio per request, while URL uploads are capped at 1 GB or 4 hours of audio per request. See [Limits](/docs/inference/transcription/overview#limits).
 * For binary uploads, place the `model` form field before the `file` field in the multipart body so the server can route the request without buffering the audio.
 * For long audio files (over 4 hours), chunk the audio into ≤ 4 h segments and send each chunk as a separate URL request.
 * Use streaming for real-time applications when available.
@@ -349,7 +349,7 @@ Process multiple audio files concurrently:
 | `400 file_too_large`     | A URL-fetched audio download exceeded the 1 GB server-side cap. | Compress the source, or split into smaller files.                                                                                         |
 | `400 unsupported_format` | The audio container or codec could not be decoded.              | Re-encode to a [supported format](/docs/inference/transcription/overview#limits). Run `ffprobe` on the file to confirm it is valid audio. |
 | `400 invalid_params`     | Request parameters failed validation.                           | Check the [API reference](/reference/audio-transcriptions).                                                                               |
-| `413 Payload Too Large`  | A direct upload exceeded the 500 MB edge limit.                 | Submit the file via an HTTPS URL on the `file` field instead, or split the file.                                                          |
+| `413 request_too_large`  | A direct upload exceeded the 80 MB limit.                       | Submit the file via an HTTPS URL on the `file` field instead, or split the file.                                                          |
 | `429`                    | Rate limit exceeded.                                            | See [serverless rate limits](/docs/serverless/rate-limits).                                                                               |
 | `500 processing_failed`  | Internal decode failure after the file was accepted.            | Verify the file is valid audio with `ffprobe`. If it is, [contact support](mailto:support@together.ai) with the response `id`.            |
 

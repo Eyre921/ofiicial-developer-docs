@@ -334,6 +334,10 @@ bun run <file or script>
   Automatically restart the process on file change
 </ParamField>
 
+<ParamField type="string">
+  Signal whose handlers run when --watch restarts the process
+</ParamField>
+
 <ParamField type="boolean">
   Enable auto reload in the Bun runtime, test runner, or bundler
 </ParamField>

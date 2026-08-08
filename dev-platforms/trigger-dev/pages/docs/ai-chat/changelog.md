@@ -1,5 +1,5 @@
 ---
-title: "Changelog"
+title: "AI Agents SDK changelog"
 source: https://trigger.dev/docs/ai-chat/changelog
 path: docs/ai-chat/changelog
 ---

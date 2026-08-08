@@ -20,6 +20,34 @@ These interfaces create the same underlying managed jobs:
 
 The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
 
+## Reservation-first placement
+
+Managed SFT and DPO jobs can try your account's reservation capacity before falling back to shared trainer capacity. Opt in with `--use-reservation` in `firectl`, `useReservation: true` in the REST request, or `use_reservation=True` in the Python SDK:
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+
+sft_job = client.supervised_fine_tuning_jobs.create(
+    dataset="accounts/my-account/datasets/sft-data",
+    base_model="accounts/fireworks/models/my-base-model",
+    output_model="my-sft-model",
+    use_reservation=True,
+)
+
+dpo_job = client.dpo_jobs.create(
+    dataset="accounts/my-account/datasets/dpo-data",
+    training_config={
+        "base_model": "accounts/fireworks/models/my-base-model",
+        "output_model": "my-dpo-model",
+    },
+    use_reservation=True,
+)
+```
+
+For full-parameter DPO, policy and dedicated reference trainers try independently. Omit the option to preserve default placement.
+
 ## Methods
 
 <CardGroup>

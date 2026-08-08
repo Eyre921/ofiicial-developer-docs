@@ -37,6 +37,7 @@ The following destinations are currently available:
 * [ClickHouse](/docs/guides/features/broadcast/clickhouse)
 * [Comet Opik](/docs/guides/features/broadcast/opik)
 * [Datadog](/docs/guides/features/broadcast/datadog)
+* [Google BigQuery](/docs/guides/features/broadcast/bigquery)
 * [Grafana Cloud](/docs/guides/features/broadcast/grafana)
 * [Langfuse](/docs/guides/features/broadcast/langfuse)
 * [LangSmith](/docs/guides/features/broadcast/langsmith)
@@ -221,6 +222,7 @@ Each observability platform may recognize different metadata keys. See the desti
 * [Ramp](/docs/guides/features/broadcast/ramp#custom-metadata) - Supports OTLP span attributes for AI cost tracking
 * [Snowflake](/docs/guides/features/broadcast/snowflake#custom-metadata) - Queryable via VARIANT column functions
 * [ClickHouse](/docs/guides/features/broadcast/clickhouse#custom-metadata) - Queryable via JSONExtract functions
+* [Google BigQuery](/docs/guides/features/broadcast/bigquery#custom-metadata) - Queryable via JSON functions
 * [S3](/docs/guides/features/broadcast/s3#custom-metadata) - Stored in trace JSON files
 
 ## API Key Filtering
@@ -277,6 +279,7 @@ Step-by-step guides for configuring specific observability destinations:
 * [ClickHouse](/docs/guides/features/broadcast/clickhouse) - Real-time analytics database
 * [Comet Opik](/docs/guides/features/broadcast/opik) - LLM evaluation and testing
 * [Datadog](/docs/guides/features/broadcast/datadog) - Full-stack monitoring and analytics
+* [Google BigQuery](/docs/guides/features/broadcast/bigquery) - Serverless cloud data warehouse
 * [Grafana Cloud](/docs/guides/features/broadcast/grafana) - Observability and monitoring platform
 * [Langfuse](/docs/guides/features/broadcast/langfuse) - Open-source LLM engineering platform
 * [LangSmith](/docs/guides/features/broadcast/langsmith) - LangChain observability and debugging

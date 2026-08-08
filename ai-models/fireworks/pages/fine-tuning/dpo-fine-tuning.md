@@ -138,6 +138,8 @@ Use either method for:
           --output-model new-model-id
         ```
 
+        To try your account's reservation capacity before falling back to shared trainer capacity, add `--use-reservation`. For full-parameter DPO, policy and dedicated reference trainers try independently. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
+
         For ORPO, use the same preference dataset and select the ORPO objective:
 
         ```bash theme={null}

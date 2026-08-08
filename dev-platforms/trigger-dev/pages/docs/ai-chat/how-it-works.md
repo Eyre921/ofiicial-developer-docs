@@ -1,5 +1,5 @@
 ---
-title: "How it works"
+title: "How the AI Agents SDK works"
 source: https://trigger.dev/docs/ai-chat/how-it-works
 path: docs/ai-chat/how-it-works
 ---

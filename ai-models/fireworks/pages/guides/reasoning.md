@@ -172,6 +172,17 @@ You can preserve reasoning context in two ways:
   safe to use broadly.
 </Note>
 
+<Note>
+  **Fine-tuned models:** whether historical `reasoning_content` was visible during
+  training depends on the base model and the job's thinking-history mode.
+  Interleaved removes thinking across user-turn boundaries while retaining the
+  assistant/tool trajectory within the current turn; Preserved retains thinking
+  across user turns. Datum unrolling is model-specific. For reliable results,
+  serve a fine-tuned model consistently with how it was trained; see
+  [thinking history in fine-tuning](/fine-tuning/thinking-history)
+  for per-model behavior.
+</Note>
+
 Here's how to preserve reasoning context using both approaches:
 
 <Tabs>

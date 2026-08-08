@@ -140,7 +140,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     }
     ```
 
-    For the subset of models that supports thinking (e.g. DeepSeek R1, GPT OSS models and Qwen3 thinking models), we also support fine tuning with thinking traces. If you wish to fine tune with thinking traces, the dataset could also include thinking traces for assistant turns. Though optional, ideally each assistant turn includes a thinking trace. For example:
+    #### Thinking traces
+
+    For managed supervised fine-tuning (SFT), you can include thinking traces for assistant turns in `reasoning_content`. Thinking traces are optional, but ideally each assistant turn includes one. For example:
 
     ```json theme={null}
     {
@@ -160,50 +162,11 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     }
     ```
 
-    Note that when fine tuning with intermediate thinking traces, the number of total tuned tokens could exceed the number of total tokens in the dataset. This is because we unroll multi-turn conversations into multiple training examples to ensure train-inference consistency.
+    How earlier thinking appears in later training contexts depends on the base model and its thinking-history mode. This is separate from enabling or disabling thinking generation. Some models offer both Interleaved and Preserved history, some have one fixed mode, and DeepSeek V4 derives its behavior from whether each dataset row declares tools.
 
-    During inference, a model's thinking traces from previous turns are **not** visible in the conversation history — only the final `content` is retained. To match this behavior during training, we expand each multi-turn conversation into several single-turn training examples, where each example only tunes on one assistant turn and presents the conversation history exactly as it would appear at inference time (i.e., without previous thinking traces).
-
-    For example, consider this two-turn dataset entry:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "reasoning_content": "Simple arithmetic: 1+1=2."},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "Following up: 2+2=4."}
-      ]
-    }
-    ```
-
-    This gets expanded into two training examples:
-
-    **Example 1** — tunes on the first assistant turn:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "reasoning_content": "Simple arithmetic: 1+1=2."}
-      ]
-    }
-    ```
-
-    **Example 2** — tunes on the second assistant turn, with the first turn's thinking trace stripped to match inference behavior:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2"},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "Following up: 2+2=4."}
-      ]
-    }
-    ```
-
-    Because the conversation context is duplicated across these expanded examples, the total tuned token count will be larger than the raw dataset token count. The expansion grows with the number of assistant turns in each conversation: a conversation with *N* assistant turns produces *N* separate training examples.
+    <Card title="Thinking history in fine-tuning" icon="brain" href="/fine-tuning/thinking-history">
+      Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
+    </Card>
   </Step>
 
   <Step title="Create and upload a dataset">
@@ -314,7 +277,10 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 </Steps>
 
 <Tip>
-  For a complete Python SDK example that demonstrates the full workflow (creating datasets, uploading files, and launching a supervised fine-tuning job), see the [Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
+  For a complete Python SDK example that demonstrates the full workflow
+  (creating datasets, uploading files, and launching a supervised fine-tuning
+  job), see the [Python SDK workflow
+  example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
 </Tip>
 
 ## Deploying a fine-tuned model
@@ -328,7 +294,9 @@ firectl deployment create <FINE_TUNED_MODEL_ID>
 This creates a dedicated deployment with performance matching the base model.
 
 <Tip>
-  For more details on deploying fine-tuned models, including multi-LoRA deployments, see the [Deploying Fine Tuned Models guide](/fine-tuning/deploying-loras).
+  For more details on deploying fine-tuned models, including multi-LoRA
+  deployments, see the [Deploying Fine Tuned Models
+  guide](/fine-tuning/deploying-loras).
 </Tip>
 
 <a />
@@ -504,12 +472,29 @@ Additional tuning settings are available when starting an SFT or preference (DPO
       --output-model my-tuned-model
     ```
   </Accordion>
+
+  <Accordion title="Reservation placement">
+    Add `--use-reservation` to try your account's reservation capacity before falling back to shared trainer capacity:
+
+    ```shell theme={null}
+    firectl sftj create \
+      --use-reservation \
+      --base-model MY_BASE_MODEL \
+      --dataset cancerset \
+      --output-model my-tuned-model
+    ```
+
+    Omitting the flag preserves default placement. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
+  </Accordion>
 </AccordionGroup>
 
 ### Deprecated parameters
 
 <Warning>
-  These parameters are deprecated. Do not include them in new managed fine-tuning requests. The wire fields remain present so existing resources can still be read, but Training V2 rejects or ignores non-default values as described below.
+  These parameters are deprecated. Do not include them in new managed
+  fine-tuning requests. The wire fields remain present so existing resources can
+  still be read, but Training V2 rejects or ignores non-default values as
+  described below.
 </Warning>
 
 | Proto / Python field          | Former or legacy `firectl` flag           | Affected jobs                    | Migration behavior                                                                                                                                                                                                                         |
@@ -522,7 +507,6 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 | `mtp_num_draft_tokens`        | `--mtp-num-draft-tokens`                  | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`0`).                                                                                                                                                        |
 | `mtp_freeze_base_model`       | `--mtp-freeze-base-model`                 | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`false`).                                                                                                                                                    |
 | `extra_values`                | `--extra-values` (admin-only legacy flag) | Managed SFT                      | Legacy V1 Helm overrides. Training V2 rejects a non-empty map.                                                                                                                                                                             |
-| `use_reservation`             | `--use-reservation` (former admin flag)   | SFT, DPO/ORPO, RFT, RLOR trainer | The request value is ignored. Reservation placement is selected automatically from account policy, and the CLI flag was removed.                                                                                                           |
 
 ## Appendix
 
