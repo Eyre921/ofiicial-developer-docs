@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-design
 
 # Voice Design
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T233140Z&X-Amz-Expires=604800&X-Amz-Signature=15f06194e3bfbf0547b16c52f3737e5fb1c022be1446bb072f9a98aac6f34571&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice design" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T113219Z&X-Amz-Expires=604800&X-Amz-Signature=a0d7d9a77103fc7b56622b1a96d85b80b2ddd6699c1873ce8b1125f4ee83a7fc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice design" />
 
 ## Overview
 

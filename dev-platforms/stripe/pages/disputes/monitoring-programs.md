@@ -248,7 +248,7 @@ You can request that Mastercard suspend an assessed fine one time during an open
 
 ## AusPayNet monitoring programs 
 
-The AusPayNet (APN) Card-Not-Present (CNP) fraud mitigation program is designed to reduce CNP payments fraud within the Australian payment industry (AU-based users and cardholders only). Where user fraud rates exceed certain defined thresholds for two consecutive quarters, the APN reserves the option to mandate [Strong Customer Authentication (SCA)](https://docs.stripe.com/disputes/monitoring-programs.md#sca) for all transactions. Stripe notifies you if your account exceeds program thresholds for the preceding quarter.
+The purpose of the AusPayNet (APN) Card-Not-Present (CNP) fraud mitigation program is to reduce CNP payments fraud within the Australian payment industry (AU-based users and cardholders only). Where user fraud rates exceed certain defined thresholds for two consecutive quarters, the APN reserves the option to mandate [Strong Customer Authentication (SCA)](https://docs.stripe.com/disputes/monitoring-programs.md#sca) for all transactions. Stripe notifies you if your account exceeds program thresholds for the preceding quarter.
 
 ### FMP: APN Fraud Monitoring Program 
 

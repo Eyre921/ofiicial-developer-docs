@@ -37,7 +37,9 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. For `query_data_sources`, the status describes single-data-source SQL access; view mode is always available, while queries across multiple data sources still require Enterprise with Notion AI. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+
+    When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
     **Example prompts:**
 
@@ -218,7 +220,7 @@ An MCP client can call several tools in one task. For example, it can search for
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      Single-data-source SQL queries have a usage limit on select plans. Queries across multiple data sources require the latest Enterprise plan.
+      View mode is available on every plan without a tool-specific quota. Single-data-source SQL is unlimited on Business and Enterprise plans with Notion AI; other plans share a per-workspace usage limit and receive an upgrade prompt after the allowance is exhausted. Queries across multiple data sources require an Enterprise plan with Notion AI.
     </Note>
 
     **Example prompts:**
@@ -231,6 +233,10 @@ An MCP client can call several tools in one task. For example, it can search for
     `notion-query-database-view`
 
     Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
+
+    <Note>
+      Available on every plan without a tool-specific quota.
+    </Note>
 
     **Example prompts:**
 

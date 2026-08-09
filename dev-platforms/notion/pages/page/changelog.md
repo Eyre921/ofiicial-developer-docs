@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 7, 2026">
+  ### Truncation metadata on `notion-fetch`
+
+  The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool response now includes `truncated`, `unknown_block_ids`, and `unknown_block_count` when a page is large enough that some subtrees could not be loaded. `unknown_block_ids` lists up to 50 omitted subtree root IDs, and `unknown_block_count` reports the total number of omitted subtree roots. Pass a returned ID back to `notion-fetch` to retrieve that subtree directly; treat an `object_not_found` error on retry as a signal that the caller does not have access to the subtree.
+</Update>
+
 <Update label="August 5, 2026">
   ### `unsupported` formula and rollup property values
 

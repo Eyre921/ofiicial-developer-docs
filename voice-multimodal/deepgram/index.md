@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -33,7 +33,6 @@
 - `docs/amazon-connect-and-deepgram-voice-agent` — [Amazon Connect and Deepgram Voice Agent](pages/docs/amazon-connect-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/amazon-connect-and-deepgram-voice-agent.md)
 - `docs/amazon-sagemaker` — [Amazon SageMaker](pages/docs/amazon-sagemaker.md) · [原文](https://developers.deepgram.com/docs/amazon-sagemaker.md)
 - `docs/audio-intelligence` — [Getting Started](pages/docs/audio-intelligence.md) · [原文](https://developers.deepgram.com/docs/audio-intelligence.md)
-- `docs/audio-keep-alive` — [Audio Keep Alive](pages/docs/audio-keep-alive.md) · [原文](https://developers.deepgram.com/docs/audio-keep-alive.md)
 - `docs/auto-scaling-sagemaker` — [Auto-Scaling SageMaker Endpoints](pages/docs/auto-scaling-sagemaker.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker.md)
 - `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
 - `docs/auto-scaling-sagemaker-streaming` — [Auto-Scaling Real-Time Endpoints](pages/docs/auto-scaling-sagemaker-streaming.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md)
@@ -201,7 +200,6 @@
 - `docs/sentiment-analysis` — [Sentiment Analysis](pages/docs/sentiment-analysis.md) · [原文](https://developers.deepgram.com/docs/sentiment-analysis.md)
 - `docs/smart-format` — [Smart Formatting](pages/docs/smart-format.md) · [原文](https://developers.deepgram.com/docs/smart-format.md)
 - `docs/speech-started` — [Speech Started](pages/docs/speech-started.md) · [原文](https://developers.deepgram.com/docs/speech-started.md)
-- `docs/streaming-text-to-speech` — [Getting Started](pages/docs/streaming-text-to-speech.md) · [原文](https://developers.deepgram.com/docs/streaming-text-to-speech.md)
 - `docs/streaming-the-audio-output` — [Audio Output Streaming](pages/docs/streaming-the-audio-output.md) · [原文](https://developers.deepgram.com/docs/streaming-the-audio-output.md)
 - `docs/stt-intelligence-feature-overview` — [Feature Overview](pages/docs/stt-intelligence-feature-overview.md) · [原文](https://developers.deepgram.com/docs/stt-intelligence-feature-overview.md)
 - `docs/stt-pre-recorded-feature-overview` — [Feature Overview](pages/docs/stt-pre-recorded-feature-overview.md) · [原文](https://developers.deepgram.com/docs/stt-pre-recorded-feature-overview.md)
@@ -221,7 +219,6 @@
 - `docs/text-intelligence-callback` — [Text Intelligence Callback](pages/docs/text-intelligence-callback.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-callback.md)
 - `docs/text-intelligence-feature-overview` — [Feature Overview](pages/docs/text-intelligence-feature-overview.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-feature-overview.md)
 - `docs/text-intelligence-tagging` — [Tagging Intelligence Requests](pages/docs/text-intelligence-tagging.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-tagging.md)
-- `docs/text-intelligence-template-apps` — [Template Apps](pages/docs/text-intelligence-template-apps.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-template-apps.md)
 - `docs/text-intention-recognition` — [Intent Recognition](pages/docs/text-intention-recognition.md) · [原文](https://developers.deepgram.com/docs/text-intention-recognition.md)
 - `docs/text-sentiment-analysis` — [Sentiment Analysis](pages/docs/text-sentiment-analysis.md) · [原文](https://developers.deepgram.com/docs/text-sentiment-analysis.md)
 - `docs/text-summarization` — [Summarization](pages/docs/text-summarization.md) · [原文](https://developers.deepgram.com/docs/text-summarization.md)

@@ -173,13 +173,13 @@ DC (Direct Current) offset refers to a mean amplitude displacement from zero in 
 
 **No DC Offset**
 
-![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T233225Z&X-Amz-Expires=604800&X-Amz-Signature=9b9b80a1c526f76885c13a5a963ad47e16bc7aff3fb23060526aed15ef74d521&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio doesn't contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da/images/af63e2a-no-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T113248Z&X-Amz-Expires=604800&X-Amz-Signature=0e4be28217e8c24e3cf7a0a65611355a0e71f188d2a044c2a98365f7e61c567d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio doesn't contain a DC Offset.
 
 **DC Offset**
 
-![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T233225Z&X-Amz-Expires=604800&X-Amz-Signature=3f0ec98a9dd5b764c8be6236b5e01e6751fadcb60b8e843cc7dc93f2622926e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![This audio does contain a DC Offset.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82/images/b93157b-dc-offset.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T113248Z&X-Amz-Expires=604800&X-Amz-Signature=25ea50d91fc6a586e0265d31d48d0c94c6f6b2e27ea34b22ad5259764e291f36&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 This audio does contain a DC Offset.
 

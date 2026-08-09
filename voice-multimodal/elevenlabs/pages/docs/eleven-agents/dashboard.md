@@ -21,7 +21,7 @@ For conversation-level themes, use [Spotlight](/docs/eleven-agents/dashboard/spo
 Navigate to the **Analytics** tab in your agents dashboard. You can view metrics across your entire workspace or filter down to a specific agent.
 
 ![Analytics dashboard General tab showing call count, average duration, total cost, and call
-volume over time](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/028eabc5e8536870547389bc6a07c2fe01d9e9440c4f930cc2f9d1efdf22de37/assets/images/conversational-ai/analytics-general.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T213203Z&X-Amz-Expires=604800&X-Amz-Signature=3c354cb67996b5847f40b8934cffb40ae2f2b5e3b17fd66adba26fa1e677b257&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+volume over time](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/028eabc5e8536870547389bc6a07c2fe01d9e9440c4f930cc2f9d1efdf22de37/assets/images/conversational-ai/analytics-general.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T080726Z&X-Amz-Expires=604800&X-Amz-Signature=ad260b94ad06fd5a46668386dd6268d2ba5ff32d42aba6e943a7cdb4a7bea44f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 When running [experiments](/docs/eleven-agents/operate/experiments), you can jump directly to branch-filtered analytics from the agent configuration page using the **View Analytics** button. This pre-applies the agent and branch filters so you can compare variant performance immediately.
 
@@ -68,7 +68,7 @@ The dashboard displays the current number of active calls in real time. This ref
 Narrow your analytics view by applying filters on any combination of dimensions:
 
 ![Tools tab showing average error rate and average tool latency grouped by tool
-type](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/381d3ab344234172f0cf9474ec7388e19dbb3da7b4b7698becbd839bb96a1e15/assets/images/conversational-ai/analytics-tools.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T213203Z&X-Amz-Expires=604800&X-Amz-Signature=1b5ea13b6649103ef56cd3605c12d2adc02ba9d7d6c5a58729490a54b22b5985&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+type](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/381d3ab344234172f0cf9474ec7388e19dbb3da7b4b7698becbd839bb96a1e15/assets/images/conversational-ai/analytics-tools.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T080726Z&X-Amz-Expires=604800&X-Amz-Signature=952ec040d2fbb93f5461efe1b21416edfd16178f503d99142bebd2c37f171e91&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Filter                  | Description                                                       |
 | ----------------------- | ----------------------------------------------------------------- |
@@ -89,10 +89,10 @@ type](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.d
 Group metrics by any of the filterable dimensions to break down aggregate numbers.
 
 ![LLMs tab showing LLM time to first sentence over
-time](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/abfe0baeebc774a3782213d19e9fcf9d106cf12112fc530333289d8247f9fc10/assets/images/conversational-ai/analytics-llms.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T213203Z&X-Amz-Expires=604800&X-Amz-Signature=4bbdc59b166572db0a6e0ff50f5dad418b2e54a337023dfee333797a8a491e62&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+time](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/abfe0baeebc774a3782213d19e9fcf9d106cf12112fc530333289d8247f9fc10/assets/images/conversational-ai/analytics-llms.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T080726Z&X-Amz-Expires=604800&X-Amz-Signature=7d06679cd630975497b00d0191efb4eab81e195a4621013f72fe2397d05d7f3c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ![Turn taking latency chart showing p50, p90, and p99
-percentiles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e010346a296dd85403e9b4519378eba78cefd60aca798645cb435ceefc793bd6/assets/images/conversational-ai/analytics-latency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T213203Z&X-Amz-Expires=604800&X-Amz-Signature=7c09f9370458da91a4bd5f14b0f459a5c700f775ba5cb184b5153076b236c109&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+percentiles](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e010346a296dd85403e9b4519378eba78cefd60aca798645cb435ceefc793bd6/assets/images/conversational-ai/analytics-latency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T080726Z&X-Amz-Expires=604800&X-Amz-Signature=b9f6731e1323dc8e662b1de1a0f19a8f4e6408c98303421f32077de1e8a09365&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For example:
 
@@ -106,7 +106,7 @@ Multiple grouping dimensions can be combined for deeper analysis.
 ## Workflow analytics
 
 ![Workflow analytics tab showing per-node entries, durations, terminations, and edge flow overlaid
-on the workflow graph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3/assets/images/conversational-ai/workflow-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260808%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260808T213203Z&X-Amz-Expires=604800&X-Amz-Signature=89d430439179b7935ea60b2450a5d939c12cca92c2092a321fb6c1bebd646037&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+on the workflow graph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3/assets/images/conversational-ai/workflow-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260809%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260809T080726Z&X-Amz-Expires=604800&X-Amz-Signature=8f7a0dd32d9ef18339e73a76514e62d59a3d13886c490170c52dd113b2858ede&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For agents with a [workflow](/docs/eleven-agents/customization/agent-workflows), the **Workflow** tab in the analytics dashboard overlays usage metrics directly on the workflow graph. Select an agent that uses a workflow to enable the graph view — you can then visualize conversation flow and traffic volume directly on the workflow canvas, with detailed inflow and outflow for every node.
 

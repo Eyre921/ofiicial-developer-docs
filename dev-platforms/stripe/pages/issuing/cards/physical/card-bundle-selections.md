@@ -80,7 +80,7 @@ The following additional effects and features are available for custom card desi
 | Metallic foil | Applies a thin layer of metallic foil onto the surface of the card, creating a reflective and shiny appearance. You can use this technique to partially highlight or mask the metalized effect on the face of the card by using translucent or opaque inks. The combination of the foil and the inks creates a striking visual effect on the card design. | ✓ Supported | ✓ Supported | ✓ Supported | - Not supported |
 | Metallic ink | Prints silver or gold ink over the card and then your design is printed on top to create a metallic appearance. Metallic ink is also commonly used for logos or product identifiers, adding a touch of elegance and shine to the card design. | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 | Pearlescent ink | Provides a metallic sheen with “sparkles” to either specific parts or the entire card. It can give a shiny quality to almost any image or design element when overprinted. Pearlescent ink adds a subtle shimmer and depth, enhancing the overall visual appeal of the card design. | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
-| Accessibility notch | Assists individuals with visual impairments. This notch is designed to provide tactile feedback and aid in the identification and orientation of the card. | ✓ Supported | - Not supported | - Not supported | - Not supported |
+| Accessibility notch | Assists individuals with visual impairments. This notch provides tactile feedback and aids in the identification and orientation of the card. | ✓ Supported | - Not supported | - Not supported | - Not supported |
 
 ## Optional: Activation labels
 

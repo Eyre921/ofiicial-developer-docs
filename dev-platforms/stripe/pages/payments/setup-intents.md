@@ -54,7 +54,7 @@ For users impacted by *SCA* (Strong Customer Authentication (SCA) is a regulator
 
 ## Specify usage to increase success rate
 
-The [usage](https://docs.stripe.com/api/setup_intents/object.md#setup_intent_object-usage) parameter tells Stripe how you plan to use payment method details later. For some payment methods, Stripe can use your `usage` setting to pick the most frictionless flow for the customer. This optimization is designed to increase the number of successful payments.
+The [usage](https://docs.stripe.com/api/setup_intents/object.md#setup_intent_object-usage) parameter tells Stripe how you plan to use payment method details later. For some payment methods, Stripe can use your `usage` setting to pick the most frictionless flow for the customer, which can increase the number of successful payments.
 
 For example, credit and debit cards under European *SCA* (Strong Customer Authentication (SCA) is a regulatory requirement in effect as of September 14, 2019, that impacts many European online payments. It requires customers to use two-factor authentication like 3D Secure to verify their purchase) regulation may require the customer to authenticate the card during the saving process. Setting `usage` to `off_session` properly authenticates a credit or debit card for off-session payments so that your customer doesn’t have to come back online and re-authenticate. So although it creates initial friction in the setup flow, setting `usage` to `off_session` can reduce customer intervention in later off-session payments.
 

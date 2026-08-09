@@ -14,7 +14,7 @@ The first step for using Stripe Tax with Connect requires you to **determine whi
 
 ## Use cases
 
-Stripe Tax is designed to support different multi-party use cases:
+Stripe Tax supports different multi-party use cases:
 
 | Use case | Use when | Examples |
 | --- | --- | --- |

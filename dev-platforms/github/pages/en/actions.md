@@ -20,7 +20,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  You can assign a job to run on a virtual machine hosted by GitHub.
+  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
@@ -40,7 +40,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
+  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 

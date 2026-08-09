@@ -179,7 +179,7 @@ For example, say you have an invoice line item `Service A` that costs 100 USD. Y
 
 ### Adjust revenue recognition controls 
 
-While Stripe Revenue Recognition is designed to work out-of-the-box for many business types, we understand that each business might have unique needs. We offer advanced configurations on your revenue recognition reporting through our [Controls](https://docs.stripe.com/revenue-recognition/revenue-settings.md) page, where you can easily adjust for settings like revenue amortization granularity and catch-up revenue treatment.
+Many business types can use Stripe Revenue Recognition without making configuration changes, but your business might have unique needs. You can use advanced settings on the [Controls](https://docs.stripe.com/revenue-recognition/revenue-settings.md) page to adjust revenue recognition reporting, including revenue amortization granularity and catch-up revenue treatment.
 
 ## See also
 
