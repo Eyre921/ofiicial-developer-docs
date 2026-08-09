@@ -16,11 +16,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
+  Learn the basics of core concepts and essential terminology in GitHub Actions.
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
+  You can assign a job to run on a virtual machine hosted by GitHub.
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
@@ -36,7 +36,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
-  <p>Learn how to migrate your existing CI/CD workflows to GitHub Actions.</p>
+  Learn how to migrate your existing CI/CD workflows to GitHub Actions.
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
@@ -44,7 +44,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
-  <p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p>
+  You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.
 
 ## Links
 
@@ -863,3 +863,7 @@ Automate, customize, and execute your software development workflows right in yo
 * [Troubleshooting Actions Runner Controller errors](/en/actions/tutorials/use-actions-runner-controller/troubleshoot)
 
   Learn how to troubleshoot Actions Runner Controller errors.
+
+* [Develop agentic workflows in GitHub Actions](/en/actions/tutorials/develop-agentic-workflows-in-github-actions)
+
+  Use GitHub Agentic Workflows to turn Markdown instructions into automations powered by third-party coding agents.

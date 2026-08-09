@@ -12,7 +12,7 @@ path: docs/cookbook/video-generation/provider-specific-video-options
 
 > Inspect allowed passthrough parameters and send provider-specific video controls safely
 
-Use this guide when you need to add video model controls that are not part of
+Use this guide when you need to add video model controls that aren't part of
 OpenRouter's normalized video schema.
 
 By the end, your implementation should inspect a model's allowed passthrough
@@ -32,10 +32,10 @@ You need:
 * A target video model for the provider-specific options you want to send
 
 <Tip>
-  If you are not already targeting a specific provider model, read
+  If you aren't already targeting a specific provider model, read
   [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model)
-  so you can select one based on your clip duration, output shape, input type,
-  audio, provider controls, and cost requirements.
+  first. It helps you pick one based on clip duration, output shape, input
+  type, audio, provider controls, and cost.
 </Tip>
 
 Use the API reference pages as the source of truth for exact fields:
