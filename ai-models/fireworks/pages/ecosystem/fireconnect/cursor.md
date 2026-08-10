@@ -71,19 +71,20 @@ Cursor modes include `composer` (default), `cmd-k`, `background-composer`, `comp
 </Warning>
 
 <Warning>
-  **While FireConnect is on, only Fireworks models in your picker work.** Cursor subscription models, Opus modes, and other built-in models won't respond. Run `fireconnect cursor off` to restore built-in Cursor models.
+  **While FireConnect is on, only Fireworks models work.** Built-in Cursor models are hidden. `fireconnect cursor off` restores them. v0.9.2+ preserves your native model IDs (for example `auto-smart`) on re-enable.
 </Warning>
 
 ## What gets written
 
 FireConnect writes Cursor's BYOK OpenAI settings in the local SQLite state database at `state.vscdb`:
 
-| Setting        | Location                                                                                     |
-| -------------- | -------------------------------------------------------------------------------------------- |
-| API key        | `cursorAuth/openAIKey` (plaintext)                                                           |
-| Base URL       | `openAIBaseUrl` on the `applicationUser` blob: `https://api.fireworks.ai/inference/v1`       |
-| Custom models  | `aiSettings.userAddedModels` + `aiSettings.fireconnectAddedModels` (tracked for clean `off`) |
-| Per-mode model | `aiSettings.modelConfig[<mode>]`                                                             |
+| Setting          | Location                                                                                     |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| API key          | `cursorAuth/openAIKey` (plaintext)                                                           |
+| Base URL         | `openAIBaseUrl` on the `applicationUser` blob: `https://api.fireworks.ai/inference/v1`       |
+| Custom models    | `aiSettings.userAddedModels` + `aiSettings.fireconnectAddedModels` (tracked for clean `off`) |
+| Hidden built-ins | `aiSettings.modelOverrideDisabled` (Cursor subscription and built-in models)                 |
+| Per-mode model   | `aiSettings.modelConfig[<mode>]`                                                             |
 
 Platform paths for `state.vscdb`:
 

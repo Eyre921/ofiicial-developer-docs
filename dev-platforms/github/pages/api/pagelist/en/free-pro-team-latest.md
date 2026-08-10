@@ -1645,6 +1645,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/tutorials/use-actions-runner-controller
 /en/actions/tutorials/use-actions-runner-controller/get-started
 /en/actions/tutorials/use-actions-runner-controller/troubleshoot
+/en/actions/tutorials/develop-agentic-workflows-in-github-actions
 /en/copilot
 /en/copilot/get-started
 /en/copilot/get-started/quickstart

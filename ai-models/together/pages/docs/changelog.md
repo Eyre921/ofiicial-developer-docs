@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 8, 2026">
+  ## Longer context for GLM-5.2
+
+  `zai-org/GLM-5.2` on [serverless](/docs/serverless/models) now accepts a 512,000-token context length, up from 262,144. Pricing is unchanged.
+
+  See the [GLM-5.2 quickstart](/docs/glm-5.2-quickstart).
+</Update>
+
 <Update label="August 5, 2026">
   ## Expert LoRA for DeepSeek-V3.1
 

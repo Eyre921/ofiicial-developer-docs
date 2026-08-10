@@ -149,6 +149,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -226,6 +227,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -364,6 +366,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -440,6 +443,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -600,6 +604,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -675,6 +680,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -950,6 +956,7 @@ Successful Response
         - Allowed values: `like`, `dislike`
       - `time_in_call_secs` (integer, required)
     - `llm_override` (string, optional, nullable)
+    - `producing_llm` (string, optional, nullable)
     - `conversation_turn_metrics` (object, optional, nullable)
       - `metrics` (map from string to object, optional)
         - `elapsed_time` (double, required)
@@ -1114,6 +1121,7 @@ Successful Response
               "time_in_call_secs": 1
             },
             "llm_override": "string",
+            "producing_llm": "string",
             "conversation_turn_metrics": {
               "metrics": {},
               "convai_asr_provider": "string",
@@ -1248,6 +1256,7 @@ Successful Response
                 "time_in_call_secs": 1
               },
               "llm_override": "string",
+              "producing_llm": "string",
               "conversation_turn_metrics": {
                 "metrics": {},
                 "convai_asr_provider": "string",
@@ -1374,6 +1383,7 @@ Successful Response
             "time_in_call_secs": 1
           },
           "llm_override": "string",
+          "producing_llm": "string",
           "conversation_turn_metrics": {
             "metrics": {},
             "convai_asr_provider": "string",

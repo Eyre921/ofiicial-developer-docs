@@ -35,6 +35,15 @@ Reference: https://elevenlabs.io/docs/api-reference/voices/search
 - `category` (string, optional, nullable) — Category of the voice to filter by. One of 'premade', 'cloned', 'generated', 'professional'
 - `fine_tuning_state` (string, optional, nullable) — State of the voice's fine tuning to filter by. Applicable only to professional voices clones. One of 'draft', 'not_verified', 'not_started', 'queued', 'fine_tuning', 'fine_tuned', 'failed', 'delayed'
 - `collection_id` (string, optional, nullable) — Collection ID to filter voices by.
+- `gender` (string, optional, nullable) — Gender used for filtering, based on the voice's 'gender' label.
+- `age` (string, optional, nullable) — Age used for filtering, based on the voice's 'age' label.
+- `language` (list of string, optional, nullable) — Languages used for filtering, based on the voice's 'language' label. Voices matching any of the given languages are returned.
+- `accent` (string, optional, nullable) — Accent used for filtering, based on the voice's 'accent' label.
+- `use_cases` (list of string, optional, nullable) — Use cases used for filtering, based on the voice's 'use_case' label. Voices matching any of the given use cases are returned.
+- `min_notice_period_days` (integer, optional, nullable) — Filter to voices whose sharing notice period is at least the given number of days.
+- `include_custom_rates` (boolean, optional, nullable) — Whether to include voices that have a custom sharing rate. Defaults to including them.
+- `include_live_moderated` (boolean, optional, nullable) — Whether to include voices that have live moderation enabled. Defaults to including them.
+- `high_quality` (boolean, optional, nullable) — When true, only return studio-quality voices (those whose category is 'high_quality').
 - `include_total_count` (boolean, optional, default: true) — Whether to include the total count of voices found in the response. NOTE: The total_count value is a live snapshot and may change between requests as users create, modify, or delete voices. For pagination, rely on the has_more flag instead. Only enable this when you actually need the total count (e.g., for display purposes), as it incurs a performance cost.
 - `voice_ids` (list of string, optional, nullable) — Voice IDs to lookup by. Maximum 100 voice IDs.
 

@@ -412,7 +412,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
         - `api_version` (string, optional, nullable) — The API version to use for the request
         - `api_type` (enum, optional, default: chat_completions) — The API type to use (chat_completions, responses or websocket)
           - Allowed values: `chat_completions`, `responses`, `websocket`
-      - `ignore_default_personality` (boolean, optional, nullable, default: false) — Whether to remove the default personality lines from the system prompt
+      - `ignore_default_personality` (boolean, optional, nullable, default: true) — Whether to remove the default personality lines from the system prompt
       - `rag` (object, optional) — Configuration for RAG
         - `enabled` (boolean, optional, default: false)
         - `embedding_model` (enum, optional, default: e5_mistral_7b_instruct)
@@ -816,6 +816,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
         - Allowed values: `like`, `dislike`
       - `time_in_call_secs` (integer, required)
     - `llm_override` (string, optional, nullable)
+    - `producing_llm` (string, optional, nullable)
     - `conversation_turn_metrics` (object, optional, nullable)
       - `metrics` (map from string to object, optional)
         - `elapsed_time` (double, required)

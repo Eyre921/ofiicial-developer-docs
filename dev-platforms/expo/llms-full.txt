@@ -362,6 +362,7 @@ Install the CLI and start a project:
 - ["Application has not been registered" error](https://docs.expo.dev/troubleshooting/application-has-not-been-registered.md)
 - [Clear bundler caches on macOS and Linux](https://docs.expo.dev/troubleshooting/clear-cache-macos-linux.md)
 - [Clear bundler caches on Windows](https://docs.expo.dev/troubleshooting/clear-cache-windows.md)
+- ["Project is incompatible with this version of Expo Go" error](https://docs.expo.dev/troubleshooting/expo-go-version-mismatch.md)
 - ["React Native version mismatch" errors](https://docs.expo.dev/troubleshooting/react-native-version-mismatch.md)
 - [Troubleshooting proxies](https://docs.expo.dev/troubleshooting/proxies.md)
 

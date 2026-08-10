@@ -24,7 +24,7 @@ fireconnect claude on --interactive              # Claude: map all six slots
 fireconnect claude on --opus glm-fast-latest --sonnet glm-fast-latest
 ```
 
-Claude Code: `--model` sets **main** only; use `--opus`, `--sonnet`, `--haiku`, `--fable`, `--subagent`, or `--interactive` for the rest. Other harnesses take one `--model` for the default. Re-running `on` without `--model` keeps your current choice.
+Claude Code: `--model` sets **main** only; use slot flags or `--interactive` for the rest. Claude adds `[1m]` on 1M-context models (not `subagent`). Re-running `on` without flags keeps your current mapping.
 
 | Harness                          | Apply the change                                    |
 | -------------------------------- | --------------------------------------------------- |
@@ -38,7 +38,7 @@ FireConnect short IDs follow the same [Serverless serving paths](/serverless/ser
 
 | Kind                       | Example IDs                           | When to use                                                                                                           |
 | -------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Latest** (standard path) | `kimi-latest`, `glm-latest`           | Best price/quality. Version-tracking routers that move to the current model automatically.                            |
+| **Latest** (standard path) | `kimi-latest`, `glm-latest`           | Best price/quality; tracks current model versions                                                                     |
 | **Fast**                   | `kimi-fast-latest`, `glm-fast-latest` | Interactive coding where token speed matters. Same model quality as latest, higher \$/token, aims for **100+ tok/s**. |
 | **Pinned**                 | `kimi-k3`, `glm-5p2`, `kimi-k3-fast`  | Stable ID that does not track new versions.                                                                           |
 

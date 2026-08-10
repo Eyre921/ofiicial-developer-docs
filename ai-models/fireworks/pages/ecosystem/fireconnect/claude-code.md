@@ -16,7 +16,7 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI v0.9.1+ (see [Install](/ecosystem/fireconnect/overview#install))
+* The FireConnect CLI v0.9.2+ (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -78,7 +78,7 @@ When you run `fireconnect claude on` without model flags, FireConnect applies th
 | fable    | `kimi-fast-latest`                                                                                                                        | `kimi-fast-latest`        |
 | subagent | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
 
-Short model IDs expand automatically. FireConnect appends `[1m]` on 1M-context models (not on `subagent`).
+Short model IDs expand automatically. Claude Code adds `[1m]` on 1M-context models (not `subagent`).
 
 FireConnect saves your chosen mapping per key type. Reopen the wizard anytime:
 
@@ -151,26 +151,29 @@ fireconnect claude on --model firerouter --routing-preference 4
 
 See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
-## Session usage
+## Usage and live meter
 
-Claude Code's `/model` picker shows **Anthropic list prices**, not Fireworks serverless rates. For actual spend, use `fireconnect claude usage`. It reads Claude Code session logs and estimates Fireworks cost from your configured models.
+Claude Code's `/model` picker shows Anthropic list prices, not Fireworks rates. Use `fireconnect claude usage` to estimate real Fireworks spend from session logs.
+
+On a TTY, `usage` opens a session picker (last 3 days by default), then a live cost meter. Tab: agents pane. Esc: session list. q: quit.
 
 ```bash theme={null}
-fireconnect claude usage                    # latest session
-fireconnect claude usage --last-n 5         # five most recent parent sessions
-fireconnect claude usage --session <id>     # session id prefix or path to a .jsonl log
-fireconnect claude usage --plain            # plain-text summary (scripts)
-fireconnect claude usage --verbose          # per-request token rows
-fireconnect claude usage --json             # machine-readable output
+fireconnect claude usage                 # picker → live meter
+fireconnect claude usage --days 7        # picker lookback only (1–365)
+fireconnect claude usage --session <id>  # start on one session
+fireconnect claude usage --last-n 5      # snapshot, no picker (--days ignored)
+fireconnect claude usage --plain         # plain text
+fireconnect claude usage --json          # JSON
 ```
 
-Pair with `fireconnect claude status` for per-slot Fireworks rates and `fireconnect model list` to browse serverless pricing.
+For a tmux split (Claude Code left, meter right):
 
-## Claude Code pricing estimates
+```bash theme={null}
+fireconnect claude live
+fireconnect claude live --session <id>
+```
 
-Claude Code's cost column in the `/model` picker still uses Anthropic list prices. The [session usage](#session-usage) section above is the better place to estimate real Fireworks spend.
-
-FireConnect cannot override Claude Code's price column. For example, a `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at serverless rates. Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+Requires `tmux`. Neither command changes harness settings.
 
 ## Troubleshooting
 
@@ -191,9 +194,10 @@ fireconnect claude on --sonnet kimi-fast-latest
 ```bash theme={null}
 fireconnect claude on         # Route Claude Code through Fireworks
 fireconnect claude off        # Restore your previous provider
-fireconnect claude status     # Show the current provider and model mapping
-fireconnect claude usage      # Session token usage and estimated Fireworks cost
-fireconnect claude help       # Show harness-specific help
+fireconnect claude status     # Provider, auth, and model mapping
+fireconnect claude usage      # Session cost meter
+fireconnect claude live       # tmux split with live meter
+fireconnect claude help       # Harness-specific help
 ```
 
 Run `fireconnect claude help` for all options.

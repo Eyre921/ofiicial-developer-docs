@@ -129,8 +129,12 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
           - `stability` (double, optional) — The stability of generated speech
           - `speed` (double, optional) — The speed of generated speech
           - `similarity_boost` (double, optional) — The similarity boost for generated speech
+          - `pronunciation_dictionary_locators` (list of object, optional) — The pronunciation dictionary locators
+            - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+            - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
         - `conversation` (object, optional) — Configuration for conversational events
           - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+          - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds
         - `agent` (object, optional) — Agent specific configuration
           - `first_message` (string, optional) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
           - `language` (string, optional) — Language of the agent - used for ASR and TTS
@@ -643,8 +647,10 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
           - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
           - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
           - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.
+          - `pronunciation_dictionary_locators` (boolean, optional, default: false) — Whether to allow overriding the pronunciation_dictionary_locators field.
         - `conversation` (object, optional) — Configures overrides for nested fields.
           - `text_only` (boolean, optional, default: false) — Whether to allow overriding the text_only field.
+          - `max_duration_seconds` (boolean, optional, default: false) — Whether to allow overriding the max_duration_seconds field.
         - `agent` (object, optional) — Configures overrides for nested fields.
           - `first_message` (boolean, optional, default: false) — Whether to allow overriding the first_message field.
           - `language` (boolean, optional, default: false) — Whether to allow overriding the language field.
@@ -718,7 +724,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
@@ -808,7 +814,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
               - `right` (object, required) — Right operand of the binary operator.
             - `type`: `null_literal`
             - `type`: `number_literal`
-              - `value` (double, required) — Value of this literal.
+              - `value` (double or integer, required) — Value of this literal.
             - `type`: `or_operator`
               - `children` (list of object, required) — Child nodes of the logical operator.
             - `type`: `string_literal`
@@ -870,7 +876,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
               - `right` (object, required) — Right operand of the binary operator.
             - `type`: `null_literal`
             - `type`: `number_literal`
-              - `value` (double, required) — Value of this literal.
+              - `value` (double or integer, required) — Value of this literal.
             - `type`: `or_operator`
               - `children` (list of object, required) — Child nodes of the logical operator.
             - `type`: `string_literal`

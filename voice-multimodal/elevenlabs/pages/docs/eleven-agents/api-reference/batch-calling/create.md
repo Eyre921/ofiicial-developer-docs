@@ -47,8 +47,12 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/
         - `stability` (double, optional) — The stability of generated speech
         - `speed` (double, optional) — The speed of generated speech
         - `similarity_boost` (double, optional) — The similarity boost for generated speech
+        - `pronunciation_dictionary_locators` (list of object, optional) — The pronunciation dictionary locators
+          - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+          - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
       - `conversation` (object, optional) — Configuration for conversational events
         - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+        - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds
       - `agent` (object, optional) — Agent specific configuration
         - `first_message` (string, optional) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
         - `language` (string, optional) — Language of the agent - used for ASR and TTS

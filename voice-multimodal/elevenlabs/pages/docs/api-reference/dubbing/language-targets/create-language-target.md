@@ -34,7 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/dubbing/language-targets/cre
 - `target_language` (string, required) — BCP-47 language tag to dub the project into (e.g. 'fr', 'es-MX'); must be a language the dubbing model supports. A region-qualified tag must be one of the supported dialects.
 - `voice_settings` (object, optional, nullable) — Voice settings applied to the whole language (e.g. cloning strength).
   - `cloning_strength` (integer, optional, default: 7) — How strongly the dubbed speakers clone the source voices, 0 to 10.
-- `translations` (map from string to string, optional, nullable) — Optional translations to use instead of machine translation. A map from each source segment's external_id (or its id, if you supplied none) to the translated text; every source segment must be covered exactly once. At most 20000 entries, totalling at most 4 MiB of text.
+- `translations` (map from string to string, optional, nullable) — Enterprise only. Optional translations to use instead of machine translation. A map from each source segment's external_id (or its id, if you supplied none) to the translated text; every source segment must be covered exactly once. At most 20000 entries, totalling at most 4 MiB of text.
 
 ## Response
 

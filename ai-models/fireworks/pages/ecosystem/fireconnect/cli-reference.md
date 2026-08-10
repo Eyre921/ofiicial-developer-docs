@@ -18,11 +18,11 @@ fireconnect logout       # Clear the stored key (keychain entry + config ref)
 fireconnect status       # Show sign-in state and where the key is stored
 fireconnect configure    # Set the provider (Azure/Foundry) and Anthropic key for FireRouter
 fireconnect model list   # Browse the global Fireworks coding model catalog
-fireconnect demo         # Race Anthropic vs Fireworks on the same prompt
+fireconnect demo         # Race your provider vs Fireworks on the same prompt
 fireconnect upgrade      # Update FireConnect (curl/git install only)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
 fireconnect help         # Show help
-fireconnect --version    # Print the installed CLI version (-V also works)
+fireconnect --version    # Print the installed CLI version (-V also works; --json for machine-readable)
 ```
 
 Run `fireconnect help` for the overview, or `fireconnect claude help` (and similarly for other harnesses) for harness-level options.
@@ -84,7 +84,7 @@ Each CLI harness (`claude`, `opencode`, `codex`, `pi`, `deepagents`) supports:
 * `fireconnect <harness> status`: show provider, auth, and models
 * `fireconnect <harness> help`: harness-specific help
 
-Claude Code also has `fireconnect claude usage`. See [Session usage](/ecosystem/fireconnect/claude-code#session-usage).
+Claude Code also has `usage` and `live`. See [Usage and live meter](/ecosystem/fireconnect/claude-code#usage-and-live-meter).
 
 Each IDE harness (`cursor`, `vscode`) supports `on`, `off`, `status`, and `help`. Commands that write settings require quitting the IDE first; `status` is read-only.
 
@@ -119,6 +119,8 @@ FireRouter flags (when using `firerouter`):
 3. Global `~/.fireconnect/config.json` reference
 4. `FIREWORKS_API_KEY` environment variable
 
+When `FIREWORKS_API_KEY` is set, `login` uses it without storing a copy. Unset it before `login --api-key`, `--with-token`, or browser sign-in.
+
 Claude Code additionally reads harness-local keys from `~/.claude/settings.json` when FireConnect is already enabled there.
 
 **Fireworks on Microsoft Foundry** (`--provider azure`)
@@ -142,6 +144,15 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
     | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
     | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
     | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+  </Accordion>
+
+  <Accordion title="v0.9.2 changes">
+    | Feature               | Details                                                  |
+    | --------------------- | -------------------------------------------------------- |
+    | `claude live`         | tmux split with live usage meter                         |
+    | `claude usage --days` | Wider session picker lookback (interactive mode only)    |
+    | VS Code               | Uses `chat-completions` API (auto-migrated)              |
+    | Cursor                | Hides built-in models; preserves native IDs on re-enable |
   </Accordion>
 
   <Accordion title="v0.9.1 changes">

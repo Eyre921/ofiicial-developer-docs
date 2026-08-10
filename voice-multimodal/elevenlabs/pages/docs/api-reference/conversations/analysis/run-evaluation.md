@@ -124,13 +124,14 @@ Successful Response
       - `asr_model` (string, optional, nullable)
       - `total_transcription_calls` (integer, optional, default: 0)
       - `total_audio_input_seconds` (double, optional, default: 0)
-    - `analysis` (object, optional, nullable) — Cost of running post-call analysis on this conversation. Present once analysis has incurred a cost. `last_run` is null when the most recent pass incurred none.
+    - `analysis` (object, optional, nullable) — Cost of running post-call analysis on this conversation. Present once an analysis pass has run, billed or not.
       - `total` (object, required) — Cumulative LLM cost of running post-call analysis on this conversation.
         - `price` (double, optional, default: 0)
         - `charge` (integer, optional, default: 0)
+        - `runs` (integer, optional, default: 0)
         - `price_per_feature` (map from string to double, optional)
         - `charge_per_feature` (map from string to integer, optional)
-      - `last_run` (object, optional, nullable) — LLM cost of the most recent post-call analysis pass on this conversation.
+      - `last_run` (object, required) — LLM cost of the most recent post-call analysis pass on this conversation.
         - `price` (double, optional, default: 0)
         - `charge` (integer, optional, default: 0)
         - `price_per_feature` (map from string to double, optional)
@@ -506,6 +507,7 @@ Successful Response
       - Allowed values: `like`, `dislike`
     - `time_in_call_secs` (integer, required)
   - `llm_override` (string, optional, nullable)
+  - `producing_llm` (string, optional, nullable)
   - `conversation_turn_metrics` (object, optional, nullable)
     - `metrics` (map from string to object, optional)
       - `elapsed_time` (double, required)
@@ -663,8 +665,12 @@ Successful Response
       - `stability` (double, optional, nullable) — The stability of generated speech
       - `speed` (double, optional, nullable) — The speed of generated speech
       - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+      - `pronunciation_dictionary_locators` (list of object, optional, nullable) — The pronunciation dictionary locators
+        - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+        - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
     - `conversation` (object, optional, nullable) — Configuration for conversational events
       - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+      - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds
     - `agent` (object, optional, nullable) — Agent specific configuration
       - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
       - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS

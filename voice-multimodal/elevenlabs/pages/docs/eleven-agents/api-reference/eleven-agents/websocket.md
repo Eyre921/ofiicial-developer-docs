@@ -1106,6 +1106,28 @@ components:
         - eleven_v3_conversational
       description: The model to use for TTS
       title: ConversationInitiationClientDataConversationConfigOverrideTtsModelId
+    ConversationInitiationClientDataConversationConfigOverrideTtsPronunciationDictionaryLocatorsItems:
+      type: object
+      properties:
+        pronunciation_dictionary_id:
+          type: string
+          description: The ID of the pronunciation dictionary
+        version_id:
+          type: string
+          description: The ID of the version of the pronunciation dictionary
+      required:
+        - pronunciation_dictionary_id
+        - version_id
+      description: >-
+        A locator for other documents to be able to reference a specific
+        dictionary and it's version.
+
+        This is a pydantic version of
+        PronunciationDictionaryVersionLocatorDBModel.
+
+        Required to ensure compat with the rest of the agent data models.
+      title: >-
+        ConversationInitiationClientDataConversationConfigOverrideTtsPronunciationDictionaryLocatorsItems
     ConversationInitiationClientDataConversationConfigOverrideTts:
       type: object
       properties:
@@ -1128,6 +1150,12 @@ components:
           type: number
           format: double
           description: The similarity boost for generated speech
+        pronunciation_dictionary_locators:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/ConversationInitiationClientDataConversationConfigOverrideTtsPronunciationDictionaryLocatorsItems
+          description: The pronunciation dictionary locators
       description: Configuration for conversational text to speech
       title: ConversationInitiationClientDataConversationConfigOverrideTts
     ConversationInitiationClientDataConversationConfigOverrideConversation:
@@ -1138,6 +1166,9 @@ components:
           description: >-
             If enabled audio will not be processed and only text will be used,
             use to avoid audio pricing.
+        max_duration_seconds:
+          type: integer
+          description: The maximum duration of a conversation in seconds
       description: Configuration for conversational events
       title: ConversationInitiationClientDataConversationConfigOverrideConversation
     ConversationInitiationClientDataConversationConfigOverrideAgentPromptLlm:

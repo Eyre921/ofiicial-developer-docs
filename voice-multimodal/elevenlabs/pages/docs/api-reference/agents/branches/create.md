@@ -83,7 +83,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/create
             - `right` (object, required) — Right operand of the binary operator.
           - `type`: `null_literal` (ASTNullNode)
           - `type`: `number_literal` (ASTNumberNode)
-            - `value` (double, required) — Value of this literal.
+            - `value` (double or integer, required) — Value of this literal.
           - `type`: `or_operator` (ASTOrOperatorNode)
             - `children` (list of object, required) — Child nodes of the logical operator.
           - `type`: `string_literal` (ASTStringNode)
@@ -143,7 +143,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/create
             - `right` (object, required) — Right operand of the binary operator.
           - `type`: `null_literal` (ASTNullNode)
           - `type`: `number_literal` (ASTNumberNode)
-            - `value` (double, required) — Value of this literal.
+            - `value` (double or integer, required) — Value of this literal.
           - `type`: `or_operator` (ASTOrOperatorNode)
             - `children` (list of object, required) — Child nodes of the logical operator.
           - `type`: `string_literal` (ASTStringNode)

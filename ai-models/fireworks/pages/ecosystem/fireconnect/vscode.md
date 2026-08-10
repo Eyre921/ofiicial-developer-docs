@@ -21,7 +21,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 * [Visual Studio Code](https://code.visualstudio.com) with the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension
 * GitHub Copilot **Pro** or **Enterprise** (the free tier only supports the Auto model)
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.2+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -46,7 +46,7 @@ fireconnect vscode status   # read-only; works while VS Code is running
 
 ## Browse and switch models
 
-In v0.9.0, VS Code uses the Fireworks **Responses API** (`apiType: responses`). Kimi models support vision/image inputs; GLM models remain text-only.
+Direct Fireworks routing uses the **chat-completions** API. Kimi models support vision; GLM models are text-only.
 
 ```bash theme={null}
 fireconnect model list --search glm
@@ -81,7 +81,7 @@ Platform paths:
 | macOS    | `~/Library/Application Support/Code/User/chatLanguageModels.json` | `~/Library/Application Support/Code/User/globalStorage/state.vscdb` |
 | Windows  | `%APPDATA%\Code\User\chatLanguageModels.json`                     | `%APPDATA%\Code\User\globalStorage\state.vscdb`                     |
 
-The endpoint uses model URL `https://api.fireworks.ai/inference` (VS Code appends `/v1/responses` for the Responses API). The API key is **not** stored in the JSON. VS Code resolves the `${input:chat.lm.secret.<id>}` reference through its secret storage.
+The endpoint URL is `https://api.fireworks.ai/inference` (VS Code appends `/v1/chat/completions`). The API key lives in `state.vscdb`, not the JSON.
 
 On macOS, `safeStorage` encrypts with a master key VS Code stores in the login Keychain. On Linux, `safeStorage` needs `libsecret` (`secret-tool`) for real encryption. Without it, Chromium falls back to a hardcoded password (obfuscated, not encrypted), which FireConnect still writes but warns about.
 

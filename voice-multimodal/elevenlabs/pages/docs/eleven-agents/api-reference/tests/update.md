@@ -240,6 +240,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -402,6 +403,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -653,6 +655,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -813,6 +816,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1080,6 +1084,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -1241,6 +1246,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1523,6 +1529,7 @@ Successful Response
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -1685,6 +1692,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1936,6 +1944,7 @@ Successful Response
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -2096,6 +2105,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -2363,6 +2373,7 @@ Successful Response
           - Allowed values: `like`, `dislike`
         - `time_in_call_secs` (integer, required)
       - `llm_override` (string, optional)
+      - `producing_llm` (string, optional)
       - `conversation_turn_metrics` (object, optional)
         - `metrics` (map from string to object, optional)
           - `elapsed_time` (double, required)
@@ -2524,6 +2535,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional)
+        - `producing_llm` (string, optional)
         - `conversation_turn_metrics` (object, optional)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -2646,6 +2658,7 @@ Successful Response
         "time_in_call_secs": 1
       },
       "llm_override": "llm_override",
+      "producing_llm": "producing_llm",
       "rag_retrieval_info": {
         "chunks": [
           {

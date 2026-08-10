@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1231 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1230 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1031,7 +1031,6 @@
 - `docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/managing-your-eleven-labs-subscription-mobile-app-vs-website` — [Managing Your ElevenLabs Subscription (Mobile App vs. Website)](pages/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/managing-your-eleven-labs-subscription-mobile-app-vs-website.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/managing-your-eleven-labs-subscription-mobile-app-vs-website.md)
 - `docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-features-are-available-in-the-eleven-labs-mobile-app` — [What features are available in the ElevenLabs mobile app?](pages/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-features-are-available-in-the-eleven-labs-mobile-app.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-features-are-available-in-the-eleven-labs-mobile-app.md)
 - `docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-is-the-eleven-labs-app` — [What is the ElevenLabs App?](pages/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-is-the-eleven-labs-app.md) · [原文](https://elevenlabs.io/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android/what-is-the-eleven-labs-app.md)
-- `docs/help-center/product/monetization-business` — [Monetization & Business](pages/docs/help-center/product/monetization-business.md) · [原文](https://elevenlabs.io/docs/help-center/product/monetization-business.md)
 - `docs/help-center/product/monetization-business/music-marketplace` — [Music Marketplace FAQ](pages/docs/help-center/product/monetization-business/music-marketplace.md) · [原文](https://elevenlabs.io/docs/help-center/product/monetization-business/music-marketplace.md)
 - `docs/help-center/product/monetization-business/music-marketplace/how-do-creators-earn-money-on-music-marketplace` — [How do creators earn money on Music Marketplace?](pages/docs/help-center/product/monetization-business/music-marketplace/how-do-creators-earn-money-on-music-marketplace.md) · [原文](https://elevenlabs.io/docs/help-center/product/monetization-business/music-marketplace/how-do-creators-earn-money-on-music-marketplace.md)
 - `docs/help-center/product/monetization-business/music-marketplace/what-am-i-purchasing-on-music-marketplace` — [What am I purchasing on Music Marketplace?](pages/docs/help-center/product/monetization-business/music-marketplace/what-am-i-purchasing-on-music-marketplace.md) · [原文](https://elevenlabs.io/docs/help-center/product/monetization-business/music-marketplace/what-am-i-purchasing-on-music-marketplace.md)

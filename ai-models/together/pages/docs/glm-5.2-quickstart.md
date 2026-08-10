@@ -8,7 +8,7 @@ Get the most out of GLM-5.2 for long-horizon coding and agentic tasks.
 
 GLM-5.2 is Zhipu AI's flagship mixture-of-experts (MoE) model, built for long-horizon coding and agentic work. It holds project-scale context across many steps and completes multi-stage tasks end to end, leading open-source models on benchmarks like FrontierSWE, Terminal-Bench, and SWE-bench Pro.
 
-On Together AI, GLM-5.2 runs in FP4 with a 262K-token context window and up to 128K output tokens. It supports streaming, function calling, structured outputs, and adjustable reasoning effort. Thinking is enabled by default, so you'll receive both reasoning and content tokens.
+On Together AI, GLM-5.2 runs in FP4 with a 512K-token context window and up to 128K output tokens. It supports streaming, function calling, structured outputs, and adjustable reasoning effort. Thinking is enabled by default, so you'll receive both reasoning and content tokens.
 
 The model ID is `zai-org/GLM-5.2`. Pricing is \$1.40 per 1M input tokens, \$4.40 per 1M output tokens, and \$0.26 per 1M cached input tokens.
 

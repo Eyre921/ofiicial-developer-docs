@@ -85,8 +85,12 @@ Successful Response
         - `stability` (double, optional, nullable) — The stability of generated speech
         - `speed` (double, optional, nullable) — The speed of generated speech
         - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+        - `pronunciation_dictionary_locators` (list of object, optional, nullable) — The pronunciation dictionary locators
+          - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+          - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
       - `conversation` (object, optional, nullable) — Configuration for conversational events
         - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+        - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds
       - `agent` (object, optional, nullable) — Agent specific configuration
         - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
         - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
@@ -193,7 +197,11 @@ Successful Response
             "voice_id": "cjVigY5qzO86Huf0OWal",
             "stability": 0.5,
             "speed": 1,
-            "similarity_boost": 0.8
+            "similarity_boost": 0.8,
+            "pronunciation_dictionary_locators": []
+          },
+          "conversation": {
+            "max_duration_seconds": 600
           },
           "agent": {
             "first_message": "Hello, how can I help you today?",

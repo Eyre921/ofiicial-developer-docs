@@ -136,8 +136,12 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
           - `stability` (double, optional, nullable) — The stability of generated speech
           - `speed` (double, optional, nullable) — The speed of generated speech
           - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
+          - `pronunciation_dictionary_locators` (list of object, optional, nullable) — The pronunciation dictionary locators
+            - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+            - `version_id` (string, required, nullable) — The ID of the version of the pronunciation dictionary
         - `conversation` (object, optional, nullable) — Configuration for conversational events
           - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+          - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds
         - `agent` (object, optional, nullable) — Agent specific configuration
           - `first_message` (string, optional, nullable) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
           - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
@@ -297,7 +301,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
           - `api_version` (string, optional, nullable) — The API version to use for the request
           - `api_type` (enum, optional, default: chat_completions) — The API type to use (chat_completions, responses or websocket)
             - Allowed values: `chat_completions`, `responses`, `websocket`
-        - `ignore_default_personality` (boolean, optional, nullable, default: false) — Whether to remove the default personality lines from the system prompt
+        - `ignore_default_personality` (boolean, optional, nullable, default: true) — Whether to remove the default personality lines from the system prompt
         - `rag` (object, optional) — Configuration for RAG
           - `enabled` (boolean, optional, default: false)
           - `embedding_model` (enum, optional, default: e5_mistral_7b_instruct)
@@ -645,8 +649,10 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
           - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
           - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
           - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.
+          - `pronunciation_dictionary_locators` (boolean, optional, default: false) — Whether to allow overriding the pronunciation_dictionary_locators field.
         - `conversation` (object, optional) — Configures overrides for nested fields.
           - `text_only` (boolean, optional, default: false) — Whether to allow overriding the text_only field.
+          - `max_duration_seconds` (boolean, optional, default: false) — Whether to allow overriding the max_duration_seconds field.
         - `agent` (object, optional) — Configures overrides for nested fields.
           - `first_message` (boolean, optional, default: false) — Whether to allow overriding the first_message field.
           - `language` (boolean, optional, default: false) — Whether to allow overriding the language field.
@@ -720,7 +726,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
@@ -808,7 +814,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
               - `right` (object, required) — Right operand of the binary operator.
             - `type`: `null_literal` (ASTNullNode)
             - `type`: `number_literal` (ASTNumberNode)
-              - `value` (double, required) — Value of this literal.
+              - `value` (double or integer, required) — Value of this literal.
             - `type`: `or_operator` (ASTOrOperatorNode)
               - `children` (list of object, required) — Child nodes of the logical operator.
             - `type`: `string_literal` (ASTStringNode)
@@ -868,7 +874,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/run-tests
               - `right` (object, required) — Right operand of the binary operator.
             - `type`: `null_literal` (ASTNullNode)
             - `type`: `number_literal` (ASTNumberNode)
-              - `value` (double, required) — Value of this literal.
+              - `value` (double or integer, required) — Value of this literal.
             - `type`: `or_operator` (ASTOrOperatorNode)
               - `children` (list of object, required) — Child nodes of the logical operator.
             - `type`: `string_literal` (ASTStringNode)
@@ -1145,6 +1151,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1222,6 +1229,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -1360,6 +1368,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1436,6 +1445,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -1596,6 +1606,7 @@ Successful Response
             - Allowed values: `like`, `dislike`
           - `time_in_call_secs` (integer, required)
         - `llm_override` (string, optional, nullable)
+        - `producing_llm` (string, optional, nullable)
         - `conversation_turn_metrics` (object, optional, nullable)
           - `metrics` (map from string to object, optional)
             - `elapsed_time` (double, required)
@@ -1671,6 +1682,7 @@ Successful Response
             - `score` (enum, required)
             - `time_in_call_secs` (integer, required)
           - `llm_override` (string, optional, nullable)
+          - `producing_llm` (string, optional, nullable)
           - `conversation_turn_metrics` (object, optional, nullable)
             - `metrics` (map from string to object, optional)
             - `convai_asr_provider` (string, optional, nullable)
@@ -1946,6 +1958,7 @@ Successful Response
         - Allowed values: `like`, `dislike`
       - `time_in_call_secs` (integer, required)
     - `llm_override` (string, optional, nullable)
+    - `producing_llm` (string, optional, nullable)
     - `conversation_turn_metrics` (object, optional, nullable)
       - `metrics` (map from string to object, optional)
         - `elapsed_time` (double, required)
@@ -2122,6 +2135,7 @@ Successful Response
               "time_in_call_secs": 1
             },
             "llm_override": "string",
+            "producing_llm": "string",
             "conversation_turn_metrics": {
               "metrics": {},
               "convai_asr_provider": "string",
@@ -2256,6 +2270,7 @@ Successful Response
                 "time_in_call_secs": 1
               },
               "llm_override": "string",
+              "producing_llm": "string",
               "conversation_turn_metrics": {
                 "metrics": {},
                 "convai_asr_provider": "string",
@@ -2382,6 +2397,7 @@ Successful Response
             "time_in_call_secs": 1
           },
           "llm_override": "string",
+          "producing_llm": "string",
           "conversation_turn_metrics": {
             "metrics": {},
             "convai_asr_provider": "string",

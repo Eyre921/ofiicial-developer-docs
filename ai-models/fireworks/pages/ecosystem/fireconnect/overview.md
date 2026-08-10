@@ -31,9 +31,13 @@ curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh |
 fireconnect login
 ```
 
-The installer clones the CLI to `~/.fireconnect/cli`, installs dependencies, and adds `~/.local/bin/fireconnect`. It does **not** sign you in or write harness settings.
+The installer is a **bash** script. It clones the CLI to `~/.fireconnect/cli`, installs dependencies, and adds `~/.local/bin/fireconnect`. It does **not** sign you in or write harness settings.
 
 After `login`, open your [harness guide](#choose-your-harness) and run `fireconnect <harness> on`. You can also pass `--api-key` or set `FIREWORKS_API_KEY` instead of `login`.
+
+<Note>
+  **Windows:** run from Git Bash with the same command. Piping through PowerShell corrupts line endings (`set: pipefail\r: invalid option name`).
+</Note>
 
 ### Upgrade FireConnect
 
@@ -41,9 +45,9 @@ After `login`, open your [harness guide](#choose-your-harness) and run `fireconn
 fireconnect upgrade
 ```
 
-Or re-run the install curl above. On v0.9.0+, your harness stays connected; no need to run `off` first.
+Or re-run the install curl above. On v0.9.0+, harness settings stay connected across upgrade.
 
-Check the installed version with `fireconnect --version`. For older releases and CLI renames, see [CLI reference: Migration](/ecosystem/fireconnect/cli-reference#migration-from-earlier-syntax).
+Check version with `fireconnect --version`. See [CLI reference: Migration](/ecosystem/fireconnect/cli-reference#migration-from-earlier-syntax) for renames.
 
 ## Sign in
 
@@ -63,7 +67,7 @@ After install and sign-in, open the guide for the tool you use. Each page covers
 
 <CardGroup>
   <Card title="Claude Code" icon="terminal" href="/ecosystem/fireconnect/claude-code">
-    Six model slots + interactive wizard
+    Six model slots + usage meter
   </Card>
 
   <Card title="OpenCode" icon="terminal" href="/ecosystem/fireconnect/opencode">
@@ -118,7 +122,7 @@ fireconnect <harness> on --model glm-fast-latest
 * **Foundry**: not on Claude Code yet.
 * **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
 * **FireRouter**: Cursor and Deep Agents need workspace BYOK.
-* **Web search MCP**: any harness via HTTP MCP; FireConnect auto-install is Claude Code only today. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+* **Web search MCP**: Claude Code auto-install only; any harness can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
 * **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
 
 ## FireRouter

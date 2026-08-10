@@ -21549,7 +21549,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1000000        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
 | Moonshot          | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
-| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 512000         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
 | DeepSeek          | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
@@ -29165,7 +29165,7 @@ Get the most out of GLM-5.2 for long-horizon coding and agentic tasks.
 
 GLM-5.2 is Zhipu AI's flagship mixture-of-experts (MoE) model, built for long-horizon coding and agentic work. It holds project-scale context across many steps and completes multi-stage tasks end to end, leading open-source models on benchmarks like FrontierSWE, Terminal-Bench, and SWE-bench Pro.
 
-On Together AI, GLM-5.2 runs in FP4 with a 262K-token context window and up to 128K output tokens. It supports streaming, function calling, structured outputs, and adjustable reasoning effort. Thinking is enabled by default, so you'll receive both reasoning and content tokens.
+On Together AI, GLM-5.2 runs in FP4 with a 512K-token context window and up to 128K output tokens. It supports streaming, function calling, structured outputs, and adjustable reasoning effort. Thinking is enabled by default, so you'll receive both reasoning and content tokens.
 
 The model ID is `zai-org/GLM-5.2`. Pricing is \$1.40 per 1M input tokens, \$4.40 per 1M output tokens, and \$0.26 per 1M cached input tokens.
 
@@ -46620,6 +46620,14 @@ Requires a Bearer API key in the `Authorization` header. Cookie, session, and SL
 Source: https://docs.together.ai/docs/changelog
 
 
+
+<Update label="August 8, 2026">
+  ## Longer context for GLM-5.2
+
+  `zai-org/GLM-5.2` on [serverless](/docs/serverless/models) now accepts a 512,000-token context length, up from 262,144. Pricing is unchanged.
+
+  See the [GLM-5.2 quickstart](/docs/glm-5.2-quickstart).
+</Update>
 
 <Update label="August 5, 2026">
   ## Expert LoRA for DeepSeek-V3.1

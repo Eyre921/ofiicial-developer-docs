@@ -85,7 +85,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
             - `right` (object, required) — Right operand of the binary operator.
           - `type`: `null_literal`
           - `type`: `number_literal`
-            - `value` (double, required) — Value of this literal.
+            - `value` (double or integer, required) — Value of this literal.
           - `type`: `or_operator`
             - `children` (list of object, required) — Child nodes of the logical operator.
           - `type`: `string_literal`
@@ -147,7 +147,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
             - `right` (object, required) — Right operand of the binary operator.
           - `type`: `null_literal`
           - `type`: `number_literal`
-            - `value` (double, required) — Value of this literal.
+            - `value` (double or integer, required) — Value of this literal.
           - `type`: `or_operator`
             - `children` (list of object, required) — Child nodes of the logical operator.
           - `type`: `string_literal`
