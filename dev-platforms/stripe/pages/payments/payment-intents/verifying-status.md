@@ -165,7 +165,7 @@ The following list describes how to handle webhook events:
 | `amount_capturable_updated` | The customer’s payment is authorized and ready for capture. | Capture the funds that are available for payment. |
 | `payment_failed` | The customer’s payment was declined by a card network or otherwise expired. | Reach out to your customer through email or push notification and prompt them to provide another payment method. |
 
-To test webhooks locally, you can use [Stripe CLI](https://docs.stripe.com/stripe-cli.md). After you install it, you can forward events to your server:
+To test webhooks locally, you can use [Stripe CLI](https://docs.stripe.com/cli.md). After you install it, you can forward events to your server:
 
 ```bash
 stripe listen --forward-to localhost:4242/webhook

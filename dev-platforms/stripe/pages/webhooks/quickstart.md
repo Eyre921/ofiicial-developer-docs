@@ -328,7 +328,7 @@ java -cp target/sample-jar-with-dependencies.jar com.stripe.sample.Server
 
 ### Download the CLI
 
-Use the Stripe CLI to test your webhook locally. [Download the CLI](https://docs.stripe.com/stripe-cli.md) and log in with your Stripe account. Alternatively, use a service like ngrok to make your local endpoint publicly accessible.
+Use the Stripe CLI to test your webhook locally. [Download the CLI](https://docs.stripe.com/cli.md) and log in with your Stripe account. Alternatively, use a service like ngrok to make your local endpoint publicly accessible.
 
 ```bash
 stripe login
@@ -864,7 +864,7 @@ Learn how to deploy your webhook endpoint to production and handle events at sca
 
 Understand best practices for maintaining your endpoint, such as managing retries or duplicate events.
 
-#### [Stripe CLI](https://docs.stripe.com/stripe-cli.md)
+#### [Stripe CLI](https://docs.stripe.com/cli.md)
 
 The Stripe CLI has several commands that can help test your Stripe application beyond webhooks.
 

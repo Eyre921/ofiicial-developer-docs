@@ -54,7 +54,7 @@ Meters specify how to aggregate meter events over a billing period. Meter events
 
 For the Hypernian example, meter events are the number of tokens a customer uses in a query. The meter is the sum of tokens over a month.
 
-You can use the Stripe Dashboard or API to configure a meter. To use the API with the Stripe CLI to create a meter, [get started with the Stripe CLI](https://docs.stripe.com/stripe-cli.md).
+You can use the Stripe Dashboard or API to configure a meter. To use the API with the Stripe CLI to create a meter, [get started with the Stripe CLI](https://docs.stripe.com/cli.md).
 
 #### Dashboard
 

@@ -249,17 +249,8 @@ Possible enum values:
   - `zip`
     [Zip](https://docs.stripe.com/docs/payments/zip.md) is a Buy now, pay later Payment Method
 
-- `acss_debit` (object, optional)
+- [`acss_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=acss_debit) (object, optional)
   If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method.
-
-  - `acss_debit.account_number` (string, required)
-    Customer’s bank account number.
-
-  - `acss_debit.institution_number` (string, required)
-    Institution number of the customer’s bank.
-
-  - `acss_debit.transit_number` (string, required)
-    Transit number of the customer’s bank.
 
 - `affirm` (object, optional)
   If this is an `affirm` PaymentMethod, this hash contains details about the Affirm payment method.
@@ -288,23 +279,11 @@ Possible enum values:
 - `amazon_pay` (object, optional)
   If this is a AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
 
-- `au_becs_debit` (object, optional)
+- [`au_becs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=au_becs_debit) (object, optional)
   If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
 
-  - `au_becs_debit.account_number` (string, required)
-    The account number for the bank account.
-
-  - `au_becs_debit.bsb_number` (string, required)
-    Bank-State-Branch number of the bank account.
-
-- `bacs_debit` (object, optional)
+- [`bacs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=bacs_debit) (object, optional)
   If this is a `bacs_debit` PaymentMethod, this hash contains details about the Bacs Direct Debit bank account.
-
-  - `bacs_debit.account_number` (string, optional)
-    Account number of the bank account that the funds will be debited from.
-
-  - `bacs_debit.sort_code` (string, optional)
-    Sort code of the bank account. (e.g., `10-20-30`)
 
 - `bancontact` (object, optional)
   If this is a `bancontact` PaymentMethod, this hash contains details about the Bancontact payment method.
@@ -312,43 +291,8 @@ Possible enum values:
 - `billie` (object, optional)
   If this is a `billie` PaymentMethod, this hash contains details about the Billie payment method.
 
-- `billing_details` (object, optional)
+- [`billing_details`](https://docs.stripe.com/api/payment_methods/create.md?query=billing_details) (object, optional)
   Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
-
-  - `billing_details.address` (object, optional)
-    Billing address.
-
-    - `billing_details.address.city` (string, optional)
-      City, district, suburb, town, or village.
-
-    - `billing_details.address.country` (string, optional)
-      Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-
-    - `billing_details.address.line1` (string, optional)
-      Address line 1, such as the street, PO Box, or company name.
-
-    - `billing_details.address.line2` (string, optional)
-      Address line 2, such as the apartment, suite, unit, or building.
-
-    - `billing_details.address.postal_code` (string, optional)
-      ZIP or postal code.
-
-    - `billing_details.address.state` (string, optional)
-      State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-
-  - `billing_details.email` (string, optional)
-    Email address.
-
-    The maximum length is 800 characters.
-
-  - `billing_details.name` (string, optional)
-    Full name.
-
-  - `billing_details.phone` (string, optional)
-    Billing phone number (including extension).
-
-  - `billing_details.tax_id` (string, optional)
-    Taxpayer identification number. Used only for transactions between LATAM buyers and non-LATAM sellers.
 
 - `bizum` (object, optional)
   If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
@@ -356,32 +300,11 @@ Possible enum values:
 - `blik` (object, optional)
   If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
 
-- `boleto` (object, optional)
+- [`boleto`](https://docs.stripe.com/api/payment_methods/create.md?query=boleto) (object, optional)
   If this is a `boleto` PaymentMethod, this hash contains details about the Boleto payment method.
 
-  - `boleto.tax_id` (string, required)
-    The tax ID of the customer (CPF for individual consumers or CNPJ for businesses consumers)
-
-- `card` (object, optional)
+- [`card`](https://docs.stripe.com/api/payment_methods/create.md?query=card) (object, optional)
   If this is a `card` PaymentMethod, this hash contains the user’s card details. For backwards compatibility, you can alternatively provide a Stripe token (e.g., for Apple Pay, Amex Express Checkout, or legacy Checkout) into the card hash with format `card: {token: "tok_visa"}`. When providing a card number, you must meet the requirements for [PCI compliance](https://docs.stripe.com/security.md#validating-pci-compliance). We strongly recommend using Stripe.js instead of interacting with this API directly.
-
-  - `card.exp_month` (integer, required)
-    Two-digit number representing the card’s expiration month.
-
-  - `card.exp_year` (integer, required)
-    Four-digit number representing the card’s expiration year.
-
-  - `card.number` (string, required)
-    The card number, as a string without any separators.
-
-  - `card.cvc` (string, optional)
-    The card’s CVC. It is highly recommended to always include this value.
-
-  - `card.networks` (object, optional)
-    Contains information about card networks used to process the payment.
-
-    - `card.networks.preferred` (enum, optional)
-      The customer’s preferred card network for co-branded cards. Supports `cartes_bancaires`, `mastercard`, or `visa`. Selection of a network that does not apply to the card will be stored as `invalid_preference` on the card.
 
 - `cashapp` (object, optional)
   If this is a `cashapp` PaymentMethod, this hash contains details about the Cash App Pay payment method.
@@ -389,26 +312,17 @@ Possible enum values:
 - `crypto` (object, optional)
   If this is a Crypto PaymentMethod, this hash contains details about the Crypto payment method.
 
-- `custom` (object, optional)
+- [`custom`](https://docs.stripe.com/api/payment_methods/create.md?query=custom) (object, optional)
   If this is a `custom` PaymentMethod, this hash contains details about the Custom payment method.
-
-  - `custom.type` (string, required)
-    ID of the Dashboard-only CustomPaymentMethodType. This field is used by Stripe products’ internal code to support CPMs.
 
 - `customer_balance` (object, optional)
   If this is a `customer_balance` PaymentMethod, this hash contains details about the CustomerBalance payment method.
 
-- `eps` (object, optional)
+- [`eps`](https://docs.stripe.com/api/payment_methods/create.md?query=eps) (object, optional)
   If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
 
-  - `eps.bank` (string, optional)
-    The customer’s bank.
-
-- `fpx` (object, optional)
+- [`fpx`](https://docs.stripe.com/api/payment_methods/create.md?query=fpx) (object, optional)
   If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
-
-  - `fpx.bank` (string, required)
-    The customer’s bank.
 
 - `giropay` (object, optional)
   If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
@@ -416,11 +330,8 @@ Possible enum values:
 - `grabpay` (object, optional)
   If this is a `grabpay` PaymentMethod, this hash contains details about the GrabPay payment method.
 
-- `ideal` (object, optional)
+- [`ideal`](https://docs.stripe.com/api/payment_methods/create.md?query=ideal) (object, optional)
   If this is an `ideal` PaymentMethod, this hash contains details about the iDEAL payment method.
-
-  - `ideal.bank` (string, optional)
-    The customer’s bank. Only use this parameter for existing customers. Don’t use it for new customers.
 
 - `interac_present` (object, optional)
   If this is an `interac_present` PaymentMethod, this hash contains details about the Interac Present payment method.
@@ -428,20 +339,8 @@ Possible enum values:
 - `kakao_pay` (object, optional)
   If this is a `kakao_pay` PaymentMethod, this hash contains details about the Kakao Pay payment method.
 
-- `klarna` (object, optional)
+- [`klarna`](https://docs.stripe.com/api/payment_methods/create.md?query=klarna) (object, optional)
   If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method.
-
-  - `klarna.dob` (object, optional)
-    Customer’s date of birth
-
-    - `klarna.dob.day` (integer, required)
-      The day of birth, between 1 and 31.
-
-    - `klarna.dob.month` (integer, required)
-      The month of birth, between 1 and 12.
-
-    - `klarna.dob.year` (integer, required)
-      The four-digit year of birth.
 
 - `konbini` (object, optional)
   If this is a `konbini` PaymentMethod, this hash contains details about the Konbini payment method.
@@ -464,44 +363,17 @@ Possible enum values:
 - `multibanco` (object, optional)
   If this is a `multibanco` PaymentMethod, this hash contains details about the Multibanco payment method.
 
-- `naver_pay` (object, optional)
+- [`naver_pay`](https://docs.stripe.com/api/payment_methods/create.md?query=naver_pay) (object, optional)
   If this is a `naver_pay` PaymentMethod, this hash contains details about the Naver Pay payment method.
 
-  - `naver_pay.funding` (enum, optional)
-    Whether to use Naver Pay points or a card to fund this transaction. If not provided, this defaults to `card`.
-Possible enum values:
-    - `card`
-      Use a card to fund this transaction.
-
-    - `points`
-      Use Naver Pay points to fund this transaction.
-
-- `nz_bank_account` (object, optional)
+- [`nz_bank_account`](https://docs.stripe.com/api/payment_methods/create.md?query=nz_bank_account) (object, optional)
   If this is an nz_bank_account PaymentMethod, this hash contains details about the nz_bank_account payment method.
-
-  - `nz_bank_account.account_number` (string, required)
-    The account number for the bank account.
-
-  - `nz_bank_account.bank_code` (string, required)
-    The numeric code for the bank account’s bank.
-
-  - `nz_bank_account.branch_code` (string, required)
-    The numeric code for the bank account’s bank branch.
-
-  - `nz_bank_account.suffix` (string, required)
-    The suffix of the bank account number.
-
-  - `nz_bank_account.account_holder_name` (string, optional)
-    The name on the bank account. Only required if the account holder name is different from the name of the authorized signatory collected in the PaymentMethod’s billing details.
 
 - `oxxo` (object, optional)
   If this is an `oxxo` PaymentMethod, this hash contains details about the OXXO payment method.
 
-- `p24` (object, optional)
+- [`p24`](https://docs.stripe.com/api/payment_methods/create.md?query=p24) (object, optional)
   If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-
-  - `p24.bank` (enum, optional)
-    The customer’s bank.
 
 - `pay_by_bank` (object, optional)
   If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
@@ -518,17 +390,8 @@ Possible enum values:
 - `paypay` (object, optional)
   If this is a `paypay` PaymentMethod, this hash contains details about the PayPay payment method.
 
-- `payto` (object, optional)
+- [`payto`](https://docs.stripe.com/api/payment_methods/create.md?query=payto) (object, optional)
   If this is a `payto` PaymentMethod, this hash contains details about the PayTo payment method.
-
-  - `payto.account_number` (string, optional)
-    The account number for the bank account.
-
-  - `payto.bsb_number` (string, optional)
-    Bank-State-Branch number of the bank account.
-
-  - `payto.pay_id` (string, optional)
-    The PayID alias for the bank account.
 
 - `pix` (object, optional)
   If this is a `pix` PaymentMethod, this hash contains details about the Pix payment method.
@@ -536,11 +399,8 @@ Possible enum values:
 - `promptpay` (object, optional)
   If this is a `promptpay` PaymentMethod, this hash contains details about the PromptPay payment method.
 
-- `radar_options` (object, optional)
+- [`radar_options`](https://docs.stripe.com/api/payment_methods/create.md?query=radar_options) (object, optional)
   Options to configure Radar. See [Radar Session](https://docs.stripe.com/docs/radar/radar-session.md) for more information.
-
-  - `radar_options.session` (string, optional)
-    A [Radar Session](https://docs.stripe.com/docs/radar/radar-session.md) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
 
 - `revolut_pay` (object, optional)
   If this is a `revolut_pay` PaymentMethod, this hash contains details about the Revolut Pay payment method.
@@ -554,35 +414,11 @@ Possible enum values:
 - `scalapay` (object, optional)
   If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
 
-- `sepa_debit` (object, optional)
+- [`sepa_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=sepa_debit) (object, optional)
   If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
 
-  - `sepa_debit.iban` (string, required)
-    IBAN of the bank account.
-
-- `sofort` (object, optional)
+- [`sofort`](https://docs.stripe.com/api/payment_methods/create.md?query=sofort) (object, optional)
   If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
-
-  - `sofort.country` (enum, required)
-    Two-letter ISO code representing the country the bank account is located in.
-Possible enum values:
-    - `AT`
-      Austria
-
-    - `BE`
-      Belgium
-
-    - `DE`
-      Germany
-
-    - `ES`
-      Spain
-
-    - `IT`
-      Italy
-
-    - `NL`
-      Netherlands
 
 - `sunbit` (object, optional)
   If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
@@ -593,61 +429,11 @@ Possible enum values:
 - `twint` (object, optional)
   If this is a TWINT PaymentMethod, this hash contains details about the TWINT payment method.
 
-- `upi` (object, optional)
+- [`upi`](https://docs.stripe.com/api/payment_methods/create.md?query=upi) (object, optional)
   If this is a `upi` PaymentMethod, this hash contains details about the UPI payment method.
 
-  - `upi.mandate_options` (object, optional)
-    Configuration options for setting up an eMandate
-
-    - `upi.mandate_options.amount` (integer, optional)
-      Amount to be charged for future payments.
-
-    - `upi.mandate_options.amount_type` (enum, optional)
-      One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-Possible enum values:
-      - `fixed`
-        If `fixed`, the `amount` param refers to the exact amount to be charged in future payments.
-
-      - `maximum`
-        If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-
-    - `upi.mandate_options.description` (string, optional)
-      A description of the mandate or subscription that is meant to be displayed to the customer.
-
-      The maximum length is 20 characters.
-
-    - `upi.mandate_options.end_date` (timestamp, optional)
-      End date of the mandate or subscription.
-
-- `us_bank_account` (object, optional)
+- [`us_bank_account`](https://docs.stripe.com/api/payment_methods/create.md?query=us_bank_account) (object, optional)
   If this is an `us_bank_account` PaymentMethod, this hash contains details about the US bank account payment method.
-
-  - `us_bank_account.account_holder_type` (enum, optional)
-    Account holder type: individual or company.
-Possible enum values:
-    - `company`
-      Account belongs to a company
-
-    - `individual`
-      Account belongs to an individual
-
-  - `us_bank_account.account_number` (string, optional)
-    Account number of the bank account.
-
-  - `us_bank_account.account_type` (enum, optional)
-    Account type: checkings or savings. Defaults to checking if omitted.
-Possible enum values:
-    - `checking`
-      Bank account type is checking
-
-    - `savings`
-      Bank account type is savings
-
-  - `us_bank_account.financial_connections_account` (string, optional)
-    The ID of a Financial Connections Account to use as a payment method.
-
-  - `us_bank_account.routing_number` (string, optional)
-    Routing number of the bank account.
 
 - `wechat_pay` (object, optional)
   If this is an `wechat_pay` PaymentMethod, this hash contains details about the wechat_pay payment method.

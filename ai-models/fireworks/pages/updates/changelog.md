@@ -85,7 +85,7 @@ path: updates/changelog
 
   Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
-  See the [Secure Training (BYOB) documentation](/fine-tuning/secure-fine-tuning) for IAM role setup and usage examples.
+  See the [Secure Training (BYOB) documentation](/fine-tuning/finetuning-intro#training-security) for IAM role setup and usage examples.
 
   ## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
 
@@ -96,7 +96,7 @@ path: updates/changelog
   ## 📚 Documentation Updates
 
   * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
-  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/fine-tuning/secure-fine-tuning))
+  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/fine-tuning/finetuning-intro#training-security))
   * **Rate Limits Clarification:** Expanded documentation on adaptive serverless limits, upper bounds, and monitoring ([Serverless rate limits](/serverless/rate-limits))
   * **Anthropic-Compatible Thinking Parameter:** Control reasoning with `thinking` parameter alongside `reasoning_effort` ([Reasoning](/guides/reasoning))
   * **Scaling from Zero Behavior:** Deployments scaled to zero return `503` immediately with retry guidance ([Autoscaling](/deployments/autoscaling))
@@ -134,7 +134,7 @@ path: updates/changelog
 
   You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
-  See the [Warm-Start Training guide](/fine-tuning/warm-start) for details.
+  See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models#warm-start) for details.
 
   ## **Azure Federated Identity for Model Uploads**
 
@@ -144,7 +144,7 @@ path: updates/changelog
 
   ## 📚 Documentation Updates
 
-  * **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/warm-start))
+  * **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models#warm-start))
   * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
   * **Preserved Thinking:** Multi-turn reasoning with preserved thinking context ([Reasoning](/guides/reasoning))
   * **GLM 4.7:** Added to models supporting `reasoning_effort` parameter
@@ -366,7 +366,7 @@ path: updates/changelog
 
   Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
-  See the [Weighted Training documentation](/fine-tuning/weighted-training) for details on the weight field format.
+  See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models#weighted-training) for details on the weight field format.
 
   ## ✨ New Models
 
@@ -534,7 +534,7 @@ path: updates/changelog
   * Support for up to 64K context length during training
   * Built on the same Supervised Fine-tuning V2 infrastructure as text models
 
-  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-vlm) for setup instructions and dataset formatting requirements.
+  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-fine-tuning) for setup instructions and dataset formatting requirements.
 
   ## 🔧 Build SDK: Deployment Configuration Application Requirement
 

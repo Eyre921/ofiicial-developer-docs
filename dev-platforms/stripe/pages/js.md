@@ -1269,7 +1269,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
         - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
         - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
         - `address`
           Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -1325,6 +1331,19 @@ can set its property in `wallets` to `never`.
       - `applePay`
       - `googlePay`
       - `link`
+    - `walletOptions`
+      Options to control the information collected from the customer when
+paying with a wallet payment method.
+      - `emailRequired`
+        Collect the customer's email from wallet payment methods by setting this option to true.
+      - `phoneNumberRequired`
+        Collect the customer's phone number from wallet payment methods by setting this option to true.
+
+PayPal doesn't provide a phone number, even when this option is set to true.
+
+Google Pay makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
+
+Link makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
@@ -1384,7 +1403,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
       - `name`
       - `email`
+        Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
       - `phone`
+        Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
       - `address`
         Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -1540,7 +1565,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
         - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
         - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
         - `address`
           Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -1580,6 +1611,19 @@ Consult your legal and compliance advisors before making any changes to the text
       - `sepaDebit`
       - `sofort`
       - `usBankAccount`
+    - `walletOptions`
+      Options to control the information collected from the customer when
+paying with a wallet payment method.
+      - `emailRequired`
+        Collect the customer's email from wallet payment methods by setting this option to true.
+      - `phoneNumberRequired`
+        Collect the customer's phone number from wallet payment methods by setting this option to true.
+
+PayPal doesn't provide a phone number, even when this option is set to true.
+
+Google Pay makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
+
+Link makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`
@@ -4253,7 +4297,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
         - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
         - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
         - `address`
           Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -4345,6 +4395,19 @@ can set its property in `wallets` to `never`.
       - `applePay`
       - `googlePay`
       - `link`
+    - `walletOptions`
+      Options to control the information collected from the customer when
+paying with a wallet payment method.
+      - `emailRequired`
+        Collect the customer's email from wallet payment methods by setting this option to true.
+      - `phoneNumberRequired`
+        Collect the customer's phone number from wallet payment methods by setting this option to true.
+
+PayPal doesn't provide a phone number, even when this option is set to true.
+
+Google Pay makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
+
+Link makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
 
 ### Example
 
@@ -6490,7 +6553,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
         - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
         - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
         - `address`
           Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -6582,6 +6651,19 @@ can set its property in `wallets` to `never`.
       - `applePay`
       - `googlePay`
       - `link`
+    - `walletOptions`
+      Options to control the information collected from the customer when
+paying with a wallet payment method.
+      - `emailRequired`
+        Collect the customer's email from wallet payment methods by setting this option to true.
+      - `phoneNumberRequired`
+        Collect the customer's phone number from wallet payment methods by setting this option to true.
+
+PayPal doesn't provide a phone number, even when this option is set to true.
+
+Google Pay makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
+
+Link makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
 
 - `onChange`
   Callback called when any value in the [change event payload](https://docs.stripe.com/js/element/events/on_change?type=paymentElement.md#element_on_change-handler) changes.
@@ -9002,7 +9084,13 @@ pass an object specifying which fields you would like to disable collection for.
 The default setting for each field or object is `auto`.
         - `name`
         - `email`
+          Specify `never` to avoid collecting email in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.email=never` and `walletOptions.emailRequired=true`, email is still collected from wallets.
         - `phone`
+          Specify `never` to avoid collecting phone in the Payment Element.
+
+Note that this parameter is independent of [walletOptions](https://docs.stripe.com/js/elements_object/create_payment_element.md#payment_element_create-options-walletOptions), so if you set `fields.billingDetails.phone=never` and `walletOptions.phoneNumberRequired=true`, phone is still collected from wallets.
         - `address`
           Specify `if_required` to only collect the minimum billing address fields required to complete the payment.
 You can omit and hide optional address fields in the card form, such as country and postal code.
@@ -9058,6 +9146,19 @@ can set its property in `wallets` to `never`.
       - `applePay`
       - `googlePay`
       - `link`
+    - `walletOptions`
+      Options to control the information collected from the customer when
+paying with a wallet payment method.
+      - `emailRequired`
+        Collect the customer's email from wallet payment methods by setting this option to true.
+      - `phoneNumberRequired`
+        Collect the customer's phone number from wallet payment methods by setting this option to true.
+
+PayPal doesn't provide a phone number, even when this option is set to true.
+
+Google Pay makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
+
+Link makes a best effort to return the phone number registered to the wallet, but doesn't guarantee it will be provided in all cases.
     - `applePay`
       Specify Apple Pay specific options. These are passed through to the Apple Pay API.
       - `recurringPaymentRequest`

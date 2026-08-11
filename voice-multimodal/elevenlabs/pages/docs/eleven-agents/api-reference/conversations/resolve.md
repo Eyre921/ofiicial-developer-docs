@@ -60,7 +60,7 @@ Successful Response
     - `rating` (integer, optional)
     - `comment` (string, optional)
   - `authorization_method` (enum, optional, default: public)
-    - Allowed values: `invalid`, `public`, `authorization_header`, `signed_url`, `shareable_link`, `livekit_token`, `livekit_token_website`, `genesys_api_key`, `audiocodes_api_key`, `whatsapp`, `sms`
+    - Allowed values: `invalid`, `public`, `authorization_header`, `signed_url`, `shareable_link`, `livekit_token`, `livekit_token_website`, `genesys_api_key`, `avaya_api_key`, `audiocodes_api_key`, `whatsapp`, `sms`
   - `charging` (object, optional)
     - `dev_discount` (boolean, optional, default: false)
     - `is_burst` (boolean, optional, default: false)
@@ -117,13 +117,14 @@ Successful Response
       - `asr_model` (string, optional)
       - `total_transcription_calls` (integer, optional, default: 0)
       - `total_audio_input_seconds` (double, optional, default: 0)
-    - `analysis` (object, optional) — Cost of running post-call analysis on this conversation. Present once analysis has incurred a cost. `last_run` is null when the most recent pass incurred none.
+    - `analysis` (object, optional) — Cost of running post-call analysis on this conversation. Present once an analysis pass has run, billed or not.
       - `total` (object, required) — Cumulative LLM cost of running post-call analysis on this conversation.
         - `price` (double, optional, default: 0)
         - `charge` (integer, optional, default: 0)
+        - `runs` (integer, optional, default: 0)
         - `price_per_feature` (map from string to double, optional)
         - `charge_per_feature` (map from string to integer, optional)
-      - `last_run` (object, optional) — LLM cost of the most recent post-call analysis pass on this conversation.
+      - `last_run` (object, required) — LLM cost of the most recent post-call analysis pass on this conversation.
         - `price` (double, optional, default: 0)
         - `charge` (integer, optional, default: 0)
         - `price_per_feature` (map from string to double, optional)
@@ -226,7 +227,7 @@ Successful Response
     - `is_eleven_assistant` (boolean, optional, default: false)
   - `initiator_id` (string, optional)
   - `conversation_initiation_source` (enum, optional, default: unknown) — Enum representing the possible sources for conversation initiation.
-    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
   - `conversation_initiation_source_version` (string, optional)
   - `timezone` (string, optional)
   - `async_metadata` (object, optional) — Metadata for async conversation delivery (Zendesk, Slack, etc.).
@@ -501,6 +502,7 @@ Successful Response
       - Allowed values: `like`, `dislike`
     - `time_in_call_secs` (integer, required)
   - `llm_override` (string, optional)
+  - `producing_llm` (string, optional)
   - `conversation_turn_metrics` (object, optional)
     - `metrics` (map from string to object, optional)
       - `elapsed_time` (double, required)
@@ -658,8 +660,12 @@ Successful Response
       - `stability` (double, optional) — The stability of generated speech
       - `speed` (double, optional) — The speed of generated speech
       - `similarity_boost` (double, optional) — The similarity boost for generated speech
+      - `pronunciation_dictionary_locators` (list of object, optional) — The pronunciation dictionary locators
+        - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary
+        - `version_id` (string, optional) — The ID of the version of the pronunciation dictionary
     - `conversation` (object, optional) — Configuration for conversational events
       - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
+      - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds
     - `agent` (object, optional) — Agent specific configuration
       - `first_message` (string, optional) — If non-empty, the first message the agent will say. If empty, the agent waits for the user to start the discussion.
       - `language` (string, optional) — Language of the agent - used for ASR and TTS
@@ -667,7 +673,7 @@ Successful Response
       - `prompt` (object, optional) — The prompt for the agent
         - `prompt` (string, optional) — The prompt for the agent
         - `llm` (enum, optional) — The LLM to query with the prompt and the chat history. If using data residency, the LLM must be supported in the data residency environment
-          - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+          - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
         - `tool_ids` (list of string, optional) — A list of IDs of tools used by the agent
         - `native_mcp_server_ids` (list of string, optional) — A list of Native MCP server ids to be used by the agent
         - `knowledge_base` (list of object, optional) — A list of knowledge bases to be used by the agent
@@ -681,7 +687,7 @@ Successful Response
   - `user_id` (string, optional) — ID of the end user participating in this conversation (for agent owner's user identification)
   - `source_info` (object, optional) — Information about the source of conversation initiation
     - `source` (enum, optional, default: unknown) — Source of the conversation initiation
-      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+      - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
     - `version` (string, optional) — The SDK version number
   - `branch_id` (string, optional) — ID of the agent branch to use for this conversation
   - `environment` (string, optional) — Environment to use for resolving environment variables
@@ -733,7 +739,8 @@ Successful Response
       "free_minutes_consumed": 1.1,
       "free_llm_dollars_consumed": 1.1,
       "analysis": {
-        "total": {}
+        "total": {},
+        "last_run": {}
       }
     },
     "phone_call": {
@@ -852,6 +859,7 @@ Successful Response
         "time_in_call_secs": 1
       },
       "llm_override": "llm_override",
+      "producing_llm": "producing_llm",
       "rag_retrieval_info": {
         "chunks": [
           {
@@ -970,7 +978,16 @@ Successful Response
         "voice_id": "cjVigY5qzO86Huf0OWal",
         "stability": 0.5,
         "speed": 1,
-        "similarity_boost": 0.8
+        "similarity_boost": 0.8,
+        "pronunciation_dictionary_locators": [
+          {
+            "pronunciation_dictionary_id": "pronunciation_dictionary_id",
+            "version_id": null
+          }
+        ]
+      },
+      "conversation": {
+        "max_duration_seconds": 600
       },
       "agent": {
         "first_message": "Hello, how can I help you today?",

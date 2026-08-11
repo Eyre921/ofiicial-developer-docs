@@ -10,7 +10,13 @@ Select your business model and monetization strategy, then get a tailored code q
 
 > **Integration guides available:**We've generated integration guides for you. View the quickstart guide or copy integration details for use with an LLM assistant.
 
-Select the configuration options below to get personalized guidance for your Connect integration, including best practices like the use of the Accounts v2 API. You’ll get a custom integration guide and a custom LLM prompt that you can copy to use with an AI coding assistant.
+Configure the following options to get personalized guidance and best practices for building your Connect integration, including:
+
+- The recommended charge type
+- Your risk and compliance responsibilities
+- A preview of the user experience
+- A customized code quickstart
+- A customized LLM prompt that you can copy to use with an AI coding assistant
 
 ### 1. Select your business model
 

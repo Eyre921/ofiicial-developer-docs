@@ -53,7 +53,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
   - Allowed values: `exclude`, `include`
 - `search` (string, optional, nullable, deprecated) — Full-text or fuzzy search over transcript messages
 - `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Enum representing the possible sources for conversation initiation.
-  - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+  - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
 - `text_only` (boolean, optional, nullable)
 - `conversation_product_type` (enum, optional, nullable) — Restrict results to a single conversation product surface.
   - Allowed values: `agents`, `speech_engine`
@@ -95,7 +95,7 @@ Successful Response
   - `call_summary_title` (string, optional, nullable)
   - `main_language` (string, optional, nullable)
   - `conversation_initiation_source` (enum, optional, nullable, default: unknown) — Enum representing the possible sources for conversation initiation.
-    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
+    - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
   - `tool_names` (list of string, optional, nullable)
   - `direction` (enum, optional, nullable, default: inbound)
     - Allowed values: `inbound`, `outbound`

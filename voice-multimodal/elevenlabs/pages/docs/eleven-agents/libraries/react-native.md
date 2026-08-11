@@ -31,9 +31,26 @@ Upgrading from an earlier version? Run `npx skills add elevenlabs/packages` to i
 * React Native with LiveKit dependencies
 * Microphone permissions configured for your platform
 * Expo compatibility (development builds only)
+* React Native 0.79.0+, or Metro configured to resolve `package.json` `"exports"` on older versions
 
 This SDK was designed and built for use with the Expo framework. Due to its dependency on
 LiveKit's WebRTC implementation, it requires development builds and cannot be used with Expo Go.
+
+`@elevenlabs/react-native` resolves its React Native entry point via the `package.json`
+[`"exports"`](https://nodejs.org/api/packages.html#exports) field. Metro only resolves
+`"exports"` by default starting with Metro 0.82.0, which shipped in [React Native
+0.79.0](https://reactnative.dev/blog/2025/04/08/react-native-0.79) (released April 8, 2025). If
+you're on a React Native version older than 0.79, set `resolver.unstable_enablePackageExports =
+  true` in your `metro.config.js` so this package resolves correctly:
+
+```js
+const { getDefaultConfig } = require("metro-config");
+
+const config = getDefaultConfig(__dirname);
+config.resolver.unstable_enablePackageExports = true;
+
+module.exports = config;
+```
 
 ## Setup
 

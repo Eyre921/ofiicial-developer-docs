@@ -20,50 +20,18 @@ These interfaces create the same underlying managed jobs:
 
 The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
 
-## Reservation-first placement
-
-Managed SFT and DPO jobs can try your account's reservation capacity before falling back to shared trainer capacity. Opt in with `--use-reservation` in `firectl`, `useReservation: true` in the REST request, or `use_reservation=True` in the Python SDK:
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-
-sft_job = client.supervised_fine_tuning_jobs.create(
-    dataset="accounts/my-account/datasets/sft-data",
-    base_model="accounts/fireworks/models/my-base-model",
-    output_model="my-sft-model",
-    use_reservation=True,
-)
-
-dpo_job = client.dpo_jobs.create(
-    dataset="accounts/my-account/datasets/dpo-data",
-    training_config={
-        "base_model": "accounts/fireworks/models/my-base-model",
-        "output_model": "my-dpo-model",
-    },
-    use_reservation=True,
-)
-```
-
-For full-parameter DPO, policy and dedicated reference trainers try independently. Omit the option to preserve default placement.
-
 ## Methods
 
 <CardGroup>
-  <Card title="Supervised Fine Tuning - Text" href="/fine-tuning/fine-tuning-models" icon="message">
-    Train text models with labeled examples of desired outputs
-  </Card>
-
-  <Card title="Supervised Fine Tuning - Vision" href="/fine-tuning/fine-tuning-vlm" icon="eye">
-    Train vision-language models with image and text pairs
+  <Card title="Supervised Fine-Tuning" href="/fine-tuning/fine-tuning-models" icon="message">
+    Train text and vision models with labeled examples of desired outputs
   </Card>
 
   <Card title="Preference Optimization (DPO / ORPO)" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
     Train on preferred and non-preferred response pairs using DPO or ORPO
   </Card>
 
-  <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
+  <Card title="Reinforcement Fine-Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
     Train models using custom reward functions for complex reasoning tasks
   </Card>
 </CardGroup>
@@ -85,5 +53,5 @@ Managed fine-tuning runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/21
 LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment. For full-parameter tuning, use the [Training API](/fine-tuning/training-api/introduction).
 
 <Warning>
-  **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Please migrate to the `model` field with the `<model_name>#<deployment_name>` format described in [Routing requests to LoRA addons](/fine-tuning/deploying-loras#routing-requests-to-lora-addons).
+  **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Please migrate to the `model` field with the `<model_name>#<deployment_name>` format described in [Routing requests to LoRA addons](/fine-tuning/deploying-loras#multi-lora-deployment).
 </Warning>

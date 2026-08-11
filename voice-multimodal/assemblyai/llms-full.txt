@@ -368,7 +368,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [How do I contact support?](#how-do-i-contact-support-docs-faq-how-do-i-contact-support-mdx)
 - [How do I get in touch with your Sales team?](#how-do-i-get-in-touch-with-your-sales-team-docs-faq-how-do-i-get-in-touch-with-your-sales-team-mdx)
 - [I’ve spotted an issue with the website, what should I do?](#i-ve-spotted-an-issue-with-the-website-what-should-i-do-docs-faq-ive-spotted-an-issue-with-the-website-what-should-i-do-mdx)
-- [What are your support hours and response time SLAs?](#what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx)
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
@@ -31037,8 +31036,8 @@ Two silence thresholds control this behavior.
 
 | Parameter | What it does | Default |
 | --- | --- | --- |
-| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 128`, `max_accuracy: 800`) |
-| `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete. | `1536` |
+| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 128`, `max_accuracy: 512`) |
+| `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete. | Set by `mode` (`min_latency: 640`, `balanced: 1280`, `max_accuracy: 2560`) |
 
 Lower values end turns faster. Higher values tolerate longer pauses without fragmenting the turn. Both parameters can be set on the connection and [updated mid-stream](#capturing-entities-like-phone-numbers), and their defaults come from the [`mode` preset](/streaming/getting-started/optimizing-accuracy-and-latency) you select.
 
@@ -80403,39 +80402,6 @@ Navigation: FAQ > Overview > Company
 Description: I’ve spotted an issue with the website, what should I do? documentation.
 
 If you encounter an issue or problem with our website please reach out to us at [support@assemblyai.com](mailto:support@assemblyai.com) and we would be happy to look into it for you.
-
----
-
-<a id="what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx"></a>
-
-# What are your support hours and response time SLAs?
-
-URL: https://www.assemblyai.com/docs/faq/what-are-your-support-hours-and-response-time-slas
-Source: docs/faq/what-are-your-support-hours-and-response-time-slas.mdx
-Navigation: FAQ > Overview > Company
-Description: What are your support hours and response time SLAs? documentation.
-
-AssemblyAI provides technical support to Customer via telephone, live chat, and email on weekdays during the hours of 6:00 pm PT Sunday through 6:00 pm PT Friday, with the exclusion of federal holidays ("Support Hours").
-
-Customers may initiate a helpdesk ticket by emailing [support@assemblyai.com](mailto:support@assemblyai.com), or the support widget on AssemblyAI's website [www.AssemblyAI.com](https://www.assemblyai.com/). Some select customers may also have a Slack Connect channel which is configured and monitored by the Support Team. All message services may be accessed 24/7.
-
-When reporting problems experienced with the Services, Customer shall provide AssemblyAI with the following information, as applicable, in the call or email:
-
-1. Company name
-2. Contact name and callback number
-3. Problem description
-4. Date and time problem was detected
-5. Error messages
-
-## Ticket Severity and Response SLAs
-
-AssemblyAI shall assign a trouble ticket to Customer, and shall use commercially reasonable efforts to resolve each trouble ticket according to the Severity Levels set forth below.
-
-| Severity Level | Definition                                                                                                                                                                         | Initial Response | Rate of Work                                                                                                          | Status Updates |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
-| HIGH           | Service is unavailable or inoperable (including Downtime).                                                                                                                         | 60 min           | 24 x 7 until a resolution is achieved                                                                                 | Hourly         |
-| MEDIUM         | Service is available and usable, but certain non-critical functions not working properly.                                                                                          | 4 hours          | Work shall be performed during AssemblyAI's normal business hours until a resolution is achieved                      | Weekly         |
-| LOW            | Service is available and all functions are working as advertised. This category would include feature enhancement requests, or service questions requiring research by AssemblyAI. | 24 hours         | Work shall be performed during AssemblyAI's normal business hours, based on nature, scope, and complexity of request. | Monthly        |
 
 ---
 

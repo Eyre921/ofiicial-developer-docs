@@ -16,7 +16,7 @@ Use these common scenarios to test your invoicing integration before taking it l
 
 Stripe triggers event notifications when an *invoice’s* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) [status changes](https://docs.stripe.com/invoicing/integration/workflow-transitions.md#status-transitions-endpoints). After you set up the Stripe CLI and link to your Stripe account, you can test webhooks by:
 
-- Triggering event notifications with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md). See a complete list of [invoice event types](https://docs.stripe.com/api/events/types.md#event_types-invoice.created).
+- Triggering event notifications with the [Stripe CLI](https://docs.stripe.com/cli.md). See a complete list of [invoice event types](https://docs.stripe.com/api/events/types.md#event_types-invoice.created).
 
 - Using the Dashboard to [create invoices](https://dashboard.stripe.com/test/invoices/create) in a *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes).
 

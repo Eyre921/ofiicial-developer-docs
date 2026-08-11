@@ -239,7 +239,7 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 ## Related resources
 
 <CardGroup>
-  <Card title="Chat with Video using Qwen3 Omni" href="https://colab.research.google.com/github/fw-ai/cookbook/blob/main/learn/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb" icon="video">
+  <Card title="Chat with Video using Qwen3 Omni" href="https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb" icon="video">
     Interactive notebook for video and audio analysis
   </Card>
 

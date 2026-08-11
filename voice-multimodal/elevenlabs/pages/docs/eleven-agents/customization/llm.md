@@ -130,9 +130,18 @@ Reasoning effort is perfect for workflow steps that require complex thought or d
 
 Reasoning summary stores a summary of the model's reasoning on the conversation transcript, so you can review why the agent responded or called a tool the way it did. Messages that involved reasoning show a **Reasoning** badge in the conversation history; select it to expand the summary.
 
-Reasoning summary is in alpha. Behavior and availability may change.
-
 Enable the **Reasoning summary** toggle (off by default) in the agent's LLM settings, or set `enable_reasoning_summary` via the API.
+
+#### Custom LLMs
+
+Reasoning summary works with custom LLMs that return reasoning in a supported OpenAI-compatible format. ElevenLabs stores the reasoning returned by your endpoint; it does not generate a summary from the model's final answer.
+
+| API type             | Supported reasoning format                                                                                                                                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chat Completions API | Stream reasoning in the `reasoning` or `reasoning_content` field of each response delta. For Gemini-compatible endpoints, ElevenLabs requests thoughts with `google.thinking_config.include_thoughts` and reads content marked with `extra_content.google.thought`. |
+| Responses API        | Return a `reasoning` output item with summary text in its `summary` field. When reasoning effort is configured, ElevenLabs requests an automatic summary by setting `reasoning.summary` to `auto`.                                                                  |
+
+Reasoning content is excluded from the agent's spoken response and stored with the corresponding transcript item. If the custom LLM does not return reasoning in one of these formats, the transcript does not include a reasoning summary for that turn.
 
 **Limitations:**
 

@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 397 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 369 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -209,48 +209,29 @@
 ## fine-tuning
 
 - `fine-tuning/agent/use-with-coding-agents` — [Agent Skills](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
-- `fine-tuning/choose-training-path` — [Choose a Training Path](pages/fine-tuning/choose-training-path.md) · [原文](https://docs.fireworks.ai/fine-tuning/choose-training-path)
-- `fine-tuning/cli-reference` — [Training Overview](pages/fine-tuning/cli-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/cli-reference)
-- `fine-tuning/cmek` — [Customer-Managed Encryption Keys (CMEK)](pages/fine-tuning/cmek.md) · [原文](https://docs.fireworks.ai/fine-tuning/cmek)
 - `fine-tuning/connect-environments` — [Remote Environment Setup](pages/fine-tuning/connect-environments.md) · [原文](https://docs.fireworks.ai/fine-tuning/connect-environments)
-- `fine-tuning/debug-sft-tokenization` — [Debug SFT tokenization](pages/fine-tuning/debug-sft-tokenization.md) · [原文](https://docs.fireworks.ai/fine-tuning/debug-sft-tokenization)
 - `fine-tuning/deploying-loras` — [Deploying Fine Tuned Models](pages/fine-tuning/deploying-loras.md) · [原文](https://docs.fireworks.ai/fine-tuning/deploying-loras)
 - `fine-tuning/dpo-fine-tuning` — [Preference Optimization with DPO or ORPO](pages/fine-tuning/dpo-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning)
-- `fine-tuning/environments` — [Agent Tracing](pages/fine-tuning/environments.md) · [原文](https://docs.fireworks.ai/fine-tuning/environments)
-- `fine-tuning/evaluators` — [Evaluators](pages/fine-tuning/evaluators.md) · [原文](https://docs.fireworks.ai/fine-tuning/evaluators)
 - `fine-tuning/fine-tuning-models` — [Supervised Fine Tuning - Text](pages/fine-tuning/fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
-- `fine-tuning/fine-tuning-vlm` — [Supervised Fine Tuning - Vision](pages/fine-tuning/fine-tuning-vlm.md) · [原文](https://docs.fireworks.ai/fine-tuning/fine-tuning-vlm)
 - `fine-tuning/finetuning-intro` — [Training Overview](pages/fine-tuning/finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/finetuning-intro)
-- `fine-tuning/how-rft-works` — [Basics](pages/fine-tuning/how-rft-works.md) · [原文](https://docs.fireworks.ai/fine-tuning/how-rft-works)
 - `fine-tuning/managed-finetuning-intro` — [Managed Fine-Tuning Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)
 - `fine-tuning/models` — [Models](pages/fine-tuning/models.md) · [原文](https://docs.fireworks.ai/fine-tuning/models)
-- `fine-tuning/monitor-training` — [Monitor Training](pages/fine-tuning/monitor-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/monitor-training)
 - `fine-tuning/multi-turn-cost-comparison` — [Price comparison vs Tinker](pages/fine-tuning/multi-turn-cost-comparison.md) · [原文](https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison)
-- `fine-tuning/parameter-tuning` — [Parameter Tuning](pages/fine-tuning/parameter-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/parameter-tuning)
 - `fine-tuning/quickstart-math` — [Single-Turn Training Quickstart](pages/fine-tuning/quickstart-math.md) · [原文](https://docs.fireworks.ai/fine-tuning/quickstart-math)
 - `fine-tuning/quickstart-svg-agent` — [Remote Agent Quickstart](pages/fine-tuning/quickstart-svg-agent.md) · [原文](https://docs.fireworks.ai/fine-tuning/quickstart-svg-agent)
-- `fine-tuning/reinforcement-fine-tuning-models` — [Overview](pages/fine-tuning/reinforcement-fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/reinforcement-fine-tuning-models)
-- `fine-tuning/rft-cost-estimator` — [RFT Cost Planning](pages/fine-tuning/rft-cost-estimator.md) · [原文](https://docs.fireworks.ai/fine-tuning/rft-cost-estimator)
+- `fine-tuning/reinforcement-fine-tuning-models` — [Reinforcement Fine-Tuning](pages/fine-tuning/reinforcement-fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/reinforcement-fine-tuning-models)
 - `fine-tuning/rft-parameters-reference` — [RFT parameters reference](pages/fine-tuning/rft-parameters-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/rft-parameters-reference)
-- `fine-tuning/rl-rollout-debugging` — [Ledger & Debugging for RL Rollouts](pages/fine-tuning/rl-rollout-debugging.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-debugging)
-- `fine-tuning/rl-rollout-delta-checkpoints` — [Incremental Snapshots (ARC2)](pages/fine-tuning/rl-rollout-delta-checkpoints.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-delta-checkpoints)
 - `fine-tuning/rl-rollout-integration` — [RL Rollouts with Your Own Trainer](pages/fine-tuning/rl-rollout-integration.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-integration)
-- `fine-tuning/secure-fine-tuning` — [Secure Training Overview](pages/fine-tuning/secure-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/secure-fine-tuning)
 - `fine-tuning/thinking-history` — [Thinking history in fine-tuning](pages/fine-tuning/thinking-history.md) · [原文](https://docs.fireworks.ai/fine-tuning/thinking-history)
-- `fine-tuning/training-api/choose-infrastructure` — [Choose Serverless or Dedicated Training](pages/fine-tuning/training-api/choose-infrastructure.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/choose-infrastructure)
 - `fine-tuning/training-api/cookbook/agentic-rl` — [Cookbook: Agentic Reinforcement Learning](pages/fine-tuning/training-api/cookbook/agentic-rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl)
-- `fine-tuning/training-api/cookbook/checkpoints` — [Checkpoints and Resume](pages/fine-tuning/training-api/cookbook/checkpoints.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/checkpoints)
 - `fine-tuning/training-api/cookbook/distillation` — [Cookbook: Distillation](pages/fine-tuning/training-api/cookbook/distillation.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation)
-- `fine-tuning/training-api/cookbook/dpo` — [Cookbook: DPO](pages/fine-tuning/training-api/cookbook/dpo.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo)
+- `fine-tuning/training-api/cookbook/dpo` — [Cookbook: Preference Optimization](pages/fine-tuning/training-api/cookbook/dpo.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo)
 - `fine-tuning/training-api/cookbook/overview` — [The Cookbook](pages/fine-tuning/training-api/cookbook/overview.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview)
-- `fine-tuning/training-api/cookbook/reference` — [Cookbook Reference](pages/fine-tuning/training-api/cookbook/reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference)
+- `fine-tuning/training-api/cookbook/reference` — [Cookbook: Reference](pages/fine-tuning/training-api/cookbook/reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference)
 - `fine-tuning/training-api/cookbook/rl` — [Cookbook: Reinforcement Learning](pages/fine-tuning/training-api/cookbook/rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl)
-- `fine-tuning/training-api/cookbook/sft` — [Cookbook: SFT](pages/fine-tuning/training-api/cookbook/sft.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft)
-- `fine-tuning/training-api/cookbook/weight-sync` — [Weight sync](pages/fine-tuning/training-api/cookbook/weight-sync.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/weight-sync)
+- `fine-tuning/training-api/cookbook/sft` — [Cookbook: Supervised Fine-Tuning](pages/fine-tuning/training-api/cookbook/sft.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft)
 - `fine-tuning/training-api/dedicated` — [Dedicated Training](pages/fine-tuning/training-api/dedicated.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/dedicated)
-- `fine-tuning/training-api/introduction` — [Introduction](pages/fine-tuning/training-api/introduction.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/introduction)
-- `fine-tuning/training-api/loss-functions` — [Loss Functions](pages/fine-tuning/training-api/loss-functions.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/loss-functions)
-- `fine-tuning/training-api/quickstart` — [Dedicated Training Quickstart](pages/fine-tuning/training-api/quickstart.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/quickstart)
+- `fine-tuning/training-api/introduction` — [Overview](pages/fine-tuning/training-api/introduction.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/introduction)
 - `fine-tuning/training-api/reference/cleanup` — [Cleanup and Teardown](pages/fine-tuning/training-api/reference/cleanup.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/cleanup)
 - `fine-tuning/training-api/reference/deployment-manager` — [DeploymentManager (Compatibility)](pages/fine-tuning/training-api/reference/deployment-manager.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-manager)
 - `fine-tuning/training-api/reference/deployment-sampler` — [DeploymentSampler](pages/fine-tuning/training-api/reference/deployment-sampler.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-sampler)
@@ -258,16 +239,8 @@
 - `fine-tuning/training-api/reference/service-client` — [FiretitanServiceClient & TrainingClient](pages/fine-tuning/training-api/reference/service-client.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/service-client)
 - `fine-tuning/training-api/reference/trainer-job-manager` — [TrainerJobManager (Compatibility)](pages/fine-tuning/training-api/reference/trainer-job-manager.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/trainer-job-manager)
 - `fine-tuning/training-api/reference/weight-syncer` — [WeightSyncer (Legacy)](pages/fine-tuning/training-api/reference/weight-syncer.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/weight-syncer)
-- `fine-tuning/training-api/saving-and-loading` — [Saving and Loading](pages/fine-tuning/training-api/saving-and-loading.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/saving-and-loading)
 - `fine-tuning/training-api/serverless` — [Serverless Training](pages/fine-tuning/training-api/serverless.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/serverless)
-- `fine-tuning/training-api/training-and-sampling` — [Dedicated Training and Sampling](pages/fine-tuning/training-api/training-and-sampling.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/training-and-sampling)
 - `fine-tuning/training-api/training-shapes` — [Training Shapes](pages/fine-tuning/training-api/training-shapes.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/training-shapes)
-- `fine-tuning/training-api/vision-inputs` — [Vision Inputs](pages/fine-tuning/training-api/vision-inputs.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/vision-inputs)
-- `fine-tuning/training-prerequisites` — [Training Prerequisites & Validation](pages/fine-tuning/training-prerequisites.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-prerequisites)
-- `fine-tuning/using-secret-in-evaluator` — [Using Secrets](pages/fine-tuning/using-secret-in-evaluator.md) · [原文](https://docs.fireworks.ai/fine-tuning/using-secret-in-evaluator)
-- `fine-tuning/warm-start` — [Warm Start from Fine-Tuned Models](pages/fine-tuning/warm-start.md) · [原文](https://docs.fireworks.ai/fine-tuning/warm-start)
-- `fine-tuning/web-ui-guide` — [Training Guide: UI](pages/fine-tuning/web-ui-guide.md) · [原文](https://docs.fireworks.ai/fine-tuning/web-ui-guide)
-- `fine-tuning/weighted-training` — [Weighted Training](pages/fine-tuning/weighted-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/weighted-training)
 
 ## fireworks-nexus
 
@@ -302,7 +275,6 @@
 - `guides/security_compliance/audit_logs` — [Audit & Access Logs](pages/guides/security_compliance/audit_logs.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/audit_logs)
 - `guides/security_compliance/data_handling` — [Zero Data Retention](pages/guides/security_compliance/data_handling.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_handling)
 - `guides/security_compliance/data_security` — [Data Security](pages/guides/security_compliance/data_security.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_security)
-- `guides/understanding_lora_performance` — [Understanding LoRA performance](pages/guides/understanding_lora_performance.md) · [原文](https://docs.fireworks.ai/guides/understanding_lora_performance)
 - `guides/video-audio-inputs` — [Video & Audio Inputs](pages/guides/video-audio-inputs.md) · [原文](https://docs.fireworks.ai/guides/video-audio-inputs)
 
 ## models
@@ -314,7 +286,7 @@
 
 ## serverless
 
-- `serverless/overview` — [Serverless Overview](pages/serverless/overview.md) · [原文](https://docs.fireworks.ai/serverless/overview)
+- `serverless/overview` — [Serverless Inference Overview](pages/serverless/overview.md) · [原文](https://docs.fireworks.ai/serverless/overview)
 - `serverless/pricing` — [Serverless Pricing](pages/serverless/pricing.md) · [原文](https://docs.fireworks.ai/serverless/pricing)
 - `serverless/rate-limits` — [Serverless Rate Limits](pages/serverless/rate-limits.md) · [原文](https://docs.fireworks.ai/serverless/rate-limits)
 - `serverless/serving-paths` — [Serverless Serving Paths](pages/serverless/serving-paths.md) · [原文](https://docs.fireworks.ai/serverless/serving-paths)

@@ -14,6 +14,14 @@ Pick a model to see the surfaces and methods it is enabled for, plus any trainin
 
 <ModelsCatalog />
 
+## Vision and multimodal support
+
+Vision support is model- and surface-specific. Use the catalog above to confirm that the selected VLM has a compatible managed method or Training API shape before preparing data.
+
+* Managed VLM SFT dataset schema and launch flow: [Supervised Fine-Tuning: Vision](/fine-tuning/fine-tuning-models#vision-fine-tuning)
+* Training API VLM loops: start from a VLM-compatible shape and the same cookbook SFT, DPO, or RL recipe used for text, replacing the text tokenizer with the model processor
+* Inference request formats after deployment: [Vision-language models](/guides/querying-vision-language-models)
+
 ## Next steps
 
 <CardGroup>

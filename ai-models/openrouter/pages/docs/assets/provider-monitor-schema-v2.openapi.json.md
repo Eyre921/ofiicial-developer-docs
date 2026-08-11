@@ -966,9 +966,11 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "enum": [
               "token",
               "image",
+              "megapixel",
               "second",
               "character"
-            ]
+            ],
+            "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
           },
           "per": {
             "$ref": "#/components/schemas/CapacityWindow"
@@ -1000,10 +1002,12 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "enum": [
                   "token",
                   "image",
+                  "megapixel",
                   "second",
                   "character",
                   "request"
-                ]
+                ],
+                "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
               },
               "per": {
                 "$ref": "#/components/schemas/CapacityWindow"
@@ -1172,9 +1176,11 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "enum": [
                   "token",
                   "image",
+                  "megapixel",
                   "second",
                   "character"
-                ]
+                ],
+                "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
               },
               "cost_usd": {
                 "type": "string",
@@ -1230,9 +1236,11 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "enum": [
                   "token",
                   "image",
+                  "megapixel",
                   "second",
                   "character"
-                ]
+                ],
+                "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
               },
               "cost_usd": {
                 "type": "string",
@@ -1297,9 +1305,11 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
                 "enum": [
                   "token",
                   "image",
+                  "megapixel",
                   "second",
                   "character"
-                ]
+                ],
+                "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
               },
               "cost_usd": {
                 "type": "string",
@@ -1363,10 +1373,12 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
             "enum": [
               "token",
               "image",
+              "megapixel",
               "second",
               "character",
               "request"
-            ]
+            ],
+            "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
           },
           "cost_usd": {
             "type": "string",
@@ -1507,11 +1519,13 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
         "enum": [
           "token",
           "image",
+          "megapixel",
           "second",
           "character",
           "request",
           "search"
-        ]
+        ],
+        "description": "`megapixel` prices resolution-scaled media: `cost_usd` is the rate per megapixel (1,000,000 pixels) of media area, so cost scales linearly with the pixel dimensions of the input consumed or output generated."
       },
       "PricingOverride": {
         "type": "object",

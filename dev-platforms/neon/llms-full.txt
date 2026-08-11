@@ -20011,6 +20011,16 @@ Link the current directory to a Neon project.
 
 Usage: `neon link [options]`
 
+### logs
+
+Query branch logs.
+
+| Subcommand                       | Description                                                    |
+| -------------------------------- | -------------------------------------------------------------- |
+| `neon logs field-values <field>` | List the distinct values observed for a log field              |
+| `neon logs fields`               | List the log fields whose values can be discovered on a branch |
+| `neon logs query`                | Query log records on a branch                                  |
+
 ### me
 
 Show current user.
@@ -20691,7 +20701,7 @@ neon branches create [options]
 | `--expires-at`      | Set an expiration date for the branch. Accepts a date string (e.g., 2024-12-31T23:59:59Z).                                                                                                                                                                                     | string  | never expires   |    No    |
 | `--name`            | The branch name                                                                                                                                                                                                                                                                | string  | branch id       |    No    |
 | `--parent`          | Parent branch name or id or timestamp or LSN. Defaults to the default branch                                                                                                                                                                                                   | string  | —               |    No    |
-| `--protected`       | Whether the branch is protected                                                                                                                                                                                                                                                | boolean | —               |    No    |
+| `--protected`       | Whether the branch is protected. Protected branches (and their computes) cannot be deleted, archived, or reset, and block deletion of the project. Can be gated by `protected_branches_only` in the IP allowlist. Paid plans only.                                             | boolean | —               |    No    |
 | `--psql`            | Connect to a new branch via psql                                                                                                                                                                                                                                               | boolean | `false`         |    No    |
 | `--schema-only`     | Create a schema-only branch. Requires exactly one read-write compute.                                                                                                                                                                                                          | boolean | `false`         |    No    |
 | `--suspend-timeout` | Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value `0` means use the global default. The value `-1` means never suspend. The default value is `300` seconds (5 minutes). The maximum value is `604800` seconds (1 week). | number  | `0`             |    No    |
@@ -21267,9 +21277,10 @@ Lists the buckets on a branch.
 neon bucket list [options]
 ```
 
-| Option         | Description | Type   | Default | Required |
-| -------------- | ----------- | ------ | ------- | :------: |
-| `--project-id` | Project ID  | string | —       |    No    |
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
 
 List the buckets on a branch with `json` output:
 
@@ -21285,9 +21296,10 @@ Deletes a bucket from a branch.
 neon bucket delete <name> [options]
 ```
 
-| Option         | Description | Type   | Default | Required |
-| -------------- | ----------- | ------ | ------- | :------: |
-| `--project-id` | Project ID  | string | —       |    No    |
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
 
 ```bash
 neon buckets delete my-bucket
@@ -21603,13 +21615,13 @@ If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `confi
 neon config init [options]
 ```
 
-| Option          | Description                                                                                                                                                                                                        | Type    | Default | Required |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
-| `--from-branch` | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API. | boolean | —       |    No    |
-| `--install`     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                  | boolean | `true`  |    No    |
-| `--services`    |                                                                                                                                                                                                                    | string  | —       |    No    |
-| `--branch`      | Branch ID or name                                                                                                                                                                                                  | string  | —       |    No    |
-| `--project-id`  | Project ID                                                                                                                                                                                                         | string  | —       |    No    |
+| Option          | Description                                                                                                                                                                                                                                          | Type    | Default | Required |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--from-branch` | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API.                                   | boolean | —       |    No    |
+| `--install`     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                                                    | boolean | `true`  |    No    |
+| `--services`    | Services the scaffolded neon.ts declares: auth, functions, object-storage, ai-gateway. Pass "none" for the bare starter policy. Repeat the flag or comma-separate. Omitted: pick interactively on a terminal, starter policy in CI or without a TTY. | array   | —       |    No    |
+| `--branch`      | Branch ID or name                                                                                                                                                                                                                                    | string  | —       |    No    |
+| `--project-id`  | Project ID                                                                                                                                                                                                                                           | string  | —       |    No    |
 
 ```bash
 neon config init
@@ -22239,7 +22251,7 @@ Each branch's schema is dumped as `pg_dump --schema-only` SQL and the two dumps 
 
 --- [Document source](https://neon.com/docs/cli/env.md) ---
 
-> Summary: The Neon CLI `neon env pull` command writes a branch's Neon environment variables to a local .env file. By default it targets an existing .env file, otherwise .env.local, and only Neon-managed variables are rewritten; other lines in the file are preserved. Use --file to target a specific file and --branch to pull from a specific branch.
+> Summary: The Neon CLI `neon env pull` command writes a branch's Neon environment variables to a local .env file. By default it targets an existing .env file, otherwise .env.local, and only Neon-managed variables are rewritten; other lines in the file are preserved. Use --file to target a specific file, --branch to pull from a specific branch, and --service to pull only selected services.
 
 # Neon CLI command: env
 
@@ -22259,11 +22271,12 @@ Writes the branch's Neon environment variables to a local `.env` file.
 neon env pull [options]
 ```
 
-| Option         | Description                                                                                                                                | Type   | Default | Required |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------- | :------: |
-| `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved. | string | —       |    No    |
-| `--branch`     | Branch ID or name                                                                                                                          | string | —       |    No    |
-| `--project-id` | Project ID                                                                                                                                 | string | —       |    No    |
+| Option         | Description                                                                                                                                                                                    | Type   | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                     | string | —       |    No    |
+| `--service`    | Pull only these services' variables: postgres, auth, data-api, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                                                                                              | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                     | string | —       |    No    |
 
 Write the linked branch's Neon variables into `.env.local` (or `.env` if present):
 
@@ -22275,6 +22288,12 @@ Pull a specific branch into a specific file:
 
 ```bash
 neon env pull --branch preview --file .env.preview
+```
+
+Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `--service` or comma-separate the values (`postgres`, `auth`, `data-api`, `object-storage`, `ai-gateway`):
+
+```bash
+neon env pull --service ai-gateway --service postgres
 ```
 
 --- [Document source](https://neon.com/docs/cli/functions.md) ---
@@ -23244,6 +23263,112 @@ Organization-scoped API keys (those created at the organization level rather tha
 - If the API key is org-scoped and at least one project already exists in the org, the CLI auto-detects the `org_id` from the first project.
 - If the API key is org-scoped and no projects exist yet, `--agent` returns a `needs_org` response with `options: []` and an instruction to find the org ID in the Neon Console. Interactive mode prints an error pointing to `--org-id`.
 - When the regions endpoint is not allowed, `link` falls back to a built-in static region list.
+
+--- [Document source](https://neon.com/docs/cli/logs.md) ---
+
+> Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit (Postgres compute, storage, and Neon Functions). Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available only in AWS US East (Ohio) (aws-us-east-2).
+
+# Neon CLI command: logs
+
+Query the logs a branch's services emit
+
+**Note: Beta**
+
+This feature is in Beta. Please give us [Feedback](https://console.neon.tech/app/projects?modal=feedback) from the Neon Console or by connecting with us on [Discord](https://discord.gg/92vNTzKDGp).
+
+The `logs` command reads the logs a branch's services emit: the Postgres compute, storage, and Neon Functions. Query records over a time window, filter by source, severity, or OpenTelemetry attribute, and list which fields and values a branch reports so you can build precise filters.
+
+Logs are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so your project must be in that region to use them.
+
+Every subcommand resolves the project and branch from your [context](https://neon.com/docs/cli/set-context). Pass `--project-id` and `--branch` to target a specific branch instead.
+
+Subcommands: [field-values](https://neon.com/docs/cli/logs#field-values), [fields](https://neon.com/docs/cli/logs#fields), [query](https://neon.com/docs/cli/logs#query)
+
+## neon logs query
+
+Query log records over a time window. By default it returns the last hour of logs on the default branch, newest first.
+
+```bash
+neon logs query [options]
+```
+
+| Option               | Description                                                                                                                                                                                                              | Type   | Default | Required |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------- | :------: |
+| `--body-contains`    | Match the case-sensitive rendered message. Structured bodies are rendered as compact JSON.                                                                                                                               | string | —       |    No    |
+| `--cursor`           | Pagination cursor returned as next\_cursor by a previous call. Repeat the same time range and filters.                                                                                                                   | string | —       |    No    |
+| `--end-time`         | Exclusive end of the window (RFC 3339). Defaults to the current time.                                                                                                                                                    | string | —       |    No    |
+| `--limit`            | Maximum number of records to return per page (1-1000)                                                                                                                                                                    | number | `100`   |    No    |
+| `--logql`            | Raw LogQL expression (stream selectors and line filters only). Replaces the structured filters; the window, --limit, --sort-order and --cursor still apply.                                                              | string | —       |    No    |
+| `--minimum-severity` | Only records at or above this severity. Combines with --severity-text. If Neon reports that this filter is unsupported, use --severity-text instead. Possible values: `trace`, `debug`, `info`, `warn`, `error`, `fatal` | string | —       |    No    |
+| `--scope-name`       | Match the OpenTelemetry instrumentation scope name exactly                                                                                                                                                               | string | —       |    No    |
+| `--service-name`     | Match the OpenTelemetry service.name resource attribute exactly                                                                                                                                                          | string | —       |    No    |
+| `--severity-text`    | Match the OpenTelemetry severity text exactly. Run `neon logs field-values severity_text` to discover the values present.                                                                                                | string | —       |    No    |
+| `--since`            | Length of the window, ending at --end-time or now. Defaults to 1h; the maximum window is 7d. Mutually exclusive with --start-time.                                                                                       | string | —       |    No    |
+| `--sort-order`       | Order records by timestamp. Defaults to desc (newest first). Possible values: `asc`, `desc`                                                                                                                              | string | —       |    No    |
+| `--source`           | Only records emitted by this service Possible values: `function`, `storage`, `pg_endpoint`                                                                                                                               | string | —       |    No    |
+| `--start-time`       | Inclusive start of the window (RFC 3339, e.g. 2025-01-01T00:00:00Z). The maximum window is 7d. Mutually exclusive with --since.                                                                                          | string | —       |    No    |
+| `--trace-id`         | Match records carrying this trace ID (32 lowercase hex digits)                                                                                                                                                           | string | —       |    No    |
+| `--branch`           | Branch ID or name                                                                                                                                                                                                        | string | —       |    No    |
+| `--project-id`       | Project ID                                                                                                                                                                                                               | string | —       |    No    |
+
+Bound the window with `--since` (a duration like `30m` or `1h`, ending at `--end-time` or now) or with an explicit `--start-time`/`--end-time` pair. `--since` and `--start-time` are mutually exclusive, and the maximum window is 7 days.
+
+The structured content filters (`--source`, `--service-name`, `--scope-name`, `--minimum-severity`, `--severity-text`, `--body-contains`, and `--trace-id`) combine with each other. Passing `--logql` replaces all of them with a raw [LogQL](https://grafana.com/docs/loki/latest/query/) expression (stream selectors and line filters only); the window, `--limit`, `--sort-order`, and `--cursor` still apply.
+
+```bash
+neon logs query --since 30m
+```
+
+Filter Postgres compute errors on a specific branch:
+
+```bash
+neon logs query --branch main --source pg_endpoint --minimum-severity error
+```
+
+Use a raw LogQL selection instead of the structured filters:
+
+```bash
+neon logs query --since 1h --logql '{entity_type="function"} |= "timeout"'
+```
+
+When more records match than fit in one page, the command reports a pagination cursor on stderr. Re-run with the same window and filters plus `--cursor=<value>` to fetch the next page.
+
+## neon logs fields
+
+List the log fields a branch reports. Pass any of these field names to `neon logs field-values` to see the values it carries.
+
+```bash
+neon logs fields [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+## neon logs field-values
+
+List the distinct values a single field carries over a time window, so you know what to filter on with `neon logs query`. By default it looks back six hours.
+
+```bash
+neon logs field-values <field> [options]
+```
+
+| Option         | Description                                                                                                                        | Type   | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--end-time`   | Exclusive end of the window (RFC 3339). Defaults to the current time.                                                              | string | —       |    No    |
+| `--limit`      | Maximum number of distinct values to return (1-1000)                                                                               | number | —       |    No    |
+| `--since`      | Length of the window, ending at --end-time or now. Defaults to 6h; the maximum window is 7d. Mutually exclusive with --start-time. | string | —       |    No    |
+| `--source`     | Only consider records emitted by this service Possible values: `function`, `storage`, `pg_endpoint`                                | string | —       |    No    |
+| `--start-time` | Inclusive start of the window (RFC 3339, e.g. 2025-01-01T00:00:00Z). The maximum window is 7d. Mutually exclusive with --since.    | string | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                                  | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                         | string | —       |    No    |
+
+Show the service names seen in the last six hours:
+
+```bash
+neon logs field-values service_name --since 6h
+```
 
 --- [Document source](https://neon.com/docs/cli/me.md) ---
 
@@ -127916,7 +128041,7 @@ In the Neon Console, select your branch and click **Credentials** under **APP BA
 After creation, the credentials are shown once. Copy the snippet or click **Download .env** before closing:
 
 ```text
-AWS_ENDPOINT_URL_S3=https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.build
+AWS_ENDPOINT_URL_S3=https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech
 AWS_ACCESS_KEY_ID=nak_live_...
 AWS_SECRET_ACCESS_KEY=nsk_live_...
 AWS_REGION=us-east-2

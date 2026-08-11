@@ -195,7 +195,7 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | `disable_inactivity_cleanup` | `bool`                              | `False` | Disable trainer inactivity cleanup. GPU usage continues to accrue while the trainer is running.                                                                                                                                                                                                                                                                 |
 
 <Warning>
-  `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/loss-functions#applying-the-optimizer-step).
+  `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
 </Warning>
 
 <Note>

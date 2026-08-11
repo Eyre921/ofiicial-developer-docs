@@ -153,6 +153,7 @@
 - [Teams and Roles on the Cohere Platform](https://docs.cohere.com/reference/teams-and-roles.md): The document outlines how to work in teams on the Cohere platform, including inviting others, managing roles, and access permissions for Owners and Users.
 - [Errors (status codes and description)](https://docs.cohere.com/reference/errors.md): Understand Cohere's HTTP response codes and how to handle errors in various programming languages.
 - [Release Notes](https://docs.cohere.com/changelog.md)
+- [Release Notes (all entries)](https://docs.cohere.com/changelog/llms.txt)
 - [Cookbooks](https://docs.cohere.com/page/cookbooks.md): Explore a range of AI guides and get started with Cohere's generative platform, ready-made and best-practice optimized.
 - [Building an LLM Agent with the Cohere API](https://docs.cohere.com/page/agent-api-calls.md): This page how to use Cohere's API to build an LLM-based agent.
 - [Short-Term Memory Handling for Agents](https://docs.cohere.com/page/agent-short-term-memory.md): This page describes how to manage short-term memory in an agent built with Cohere models.

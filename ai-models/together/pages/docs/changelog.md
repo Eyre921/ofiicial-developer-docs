@@ -26,6 +26,14 @@ path: docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `deepseek-ai/DeepSeek-V4-Flash-0731`: 1,000,000 context length, FP4 quantization. Pricing: \$0.14 input / \$0.28 output / \$0.03 cached input (per 1M tokens).
+
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `deepseek-ai/DeepSeek-V4-Flash`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
 <Update label="July 31, 2026">
@@ -140,6 +148,12 @@ path: docs/changelog
   * `meta-llama/Meta-Llama-3.1-70B-Reference`.
   * `meta-llama/Meta-Llama-3.1-70B-32k-Reference`.
   * `meta-llama/Meta-Llama-3.1-70B-131k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-10k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-10k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-8k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-405B-8k-Reference`.
   * `meta-llama/Meta-Llama-3-8B-Instruct`.
   * `meta-llama/Meta-Llama-3-8B`.
   * `meta-llama/Meta-Llama-3-70B-Instruct`.

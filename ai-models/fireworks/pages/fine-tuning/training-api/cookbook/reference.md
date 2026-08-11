@@ -1,10 +1,10 @@
 ---
-title: "Cookbook Reference"
+title: "Cookbook: Reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference
 path: fine-tuning/training-api/cookbook/reference
 ---
 
-Configuration classes, checkpoint utilities, and advanced recipe knobs.
+Configuration classes, checkpoint utilities, weight sync, and advanced recipe knobs.
 
 ## TrainerConfig
 
@@ -67,24 +67,24 @@ deploy_cfg = DeployConfig(
 
 When `deployment_shape` is set (the recommended path), the shape owns deployment hardware and serving configuration.
 
-| Field                          | Type                     | Default                       | Description                                                                                                                                         |
-| ------------------------------ | ------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `weight_sync_scope`            | `WeightSyncScope`        | `WeightSyncScope.PER_TRAINER` | Controls whether the trainer bucket or deployment bucket owns weight sync state. See [Weight sync](/fine-tuning/training-api/cookbook/weight-sync). |
-| `deployment_id`                | `str \| None`            | `None`                        | Deployment identifier. If unset, the cookbook auto-derives one from the base model name.                                                            |
-| `tokenizer_model`              | `str \| None`            | `None`                        | HuggingFace model name for client-side tokenization. Required for RL sampling.                                                                      |
-| `tokenizer_revision`           | `str \| None`            | `None`                        | Optional HuggingFace tokenizer revision.                                                                                                            |
-| `deployment_shape`             | `str \| None`            | `None`                        | Deployment shape resource name. When set, the shape owns GPU type and serving config.                                                               |
-| `deployment_region`            | `str \| None`            | `None`                        | Region override for the deployment                                                                                                                  |
-| `hot_load_bucket_type`         | `str`                    | `"FW_HOSTED"`                 | Weight-sync storage backend                                                                                                                         |
-| `hot_load_trainer_job`         | `str \| None`            | `None`                        | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`.                        |
-| `deployment_timeout_s`         | `float`                  | `5400`                        | Timeout for deployment provisioning / readiness waits                                                                                               |
-| `reattach_settle_timeout_s`    | `int`                    | `600`                         | Timeout for the serving pod to settle after re-attaching a deployment to a new trainer bucket.                                                      |
-| `deployment_extra_args`        | `list[str] \| None`      | `None`                        | Extra serving arguments                                                                                                                             |
-| `sample_timeout`               | `int`                    | `600`                         | HTTP read timeout for sampling completions                                                                                                          |
-| `disable_speculative_decoding` | `bool`                   | `True`                        | Disable speculative decoding for weight-sync compatibility                                                                                          |
-| `extra_values`                 | `dict[str, str] \| None` | `None`                        | Extra deployment Helm values                                                                                                                        |
-| `replica_count`                | `int \| None`            | `None`                        | If set, pin the deployment to a fixed replica count (sets both min and max).                                                                        |
-| `deployment_accelerator_type`  | `str \| None`            | `None`                        | Manual-path deployment GPU type used only when no `deployment_shape` is set.                                                                        |
+| Field                          | Type                     | Default                       | Description                                                                                                                                                   |
+| ------------------------------ | ------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `weight_sync_scope`            | `WeightSyncScope`        | `WeightSyncScope.PER_TRAINER` | Controls whether the trainer bucket or deployment bucket owns weight sync state. See [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync). |
+| `deployment_id`                | `str \| None`            | `None`                        | Deployment identifier. If unset, the cookbook auto-derives one from the base model name.                                                                      |
+| `tokenizer_model`              | `str \| None`            | `None`                        | HuggingFace model name for client-side tokenization. Required for RL sampling.                                                                                |
+| `tokenizer_revision`           | `str \| None`            | `None`                        | Optional HuggingFace tokenizer revision.                                                                                                                      |
+| `deployment_shape`             | `str \| None`            | `None`                        | Deployment shape resource name. When set, the shape owns GPU type and serving config.                                                                         |
+| `deployment_region`            | `str \| None`            | `None`                        | Region override for the deployment                                                                                                                            |
+| `hot_load_bucket_type`         | `str`                    | `"FW_HOSTED"`                 | Weight-sync storage backend                                                                                                                                   |
+| `hot_load_trainer_job`         | `str \| None`            | `None`                        | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`.                                  |
+| `deployment_timeout_s`         | `float`                  | `5400`                        | Timeout for deployment provisioning / readiness waits                                                                                                         |
+| `reattach_settle_timeout_s`    | `int`                    | `600`                         | Timeout for the serving pod to settle after re-attaching a deployment to a new trainer bucket.                                                                |
+| `deployment_extra_args`        | `list[str] \| None`      | `None`                        | Extra serving arguments                                                                                                                                       |
+| `sample_timeout`               | `int`                    | `600`                         | HTTP read timeout for sampling completions                                                                                                                    |
+| `disable_speculative_decoding` | `bool`                   | `True`                        | Disable speculative decoding for weight-sync compatibility                                                                                                    |
+| `extra_values`                 | `dict[str, str] \| None` | `None`                        | Extra deployment Helm values                                                                                                                                  |
+| `replica_count`                | `int \| None`            | `None`                        | If set, pin the deployment to a fixed replica count (sets both min and max).                                                                                  |
+| `deployment_accelerator_type`  | `str \| None`            | `None`                        | Manual-path deployment GPU type used only when no `deployment_shape` is set.                                                                                  |
 
 <Note>
   When `deployment_shape` is set, the deployment shape owns GPU type and serving configuration. Use `deployment_accelerator_type` only for advanced manual deployments without a deployment shape.
@@ -207,7 +207,7 @@ client.optim_step(tinker.AdamParams(...))
 
 ## Checkpoint utilities
 
-For checkpointing, resume, and promote — see the dedicated [Checkpoints and Resume](/fine-tuning/training-api/cookbook/checkpoints) page.
+For checkpointing, resume, and promote — see the dedicated [Checkpoints and Resume](/fine-tuning/training-api/cookbook/reference#checkpoints) page.
 
 ## Skills reference
 
@@ -241,3 +241,30 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 ### Get help migrating
 
 The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
+
+<h2>
+  Weight sync
+</h2>
+
+During RL training the inference deployment needs updated weights after each optimizer step. Cookbook recipes wire this through a shared bucket (trainer writes, deployment hot-loads).
+
+For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+
+See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
+
+<h2>
+  Checkpoints and resume
+</h2>
+
+Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. Rerun with the same `log_path` to resume.
+
+```python theme={null}
+cfg = Config(
+    log_path="./my_training",
+    dcp_save_interval=10,
+    output_model_id="my-model",
+    ...
+)
+```
+
+For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).

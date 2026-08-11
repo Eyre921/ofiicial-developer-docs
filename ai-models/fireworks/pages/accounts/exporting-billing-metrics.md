@@ -54,12 +54,21 @@ The exported CSV includes the following columns:
 * **parameter\_count**: Model size
 * **prompt\_tokens**: Input tokens
 * **completion\_tokens**: Output tokens
+* **cached\_prompt\_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
+* **uncached\_prompt\_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
+
+<Note>
+  Older usage records and non-text usage types may not have a cached/uncached split
+  in the underlying data. Exports normalize these rows to `cached_prompt_tokens=0`
+  and `uncached_prompt_tokens=prompt_tokens`, so `prompt_tokens =
+      cached_prompt_tokens + uncached_prompt_tokens` always holds.
+</Note>
 
 ### Sample row
 
 ```csv theme={null}
-email,start_time,end_time,usage_type,accelerator_type,accelerator_seconds,base_model_name,model_bucket,parameter_count,prompt_tokens,completion_tokens
-user@example.com,2025-10-20 17:16:48 UTC,2025-10-20 17:16:48 UTC,TEXT_COMPLETION_INFERENCE_USAGE,,,accounts/fireworks/models/llama4-maverick-instruct-basic,Llama 4 Maverick Basic,401583781376,803,109
+email,start_time,end_time,usage_type,accelerator_type,accelerator_seconds,base_model_name,model_bucket,parameter_count,prompt_tokens,completion_tokens,cached_prompt_tokens,uncached_prompt_tokens
+user@example.com,2025-10-20 17:16:48 UTC,2025-10-20 17:16:48 UTC,TEXT_COMPLETION_INFERENCE_USAGE,,,accounts/fireworks/models/llama4-maverick-instruct-basic,Llama 4 Maverick Basic,401583781376,803,109,200,603
 ```
 
 ## Automation

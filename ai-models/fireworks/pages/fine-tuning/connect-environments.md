@@ -454,11 +454,11 @@ Learn by example:
 ## Next steps
 
 <CardGroup>
-  <Card title="Launch training" icon="rocket" href="/fine-tuning/cli-reference">
+  <Card title="Launch training" icon="rocket" href="/fine-tuning/reinforcement-fine-tuning-models#cli">
     Launch your RFT job using the CLI
   </Card>
 
-  <Card title="Monitor training" icon="chart-line" href="/fine-tuning/monitor-training">
+  <Card title="Monitor training" icon="chart-line" href="/fine-tuning/reinforcement-fine-tuning-models#monitor-training">
     Track rollout progress and debug issues
   </Card>
 
@@ -466,7 +466,43 @@ Learn by example:
     Full Remote Rollout Processor tutorial
   </Card>
 
-  <Card title="Evaluator best practices" icon="lightbulb" href="/fine-tuning/evaluators">
+  <Card title="Evaluator best practices" icon="lightbulb" href="/fine-tuning/reinforcement-fine-tuning-models#evaluators">
     Design effective reward functions
+  </Card>
+</CardGroup>
+
+<h2>
+  Agent tracing
+</h2>
+
+Remote RFT needs **correlated traces** so the trainer can join rollouts, tool calls, and rewards. Your environment receives `model_base_url` (OpenAI-compatible, on `tracing.fireworks.ai`) and correlation IDs in `/init`.
+
+**Minimum wiring:**
+
+1. Use `model_base_url` from `/init` for all model calls (do not override).
+2. Add `FireworksTracingHttpHandler` and log `Status.rollout_finished()` or `Status.rollout_error()` when the rollout ends.
+3. Tag logs with `rollout_id` via `RolloutIdFilter` or `EP_ROLLOUT_ID`.
+
+<Tip>
+  **Coding agents:** correlation fields, minimal server example, capture checklist, and RemoteRolloutProcessor polling → [RFT agent tracing](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rft-agent-tracing.md) in the Fireworks training skill.
+</Tip>
+
+### Next steps
+
+<CardGroup>
+  <Card title="Connect remote environment" icon="server" href="/fine-tuning/connect-environments">
+    Implement `/init`, tracing, and structured status for remote agents
+  </Card>
+
+  <Card title="Small model quickstart" icon="bolt" href="/fine-tuning/quickstart-math">
+    Build and deploy a local evaluator in under 10 minutes
+  </Card>
+
+  <Card title="Launch training" icon="rocket" href="/fine-tuning/reinforcement-fine-tuning-models#cli">
+    Launch your RFT job
+  </Card>
+
+  <Card title="Evaluator best practices" icon="code" href="/fine-tuning/reinforcement-fine-tuning-models#evaluators">
+    Design effective reward functions for your task
   </Card>
 </CardGroup>

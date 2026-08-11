@@ -32,7 +32,7 @@ For invoices where you charge the customer automatically, the option to **Schedu
 
 #### API
 
-> For a complete guide on how to get started using the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) or API, see the [Invoicing end-to-end integration guide](https://docs.stripe.com/invoicing/integration.md).
+> For a complete guide on how to get started using the [Stripe CLI](https://docs.stripe.com/cli.md) or API, see the [Invoicing end-to-end integration guide](https://docs.stripe.com/invoicing/integration.md).
 
 For a draft invoice, specify the time that you want the invoice to be finalized. If `auto_advance` isn’t already enabled for the invoice, you have to enable it.
 

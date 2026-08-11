@@ -14,7 +14,7 @@ Help emerging permanent carbon removal technologies scale by allocating a fracti
 
 You can manage your contribution percentage and monitor impact in the [Dashboard](https://dashboard.stripe.com/climate). Stripe Climate Commitments also sends you regular updates with details about your contribution.
 
-You can also manage your commitment from the terminal with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md):
+You can also manage your commitment from the terminal with the [Stripe CLI](https://docs.stripe.com/cli.md):
 
 - Set your contribution percentage: `stripe climate commitment enable <rate>` (for example, `stripe climate commitment enable 1` for 1%)
 - View your current program: `stripe climate commitment show`

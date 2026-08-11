@@ -15,7 +15,7 @@ Dedicated training provisions trainer and deployment resources for your run. Use
 If LoRA SFT, DPO, or RL on the shared pool is sufficient, compare this path with [Serverless Training](/fine-tuning/training-api/serverless) before provisioning resources.
 
 <Tip>
-  **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), then fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes). Recipes own provisioning, checkpoints, reconnect, and sampling where applicable. Cleanup is configuration-specific; review and set each recipe's cleanup flags before launch.
+  **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes), and use the [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) for losses, checkpoints, and debugging depth.
 </Tip>
 
 ## How dedicated training runs
@@ -74,7 +74,9 @@ The trainer and inference deployment are separate resources with separate billin
   </Card>
 </CardGroup>
 
-## Dedicated training steps
+<h2>
+  Dedicated training quickstart
+</h2>
 
 ### Step 1: Install the SDK and cookbook
 
@@ -85,109 +87,106 @@ pip install -e ./training
 export FIREWORKS_API_KEY="fw_..."
 ```
 
-Check the SDK requirement declared by your cookbook revision:
-
-```bash theme={null}
-grep 'fireworks-ai\[training\]' training/pyproject.toml
-pip show fireworks-ai | grep -i version
-```
-
 ### Step 2: Choose the closest recipe
 
-| Task                              | Start here                                                                                                                   |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| SFT                               | [`training/recipes/sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py)                   |
-| DPO                               | [`training/recipes/dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)                   |
-| ORPO                              | [`training/recipes/orpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/orpo_loop.py)                 |
-| RL                                | [`training/recipes/rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)                     |
-| Async or agentic RL, experimental | [`training/recipes/async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py)         |
-| Distillation                      | [`training/recipes/distillation_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/distillation_loop.py) |
+| Task         | Start here                                                                                                  |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| SFT          | [`sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py)                   |
+| DPO          | [`dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)                   |
+| RL           | [`rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)                     |
+| Async RL     | [`async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py)         |
+| Distillation | [`distillation_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/distillation_loop.py) |
 
-Fork the recipe and change only the task-specific data, loss, reward, rollout, evaluation, or configuration.
-
-For a complete bounded SFT smoke using the bundled text-to-SQL dataset:
+Smoke test (bounded SFT):
 
 ```bash theme={null}
 python training/examples/sft/train_sft.py \
   --output-model-id dedicated-sft-smoke \
-  --max-examples 10 \
-  --epochs 1 \
-  --lora-rank 8 \
+  --max-examples 10 --epochs 1 --lora-rank 8 \
   --training-shape accounts/fireworks/trainingShapes/<shape>
 ```
 
-This command creates paid trainer resources. Replace `<shape>`, then review the
-model, shape, parameters, cost ceiling, and cleanup flags before running it.
+### Step 3: Pick model and shape
 
-### Step 3: Choose the model and training shape
+Choose a shape from [Models](/fine-tuning/models). Pass the full shared shape ID as `training_shape_id`; the SDK resolves the validated version and linked deployment shape.
 
-Pick a shape from your model's entry on [Models](/fine-tuning/models). Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
+### Step 4–10: Train, checkpoint, promote, deploy, tear down
 
-Do not copy accelerator type, GPU count, image tag, or deployment-shape details into the config when the training shape owns them.
+Follow the forked recipe. Record trainer and deployment IDs, checkpoint cadence, and cleanup flags before launch.
 
-### Step 4: Configure stable run outputs
+<h2>
+  Training and sampling lifecycle
+</h2>
 
-Record:
+Dedicated recipes use two independently billed resources:
 
-* cookbook commit and installed SDK version;
-* account, base model, recipe, and dataset;
-* complete configuration, including defaults;
-* training shape and linked deployment shape;
-* stable trainer, output-model, and deployment IDs where the API exposes them;
-* checkpoint cadence and resume policy;
-* cost ceiling, success metric, and teardown policy.
+1. Create or reconnect to a trainer from the selected training shape.
+2. Create an inference deployment when the loop needs rollouts or evaluation.
+3. Run one or more forward/backward calls, then apply one optimizer step.
+4. Save sampler weights and refresh the deployment before collecting new rollouts.
+5. Save resumable state on the approved cadence, promote the selected checkpoint, then delete or scale down billable resources.
 
-### Step 5: Provision the SDK-managed service
+Keep stable trainer and deployment IDs so retries reconnect instead of provisioning duplicates. The trainer owns optimization state; the deployment owns serving and sampling.
 
-Cookbook recipes provision through the SDK-managed service. If you are writing a direct loop, follow the exact [`FiretitanServiceClient.from_firetitan_config(...)` quickstart](/fine-tuning/training-api/quickstart#step-1-create-the-managed-service).
+<h2>
+  Loss functions
+</h2>
 
-Provisioning happens on the first client creation. Capture `service.trainer_job_id` and every rollout or evaluation deployment ID immediately.
+| Need                   | Start from                                                             |
+| ---------------------- | ---------------------------------------------------------------------- |
+| SFT                    | `sft_loop.py` and its weighted token objective                         |
+| DPO or ORPO            | `dpo_loop.py` or `orpo_loop.py`                                        |
+| Standard RL            | `rl_loop.py` or `async_rl_loop.py`                                     |
+| New research objective | Fork the closest recipe and use `forward_backward_custom` deliberately |
 
-### Step 6: Train and monitor
+Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
-Run the forked recipe. Monitor:
+<h2>
+  Saving and loading
+</h2>
 
-* trainer state and real optimizer-step progress;
-* recipe metrics and W\&B when configured;
-* rollout success, reward distribution, and sampler latency for RL;
-* checkpoints and deployment weight-sync state;
-* quota, billing, and capacity separately.
+Dedicated training has three distinct checkpoint purposes:
 
-State alone is not proof of progress. Use a bounded no-progress interval and preserve IDs and timestamps for escalation.
+| Purpose               | Contains                    | Use                                               |
+| --------------------- | --------------------------- | ------------------------------------------------- |
+| Sampler snapshot      | Weights for inference       | Refresh a rollout or evaluation deployment        |
+| Resumable state       | Weights and optimizer state | Continue an interrupted training run              |
+| Promotable checkpoint | Deployable model artifact   | Register the selected result as a Fireworks model |
 
-### Step 7: Save, sample, and evaluate
+Do not pass a sampler snapshot to a resumable-state API. Keep the same trainer ID and log path for exact continuation; use the recipe's explicit initialization option for a new job. See the [checkpoint skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md).
 
-Save weights for the sampler, create or refresh the SDK-managed sampler, and evaluate the base and tuned policy on the same held-out set.
+## Deep dives (cookbook skill)
 
-For checkpoint and sampler details, see [Saving and Loading](/fine-tuning/training-api/saving-and-loading) and [Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+| Topic                                 | Skill reference                                                                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Losses, datums, gradient accumulation | [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md) |
+| Checkpoints, resume, promote          | [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md)         |
+| Custom RL objectives                  | [rl-custom-loss](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md)           |
+| Async RL and concurrency              | [rl-async](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md)                       |
+| Recipe catalog                        | [sdk-recipes](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md)                 |
 
-### Step 8: Promote the selected checkpoint
-
-List checkpoints from the control plane, choose a row marked promotable, validate the output model ID, and promote the full checkpoint resource name.
-
-Do not choose a winner from training loss alone. Use the agreed held-out metric or evaluator.
-
-### Step 9: Deploy and prove serving
-
-Create the final on-demand deployment, wait for `READY`, then send a real request. `READY` without a successful response is not serving proof.
-
-Fine-tuned LoRA adapters are served through an on-demand deployment, not the shared serverless inference catalog.
-
-### Step 10: Tear down
-
-Set the recipe's cleanup flags explicitly. Close the SDK-managed service in `try/finally`, then verify every trainer and deployment reached the requested final state. Resources are not deleted or scaled down unless the configuration requests it. Use the complete [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup) contract.
-
-Checkpoint storage and promoted models can remain after compute teardown. Report them separately from billable trainer and deployment resources.
+Config class reference (short): [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
 ## Compare infrastructure
 
-For the canonical decision rules and comparison table, see [Choose Serverless or Dedicated Training](/fine-tuning/training-api/choose-infrastructure).
+See [Serverless vs dedicated](/fine-tuning/training-api/introduction#infrastructure).
 
 ## Next steps
 
-* [Dedicated quickstart](/fine-tuning/training-api/quickstart)
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling)
-* [Models](/fine-tuning/models): available models, their shapes, and how shapes work
-* [Saving and Loading](/fine-tuning/training-api/saving-and-loading)
-* [Cookbook overview](/fine-tuning/training-api/cookbook/overview)
-* [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup)
+<CardGroup>
+  <Card title="Cookbook overview" icon="book" href="/fine-tuning/training-api/cookbook/overview">
+    Recipe entry points
+  </Card>
+
+  <Card title="Training Shapes" icon="microchip" href="/fine-tuning/training-api/training-shapes">
+    What a shape pins
+  </Card>
+
+  <Card title="Models" icon="table" href="/fine-tuning/models">
+    Per-model shape catalog
+  </Card>
+
+  <Card title="Cleanup" icon="broom" href="/fine-tuning/training-api/reference/cleanup">
+    Teardown contract
+  </Card>
+</CardGroup>

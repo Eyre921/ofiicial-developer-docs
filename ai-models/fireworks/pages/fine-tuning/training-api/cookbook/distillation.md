@@ -105,5 +105,5 @@ python examples/distillation/routed_mopd/train_two_teacher_lora.py
 ## Next steps
 
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) - config classes and common recipe fields
-* [Loss Functions](/fine-tuning/training-api/loss-functions) - built-in and custom Training API losses
-* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) - how updated weights reach serving deployments
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) - built-in and custom Training API losses
+* [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) - how updated weights reach serving deployments

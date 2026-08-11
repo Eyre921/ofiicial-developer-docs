@@ -157,9 +157,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="OpenAI">
     👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[openai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[openai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[openai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -184,7 +190,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_openai import ChatOpenAI
       from deepagents import create_deep_agent
@@ -200,9 +206,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="Anthropic">
     👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[anthropic]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[anthropic]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[anthropic]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -227,7 +239,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_anthropic import ChatAnthropic
       from deepagents import create_deep_agent
@@ -243,9 +255,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="Azure">
     👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[openai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[openai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[openai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -277,7 +295,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_openai import AzureChatOpenAI
       from deepagents import create_deep_agent
@@ -298,9 +316,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="Google Gemini">
     👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[google-genai]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[google-genai]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[google-genai]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -325,7 +349,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_google_genai import ChatGoogleGenerativeAI
       from deepagents import create_deep_agent
@@ -341,9 +365,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="AWS Bedrock">
     👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[aws]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[aws]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[aws]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -374,7 +404,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
       from deepagents import create_deep_agent
 
@@ -390,9 +420,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   <Tab title="HuggingFace">
     👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain[huggingface]"
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[huggingface]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[huggingface]"
+      ```
+    </CodeGroup>
 
     <CodeGroup>
       ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -427,7 +463,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
       agent = create_deep_agent(model=model)
       ```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
       from deepagents import create_deep_agent
@@ -446,10 +482,20 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
   </Tab>
 
   <Tab title="Other">
-    Pass any [supported model string](/oss/python/deepagents/models#supported-models), or an initialized model instance:
+    Pass any [supported model string](/oss/python/deepagents/models#supported-models), or an initialized model instance. For example:
 
     <CodeGroup>
-      ```python model string theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U "langchain[deepseek]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add "langchain[deepseek]"
+      ```
+    </CodeGroup>
+
+    <CodeGroup>
+      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
 
       agent = create_deep_agent(model="provider:model-name")
@@ -465,9 +511,13 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_<provider> import Chat<Provider>
+      # from langchain_deepseek import ChatDeepSeek
+
       from deepagents import create_deep_agent
 
       model = Chat<Provider>(model="model-name")
+      # model = ChatDeepSeek(model="deepseek-v4-pro")
+
       agent = create_deep_agent(model=model)
       ```
     </CodeGroup>

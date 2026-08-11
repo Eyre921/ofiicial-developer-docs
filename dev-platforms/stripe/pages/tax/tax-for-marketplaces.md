@@ -6,7 +6,7 @@ path: tax/tax-for-marketplaces
 
 # Tax for marketplaces
 
-Learn about tax requirements for platforms and marketplaces, and how to enable Stripe Tax to collect tax on transactions when the Connect platform is liable.
+Learn about indirect tax requirements for platforms and marketplaces, and how to enable Stripe Tax to collect tax on transactions when the Connect platform is liable.
 
 ## Tax requirements for platforms and marketplaces
 
@@ -14,7 +14,11 @@ Many countries and US states require marketplace operators to collect sales tax 
 
 As a marketplace operator, your tax collection requirements differ depending on the country or state. However, if your electronic interface enables transactions between customers and sellers and you directly or indirectly collect customer payments, you might need to fulfill tax collection responsibilities.
 
-If your businesses operates a marketplace or platform, you must first determine whether they qualify as a marketplace facilitator or a deemed seller, then make sure that they maintain tax compliance. If you’re unsure about your business’s tax requirements, consult a tax advisor.
+If your business operates a marketplace or platform, you must first determine whether it qualifies as a marketplace facilitator or a deemed seller, then make sure that you maintain tax compliance. If you’re unsure about your business’s tax requirements, consult a tax advisor.
+
+> #### US 1099 tax reporting
+> 
+> Marketplace tax obligations can include both indirect taxes, such as sales tax, VAT, and GST, and information reporting obligations, such as US 1099 forms. This guide covers indirect tax collection, filing, and reporting with Stripe Tax. To learn when a platform is responsible for filing 1099 forms for connected accounts, see [US tax reporting for Connect platforms](https://docs.stripe.com/connect/tax-reporting.md) and [Get started with tax reporting](https://docs.stripe.com/connect/get-started-tax-reporting.md).
 
 If your business operates a marketplace and wants to collect tax on sales facilitated through this marketplace, refer to details below to enable Stripe Tax for marketplaces.
 
@@ -22,7 +26,7 @@ If your business operates a marketplace and wants to collect tax on sales facili
 
 Stripe Tax enables businesses to calculate, collect, and file indirect taxes in over [100 countries](https://docs.stripe.com/tax/supported-countries.md), across hundreds of product categories.
 
-Use this guide if your platform is responsible for collecting, filing, and reporting taxes.
+Use this guide if your platform is responsible for collecting, filing, and reporting indirect taxes.
 
 1. [Configure your platform account for tax collection](https://docs.stripe.com/tax/tax-for-marketplaces.md#set-up)
 2. (Optional) [Assign tax codes to product catalog](https://docs.stripe.com/tax/tax-for-marketplaces.md#assign-product-tax-codes)
@@ -832,4 +836,5 @@ curl https://api.stripe.com/v1/reporting/report_runs \
 ## See also
 
 - [Calculate tax in your custom checkout flow](https://docs.stripe.com/tax/standalone-tax-api.md)
+- [US tax reporting for Connect platforms](https://docs.stripe.com/connect/tax-reporting.md)
 

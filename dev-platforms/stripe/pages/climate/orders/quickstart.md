@@ -260,7 +260,7 @@ Use [the asset kit](https://stripe-images.s3.amazonaws.com/content-store/climate
 
 ### Set your environment variables
 
-Add your publishable and secret keys to a `.env` file. Next.js automatically loads them into your application as [environment variables](https://nextjs.org/docs/basic-features/environment-variables). Also include a webhook secret, which you can create in the [Dashboard](https://dashboard.stripe.com/webhooks) or with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md).
+Add your publishable and secret keys to a `.env` file. Next.js automatically loads them into your application as [environment variables](https://nextjs.org/docs/basic-features/environment-variables). Also include a webhook secret, which you can create in the [Dashboard](https://dashboard.stripe.com/webhooks) or with the [Stripe CLI](https://docs.stripe.com/cli.md).
 
 ### Run the application
 

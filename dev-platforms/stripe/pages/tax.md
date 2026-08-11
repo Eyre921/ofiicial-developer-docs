@@ -26,7 +26,7 @@ Calculate and report tax on all payments, even those that you process outside of
 
 [Monitor your tax obligations](https://docs.stripe.com/tax/monitoring.md): Identify where you might need to register to collect tax based on past transactions.
 
-[Manage your registrations](https://docs.stripe.com/tax/registering.md): Register to collect taxes, as soon as you start processing payments.
+[Manage your registrations](https://docs.stripe.com/tax/registering.md): Register to collect tax as soon as you start processing payments.
 
 [File and remit](https://docs.stripe.com/tax/filing.md): Learn about reporting and filing with Stripe Tax.
 
@@ -36,7 +36,7 @@ Calculate and report tax on all payments, even those that you process outside of
 
 [Collect tax on a prebuilt payment page](https://docs.stripe.com/payments/checkout/taxes.md): Calculate and collect tax on one-time and recurring payments when you use Stripe Checkout.
 
-[Collect taxes on subscriptions](https://docs.stripe.com/tax/subscriptions.md): Learn how to collect and report taxes for recurring payments.
+[Collect tax on subscriptions](https://docs.stripe.com/tax/subscriptions.md): Learn how to collect and report tax for recurring payments.
 
 [Collect tax on invoices](https://docs.stripe.com/tax/invoicing.md): Learn how to automatically calculate and collect tax on invoices.
 
@@ -50,7 +50,7 @@ Calculate and report tax on all payments, even those that you process outside of
 
 |  |
 | [End-to-end compliance solution](https://docs.stripe.com/tax/how-tax-works.md) | Helps you manage tax calculations, registrations, and filings directly or through integrated partners. |
-| [Automatic tax calculation](https://docs.stripe.com/tax/calculating.md) | Calculate sales tax, VAT, and GST for transactions worldwide, determining tax rates based on [product type](https://docs.stripe.com/tax/tax-codes.md) and [customer and business location](https://docs.stripe.com/tax/supported-countries.md). |
+| [Automatic tax calculation](https://docs.stripe.com/tax/calculating.md) | Calculate sales tax, VAT, and GST for transactions worldwide, determining tax rates based on [product type](https://docs.stripe.com/tax/tax-codes.md), [customer location](https://docs.stripe.com/tax/supported-countries.md), and [business location](https://docs.stripe.com/tax/supported-countries.md). |
 | [Multi-country support](https://docs.stripe.com/tax/supported-countries.md) | Handles tax calculations for international sales and cross-border transactions, supporting compliance in multiple countries. |
 | [Threshold monitoring](https://docs.stripe.com/tax/monitoring.md) | Tracks your sales against local tax registration thresholds and alerts you when you might have tax obligations, helping you stay compliant as your business grows. |
 | [Tax registration management](https://docs.stripe.com/tax/registering.md) | Helps you manage your global tax registrations. You can also use Stripe to [register for sales tax](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf. |

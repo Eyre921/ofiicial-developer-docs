@@ -12,11 +12,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Quickstart for GitHub Codespaces](/en/codespaces/quickstart)
 
-  <p>Get started with GitHub Codespaces quickly.</p>
+  Get started with GitHub Codespaces quickly.
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
-  Learn about what GitHub Codespaces are.
+  <p>Learn about what GitHub Codespaces are.</p>
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 

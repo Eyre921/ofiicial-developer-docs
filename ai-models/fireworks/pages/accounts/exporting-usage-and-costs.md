@@ -286,9 +286,15 @@ Valid `--group-by` / `groupBy` and `--filter` / `filter` dimensions depend on th
 * **Serverless**: `model_name`, `api_key_id`, `api_key_name`, `annotations.team`, `annotations.project`, `annotations.environment`
 * **Dedicated deployment**: `deployment_name`, `accelerator_type`, `annotations.team`, `annotations.project`, `annotations.environment`
 
+The `annotations.*` dimensions require an **Enterprise** plan (see [Custom tags](#custom-tags-team--project--environment)); the other dimensions are available to all accounts.
+
 Dedicated-deployment rows also include the deployment's region (`placement`, e.g. `US`, `EUROPE`, `GLOBAL`) and metered `accelerator_seconds`.
 
 ## Custom tags (team / project / environment)
+
+<Note>
+  Breaking usage down by annotations (`annotations.team` / `annotations.project` / `annotations.environment`) requires an **Enterprise** plan. Grouping or filtering by an annotation dimension without it returns HTTP `400` (`FAILED_PRECONDITION`); breakdowns by model, API key, or deployment remain available to all accounts. Annotation tags are still recorded on your usage regardless of plan, so past usage is immediately available for these breakdowns once an account is on Enterprise.
+</Note>
 
 Group by `annotations.team`, `annotations.project`, or `annotations.environment` to split usage by your own labels. The tag source depends on usage type:
 

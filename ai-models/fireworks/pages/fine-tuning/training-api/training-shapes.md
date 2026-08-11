@@ -100,7 +100,7 @@ You can still configure normal training-loop fields such as:
   Shape-owned infra is locked on the shape path. Do not set `accelerator_type`, `accelerator_count`, `node_count`, or `custom_image_tag`; the shape supplies all four. The linked deployment shape can be overridden through `deployment_shape`, but only for deployments you manage outside the normal flow.
 </Note>
 
-Gradient accumulation is not a trainer-launch setting. To accumulate gradients, call `forward_backward...` multiple times from your client loop before a single `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/loss-functions#applying-the-optimizer-step).
+Gradient accumulation is not a trainer-launch setting. To accumulate gradients, call `forward_backward...` multiple times from your client loop before a single `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
 
 For field-level behavior and dataclass details, see the [`FiretitanServiceClient`](/fine-tuning/training-api/reference/service-client) and [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
@@ -133,3 +133,7 @@ training_client = service.create_training_client(
 ```
 
 *Note: You do not need to hand-write a versioned `training_shape_ref` yourself. Advanced compatibility launches can still use manager-level shape refs and direct infra fields, but take that path only when you know the exact hardware and image configuration.*
+
+## Model and shape availability
+
+See the [Models](/fine-tuning/models) page for the searchable per-model matrix and training method support.

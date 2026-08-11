@@ -143,13 +143,30 @@ When you use the `thinking` parameter with `output_config.effort`, Anthropic eff
 
 For more details on reasoning, including interleaved thinking with tool use, see the [Reasoning guide](/guides/reasoning).
 
+### Tool search and deferred tool loading
+
+Tool definition schemas usually live at the top of a model's chat template, ahead of the conversation. Carrying every schema on every turn bloats that prefix and destabilizes the prompt cache for clients with large tool sets. Fireworks supports the [tool search](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) pattern for on-demand tool discovery—used by [Claude Code's MCP tool search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search) and the [Agent SDK's tool search](https://code.claude.com/docs/en/agent-sdk/tool-search)—to lazy-load schemas instead.
+
+* **`defer_loading`**: Tools marked `defer_loading: true` are omitted from the request's tool definitions when a tool-search tool is present. Rather than placing every schema at the top of the template up front, the deferred schemas are loaded lazily through tool results once the model identifies which tools it needs.
+* **`tool_reference` expansion**: When a tool result returns `tool_reference` blocks (the payload a tool-search call emits), each reference is expanded inline into the referenced tool's schema within the tool-result message. That makes the newly loaded schema visible to the model through the conversation, so it can produce tool calls in line with that schema—without the client re-sending the full `tools` array and shifting the prefix.
+
+This covers both Anthropic-native `tool_search_tool_*` tool names and clients that name their discovery tool `ToolSearch` (for example, Claude Code).
+
+<Note>
+  Fireworks translates the **client-side** tool-search discovery and deferred-loading wire format only. Anthropic's **server-side** tool search and server-side tool use—where the provider executes the search and tool calls on its side—are not supported. Server-side execution of the other server tool families (web search, code execution, memory, web fetch) is likewise not supported; see [Unsupported features](#unsupported-features).
+</Note>
+
+<Note>
+  An explicitly forced `tool_choice` naming a deferred tool overrides the drop: the forced tool stays callable in the request's tool definitions so the forced choice validates.
+</Note>
+
 ### Unsupported features
 
 The following Anthropic features are not available on Fireworks:
 
-* **Server tools**: Server-side tool families (for example, code execution, memory, web fetch, tool search, and web search) are not supported.
+* **Server tools**: Server-side execution of tool families such as code execution, memory, web fetch, and web search is not supported. Tool search discovery and deferred tool loading are supported — see [Tool search and deferred tool loading](#tool-search-and-deferred-tool-loading).
 * **Server-tool metadata**: Fields such as `caller` and `container` are not supported.
-* **Tool schema fields**: `eager_input_streaming`, `cache_control`, `allowed_callers`, `defer_loading`, and `input_examples` are not supported.
+* **Tool schema fields**: `eager_input_streaming`, `cache_control`, `allowed_callers`, and `input_examples` are not supported.
 * **`server_tool_use`**: Not included in usage tracking.
 * **`speed`**: The `output_config.speed` option is not supported yet.
 

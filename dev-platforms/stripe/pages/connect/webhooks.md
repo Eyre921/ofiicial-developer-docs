@@ -531,7 +531,7 @@ end
 
 To test event webhooks locally with the Stripe CLI:
 
-1. If you haven’t already, [install the Stripe CLI](https://docs.stripe.com/stripe-cli/install.md) on your machine.
+1. If you haven’t already, [install the Stripe CLI](https://docs.stripe.com/cli/install) on your machine.
 
 2. Log in to your Stripe account and set up the CLI by running `stripe login` on the command line.
 

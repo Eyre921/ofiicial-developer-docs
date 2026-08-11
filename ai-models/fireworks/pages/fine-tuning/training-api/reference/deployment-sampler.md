@@ -164,5 +164,5 @@ Each completion returned by `sample_with_tokens`:
 ## Related guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client) — create SDK-managed deployment samplers
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling) — end-to-end workflow
+* [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 * [Cookbook RL recipe](/fine-tuning/training-api/cookbook/rl) — GRPO with sampling pipeline

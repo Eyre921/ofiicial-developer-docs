@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1563 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1565 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -329,6 +329,7 @@
 - `langsmith/javascript/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-identity)
 - `langsmith/javascript/managed-deep-agents-instructions` — [Add instructions to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-instructions.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-instructions)
 - `langsmith/javascript/managed-deep-agents-local-development` — [Develop locally with LangSmith Studio](pages/langsmith/javascript/managed-deep-agents-local-development.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-local-development)
+- `langsmith/javascript/managed-deep-agents-mcp-connectors` — [Connect to MCP servers](pages/langsmith/javascript/managed-deep-agents-mcp-connectors.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-connectors)
 - `langsmith/javascript/managed-deep-agents-memory` — [Add memory to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-memory.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory)
 - `langsmith/javascript/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-middleware)
 - `langsmith/javascript/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-overview)
@@ -432,6 +433,7 @@
 - `langsmith/python/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-identity)
 - `langsmith/python/managed-deep-agents-instructions` — [Add instructions to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-instructions.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-instructions)
 - `langsmith/python/managed-deep-agents-local-development` — [Develop locally with LangSmith Studio](pages/langsmith/python/managed-deep-agents-local-development.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-local-development)
+- `langsmith/python/managed-deep-agents-mcp-connectors` — [Connect to MCP servers](pages/langsmith/python/managed-deep-agents-mcp-connectors.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-connectors)
 - `langsmith/python/managed-deep-agents-memory` — [Add memory to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-memory.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-memory)
 - `langsmith/python/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware)
 - `langsmith/python/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/python/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview)

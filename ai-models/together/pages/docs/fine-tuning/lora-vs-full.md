@@ -37,13 +37,13 @@ The `lora` parameter defaults to `True`. Pass `lora=False` (or `--no-lora` on th
   # LoRA (default)
   tg fine-tuning create \
     --training-file "<FILE_ID>" \
-    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
+    --model "Qwen/Qwen3.5-27B" \
     --lora
 
   # Full fine-tuning
   tg fine-tuning create \
     --training-file "<FILE_ID>" \
-    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
+    --model "Qwen/Qwen3.5-27B" \
     --no-lora
   ```
 
@@ -55,14 +55,14 @@ The `lora` parameter defaults to `True`. Pass `lora=False` (or `--no-lora` on th
   # LoRA (default) — lora=True is optional
   job = client.fine_tuning.create(
       training_file="<FILE_ID>",
-      model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
+      model="Qwen/Qwen3.5-27B",
       lora=True,
   )
 
   # Full fine-tuning
   job = client.fine_tuning.create(
       training_file="<FILE_ID>",
-      model="meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
+      model="Qwen/Qwen3.5-27B",
       lora=False,
   )
   ```
@@ -75,14 +75,14 @@ The `lora` parameter defaults to `True`. Pass `lora=False` (or `--no-lora` on th
   // LoRA (default) — lora: true is optional
   const loraJob = await client.fineTuning.create({
     training_file: "<FILE_ID>",
-    model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
+    model: "Qwen/Qwen3.5-27B",
     lora: true,
   });
 
   // Full fine-tuning
   const fullJob = await client.fineTuning.create({
     training_file: "<FILE_ID>",
-    model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
+    model: "Qwen/Qwen3.5-27B",
     lora: false,
   });
   ```
@@ -101,106 +101,29 @@ Each module you list must appear in the model's allow-list. Whitespace around mo
 <Accordion title="Default target modules by model">
   ### Text models
 
-  | Model                                                   | Default target modules                                                                                                                                                                            |
-  | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `togethercomputer/llama-2-7b-chat`                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3-8B`                            | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3-8B-Instruct`                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3-70B-Instruct`                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-8B-Reference`                | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-8B-131k-Reference`           | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-Reference`               | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-32k-Reference`           | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-131k-Reference`          | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.2-1B`                               | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.2-1B-Instruct`                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.2-3B`                               | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.2-3B-Instruct`                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.3-70B-Instruct-Reference`           | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `meta-llama/Llama-4-Scout-17B-16E`                      | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` |
-  | `meta-llama/Llama-4-Scout-17B-16E-Instruct`             | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` |
-  | `meta-llama/Llama-4-Maverick-17B-128E`                  | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`         | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `mistralai/Mistral-7B-v0.1`                             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `mistralai/Mistral-7B-Instruct-v0.2`                    | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `mistralai/Mixtral-8x7B-v0.1`                           | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `mistralai/Mixtral-8x7B-Instruct-v0.1`                  | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen2-1.5B`                                       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2-1.5B-Instruct`                              | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2-7B`                                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2-7B-Instruct`                                | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2-72B`                                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2-72B-Instruct`                               | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-1.5B`                                     | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-1.5B-Instruct`                            | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-3B`                                       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-3B-Instruct`                              | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-7B`                                       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-7B-Instruct`                              | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-14B`                                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-14B-Instruct`                             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-32B`                                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-32B-Instruct`                             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-72B`                                      | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen2.5-72B-Instruct`                             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-0.6B-Base`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-0.6B`                                       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-1.7B-Base`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-1.7B`                                       | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-4B-Base`                                    | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-4B`                                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-8B-Base`                                    | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-8B`                                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-14B-Base`                                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-14B`                                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-32B`                                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-30B-A3B-Base`                               | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-30B-A3B`                                    | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-235B-A22B`                                  | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `google/gemma-3-270m`                                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-270m-it`                                | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-1b-it`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-1b-pt`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-4b-it`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-4b-pt`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-12b-it`                                 | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-12b-pt`                                 | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-27b-it`                                 | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-27b-pt`                                 | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`              | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`             | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `deepseek-ai/DeepSeek-V3`                               | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-R1`                               | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-V3-Base`                          | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-V3-0324`                          | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-R1-0528`                          | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-V3.1-Base`                        | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `deepseek-ai/DeepSeek-V3.1`                             | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `moonshotai/Kimi-K2-Instruct`                           | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `moonshotai/Kimi-K2-Thinking`                           | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `moonshotai/Kimi-K2-Base`                               | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `moonshotai/Kimi-K2-Instruct-0905`                      | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `moonshotai/Kimi-K2.5`                                  | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
-  | `openai/gpt-oss-20b`                                    | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `openai/gpt-oss-120b`                                   | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `zai-org/GLM-4.6`                                       | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `zai-org/GLM-4.7`                                       | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | Model                                                | Default target modules                                                                                                                                                                            |
+  | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | `w_up`, `w_down`                                                                                                                                                                                  |
+  | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `moonshotai/Kimi-K2.7-Code`                          | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
+  | `moonshotai/Kimi-K2.6`                               | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
+  | `zai-org/GLM-5.1`                                    | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `o_proj`                                                                                                                               |
+  | `openai/gpt-oss-20b`                                 | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `openai/gpt-oss-120b`                                | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `deepseek-ai/DeepSeek-V4-Flash`                      | `q_a_proj`, `q_b_proj`, `kv_proj`, `o_b_proj`, `shared_experts.gate_proj`, `shared_experts.up_proj`, `shared_experts.down_proj`                                                                   |
+  | `deepseek-ai/DeepSeek-V3.1`                          | `q_a_proj`, `q_b_proj`, `kv_a_proj_with_mqa`, `kv_b_proj`, `mlp.gate_proj`, `mlp.up_proj`, `mlp.down_proj`                                                                                        |
+  | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` |
+  | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `meta-llama/Llama-3.3-70B-Instruct-Reference`        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`    | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `mistralai/Mixtral-8x7B-Instruct-v0.1`               | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `google/gemma-4-31B-it`                              | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `google/gemma-4-26B-A4B-it`                          | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `Qwen/Qwen3.5-35B-A3B`                               | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `Qwen/Qwen3.5-35B-A3B-Base`                          | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `Qwen/Qwen3.5-122B-A10B`                             | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `Qwen/Qwen3.5-397B-A17B`                             | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
+  | `Qwen/Qwen3.6-35B-A3B`                               | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
 
   ### Multimodal models
 
@@ -208,31 +131,26 @@ Each module you list must appear in the model's allow-list. Whitespace around mo
   | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` |
   | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-VL-8B-Instruct`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-VL-32B-Instruct`                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `Qwen/Qwen3-VL-30B-A3B-Instruct`                    | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3-VL-235B-A22B-Instruct`                  | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3.5-35B-A3B`                              | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3.5-35B-A3B-Base`                         | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3.5-122B-A10B`                            | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `Qwen/Qwen3.5-397B-A17B`                            | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            |
-  | `google/gemma-3-4b-it-VLM`                          | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-12b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
-  | `google/gemma-3-27b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.5-0.8B`                                 | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.5-2B`                                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.5-4B`                                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.5-9B`                                   | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.5-27B`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `Qwen/Qwen3.6-27B`                                  | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-4-31B-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
 </Accordion>
 
 ## Target MoE expert layers
 
-On mixture-of-experts (MoE) models, you can apply LoRA to the expert feed-forward projections instead of the attention projections. Set `lora_trainable_modules` to the expert modules `w_up`, `w_gate`, and `w_down`. Together uses a compact shared-factor adapter layout across experts, so the adapter stays small even on very large models.
+On mixture-of-experts (MoE) models, you can apply LoRA to the expert feed-forward projections instead of the attention projections. Set `lora_trainable_modules` to the expert modules `w_up`, `w_gate`, and `w_down` (or `w_up` and `w_down` on gateless models such as Nemotron). Together uses a compact shared-factor adapter layout across experts, so the adapter stays small even on very large models.
 
-Use expert targeting when your task depends on the model's domain knowledge (the feed-forward experts) rather than its attention patterns — for example, adapting an MoE base to a new domain or task family.
+Use expert targeting when your task depends on the model's domain knowledge (the feed-forward experts) rather than its attention patterns. For example, adapting an MoE base to a new domain or task family.
 
 <CodeGroup>
   ```bash CLI theme={null}
   tg fine-tuning create \
     --training-file "<FILE_ID>" \
-    --model "zai-org/GLM-4.6" \
+    --model "moonshotai/Kimi-K2.7-Code" \
     --lora \
     --lora-trainable-modules "w_up,w_gate,w_down"
   ```
@@ -244,7 +162,7 @@ Use expert targeting when your task depends on the model's domain knowledge (the
 
   job = client.fine_tuning.create(
       training_file="<FILE_ID>",
-      model="zai-org/GLM-4.6",
+      model="moonshotai/Kimi-K2.7-Code",
       lora=True,
       lora_trainable_modules="w_up,w_gate,w_down",
   )
@@ -257,7 +175,7 @@ Use expert targeting when your task depends on the model's domain knowledge (the
 
   const job = await client.fineTuning.create({
     training_file: "<FILE_ID>",
-    model: "zai-org/GLM-4.6",
+    model: "moonshotai/Kimi-K2.7-Code",
     lora: true,
     lora_trainable_modules: "w_up,w_gate,w_down",
   });
@@ -268,11 +186,9 @@ You can't combine expert and attention modules in one job. Pass either the atten
 
 Expert LoRA is available on these models:
 
-* Mixtral: `mistralai/Mixtral-8x7B-v0.1`, `mistralai/Mixtral-8x7B-Instruct-v0.1`.
-* Qwen3 MoE: `Qwen/Qwen3-30B-A3B-Base`, `Qwen/Qwen3-30B-A3B`, `Qwen/Qwen3-30B-A3B-Instruct-2507`, `Qwen/Qwen3-235B-A22B`, `Qwen/Qwen3-235B-A22B-Instruct-2507`, `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
-* Qwen3-Next: `Qwen/Qwen3-Next-80B-A3B-Instruct`, `Qwen/Qwen3-Next-80B-A3B-Thinking`.
-* GLM-4: `zai-org/GLM-4.6`, `zai-org/GLM-4.7`.
-* DeepSeek: `deepseek-ai/DeepSeek-V3.1`.
+* Mixtral: `mistralai/Mixtral-8x7B-Instruct-v0.1`.
+* DeepSeek / Kimi: `deepseek-ai/DeepSeek-V3.1`, `moonshotai/Kimi-K2.6`, `moonshotai/Kimi-K2.7-Code`.
+* Nemotron (gateless, `w_up` and `w_down` only): `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`, `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`.
 
 Every expert-LoRA job produces a LoRA adapter served on top of the base model. Unlike a standard LoRA, an expert-LoRA adapter is never merged into a full set of weights, so deploy it as an adapter on any of the models above. See [adapter upload](/docs/dedicated-endpoints/adapter).
 

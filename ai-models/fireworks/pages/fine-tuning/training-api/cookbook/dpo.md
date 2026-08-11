@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: DPO"
+title: "Cookbook: Preference Optimization"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo
 path: fine-tuning/training-api/cookbook/dpo
 ---
@@ -224,4 +224,4 @@ for idx in ref_cache:
 
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — reinforcement learning recipes
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — API-level DPO loss details
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — API-level DPO loss details

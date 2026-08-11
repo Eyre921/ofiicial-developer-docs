@@ -110,6 +110,10 @@ npx tsx example.mts
 
 You should hear the dialogue audio play.
 
+## WebSocket streaming
+
+For incremental dialogue over a long-lived connection with **Eleven v3** models, follow [Realtime Text to Dialogue](/docs/eleven-api/guides/how-to/websockets/realtime-tdd). To compare this WebSocket with the standard TTS WebSocket, see [Text to Speech vs Text to Dialogue WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
+
 ## Next steps
 
 #### [Browse voices](https://elevenlabs.io/app/voice-library)

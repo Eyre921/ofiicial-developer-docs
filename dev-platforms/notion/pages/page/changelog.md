@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 10, 2026">
+  ### Reorganizing query tools in Notion MCP
+
+  Use `notion-query-data-sources` for both SQL queries and saved database views. To query a saved view, set `mode` to `"view"` and pass the same `view_url`.
+
+  Existing `notion-query-database-view` calls continue to work and now include migration guidance. We plan to remove this older tool in a follow-up change.
+</Update>
+
 <Update label="August 7, 2026">
   ### Truncation metadata on `notion-fetch`
 

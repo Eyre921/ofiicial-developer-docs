@@ -234,9 +234,9 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
 
-    <Note>
-      Available on every plan without a tool-specific quota.
-    </Note>
+    <Warning>
+      This tool is deprecated and will be removed in a future release. Use `notion-query-data-sources` with `mode: "view"` and pass the same `view_url`. Existing calls continue to work and include migration guidance in successful responses.
+    </Warning>
 
     **Example prompts:**
 

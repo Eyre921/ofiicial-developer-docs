@@ -19,7 +19,7 @@ from fireworks.training.sdk import WeightSyncer
 ```
 
 <Note>
-  For full-parameter training, only the first checkpoint (saved as `base`) is promotable; subsequent `delta` checkpoints are not. LoRA checkpoints are always promotable (delta chain is disabled via `lora_rank > 0`). See [Checkpoint kinds](/fine-tuning/training-api/cookbook/checkpoints#checkpoint-kinds) for the full promotability matrix.
+  For full-parameter training, only the first checkpoint (saved as `base`) is promotable; subsequent `delta` checkpoints are not. LoRA checkpoints are always promotable (delta chain is disabled via `lora_rank > 0`). See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
 </Note>
 
 ## Constructor
@@ -103,7 +103,7 @@ Force the next save to be treated as `base`. Call when the deployment's bucket o
 
 ## Usage patterns
 
-These patterns are for maintaining older integrations. New code should use the service-client sampler refresh pattern documented in [Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+These patterns are for maintaining older integrations. New code should use the service-client sampler refresh pattern documented in [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
 ### Sync weights every step
 
@@ -156,5 +156,5 @@ for step in range(total_steps):
 ## Related guides
 
 * [DeploymentManager](/fine-tuning/training-api/reference/deployment-manager) — deployment lifecycle and weight-sync API
-* [Saving and Loading](/fine-tuning/training-api/saving-and-loading) — checkpoint concepts
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling) — end-to-end workflow
+* [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) — checkpoint concepts
+* [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow

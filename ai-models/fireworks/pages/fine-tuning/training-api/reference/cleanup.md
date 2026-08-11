@@ -135,4 +135,4 @@ Track the IDs you create (trainer job IDs + deployment ID) and clean those expli
 ## Related Guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client)
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling)
+* [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling)

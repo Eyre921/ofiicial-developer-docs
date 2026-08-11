@@ -66,10 +66,23 @@ real task outcome, not as a substitute for missing or misaligned training data.
 
 ## Start from an example
 
-The [Harbor + OpenCode example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor_rl_opencode)
-runs local Docker environments, records OpenCode model calls through a policy
-adapter, builds a per-attempt token tree, and splits non-append token histories.
-It is one integration pattern, not a required Harbor or OpenCode dependency.
+The cookbook provides a shared
+[Harbor + OpenCode adapter](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor)
+and two task-specific entrypoints:
+
+* [Terminal-Bench 2.0](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor_rl_terminal_bench)
+  prepares Harbor tasks with a pinned OpenCode CLI, runs the task environments
+  and verifier in local Docker containers, and trains through the serverless
+  async RL recipe. Its walkthrough starts with sampling-only calibration so you
+  can inspect the exact trajectories before training.
+* [DABStep](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor_rl_opencode)
+  keeps its dataset selection and experiment configuration separate while
+  reusing the same adapter.
+
+Both entrypoints record OpenCode model calls, build a per-attempt token tree,
+and split non-append token histories into segments within one logical rollout.
+They demonstrate one integration pattern, not a required Harbor, OpenCode, or
+trajectory-reconciliation architecture.
 
 For the loop itself, read
 [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl). For

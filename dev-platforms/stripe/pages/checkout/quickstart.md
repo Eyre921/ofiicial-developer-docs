@@ -220,7 +220,7 @@ Show a message to your customer when they’re redirected back to your page. Wai
 
 ### Set your environment variables
 
-Add your publishable and secret keys to a `.env` file. Next.js automatically loads them into your application as [environment variables](https://nextjs.org/docs/basic-features/environment-variables). If you want to listen to webhooks, also include a webhook secret, which you can create in the [Dashboard](https://dashboard.stripe.com/webhooks) or with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md).
+Add your publishable and secret keys to a `.env` file. Next.js automatically loads them into your application as [environment variables](https://nextjs.org/docs/basic-features/environment-variables). If you want to listen to webhooks, also include a webhook secret, which you can create in the [Dashboard](https://dashboard.stripe.com/webhooks) or with the [Stripe CLI](https://docs.stripe.com/cli.md).
 
 ### Before you run the application
 

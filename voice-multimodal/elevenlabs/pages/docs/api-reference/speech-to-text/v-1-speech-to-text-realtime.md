@@ -664,6 +664,19 @@ components:
         - error
       description: Payload for input errors.
       title: ScribeInputError
+    ScribeInvalidRequestError:
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+            - invalid_request
+        error:
+          type: string
+      required:
+        - message_type
+        - error
+      title: ScribeInvalidRequestError
     ScribeChunkSizeExceededError:
       type: object
       properties:
@@ -731,6 +744,7 @@ components:
         - $ref: '#/components/schemas/ScribeResourceExhaustedError'
         - $ref: '#/components/schemas/ScribeSessionTimeLimitExceededError'
         - $ref: '#/components/schemas/ScribeInputError'
+        - $ref: '#/components/schemas/ScribeInvalidRequestError'
         - $ref: '#/components/schemas/ScribeChunkSizeExceededError'
         - $ref: '#/components/schemas/ScribeInsufficientAudioActivityError'
         - $ref: '#/components/schemas/ScribeTranscriberError'

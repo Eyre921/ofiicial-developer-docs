@@ -164,7 +164,7 @@ To deploy Nexus BYOC, follow these steps.
       | **TLS certificates** | AWS Certificate Manager                                         | cert-manager                                  | cert-manager                             |
       | **IAM**              | IAM roles and policies                                          | Service accounts and Workload Identity        | Managed identities and Workload Identity |
 
-      The cluster comes up small and then autoscales to a steady-state footprint of roughly 20 nodes across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the per-pool breakdown.
+      The cluster comes up small and then autoscales across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the node pools.
     </Accordion>
   </Step>
 

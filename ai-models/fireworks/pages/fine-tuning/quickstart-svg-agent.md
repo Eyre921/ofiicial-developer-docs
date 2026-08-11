@@ -56,7 +56,7 @@ OPENAI_API_KEY=your-openai-key-here
 
 The create process below automatically reads and uploads these secrets to Fireworks.
 
-For more details on Fireworks Secret Management usage, please refer to [using secret in evaluator](/fine-tuning/using-secret-in-evaluator).
+For more details on Fireworks Secret Management usage, please refer to [using secret in evaluator](/fine-tuning/reinforcement-fine-tuning-models#using-secrets).
 
 ## 2. Test your evaluator locally
 
@@ -270,7 +270,7 @@ Clicking on **View Logs** takes you to a page of logs being streamed in. Here, y
 ## Next steps
 
 <CardGroup>
-  <Card title="Customize training" icon="terminal" href="/fine-tuning/cli-reference">
+  <Card title="Customize training" icon="terminal" href="/fine-tuning/reinforcement-fine-tuning-models#cli">
     Learn all CLI options to customize your training parameters
   </Card>
 

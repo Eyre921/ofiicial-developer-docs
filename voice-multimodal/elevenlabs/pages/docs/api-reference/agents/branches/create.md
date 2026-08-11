@@ -366,6 +366,14 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/create
         - `y` (double, optional, default: 0)
       - `tools` (list of object, optional) — List of tools to execute in parallel. The entire node is considered successful if all tools are executed successfully.
         - `tool_id` (string, required)
+        - `schema_overrides` (map from string to object, optional, nullable) — Per-node parameter overrides applied on top of the tool's own configuration. Keys are dotted parameter paths (webhook tools prefix keys with path_params./query_params./request_body.). These take precedence over any overrides already defined on the tool itself.
+          - `source`: `constant` (ConstantSchemaOverride)
+            - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+          - `source`: `dynamic_variable` (DynamicVariableSchemaOverride)
+            - `dynamic_variable` (string, required) — The name of the dynamic variable to use
+          - `source`: `llm` (LLMSchemaOverride)
+            - `prompt` (string, optional, nullable) — Prompt override for the LLM. If not provided, the original schema description is used.
+          - `source`: `omit` (OmitSchemaOverride)
   - `prevent_subagent_loops` (boolean, optional, default: false) — Whether to prevent loops in the workflow execution.
 
 ## Response

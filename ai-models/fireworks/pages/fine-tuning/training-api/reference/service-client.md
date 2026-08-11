@@ -205,7 +205,7 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
 ```
 
 <Note>
-  Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail. Use the target-token `tinker.Datum` example in [Loss Functions](/fine-tuning/training-api/loss-functions#using-tinkerdatum-directly-target-token-based) for built-in losses, or use `forward_backward_custom` with the weight-based format in [Building datums](/fine-tuning/training-api/loss-functions#building-datums) and the custom-loss pattern in [Example: simple cross-entropy](/fine-tuning/training-api/loss-functions#example-simple-cross-entropy).
+  Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail. Use the target-token `tinker.Datum` example in [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) for built-in losses, or use `forward_backward_custom` with the weight-based format in [Building datums](/fine-tuning/training-api/dedicated#loss-functions) and the custom-loss pattern in [Example: simple cross-entropy](/fine-tuning/training-api/dedicated#loss-functions).
 </Note>
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`
@@ -219,7 +219,7 @@ print(result.metrics)
 
 ### `forward_backward_custom(datums, loss_fn)`
 
-Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/loss-functions) for details:
+Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) for details:
 
 ```python theme={null}
 def my_loss(data, logprobs_list):
@@ -295,7 +295,7 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 | `checkpoint_type` | `str \| None` | `None`  | `"base"` for full weights, `"delta"` for incremental |
 
 <Note>
-  On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/checkpoints#checkpoint-kinds) for the full promotability matrix.
+  On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
 </Note>
 
 `save_weights_for_sampler_ext` saves the snapshot only; it does not mutate a deployment. To serve the snapshot, pass `result.snapshot_name` to the managed service weight-sync path, or use `create_sampling_client(model_path=...)` / `create_deployment_sampler(model_path=...)`, which sync and return a sampler.
@@ -379,6 +379,6 @@ Enum for the advanced `optim_step` `grad_accumulation_normalization` parameter:
 
 ## Related guides
 
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling) — managed service training + sampler refresh walkthrough
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — built-in and custom loss functions
-* [Saving and Loading](/fine-tuning/training-api/saving-and-loading) — checkpoint details
+* [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — managed service training + sampler refresh walkthrough
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — built-in and custom loss functions
+* [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) — checkpoint details

@@ -1316,7 +1316,7 @@ You can use the [Invoice template](https://dashboard.stripe.com/account/billing/
 
 Learn more about the Invoicing API.
 
-#### [Stripe CLI](https://docs.stripe.com/stripe-cli.md)
+#### [Stripe CLI](https://docs.stripe.com/cli.md)
 
 The Stripe CLI has several commands that can help you test your Stripe application beyond invoicing.
 

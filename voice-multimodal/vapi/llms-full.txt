@@ -147,8 +147,10 @@
 - [Server authentication](https://docs.vapi.ai/server-url/server-authentication.md)
 - [Evals quickstart](https://docs.vapi.ai/observability/evals-quickstart.md): Get started with AI agent testing in 5 minutes
 - [Advanced eval testing](https://docs.vapi.ai/observability/evals-advanced.md): Master testing strategies and best practices for production AI agents
-- [Simulations quickstart](https://docs.vapi.ai/observability/simulations-quickstart.md): Test your AI assistants with realistic AI-powered callers
-- [Simulations advanced](https://docs.vapi.ai/observability/simulations-advanced.md): Master testing strategies and best practices for AI voice agent simulations
+- [Simulations overview](https://docs.vapi.ai/observability/simulations-overview.md): Simulations test assistants and squads through real conversations with AI testers. Learn how simulations work in Vapi and when to use them instead of Evals.
+- [Simulations quickstart](https://docs.vapi.ai/observability/simulations-quickstart.md): Create a simulation suite that asks an AI tester to book an appointment with Riley, then evaluate whether it was booked for the requested date and time.
+- [Simulations advanced](https://docs.vapi.ai/observability/simulations-advanced.md): Configure advanced simulations with AI tester settings, variables, tool mocks, lifecycle webhooks, and reusable structured outputs for consistent testing.
+- [Manage simulations](https://docs.vapi.ai/observability/simulations-manage.md): Manage Vapi simulation suites and runs: edit configurations, review and rerun results, develop testing strategies, maintain coverage, and delete suites.
 - [Boards quickstart](https://docs.vapi.ai/observability/boards-quickstart.md): Create custom analytics dashboards in minutes
 - [Structured outputs](https://docs.vapi.ai/assistants/structured-outputs.md): Extract structured, schema-defined data from voice calls using AI-powered analysis. Covers field types, extraction timing, limitations, and HIPAA storage behavior.
 - [Structured outputs quickstart](https://docs.vapi.ai/assistants/structured-outputs-quickstart.md): Set up structured data extraction from calls in a few minutes. Create a schema, link it to an assistant, test extraction, and configure HIPAA-safe storage settings.
@@ -230,9 +232,40 @@
 - [Local webhook testing](https://docs.vapi.ai/cli/webhook.md): Forward webhooks to your local development server with vapi listen
 - [Authentication management](https://docs.vapi.ai/cli/auth.md): Manage multiple Vapi accounts and environments with the CLI
 - [What's New?](https://docs.vapi.ai/whats-new.md)
+- [What's New? (all entries)](https://docs.vapi.ai/whats-new/llms.txt)
 
 ## API Docs
 
+- API reference [Get Eval Simulation Personality](https://docs.vapi.ai/api-reference/get-eval-simulation-personality.md)
+- API reference [Post Eval Simulation Personality](https://docs.vapi.ai/api-reference/post-eval-simulation-personality.md)
+- API reference [Get Eval Simulation Personality Id](https://docs.vapi.ai/api-reference/get-eval-simulation-personality-id.md)
+- API reference [Delete Eval Simulation Personality Id](https://docs.vapi.ai/api-reference/delete-eval-simulation-personality-id.md)
+- API reference [Patch Eval Simulation Personality Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-personality-id.md)
+- API reference [Get Eval Simulation Scenario](https://docs.vapi.ai/api-reference/get-eval-simulation-scenario.md)
+- API reference [Post Eval Simulation Scenario](https://docs.vapi.ai/api-reference/post-eval-simulation-scenario.md)
+- API reference [Post Eval Simulation Scenario Generate](https://docs.vapi.ai/api-reference/post-eval-simulation-scenario-generate.md)
+- API reference [Get Eval Simulation Scenario Id](https://docs.vapi.ai/api-reference/get-eval-simulation-scenario-id.md)
+- API reference [Delete Eval Simulation Scenario Id](https://docs.vapi.ai/api-reference/delete-eval-simulation-scenario-id.md)
+- API reference [Patch Eval Simulation Scenario Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-scenario-id.md)
+- API reference [Get Eval Simulation Run](https://docs.vapi.ai/api-reference/get-eval-simulation-run.md)
+- API reference [Post Eval Simulation Run](https://docs.vapi.ai/api-reference/post-eval-simulation-run.md)
+- API reference [Get Eval Simulation Run Id](https://docs.vapi.ai/api-reference/get-eval-simulation-run-id.md)
+- API reference [Patch Eval Simulation Run Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-run-id.md)
+- API reference [Get Eval Simulation Run Id Item](https://docs.vapi.ai/api-reference/get-eval-simulation-run-id-item.md)
+- API reference [Get Eval Simulation Run Id Item Item Id](https://docs.vapi.ai/api-reference/get-eval-simulation-run-id-item-item-id.md)
+- API reference [Patch Eval Simulation Run Id Item Item Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-run-id-item-item-id.md)
+- API reference [Post Eval Simulation Run Id Item Item Id Generate](https://docs.vapi.ai/api-reference/post-eval-simulation-run-id-item-item-id-generate.md)
+- API reference [Get Eval Simulation Suite](https://docs.vapi.ai/api-reference/get-eval-simulation-suite.md)
+- API reference [Post Eval Simulation Suite](https://docs.vapi.ai/api-reference/post-eval-simulation-suite.md)
+- API reference [Get Eval Simulation Suite Id](https://docs.vapi.ai/api-reference/get-eval-simulation-suite-id.md)
+- API reference [Delete Eval Simulation Suite Id](https://docs.vapi.ai/api-reference/delete-eval-simulation-suite-id.md)
+- API reference [Patch Eval Simulation Suite Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-suite-id.md)
+- API reference [Get Eval Simulation](https://docs.vapi.ai/api-reference/get-eval-simulation.md)
+- API reference [Post Eval Simulation](https://docs.vapi.ai/api-reference/post-eval-simulation.md)
+- API reference [Get Eval Simulation Id](https://docs.vapi.ai/api-reference/get-eval-simulation-id.md)
+- API reference [Delete Eval Simulation Id](https://docs.vapi.ai/api-reference/delete-eval-simulation-id.md)
+- API reference [Patch Eval Simulation Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-id.md)
+- API reference [Get Eval Simulation Concurrency](https://docs.vapi.ai/api-reference/get-eval-simulation-concurrency.md)
 - API reference > Assistants [List Assistants](https://docs.vapi.ai/api-reference/assistants/list.md)
 - API reference > Assistants [Create Assistant](https://docs.vapi.ai/api-reference/assistants/create.md)
 - API reference > Assistants [Get Assistant](https://docs.vapi.ai/api-reference/assistants/get.md)

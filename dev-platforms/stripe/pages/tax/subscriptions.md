@@ -25,7 +25,7 @@ This guide assumes you’re setting up Stripe Tax and Billing for the first time
 
 ## Add tax registrations [Dashboard] [Server-side]
 
-Stripe Tax only collects tax in jurisdictions where you have an active registration. You must both register with the jurisdictional government for each country or state where you’re required to collect tax, then add that registration to your Stripe account.
+Stripe Tax only collects tax in jurisdictions where you have an active registration. You must both register with the jurisdictional government for each country or state where you’re required to collect tax, and then add that registration to your Stripe account.
 
 You can add registrations to Stripe in the Dashboard under [Tax > Registrations](https://dashboard.stripe.com/tax/registrations).
 
@@ -172,7 +172,7 @@ document.querySelector("#form").addEventListener("submit", async function(event)
 
 [Update](https://docs.stripe.com/api/customers/update.md) your `Customer` object using the details you’ve collected from your customer, so that Stripe Tax can determine their precise location for accurate results.
 
-> If your customer is in the United States, provide a full address if possible. We use the term “rooftop-accurate” to mean that we can attribute your customer’s location to a specific house or building. This provides greater accuracy, where two houses located side-by-side on the same street might be subject to different tax rates, because of complex jurisdiction boundaries.
+> If your customer is in the United States, provide a full address if possible. We use the term **rooftop-accurate** to mean that we can attribute your customer’s location to a specific house or building. This provides greater accuracy, where two houses located side-by-side on the same street might be subject to different tax rates, because of complex jurisdiction boundaries.
 
 If you haven’t already created a `Customer` object (for example, when your customer first signs up on your website), you can [create](https://docs.stripe.com/api/customers/create.md) one now.
 

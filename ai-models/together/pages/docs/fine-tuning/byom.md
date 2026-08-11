@@ -37,8 +37,8 @@ Launch the job by pairing the base model (template) with `from_hf_model` (your c
   ```bash CLI theme={null}
   tg fine-tuning create \
     --training-file "<FILE_ID>" \
-    --model "togethercomputer/llama-2-7b-chat" \
-    --from-hf-model "HuggingFaceTB/SmolLM2-1.7B-Instruct" \
+    --model "Qwen/Qwen3.5-9B" \
+    --from-hf-model "Qwen/Qwen3.5-9B-Base" \
     --n-epochs 3 \
     --learning-rate 1e-5 \
     --suffix "custom-v1"
@@ -50,8 +50,8 @@ Launch the job by pairing the base model (template) with `from_hf_model` (your c
   client = Together()
 
   job = client.fine_tuning.create(
-      model="togethercomputer/llama-2-7b-chat",  # base template
-      from_hf_model="HuggingFaceTB/SmolLM2-1.7B-Instruct",  # your custom model
+      model="Qwen/Qwen3.5-9B",  # base template
+      from_hf_model="Qwen/Qwen3.5-9B-Base",  # your custom model
       training_file="<FILE_ID>",
       n_epochs=3,
       learning_rate=1e-5,
@@ -68,8 +68,8 @@ Launch the job by pairing the base model (template) with `from_hf_model` (your c
   const client = new Together();
 
   const job = await client.fineTuning.create({
-    model: "togethercomputer/llama-2-7b-chat",
-    from_hf_model: "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    model: "Qwen/Qwen3.5-9B",
+    from_hf_model: "Qwen/Qwen3.5-9B-Base",
     training_file: "<FILE_ID>",
     n_epochs: 3,
     learning_rate: 1e-5,
@@ -94,7 +94,7 @@ Match these three variables to pick the base template:
 * **Size:** As close to your custom checkpoint as the catalog allows. If every option is larger, pick the smallest.
 * **Max sequence length:** The base's max must be at least as large as your checkpoint's; ideally not much larger.
 
-For example: `HuggingFaceTB/SmolLM2-135M-Instruct` has Llama architecture, 135M parameters, and an 8k context. The closest Llama in the catalog by parameter count is `meta-llama/Llama-3.2-1B-Instruct`, but its max context is 131k, much higher than the checkpoint supports. A better choice is `togethercomputer/llama-2-7b-chat`: larger than your checkpoint, but the max sequence length fits.
+For example: `Qwen/Qwen3.5-9B-Base` has Qwen3.5 architecture and 9B parameters. The catalog has a direct match, `Qwen/Qwen3.5-9B`: the same architecture and size, with a max sequence length that covers the checkpoint's.
 
 ## Watch and deploy
 

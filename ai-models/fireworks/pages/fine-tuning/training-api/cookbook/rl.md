@@ -61,7 +61,10 @@ The example rollout above expects rows with `prompt_token_ids`. Fork the [single
 For multi-turn agents, tools, sandboxes, token ancestry, and session design, read
 [Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl).
 Agentic RL is a rollout integration concern; it does not change the async
-loop's scheduling contract.
+loop's scheduling contract. The
+[Terminal-Bench 2.0 example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor_rl_terminal_bench)
+shows a complete serverless integration with Harbor-managed local containers,
+OpenCode tool use, verifier rewards, and multi-segment logical rollouts.
 
 ## Rollout contract
 
@@ -121,6 +124,10 @@ Keep implementation and tuning detail out of the recipe page:
 * [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
 * [Agentic RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
 * [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
-* [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
-* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler
+* [Checkpointing](/fine-tuning/training-api/cookbook/reference#checkpoints) — resumable checkpoints and final model promotion
+* [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) — how updated policy weights reach the sampler
 * [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
+
+## IGPO (Information Gain Policy Optimization)
+
+The [`igpo_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/igpo_loop.py) recipe extends the async RL pipeline with turn-level information-gain rewards for multi-turn agent trajectories. Start from [Cookbook RL](/fine-tuning/training-api/cookbook/rl) for the core rollout and weight-sync lifecycle, then switch to `igpo_loop` when your reward depends on per-turn information gain rather than a single scalar at episode end.

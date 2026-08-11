@@ -406,6 +406,12 @@ The table below lists all models removed from the fine-tuning service, most rece
 | 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-Reference`               | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
 | 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-32k-Reference`           | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
 | 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-131k-Reference`          | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-Instruct-Reference`     |                                                   |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-Reference`              |                                                   |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-10k-Instruct-Reference` |                                                   |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-10k-Reference`          |                                                   |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-8k-Instruct-Reference`  |                                                   |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-405B-8k-Reference`           |                                                   |
 | 2026-07-29   | `meta-llama/Meta-Llama-3-8B-Instruct`                   | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
 | 2026-07-29   | `meta-llama/Meta-Llama-3-8B`                            | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
 | 2026-07-29   | `meta-llama/Meta-Llama-3-70B-Instruct`                  | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |

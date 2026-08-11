@@ -33,7 +33,7 @@ If you used the Dashboard in a *sandbox* (A sandbox is an isolated test environm
 
 Learn how to create [Products](https://docs.stripe.com/api/products.md) and [Prices](https://docs.stripe.com/api/prices.md).
 
-> For a complete guide on how to get started using the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) or API, see the [Invoicing end-to-end integration guide](https://docs.stripe.com/invoicing/integration.md).
+> For a complete guide on how to get started using the [Stripe CLI](https://docs.stripe.com/cli.md) or API, see the [Invoicing end-to-end integration guide](https://docs.stripe.com/invoicing/integration.md).
 
 ### Create a product 
 

@@ -8,50 +8,55 @@ path: docs/overview/administration/usage-analytics
 
 # Usage analytics
 
-The Developers page provides comprehensive tools to monitor and analyze your platform activity.
+The Developers page provides tools to monitor and analyze your platform activity.
 
-To access these tools, navigate to the **Developers** page (found at the bottom of the sidebar in both ElevenAgents and ElevenCreative).
+To access these tools, navigate to **Developers** at the bottom of the sidebar in both ElevenAgents and ElevenCreative.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e8ea126ff2f8d646b145c52257c7dfdd3271d05abbfce82999b0a96727f965e/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260810%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260810T113143Z&X-Amz-Expires=604800&X-Amz-Signature=164250546de8fbe02520997f5636daa9e03ca360be3d04ab3a849d2b33dd0516&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Usage analytics interface" />
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace.
 
-The Developers page includes several tabs:
+## Analytics
 
-* **Usage**: View and filter usage data for your account or workspace
-* **Analytics**: Collect, view, and filter workspace activity including API requests, usage metrics, and webhooks
-* **Request Log**: View and filter specific API requests for debugging and monitoring
+The **Analytics** tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period (for example, hour, day, month, or year) and at different levels of granularity.
 
-If you're part of a multi-seat workspace, you'll see a toggle to switch between data for your account and your workspace.
+### API Requests
 
-## Usage tab
+The API Requests view shows request volume and performance for your account or workspace. Metrics include:
 
-The Usage tab allows you to choose from a range of metrics for analysis, including credits, and filter your usage data in a number of different ways.
+* Total requests, which you can break down and filter
+* Success rate
+* Average latency
+* Top called path
 
-You can break your usage down by voice, product, or API key. If you're viewing workspace usage, you have additional options allowing you to break usage down by individual user or workspace group.
+![API Requests metrics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260811%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260811T100016Z&X-Amz-Expires=604800&X-Amz-Signature=9a63a2a64989a9611845d0fd009fb68e12c20d7544d912aad3666b3ef7e6c0e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-You can view the data by day, week, month or cumulatively. If you want to be more specific, you can use filters to show only your usage for specific voices, products or API keys.
+### Usage
 
-This feature is quite powerful, allowing you to gain great insights into your usage or understand your customers' usage if you've implemented us in your product.
+The Usage view shows credit consumption and related performance metrics. Metrics include:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b95d7c8edd7ad5e94cb97b443850e54ef84e9d3bc8e844d65e04d1b3a06f050b/assets/images/product-guides/administration/analytics-credits-voice.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260810%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260810T113143Z&X-Amz-Expires=604800&X-Amz-Signature=8335134303fcc0dd90f58fb498adb317f74dd76a56daf17fa94632fa9724aae6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Usage metrics broken down by voice" />
+* Credit usage, which you can break down and filter (for example, by voice, product, or API key)
+* Average time to first byte
+* Average time to completed transcript
+* Concurrent requests
 
-In the API Requests section, you’ll find not only the total number of requests made within a specific timeframe but also the number of concurrent requests during that period.
+When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-You can view data by different time periods, for example, hour, day, month and year, and at different levels of granularity.
+![Usage metrics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260811%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260811T100016Z&X-Amz-Expires=604800&X-Amz-Signature=69553905af28e70ee47b4c4159c4f14d05fc42e102bec5edf182da814e5733f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/03c5a1eba19089ce5a094b115619d5ae8e9397b4f4bfebcc17f5c7d62f153e24/assets/images/product-guides/administration/analytics-workspace-api.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260810%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260810T113143Z&X-Amz-Expires=604800&X-Amz-Signature=819f6b7b9241f023b85c236cdbbb3eedb9956bb884f6de8bbb295afbc517e102&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="API requests for specified time period" />
+### Webhooks
 
-## Analytics tab
+The Webhooks view shows webhook delivery activity for your account or workspace. Metrics include:
 
-The Analytics tab provides detailed insights into workspace API requests and webhooks. You can filter and analyze data by different time periods (hour, day, month, year) and at different levels of granularity. You can also monitor success rate and average latency for your API requests.
-
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93993cf042c491a549cffc330357f3aaf272802f037e867e69e32ad27d5505f1/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260810%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260810T113143Z&X-Amz-Expires=604800&X-Amz-Signature=cf7f3e37f09cd1be6cd4883dfc6550a3ef09a7b03588d1aa8b522e8213bfdc2c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspace API calls broken down by path" />
+* Total webhook calls
+* Recent webhook calls
 
 ## Request Log
 
-The Request Log tab allows you to view and filter specific API requests for debugging and monitoring purposes.
+The **Request Log** tab lists all API requests for your account or workspace. Use search and filters to find specific requests for debugging and monitoring.
+
+![Request Log](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ff35ca4c4c47dd86731b7bdc2fb71cff39663cf8cef61d355209b9648ffe003/assets/images/product-guides/administration/analytics-request-log.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260811%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260811T100016Z&X-Amz-Expires=604800&X-Amz-Signature=fd8d97bf39c0bf3eca61e96ccc64b3a931909650757f725d7edb9847cc87d952&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Export data
 
-You also have the option to export your data as a CSV file. To do this, just click the "Export as CSV" button, and the data from your current view will be exported and downloaded.
+You can export the data from your current view as a CSV file. Click **Export** to download it.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d41a16a9e09de52a0c9406fe8b02d874e773da2b49f1f0f8c635f9ecda1bc6f/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260810%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260810T113143Z&X-Amz-Expires=604800&X-Amz-Signature=8f9e75c9100a92e9fd80e811033e4c4c1a91af21c633aa120eee711d1281f909&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Export your usage data as CSV" />
+![Export usage data as CSV](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260811%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260811T100016Z&X-Amz-Expires=604800&X-Amz-Signature=3be9e97819786b196440ac6d0979af3c4b6f54b269e1f4461f04a649d5c706a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

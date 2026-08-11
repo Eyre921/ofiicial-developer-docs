@@ -186,7 +186,7 @@ Explore other fine-tuning methods to improve model output for different use case
     Optimize models using AI feedback for complex reasoning and decision-making.
   </Card>
 
-  <Card title="Supervised Fine Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-vlm">
+  <Card title="Supervised Fine Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-fine-tuning">
     Fine-tune vision-language models to understand both images and text.
   </Card>
 </CardGroup>

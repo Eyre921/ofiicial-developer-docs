@@ -115,7 +115,7 @@ If your rollout traffic hits a hot-load deployment, a new checkpoint can arrive 
 * **Async transition (recommended for RL):** in-flight requests pause then resume on the same HTTP connection using the new weights. The active turn keeps its current KV state, so it continues rather than restarting. New requests queue up. You see elevated TTFT but no errors.
 * **Synchronous transition:** in-flight requests finish on the old weights; new requests get HTTP `425 Too Early` until the swap is done. Your client should retry with back-off, ideally keeping the same session-affinity key so it lands on a replica that has already finished the swap.
 
-See [Checkpoint-swap behavior](/fine-tuning/rl-rollout-debugging#checkpoint-swap-behavior) for the full hot-load reference.
+See [Checkpoint-swap behavior](/fine-tuning/rl-rollout-integration#checkpoint-swap-behavior) for the full hot-load reference.
 
 ### `reset_prompt_cache`
 
@@ -236,11 +236,11 @@ Non-streaming responses are adding the same `model@snapshot_identity` convention
     Prerequisites, hot-load deployment, and rollout loop.
   </Card>
 
-  <Card title="Incremental snapshots" icon="layer-group" href="/fine-tuning/rl-rollout-delta-checkpoints">
+  <Card title="Incremental snapshots" icon="layer-group" href="/fine-tuning/rl-rollout-integration#arc2">
     ARC2 compression and incremental hot-load signals.
   </Card>
 
-  <Card title="Ledger & checkpoint swap" icon="bug" href="/fine-tuning/rl-rollout-debugging">
+  <Card title="Ledger & checkpoint swap" icon="bug" href="/fine-tuning/rl-rollout-integration#ledger-debugging">
     Detailed semantics of request behavior across weight swaps.
   </Card>
 

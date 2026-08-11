@@ -447,6 +447,7 @@ Install the CLI and start a project:
 - [Get started with EAS Workflows](https://docs.expo.dev/eas/workflows/get-started.md)
 - [Pre-packaged jobs in EAS Workflows](https://docs.expo.dev/eas/workflows/pre-packaged-jobs.md)
 - [Syntax for EAS Workflows](https://docs.expo.dev/eas/workflows/syntax.md)
+- [Custom functions in EAS Workflows](https://docs.expo.dev/eas/workflows/custom-functions.md)
 - [Environment variables in EAS Workflows](https://docs.expo.dev/eas/workflows/environment.md)
 - [Automating EAS CLI commands](https://docs.expo.dev/eas/workflows/automating-eas-cli.md)
 - [Workflows REST API](https://docs.expo.dev/eas/workflows/rest-api.md)

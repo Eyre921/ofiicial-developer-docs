@@ -64,7 +64,7 @@ print(f"Model state: {model['state']}, kind: {model['kind']}")
 | `output_model_id` | `str` | Desired model ID (1-63 chars, lowercase a-z, 0-9, hyphen only)                                                                  |
 | `base_model`      | `str` | Base model resource name for metadata inheritance (e.g. `accounts/fireworks/models/qwen3-8b`)                                   |
 
-Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). See [Saving and Loading](/fine-tuning/training-api/saving-and-loading#promoting-a-checkpoint-to-a-model) for details, and [Checkpoint kinds](/fine-tuning/training-api/cookbook/checkpoints#checkpoint-kinds) for which checkpoints are promotable.
+Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). See [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) for details, and [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for which checkpoints are promotable.
 
 <Note>
   The trainer job can be in any state (running, failed, cancelled, or deleted) as long as the checkpoint files still exist in GCS. Promotion is a file copy -- it does not interact with the trainer process.
@@ -159,5 +159,5 @@ Returned by `resolve_training_profile`:
 ## Related guides
 
 * [TrainerJobManager](/fine-tuning/training-api/reference/trainer-job-manager) -- trainer job lifecycle (extends FireworksClient)
-* [Saving and Loading](/fine-tuning/training-api/saving-and-loading) -- checkpoint save, load, and promote workflows
+* [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) -- checkpoint save, load, and promote workflows
 * [Training shapes](/fine-tuning/training-api/training-shapes) -- what a shape pins, and its deployment linkage

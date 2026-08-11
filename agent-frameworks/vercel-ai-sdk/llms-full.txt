@@ -71001,6 +71001,22 @@ const { video } = await generateVideo({
 });
 ```
 
+Some models also accept `'adaptive'`, which lets the provider derive the output
+ratio from the input media instead of a fixed value. This is typically required
+for image-to-video, video editing, and video extension, where the output
+inherits the ratio of the input and an explicit ratio is rejected.
+
+```tsx highlight={"7"}
+import { experimental_generateVideo as generateVideo } from 'ai';
+__PROVIDER_IMPORT__;
+
+const { video } = await generateVideo({
+  model: __VIDEO_MODEL__,
+  prompt: { image: firstFrame, text: 'A cat walking on a treadmill' },
+  aspectRatio: 'adaptive',
+});
+```
+
 ### Resolution
 
 The resolution is specified as a string in the format `{width}x{height}`.
@@ -82865,10 +82881,12 @@ The following provider options are available:
   `.nullable()`.
 </Note>
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
+  'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
+  gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
 
   Defaults to 'auto'.
 
@@ -84343,11 +84361,13 @@ The following optional provider options are available for OpenAI chat models:
 
   Parameters for prediction mode.
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
 
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
+  'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
+  gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
 
   Defaults to 'auto'.
 
@@ -103346,6 +103366,14 @@ const { video } = await generateVideo({
 });
 ```
 
+<Note>
+  When the output ratio is dictated by an input — first-frame or
+  first-and-last-frame image-to-video, video editing, and video extension — pass
+  `aspectRatio: 'adaptive'` or omit `aspectRatio` entirely. Newer Seedance
+  models reject an explicit ratio on those paths, because the output inherits
+  the ratio of the input media.
+</Note>
+
 ### Image-to-Video with Audio
 
 Seedance 1.5 Pro supports generating synchronized audio alongside the video:
@@ -107213,7 +107241,7 @@ This project uses the following stack:
 - [AI SDK](/docs)
 - [OpenAI](https://openai.com)
 - [Zod](https://zod.dev)
-- [Postgres](https://www.postgresql.org/) with [ Vercel Postgres ](https://vercel.com/postgres)
+- [Postgres](https://www.postgresql.org/) with [Neon through the Vercel Marketplace](https://vercel.com/marketplace/neon)
 - [shadcn-ui](https://ui.shadcn.com) and [TailwindCSS](https://tailwindcss.com) for styling
 - [Recharts](https://recharts.org) for data visualization
 
@@ -123714,6 +123742,22 @@ const { video } = await generateVideo({
 });
 ```
 
+Some models also accept `'adaptive'`, which lets the provider derive the output
+ratio from the input media instead of a fixed value. This is typically required
+for image-to-video, video editing, and video extension, where the output
+inherits the ratio of the input and an explicit ratio is rejected.
+
+```tsx highlight={"7"}
+import { experimental_generateVideo as generateVideo } from 'ai';
+__PROVIDER_IMPORT__;
+
+const { video } = await generateVideo({
+  model: __VIDEO_MODEL__,
+  prompt: { image: firstFrame, text: 'A cat walking on a treadmill' },
+  aspectRatio: 'adaptive',
+});
+```
+
 ### Resolution
 
 The resolution is specified as a string in the format `{width}x{height}`.
@@ -128555,11 +128599,13 @@ description: Use tools with AI SDK harnesses.
 
 # Harness Tools
 
-Harnesses have two tool surfaces:
+Harnesses have three tool surfaces:
 
 - Built-in tools exposed by the underlying harness runtime, such as file reads,
   edits, shell commands, and web search.
 - AI SDK tools that you pass to `HarnessAgent` with the `tools` setting.
+- External MCP tools configured through the harness adapter's `mcpServers`
+  setting.
 
 This page covers harness-specific behavior. For general AI SDK tool concepts,
 schemas, tool results, and `tool()` usage, see [Tools](/docs/foundations/tools).
@@ -128904,6 +128950,7 @@ The AI SDK includes the following harness adapters:
 - [Claude Code](/providers/ai-sdk-harnesses/claude-code) (`@ai-sdk/harness-claude-code`)
 - [Codex](/providers/ai-sdk-harnesses/codex) (`@ai-sdk/harness-codex`)
 - [Deep Agents](/providers/ai-sdk-harnesses/deepagents) (`@ai-sdk/harness-deepagents`)
+- [Grok Build](/providers/ai-sdk-harnesses/grok-build) (`@ai-sdk/harness-grok-build`)
 - [OpenCode](/providers/ai-sdk-harnesses/opencode) (`@ai-sdk/harness-opencode`)
 - [Pi](/providers/ai-sdk-harnesses/pi) (`@ai-sdk/harness-pi`)
 
@@ -128920,6 +128967,7 @@ The AI SDK includes the following harness adapters:
 | [Claude Code](/providers/ai-sdk-harnesses/claude-code) | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check />                    |
 | [Codex](/providers/ai-sdk-harnesses/codex)             | Sandbox bridge   | <Check />    | <Check />     | <Cross />              | <Cross />                    |
 | [Deep Agents](/providers/ai-sdk-harnesses/deepagents)  | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check /> via auto-rejection |
+| [Grok Build](/providers/ai-sdk-harnesses/grok-build)   | Sandbox via ACP  | <Check />    | <Check />     | <Check />              | <Cross />                    |
 | [OpenCode](/providers/ai-sdk-harnesses/opencode)       | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check /> via auto-rejection |
 | [Pi](/providers/ai-sdk-harnesses/pi)                   | Host process     | <Check />    | <Check />     | <Check />              | <Check />                    |
 
@@ -139256,6 +139304,47 @@ const { text } = await generateText({
 });
 ```
 
+### Image Generation Tool
+
+The image generation tool lets the model create and edit images with Grok Imagine as part of a conversation. The model decides when to call the tool, writes the image prompt, and returns the finished image alongside its text response:
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: xai.responses('grok-4.5'),
+  prompt:
+    'Generate an image of a corgi surfing a big wave, in the style of a Japanese woodblock print',
+  tools: {
+    image_generation: xai.tools.imageGeneration(),
+  },
+});
+
+for (const toolResult of result.staticToolResults) {
+  if (toolResult.toolName === 'image_generation') {
+    const base64Image = toolResult.output.result;
+  }
+}
+```
+
+The tool result also contains the prompt that the model wrote for the image model, which is useful for understanding and debugging what was generated.
+
+#### Image Generation Parameters
+
+- **action** _'auto' | 'generate' | 'edit'_
+
+  Restricts what the tool can do. Defaults to `'auto'`.
+  - `'auto'`: the model can generate and edit images.
+  - `'generate'`: text-to-image generation only.
+  - `'edit'`: image editing only (edits images already in the conversation, including images the model generated earlier).
+
+<Note>
+  The tool takes no size or format parameters; the model picks an aspect ratio
+  for each call. To control it, ask in your prompt (e.g. "in a 9:16 vertical
+  aspect ratio").
+</Note>
+
 ### MCP Server Tool
 
 The MCP server tool enables the model to connect to remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers and use their tools:
@@ -140499,10 +140588,12 @@ The following provider options are available:
   `.nullable()`.
 </Note>
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
+  'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
+  gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
 
   Defaults to 'auto'.
 
@@ -142273,11 +142364,13 @@ The following optional provider options are available for OpenAI chat models:
 
   Parameters for prediction mode.
 
-- **serviceTier** _'auto' | 'flex' | 'priority' | 'default'_
+- **serviceTier** _'auto' | 'flex' | 'priority' | 'fast' | 'default'_
 
   Service tier for the request. Set to 'flex' for 50% cheaper processing
   at the cost of increased latency (available for o3, o4-mini, and gpt-5 models).
   Set to 'priority' for faster processing with Enterprise access (available for gpt-4, gpt-5, gpt-5-mini, o3, o4-mini; gpt-5-nano is not supported).
+  'fast' is OpenAI's newer name for the 'priority' tier; the two are interchangeable, and responses from
+  gpt-5.6 and earlier report `serviceTier: 'priority'` for either.
 
   Defaults to 'auto'.
 
@@ -149618,6 +149711,79 @@ AssemblyAI's documentation for per-language availability.
 | `best`              | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
+title: GMI Cloud
+description: Learn how to use GMI Cloud's models with the AI SDK.
+---
+
+# GMI Cloud Provider
+
+The [GMI Cloud](https://www.gmicloud.ai) provider offers access to open-weight language models through GMI Cloud's GPU inference platform, over an OpenAI-compatible API.
+
+API keys can be obtained from the [GMI Cloud console](https://console.gmicloud.ai).
+
+## Setup
+
+The GMI Cloud provider is available via the `@ai-sdk/gmicloud` module. You can install it with:
+
+<InstallPackages packages="@ai-sdk/gmicloud" />
+
+## Provider Instance
+
+You can import the default provider instance `gmicloud` from `@ai-sdk/gmicloud`:
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+```
+
+For custom configuration, you can import `createGmicloud` and create a provider instance with your settings:
+
+```ts
+import { createGmicloud } from '@ai-sdk/gmicloud';
+
+const gmicloud = createGmicloud({
+  apiKey: process.env.GMI_CLOUD_APIKEY ?? '',
+});
+```
+
+You can use the following optional settings to customize the GMI Cloud provider instance:
+
+- **baseURL** _string_
+
+  Use a different URL prefix for API calls.
+  The default prefix is `https://api.gmi-serving.com/v1`.
+
+- **apiKey** _string_
+
+  API key that is being sent using the `Authorization` header. It defaults to
+  the `GMI_CLOUD_APIKEY` environment variable.
+
+- **headers** _Record&lt;string,string&gt;_
+
+  Custom headers to include in the requests.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation.
+
+## Language Models
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: gmicloud('deepseek-ai/DeepSeek-V4-Flash-0731'),
+  prompt: 'What is the capital of France?',
+});
+```
+
+GMI Cloud serves an evolving catalog of open-weight models, so model ids are typed as `string`. Embedding and image models are not supported.
+
+## Error diagnostics
+
+GMI Cloud's edge reports a generic banner in `error.message` on rejections and nests the backend engine's diagnostic in `error.details`. This provider unwraps the nested diagnostic, so `AI_APICallError.message` carries the engine's reason (e.g. `The request is invalid: Invalid max_tokens value, the valid range of max_tokens is [1, 393216].`) instead of `Backend request failed with status 400`.
+
+---
 title: DeepInfra
 description: Learn how to use DeepInfra's models with the AI SDK.
 ---
@@ -153539,8 +153705,7 @@ You can use the following optional settings to customize the provider instance:
 <a id="google-vertex-edge-runtime"></a>
 #### Edge Runtime
 
-Edge runtimes (like Vercel Edge Functions and Cloudflare Workers) are lightweight JavaScript environments that run closer to users at the network edge.
-They only provide a subset of the standard Node.js APIs.
+Edge runtimes (like Cloudflare Workers) are lightweight JavaScript environments that run closer to users at the network edge. They only provide a subset of the standard Node.js APIs.
 For example, direct file system access is not available, and many Node.js-specific libraries
 (including the standard Google Auth library) are not compatible.
 
@@ -155028,8 +155193,7 @@ You can use the following optional settings to customize the Google Vertex Anthr
 <a id="google-vertex-anthropic-edge-runtime"></a>
 #### Edge Runtime
 
-Edge runtimes (like Vercel Edge Functions and Cloudflare Workers) are lightweight JavaScript environments that run closer to users at the network edge.
-They only provide a subset of the standard Node.js APIs.
+Edge runtimes (like Cloudflare Workers) are lightweight JavaScript environments that run closer to users at the network edge. They only provide a subset of the standard Node.js APIs.
 For example, direct file system access is not available, and many Node.js-specific libraries
 (including the standard Google Auth library) are not compatible.
 
@@ -159306,6 +159470,52 @@ console.log(text);
 
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
 
+### Video Input
+
+Kimi K3, Kimi K2.7 Code, Kimi K2.6, and Kimi K2.5 support video input. Pass the video as a `file` content part with a video media type:
+
+```ts
+import { moonshotai } from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+import fs from 'node:fs';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Summarize what happens in this video.' },
+        {
+          type: 'file',
+          data: fs.readFileSync('./video.mp4'),
+          mediaType: 'video/mp4',
+        },
+      ],
+    },
+  ],
+});
+
+console.log(text);
+```
+
+You can also pass a URL. Since Moonshot AI does not fetch external URLs, the AI SDK downloads the video and inlines it as base64 before sending:
+
+```ts
+{
+  type: 'file',
+  data: new URL('https://example.com/video.mp4'),
+  mediaType: 'video/mp4',
+}
+```
+
+<Note>
+  Moonshot AI recommends videos up to 1080p. For larger videos, or videos you
+  reuse across many requests, upload them with the [Moonshot Files
+  API](https://platform.moonshot.ai/docs/api/files) instead. Audio and PDF
+  inputs are not supported by Moonshot AI chat completions.
+</Note>
+
 ### Provider Options
 
 The following optional provider options are available for Moonshot AI language models:
@@ -159330,21 +159540,24 @@ The following optional provider options are available for Moonshot AI language m
   Controls how reasoning history is handled in multi-turn conversations:
   - `'disabled'`: Remove reasoning from history
   - `'interleaved'`: Include reasoning between tool calls within a single turn
-  - `'preserved'`: Keep all reasoning in history
+  - `'preserved'`: Keep all reasoning in history. Mapped to Moonshot's
+    `thinking.keep: 'all'` request field.
 
 ## Model Capabilities
 
-| Model                    | Image Input | Object Generation | Tool Usage | Tool Streaming |
-| ------------------------ | ----------- | ----------------- | ---------- | -------------- |
-| `moonshot-v1-8k`         | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `moonshot-v1-32k`        | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `moonshot-v1-128k`       | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2`                | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2.5`              | <Check />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-thinking`       | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-thinking-turbo` | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k2-turbo`          | <Cross />   | <Check />         | <Check />  | <Check />      |
-| `kimi-k3`                | <Check />   | <Check />         | <Check />  | <Check />      |
+| Model                    | Image Input | Video Input | Object Generation | Tool Usage | Tool Streaming |
+| ------------------------ | ----------- | ----------- | ----------------- | ---------- | -------------- |
+| `moonshot-v1-8k`         | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-32k`        | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-128k`       | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2`                | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.5`              | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-thinking`       | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-thinking-turbo` | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-turbo`          | <Cross />   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.6`              | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.7-code`         | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k3`                | <Check />   | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
@@ -161613,6 +161826,14 @@ const { video } = await generateVideo({
 });
 ```
 
+<Note>
+  When the output ratio is dictated by an input — first-frame or
+  first-and-last-frame image-to-video, video editing, and video extension — pass
+  `aspectRatio: 'adaptive'` or omit `aspectRatio` entirely. Newer Seedance
+  models reject an explicit ratio on those paths, because the output inherits
+  the ratio of the input media.
+</Note>
+
 ### Image-to-Video with Audio
 
 Seedance 1.5 Pro supports generating synchronized audio alongside the video:
@@ -161792,20 +162013,25 @@ type them with `ByteDanceVideoModelOptions`.
 
 #### Polling Options
 
-- **pollIntervalMs** _number_
+ByteDance video generation is task-based: the provider creates a task and the AI
+SDK polls it until it completes. Configure polling with the top-level `poll`
+option of [`generateVideo()`](/docs/reference/ai-sdk-core/generate-video):
 
-  Control how frequently the API is checked for completed videos while they are
-  being processed. Defaults to 3000ms.
-
-- **pollTimeoutMs** _number_
-
-  Maximum time to wait for video generation to complete before timing out.
-  Defaults to 300000ms (5 minutes).
+```ts
+const { video } = await generateVideo({
+  model: byteDance.video('seedance-1-0-pro-250528'),
+  prompt: 'A futuristic city with flying cars',
+  poll: {
+    intervalMs: 2000, // how often to check the task (default: 5000)
+    timeoutMs: 900000, // give up after 15 minutes (default: 600000)
+  },
+});
+```
 
 <Note>
-  Video generation is an asynchronous process that can take several minutes.
-  Consider setting `pollTimeoutMs` to at least 10 minutes (600000ms) for
-  reliable operation.
+  The `pollIntervalMs` and `pollTimeoutMs` provider options are deprecated and
+  ignored. Passing either emits a warning. Video generation can take several
+  minutes, so raise `poll.timeoutMs` above the 10 minute default for long jobs.
 </Note>
 
 ### Video Model Capabilities
@@ -162948,6 +163174,9 @@ Use `createClaudeCode()` to configure the runtime:
 const harness = createClaudeCode({
   model: 'claude-sonnet-4-6',
   maxTurns: 10,
+  env: {
+    DEPLOYMENT_ENV: 'staging',
+  },
   thinking: {
     type: 'adaptive',
     display: 'summarized',
@@ -162958,14 +163187,21 @@ const harness = createClaudeCode({
 Settings:
 
 - `auth`: direct Anthropic or AI Gateway authentication settings.
+- `mcpServers`: MCP server definitions keyed by server name.
 - `model`: Anthropic model id passed to the underlying Claude Code runtime.
 - `maxTurns`: maximum internal turns before yielding.
+- `env`: environment variables for the Claude Code process. Values are merged
+  over the sandbox bridge process environment and take precedence.
 - `thinking`: extended-thinking configuration. `type` can be `enabled`,
   `disabled`, or `adaptive`. For enabled or adaptive thinking, `display` can be
   `summarized` or `omitted`. Defaults to
   `{ type: 'adaptive', display: 'summarized' }`.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the bridge authentication token. By default, the adapter generates a
+  random 32-byte token. Custom implementations must return a suitably secret
+  token.
 
 ## Authentication
 
@@ -163117,11 +163353,16 @@ const harness = createCodex({
 Settings:
 
 - `auth`: OpenAI, OpenAI-compatible, or AI Gateway authentication settings.
+- `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenAI model id. If omitted, the adapter uses its pinned default.
 - `reasoningEffort`: `low`, `medium`, or `high`.
 - `webSearch`: allow live web search.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the bridge authentication token. By default, the adapter generates a
+  random 32-byte token. Custom implementations must return a suitably secret
+  token.
 
 ## Authentication
 
@@ -163278,8 +163519,38 @@ const harness = createPi({
 Settings:
 
 - `auth`: AI Gateway or custom provider environment configuration.
+- `extensionFactories`: trusted inline Pi extension factories that run in the
+  host Node.js process.
+- `mcpServers`: MCP server definitions keyed by server name.
 - `model`: Pi model id or model name.
 - `thinkingLevel`: Pi thinking budget level.
+
+## Inline Extensions
+
+Use `extensionFactories` to load trusted inline Pi extensions for each harness
+session:
+
+```ts
+const harness = createPi({
+  extensionFactories: [
+    pi => {
+      pi.on('agent_start', () => {
+        console.log('Pi agent started');
+      });
+    },
+  ],
+});
+```
+
+Routine resource refreshes between turns reuse the active extension runtime and
+do not reinitialize factories. If the underlying Pi session is rebuilt, the
+factories initialize again for the new Pi runtime.
+
+Extension factories execute in the host Node.js process with access to the host
+environment, so only pass factories you trust. This setting enables only the
+factories you explicitly provide. Filesystem extension discovery remains
+disabled, including user, project, and settings-based extensions. Themes and
+prompt templates also remain disabled.
 
 ## Authentication
 
@@ -163427,6 +163698,7 @@ Settings:
 
 - `auth`: Anthropic, OpenAI, OpenAI-compatible, or AI Gateway authentication
   settings.
+- `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenCode model id. Provider-prefixed values such as
   `anthropic/claude-sonnet-4-6` are passed through to OpenCode.
 - `provider`: provider id to use with an unprefixed `model`.
@@ -163434,6 +163706,10 @@ Settings:
   such as `low`, `medium`, or `high`.
 - `port`: bridge port override.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the bridge authentication token. By default, the adapter generates a
+  random 32-byte token. Custom implementations must return a suitably secret
+  token.
 
 ## Authentication
 
@@ -163598,6 +163874,7 @@ const harness = createDeepAgents({
 Settings:
 
 - `auth`: Anthropic or AI Gateway authentication settings.
+- `mcpServers`: MCP server definitions keyed by server name.
 - `model`: model id passed to the Deep Agents (LangChain) runtime. Through AI
   Gateway, use the `creator/model` slug (e.g. `anthropic/claude-sonnet-4-6`,
   `google/gemini-2.5-flash`, `openai/gpt-4.1-mini`).
@@ -163605,6 +163882,10 @@ Settings:
 - `recursionLimit`: maximum LangGraph super-steps per turn. When omitted, the
   Deep Agents default applies.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the bridge authentication token. By default, the adapter generates a
+  random 32-byte token. Custom implementations must return a suitably secret
+  token.
 
 ## Authentication
 
@@ -163689,6 +163970,592 @@ The adapter exposes these Deep Agents built-ins through `agent.tools`:
 - [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
 
 ---
+title: Agent Client Protocol
+description: Learn how to use Agent Client Protocol implementations through the AI SDK harness adapter.
+---
+
+# Agent Client Protocol Harness
+
+The Agent Client Protocol (ACP) harness adapter connects `HarnessAgent` to any
+harness compatible with ACP version 1. The generic adapter owns the bridge, ACP
+client, host-tool relay, event translation, approvals, and lifecycle behavior;
+the inline profile describes how to install and configure one ACP runtime.
+
+All you need in addition to the ACP harness adapter is an NPM package that provides
+an ACP compatible implementation, e.g. `@agentclientprotocol/claude-agent-acp` or
+`@agentclientprotocol/codex-acp`. You can then configure the ACP harness adapter
+with a few lines of code.
+
+<Note>
+  Harness packages are **experimental**. Expect breaking changes between
+  releases as this early API gets further refined.
+</Note>
+
+## Setup
+
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-acp @ai-sdk/sandbox-vercel" />
+
+## Basic Usage
+
+Define an ACP harness profile, such as one of the
+[complete implementations](#complete-acp-harness-implementations) below, and
+pass it to `HarnessAgent`:
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { codexACPHarness } from './codex-acp-harness';
+
+const agent = new HarnessAgent({
+  harness: codexACPHarness,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+    ports: [4000],
+  }),
+});
+
+const session = await agent.createSession();
+try {
+  const result = await agent.generate({
+    session,
+    prompt: 'Check the test failures and fix the production code.',
+  });
+  console.log(result.text);
+} finally {
+  await session.destroy();
+}
+```
+
+## Adapter Settings
+
+`createACP` accepts:
+
+- `harnessId`: stable kebab-case identity for this profile.
+- `version`: ACP protocol version. It defaults to and currently supports only
+  `'v1'`.
+- `source`: where the ACP package comes from, as a simple or locked NPM source.
+- `executable`: the package bin name to launch.
+- `args`: optional arguments passed to the executable.
+- `forwardEnv`: host environment variable names to forward into the sandbox.
+- `env`: persistent environment values written at bootstrap.
+- `builtinTools`: optional native tool definitions for static typing and exact
+  name matching.
+- `mcpServers`: MCP server definitions keyed by server name.
+- `authentication`: advertised ACP authentication method, metadata, and client
+  capabilities.
+- `auth`: downstream provider authentication mode:
+  - `auto` (default): use AI Gateway when Gateway credentials and a
+    `providerAuthentication` configuration are available; otherwise use direct
+    authentication.
+  - `direct`: always use direct authentication, even when Gateway credentials
+    are available.
+  - `ai-gateway`: always use AI Gateway and throw when Gateway credentials are
+    unavailable. This requires `providerAuthentication` configuration.
+- `providerAuthentication`: declarative runtime-specific Gateway environment.
+- `modelId`: a known implementation model identifier for Harness metadata.
+- `permissionModeMapping`: mappings from all three Harness permission modes to
+  advertised ACP session modes or configuration options. Set an entry to
+  `null` when the ACP implementation does not support that mode. When omitted,
+  the adapter applies `permissionMode` to ACP permission requests by tool kind.
+- `session.meta`: serializable implementation-specific metadata for session
+  creation and restoration.
+- `port`: exposed bridge port override.
+- `startupTimeoutMs`: bridge startup timeout. The default is 120 seconds.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the bridge authentication token. By default, the adapter generates a
+  random 32-byte token. Custom implementations must return a suitably secret
+  token.
+- `clientApp`: optional client attribution with `name` and `version`. It
+  defaults to the installed `ai-sdk/harness-acp/<version>` identity and is
+  available to Gateway environment placeholders.
+
+Runtime-specific package names, environment variables, modes, and session
+metadata belong in the inline profile, not in the generic adapter.
+
+### Package source
+
+A simple NPM source installs a single package by name:
+
+```ts
+const source = {
+  type: 'npm-simple',
+  packageName: '@agentclientprotocol/codex-acp',
+  packageVersion: '1.1.4',
+} as const;
+```
+
+`packageVersion` is optional and must be an exact version when supplied. Omit it
+to install the package's `latest` dist-tag instead. An omitted version also
+stays out of the harness identity, so a new upstream release does not
+invalidate existing lifecycle state.
+
+A simple source pins only the requested ACP package, while its transitive
+dependencies are resolved when the sandbox bootstraps. To freeze the complete
+installation, use a locked source and provide the contents of a `package.json`
+and its `pnpm-lock.yaml`:
+
+```ts
+const source = {
+  type: 'npm-locked',
+  packageJson: packageJsonContents,
+  pnpmLockYaml: pnpmLockYamlContents,
+} as const;
+```
+
+A locked source installs the supplied files with
+`pnpm install --frozen-lockfile`.
+
+## Authentication
+
+AI Gateway authentication is supported when `providerAuthentication` defines
+how the underlying ACP implementation accepts Gateway configuration. The
+adapter reads these environment variables:
+
+- `VERCEL_OIDC_TOKEN`
+- `AI_GATEWAY_API_KEY`
+- `AI_GATEWAY_BASE_URL`
+
+With the default `auth: 'auto'`, the adapter uses AI Gateway when
+`AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` is available and otherwise uses
+direct authentication.
+
+For direct authentication, configure `forwardEnv` with the host
+environment variable names that the underlying ACP implementation reads. These
+variables are allowlisted and forwarded unchanged to the ACP process. Their
+names depend on the ACP implementation. Credential values are resolved at
+runtime and are not stored in the profile.
+
+### Gateway environment
+
+Set `providerAuthentication.gateway.env` to the environment variables that the
+underlying ACP implementation uses for its provider endpoint, credentials, and
+attribution. Profile values such as `gateway-api-key`, `gateway-base-url`,
+`gateway-authorization`, `client-app`, `client-app-name`, and
+`client-app-version` are placeholders that the adapter resolves only after
+Gateway authentication has been selected. The three client-app placeholders
+resolve to the combined `name/version` identifier, its name, and its version,
+respectively. Structured launch environment values are serialized as JSON after
+their placeholders are resolved.
+
+## Sandbox
+
+Every ACP harness requires a network sandbox with at least one exposed port,
+e.g. `@ai-sdk/sandbox-vercel`:
+
+```ts
+const sandbox = createVercelSandbox({
+  runtime: 'node24',
+  ports: [4000],
+});
+```
+
+By default, the adapter uses the first exposed port. Set `port` on `createACP`
+to select another exposed port. If neither is available, session startup throws
+`HarnessCapabilityUnsupportedError` with instructions to configure one.
+
+Bridge packages, ACP installations, state, replay logs, and projected skills
+live in adapter-owned directories outside the session project. The session
+workspace starts empty.
+
+## Tools and Approvals
+
+Optional `builtinTools` definitions classify native ACP tools only when the
+agent supplies a programmatic name matching the tool key or `nativeName`.
+Unmatched native and third-party MCP calls remain valid provider-executed
+dynamic tools.
+
+Host-defined AI SDK tools are exposed through a harness-owned MCP server and
+execute in the host. Their recursive JSON Schemas are preserved. A tool without
+`execute` pauses for a caller-supplied result through `continueStream`.
+
+Map all three Harness permission modes when the ACP implementation exposes
+native permission controls, and set unsupported modes to `null`. Selecting a
+`null` mapping throws `HarnessCapabilityUnsupportedError`. The adapter validates
+concrete modes or config options against the session response. When a mapping is
+configured, any ACP permission request that still occurs becomes a Harness
+approval request. Without a mapping, the adapter automatically selects
+`allow_once` for tool kinds allowed by `permissionMode` and requests Harness
+approval for the rest. A rejection selects `reject_once`; persistent choices
+are never inferred. Host-tool approval remains independent.
+
+## Complete ACP Harness Implementations
+
+These profiles support direct authentication through the runtime-specific
+environment variables shown below and AI Gateway authentication through
+`AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN`.
+
+### Claude Code ACP
+
+Claude Code accepts the Anthropic-compatible Gateway root URL without `/v1`.
+This profile uses the runtime's supported launch environment:
+
+```ts
+import { createACP, type ACPPermissionModeMapping } from '@ai-sdk/harness-acp';
+
+export const claudeCodeACPHarness = createACP({
+  harnessId: 'acp-claude-code',
+  // Define the runtime's built-in tool names and input schemas to expose
+  // provider-executed calls as typed HarnessAgent tools.
+  // builtinTools: { ... },
+  source: {
+    type: 'npm-simple',
+    packageName: '@agentclientprotocol/claude-agent-acp',
+    packageVersion: '0.61.0',
+  },
+  executable: 'claude-agent-acp',
+  forwardEnv: ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'],
+  env: {
+    IS_SANDBOX: '1',
+  },
+  permissionModeMapping: {
+    'allow-reads': { type: 'session-mode', modeId: 'default' },
+    'allow-edits': { type: 'session-mode', modeId: 'acceptEdits' },
+    'allow-all': { type: 'session-mode', modeId: 'bypassPermissions' },
+  } as const satisfies ACPPermissionModeMapping,
+  providerAuthentication: {
+    gateway: {
+      env: {
+        ANTHROPIC_API_KEY: { $source: 'gateway-api-key' },
+        ANTHROPIC_AUTH_TOKEN: { $source: 'gateway-api-key' },
+        ANTHROPIC_BASE_URL: { $source: 'gateway-base-url' },
+        CLAUDE_AGENT_SDK_CLIENT_APP: { $source: 'client-app' },
+      },
+    },
+  },
+});
+```
+
+Without Gateway credentials, this profile uses direct
+`ANTHROPIC_API_KEY` or `ANTHROPIC_AUTH_TOKEN` authentication. The
+Gateway environment supplies versioned attribution through Claude's supported
+`CLAUDE_AGENT_SDK_CLIENT_APP` setting. `IS_SANDBOX` allows Claude Code ACP to
+advertise `bypassPermissions` when the sandbox process runs as root.
+
+### Codex ACP
+
+Codex ACP accepts an API key and JSON session configuration through its launch
+environment. Its OpenAI-compatible endpoint must end in `/v1`:
+
+```ts
+import { createACP, type ACPPermissionModeMapping } from '@ai-sdk/harness-acp';
+
+export const codexACPHarness = createACP({
+  harnessId: 'acp-codex',
+  // Define the runtime's built-in tool names and input schemas to expose
+  // provider-executed calls as typed HarnessAgent tools.
+  // builtinTools: { ... },
+  source: {
+    type: 'npm-simple',
+    packageName: '@agentclientprotocol/codex-acp',
+    packageVersion: '1.1.4',
+  },
+  executable: 'codex-acp',
+  forwardEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
+  permissionModeMapping: {
+    'allow-reads': null,
+    'allow-edits': null,
+    'allow-all': { type: 'session-mode', modeId: 'agent-full-access' },
+  } as const satisfies ACPPermissionModeMapping,
+  authentication: {
+    methodId: 'api-key',
+  },
+  providerAuthentication: {
+    gateway: {
+      env: {
+        CODEX_API_KEY: { $source: 'gateway-api-key' },
+        CODEX_CONFIG: {
+          model: 'openai/gpt-5.6-sol',
+          model_provider: 'ai_gateway',
+          model_providers: {
+            ai_gateway: {
+              name: 'AI Gateway',
+              base_url: {
+                $source: 'gateway-base-url',
+                ensureSuffix: '/v1',
+              },
+              env_key: 'CODEX_API_KEY',
+              wire_api: 'responses',
+              supports_websockets: false,
+              http_headers: {
+                'User-Agent': { $source: 'client-app' },
+                'x-client-app': { $source: 'client-app' },
+              },
+            },
+          },
+          model_supports_reasoning_summaries: true,
+          preferred_auth_method: 'apikey',
+        },
+      },
+    },
+  },
+});
+```
+
+Codex ACP supports only `permissionMode: 'allow-all'`. Its restrictive session
+modes enable Codex's internal sandbox, which must not run inside the sandbox
+already provided to `HarnessAgent`.
+
+The `client-app` placeholder resolves to the versioned
+`ai-sdk/harness-acp/<version>` identifier and sends it as both `User-Agent` and
+`x-client-app`.
+Without Gateway credentials, this profile uses direct `CODEX_API_KEY` or
+`OPENAI_API_KEY` authentication. Gateway `env` values are added to the
+ACP process only when Gateway is selected, so direct runtime configuration
+remains unchanged.
+
+### Grok Build ACP
+
+Grok Build exposes ACP directly through `grok agent stdio`. It does not
+advertise ACP session modes for its permission behavior, so this profile omits
+`permissionModeMapping`:
+
+```ts
+import { createACP } from '@ai-sdk/harness-acp';
+
+export const grokBuildACPHarness = createACP({
+  harnessId: 'acp-grok-build',
+  // Define the runtime's built-in tool names and input schemas to expose
+  // provider-executed calls as typed HarnessAgent tools.
+  // builtinTools: { ... },
+  source: {
+    type: 'npm-simple',
+    packageName: '@xai-official/grok',
+    packageVersion: '0.2.111',
+  },
+  executable: 'grok',
+  args: ['agent', 'stdio'],
+  forwardEnv: ['XAI_API_KEY'],
+  providerAuthentication: {
+    gateway: {
+      env: {
+        GROK_CLIENT_NAME: { $source: 'client-app-name' },
+        GROK_CLIENT_VERSION: { $source: 'client-app-version' },
+        XAI_API_KEY: { $source: 'gateway-api-key' },
+        GROK_XAI_API_BASE_URL: {
+          $source: 'gateway-base-url',
+          ensureSuffix: '/v1',
+        },
+        GROK_MODELS_BASE_URL: {
+          $source: 'gateway-base-url',
+          ensureSuffix: '/v1',
+        },
+      },
+    },
+  },
+});
+```
+
+Without Gateway credentials, this profile uses direct `XAI_API_KEY`
+authentication. The Gateway environment supplies client name and version attribution.
+Grok Build handles its built-in safe operations internally. For permission
+requests sent through ACP, the adapter applies the configured Harness
+`permissionMode` by tool kind and requests explicit approval for the rest.
+
+## Known Limitations
+
+- ACP v1 does not expose model-step boundaries or per-step usage. The adapter
+  infers boundaries and reports unknown per-step usage; terminal prompt usage
+  supplies the turn total.
+- Standard ACP v1 has no portable manual compaction or mid-turn steering API.
+- ACP v1 has no portable built-in tool filtering API. You can still use
+  `activeTools` and `inactiveTools` to filter host-executed tools, but filtering
+  ACP built-ins will throw.
+- A changed host-tool catalog requires the ACP implementation to refresh its
+  MCP tool list. Implementations that retain stale tools fail explicitly.
+
+## Related
+
+- [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent)
+- [Harness tools](/docs/ai-sdk-harnesses/tools)
+- [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
+
+---
+title: Grok Build
+description: Learn how to use the Grok Build harness adapter.
+---
+
+# Grok Build Harness
+
+The Grok Build harness adapter connects `HarnessAgent` to the
+[Grok Build CLI](https://x.ai/cli) through the Agent Client Protocol (ACP).
+The adapter delegates ACP installation, sessions, streaming, tools, and
+lifecycle management to `@ai-sdk/harness-acp`.
+
+<Note>
+  Harness packages are **experimental**. Expect breaking changes between
+  releases as this early API gets further refined.
+</Note>
+
+## Setup
+
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-grok-build @ai-sdk/sandbox-vercel" />
+
+The ACP harness installs the pinned Grok Build CLI inside the sandbox when the
+first session starts.
+
+## Import
+
+```ts
+import { createGrokBuild, grokBuild } from '@ai-sdk/harness-grok-build';
+```
+
+`grokBuild` is equivalent to `createGrokBuild()` with its default
+configuration.
+
+## Basic Usage
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { grokBuild } from '@ai-sdk/harness-grok-build';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+
+const agent = new HarnessAgent({
+  harness: grokBuild,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+    ports: [4000],
+  }),
+});
+
+const session = await agent.createSession();
+
+let exitCode = 0;
+try {
+  const result = await agent.stream({
+    session,
+    prompt: 'Check the test failures and fix the production code.',
+  });
+
+  for await (const part of result.stream) {
+    if (part.type === 'text-delta') {
+      process.stdout.write(part.text);
+    }
+  }
+} catch (err) {
+  exitCode = 1;
+  console.error(err);
+} finally {
+  await session.destroy();
+  process.exit(exitCode);
+}
+```
+
+To use this agent, ensure environment variables include `VERCEL_OIDC_TOKEN`
+for Vercel Sandbox and one of the variables listed under
+[authentication](#authentication) for Grok Build.
+
+## Adapter Settings
+
+Use `createGrokBuild()` to configure the runtime:
+
+```ts
+const harness = createGrokBuild({
+  auth: 'ai-gateway',
+  model: 'grok-code-fast-1',
+  port: 4001,
+  startupTimeoutMs: 180_000,
+});
+```
+
+Settings:
+
+- `auth`: selects `auto`, `direct`, or `ai-gateway` authentication. The default
+  is `auto`, which selects AI Gateway when Gateway credentials are present and
+  direct xAI authentication otherwise.
+- `model`: Grok model id selected through ACP. When omitted, Grok Build chooses
+  its own default model.
+- `mcpServers`: MCP server definitions keyed by server name.
+- `port`: ACP bridge port override.
+- `startupTimeoutMs`: maximum time to wait for the ACP bridge to start.
+- `mintBridgeToken`: synchronous function that receives the sandbox id and
+  returns the ACP bridge authentication token. By default, the adapter generates
+  a random 32-byte token. Custom implementations must return a suitably secret
+  token.
+
+The adapter pins the Grok Build CLI and ACP launch command. These implementation
+details cannot be overridden through `createGrokBuild()`.
+
+## Authentication
+
+By default, authentication is resolved from the host environment and forwarded
+to the Grok Build process in the sandbox.
+
+Supported environment variables:
+
+- `VERCEL_OIDC_TOKEN`
+- `AI_GATEWAY_API_KEY`
+- `AI_GATEWAY_BASE_URL`
+- `XAI_API_KEY`
+
+With direct authentication, the adapter forwards `XAI_API_KEY`. With AI
+Gateway, it supplies the Gateway credential as `XAI_API_KEY`, maps the Gateway
+base URL ending in `/v1` to `GROK_XAI_API_BASE_URL` and
+`GROK_MODELS_BASE_URL`, and sets `GROK_CLIENT_NAME` and
+`GROK_CLIENT_VERSION` for client attribution.
+
+Force a specific authentication route when both kinds of credentials are
+available:
+
+```ts
+const directHarness = createGrokBuild({ auth: 'direct' });
+const gatewayHarness = createGrokBuild({ auth: 'ai-gateway' });
+```
+
+## Sandbox
+
+Grok Build runs inside the sandbox through `@ai-sdk/harness-acp`. It requires a
+network sandbox with at least one exposed port, such as
+`@ai-sdk/sandbox-vercel`:
+
+```ts
+const sandbox = createVercelSandbox({
+  runtime: 'node24',
+  ports: [4000],
+});
+```
+
+The first session requires network egress so the ACP harness can install
+`@xai-official/grok@0.2.111` inside the sandbox.
+
+## Built-in Tools
+
+The adapter maps these Grok Build built-ins to common harness tools:
+
+- `bash` (`run_terminal_command`)
+- `edit` (`search_replace`)
+- `grep`
+- `webSearch` (`web_search`)
+- `write`
+
+Other Grok Build tools remain available under their native names, including
+`read_file`, `list_dir`, `todo_write`, `spawn_subagent`, `monitor`, workflow and
+scheduler tools, and image-generation tools.
+
+Grok Build does not advertise ACP session modes for its permission behavior.
+When Grok sends an ACP permission request, the ACP harness applies the
+configured Harness `permissionMode` based on the tool kind. Grok may handle
+safe built-in operations internally without sending a permission request.
+
+## Known Limitations
+
+- ACP v1 does not expose model-step boundaries or per-step usage. The adapter
+  infers boundaries and reports unknown per-step usage when Grok does not
+  provide totals.
+- ACP v1 has no portable manual compaction or mid-turn steering API.
+- ACP v1 has no portable built-in tool filtering API. Filtering host tools is
+  supported, but filtering Grok built-ins throws an unsupported-capability
+  error.
+- A changed host-tool catalog requires Grok Build to refresh its ACP MCP tool
+  list. If the implementation retains stale tools, the turn fails explicitly.
+
+## Related
+
+- [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent)
+- [Harness tools](/docs/ai-sdk-harnesses/tools)
+- [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
+- [Agent Client Protocol](/providers/ai-sdk-harnesses/acp)
+
+---
 title: AI SDK Harnesses
 description: Learn how to use AI SDK harness adapters.
 ---
@@ -163712,6 +164579,11 @@ and response primitives.
       href: '/providers/ai-sdk-harnesses/codex',
     },
     {
+      title: 'Grok Build',
+      description: 'Use Grok Build through the AI SDK harness abstraction.',
+      href: '/providers/ai-sdk-harnesses/grok-build',
+    },
+    {
       title: 'OpenCode',
       description: 'Use OpenCode through the AI SDK harness abstraction.',
       href: '/providers/ai-sdk-harnesses/opencode',
@@ -163720,6 +164592,12 @@ and response primitives.
       title: 'Pi',
       description: 'Use Pi through the AI SDK harness abstraction.',
       href: '/providers/ai-sdk-harnesses/pi',
+    },
+    {
+      title: 'Agent Client Protocol',
+      description:
+        'Use any ACP compatible harness through the AI SDK harness abstraction.',
+      href: '/providers/ai-sdk-harnesses/acp',
     },
   ]}
 />

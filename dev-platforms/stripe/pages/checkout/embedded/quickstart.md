@@ -259,7 +259,7 @@ Add your publishable and secret keys to a `.env` file. Next.js automatically loa
 
 Each webhook endpoint has a unique signing secret. Webhooks are managed in [Workbench](https://docs.stripe.com/workbench.md) in the Dashboard. You can find the secret in the destination detail view for your webhook endpoint in Workbench’s [Webhooks tab](https://dashboard.stripe.com/workbench/webhooks). If you’re testing locally with the Stripe CLI, you can also get the secret from the CLI output using the command `stripe listen`.
 
-To include a webhook endpoint signing secret to listen to [events](https://docs.stripe.com/event-destinations.md), go to Workbench’s [Event destinations](https://dashboard.stripe.com/workbench/webhooks) tab or use the [Stripe CLI](https://docs.stripe.com/stripe-cli.md).
+To include a webhook endpoint signing secret to listen to [events](https://docs.stripe.com/event-destinations.md), go to Workbench’s [Event destinations](https://dashboard.stripe.com/workbench/webhooks) tab or use the [Stripe CLI](https://docs.stripe.com/cli.md).
 
 ### Run the application
 

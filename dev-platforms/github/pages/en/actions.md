@@ -16,7 +16,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
+  Learn the basics of core concepts and essential terminology in GitHub Actions.
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
@@ -32,7 +32,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
-  <p>Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.</p>
+  Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 

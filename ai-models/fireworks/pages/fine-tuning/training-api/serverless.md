@@ -12,7 +12,7 @@ Run LoRA fine-tuning, preference optimization, and RL on a shared pooled trainer
 
 Serverless training connects to a shared, already-running pooled trainer through the gateway and returns training and sampling clients. There is no trainer job or inference deployment to provision or delete. Close each sampler and the service client when finished.
 
-Not sure whether the shared pool fits your workload? [Compare serverless and dedicated training](/fine-tuning/training-api/choose-infrastructure).
+Not sure whether the shared pool fits your workload? [Compare serverless and dedicated training](/fine-tuning/training-api/introduction#infrastructure).
 
 <Info>
   **What you need**
@@ -84,7 +84,7 @@ All three run as LoRA on the shared pool. For full-parameter training, ORPO, dis
 
 ## When to use dedicated
 
-Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support such as ORPO or distillation, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
+Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/introduction#infrastructure).
 
 ## Core concepts
 
@@ -316,7 +316,7 @@ response = client.chat.completions.create(
 
 For deployment configuration, performance, and troubleshooting, see [Deploying fine-tuned models](/fine-tuning/deploying-loras).
 
-For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, cross-job resolution), see [Saving and Loading](/fine-tuning/training-api/saving-and-loading). For recipe-driven save / resume / promote, see [Checkpoints and Resume (cookbook)](/fine-tuning/training-api/cookbook/checkpoints).
+For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, and cross-job resolution), see [Dedicated Training](/fine-tuning/training-api/dedicated#saving-and-loading) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference#checkpoints).
 
 ## Pricing
 
@@ -370,10 +370,10 @@ This walkthrough fine-tunes Qwen 3.5 9B with LoRA SFT to classify prompts and ro
 
 ## Next steps
 
-* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): compact synchronous Countdown loop
+* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): runnable serverless loop
 * [Async serverless RL recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py): experimental rollout-function loop with rollout/training overlap
-* [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure): compare serverless and dedicated
+* [Choose infrastructure](/fine-tuning/training-api/introduction#infrastructure): compare serverless and dedicated
 * [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling): dedicated lifecycle internals
-* [Loss Functions](/fine-tuning/training-api/loss-functions): built-in and custom losses
-* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run and experimental training recipes
+* [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling): dedicated lifecycle internals
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions): built-in and custom losses
+* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl)

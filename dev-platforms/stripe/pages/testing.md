@@ -292,7 +292,7 @@ To simulate successful payments from specific countries, use test cards from the
 | India (IN) | `pm_card_in` | Visa |
 | Japan (JP) | `pm_card_jp` | Visa |
 | Japan (JP) | `pm_card_jcb` | JCB |
-| Malaysia (my) | `pm_card_my` | Visa |
+| Malaysia (MY) | `pm_card_my` | Visa |
 | New Zealand (NZ) | `pm_card_nz` | Visa |
 | Singapore (SG) | `pm_card_sg` | Visa |
 | Taiwan (TW) | `pm_card_tw` | Visa |
@@ -365,7 +365,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | India (IN) | `tok_in` | Visa |
 | Japan (JP) | `tok_jp` | Visa |
 | Japan (JP) | `tok_jcb` | JCB |
-| Malaysia (my) | `tok_my` | Visa |
+| Malaysia (MY) | `tok_my` | Visa |
 | New Zealand (NZ) | `tok_nz` | Visa |
 | Singapore (SG) | `tok_sg` | Visa |
 | Taiwan (TW) | `tok_tw` | Visa |
@@ -382,7 +382,7 @@ When you visit the resulting Checkout Session URL, you see the same currency and
 
 ## Simulate an HSA or FSA card payment 
 
-Below are test card numbers for simulating transactions using a health savings account (HSA) and a flexible spending account (FSA). These accounts are commonly used for medical expenses, and testing with them ensures proper handling of healthcare-related transactions within your application.
+Use these test card numbers to simulate FSA or HSA transactions in your integration. These accounts are commonly used for medical expenses, and testing with them helps you verify that your application handles healthcare-related transactions correctly.
 
 #### Card numbers
 
@@ -458,7 +458,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | Stolen card decline | `tok_visa_chargeDeclinedStolenCard` | `card_declined` | `stolen_card` |
 | Expired card decline | `tok_chargeDeclinedExpiredCard` | `expired_card` | n/a |
 | Expired card decline | `tok_visa_chargeDeclinedExpiredCard` | `expired_card` | n/a |
-| Fraudulent card decline | `tok_visa_chargeDeclinedFraudulent` | `expired_card` | n/a |
+| Fraudulent card decline | `tok_visa_chargeDeclinedFraudulent` | `card_declined` | `fraudulent` |
 | Incorrect CVC decline | `tok_chargeDeclinedIncorrectCvc` | `incorrect_cvc` | n/a |
 | Incorrect CVC decline | `tok_visa_chargeDeclinedIncorrectCvc` | `incorrect_cvc` | n/a |
 | Processing error decline | `tok_chargeDeclinedProcessingError` | `processing_error` | n/a |
@@ -794,7 +794,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 
 3D Secure requires an additional layer of authentication for credit card transactions. The test cards in this section allow you to simulate triggering authentication in different payment flows.
 
-Only cards in this section effectively test your 3D Secure integration by simulating defined 3DS behavior, such as a challenge flow or an unsupported card. Other Stripe testing cards might still trigger 3DS, but we return `attempt_acknowledged` to bypass the additional steps since 3DS testing isn’t the objective for those cards.
+Only cards in this section effectively test your 3D Secure integration by simulating defined 3DS behavior, such as a challenge flow or an unsupported card. Other Stripe testing cards might still trigger 3DS, but Stripe returns `attempt_acknowledged` to bypass the additional steps because 3DS testing isn’t the objective for those cards.
 
 > #### Dashboard not supported
 > 
@@ -881,7 +881,7 @@ In a mobile payment, several challenge flows for authentication—where the cust
 
 ## Simulate a captcha challenge 
 
-To prevent fraud, Stripe might display a captcha challenge to the user on the payment page. Use the test cards below to simulate this flow.
+To prevent fraud, Stripe might display a captcha challenge to the user on the payment page. Use the following test cards to simulate this flow.
 
 | Description | Number | Details |
 | --- | --- | --- |
@@ -890,7 +890,7 @@ To prevent fraud, Stripe might display a captcha challenge to the user on the pa
 
 ## Simulate an in-person payment with a PIN 
 
-Use the test cards in this section to simulate successful in-person payments where a PIN is involved. There are many other options for testing in-person payments, including a simulated reader and physical test cards. See [Test Stripe Terminal](https://docs.stripe.com/terminal/references/testing.md) for more information.
+Use the test cards in this section to simulate successful in-person payments where a PIN is involved. For additional testing options, including a simulated reader and physical test cards, see [Test Stripe Terminal](https://docs.stripe.com/terminal/references/testing.md).
 
 #### Card numbers
 
@@ -919,9 +919,7 @@ To test your webhook endpoint or [event destination](https://docs.stripe.com/eve
 
 ## Rate limits
 
-If your requests in your testing environments begin to receive `429` HTTP errors, make them less frequently. These errors come from our [rate limiter](https://docs.stripe.com/rate-limits.md), which is more strict in testing environments than in live mode.
-
-We don’t recommend load testing your integration using the Stripe API in testing environments. Because the load limiter is stricter in testing environments, you might see errors that you wouldn’t see in production. See [load testing](https://docs.stripe.com/rate-limits.md#load-testing) for an alternative approach.
+If requests in your test environment return `429` errors, reduce your request frequency. The rate limiter is stricter in test environments than in live mode. For an alternative, see [Load testing](https://docs.stripe.com/rate-limits.md#load-testing).
 
 ## Test a non-card payment method 
 
@@ -1277,7 +1275,8 @@ You can test using any of the account numbers provided above. However, because B
 
 You can create a test `PaymentIntent` that either succeeds or fails by doing the following:
 
-Create a test *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs) with the test `BSB 000000` and a test account number from the list below. Use the resulting `PaymentMethod` in a `confirmAuBecsDebitPayment` request to create the test charge.
+1. Create a test *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs) with the test `BSB 000000` and a test account number from the list below.
+2. Use the resulting `PaymentMethod` in a `confirmAuBecsDebitPayment` request to create the test charge.
 
 ### Test account numbers 
 
@@ -1327,7 +1326,7 @@ Payment methods that require further action from your customer to authorize the 
 
 ### Handle webhook events
 
-Register a webhook handler, or use the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) to listen locally with `stripe listen --forward-to localhost:4242/webhook`, and handle these events:
+Register a webhook handler, or use the [Stripe CLI](https://docs.stripe.com/cli.md) to listen locally with `stripe listen --forward-to localhost:4242/webhook`, and handle these events:
 
 | Event | Description | Recommended action |
 | --- | --- | --- |

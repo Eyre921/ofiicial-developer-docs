@@ -112,7 +112,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tools/create
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
@@ -160,7 +160,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tools/create
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
@@ -465,7 +465,7 @@ Successful Response
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.
@@ -512,7 +512,7 @@ Successful Response
             - `prompt` (string, required) — Instruction describing what to block, e.g. 'don't talk about politics'
             - `is_enabled` (boolean, optional, default: false)
             - `execution_mode` (enum, optional, default: streaming)
-            - `model` (enum, optional, default: gemini-2.5-flash-lite) — LLM model to use for custom guardrail evaluation
+            - `model` (enum, optional, default: gemini-3.1-flash-lite) — LLM model to use for custom guardrail evaluation
             - `history_message_count` (integer, optional, default: 0) — How much recent history the guardrail sees before the reply it evaluates, counted in user messages (the agent replies between them are included too). The guardrail always gets a single \<conversation\_history> transcript ending in the evaluated reply, marked 'AGENT \[current reply]:'. 0 (default) adds no prior history (just that line); 1 adds the latest user message onward.
             - `trigger_action` (object, optional)
             - `evaluate_full_response_only` (boolean, optional, default: false) — Evaluate once against the complete non-TTS response instead of cumulative partials. Requires blocking mode.

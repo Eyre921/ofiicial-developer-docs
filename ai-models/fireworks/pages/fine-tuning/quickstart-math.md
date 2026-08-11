@@ -193,7 +193,7 @@ Understanding the training workflow:
 ## Next steps
 
 <CardGroup>
-  <Card title="Customize training" icon="terminal" href="/fine-tuning/cli-reference">
+  <Card title="Customize training" icon="terminal" href="/fine-tuning/reinforcement-fine-tuning-models#cli">
     Learn all CLI options to customize your training parameters
   </Card>
 

@@ -317,17 +317,31 @@ To reproduce this locally, merge in BF16 first, then quantize the merged weights
   **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
 </Warning>
 
-## Performance considerations
+<h2>
+  LoRA performance
+</h2>
 
-Live merge eliminates all LoRA-related inference overhead because the adapter weights are baked into the model at deployment time. The resulting deployment behaves exactly like a natively fine-tuned base model.
+### Why multi-LoRA can feel slower than the base model
 
-Multi-LoRA deployments incur overhead because adapters are applied dynamically:
+Three factors explain most latency gaps:
 
-* **Time to first token (TTFT):** Increases by roughly 10–30% due to adapter loading and prompt processing overhead
-* **Generation speed:** Overhead grows with higher request concurrency
-* **Maximum throughput:** Lower than a live-merge deployment under sustained load
+1. **Unmerged adapters** — dynamic LoRA application adds compute on each request. [Live merge](#live-merge-deployment) removes this entirely.
+2. **Speculative decoding** — base deployments often use SD; fine-tuned LoRA deployments may not unless you configure a custom draft model.
+3. **Concurrency** — multi-LoRA overhead shows up mainly under sustained load (see below).
 
-For a deeper dive into LoRA performance characteristics and optimization strategies, see [Understanding LoRA Performance](/guides/understanding_lora_performance).
+### Live merge vs multi-LoRA (performance)
+
+|                         | **Live merge**                  | **Multi-LoRA**                                      |
+| ----------------------- | ------------------------------- | --------------------------------------------------- |
+| Latency / throughput    | Matches base model              | TTFT often +10–30%; lower max throughput under load |
+| Adapter count at deploy | One fine-tune per deployment    | Many adapters on one base deployment                |
+| Best for                | Production single-model serving | A/B tests, many variants, shared GPU                |
+
+The number of adapters registered on a deployment has **little effect** on per-request performance; concurrency and merge mode matter more.
+
+### Speculative decoding
+
+Training and deploying a **custom draft model** for your fine-tuned setup can match or beat base-model latency. Speculative decoding for fine-tuned models is an enterprise feature — contact Fireworks for access.
 
 ## Troubleshooting
 
@@ -370,14 +384,10 @@ Signs you have hit this failure mode:
 
 <CardGroup>
   <Card title="On-Demand Deployments" href="/guides/ondemand-deployments" icon="rocket">
-    Learn about deployment configuration and optimization
+    Deployment configuration, scaling, and hardware
   </Card>
 
   <Card title="Import Fine-Tuned Models" href="/models/uploading-custom-models#importing-fine-tuned-models" icon="upload">
-    Upload LoRA models fine-tuned outside of Fireworks
-  </Card>
-
-  <Card title="LoRA Performance" href="/guides/understanding_lora_performance" icon="gauge-high">
-    Understand performance tradeoffs and optimization strategies
+    Upload LoRA models fine-tuned outside Fireworks
   </Card>
 </CardGroup>

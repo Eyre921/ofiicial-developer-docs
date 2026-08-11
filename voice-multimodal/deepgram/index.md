@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 377 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -12,6 +12,10 @@
 - `openapi.json` — [OpenAPI JSON](pages/openapi.json.md) · [原文](https://developers.deepgram.com/openapi.json)
 - `openapi.yaml` — [OpenAPI YAML](pages/openapi.yaml.md) · [原文](https://developers.deepgram.com/openapi.yaml)
 - `support` — [Support](pages/support.md) · [原文](https://developers.deepgram.com/support.md)
+
+## changelog
+
+- `changelog/llms.txt` — [Changelog](pages/changelog/llms.txt.md) · [原文](https://developers.deepgram.com/changelog/llms.txt)
 
 ## developer-tools
 

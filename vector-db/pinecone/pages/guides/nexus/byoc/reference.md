@@ -45,16 +45,16 @@ In BYOC, your data (sources, compiled knowledge, index contents, and the metadat
 
 ## Cluster footprint
 
-The Kubernetes cluster runs roughly 20 nodes at a typical deployment, across several dedicated, autoscaling node pools spread over the three AZs. Rough shape on AWS (GCP and Azure use equivalent instance families):
+Nexus BYOC runs a Kubernetes cluster across several dedicated node pools spread over three availability zones (AZs):
 
-| Node pool                                                  | AWS machine type       | Rough node count |
-| ---------------------------------------------------------- | ---------------------- | ---------------- |
-| Pinecone Database services, query routing, and index build | `r6in.large` class     | \~10             |
-| Metadata store (FoundationDB)                              | `m8a.large` (2 per AZ) | 6                |
-| Nexus services and workflow jobs                           | `m6i.xlarge`           | 4 (2 + 2)        |
-| Dedicated read nodes (at least 1 per index)                | `i7i.large`            | scales from 0    |
+| Node pool                                                       | Purpose                                                  |
+| --------------------------------------------------------------- | -------------------------------------------------------- |
+| Pinecone Database                                               | The data plane, including query routing and index builds |
+| Metadata store                                                  | Stores Nexus metadata, backed by FoundationDB            |
+| Nexus services                                                  | The curation and query runtimes and their workflow jobs  |
+| [Dedicated read nodes](/guides/index-data/dedicated-read-nodes) | Scale from zero as read demand grows                     |
 
-Pools autoscale with load and with the number of contexts and indexes, so node count grows above this baseline under use.
+The cluster comes up small and autoscales with load and with the number of contexts and indexes. Node counts and instance types change across releases as the footprint is tuned. Size your cloud quotas from the installer's preflight quota checks in [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) rather than from a fixed node count.
 
 ## Limitations
 

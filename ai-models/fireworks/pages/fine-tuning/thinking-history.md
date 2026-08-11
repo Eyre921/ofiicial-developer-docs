@@ -132,7 +132,7 @@ A render-preview request does not select a thinking-history mode. It returns eve
 * A rendering can contain multiple `renderedDatums` when that dataset row unrolls.
 * Within each datum, concatenate `segments[].text` in order. A `lossWeight` of `0` is masked context; a value greater than `0` is trained.
 
-Select one of the returned modes when creating the training job. After the job starts, use [Render Samples](/fine-tuning/debug-sft-tokenization) to inspect the exact token IDs and loss mask seen by the trainer.
+Select one of the returned modes when creating the training job. After the job starts, use [Render Samples](/fine-tuning/fine-tuning-models#debug-sft-tokenization) to inspect the exact token IDs and loss mask seen by the trainer.
 
 ## How Fireworks verifies model behavior
 

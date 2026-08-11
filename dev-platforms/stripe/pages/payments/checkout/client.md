@@ -193,7 +193,7 @@ Successful payments appear in the Dashboard’s [list of payments](https://dashb
 
 #### Webhooks
 
-[Set up webhooks](https://docs.stripe.com/webhooks.md) to programmatically handle post-payment events. The quickest way to develop and test webhooks locally is with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md). Once you have it installed, you can forward events to your server:
+[Set up webhooks](https://docs.stripe.com/webhooks.md) to programmatically handle post-payment events. The quickest way to develop and test webhooks locally is with the [Stripe CLI](https://docs.stripe.com/cli.md). Once you have it installed, you can forward events to your server:
 
 ```bash
 stripe listen --forward-to localhost:4242/webhook

@@ -113,8 +113,8 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-engine/update
       - Allowed values: `preset`
     - `source_id` (enum, optional, nullable) — Identifier for the sound source.
       - Allowed values: `office2`, `office1`, `restaurant`, `city`, `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
-    - `volume` (double, optional, default: 0.6) — Volume level for background sound (0.01 to 1.0).
-    - `crossfade_loop` (boolean, optional, default: false) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
+    - `volume` (double, optional, default: 0.15) — Volume level for background sound (0.01 to 1.0).
+    - `crossfade_loop` (boolean, optional, default: true) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
   - `source_attribution` (boolean, optional, default: false) — When enabled and knowledge base content is present, the LLM is instructed to report which sources it used.
 - `privacy` (object, optional, nullable)
   - `record_voice` (boolean, optional, default: true) — Whether to record the conversation
@@ -225,8 +225,8 @@ Successful Response
       - Allowed values: `preset`
     - `source_id` (enum, optional, nullable) — Identifier for the sound source.
       - Allowed values: `office2`, `office1`, `restaurant`, `city`, `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
-    - `volume` (double, optional, default: 0.6) — Volume level for background sound (0.01 to 1.0).
-    - `crossfade_loop` (boolean, optional, default: false) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
+    - `volume` (double, optional, default: 0.15) — Volume level for background sound (0.01 to 1.0).
+    - `crossfade_loop` (boolean, optional, default: true) — Apply a crossfade at the loop boundary to avoid audible pops when the sound loops.
   - `source_attribution` (boolean, optional, default: false) — When enabled and knowledge base content is present, the LLM is instructed to report which sources it used.
 - `privacy` (object, required) — Privacy settings controlling recording, retention, and PII handling
   - `record_voice` (boolean, optional, default: true) — Whether to record the conversation

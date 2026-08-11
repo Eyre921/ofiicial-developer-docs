@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "Overview"
 source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 path: fine-tuning/training-api/introduction
 ---
@@ -27,14 +27,61 @@ Use the Python SDK directly when you need full control over Training API behavio
 | **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
 | **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
 
-## Choose serverless or dedicated infrastructure
+<h2>
+  Choose infrastructure
+</h2>
 
 After choosing the Training API, decide how compute is provided:
 
 * [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT, DPO, or RL on supported models, no provisioning, per-token billing.
 * [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and method support, explicit checkpoint/resume/deployment control.
 
-Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrastructure) before adapting a recipe.
+<CardGroup>
+  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
+    Attach to a shared pooled trainer. There is no trainer or rollout deployment to provision.
+  </Card>
+
+  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
+    Provision trainer and deployment resources for your run, with broader model and method support.
+  </Card>
+</CardGroup>
+
+### Quick decision
+
+<div aria-label="Decision guide comparing serverless and dedicated Training API infrastructure">
+  <div>
+    <strong>Start with Serverless Training</strong>
+
+    <div>
+      The model is supported, LoRA SFT or RL covers the task, and you want pooled compute with per-token billing.
+    </div>
+  </div>
+
+  <div>
+    <strong>Choose Dedicated Training</strong>
+
+    <div>
+      You need full-parameter training, DPO, explicit resume or deployment control, or sustained provisioned compute.
+    </div>
+  </div>
+</div>
+
+### Comparison
+
+| Dimension         | Serverless                                                       | Dedicated                                                                                     |
+| ----------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                               |
+| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
+| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
+| Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
+| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                               |
+| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
+| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
+| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
+| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                  |
+| Best fit          | Fast LoRA experiments and first RL iterations                    | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
+
+Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
 
 ## Who does what
 
@@ -125,7 +172,7 @@ For SFT, token weight `0.0` marks prompt tokens and `1.0` marks response tokens.
 
 When you call `forward_backward_custom`, the GPU runs a forward pass and returns **per-token log-probabilities** as PyTorch tensors with `requires_grad=True`. Your loss function computes a scalar loss, the API calls `loss.backward()`, and gradients are sent back to the GPU for the model backward pass.
 
-After accumulating gradients, call `optim_step` to apply the update. See the [Dedicated Training Quickstart](/fine-tuning/training-api/quickstart) for one complete runnable Datum, loss, and optimizer loop.
+After accumulating gradients, call `optim_step` to apply the update. See the [Dedicated Training Quickstart](/fine-tuning/training-api/dedicated#quickstart) for one complete runnable Datum, loss, and optimizer loop.
 
 ### Futures
 
@@ -143,13 +190,13 @@ The SDK selects base versus delta automatically unless the recipe overrides it.
 Checkpoint-to-sampler behavior depends on the infrastructure:
 
 * **Serverless:** save a snapshot and bind an in-session sampling client to that snapshot. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
-* **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+* **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
 For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
 
 ### Dedicated RL rollout transition mode
 
-When a dedicated RL recipe provisions a hot-load rollout deployment, you can set `hot_load_transition_type` to `ASYNC` or `SYNC` in the SDK provisioning config or the cookbook rollout deployment config. Leave it unset to keep the recommended `ASYNC` default; set `SYNC` when a rollout must not span a weight transition. For the tradeoffs and KV-cache behavior, see [Async transition (recommended, default for RL)](/fine-tuning/rl-rollout-debugging#async-transition-recommended-default-for-rl).
+When a dedicated RL recipe provisions a hot-load rollout deployment, you can set `hot_load_transition_type` to `ASYNC` or `SYNC` in the SDK provisioning config or the cookbook rollout deployment config. Leave it unset to keep the recommended `ASYNC` default; set `SYNC` when a rollout must not span a weight transition. For the tradeoffs and KV-cache behavior, see [Async transition (recommended, default for RL)](/fine-tuning/rl-rollout-integration#async-transition-recommended-default-for-rl).
 
 ## Key APIs
 
@@ -206,7 +253,7 @@ Usually because `.result()` was not called on futures, so failures were never su
 
 ### What's the difference between base and delta checkpoints, and when should I use each?
 
-Let the SDK select automatically. LoRA snapshots contain the full adapter; full-parameter delta snapshots can accelerate synchronization but are not promotable. See [Saving and Loading](/fine-tuning/training-api/saving-and-loading#sampler-checkpoints).
+Let the SDK select automatically. LoRA snapshots contain the full adapter; full-parameter delta snapshots can accelerate synchronization but are not promotable. See [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading).
 
 ### Do I need to manage distributed training infra?
 
@@ -230,11 +277,11 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 
 ## Next steps
 
-* [Dedicated quickstart](/fine-tuning/training-api/quickstart) — run a minimal dedicated custom loop
-* [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure) — compare serverless and dedicated training
+* [Dedicated quickstart](/fine-tuning/training-api/dedicated#quickstart) — run a minimal dedicated custom loop
+* [Choose infrastructure](/fine-tuning/training-api/introduction#infrastructure) — compare serverless and dedicated training
 * [Serverless Training](/fine-tuning/training-api/serverless) — shared pooled LoRA training
 * [Dedicated Training](/fine-tuning/training-api/dedicated) — provisioned trainer and deployment lifecycle
-* [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling) — deployment-sampling lifecycle
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — built-in and custom loss functions
-* [Vision Inputs](/fine-tuning/training-api/vision-inputs) — fine-tune vision-language models with image and text data
+* [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — deployment-sampling lifecycle
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — built-in and custom loss functions
+* [Vision Inputs](/fine-tuning/models) — fine-tune vision-language models with image and text data
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)

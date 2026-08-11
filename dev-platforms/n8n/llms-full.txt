@@ -2,9 +2,9 @@
 
 n8n is a fair-code licensed workflow automation tool that combines AI capabilities with business process automation.
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/mCDV3p515YyTtwGnNdLq">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/mCDV3p515YyTtwGnNdLq</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/69yLdGbIionxWshakLo7">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/69yLdGbIionxWshakLo7</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8</a></li></ul></td><td></td><td><a href="/files/cew5tUoowk0ECeg4Sn7Q">/files/cew5tUoowk0ECeg4Sn7Q</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first automation</strong></td><td><a data-mention href="/pages/zUKRppskKg9LhFTtXLPj">/pages/zUKRppskKg9LhFTtXLPj</a></td><td></td><td><a href="/files/jsSOd2oDuEAGpUNhiGlY">/files/jsSOd2oDuEAGpUNhiGlY</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize webpages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="/files/qnZMSRNOlw7AxMBtjXwi">/files/qnZMSRNOlw7AxMBtjXwi</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc</a></li></ul></td><td></td><td><a href="/files/VkcOOhTRPQBjR6UUdVEy">/files/VkcOOhTRPQBjR6UUdVEy</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td>Add the n8n connector to Claude Desktop</td><td><a data-mention href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-claude-desktop-to-n8n-mcp-server">/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-claude-desktop-to-n8n-mcp-server</a></td><td><a href="/files/xmdd04HkxvE0QDJ5HV8G">/files/xmdd04HkxvE0QDJ5HV8G</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
-</code></pre></td><td><a data-mention href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-claude-code-to-n8n-mcp-server">/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-claude-code-to-n8n-mcp-server</a></td><td><a href="/files/dd7B4dyNfwmfOPJTNbQS">/files/dd7B4dyNfwmfOPJTNbQS</a></td></tr><tr><td><strong>Open AI Codex</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
-</code></pre></td><td><a data-mention href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-codex-cli-to-n8n-mcp-server">/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/vxNjlVsE3bD1WgNAUOnO#connecting-codex-cli-to-n8n-mcp-server</a></td><td><a href="/files/Ct6O3FmZIzVLSJLgogne">/files/Ct6O3FmZIzVLSJLgogne</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><i class="fa-server">:server:</i> <strong>Get set up on n8n</strong></td><td><ul><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/ziS002yiEqmQSjXZALLO</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/mCDV3p515YyTtwGnNdLq">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/mCDV3p515YyTtwGnNdLq</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/69yLdGbIionxWshakLo7">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/69yLdGbIionxWshakLo7</a></li><li><a data-mention href="/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8">/spaces/jm0ZYRpZIPWge2ZSiDYO/pages/o0tyrSRLdqerPqm6bDW8</a></li></ul></td><td></td><td><a href="/files/cew5tUoowk0ECeg4Sn7Q">/files/cew5tUoowk0ECeg4Sn7Q</a></td></tr><tr><td><i class="fa-draw-square">:draw-square:</i> <strong>Build your first automation</strong></td><td><a data-mention href="/pages/zUKRppskKg9LhFTtXLPj">/pages/zUKRppskKg9LhFTtXLPj</a></td><td></td><td><a href="/files/jsSOd2oDuEAGpUNhiGlY">/files/jsSOd2oDuEAGpUNhiGlY</a></td></tr><tr><td><i class="fa-stamp">:stamp:</i> <strong>Get inspiration for what to automate</strong></td><td><ul><li><a href="https://n8n.io/workflows/1750-creating-an-api-endpoint/">Creating an API endpoint</a></li><li><a href="https://n8n.io/workflows/1954-ai-agent-chat/">AI agent chat</a></li><li><a href="https://n8n.io/workflows/1951-scrape-and-summarize-webpages-with-ai/">Scrape and summarize webpages with AI</a></li><li><a href="https://n8n.io/workflows/1747-joining-different-datasets/">Joining different datasets</a></li></ul></td><td></td><td><a href="/files/qnZMSRNOlw7AxMBtjXwi">/files/qnZMSRNOlw7AxMBtjXwi</a></td></tr><tr><td><i class="fa-lightbulb-gear">:lightbulb-gear:</i> <strong>Understand key concepts</strong></td><td><ul><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/bJVqnsoYoKeTVGzLQgy2</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/1hqzhYpLBsjFvbo8HxAU</a></li><li><a data-mention href="/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc">/spaces/rPN1zU5jaYNvwH7RzxqA/pages/eTf5Lc65AFb3sSVXviVc</a></li></ul></td><td></td><td><a href="/files/VkcOOhTRPQBjR6UUdVEy">/files/VkcOOhTRPQBjR6UUdVEy</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Desktop</strong></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-desktop-to-n8n-mcp-server">Connecting Claude Desktop to n8n MCP server</a></td><td></td><td><a href="/files/xmdd04HkxvE0QDJ5HV8G">/files/xmdd04HkxvE0QDJ5HV8G</a></td></tr><tr><td><strong>Anthropic</strong> <strong>Claude Code</strong></td><td><pre data-overflow="wrap"><code>claude mcp add --transport http n8n-mcp https:///mcp-server/http
+</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-claude-code-to-n8n-mcp-server">Connecting Claude Code to n8n MCP server</a></td><td><a href="/files/dd7B4dyNfwmfOPJTNbQS">/files/dd7B4dyNfwmfOPJTNbQS</a></td></tr><tr><td><strong>Open AI Codex</strong></td><td><pre data-overflow="wrap"><code>codex mcp add n8n-mcp --url https:///mcp-server/http
+</code></pre></td><td><a href="/spaces/r7wKI4I1BgdBCuq5Cvcx/pages/UOJtqNvrsXpvCGg9r3LR#connecting-codex-cli-to-n8n-mcp-server">Connecting Codex CLI to n8n MCP server</a></td><td><a href="/files/Ct6O3FmZIzVLSJLgogne">/files/Ct6O3FmZIzVLSJLgogne</a></td></tr></tbody></table>
 
 
 # Choose how to use n8n
@@ -987,7 +987,7 @@ npm is a quick way to get started with n8n on your local machine. You must have 
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Try n8n with npx <a href="#try-n8n-with-npx" id="try-n8n-with-npx"></a>
@@ -1139,7 +1139,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1372,7 +1372,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -1597,7 +1597,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -1685,7 +1685,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -1898,7 +1898,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2091,7 +2091,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -2285,7 +2285,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -2554,7 +2554,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3814,7 +3814,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.7 Current `beta`: 2.34.4
+Current `stable`: 2.33.7 Current `beta`: 2.35.0
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7830,9 +7830,11 @@ Task runners are a generic mechanism to execute tasks in a secure and performant
 This document describes how task runners work and how you can configure them.
 
 {% hint style="warning" %}
-**Internal mode not recommended for production**
+**Always use task runners in production**
 
-Using internal mode in production environments can pose a security risk. For production deployments, use [external mode](#external-mode) to ensure proper isolation between n8n and task runner processes. Refer to [Hardening task runners](/deploy/host-n8n/configure-n8n/security/harden-task-runners) for additional security measures.
+Task runners are the only isolation layer between user-provided code and n8n. Without them, or with [internal mode](#internal-mode), anyone who can edit a workflow could potentially read your database, [encryption key](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key), stored credentials, and environment variables.
+
+In production, and on any instance holding sensitive data, use [external mode](#external-mode) plus the measures in [Hardening task runners](/deploy/host-n8n/configure-n8n/security/harden-task-runners). Skipping external mode to save hosting costs is only a reasonable tradeoff on isolated instances that hold nothing but trusted or mock data.
 {% endhint %}
 
 ## How it works <a href="#how-it-works" id="how-it-works"></a>
@@ -7853,7 +7855,13 @@ You can use task runners in two different modes: internal and external.
 
 ### Internal mode <a href="#internal-mode" id="internal-mode"></a>
 
-In internal mode, the n8n instance launches the task runner as a child process. The n8n process monitors and manages the life cycle of the task runner. The task runner process shares the same `uid` and `gid` as n8n. This is **not** recommended for production.
+In internal mode, the n8n instance launches the task runner as a child process, which is insecure by design. The n8n process monitors and manages the life cycle of the task runner. The task runner process shares the same `uid` and `gid` as n8n.
+
+{% hint style="warning" %}
+**Internal mode not recommended for production**
+
+Because the runner runs as the same user on the same host as n8n, code that escapes the runner's sandbox has the same access as n8n, including to stored credentials (see the warning at the top of this page). Use internal mode only on isolated instances that hold no sensitive data.
+{% endhint %}
 
 ### External mode <a href="#external-mode" id="external-mode"></a>
 
@@ -7909,7 +7917,7 @@ These are the main environment variables that you can set on the n8n container r
 {% hint style="info" %}
 **`N8N_RUNNERS_ENABLED` is deprecated from version 2.0**
 
-From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners.
+From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners. Leaving task runners disabled on 1.x runs Code node scripts inside the main n8n process with no isolation at all. Don't do this on any instance that holds sensitive credentials or data.
 {% endhint %}
 
 | Environment variables                                  | Description                                                                                                                                                                   |

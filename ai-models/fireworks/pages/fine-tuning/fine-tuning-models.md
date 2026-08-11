@@ -74,7 +74,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     ```
 
     <Note>
-      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only fine-tuning, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision fine-tuning](/fine-tuning/fine-tuning-vlm).
+      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only fine-tuning, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision fine-tuning](/fine-tuning/fine-tuning-models#vision-fine-tuning).
     </Note>
 
     Here is an example conversation dataset with sample weights:
@@ -259,7 +259,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     <img alt="Sftj Details Pn" />
 
     <Tip>
-      If the fine-tuned model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/debug-sft-tokenization).
+      If the fine-tuned model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
     </Tip>
 
     With `firectl`, you can monitor the progress of the tuning job by running
@@ -514,3 +514,70 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 * `Restful API` [references](/api-reference/introduction)
 * `firectl` [references](/tools-sdks/firectl/firectl)
 * [Complete Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py) for a code-only implementation
+
+<h2>
+  Vision fine-tuning
+</h2>
+
+Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
+
+Each message `content` is an array of text and `image_url` objects. Images must be base64 data URIs with a MIME type; raw HTTP image URLs are not supported in training datasets.
+
+```json theme={null}
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {"type": "text", "text": "What is shown?"},
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [{"type": "text", "text": "A red bicycle."}]
+    }
+  ]
+}
+```
+
+Multiple images and multi-turn conversations use the same content-array shape. Keep the assistant response you want to train as the final message, upload the JSONL dataset, then create the managed SFT job with a VLM-capable base model.
+
+<Warning>
+  Download remote images and encode them before upload. Keep each MIME prefix accurate (`image/jpeg`, `image/png`, and so on), and validate the rendered sample before starting a paid job.
+</Warning>
+
+For Training API VLM loops, use a VLM-compatible training shape and the model's processor rather than a text-only tokenizer. The same Training API primitives support multimodal SFT, DPO, and RL datums. Start from the relevant cookbook recipe and verify processor output and loss masks before launch. Shape details: [Training Shapes](/fine-tuning/models#vision-and-multimodal-support).
+
+<h2>
+  Debug SFT tokenization
+</h2>
+
+If the model learns the wrong text or ignores assistant turns, the training renderer may not match inference tokenization.
+
+1. In the dashboard, open your SFT job → **Render Samples** to inspect token boundaries and loss masks.
+2. Compare rendered tokens against inference for the same prompt.
+3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
+
+<Note>
+  In the REST response, the render preview identifies each datum produced from a source row with `examples[].renderings[].renderedDatums[].datumIndex`. Downloaded **Render Samples** use the legacy `split_index` field. The fields play corresponding roles in different schemas; `split_index` has not been renamed in the downloadable artifact.
+</Note>
+
+Common fix: ensure assistant messages you intend to train have non-zero loss weight; system/user turns should be masked out.
+
+### Common findings
+
+| What you see                                        | Likely cause                                                                                                                                                                                                                         | What to do                                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content.                                                                                                           | Check the original JSONL row and remove unintended weights.                                                                                                  |
+| User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended.                                                                                                                                                      | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message.                                                           |
+| Expected text is missing from `decoded_tokens`      | The source row may have been split, truncated, or rendered differently by the model chat template.                                                                                                                                   | Check `split_index`, source line number, and the job's max context length.                                                                                   |
+| Extra special tokens appear around messages         | The selected model renderer is adding chat template markers.                                                                                                                                                                         | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match.                                      |
+| Thinking traces missing from conversation history   | The job's thinking-history mode and model renderer decide whether earlier turns' `reasoning_content` is retained. Interleaved removes thinking across user-turn boundaries; Preserved retains it. Datum unrolling is model-specific. | Compare the available modes in the render preview, then verify the created job's mode. See [Thinking history in fine-tuning](/fine-tuning/thinking-history). |
+| Token boundaries look surprising                    | Many tokenizers encode whitespace, Unicode, and byte fallback pieces in non-obvious ways.                                                                                                                                            | Compare with the same Hugging Face tokenizer using `skip_special_tokens=False`.                                                                              |
+| The Render Samples row is missing                   | The job may predate this feature, may have failed before rendering, or may not have captured samples.                                                                                                                                | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples.                                         |

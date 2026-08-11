@@ -138,52 +138,16 @@ Returns the charge object if the charge succeeded. This call raises [an error](h
 - `on_behalf_of` (string, optional)
   The Stripe account ID for which these funds are intended. You can specify the business of record as the connected account using the `on_behalf_of` attribute on the charge. For details, see [Creating Separate Charges and Transfers](https://docs.stripe.com/docs/connect/separate-charges-and-transfers.md#settlement-merchant).
 
-- `radar_options` (object, optional)
+- [`radar_options`](https://docs.stripe.com/api/charges/create.md?query=radar_options) (object, optional)
   Options to configure Radar. See [Radar Session](https://docs.stripe.com/docs/radar/radar-session.md) for more information.
-
-  - `radar_options.session` (string, optional)
-    A [Radar Session](https://docs.stripe.com/docs/radar/radar-session.md) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
 
 - `receipt_email` (string, optional)
   The email address to which this charge’s [receipt](https://docs.stripe.com/docs/dashboard/receipts.md) will be sent. The receipt will not be sent until the charge is paid, and no receipts will be sent for test mode charges. If this charge is for a [Customer](https://docs.stripe.com/docs/api/customers/object.md), the email address specified here will override the customer’s email address. If `receipt_email` is specified for a charge in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
 
   The maximum length is 800 characters.
 
-- `shipping` (object, optional)
+- [`shipping`](https://docs.stripe.com/api/charges/create.md?query=shipping) (object, optional)
   Shipping information for the charge. Helps prevent fraud on charges for physical goods.
-
-  - `shipping.address` (object, required)
-    Shipping address.
-
-    - `shipping.address.city` (string, optional)
-      City, district, suburb, town, or village.
-
-    - `shipping.address.country` (string, required for calculating taxes)
-      Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-
-    - `shipping.address.line1` (string, optional)
-      Address line 1, such as the street, PO Box, or company name.
-
-    - `shipping.address.line2` (string, optional)
-      Address line 2, such as the apartment, suite, unit, or building.
-
-    - `shipping.address.postal_code` (string, required for calculating taxes)
-      ZIP or postal code.
-
-    - `shipping.address.state` (string, optional)
-      State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-
-  - `shipping.name` (string, required)
-    Recipient name.
-
-  - `shipping.carrier` (string, optional)
-    The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc.
-
-  - `shipping.phone` (string, optional)
-    Recipient phone (including extension).
-
-  - `shipping.tracking_number` (string, optional)
-    The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas.
 
 - `source` (string, optional)
   A payment source to be charged. This can be the ID of a [card](https://docs.stripe.com/docs/api.md#cards) (i.e., credit or debit card), a [bank account](https://docs.stripe.com/docs/api.md#bank_accounts), a [source](https://docs.stripe.com/docs/api.md#sources), a [token](https://docs.stripe.com/docs/api.md#tokens), or a [connected account](https://docs.stripe.com/docs/connect/account-debits.md#charging-a-connected-account). For certain sources—namely, [cards](https://docs.stripe.com/docs/api.md#cards), [bank accounts](https://docs.stripe.com/docs/api.md#bank_accounts), and attached [sources](https://docs.stripe.com/docs/api.md#sources)—you must also pass the ID of the associated customer.
@@ -196,17 +160,8 @@ Returns the charge object if the charge succeeded. This call raises [an error](h
 - `statement_descriptor_suffix` (string, optional)
   Provides information about a card charge. Concatenated to the account’s [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors.md#static) to form the complete statement descriptor that appears on the customer’s statement. If the account has no prefix value, the suffix is concatenated to the account’s statement descriptor.
 
-- `transfer_data` (object, optional)
+- [`transfer_data`](https://docs.stripe.com/api/charges/create.md?query=transfer_data) (object, optional)
   An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://docs.stripe.com/docs/connect/destination-charges.md) for details.
-
-  - `transfer_data.destination` (string, required)
-    ID of an existing, connected Stripe account.
-
-  - `transfer_data.amount` (integer, optional)
-    The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
-
-  - `transfer_data.description` (string, optional)
-    An arbitrary string attached to the transfer. Often useful for displaying to users.
 
 - `transfer_group` (string, optional)
   A string that identifies this transaction as part of a group. For details, see [Grouping transactions](https://docs.stripe.com/docs/connect/separate-charges-and-transfers.md#transfer-options).

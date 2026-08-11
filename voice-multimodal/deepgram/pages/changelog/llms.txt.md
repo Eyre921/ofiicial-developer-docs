@@ -1,0 +1,208 @@
+---
+title: "Changelog"
+source: https://developers.deepgram.com/changelog/llms.txt
+path: changelog/llms.txt
+---
+
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://developers.deepgram.com/changelog/llms.txt.
+> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/changelog/_mcp/server.
+
+# Changelog
+
+## Docs
+
+- [August 10, 2026](https://developers.deepgram.com/changelog/2026/8/10.md)
+- [August 7, 2026](https://developers.deepgram.com/changelog/2026/8/7.md)
+- [August 5, 2026](https://developers.deepgram.com/changelog/2026/8/5.md)
+- [August 4, 2026](https://developers.deepgram.com/changelog/2026/8/4.md)
+- [July 31, 2026](https://developers.deepgram.com/changelog/2026/7/31.md)
+- [July 28, 2026](https://developers.deepgram.com/changelog/2026/7/28.md): Deepgram Self-Hosted release 260728 brings FIPS 140-3 images to general availability, adds enhanced diarization metadata and a new .dgv2 encrypted model file format, and improves number and language formatting.
+- [July 21, 2026](https://developers.deepgram.com/changelog/2026/7/21.md)
+- [July 17, 2026](https://developers.deepgram.com/changelog/2026/7/17.md)
+- [July 16, 2026](https://developers.deepgram.com/changelog/2026/7/16.md)
+- [July 14, 2026](https://developers.deepgram.com/changelog/2026/7/14.md): Deepgram Self-Hosted release 260714 adds decimal and percentage formatting improvements, Malay spoken-number conversion, and a dedicated close reason for streaming sessions that end due to a no-audio timeout.
+- [July 9, 2026](https://developers.deepgram.com/changelog/2026/7/9.md)
+- [July 2, 2026](https://developers.deepgram.com/changelog/2026/7/2.md)
+- [July 1, 2026](https://developers.deepgram.com/changelog/2026/7/1.md)
+- [June 30, 2026](https://developers.deepgram.com/changelog/2026/6/30.md): Deepgram Self-Hosted release 260630 adds Flux word-level timestamps, a Spanish number formatting fix, additional number and currency formatting, streaming timestamp accuracy fixes, and a restructured self-hosted models endpoint response.
+- [June 24, 2026](https://developers.deepgram.com/changelog/2026/6/24.md)
+- [June 17, 2026](https://developers.deepgram.com/changelog/2026/6/17.md): The Deepgram Australia endpoint (api.au.deepgram.com) is now generally available for Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs.
+- [June 15, 2026](https://developers.deepgram.com/changelog/2026/6/15.md)
+- [June 11, 2026](https://developers.deepgram.com/changelog/2026/6/11.md): Deepgram Self-Hosted release 260611 adds Persian profanity filtering, English redaction on Flux streaming, a streaming diarization model parameter, and Text-to-Speech output transcoding.
+- [May 29, 2026](https://developers.deepgram.com/changelog/2026/5/29.md)
+- [May 28, 2026](https://developers.deepgram.com/changelog/2026/5/28.md): Deepgram Self-Hosted release 260528 brings profanity filtering for Nova-3 multilingual models to self-hosted and improves Nova-3 Korean word spacing.
+- [May 27, 2026](https://developers.deepgram.com/changelog/2026/5/27.md)
+- [May 21, 2026](https://developers.deepgram.com/changelog/2026/5/21.md)
+- [May 19, 2026](https://developers.deepgram.com/changelog/2026/5/19.md)
+- [May 15, 2026](https://developers.deepgram.com/changelog/2026/5/15.md)
+- [May 14, 2026](https://developers.deepgram.com/changelog/2026/5/14.md): Deepgram Self-Hosted release 260514 brings Batch Diarization v2 to self-hosted deployments. Opt in via the new diarize_model query parameter.
+- [May 13, 2026](https://developers.deepgram.com/changelog/2026/5/13.md)
+- [May 12, 2026](https://developers.deepgram.com/changelog/2026/5/12.md)
+- [May 11, 2026](https://developers.deepgram.com/changelog/2026/5/11.md)
+- [May 4, 2026](https://developers.deepgram.com/changelog/2026/5/4.md)
+- [April 30, 2026](https://developers.deepgram.com/changelog/2026/4/30.md): Deepgram Self-Hosted release 260430 adds Nova-3 Gujarati, Aura-2 speed controls, multilingual numeral formatting for Nova-3, and Voice Agent improvements.
+- [April 29, 2026](https://developers.deepgram.com/changelog/2026/4/29.md)
+- [April 23, 2026](https://developers.deepgram.com/changelog/2026/4/23.md)
+- [April 16, 2026](https://developers.deepgram.com/changelog/2026/4/16.md): Deepgram Self-Hosted release 260416 adds Flux Multilingual for real-time multilingual conversational STT with code-switching support.
+- [April 15, 2026](https://developers.deepgram.com/changelog/2026/4/15.md)
+- [April 8, 2026](https://developers.deepgram.com/changelog/2026/4/8.md)
+- [April 3, 2026](https://developers.deepgram.com/changelog/2026/4/3.md)
+- [April 2, 2026](https://developers.deepgram.com/changelog/2026/4/2.md): Deepgram Self-Hosted release 260402 fixes the Engine certificate endpoint path and adds a canonical_name field to the /v1/models response for API 1.181.3 and Engine 3.114.5.
+- [April 1, 2026](https://developers.deepgram.com/changelog/2026/4/1.md)
+- [March 31, 2026](https://developers.deepgram.com/changelog/2026/3/31.md)
+- [March 26, 2026](https://developers.deepgram.com/changelog/2026/3/26.md)
+- [March 19, 2026](https://developers.deepgram.com/changelog/2026/3/19.md): Deepgram Self-Hosted release 260319 resolves the Flux regression from 260305, expands Nova-3 with Thai and Cantonese, and adds certificate status endpoint and configurable log formats for API 1.180.1 and Engine 3.114.4.
+- [March 17, 2026](https://developers.deepgram.com/changelog/2026/3/17.md)
+- [March 16, 2026](https://developers.deepgram.com/changelog/2026/3/16.md)
+- [March 10, 2026](https://developers.deepgram.com/changelog/2026/3/10.md)
+- [March 9, 2026](https://developers.deepgram.com/changelog/2026/3/9.md)
+- [March 5, 2026](https://developers.deepgram.com/changelog/2026/3/5.md): Pay as you Go and Growth customers can now opt in or out of the Model Improvement Program with no impact on listed pricing.
+- [February 27, 2026](https://developers.deepgram.com/changelog/2026/2/27.md)
+- [February 25, 2026](https://developers.deepgram.com/changelog/2026/2/25.md)
+- [February 12, 2026](https://developers.deepgram.com/changelog/2026/2/12.md): Deepgram Self-Hosted release 260212 includes general software maintenance updates for API 1.177.3 and Engine 3.107.0-1.
+- [February 11, 2026](https://developers.deepgram.com/changelog/2026/2/11.md): Deepgram increases default concurrency limits by up to 3X for Streaming Speech-to-Text, Text-to-Speech, and Voice Agent across Pay as you Go, Growth, and Enterprise plans.
+- [February 6, 2026](https://developers.deepgram.com/changelog/2026/2/6.md)
+- [February 5, 2026](https://developers.deepgram.com/changelog/2026/2/5.md)
+- [February 3, 2026](https://developers.deepgram.com/changelog/2026/2/3.md)
+- [January 29, 2026](https://developers.deepgram.com/changelog/2026/1/29.md): Deepgram Self-Hosted release 260129 adds Nova-3 support for 12 new languages including Belarusian, Bengali, Bosnian, Croatian, and more for API 1.177.3 and Engine 3.107.0-1.
+- [January 27, 2026](https://developers.deepgram.com/changelog/2026/1/27.md)
+- [January 21, 2026](https://developers.deepgram.com/changelog/2026/1/21.md)
+- [January 16, 2026](https://developers.deepgram.com/changelog/2026/1/16.md)
+- [January 15, 2026](https://developers.deepgram.com/changelog/2026/1/15.md): Deepgram Self-Hosted release 260115 includes a breaking change in API-Engine TTS communication requiring Engine deployment before API, plus Portuguese STT improvements for API 1.176.0 and Engine 3.107.0-1.
+- [January 13, 2026](https://developers.deepgram.com/changelog/2026/1/13.md)
+- [December 29, 2025](https://developers.deepgram.com/changelog/2025/12/29.md): Deepgram Self-Hosted release 251229 adds Aura-2 TTS multilingual support (Dutch, German, French, Italian, Japanese), PHI redaction, and Flux Engine metrics for API 1.173.4 and Engine 3.107.0.
+- [December 12, 2025](https://developers.deepgram.com/changelog/2025/12/12.md)
+- [December 11, 2025](https://developers.deepgram.com/changelog/2025/12/11.md)
+- [December 10, 2025](https://developers.deepgram.com/changelog/2025/12/10.md): Deepgram Self-Hosted release 251210 expands Nova-3 to 31 total languages, adds multilingual keyterm prompting for Nova-3 Multi, and improves entity formatting for API 1.172.2 and Engine 3.104.10.
+- [December 3, 2025](https://developers.deepgram.com/changelog/2025/12/3.md): Deepgram EU endpoint (api.eu.deepgram.com) is now generally available for Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs.
+- [November 26, 2025](https://developers.deepgram.com/changelog/2025/11/26.md)
+- [November 24, 2025](https://developers.deepgram.com/changelog/2025/11/24.md)
+- [November 18, 2025](https://developers.deepgram.com/changelog/2025/11/18.md): Deepgram Self-Hosted release 251118 expands Nova-3 to 21 additional languages, adds a 36-language detection model, updates the /v1/status endpoint, and deprecates legacy Intelligence features for API 1.169.0 and Engine 3.104.10.
+- [November 14, 2025](https://developers.deepgram.com/changelog/2025/11/14.md)
+- [November 12, 2025](https://developers.deepgram.com/changelog/2025/11/12.md)
+- [November 10, 2025](https://developers.deepgram.com/changelog/2025/11/10.md)
+- [November 7, 2025](https://developers.deepgram.com/changelog/2025/11/7.md)
+- [November 5, 2025](https://developers.deepgram.com/changelog/2025/11/5.md)
+- [November 4, 2025](https://developers.deepgram.com/changelog/2025/11/4.md)
+- [October 29, 2025](https://developers.deepgram.com/changelog/2025/10/29.md): Deepgram Self-Hosted release 251029 includes general software maintenance updates for API 1.167.1 and Engine 3.104.7.
+- [October 16, 2025](https://developers.deepgram.com/changelog/2025/10/16.md)
+- [October 15, 2025](https://developers.deepgram.com/changelog/2025/10/15.md): Deepgram Self-Hosted release 251015 adds Flux conversational STT model support via the /v2/listen endpoint and resolves a Nova-3 diarization regression for API 1.166.0 and Engine 3.104.7.
+- [October 2, 2025](https://developers.deepgram.com/changelog/2025/10/2.md)
+- [September 29, 2025](https://developers.deepgram.com/changelog/2025/9/29.md): Deepgram Self-Hosted release 250929 resolves an Aura-2 TTS conditioning defect and includes general improvements for API 1.159.2 and Engine 3.104.3.
+- [September 26, 2025](https://developers.deepgram.com/changelog/2025/9/26.md)
+- [September 16, 2025](https://developers.deepgram.com/changelog/2025/9/16.md)
+- [September 15, 2025](https://developers.deepgram.com/changelog/2025/9/15.md)
+- [September 12, 2025](https://developers.deepgram.com/changelog/2025/9/12.md): Deepgram Self-Hosted release 250912 adds GA support for Nova-3 in German, Dutch, Swedish, Danish, Spanish, French, and Portuguese for API 1.159.2 and Engine 3.101.1.
+- [September 4, 2025](https://developers.deepgram.com/changelog/2025/9/4.md)
+- [September 2, 2025](https://developers.deepgram.com/changelog/2025/9/2.md)
+- [August 29, 2025](https://developers.deepgram.com/changelog/2025/8/29.md)
+- [August 28, 2025](https://developers.deepgram.com/changelog/2025/8/28.md): Deepgram Self-Hosted release 250828 adds a gpu_required health configuration option to fail fast at startup when no GPU is detected, for API 1.156.1 and Engine 3.100.0.
+- [August 15, 2025](https://developers.deepgram.com/changelog/2025/8/15.md)
+- [August 14, 2025](https://developers.deepgram.com/changelog/2025/8/14.md): Deepgram Self-Hosted release 250814 adds Aura-2 TTS support, automatic Engine shutdown on GPU errors, and alphanumeric postal code formatting for API 1.156.1 and Engine 3.97.2.
+- [August 11, 2025](https://developers.deepgram.com/changelog/2025/8/11.md)
+- [August 8, 2025](https://developers.deepgram.com/changelog/2025/8/8.md)
+- [August 6, 2025](https://developers.deepgram.com/changelog/2025/8/6.md)
+- [July 31, 2025](https://developers.deepgram.com/changelog/2025/7/31.md): Deepgram Self-Hosted release 250731 adds redact_usage functionality, CUDA 12.8 support, and smart formatting improvements for API 1.154.1 and Engine 3.94.0.
+- [July 22, 2025](https://developers.deepgram.com/changelog/2025/7/22.md)
+- [July 17, 2025](https://developers.deepgram.com/changelog/2025/7/17.md)
+- [July 11, 2025](https://developers.deepgram.com/changelog/2025/7/11.md)
+- [July 10, 2025](https://developers.deepgram.com/changelog/2025/7/10.md)
+- [June 26, 2025](https://developers.deepgram.com/changelog/2025/6/26.md)
+- [June 25, 2025](https://developers.deepgram.com/changelog/2025/6/25.md)
+- [June 11, 2025](https://developers.deepgram.com/changelog/2025/6/11.md)
+- [June 10, 2025](https://developers.deepgram.com/changelog/2025/6/10.md)
+- [May 21, 2025](https://developers.deepgram.com/changelog/2025/5/21.md)
+- [May 14, 2025](https://developers.deepgram.com/changelog/2025/5/14.md)
+- [May 5, 2025](https://developers.deepgram.com/changelog/2025/5/5.md)
+- [April 2, 2025](https://developers.deepgram.com/changelog/2025/4/2.md)
+- [March 31, 2025](https://developers.deepgram.com/changelog/2025/3/31.md)
+- [March 11, 2025](https://developers.deepgram.com/changelog/2025/3/11.md)
+- [March 7, 2025](https://developers.deepgram.com/changelog/2025/3/7.md)
+- [March 3, 2025](https://developers.deepgram.com/changelog/2025/3/3.md)
+- [February 12, 2025](https://developers.deepgram.com/changelog/2025/2/12.md)
+- [January 30, 2025](https://developers.deepgram.com/changelog/2025/1/30.md)
+- [December 26, 2024](https://developers.deepgram.com/changelog/2024/12/26.md)
+- [December 16, 2024](https://developers.deepgram.com/changelog/2024/12/16.md)
+- [November 21, 2024](https://developers.deepgram.com/changelog/2024/11/21.md)
+- [October 24, 2024](https://developers.deepgram.com/changelog/2024/10/24.md)
+- [September 27, 2024](https://developers.deepgram.com/changelog/2024/9/27.md)
+- [September 18, 2024](https://developers.deepgram.com/changelog/2024/9/18.md)
+- [September 12, 2024](https://developers.deepgram.com/changelog/2024/9/12.md)
+- [August 27, 2024](https://developers.deepgram.com/changelog/2024/8/27.md)
+- [August 19, 2024](https://developers.deepgram.com/changelog/2024/8/19.md)
+- [August 15, 2024](https://developers.deepgram.com/changelog/2024/8/15.md)
+- [August 1, 2024](https://developers.deepgram.com/changelog/2024/8/1.md)
+- [July 25, 2024](https://developers.deepgram.com/changelog/2024/7/25.md)
+- [July 22, 2024](https://developers.deepgram.com/changelog/2024/7/22.md)
+- [July 16, 2024](https://developers.deepgram.com/changelog/2024/7/16.md)
+- [June 27, 2024](https://developers.deepgram.com/changelog/2024/6/27.md)
+- [May 30, 2024](https://developers.deepgram.com/changelog/2024/5/30.md)
+- [May 24, 2024](https://developers.deepgram.com/changelog/2024/5/24.md)
+- [May 21, 2024](https://developers.deepgram.com/changelog/2024/5/21.md)
+- [May 14, 2024](https://developers.deepgram.com/changelog/2024/5/14.md)
+- [April 26, 2024](https://developers.deepgram.com/changelog/2024/4/26.md)
+- [April 18, 2024](https://developers.deepgram.com/changelog/2024/4/18.md)
+- [April 11, 2024](https://developers.deepgram.com/changelog/2024/4/11.md)
+- [March 25, 2024](https://developers.deepgram.com/changelog/2024/3/25.md)
+- [February 29, 2024](https://developers.deepgram.com/changelog/2024/2/29.md)
+- [January 17, 2024](https://developers.deepgram.com/changelog/2024/1/17.md)
+- [January 4, 2024](https://developers.deepgram.com/changelog/2024/1/4.md)
+- [December 21, 2023](https://developers.deepgram.com/changelog/2023/12/21.md)
+- [December 7, 2023](https://developers.deepgram.com/changelog/2023/12/7.md)
+- [November 14, 2023](https://developers.deepgram.com/changelog/2023/11/14.md)
+- [October 26, 2023](https://developers.deepgram.com/changelog/2023/10/26.md)
+- [October 6, 2023](https://developers.deepgram.com/changelog/2023/10/6.md)
+- [September 28, 2023](https://developers.deepgram.com/changelog/2023/9/28.md)
+- [September 20, 2023](https://developers.deepgram.com/changelog/2023/9/20.md)
+- [September 19, 2023](https://developers.deepgram.com/changelog/2023/9/19.md)
+- [August 4, 2023](https://developers.deepgram.com/changelog/2023/8/4.md)
+- [July 19, 2023](https://developers.deepgram.com/changelog/2023/7/19.md)
+- [July 7, 2023](https://developers.deepgram.com/changelog/2023/7/7.md)
+- [June 30, 2023](https://developers.deepgram.com/changelog/2023/6/30.md)
+- [June 6, 2023](https://developers.deepgram.com/changelog/2023/6/6.md)
+- [June 2, 2023](https://developers.deepgram.com/changelog/2023/6/2.md)
+- [May 11, 2023](https://developers.deepgram.com/changelog/2023/5/11.md)
+- [April 13, 2023](https://developers.deepgram.com/changelog/2023/4/13.md)
+- [March 15, 2023](https://developers.deepgram.com/changelog/2023/3/15.md)
+- [February 28, 2023](https://developers.deepgram.com/changelog/2023/2/28.md)
+- [February 27, 2023](https://developers.deepgram.com/changelog/2023/2/27.md)
+- [January 24, 2023](https://developers.deepgram.com/changelog/2023/1/24.md)
+- [January 20, 2023](https://developers.deepgram.com/changelog/2023/1/20.md)
+- [December 15, 2022](https://developers.deepgram.com/changelog/2022/12/15.md)
+- [November 30, 2022](https://developers.deepgram.com/changelog/2022/11/30.md)
+- [November 23, 2022](https://developers.deepgram.com/changelog/2022/11/23.md)
+- [November 11, 2022](https://developers.deepgram.com/changelog/2022/11/11.md)
+- [November 8, 2022](https://developers.deepgram.com/changelog/2022/11/8.md)
+- [November 1, 2022](https://developers.deepgram.com/changelog/2022/11/1.md)
+- [October 31, 2022](https://developers.deepgram.com/changelog/2022/10/31.md)
+- [October 27, 2022](https://developers.deepgram.com/changelog/2022/10/27.md)
+- [October 17, 2022](https://developers.deepgram.com/changelog/2022/10/17.md)
+- [October 14, 2022](https://developers.deepgram.com/changelog/2022/10/14.md)
+- [October 7, 2022](https://developers.deepgram.com/changelog/2022/10/7.md)
+- [September 20, 2022](https://developers.deepgram.com/changelog/2022/9/20.md)
+- [September 19, 2022](https://developers.deepgram.com/changelog/2022/9/19.md)
+- [September 15, 2022](https://developers.deepgram.com/changelog/2022/9/15.md)
+- [August 28, 2022](https://developers.deepgram.com/changelog/2022/8/28.md)
+- [August 22, 2022](https://developers.deepgram.com/changelog/2022/8/22.md)
+- [August 17, 2022](https://developers.deepgram.com/changelog/2022/8/17.md)
+- [July 19, 2022](https://developers.deepgram.com/changelog/2022/7/19.md)
+- [July 8, 2022](https://developers.deepgram.com/changelog/2022/7/8.md)
+- [July 7, 2022](https://developers.deepgram.com/changelog/2022/7/7.md)
+- [May 26, 2022](https://developers.deepgram.com/changelog/2022/5/26.md)
+- [April 29, 2022](https://developers.deepgram.com/changelog/2022/4/29.md)
+- [April 21, 2022](https://developers.deepgram.com/changelog/2022/4/21.md)
+- [March 23, 2022](https://developers.deepgram.com/changelog/2022/3/23.md)
+- [March 14, 2022](https://developers.deepgram.com/changelog/2022/3/14.md)
+- [March 7, 2022](https://developers.deepgram.com/changelog/2022/3/7.md)
+- [January 18, 2022](https://developers.deepgram.com/changelog/2022/1/18.md)
+- [November 18, 2021](https://developers.deepgram.com/changelog/2021/11/18.md)
+- [July 13, 2021](https://developers.deepgram.com/changelog/2021/7/13.md)
+- [May 19, 2021](https://developers.deepgram.com/changelog/2021/5/19.md)
+- [May 5, 2021](https://developers.deepgram.com/changelog/2021/5/5.md)
+- [March 17, 2021](https://developers.deepgram.com/changelog/2021/3/17.md)
+- [March 3, 2021](https://developers.deepgram.com/changelog/2021/3/3.md)
+- [February 17, 2021](https://developers.deepgram.com/changelog/2021/2/17.md)
+- [February 1, 2021](https://developers.deepgram.com/changelog/2021/2/1.md)
+- [July 30, 2020](https://developers.deepgram.com/changelog/2020/7/30.md)
+

@@ -14,8 +14,6 @@ Orchestrating voice agents using this multi-context WebSocket API is a complex t
 for advanced developers. For a more managed solution, consider exploring our [Agents Platform
 product](/docs/eleven-agents/overview), which simplifies many of these challenges.
 
-Multi-context WebSockets are not available for the `eleven_v3` model.
-
 ## Overview
 
 Building responsive voice agents requires the ability to manage audio streams dynamically, handle interruptions gracefully, and maintain natural-sounding speech across conversational turns. Our multi-context WebSocket API for Text to Speech (TTS) is specifically designed for these scenarios.

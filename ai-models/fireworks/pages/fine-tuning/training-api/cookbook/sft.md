@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: SFT"
+title: "Cookbook: Supervised Fine-Tuning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft
 path: fine-tuning/training-api/cookbook/sft
 ---
@@ -78,7 +78,7 @@ The recipe automatically tokenizes conversations using the chat template, settin
 
 ### Vision datasets
 
-The SFT recipe also supports vision-language model fine-tuning. Use multimodal `content` arrays with `image_url` objects in your JSONL, and specify a VLM training shape and tokenizer. See [Vision Inputs](/fine-tuning/training-api/vision-inputs) for dataset format details and a full walkthrough.
+The SFT recipe also supports vision-language model fine-tuning. Use multimodal `content` arrays with `image_url` objects in your JSONL, and specify a VLM training shape and tokenizer. See [Vision Inputs](/fine-tuning/models) for dataset format details and a full walkthrough.
 
 ## Checkpointing and resume
 
@@ -117,8 +117,8 @@ main(cfg)
 
 ## Related guides
 
-* [Vision Inputs](/fine-tuning/training-api/vision-inputs) — VLM fine-tuning with image and text data
+* [Vision Inputs](/fine-tuning/models) — VLM fine-tuning with image and text data
 * [Cookbook DPO](/fine-tuning/training-api/cookbook/dpo) — preference optimization
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — reinforcement learning recipes
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — API-level SFT loss details
+* [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — API-level SFT loss details

@@ -317,11 +317,11 @@ client.v1.invoices.list(stripe_context=event_notification.context)
 
 ## Test your handler
 
-Before you go-live with your webhook endpoint function, we recommend that you test your application integration. You can do so by configuring a local listener to send events to your local machine, and sending test events. You need to use the [CLI](https://docs.stripe.com/stripe-cli.md) to test.
+Before you go-live with your webhook endpoint function, we recommend that you test your application integration. You can do so by configuring a local listener to send events to your local machine, and sending test events. You need to use the [CLI](https://docs.stripe.com/cli.md) to test.
 
 #### Forward events to a local endpoint 
 
-To forward events to your local endpoint, run the following command with the [CLI](https://docs.stripe.com/stripe-cli.md) to set up a local listener. The `--forward-to` flag sends all [Stripe events](https://docs.stripe.com/cli/trigger#trigger-event) in a [sandbox](https://docs.stripe.com/sandboxes.md) to your local webhook endpoint. Use the appropriate CLI commands below depending on whether you use [thin](https://docs.stripe.com/event-destinations.md#events-overview) or snapshot events.
+To forward events to your local endpoint, run the following command with the [CLI](https://docs.stripe.com/cli.md) to set up a local listener. The `--forward-to` flag sends all [Stripe events](https://docs.stripe.com/cli/trigger#trigger-event) in a [sandbox](https://docs.stripe.com/sandboxes.md) to your local webhook endpoint. Use the appropriate CLI commands below depending on whether you use [thin](https://docs.stripe.com/event-destinations.md#events-overview) or snapshot events.
 
 #### Forward snapshot events
 
@@ -394,7 +394,7 @@ To send test events, trigger an event type that your event destination is subscr
 
 #### Trigger a snapshot event
 
-You can use the following command in either [Stripe Shell](https://docs.stripe.com/workbench/shell.md) or [Stripe CLI](https://docs.stripe.com/stripe-cli.md). This example triggers a `payment_intent.succeeded` event:
+You can use the following command in either [Stripe Shell](https://docs.stripe.com/workbench/shell.md) or [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `payment_intent.succeeded` event:
 
 ```bash
 stripe trigger payment_intent.succeeded
@@ -404,7 +404,7 @@ Trigger succeeded! Check dashboard for event details.
 
 #### Trigger a thin event
 
-You can use the following command in the [Stripe CLI](https://docs.stripe.com/stripe-cli.md). This example triggers a `v1.billing.meter.error_report_triggered` event:
+You can use the following command in the [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `v1.billing.meter.error_report_triggered` event:
 
 ```bash
 stripe trigger v1.billing.meter.error_report_triggered
@@ -623,7 +623,7 @@ Multiple types of issues can occur when delivering events to your webhook endpoi
 
 To view event deliveries, open [Workbench](https://docs.stripe.com/workbench.md), select the webhook endpoint under **Webhooks**, then select the **Event deliveries** tab. The **Event deliveries** tab provides a list of events and whether they’re `Delivered`, `Pending`, or `Failed`. Click an event to view metadata, including the HTTP status code of the delivery attempt and the time of pending future deliveries.
 
-You can also use the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) to [listen for events](https://docs.stripe.com/webhooks.md#test-webhook) directly in your terminal.
+You can also use the [Stripe CLI](https://docs.stripe.com/cli.md) to [listen for events](https://docs.stripe.com/webhooks.md#test-webhook) directly in your terminal.
 
 ### Fix HTTP status codes
 
