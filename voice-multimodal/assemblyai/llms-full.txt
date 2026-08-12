@@ -250,6 +250,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Cloud Endpoints and Data Residency](#cloud-endpoints-and-data-residency-docs-llm-gateway-cloud-endpoints-and-data-residency-mdx)
 - [Create a chat completion](#create-a-chat-completion-docs-llm-gateway-api-reference-create-chat-completion-mdx)
 - [Create speech understanding](#create-speech-understanding-docs-llm-gateway-api-reference-create-speech-understanding-mdx)
+- [Improve Latency](#improve-latency-docs-llm-gateway-improve-latency-mdx)
 - [Ask Questions About Your Audio Transcripts](#ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx)
 - [Agentic Workflows](#agentic-workflows-docs-llm-gateway-agentic-workflows-mdx)
 - [Basic Chat Completions](#basic-chat-completions-docs-llm-gateway-chat-completions-mdx)
@@ -368,6 +369,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [How do I contact support?](#how-do-i-contact-support-docs-faq-how-do-i-contact-support-mdx)
 - [How do I get in touch with your Sales team?](#how-do-i-get-in-touch-with-your-sales-team-docs-faq-how-do-i-get-in-touch-with-your-sales-team-mdx)
 - [I’ve spotted an issue with the website, what should I do?](#i-ve-spotted-an-issue-with-the-website-what-should-i-do-docs-faq-ive-spotted-an-issue-with-the-website-what-should-i-do-mdx)
+- [What are your support hours and response time SLAs?](#what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx)
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
@@ -2062,7 +2064,7 @@ These pipelines use the [Real-time STT API](/streaming/getting-started/transcrib
 
 Each pipeline above is a starting point. Here are common ways to build on them:
 
-- **Swap LLM models** — Change the `model` parameter in LLM Gateway requests to use any of the [25+ supported models](/llm-gateway/quickstart#available-models) (Claude, GPT, Gemini, and more).
+- **Swap LLM models** — Change the `model` parameter in LLM Gateway requests to use any of the [25+ supported models](/llm-gateway/available-models) (Claude, GPT, Gemini, and more).
 - **Add structured output** — Use [Structured Outputs](/llm-gateway/structured-outputs) to constrain LLM responses to a JSON schema for easier downstream processing.
 - **Add PII redaction** — Enable [PII Redaction](/guardrails/redact-pii-from-transcripts) to automatically mask sensitive information before it reaches the LLM.
 - **Use Speaker Identification** — Replace generic speaker labels with real names using [Speaker Identification](/speech-understanding/speaker-identification).
@@ -32198,7 +32200,7 @@ speaker finishes another's sentence, or where a brief interjection appears mid-t
   "speaker_label": "A",
   "end_of_turn": true,
   "words": [
-    { "text": "Yeah.",      "speaker": "UNKNOWN", "word_is_final": true, "start":    0, "end":   96, "confidence": 0.204160 },
+    { "text": "Yeah.",      "speaker": "PENDING", "word_is_final": true, "start":    0, "end":   96, "confidence": 0.204160 },
     { "text": "Different",  "speaker": "A",       "word_is_final": true, "start":  145, "end":  290, "confidence": 0.844642 },
     { "text": "things",     "speaker": "A",       "word_is_final": true, "start":  306, "end":  516, "confidence": 0.998971 },
     { "text": "the",        "speaker": "A",       "word_is_final": true, "start":  581, "end":  613, "confidence": 0.807043 },
@@ -32219,7 +32221,7 @@ speaker finishes another's sentence, or where a brief interjection appears mid-t
     { "text": "in",         "speaker": "A",       "word_is_final": true, "start": 3650, "end": 3683, "confidence": 0.999225 },
     { "text": "other",      "speaker": "A",       "word_is_final": true, "start": 3747, "end": 3861, "confidence": 0.999323 },
     { "text": "countries.", "speaker": "A",       "word_is_final": true, "start": 3974, "end": 4281, "confidence": 0.868172 },
-    { "text": "Yeah.",      "speaker": "UNKNOWN", "word_is_final": true, "start": 4458, "end": 4636, "confidence": 0.656062 },
+    { "text": "Yeah.",      "speaker": "PENDING", "word_is_final": true, "start": 4458, "end": 4636, "confidence": 0.656062 },
     { "text": "Your",       "speaker": "B",       "word_is_final": true, "start": 5040, "end": 5088, "confidence": 0.856220 },
     { "text": "Colombian",  "speaker": "B",       "word_is_final": true, "start": 5121, "end": 5638, "confidence": 0.962598 },
     { "text": "Spanish",    "speaker": "B",       "word_is_final": true, "start": 5638, "end": 6090, "confidence": 0.999557 },
@@ -32242,20 +32244,20 @@ A few things to keep in mind when consuming `speaker`:
 
 - **Final words only.** The `speaker` field only appears on words where `word_is_final: true`. Non-final (in-progress) words never carry it.
 - **`speaker` can be absent on individual words.** If the field is missing from a word entirely, treat that word as unattributed and fall back to the turn-level `speaker_label` if you need a label. Absent means the field is omitted from the JSON — it will never be `null`.
-- **`UNKNOWN` at word level** means the model couldn't confidently attribute that word to any specific speaker — common for short backchannels ("uh huh", "yeah") or brief low-quality audio segments. It is not an ambiguity flag between two known speakers; words in a confidently-attributed stretch carry the speaker's letter, not `UNKNOWN`.
+- **`PENDING` at word level** means the model couldn't confidently attribute that word to any specific speaker — common for short backchannels ("uh huh", "yeah") or brief low-quality audio segments. It is not an ambiguity flag between two known speakers; words in a confidently-attributed stretch carry the speaker's letter, not `PENDING`.
 
 If a turn contains less than approximately 1 second of audio, the turn-level `speaker_label`
-will be set to `"UNKNOWN"`. This is because the model needs at least ~1 second of
+will be set to `"PENDING"`. This is because the model needs at least ~1 second of
 audio to generate a reliable diarization embedding — without enough audio, embeddings
 may be inaccurate and could lead to a single speaker being labeled as multiple
-speakers. Labeling short turns as `"UNKNOWN"` ensures that speaker labels remain
+speakers. Labeling short turns as `"PENDING"` ensures that speaker labels remain
 as accurate as possible.
 
 ```json
 {
   "type": "Turn",
   "transcript": "Hello?",
-  "speaker_label": "UNKNOWN",
+  "speaker_label": "PENDING",
   "end_of_turn": true,
   "turn_is_formatted": true
 }
@@ -32411,7 +32413,7 @@ Real-time diarization is an inherently harder problem than diarization for async
 The following limitations apply to the current beta:
 
 - **Short utterances** — Turns with less than ~1 second of audio are labeled
-  as `"UNKNOWN"` because there is insufficient audio to generate a reliable
+  as `"PENDING"` because there is insufficient audio to generate a reliable
   speaker embedding. This prevents inaccurate embeddings from causing a single
   speaker to be split across multiple labels.
 - **Overlapping speech** — When two speakers talk simultaneously, the model
@@ -47544,7 +47546,7 @@ The `llm_gateway` parameterisa JSON-stringified object that follows the same int
 
 | Key          | Type   | Description                                                                            |
 | ------------ | ------ | -------------------------------------------------------------------------------------- |
-| `model`      | string | The model to use. See [Available models](/llm-gateway/quickstart#available-models). |
+| `model`      | string | The model to use. See [Available models](/llm-gateway/available-models). |
 | `messages`   | array  | An array of message objects. The `content` field contains your prompt.                 |
 | `max_tokens` | number | The maximum number of tokens to generate.                                              |
 
@@ -59702,7 +59704,7 @@ curl https://llm-gateway.assemblyai.com/v1/chat/completions \
 
 | Key           | Type   | Description                                                                                |
 | ------------- | ------ | ------------------------------------------------------------------------------------------ |
-| `model`       | string | The LLM model to use. See [available models](/llm-gateway/quickstart#available-models). |
+| `model`       | string | The LLM model to use. See [available models](/llm-gateway/available-models). |
 | `messages`    | array  | The messages to send to the model, including your prompt and paragraph text.                |
 | `max_tokens`  | number | Maximum number of tokens in the response.                                                  |
 
@@ -65397,124 +65399,71 @@ Description: Available models on LLM Gateway
 
 ## Available models
 
-### By quality ([LMArena Score](https://arena.ai/leaderboard))
+| Model | ID | Supported parameters | Max Context | Retirement Date |
+| --- | --- | --- | --- | --- |
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Opus 4.5** | `claude-opus-4-5-20251101` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Opus 4.6** | `claude-opus-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Opus 4.7** | `claude-opus-4-7` | `max_tokens`, `tools`, `tool_choice`, `stream` | `1000000` |  |
+| **Opus 4.8** | `claude-opus-4-8` | `max_tokens`, `tools`, `tool_choice`, `stream` | `1000000` |  |
+| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Sonnet 4.6** | `claude-sonnet-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Sonnet 5** | `claude-sonnet-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `200000` |  |
+| **Gemini 2.5 Flash** | `gemini-2.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048576` |  |
+| **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048576` |  |
+| **Gemini 2.5 Pro** | `gemini-2.5-pro` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `200000` |  |
+| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **Gemini 3.5 Flash** | `gemini-3.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **Gemini 3.6 Flash** | `gemini-3.6-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **GPT OSS 120B** | `gpt-oss-120b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice` | `131072` |  |
+| **GPT OSS 20B** | `gpt-oss-20b` | `max_tokens`, `temperature`, `tools`, `tool_choice` | `131072` |  |
+| **GPT-4.1** | `gpt-4.1` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream` | `1047576` |  |
+| **GPT-5** | `gpt-5` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream`, `response_format` | `400000` |  |
+| **GPT-5 Nano** | `gpt-5-nano` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `400000` |  |
+| **GPT-5 mini** | `gpt-5-mini` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `400000` |  |
+| **GPT-5.1** | `gpt-5.1` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `400000` |  |
+| **GPT-5.2** | `gpt-5.2` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `400000` |  |
+| **GPT-5.5** | `gpt-5.5` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `272000` |  |
+| **GPT-5.6 Luna** | `gpt-5.6-luna` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `270000` |  |
+| **GPT-5.6 Terra** | `gpt-5.6-terra` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `270000` |  |
+| **Qwen3 32B** | `qwen3-32B` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `200000` |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `32768` |  |
 
-| Model                             | Provider      | Parameter                       | [LMArena Score](https://arena.ai/leaderboard) | Latency per 10,000 tokens |
-| --------------------------------- | ------------- | ------------------------------- | --------------------------------------------- | ------------------------- |
-| **Claude Opus 4.6**               | Anthropic     | `claude-opus-4-6`               | 1498                                          | 7.4s                      |
-| **Claude Opus 4.7**               | Anthropic     | `claude-opus-4-7`               | 1491                                          | TBD                       |
-| **Gemini 3.5 Flash**              | Google        | `gemini-3.5-flash`              | 1480                                          | TBD                       |
-| **GPT-5.5**                       | OpenAI        | `gpt-5.5`                       | 1475                                          | TBD                       |
-| **Claude Opus 4.5**               | Anthropic     | `claude-opus-4-5-20251101`      | 1468                                          | 3.9s                      |
-| **Claude Sonnet 4.6**             | Anthropic     | `claude-sonnet-4-6`             | 1466                                          | 7.2s                      |
-| **Claude 4.5 Sonnet**             | Anthropic     | `claude-sonnet-4-5-20250929`    | 1453                                          | 5.6s                      |
-| **Gemini 2.5 Pro**                | Google        | `gemini-2.5-pro`                | 1448                                          | 4.0s                      |
-| **GPT-5.1**                       | OpenAI        | `gpt-5.1`                       | 1439                                          | 2.7s                      |
-| **Gemini 3.1 Flash Lite**         | Google        | `gemini-3.1-flash-lite`         | 1438                                          | TBD                       |
-| **GPT-5.2**                       | OpenAI        | `gpt-5.2`                       | 1437                                          | 1.6s                      |
-| **GPT-5**                         | OpenAI        | `gpt-5`                         | 1434                                          | 4.3s                      |
-| **GPT-4.1**                       | OpenAI        | `gpt-4.1`                       | 1413                                          | 1.8s                      |
-| **Gemini 2.5 Flash**              | Google        | `gemini-2.5-flash`              | 1411                                          | 2.6s                      |
-| **Claude 4.5 Haiku**              | Anthropic     | `claude-haiku-4-5-20251001`     | 1409                                          | 4.1s                      |
-| **Qwen3 Next 80B A3B**            | Alibaba Cloud | `qwen3-next-80b-a3b`            | 1402                                          | 3.1s                      |
-| **GPT-5 mini**                    | OpenAI        | `gpt-5-mini`                    | 1390                                          | 3.8s                      |
-| **Gemini 2.5 Flash-Lite**         | Google        | `gemini-2.5-flash-lite`         | 1380                                          | 1.1s                      |
-| **gpt-oss-120b**                  | OpenAI        | `gpt-oss-120b`                  | 1353                                          | 1.4s                      |
-| **Qwen3 32B**                     | Alibaba Cloud | `qwen3-32B`                     | 1347                                          | 3.7s                      |
-| **GPT-5 nano**                    | OpenAI        | `gpt-5-nano`                    | 1337                                          | 3.2s                      |
-| **gpt-oss-20b**                   | OpenAI        | `gpt-oss-20b`                   | 1317                                          | 1.1s                      |
-| **Claude Opus 4.8**               | Anthropic     | `claude-opus-4-8`               | TBD                                           | TBD                       |
-| **Claude Sonnet 5**               | Anthropic     | `claude-sonnet-5`               | TBD                                           | TBD                       |
-| **GPT-5.6 Luna**                  | OpenAI        | `gpt-5.6-luna`                  | TBD                                           | TBD                       |
-| **GPT-5.6 Terra**                 | OpenAI        | `gpt-5.6-terra`                 | TBD                                           | TBD                       |
-| **Gemini 3.5 Flash-Lite**         | Google        | `gemini-3.5-flash-lite`         | TBD                                           | TBD                       |
-| **Gemini 3.6 Flash**              | Google        | `gemini-3.6-flash`              | TBD                                           | TBD                       |
+### Pricing details
 
-### By latency (per 10,000 tokens)
-
-| Model                             | Provider      | Parameter                       | Latency per 10,000 tokens | [LMArena Score](https://arena.ai/leaderboard) |
-| --------------------------------- | ------------- | ------------------------------- | ------------------------- | --------------------------------------------- |
-| **Gemini 2.5 Flash-Lite**         | Google        | `gemini-2.5-flash-lite`         | 1.1s                      | 1380                                          |
-| **gpt-oss-20b**                   | OpenAI        | `gpt-oss-20b`                   | 1.1s                      | 1317                                          |
-| **gpt-oss-120b**                  | OpenAI        | `gpt-oss-120b`                  | 1.4s                      | 1353                                          |
-| **GPT-5.2**                       | OpenAI        | `gpt-5.2`                       | 1.6s                      | 1437                                          |
-| **GPT-4.1**                       | OpenAI        | `gpt-4.1`                       | 1.8s                      | 1413                                          |
-| **Gemini 2.5 Flash**              | Google        | `gemini-2.5-flash`              | 2.6s                      | 1411                                          |
-| **GPT-5.1**                       | OpenAI        | `gpt-5.1`                       | 2.7s                      | 1439                                          |
-| **Qwen3 Next 80B A3B**            | Alibaba Cloud | `qwen3-next-80b-a3b`            | 3.1s                      | 1402                                          |
-| **GPT-5 nano**                    | OpenAI        | `gpt-5-nano`                    | 3.2s                      | 1337                                          |
-| **Qwen3 32B**                     | Alibaba Cloud | `qwen3-32B`                     | 3.7s                      | 1347                                          |
-| **GPT-5 mini**                    | OpenAI        | `gpt-5-mini`                    | 3.8s                      | 1390                                          |
-| **Claude Opus 4.5**               | Anthropic     | `claude-opus-4-5-20251101`      | 3.9s                      | 1468                                          |
-| **Gemini 2.5 Pro**                | Google        | `gemini-2.5-pro`                | 4.0s                      | 1448                                          |
-| **Claude 4.5 Haiku**              | Anthropic     | `claude-haiku-4-5-20251001`     | 4.1s                      | 1409                                          |
-| **GPT-5**                         | OpenAI        | `gpt-5`                         | 4.3s                      | 1434                                          |
-| **Claude 4.5 Sonnet**             | Anthropic     | `claude-sonnet-4-5-20250929`    | 5.6s                      | 1453                                          |
-| **Claude Sonnet 4.6**             | Anthropic     | `claude-sonnet-4-6`             | 7.2s                      | 1466                                          |
-| **Claude Opus 4.6**               | Anthropic     | `claude-opus-4-6`               | 7.4s                      | 1498                                          |
-| **Claude Opus 4.7**               | Anthropic     | `claude-opus-4-7`               | TBD                       | 1491                                          |
-| **Claude Opus 4.8**               | Anthropic     | `claude-opus-4-8`               | TBD                       | TBD                                           |
-| **Claude Sonnet 5**               | Anthropic     | `claude-sonnet-5`               | TBD                       | TBD                                           |
-| **GPT-5.5**                       | OpenAI        | `gpt-5.5`                       | TBD                       | 1475                                          |
-| **GPT-5.6 Luna**                  | OpenAI        | `gpt-5.6-luna`                  | TBD                       | TBD                                           |
-| **GPT-5.6 Terra**                 | OpenAI        | `gpt-5.6-terra`                 | TBD                       | TBD                                           |
-| **Gemini 3.1 Flash Lite**         | Google        | `gemini-3.1-flash-lite`         | TBD                       | 1438                                          |
-| **Gemini 3.5 Flash**              | Google        | `gemini-3.5-flash`              | TBD                       | 1480                                          |
-| **Gemini 3.5 Flash-Lite**         | Google        | `gemini-3.5-flash-lite`         | TBD                       | TBD                                           |
-| **Gemini 3.6 Flash**              | Google        | `gemini-3.6-flash`              | TBD                       | TBD                                           |
-
-#### Anthropic Claude
-
-| Model                 | Parameter                    | [LMArena Score](https://arena.ai/leaderboard) | Latency per 10,000 tokens |
-| --------------------- | ---------------------------- | --------------------------------------------- | ------------------------- |
-| **Claude Sonnet 5**   | `claude-sonnet-5`            | TBD                                           | TBD                       |
-| **Claude Opus 4.8**   | `claude-opus-4-8`            | TBD                                           | TBD                       |
-| **Claude Opus 4.7**   | `claude-opus-4-7`            | 1491                                          | TBD                       |
-| **Claude Opus 4.6**   | `claude-opus-4-6`            | 1498                                          | 7.4s                      |
-| **Claude Sonnet 4.6** | `claude-sonnet-4-6`          | 1466                                          | 7.2s                      |
-| **Claude Opus 4.5**   | `claude-opus-4-5-20251101`   | 1468                                          | 3.9s                      |
-| **Claude 4.5 Sonnet** | `claude-sonnet-4-5-20250929` | 1453                                          | 5.6s                      |
-| **Claude 4.5 Haiku**  | `claude-haiku-4-5-20251001`  | 1409                                          | 4.1s                      |
-
-#### OpenAI GPT
-
-| Model             | Parameter       | [LMArena Score](https://arena.ai/leaderboard) | Latency per 10,000 tokens |
-| ----------------- | --------------- | --------------------------------------------- | ------------------------- |
-| **GPT-5.6 Terra** | `gpt-5.6-terra` | TBD                                           | TBD                       |
-| **GPT-5.6 Luna**  | `gpt-5.6-luna`  | TBD                                           | TBD                       |
-| **GPT-5.5**       | `gpt-5.5`       | 1475                                          | TBD                       |
-| **GPT-5.2**       | `gpt-5.2`       | 1437                                          | 1.6s                      |
-| **GPT-5.1**       | `gpt-5.1`       | 1439                                          | 2.7s                      |
-| **GPT-5**         | `gpt-5`         | 1434                                          | 4.3s                      |
-| **GPT-5 nano**    | `gpt-5-nano`    | 1337                                          | 3.2s                      |
-| **GPT-5 mini**    | `gpt-5-mini`    | 1390                                          | 3.8s                      |
-| **GPT-4.1**       | `gpt-4.1`       | 1413                                          | 1.8s                      |
-| **gpt-oss-120b**  | `gpt-oss-120b`  | 1353                                          | 1.4s                      |
-| **gpt-oss-20b**   | `gpt-oss-20b`   | 1317                                          | 1.1s                      |
-
-#### Google Gemini
-
-| Model                     | Parameter                 | [LMArena Score](https://arena.ai/leaderboard) | Latency per 10,000 tokens |
-| ------------------------- | ------------------------- | --------------------------------------------- | ------------------------- |
-| **Gemini 3.6 Flash**      | `gemini-3.6-flash`        | TBD                                           | TBD                       |
-| **Gemini 3.5 Flash**      | `gemini-3.5-flash`        | 1480                                          | TBD                       |
-| **Gemini 3.5 Flash-Lite** | `gemini-3.5-flash-lite`   | TBD                                           | TBD                       |
-| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite`   | 1438                                          | TBD                       |
-| **Gemini 2.5 Pro**        | `gemini-2.5-pro`          | 1448                                          | 4.0s                      |
-| **Gemini 2.5 Flash**      | `gemini-2.5-flash`        | 1411                                          | 2.6s                      |
-| **Gemini 2.5 Flash-Lite** | `gemini-2.5-flash-lite`   | 1380                                          | 1.1s                      |
-
-  Gemini 3.1 Flash Lite is currently available in the US region only.
-
-#### Alibaba Cloud Qwen
-
-| Model                             | Parameter                     | [LMArena Score](https://arena.ai/leaderboard) | Latency per 10,000 tokens |
-| --------------------------------- | ----------------------------- | --------------------------------------------- | ------------------------- |
-| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | 1402                                          | 3.1s                      |
-| **Qwen3 32B**          | `qwen3-32B`          | 1347                                          | 3.7s                      |
-
-  Claude Opus 4.5 and Claude Opus 4.6 currently support context windows under
-  200k tokens via the LLM Gateway.
+| Model | Parameter | Prompt (per 1M) | Completion (per 1M) | Cache read (per 1M) | Cache write (per 1M) | Cache write 1h (per 1M) | Regional surcharge |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | $1 | $5 | $0.1 | $1.25 | $2 | +10% |
+| **Opus 4.5** | `claude-opus-4-5-20251101` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Opus 4.6** | `claude-opus-4-6` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Opus 4.7** | `claude-opus-4-7` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Opus 4.8** | `claude-opus-4-8` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
+| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
+| **Sonnet 4.6** | `claude-sonnet-4-6` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
+| **Sonnet 5** | `claude-sonnet-5` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
+| **Gemini 2.5 Flash** | `gemini-2.5-flash` | $0.3 | $2.5 | $0.03 |  |  | +10% |
+| **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | $0.1 | $0.4 | $0.01 |  |  | +10% |
+| **Gemini 2.5 Pro** | `gemini-2.5-pro` | $1.25 | $10 | $0.125 |  |  | +10% |
+| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | $0.25 | $1.5 | $0.025 |  |  | +10% |
+| **Gemini 3.5 Flash** | `gemini-3.5-flash` | $1.25 | $9 | $0.125 |  |  | +10% |
+| **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | $0.3 | $2.5 | $0.03 |  |  | +10% |
+| **Gemini 3.6 Flash** | `gemini-3.6-flash` | $1.5 | $7.5 | $0.15 |  |  | +10% |
+| **GPT OSS 120B** | `gpt-oss-120b` | $0.15 | $0.6 |  |  |  |  |
+| **GPT OSS 20B** | `gpt-oss-20b` | $0.07 | $0.3 |  |  |  |  |
+| **GPT-4.1** | `gpt-4.1` | $2 | $8 | $0.5 |  |  | +10% |
+| **GPT-5** | `gpt-5` | $1.25 | $10 | $0.125 |  |  | +10% |
+| **GPT-5 Nano** | `gpt-5-nano` | $0.05 | $0.4 | $0.005 |  |  | +10% |
+| **GPT-5 mini** | `gpt-5-mini` | $0.25 | $2 | $0.025 |  |  | +10% |
+| **GPT-5.1** | `gpt-5.1` | $1.25 | $10 | $0.125 |  |  | +10% |
+| **GPT-5.2** | `gpt-5.2` | $1.75 | $14 | $0.175 |  |  | +10% |
+| **GPT-5.5** | `gpt-5.5` | $5 | $30 | $0.5 |  |  | +10% |
+| **GPT-5.6 Luna** | `gpt-5.6-luna` | $1 | $6 | $0.1 | $1.25 |  | +10% |
+| **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
+| **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
+| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 
   For information on data retention and model training policies for each
   provider, see [Data Retention and Model Training](/data-retention-and-model-training#llm-gateway-production-environment).
@@ -65694,7 +65643,7 @@ When a fallback is used, the response looks exactly as if you had made the origi
 
 | Key                      | Type    | Required? | Description                                                                                                                           |
 | ------------------------ | ------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`                  | string  | Yes       | The primary model to use for completion. See [Available models](/llm-gateway/quickstart#available-models) for supported values.     |
+| `model`                  | string  | Yes       | The primary model to use for completion. See [Available models](/llm-gateway/available-models) for supported values.     |
 | `messages`               | array   | Yes       | An array of message objects representing the conversation history.                                                                    |
 | `fallbacks`              | array   | No        | An array of fallback objects. Each object must include a `model` and can override any field available in the original request.         |
 | `fallback_config`        | object  | No        | Configuration for fallback behavior.                                                                                                  |
@@ -65707,7 +65656,7 @@ Each object in the `fallbacks` array must include a `model` and can override any
 
 | Key           | Type   | Required? | Description                                                                                                                       |
 | ------------- | ------ | --------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string | Yes       | The fallback model to use. See [Available models](/llm-gateway/quickstart#available-models) for supported values.               |
+| `model`       | string | Yes       | The fallback model to use. See [Available models](/llm-gateway/available-models) for supported values.               |
 | `messages`    | array  | No        | Override the messages for the fallback request.                                                                                   |
 | `temperature` | number | No        | Override the temperature for the fallback request.                                                                                |
 | `max_tokens`  | number | No        | Override the max tokens for the fallback request.                                                                                 |
@@ -65750,7 +65699,7 @@ The LLM Gateway supports prompt caching across all major providers, with each pr
 
   Cached input tokens are billed at a discounted rate compared to regular input tokens. The exact discount depends on the model and provider.
 
-  Prompt caching only activates when the cacheable portion of your prompt meets a minimum token threshold. Claude's minimum varies by model — see [Minimum cacheable prompt length](#minimum-cacheable-prompt-length) for the per-model limits. OpenAI requires 1,024 tokens. Shorter prompts won't benefit from caching.
+  Prompt caching only activates when the cacheable portion of your prompt meets a minimum token threshold. Claude's minimum varies by model; see [Minimum cacheable prompt length](#minimum-cacheable-prompt-length) for links to each provider's documentation. Shorter prompts won't benefit from caching.
 
 ## Claude models
 
@@ -65841,16 +65790,9 @@ You can also set `cache_control` on tool result messages to cache tool interacti
 
 ### Minimum cacheable prompt length
 
-Claude only caches prompts that meet a minimum token threshold, and the threshold depends on the [model](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#cache-limitations). If the cacheable portion of your prompt falls below this threshold, the request is processed without caching and no error is returned.
+Claude only caches prompts that meet a minimum token threshold, and the threshold depends on the model. If the cacheable portion of your prompt falls below this threshold, the request is processed without caching and no error is returned.
 
-| Model | Minimum cacheable prompt length |
-| ----- | ------------------------------- |
-| Claude Opus 4.7 (`claude-opus-4-7`) | 4,096 tokens |
-| Claude Opus 4.6 (`claude-opus-4-6`) | 4,096 tokens |
-| Claude Opus 4.5 (`claude-opus-4-5-20251101`) | 4,096 tokens |
-| Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) | 4,096 tokens |
-| Claude Sonnet 4.6 (`claude-sonnet-4-6`) | 2,048 tokens |
-| Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`) | 1,024 tokens |
+For per-model thresholds, see Anthropic's [prompt caching cache limitations](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#cache-limitations). OpenAI's minimum is documented in [OpenAI's prompt caching guide](https://developers.openai.com/docs/guides/prompt-caching), and Gemini's in [Google's context caching guide](https://ai.google.dev/gemini-api/docs/caching).
 
 ### Cache control with TTL
 
@@ -66286,7 +66228,7 @@ curl -X POST \
 
 | Key           | Type             | Required? | Description                                                                                                               |
 | ------------- | ---------------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string           | Yes       | The model to use for completion. See [Available models](/llm-gateway#available-models) section for supported values. |
+| `model`       | string           | Yes       | The model to use for completion. See [Available models](/llm-gateway/available-models) for supported values. |
 | `messages`    | array            | Yes       | An array of message objects representing the conversation history.                                                        |
 | `tools`       | array            | Yes       | An array of tool definitions that the model can call.                                                                     |
 | `tool_choice` | string or object | No        | Controls which tools the model can call. Options: `"none"`, `"auto"`, or an object specifying a specific function.        |
@@ -67138,6 +67080,84 @@ Metadata:
 
 ---
 
+<a id="improve-latency-docs-llm-gateway-improve-latency-mdx"></a>
+
+# Improve Latency
+
+URL: https://www.assemblyai.com/docs/llm-gateway/improve-latency
+Source: docs/llm-gateway/improve-latency.mdx
+Navigation: LLM Gateway > Core concepts
+Description: Use keep-alive connections to minimize latency
+
+# Summary
+
+A common enhacement to minimize latency for http calls is to make use of a keep alive connection. This prevents a
+lot of the back and forth chatter between the server and your client and reduces latency on subsequent calls.
+The further your distance to the server, the more significant the improvement. Read more about this topic by
+searching "keep alive connections".
+
+## How to do this
+
+We can't go over every possible library/language combination, so the high level recommendation is to lookup
+"set keep alive connection in insert lang/lib".
+
+The some common cases:
+
+* Python requests use `session = requests.Session()`
+* The OpenAI sdk does this by default
+* JavaScript fetch set `fetch(url, {keepalive: true})`
+* Golang net/http does this by default
+
+```python {11}
+import requests
+
+headers = {
+  "authorization": "<YOUR_API_KEY>"
+}
+
+# sets the keep alive connection
+session = requests.Session()
+
+response = session.post(
+    "https://llm-gateway.assemblyai.com/v1/chat/completions",
+    headers = headers,
+    json = {
+        "model": "claude-sonnet-4-6",
+        "messages": [
+            {"role": "user", "content": "What is the capital of France?"}
+        ],
+        "max_tokens": 1000
+    }
+)
+
+result = response.json()
+print(result["choices"][0]["message"]["content"])
+```
+
+```javascript {10}
+const response = await fetch(
+  "https://llm-gateway.assemblyai.com/v1/chat/completions",
+  {
+    keepalive: true, // sets the keep alive connection
+    method: "POST",
+    headers: {
+      authorization: "<YOUR_API_KEY>",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      messages: [{ role: "user", content: "What is the capital of France?" }],
+      max_tokens: 1000,
+    }),
+  }
+);
+
+const result = await response.json();
+console.log(result.choices[0].message.content);
+```
+
+---
+
 <a id="ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx"></a>
 
 # Ask Questions About Your Audio Transcripts
@@ -67597,7 +67617,7 @@ curl -X POST \
 
 | Key           | Type             | Required? | Description                                                                                                               |
 | ------------- | ---------------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string           | Yes       | The model to use for completion. See [Available models](/llm-gateway#available-models) section for supported values. |
+| `model`       | string           | Yes       | The model to use for completion. See [Available models](/llm-gateway/available-models) for supported values. |
 | `messages`    | array            | Yes       | An array of message objects representing the conversation history.                                                        |
 | `tools`       | array            | Yes       | An array of tool definitions that the model can call.                                                                     |
 | `tool_choice` | string or object | No        | Controls which tools the model can call. Options: `"none"`, `"auto"`, or an object specifying a specific function.        |
@@ -67940,7 +67960,7 @@ curl -X POST \
 
 | Key           | Type    | Required? | Description                                                                                                               |
 | ------------- | ------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string  | Yes       | The model to use for completion. See [Available models](/llm-gateway#available-models) section for supported values. |
+| `model`       | string  | Yes       | The model to use for completion. See [Available models](/llm-gateway/available-models) for supported values. |
 | `messages`    | array   | Yes\*     | An array of message objects representing the conversation history. Either `messages` or `prompt` is required.             |
 | `prompt`      | string  | Yes\*     | A simple string prompt for single request/response interactions. Either `messages` or `prompt` is required.               |
 | `stream`      | boolean | No        | When `true`, responses are streamed as server-sent events (SSE). Supported on OpenAI models only.                        |
@@ -68225,7 +68245,7 @@ curl -X POST \
 
 | Key           | Type   | Required? | Description                                                                                                               |
 | ------------- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string | Yes       | The model to use for completion. See [Available models](/llm-gateway#available-models) section for supported values. |
+| `model`       | string | Yes       | The model to use for completion. See [Available models](/llm-gateway/available-models) for supported values. |
 | `messages`    | array  | Yes       | An array of message objects representing the conversation history.                                                        |
 | `max_tokens`  | number | No        | The maximum number of tokens to generate. Default: 1000. Range: [1, context_length).                                      |
 | `temperature` | number | No        | Controls randomness in the output. Higher values make output more random. Range: [0, 2].                                  |
@@ -68785,7 +68805,7 @@ The `metadata.errors` array lists every field that failed validation:
 
 **Fixes:**
 
-- Confirm the model is from OpenAI. See [Available models](/llm-gateway/quickstart#available-models).
+- Confirm the model is from OpenAI. See [Available models](/llm-gateway/available-models).
 - Use a client that reads SSE chunks (e.g. `response.iter_lines()` in Python `requests`, or the streaming `fetch` body reader in JavaScript). See [Basic chat completions — Streamed responses](/llm-gateway/chat-completions#streamed-responses).
 
 ---
@@ -68799,7 +68819,7 @@ The `metadata.errors` array lists every field that failed validation:
 - Capture the full request payload (model, messages, parameters), the full response, and the `request_id`. Send all three to [support@assemblyai.com](mailto:support@assemblyai.com) — quality issues are difficult to diagnose without the exact prompt.
 - For structured output, use [Structured outputs](/llm-gateway/structured-outputs) with a JSON schema rather than prompting for JSON in free text.
 - For malformed JSON, enable [Post-processing](/llm-gateway/structured-outputs#post-processing) to automatically repair responses.
-- Try a different model — quality varies. See the [LMArena scores](/llm-gateway/quickstart#by-quality-lmarena-score) for a comparison.
+- Try a different model. Quality varies across models; see [Available models](/llm-gateway/available-models) for the full list.
 
 ---
 
@@ -75404,7 +75424,7 @@ The `llm_gateway` parameterisa JSON-stringified object that follows the same int
 
 | Key          | Type   | Description                                                                            |
 | ------------ | ------ | -------------------------------------------------------------------------------------- |
-| `model`      | string | The model to use. See [Available models](/llm-gateway/quickstart#available-models). |
+| `model`      | string | The model to use. See [Available models](/llm-gateway/available-models). |
 | `messages`   | array  | An array of message objects. The `content` field contains your prompt.                 |
 | `max_tokens` | number | The maximum number of tokens to generate.                                              |
 
@@ -80402,6 +80422,39 @@ Navigation: FAQ > Overview > Company
 Description: I’ve spotted an issue with the website, what should I do? documentation.
 
 If you encounter an issue or problem with our website please reach out to us at [support@assemblyai.com](mailto:support@assemblyai.com) and we would be happy to look into it for you.
+
+---
+
+<a id="what-are-your-support-hours-and-response-time-slas-docs-faq-what-are-your-support-hours-and-response-time-slas-mdx"></a>
+
+# What are your support hours and response time SLAs?
+
+URL: https://www.assemblyai.com/docs/faq/what-are-your-support-hours-and-response-time-slas
+Source: docs/faq/what-are-your-support-hours-and-response-time-slas.mdx
+Navigation: FAQ > Overview > Company
+Description: What are your support hours and response time SLAs? documentation.
+
+AssemblyAI provides technical support to Customer via telephone, live chat, and email on weekdays during the hours of 6:00 pm PT Sunday through 6:00 pm PT Friday, with the exclusion of federal holidays ("Support Hours").
+
+Customers may initiate a helpdesk ticket by emailing [support@assemblyai.com](mailto:support@assemblyai.com), or the support widget on AssemblyAI's website [www.AssemblyAI.com](https://www.assemblyai.com/). Some select customers may also have a Slack Connect channel which is configured and monitored by the Support Team. All message services may be accessed 24/7.
+
+When reporting problems experienced with the Services, Customer shall provide AssemblyAI with the following information, as applicable, in the call or email:
+
+1. Company name
+2. Contact name and callback number
+3. Problem description
+4. Date and time problem was detected
+5. Error messages
+
+## Ticket Severity and Response SLAs
+
+AssemblyAI shall assign a trouble ticket to Customer, and shall use commercially reasonable efforts to resolve each trouble ticket according to the Severity Levels set forth below.
+
+| Severity Level | Definition                                                                                                                                                                         | Initial Response | Rate of Work                                                                                                          | Status Updates |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
+| HIGH           | Service is unavailable or inoperable (including Downtime).                                                                                                                         | 60 min           | 24 x 7 until a resolution is achieved                                                                                 | Hourly         |
+| MEDIUM         | Service is available and usable, but certain non-critical functions not working properly.                                                                                          | 4 hours          | Work shall be performed during AssemblyAI's normal business hours until a resolution is achieved                      | Weekly         |
+| LOW            | Service is available and all functions are working as advertised. This category would include feature enhancement requests, or service questions requiring research by AssemblyAI. | 24 hours         | Work shall be performed during AssemblyAI's normal business hours, based on nature, scope, and complexity of request. | Monthly        |
 
 ---
 

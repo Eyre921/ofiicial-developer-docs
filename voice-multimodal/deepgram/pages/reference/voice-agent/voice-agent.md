@@ -1477,22 +1477,46 @@ components:
         - aura-2-selena-es
         - aura-2-estrella-es
         - aura-2-javier-es
-        - flux-haley-en
-        - flux-heather-en
-        - flux-cole-en
         - flux-alexis-en
-        - flux-priya-en
-        - flux-jack-en
+        - flux-bree-en
+        - flux-brittany-en
+        - flux-brooke-en
         - flux-bruce-en
-        - flux-rufus-en
+        - flux-cliff-en
+        - flux-cole-en
+        - flux-colin-en
+        - flux-conor-en
+        - flux-donovan-en
         - flux-drew-en
-        - flux-renee-en
+        - flux-elise-en
+        - flux-gemma-en
+        - flux-haley-en
+        - flux-hannah-en
+        - flux-heather-en
+        - flux-jack-en
+        - flux-kai-en
+        - flux-kelsey-en
+        - flux-kit-en
+        - flux-maeve-en
+        - flux-marcelo-en
         - flux-marcus-en
+        - flux-meena-en
+        - flux-meghan-en
+        - flux-miles-en
+        - flux-naveen-en
+        - flux-paige-en
+        - flux-priya-en
+        - flux-rufus-en
+        - flux-sean-en
         - flux-sharon-en
+        - flux-sienna-en
+        - flux-tanner-en
+        - flux-wade-en
+        - flux-wes-en
       description: >-
         Deepgram TTS model. Aura models (version v1) use the aura-* voices; Flux
-        TTS (version v2, Early Access) uses the flux-{voice}-{language} voices
-        (e.g. flux-alexis-en).
+        TTS (version v2) uses the flux-{voice}-{language} voices (e.g.
+        flux-alexis-en). Defaults to flux-kit-en when agent.speak is omitted.
       title: DeepgramSpeakProviderModel
     DeepgramSpeakProvider:
       type: object
@@ -1506,31 +1530,33 @@ components:
           default: v1
           description: >-
             The Deepgram text-to-speech model family. Accepted values: `v1`
-            (Aura, the default) and `v2` (Flux TTS, Early Access). Use `v1` with
-            an aura-* model and `v2` with a flux-* model. Defaults to `v1` when
-            omitted.
+            (Aura, the default) and `v2` (Flux TTS). Use `v1` with an aura-*
+            model and `v2` with a flux-* model. Defaults to `v1` when omitted.
         model:
           $ref: '#/components/schemas/DeepgramSpeakProviderModel'
           description: >-
             Deepgram TTS model. Aura models (version v1) use the aura-* voices;
-            Flux TTS (version v2, Early Access) uses the flux-{voice}-{language}
-            voices (e.g. flux-alexis-en).
+            Flux TTS (version v2) uses the flux-{voice}-{language} voices (e.g.
+            flux-alexis-en). Defaults to flux-kit-en when agent.speak is
+            omitted.
         speed:
           type: number
           format: double
           default: 1
           description: >-
             Speaking rate multiplier that adjusts the pace of generated speech
-            while preserving natural prosody and voice quality. Not yet
-            supported in all languages.
+            while preserving natural prosody and voice quality. Aura (version
+            v1) accepts any value from 0.7 to 1.5. Flux TTS (version v2) accepts
+            only 0.85, 0.9, 0.95, 1.0, 1.05, 1.1 and 1.15; another value ends
+            the session with FAILED_TO_SPEAK. Not yet supported in all
+            languages.
       required:
         - type
         - model
       description: >-
         Deepgram text-to-speech provider. Aura models use version v1 (default);
-        Flux TTS uses version v2 and a flux-* model. Flux TTS is in Early Access
-        — the Flux TTS-specific API surface and voice catalog may change before
-        general availability.
+        Flux TTS uses version v2 and a flux-* model. Flux TTS is the default
+        when agent.speak is omitted, using the flux-kit-en voice.
       title: DeepgramSpeakProvider
     ElevenLabsSpeakProviderVersion:
       type: string

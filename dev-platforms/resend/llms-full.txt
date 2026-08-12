@@ -6358,6 +6358,8 @@ Retrieve a list of domains for the authenticated user.
         "status": "not_started",
         "created_at": "2026-04-26 20:21:26.347412+00",
         "region": "us-east-1",
+        "open_tracking": true,
+        "click_tracking": false,
         "capabilities": {
           "sending": "enabled",
           "receiving": "disabled"
@@ -7007,7 +7009,7 @@ Retrieve account-level email metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
@@ -7044,7 +7046,8 @@ Retrieve account-level email metrics.
 
 <ParamField type="hourly | daily | weekly | monthly">
   The bucket size used when `period` is in `dimensions`. Accepted but has no
-  effect otherwise.
+  effect otherwise. The date range can't produce more than 10,000 periods at the
+  chosen granularity. This limit only applies when `period` is in `dimensions`.
 </ParamField>
 
 <ParamField type="string[]">
@@ -7066,8 +7069,7 @@ Retrieve account-level email metrics.
 
   Possible values:
 
-  * `period`: one row per `granularity` period, zero-filled for periods with no
-    activity. Only zero-filled when `period` is the only requested dimension.
+  * `period`: one row per `granularity` period, in chronological order.
   * `domain`: one row per sending domain. Cannot be combined with `email`.
   * `email`: one row per email. Cannot be combined with `domain`.
 </ParamField>
@@ -7081,27 +7083,6 @@ Retrieve account-level email metrics.
   Comma-separated list of email IDs to restrict the response to. Cannot be
   combined with the `domain` dimension. Unrecognized query params are ignored
   rather than rejected.
-</ParamField>
-
-<ParamField type="string">
-  What to sort `data` by. Defaults to `date` when `dimensions` includes
-  `period`, or `sent` when `dimensions` is exactly `domain` or exactly `email`.
-
-  Possible values:
-
-  * `date`: chronological order. Requires `dimensions` to include `period`.
-  * Any metric: `received`, `delivered`, `complained`, `suppressed`, `bounced`,
-    `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
-    `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
-    `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`,
-    `click_rate`, `bounce_rate`, `complaint_rate`, `unsubscribe_rate`. Requires
-    `dimensions` to be exactly `domain` or exactly `email`, and must also be
-    included in `metrics`.
-</ParamField>
-
-<ParamField type="asc | desc">
-  The sort direction for `sort_by`. Defaults to `asc` when `dimensions` includes
-  `period`, `desc` otherwise.
 </ParamField>
 
 <RequestExample>
@@ -7120,8 +7101,6 @@ Retrieve account-level email metrics.
     "metrics": ["sent", "delivered", "open_rate"],
     "dimensions": ["period", "domain"],
     "granularity": "daily",
-    "sort_by": "date",
-    "sort_order": "asc",
     "totals": {
       "sent": 1204,
       "delivered": 1180,
@@ -11414,7 +11393,7 @@ Retrieve segment metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
@@ -11456,17 +11435,10 @@ via `segment_id`.
   belong to more than one.
 </ResendParamField>
 
-<ResendParamField type="string">
-  Possible values:
-
-  * `date`: each segment's creation date.
-  * `all_contacts`, `subscribers`, `unsubscribers`: that metric's count for the
-    segment.
-</ResendParamField>
-
-<ResendParamField type="asc | desc">
-  The sort direction for `sort_by`, applied to each segment's creation date.
-</ResendParamField>
+<Info>
+  When `dimensions` includes `segment`, `data` is ordered by each segment's
+  creation date, newest first.
+</Info>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11489,18 +11461,16 @@ via `segment_id`.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "object": "segments_metrics",
+    "object": "metrics",
     "metrics": ["all_contacts"],
     "dimensions": ["segment"],
-    "sort_by": "date",
-    "sort_order": "desc",
     "totals": {
       "all_contacts": 12450
     },
     "data": [
       {
-        "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "segment_name": "Registered Users",
+        "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+        "name": "Registered Users",
         "all_contacts": 4300
       }
     ]
@@ -17432,58 +17402,62 @@ You can check the [quickstart guides](/docs/introduction) or [AI builder guides]
 </CardGroup>
 
 
-# Introduction
+# Manage API keys
 Source: https://resend.com/docs/dashboard/api-keys/introduction
 
-Visualize all the API Keys on the Resend Dashboard.
+Learn how to view, edit, and delete your API keys in Resend.
 
-## What is an API Key
+## API keys
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
+API keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
-You can use multiple keys to isolate different application actions to different API Keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
+You can use multiple keys to isolate different application actions to different API keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
 
 ## API key management
 
-You can view and manage your API keys from the [API Key Dashboard](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
+You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
 
-## View all API Keys
+## View all API keys
 
-The [API Dashboard](https://resend.com/api-keys) shows you all the API Keys you have created along with their details, including the **last time you used** an API Key.
+The [API Dashboard](https://resend.com/api-keys) shows you all the API keys you have created along with their details, including the **last time you used** an API key.
 
-Different color indicators let you quickly scan and detect which API Keys are being used and which are not.
+Different color indicators let you quickly scan and detect which API keys are being used and which are not.
 
-<img alt="View All API Keys" />
+<img alt="View All API keys" />
 
-## Edit API Key details
+## Edit API key details
 
-After [creating an API Key](/docs/create-an-api-key), you can edit the following details:
+After [creating an API key](/docs/create-an-api-key), you can edit the following details:
 
 * [Name](/docs/api-reference/api-keys/create-api-key#param-name)
 * [Permission](/docs/api-reference/api-keys/create-api-key#param-permission)
 * [Domain](/docs/api-reference/api-keys/create-api-key#domain-id)
 
-<Info>You cannot view or edit an API Key value after it has been created.</Info>
+<Info>You cannot view or edit an API key value after it has been created.</Info>
 
-To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API Key**.
+To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API key**.
 
-<img alt="View Inactive API Key" />
+<img alt="View Inactive API key" />
 
-## Delete inactive API Keys
+## Delete inactive API keys
 
-If an API Key **hasn't been used in the last 30 days**, consider deleting it to keep your account secure.
+If an API key **hasn't been used in the last 30 days**, consider deleting it to keep your account secure.
 
-<img alt="View Inactive API Key" />
+<img alt="View Inactive API key" />
 
-You can delete an API Key by clicking the **More options** <Icon icon="ellipsis" /> button and then **Remove API Key**.
+You can delete an API key by clicking the **More options** <Icon icon="ellipsis" /> button and then **Remove API key**.
 
-<img alt="Delete API Key" />
+<img alt="Delete API key" />
 
-## View API Key logs
+<Tip>
+  See more [API key security practices](/docs/knowledge-base/how-to-handle-api-keys).
+</Tip>
 
-When visualizing an active API Key, you can see the **total number of requests** made to the key. For more detailed logging information, select the underlined number of requests to view all logs for that API Key.
+## View API key logs
 
-<img alt="View Active API Key" />
+When visualizing an active API key, you can see the **total number of requests** made to the key. For more detailed logging information, select the underlined number of requests to view all logs for that API key.
+
+<img alt="View Active API key" />
 
 ## Export your data
 
@@ -40507,12 +40481,7 @@ For this reason, follow all possible methods for adding your logo to your emails
 # How to Handle API Keys
 Source: https://resend.com/docs/knowledge-base/how-to-handle-api-keys
 
-Learn our suggested practices for handling API keys.
-
-<Info>
-  For more help creating, deleting, and managing API keys, see the [API Keys
-  documentation](/docs/dashboard/api-keys/introduction).
-</Info>
+Learn our suggested practices for handling API keys securely.
 
 ## Best Practices
 
@@ -40536,9 +40505,9 @@ Resend API keys do not expire automatically. Keys remain valid until you manuall
 
 To rotate an API key:
 
-1. **Create a new key** in the [API Keys Dashboard](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you are replacing.
+1. **Create a new key** in the [**API keys** Dashboard page](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you are replacing.
 2. **Update your services** to use the new key. Deploy the change to all environments that reference the old key.
-3. **Verify the new key is working** by [filtering by API Key on the logs page](https://resend.com/logs) and checking for recent requests.
+3. **Verify the new key is working** by [filtering by API key on the **Logs** Dashboard page](https://resend.com/logs) and checking for recent requests.
 4. **Delete the old key** once you have confirmed the new key is active across all services.
 
 <Warning>

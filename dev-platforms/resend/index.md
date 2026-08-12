@@ -114,7 +114,7 @@
 - `docs/cli-agents` — [Resend CLI for AI Agents](pages/docs/cli-agents.md) · [原文](https://resend.com/docs/cli-agents)
 - `docs/cli-quickstart` — [Send emails with Resend CLI](pages/docs/cli-quickstart.md) · [原文](https://resend.com/docs/cli-quickstart)
 - `docs/create-an-api-key` — [Create an API key](pages/docs/create-an-api-key.md) · [原文](https://resend.com/docs/create-an-api-key)
-- `docs/dashboard/api-keys/introduction` — [Introduction](pages/docs/dashboard/api-keys/introduction.md) · [原文](https://resend.com/docs/dashboard/api-keys/introduction)
+- `docs/dashboard/api-keys/introduction` — [Manage API keys](pages/docs/dashboard/api-keys/introduction.md) · [原文](https://resend.com/docs/dashboard/api-keys/introduction)
 - `docs/dashboard/audiences/contacts` — [Managing Contacts](pages/docs/dashboard/audiences/contacts.md) · [原文](https://resend.com/docs/dashboard/audiences/contacts)
 - `docs/dashboard/audiences/introduction` — [Your Resend Audience](pages/docs/dashboard/audiences/introduction.md) · [原文](https://resend.com/docs/dashboard/audiences/introduction)
 - `docs/dashboard/audiences/managing-unsubscribe-list` — [Managing Unsubscribed Contacts](pages/docs/dashboard/audiences/managing-unsubscribe-list.md) · [原文](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list)

@@ -1,58 +1,62 @@
 ---
-title: "Introduction"
+title: "Manage API keys"
 source: https://resend.com/docs/dashboard/api-keys/introduction
 path: docs/dashboard/api-keys/introduction
 ---
 
-Visualize all the API Keys on the Resend Dashboard.
+Learn how to view, edit, and delete your API keys in Resend.
 
-## What is an API Key
+## API keys
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
+API keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
-You can use multiple keys to isolate different application actions to different API Keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
+You can use multiple keys to isolate different application actions to different API keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
 
 ## API key management
 
-You can view and manage your API keys from the [API Key Dashboard](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
+You can view and manage your API keys from the [**API keys** Dashboard page](https://resend.com/api-keys). You can also create, list, or delete your API keys using the [API](/docs/api-reference/api-keys/create-api-key), or the [Resend CLI](/docs/cli#api-keys).
 
-## View all API Keys
+## View all API keys
 
-The [API Dashboard](https://resend.com/api-keys) shows you all the API Keys you have created along with their details, including the **last time you used** an API Key.
+The [API Dashboard](https://resend.com/api-keys) shows you all the API keys you have created along with their details, including the **last time you used** an API key.
 
-Different color indicators let you quickly scan and detect which API Keys are being used and which are not.
+Different color indicators let you quickly scan and detect which API keys are being used and which are not.
 
-<img alt="View All API Keys" />
+<img alt="View All API keys" />
 
-## Edit API Key details
+## Edit API key details
 
-After [creating an API Key](/docs/create-an-api-key), you can edit the following details:
+After [creating an API key](/docs/create-an-api-key), you can edit the following details:
 
 * [Name](/docs/api-reference/api-keys/create-api-key#param-name)
 * [Permission](/docs/api-reference/api-keys/create-api-key#param-permission)
 * [Domain](/docs/api-reference/api-keys/create-api-key#domain-id)
 
-<Info>You cannot view or edit an API Key value after it has been created.</Info>
+<Info>You cannot view or edit an API key value after it has been created.</Info>
 
-To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API Key**.
+To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API key**.
 
-<img alt="View Inactive API Key" />
+<img alt="View Inactive API key" />
 
-## Delete inactive API Keys
+## Delete inactive API keys
 
-If an API Key **hasn't been used in the last 30 days**, consider deleting it to keep your account secure.
+If an API key **hasn't been used in the last 30 days**, consider deleting it to keep your account secure.
 
-<img alt="View Inactive API Key" />
+<img alt="View Inactive API key" />
 
-You can delete an API Key by clicking the **More options** <Icon icon="ellipsis" /> button and then **Remove API Key**.
+You can delete an API key by clicking the **More options** <Icon icon="ellipsis" /> button and then **Remove API key**.
 
-<img alt="Delete API Key" />
+<img alt="Delete API key" />
 
-## View API Key logs
+<Tip>
+  See more [API key security practices](/docs/knowledge-base/how-to-handle-api-keys).
+</Tip>
 
-When visualizing an active API Key, you can see the **total number of requests** made to the key. For more detailed logging information, select the underlined number of requests to view all logs for that API Key.
+## View API key logs
 
-<img alt="View Active API Key" />
+When visualizing an active API key, you can see the **total number of requests** made to the key. For more detailed logging information, select the underlined number of requests to view all logs for that API key.
+
+<img alt="View Active API key" />
 
 ## Export your data
 

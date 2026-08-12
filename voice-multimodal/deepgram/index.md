@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 377 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -62,7 +62,7 @@
 - `docs/build-a-voice-agent-python` — [Build a Voice Agent with Python](pages/docs/build-a-voice-agent-python.md) · [原文](https://developers.deepgram.com/docs/build-a-voice-agent-python.md)
 - `docs/build-voice-agent-with-livekit-and-deepgram` — [Build a Voice Agent with LiveKit and Deepgram](pages/docs/build-voice-agent-with-livekit-and-deepgram.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-livekit-and-deepgram.md)
 - `docs/build-voice-agent-with-pipecat-and-deepgram` — [Build a Voice Agent with Pipecat and Deepgram](pages/docs/build-voice-agent-with-pipecat-and-deepgram.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-pipecat-and-deepgram.md)
-- `docs/build-voice-agent-with-twilio-deepgram-openai` — [Build a Voice Agent with Twilio & OpenAI & Deepgram](pages/docs/build-voice-agent-with-twilio-deepgram-openai.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-twilio-deepgram-openai.md)
+- `docs/build-voice-agent-with-twilio-deepgram-openai` — [Build a Real-Time Phone Voice Agent with Twilio and the Deepgram Voice Agent API](pages/docs/build-voice-agent-with-twilio-deepgram-openai.md) · [原文](https://developers.deepgram.com/docs/build-voice-agent-with-twilio-deepgram-openai.md)
 - `docs/calculate-talk-time-analytics` — [Calculate Talk Time Analytics](pages/docs/calculate-talk-time-analytics.md) · [原文](https://developers.deepgram.com/docs/calculate-talk-time-analytics.md)
 - `docs/callback` — [STT Callback](pages/docs/callback.md) · [原文](https://developers.deepgram.com/docs/callback.md)
 - `docs/certificates-endpoint` — [Certificate Status](pages/docs/certificates-endpoint.md) · [原文](https://developers.deepgram.com/docs/certificates-endpoint.md)
@@ -104,6 +104,7 @@
 - `docs/flux-tts/client-messages` — [Client Messages](pages/docs/flux-tts/client-messages.md) · [原文](https://developers.deepgram.com/docs/flux-tts/client-messages.md)
 - `docs/flux-tts/context` — [Cross-Turn Context](pages/docs/flux-tts/context.md) · [原文](https://developers.deepgram.com/docs/flux-tts/context.md)
 - `docs/flux-tts/feature-overview` — [Flux TTS Feature Overview](pages/docs/flux-tts/feature-overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/feature-overview.md)
+- `docs/flux-tts/interrupt-handling` — [Interruption Handling](pages/docs/flux-tts/interrupt-handling.md) · [原文](https://developers.deepgram.com/docs/flux-tts/interrupt-handling.md)
 - `docs/flux-tts/migrating` — [Migrating from /v1/speak to Flux TTS](pages/docs/flux-tts/migrating.md) · [原文](https://developers.deepgram.com/docs/flux-tts/migrating.md)
 - `docs/flux-tts/overview` — [Flux TTS Overview](pages/docs/flux-tts/overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/overview.md)
 - `docs/flux-tts/quickstart` — [Getting Started with Flux TTS](pages/docs/flux-tts/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux-tts/quickstart.md)
@@ -172,7 +173,6 @@
 - `docs/numerals` — [Numerals](pages/docs/numerals.md) · [原文](https://developers.deepgram.com/docs/numerals.md)
 - `docs/observability-sagemaker` — [Observability for Amazon SageMaker](pages/docs/observability-sagemaker.md) · [原文](https://developers.deepgram.com/docs/observability-sagemaker.md)
 - `docs/oci-docker-podman` — [Oracle Cloud Infrastructure](pages/docs/oci-docker-podman.md) · [原文](https://developers.deepgram.com/docs/oci-docker-podman.md)
-- `docs/on-premise-twilio-integration` — [Twilio and Deepgram STT](pages/docs/on-premise-twilio-integration.md) · [原文](https://developers.deepgram.com/docs/on-premise-twilio-integration.md)
 - `docs/outbound-telephony-agent` — [Build an Outbound Telephony Agent](pages/docs/outbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/outbound-telephony-agent.md)
 - `docs/paragraphs` — [Paragraphs](pages/docs/paragraphs.md) · [原文](https://developers.deepgram.com/docs/paragraphs.md)
 - `docs/payload-too-large` — [When Callback Is Not Received](pages/docs/payload-too-large.md) · [原文](https://developers.deepgram.com/docs/payload-too-large.md)
@@ -241,9 +241,11 @@
 - `docs/tts-callback` — [TTS Callback](pages/docs/tts-callback.md) · [原文](https://developers.deepgram.com/docs/tts-callback.md)
 - `docs/tts-container` — [Container](pages/docs/tts-container.md) · [原文](https://developers.deepgram.com/docs/tts-container.md)
 - `docs/tts-encoding` — [Encoding](pages/docs/tts-encoding.md) · [原文](https://developers.deepgram.com/docs/tts-encoding.md)
+- `docs/tts-expressivity` — [Expressivity](pages/docs/tts-expressivity.md) · [原文](https://developers.deepgram.com/docs/tts-expressivity.md)
 - `docs/tts-feature-overview` — [Feature Overview](pages/docs/tts-feature-overview.md) · [原文](https://developers.deepgram.com/docs/tts-feature-overview.md)
 - `docs/tts-media-output-settings` — [Media Output Settings](pages/docs/tts-media-output-settings.md) · [原文](https://developers.deepgram.com/docs/tts-media-output-settings.md)
 - `docs/tts-models` — [Voices and Languages](pages/docs/tts-models.md) · [原文](https://developers.deepgram.com/docs/tts-models.md)
+- `docs/tts-models-languages-overview` — [Models & Languages Overview](pages/docs/tts-models-languages-overview.md) · [原文](https://developers.deepgram.com/docs/tts-models-languages-overview.md)
 - `docs/tts-rest` — [Text-to-Speech REST](pages/docs/tts-rest.md) · [原文](https://developers.deepgram.com/docs/tts-rest.md)
 - `docs/tts-rest-template-apps` — [Template Apps](pages/docs/tts-rest-template-apps.md) · [原文](https://developers.deepgram.com/docs/tts-rest-template-apps.md)
 - `docs/tts-sample-rate` — [Sample Rate](pages/docs/tts-sample-rate.md) · [原文](https://developers.deepgram.com/docs/tts-sample-rate.md)
@@ -252,12 +254,13 @@
 - `docs/tts-tagging` — [Tagging TTS Requests](pages/docs/tts-tagging.md) · [原文](https://developers.deepgram.com/docs/tts-tagging.md)
 - `docs/tts-text-chunking` — [Text Chunking for TTS](pages/docs/tts-text-chunking.md) · [原文](https://developers.deepgram.com/docs/tts-text-chunking.md)
 - `docs/tts-troubleshooting-websocket-net-and-data-errors` — [TTS Troubleshooting WebSocket, NET, and DATA Errors](pages/docs/tts-troubleshooting-websocket-net-and-data-errors.md) · [原文](https://developers.deepgram.com/docs/tts-troubleshooting-websocket-net-and-data-errors.md)
-- `docs/tts-voice-controls` — [TTS Voice Controls](pages/docs/tts-voice-controls.md) · [原文](https://developers.deepgram.com/docs/tts-voice-controls.md)
+- `docs/tts-voice-controls` — [Speed, Pause, Pronunciation](pages/docs/tts-voice-controls.md) · [原文](https://developers.deepgram.com/docs/tts-voice-controls.md)
 - `docs/tts-websocket` — [Text-to-Speech Streaming](pages/docs/tts-websocket.md) · [原文](https://developers.deepgram.com/docs/tts-websocket.md)
 - `docs/tts-websocket-streaming` — [Real-Time TTS with WebSockets](pages/docs/tts-websocket-streaming.md) · [原文](https://developers.deepgram.com/docs/tts-websocket-streaming.md)
 - `docs/tts-ws-clear` — [Clear](pages/docs/tts-ws-clear.md) · [原文](https://developers.deepgram.com/docs/tts-ws-clear.md)
 - `docs/tts-ws-close` — [Close](pages/docs/tts-ws-close.md) · [原文](https://developers.deepgram.com/docs/tts-ws-close.md)
 - `docs/tts-ws-flush` — [Flush](pages/docs/tts-ws-flush.md) · [原文](https://developers.deepgram.com/docs/tts-ws-flush.md)
+- `docs/twilio-and-deepgram-stt` — [Twilio and Deepgram STT](pages/docs/twilio-and-deepgram-stt.md) · [原文](https://developers.deepgram.com/docs/twilio-and-deepgram-stt.md)
 - `docs/twilio-and-deepgram-tts` — [Twilio and Deepgram TTS](pages/docs/twilio-and-deepgram-tts.md) · [原文](https://developers.deepgram.com/docs/twilio-and-deepgram-tts.md)
 - `docs/twilio-and-deepgram-voice-agent` — [Twilio and Deepgram Voice Agent](pages/docs/twilio-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/twilio-and-deepgram-voice-agent.md)
 - `docs/understand-endpointing-interim-results` — [Configure Endpointing and Interim Results](pages/docs/understand-endpointing-interim-results.md) · [原文](https://developers.deepgram.com/docs/understand-endpointing-interim-results.md)

@@ -10,8 +10,6 @@ path: docs/flux-tts/template-apps
 
 # Template Apps
 
-**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
-
 Each template is a runnable demo that streams text to Deepgram Flux TTS over `/v2/speak` and plays the audio back. Unlike the Flux **transcription** starters, these use the official SDK's `speak.v2` client on the backend, so the SDK manages the Deepgram WebSocket, authentication, and binary-audio framing for you.
 
 ## SDKs

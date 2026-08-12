@@ -10,8 +10,6 @@ path: docs/flux-tts/voice-agent
 
 # Voice Agent Integration Patterns
 
-**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
-
 Flux TTS is built to sit downstream of an LLM in a voice agent pipeline. This guide shows the common integration patterns, pairing Flux TTS's `/v2/speak` with a streaming STT (such as [Flux STT](/docs/flux/quickstart)) and an LLM. Each pattern is intentionally small — drop it into your pipeline and adapt.
 
 For the messages used here, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).
@@ -31,7 +29,23 @@ async def agent_loop(stt_conn, speak_conn, llm):
             await speak_conn.send({"type": "Flush"})
 ```
 
-**Barge-in / interruption handling is planned for GA.** At Early Access, when the user speaks over the agent, stop local playback and open a new turn with the next `Speak`. Once it ships, `Interrupt` will cancel the active turn and return `text_spoken` / `text_remaining` so you can reconcile LLM context with exactly what the user heard. The split is computed from an **optional playback position** you include — how much of the turn's audio actually played before the barge-in — so it reflects what the user really heard, not just what the server sent. If your client doesn't already track audio-playback position, it's worth wiring up now.
+## Pattern 2: Barge-in
+
+When the user speaks over the agent, stop local playback immediately, then send `Interrupt`. The server returns `text_spoken` / `text_remaining` so you can reconcile LLM context with exactly what the user heard. The split is computed from an **optional playback position** you include — how much of the turn's audio actually played before the barge-in — so it reflects what the user really heard, not just what the server sent.
+
+```python
+async def handle_barge_in(stt_event, speak_conn, playback):
+    if stt_event.event == "StartOfTurn":
+        playback.stop()  # stop audio locally, immediately
+        await speak_conn.send({
+            "type": "Interrupt",
+            # ms of audio played since the START OF THE SESSION (not the turn)
+            "playback_offset": {"type": "time_ms", "value": playback.session_offset_ms()}
+        })
+        # On SpeechInterrupted: llm_context.append(assistant=text_spoken)
+```
+
+See [Interruption Handling](/docs/flux-tts/interrupt-handling) for the full pattern, including in-flight audio and edge cases.
 
 ## Streaming text correctly
 

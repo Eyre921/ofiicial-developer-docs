@@ -359,11 +359,21 @@ Add skills for all detected agents at the same time by passing `--all`. See the 
 
 You can also install the agent skills together with the Supabase MCP server using the [Supabase Plugin for AI Coding Agents](https://supabase.com/docs/guides/ai-tools/plugins) for a combined one-step setup.
 
+## Updating skills
+
+Note: We update our agent skills frequently, so be sure to check for and install updates regularly to get the latest improvements.
+
+```bash
+npx skills update
+```
+
+This updates all skills you have installed. To update specific skills instead, pass their names to the command, e.g. `npx skills update SKILL_NAME`. See the [`skills update` docs](https://github.com/vercel-labs/skills#skills-update) for more options.
+
 ## Available skills
 
 ### supabase
       
-Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, declarative schemas, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector).
+Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, declarative schemas, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector); debugging and troubleshooting errors or unexpected behavior on Supabase projects (HTTP errors, Postgres errors, RLS surprises, permission denied, schema cache issues, timeouts, Edge Function crashes, Realtime drops, Storage failures) and reading or querying logs (Logs Explorer, ClickHouse).
       
 ```sh
 npx skills add supabase/agent-skills --skill supabase
@@ -981,7 +991,7 @@ The Supabase MCP server provides tools organized into feature groups. All groups
 
 ### Debugging
 
-- `get_logs` - Retrieve service logs (API, Postgres, Edge Functions, Auth, Storage, Realtime)
+- `query_logs` - Run a read-only SQL query against project logs to filter, aggregate, or join across log fields
 - `get_advisors` - Get security and performance advisors
 
 ### Development
@@ -24938,6 +24948,38 @@ const supabase = createClient('https://your-project-id.supabase.co', 'sb_publish
 Behind the scenes, the code exchange requires a code verifier. Both the code in the URL and the code verifier are sent back to the Auth server for a successful exchange.
 
 The code verifier is created and stored locally when the Auth flow is first initiated. That means the code exchange must be initiated on the same browser and device where the flow was started.
+
+## Overlapping flows
+
+If more than one PKCE flow is started on the same browser before either one completes (for example, `signInWithOAuth()` called in two tabs), the code verifier stored for the earlier flow is overwritten by the later one, and exchanging the first flow's code fails.
+
+Caution: Support for overlapping flows is currently experimental and requires explicit opt-in as the API may change without notice.
+
+To keep each flow's verifier separate, set the `appendPkceFlowIdToRedirects` option when creating the client:
+
+```js
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    experimental: { appendPkceFlowIdToRedirects: true },
+  },
+})
+```
+
+With this enabled, the client library appends a `sb_flow_id` query parameter to `redirectTo`, so your OAuth callback page can read it back and use it to select the matching verifier. You can also get the flow ID directly from the response of `signInWithOAuth()`:
+
+```js
+const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'github',
+})
+
+const flowId = data.flowId
+```
+
+Pass the flow ID to `exchangeCodeForSession()` to make sure the correct verifier is used, whether you read it from `data.flowId` or from the `sb_flow_id` query parameter in the redirect URL:
+
+```js
+const { data, error } = await supabase.auth.exchangeCodeForSession(authCode, { flowId })
+```
 
 ## Resources
 
@@ -60737,7 +60779,7 @@ Read more about [Managing Indexes in Postgres](https://supabase.com/docs/guides/
 
 ---
 
-# Debugging and monitoring
+# Database debugging and monitoring
 
 Inspecting your Postgres database for common issues around disk, query performance, index, locks, and more using the terminal.
 
@@ -67797,14 +67839,14 @@ mkdir -p ./supabase/tests/database
 Create a new file with the `.sql` extension which will contain the test.
 
 ```bash
-touch ./supabase/tests/database/hello_world.test.sql
+touch ./supabase/tests/database/hello_world_test.sql
 ```
 
 ### Writing tests
 
 All `sql` files use [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap) as the test runner.
 
-Write a test to check that our `auth.users` table has an ID column. Open `hello_world.test.sql` and add the following code:
+Write a test to check that our `auth.users` table has an ID column. Open `hello_world_test.sql` and add the following code:
 
 ```sql
 begin;
@@ -67833,7 +67875,7 @@ This will produce the following output:
 
 ```bash
 $ supabase test db
-supabase/tests/database/hello_world.test.sql .. ok
+supabase/tests/database/hello_world_test.sql .. ok
 All tests successful.
 Files=1, Tests=1,  1 wallclock secs ( 0.01 usr  0.00 sys +  0.04 cusr  0.02 csys =  0.07 CPU)
 Result: PASS
@@ -143090,9 +143132,11 @@ To stop the missing-schema log entries:
 
 PostgREST now exposes an empty schema, which stops the missing-schema errors.
 
-## Re-enable the Data API
+## Re-enabling the Data API in the future
 
-Before you re-enable the data API:
+You may decide that you wish to re-enable the Data API in the future.
+
+If you do so, to reverse the workaround, you can run the following statements before re-enabling the Data API:
 
 1. Open the SQL Editor.
 2. Run the following statements:
@@ -154716,6 +154760,15 @@ Returns real-time data from your table as a `Stream`.
   - `.lt('column', value)` listens to rows where the column is less than the value
   - `.lte('column', value)` listens to rows where the column is less than or equal to the value
   - `.inFilter('column', [val1, val2, val3])` listens to rows where the column is one of the values
+  - `.like('column', pattern)` listens to rows where the column matches the given `LIKE` pattern
+  - `.ilike('column', pattern)` listens to rows where the column matches the given case-insensitive `LIKE` pattern
+  - `.matchRegex('column', pattern)` listens to rows where the column matches the given PostgreSQL regular expression, case-sensitive
+  - `.imatchRegex('column', pattern)` listens to rows where the column matches the given PostgreSQL regular expression, case-insensitive
+  - `.isFilter('column', value)` listens to rows where the column `IS` the given value (e.g. `null`, `true`, `false`)
+  - `.isDistinct('column', value)` listens to rows where the column `IS DISTINCT FROM` the given value
+- Multiple filters can be chained together on the same `stream()` call, and they are combined with `AND` both when fetching the initial data and when filtering realtime changes.
+- For `UPDATE` events, a filter such as `.eq()` is only re-evaluated against the new row. If a row stops matching the filter after an update, it is not removed from the stream and will remain in its last known state until it is deleted or the stream is restarted.
+- `DELETE` events only include the primary key columns of the deleted row by default, not the full previous row.
 
 ### Examples
 
@@ -154745,6 +154798,17 @@ supabase.from('countries')
 supabase.from('countries')
   .stream(primaryKey: ['id'])
   .inFilter('id', [1, 2, 3])
+  .order('name')
+  .limit(10);
+```
+
+#### With multiple filters
+
+```dart
+supabase.from('countries')
+  .stream(primaryKey: ['id'])
+  .eq('continent', 'Asia')
+  .like('name', '%Republic%')
   .order('name')
   .limit(10);
 ```
@@ -158562,6 +158626,39 @@ let user = try await supabase.auth.admin.inviteUserByEmail(
 )
 ```
 
+## generateLink()
+
+Generates an email link for a specific action without sending it. This is useful for custom admin functionality where you want to build the email or OTP flow yourself.
+
+- `GenerateLinkParams` exposes a static factory for each link type: `.signUp(email:password:redirectTo:)`, `.invite(email:redirectTo:)`, `.magicLink(email:redirectTo:)`, `.recovery(email:redirectTo:)`, `.emailChangeCurrent(email:newEmail:redirectTo:)`, and `.emailChangeNew(email:newEmail:redirectTo:)`.
+- `generateLink()` creates the user for `.signUp` and `.invite` if one doesn't already exist.
+
+### Examples
+
+#### Generate a signup link
+
+```swift
+let response = try await supabase.auth.admin.generateLink(
+  params: .signUp(
+    email: "email@example.com",
+    password: "secret"
+  )
+)
+
+let actionLink = response.properties.actionLink
+```
+
+#### Generate a recovery link
+
+```swift
+let response = try await supabase.auth.admin.generateLink(
+  params: .recovery(
+    email: "email@example.com",
+    redirectTo: URL(string: "https://example.com/reset-password")
+  )
+)
+```
+
 ## updateUserById()
 
 Update user by ID.
@@ -158579,6 +158676,27 @@ let user = try await supabase.auth.admin.updateUserById(
 )
 ```
 
+## signOut()
+
+Signs out a specific user by revoking their session(s), using that user's access token (JWT).
+
+- Unlike `supabase.auth.signOut()`, this method takes the target user's access token (JWT), not a user ID.
+- By default, `signOut()` uses the `.global` scope, which revokes every session for the user. Pass `.local` to revoke only the session tied to the given JWT, or `.others` to keep that session and revoke all the rest.
+
+### Examples
+
+#### Sign out a user
+
+```swift
+try await supabase.auth.admin.signOut(jwt: jwt)
+```
+
+#### Sign out a user with a scope
+
+```swift
+try await supabase.auth.admin.signOut(jwt: jwt, scope: .others)
+```
+
 ## Edge Functions
 
 ## invoke()
@@ -158588,6 +158706,7 @@ Invoke a Supabase Edge Function.
 - Requires an Authorization header.
 - When you pass in a body to your function, we automatically attach the Content-Type header for `String`, and `Data`. If it doesn't match any of these types we assume the payload is `json`, serialize it and attach the `Content-Type` header as `application/json`. You can override this behaviour by passing in a `Content-Type` header of your own.
 - When a region is specified, both the `x-region` header and `forceFunctionRegion` query parameter are set to ensure proper function routing.
+- By default, function invocations use a 150-second idle timeout. You can override this per-call by passing `timeoutInterval` to `FunctionInvokeOptions`. This only controls the client's request timeout — it cannot extend function execution beyond the platform's [150-second gateway idle timeout](https://supabase.com/docs/guides/functions/limits), after which a 504 Gateway Timeout is returned regardless of the value passed.
 
 ### Examples
 
@@ -158720,6 +158839,19 @@ let response = try await supabase.functions
     "hello",
     options: FunctionInvokeOptions(
       query: [URLQueryItem(name: "key", value: "value")]
+    )
+  )
+```
+
+#### Invocation with a custom timeout
+
+```swift
+let response = try await supabase.functions
+  .invoke(
+    "hello",
+    options: FunctionInvokeOptions(
+      body: ["foo": "bar"],
+      timeoutInterval: 30
     )
   )
 ```

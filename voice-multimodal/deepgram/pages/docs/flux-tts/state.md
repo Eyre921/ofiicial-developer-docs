@@ -10,18 +10,14 @@ path: docs/flux-tts/state
 
 # The Speech Lifecycle and State Machine
 
-**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
-
 Flux TTS reframes synthesis from a text-to-audio pipe into a **turn-based conversation**. You own turn boundaries (`Flush`) and content; the server handles streaming and lifecycle reporting. This page explains the state machine that connects your [Client Messages](/docs/flux-tts/client-messages) to the [Server Messages](/docs/flux-tts/server-messages) you receive.
-
-**Early Access.** This describes the EA lifecycle, where a turn ends with `Flush`. Barge-in (`Interrupt`, which cancels a turn mid-generation and reports what was heard) is planned for GA.
 
 ## Vocabulary
 
 Getting the unit right is the key to reasoning about the protocol:
 
 * **Chunk** — the text payload of one `Speak` message. Size is up to you: a single LLM token or a full paragraph. Chunk boundaries do **not** drive synthesis.
-* **Turn** — one complete agent response, bounded by `Flush`. The turn is the customer-facing reporting unit: `SpeechStarted` fires once at the start, and `SpeechMetadata` fires once at the end.
+* **Turn** — one complete agent response, bounded by `Flush`. The turn is the reporting unit: `SpeechStarted` fires once at the start, and `SpeechMetadata` fires once at the end.
 * **`speech_id`** — the server-assigned identifier for a turn (`dg_sp_<12 hex>`). Informational; a new one is minted at the start of each turn.
 
 The server holds **one active turn at a time**. If you `Flush` and then send more `Speak` before the active turn finishes, the new turn is **pending** — pending turns queue behind the active one (there's no limit) and become active in order.
@@ -113,6 +109,7 @@ A single agent turn that completes normally — the agent says "Sure, I can help
   "billable_character_count": 47,
   "controls_applied": {
     "pronunciations_applied": 0,
+    "breaks_applied": 0,
     "pronunciation_warnings": 0
   }
 }

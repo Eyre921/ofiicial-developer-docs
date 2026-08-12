@@ -34,6 +34,8 @@ Once the input audio is processed, Deepgram provides robust options for generati
 | [Container](/docs/tts-container)     | Specifies the desired file format wrapper for the output audio generated through text-to-speech synthesis |
 | [Sample Rate](/docs/tts-sample-rate) | specifies the desired sample rate of the resulting text-to-speech audio output                            |
 
+[Flux TTS](/docs/voice-agent-tts-models#flux-tts), the default `agent.speak` provider, streams raw audio: it accepts the `linear16`, `mulaw` and `alaw` encodings with no container or bit rate. Requesting a compressed encoding or a container returns `INVALID_SETTINGS`. Configure an Aura voice to use those formats.
+
 ## Learn More
 
 | API            | Supported Inputs & Outputs                                                                                                                                |

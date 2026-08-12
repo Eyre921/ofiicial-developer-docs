@@ -12,7 +12,7 @@ For more details, see the [Stripe CLI reference](https://docs.stripe.com/cli.md)
 
 Stripe Projects provisions and manages third-party services (such as hosting, databases, auth, AI, and observability) from the terminal. Run one command to create your accounts, sync credentials to your `.env`, and handle billing through Stripe.
 
-- **Provision** services from [50+ providers](https://docs.stripe.com/projects.md#available-providers). No separate dashboards.
+- **Provision** services from [60+ providers](https://docs.stripe.com/projects.md#available-providers). No separate dashboards.
 - **Sync** credentials to `.env` automatically. No copy-pasting API keys.
 - **Manage** plans, billing, environments, and keys from the CLI or your coding agent.
 

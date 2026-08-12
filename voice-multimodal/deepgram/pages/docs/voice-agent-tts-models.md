@@ -13,7 +13,7 @@ path: docs/voice-agent-tts-models
 By default [Deepgram Text-to-Speech](/docs/tts-models) will be used with the Voice Agent API. Deepgram supports two text-to-speech model families, and the agent picks the right TTS endpoint based on the `version` field of `agent.speak.provider` — you do not manage endpoint URLs yourself.
 
 * **[Flux TTS](/docs/flux-tts/overview)** (`v2`) for streaming-first, voice-agent-first synthesis with turn-based lifecycle and cross-turn voice consistency.
-* **[Aura](/docs/tts-models)** (`v1`) for the broadest, generally available Deepgram voice catalog across English and Spanish.
+* **[Aura](/docs/tts-models)** (`v1`) for the broadest Deepgram voice catalog across English and Spanish, and for compressed or containerized output formats.
 
 You can also use Deepgram's native Cartesia support or opt to use another provider's TTS model with your Agent by applying the following settings.
 
@@ -21,22 +21,19 @@ You can set your Text-to-Speech model in the [Settings Message](/docs/configure-
 
 ## Deepgram TTS models
 
-Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak.provider.version` to `v2` for Flux TTS or `v1` for Aura. When you omit `version`, the agent defaults to `v1` (Aura).
+Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak.provider.version` to `v2` for Flux TTS or `v1` for Aura; within a provider you supply, `version` defaults to `v1`. A `Settings` message that omits `agent.speak` altogether gets Flux TTS with the `flux-kit-en` voice.
 
 ### Choosing a model family
 
 |                              | Flux TTS (V2)                                     | Aura (V1)                                   |
 | ---------------------------- | ------------------------------------------------- | ------------------------------------------- |
-| Best for                     | streaming-first voice agents                      | broadest GA voice catalog                   |
-| Availability                 | Early Access                                      | Generally Available                         |
+| Best for                     | streaming-first voice agents                      | broadest voice catalog, compressed audio    |
 | Turn-based lifecycle         | yes                                               | no                                          |
 | Cross-turn voice consistency | yes                                               | no                                          |
 | `provider.version`           | `v2` (required)                                   | `v1` (default)                              |
 | Model string                 | `flux-{voice}-{language}` (e.g. `flux-alexis-en`) | `aura-2-thalia-en`, `aura-asteria-en`, etc. |
 
 ### Flux TTS
-
-**Early Access.** Flux TTS is in Early Access — the Flux TTS-specific API surface in the Voice Agent and voice catalog may change before general availability.
 
 [Flux TTS](/docs/flux-tts/overview) is Deepgram's streaming-first, voice-agent-first text-to-speech model family. It brings a turn-based lifecycle and cross-turn voice consistency built for the realities of a voice agent pipeline. For details, see the [Flux TTS Feature Overview](/docs/flux-tts/feature-overview).
 
@@ -45,6 +42,7 @@ Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak
 | `agent.speak.provider.type`    | String | Must be `deepgram`                                                                                                                                                  |
 | `agent.speak.provider.version` | String | Must be `v2`                                                                                                                                                        |
 | `agent.speak.provider.model`   | String | Flux TTS model id in the format `flux-{voice}-{language}`, for example `flux-alexis-en`. See the [Flux TTS voice catalog](/docs/flux-tts/voices) for the full list. |
+| `agent.speak.provider.speed`   | Float  | Speaking rate multiplier. Accepts `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, or `1.15`. Defaults to `1.0`.                                                        |
 
 Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aura voices only on `agent.speak.provider.version`: `v1`. Switch families by changing `agent.speak.provider.version` and `model` together.
 
@@ -57,23 +55,39 @@ Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aur
       "provider": {
         "type": "deepgram",
         "version": "v2",
-        "model": "flux-alexis-en"
+        "model": "flux-alexis-en",
+        "speed": 1.05
       }
     }
   }
 }
 ```
 
+#### Audio output formats
+
+Flux TTS streams raw audio frames, so it accepts a narrower set of `audio.output` settings than Aura:
+
+| Setting       | Accepted with Flux TTS                                                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `encoding`    | `linear16`, `mulaw`, `alaw`                                                                                                                       |
+| `container`   | `none`                                                                                                                                            |
+| `sample_rate` | `8000`, `16000`, `24000`, `32000`, `44100` or `48000` for `linear16` (default `24000`); `8000` or `16000` for `mulaw` and `alaw` (default `8000`) |
+| `bitrate`     | not accepted                                                                                                                                      |
+
+Requesting a compressed encoding (`mp3`, `opus`, `flac`, `aac`) or a container such as `wav` returns `INVALID_SETTINGS`. Configure an Aura voice to use those formats.
+
+Flux TTS is the default when `agent.speak` is omitted, so a session that omits it **and** requests compressed output is now rejected where it previously received Aura audio. Configure an Aura voice to keep that behavior.
+
 ### Aura
 
 For a complete list of Deepgram Aura TTS models see [TTS Voice Selection](/docs/tts-models).
 
-| Parameter                      | Type   | Description                                                                                                                                                                                      |
-| ------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `agent.speak.provider.type`    | String | Must be `deepgram`                                                                                                                                                                               |
-| `agent.speak.provider.version` | String | Optional. Defaults to `v1` when omitted.                                                                                                                                                         |
-| `agent.speak.provider.model`   | String | The Aura TTS model to use, for example `aura-2-thalia-en`.                                                                                                                                       |
-| `agent.speak.provider.speed`   | Float  | Speaking rate multiplier. Available for Aura (`provider.version` `v1`) only. Range: `0.7` - `1.5`. Defaults to `1.0`. See [TTS voice controls](/docs/tts-voice-controls#parameters) for details. |
+| Parameter                      | Type   | Description                                                                                                                                   |
+| ------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agent.speak.provider.type`    | String | Must be `deepgram`                                                                                                                            |
+| `agent.speak.provider.version` | String | Optional. Defaults to `v1` when omitted.                                                                                                      |
+| `agent.speak.provider.model`   | String | The Aura TTS model to use, for example `aura-2-thalia-en`.                                                                                    |
+| `agent.speak.provider.speed`   | Float  | Speaking rate multiplier. Range: `0.7` - `1.5`. Defaults to `1.0`. See [TTS voice controls](/docs/tts-voice-controls#parameters) for details. |
 
 #### Example
 

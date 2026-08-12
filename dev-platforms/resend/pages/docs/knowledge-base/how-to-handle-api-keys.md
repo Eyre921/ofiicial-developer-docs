@@ -4,12 +4,7 @@ source: https://resend.com/docs/knowledge-base/how-to-handle-api-keys
 path: docs/knowledge-base/how-to-handle-api-keys
 ---
 
-Learn our suggested practices for handling API keys.
-
-<Info>
-  For more help creating, deleting, and managing API keys, see the [API Keys
-  documentation](/docs/dashboard/api-keys/introduction).
-</Info>
+Learn our suggested practices for handling API keys securely.
 
 ## Best Practices
 
@@ -33,9 +28,9 @@ Resend API keys do not expire automatically. Keys remain valid until you manuall
 
 To rotate an API key:
 
-1. **Create a new key** in the [API Keys Dashboard](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you are replacing.
+1. **Create a new key** in the [**API keys** Dashboard page](https://resend.com/api-keys) or [via the API](/docs/api-reference/api-keys/create-api-key) with the same permission level and domain scope as the key you are replacing.
 2. **Update your services** to use the new key. Deploy the change to all environments that reference the old key.
-3. **Verify the new key is working** by [filtering by API Key on the logs page](https://resend.com/logs) and checking for recent requests.
+3. **Verify the new key is working** by [filtering by API key on the **Logs** Dashboard page](https://resend.com/logs) and checking for recent requests.
 4. **Delete the old key** once you have confirmed the new key is active across all services.
 
 <Warning>

@@ -3112,6 +3112,20 @@ paths:
           schema:
             $ref: '#/components/schemas/V2SpeakPostParametersEncoding'
             default: mp3
+        - name: expressivity
+          in: query
+          description: >-
+            Expressive range of the generated speech, on a calm-to-animated axis. Accepted values: `-2`, `-1`, `0`, `1`,
+            `2`. `0` (the default) is the voice's tuned delivery and the production-validated setting; negative values
+            are calmer and more measured, positive values more animated. Supported on all Flux voices; applies to the
+            whole request. Beta: behavior may change in future model versions, and non-default values increase the risk
+            of hallucinations and pronunciation errors; audition before shipping. An invalid value is rejected with a
+            `400` — `EXPRESSIVITY_OUT_OF_RANGE` for a value outside the range, `EXPRESSIVITY_INCREMENT_INVALID` for a
+            fractional value. See [Expressivity](/docs/tts-expressivity).
+          required: false
+          schema:
+            $ref: '#/components/schemas/V2SpeakPostParametersExpressivity'
+            default: 0
         - name: model
           in: query
           description: >-
@@ -3130,6 +3144,16 @@ paths:
           schema:
             $ref: '#/components/schemas/V2SpeakPostParametersSampleRate'
             default: 24000
+        - name: speed
+          in: query
+          description: >-
+            Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and
+            voice quality. Accepted values run `0.85` to `1.15` in `0.05` increments. Not yet supported in all
+            languages.
+          required: false
+          schema:
+            $ref: '#/components/schemas/V2SpeakPostParametersSpeed'
+            default: 1
         - name: priority
           in: query
           description: Processing priority for asynchronous (callback) requests. The only supported value is low.
@@ -3158,7 +3182,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpeakV2AcceptedResponse'
         '400':
-          description: Invalid Request
+          description: >-
+            Invalid Request. Inline pause and pronunciation controls are not applied and are stripped rather than
+            rejected.
           content:
             application/json:
               schema:
@@ -6012,6 +6038,15 @@ components:
         - $ref: '#/components/schemas/V2SpeakPostParametersEncoding5'
         - $ref: '#/components/schemas/V2SpeakPostParametersEncoding6'
       title: V2SpeakPostParametersEncoding
+    V2SpeakPostParametersExpressivity:
+      type: string
+      enum:
+        - '-2'
+        - '-1'
+        - '0'
+        - '1'
+        - '2'
+      title: V2SpeakPostParametersExpressivity
     V2SpeakPostParametersSampleRate0:
       type: string
       enum:
@@ -6054,6 +6089,17 @@ components:
         - $ref: '#/components/schemas/V2SpeakPostParametersSampleRate2'
         - $ref: '#/components/schemas/V2SpeakPostParametersSampleRate3'
       title: V2SpeakPostParametersSampleRate
+    V2SpeakPostParametersSpeed:
+      type: string
+      enum:
+        - '0.85'
+        - '0.9'
+        - '0.95'
+        - '1'
+        - '1.05'
+        - '1.1'
+        - '1.15'
+      title: V2SpeakPostParametersSpeed
     V2SpeakPostParametersPriority:
       type: string
       enum:
@@ -6065,8 +6111,9 @@ components:
         text:
           type: string
           description: >-
-            The text content to be converted to speech. The server normalizes and preprocesses the text (e.g. stripping
-            inline controls) before synthesis.
+            The text content to be converted to speech. The server normalizes and preprocesses the text before
+            synthesis. Inline pause and pronunciation controls are not yet applied; they are stripped from the text
+            before synthesis.
       required:
         - text
       description: >-

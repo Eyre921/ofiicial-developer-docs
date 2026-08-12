@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/quickstart
 path: guides/nexus/quickstart
 ---
 
-Deploy Nexus in your own cloud, then create a context and query it.
+Deploy Pinecone Nexus with bring-your-own-cloud (BYOC), build a context from your own documents, and run your first query from the deployment console.
 
 Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with bring-your-own-cloud (BYOC), then builds a context from your own documents and queries it from your deployment's console.
 
@@ -75,4 +75,4 @@ Once curation finishes, ask your context a question and get a grounded, cited an
   To query several contexts at once, start a session from **Sessions** with **+ New session**, click each context in the **Query across** row, and ask.
 </Tip>
 
-You can also query from your own code, using the [KnowQL query endpoint](/reference/api/nexus/query) or an [MCP server](/guides/nexus/mcp-server).
+You can also query from your own code, using the [Nexus API](/reference/api/nexus/introduction) or an [MCP server](/guides/nexus/mcp-server).

@@ -75,7 +75,7 @@ When the call starts, the bot greets the caller with exactly:
 
 Services:
   - Twilio for phone calls
-  - STT: Deepgram
+  - STT: Deepgram Flux
   - LLM: OpenAI
   - TTS: Deepgram Flux
   - Deploy to Pipecat Cloud
@@ -107,17 +107,19 @@ tts = CartesiaTTSService(
 Replace it with:
 
 ```python
-from pipecat.services.deepgram.tts import DeepgramTTSService
+from pipecat.services.deepgram.flux.tts import DeepgramFluxTTSService
 
-tts = DeepgramTTSService(
+tts = DeepgramFluxTTSService(
     api_key=os.getenv("DEEPGRAM_API_KEY"),
-    settings=DeepgramTTSService.Settings(
-        voice="aura-2-helena-en",
+    settings=DeepgramFluxTTSService.Settings(
+        voice="flux-alexis-en",
     ),
 )
 ```
 
-You can also remove `CARTESIA_API_KEY` from your `.env` file since it is no longer needed. No other changes are required. The STT service already uses Deepgram and the rest of the pipeline stays the same.
+Remove `CARTESIA_API_KEY` from your `.env` file — it is no longer needed. No other changes are required: the STT service already uses Deepgram, and the rest of the pipeline stays the same.
+
+Flux TTS voices use the model string format `flux-{voice}-{language}`, such as `flux-alexis-en`. This differs from the `aura-2-{voice}-{language}` format used by Deepgram's Aura-2 voices. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) to choose a different voice.
 
 Continue building by adding a [Pipecat Client](#next-steps)
 

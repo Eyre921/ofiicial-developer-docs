@@ -6,7 +6,7 @@ path: payments/afterpay-clearpay
 
 # Afterpay and Clearpay payments
 
-Offer your customers flexible financing while getting paid upfront with Afterpay (also known as Clearpay in the UK)..
+Offer your customers flexible financing while getting paid upfront with Afterpay (also known as Clearpay in the UK).
 
 [Afterpay](https://www.afterpay.com/) is a buy now, pay later (BNPL) payment method that allows customers to split purchases into interest-free installments. When customers select Afterpay as their payment method, Stripe redirects them to complete authentication and approval. You’re paid immediately while customers pay over time.
 Payment method family: Buy Now, Pay Later

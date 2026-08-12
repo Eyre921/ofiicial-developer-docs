@@ -19,7 +19,7 @@ Retrieve segment metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
@@ -61,17 +61,10 @@ via `segment_id`.
   belong to more than one.
 </ResendParamField>
 
-<ResendParamField type="string">
-  Possible values:
-
-  * `date`: each segment's creation date.
-  * `all_contacts`, `subscribers`, `unsubscribers`: that metric's count for the
-    segment.
-</ResendParamField>
-
-<ResendParamField type="asc | desc">
-  The sort direction for `sort_by`, applied to each segment's creation date.
-</ResendParamField>
+<Info>
+  When `dimensions` includes `segment`, `data` is ordered by each segment's
+  creation date, newest first.
+</Info>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -94,18 +87,16 @@ via `segment_id`.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "object": "segments_metrics",
+    "object": "metrics",
     "metrics": ["all_contacts"],
     "dimensions": ["segment"],
-    "sort_by": "date",
-    "sort_order": "desc",
     "totals": {
       "all_contacts": 12450
     },
     "data": [
       {
-        "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "segment_name": "Registered Users",
+        "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+        "name": "Registered Users",
         "all_contacts": 4300
       }
     ]

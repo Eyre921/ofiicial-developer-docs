@@ -10,8 +10,6 @@ path: docs/flux-tts/quickstart
 
 # Getting Started with Flux TTS
 
-**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
-
 Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders a buffer of text into audio and discards everything else, `/v2/speak` is built for the realities of a voice agent pipeline: streaming text in from an LLM, speaking it to a user, getting interrupted, resuming, and doing it across dozens of turns without losing conversational coherence.
 
 **Flux TTS is perfect for:** turn-based voice agents, customer service bots, phone assistants, and any application that streams LLM output to a speaker in real time.
@@ -19,10 +17,14 @@ Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders 
 **Key benefits:**
 
 * **Streaming-first** — Stream LLM tokens straight into the socket; the server handles flush placement at sentence and clause boundaries internally.
+
 * **Turn-based lifecycle** — Each agent response is a turn with a clean lifecycle (`SpeechStarted` → audio → `SpeechMetadata`), reported per turn.
+
 * **Cross-turn voice consistency** — The model persists conversational state across turns, so short responses like "Of course" keep the tone established earlier.
 
-*Planned for GA:* interruption feedback (`Interrupt` → `text_spoken` / `text_remaining`) and mid-stream `Configure` (speed).
+* **Interruption-aware** — On barge-in, `Interrupt` reports exactly what the user heard (`text_spoken` / `text_remaining`) so your LLM context stays in sync.
+
+* **Mid-stream control** — `Configure` adjusts `speed` without reconnecting.
 
 **New endpoint, not a replacement.** `/v2/speak` ships alongside `/v1/speak`. The v1 endpoint and all Aura model strings stay available and unchanged. See [When to use /v2/speak vs /v1/speak](#when-to-use-v2speak-vs-v1speak) and the [Migration guide](/docs/flux-tts/migrating).
 
@@ -46,13 +48,15 @@ wss://api.deepgram.com/v2/speak?model=flux-haley-en
 
 The streaming WebSocket produces **raw audio** (no container), so it accepts only the parameters below. Unknown or misspelled parameters are rejected, as are batch-only parameters (`container`, `bit_rate`, `callback`, `callback_method`, `priority`).
 
-| Parameter     | Type    | Default      | Description                                                                                                                                 |
-| ------------- | ------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string  | —            | **Required.** The Flux TTS model to use (e.g. `flux-haley-en`). Must be a `flux-*` model; an Aura model returns an endpoint-specific error. |
-| `encoding`    | enum    | `linear16`   | Raw audio encoding: `linear16`, `mulaw`, or `alaw`.                                                                                         |
-| `sample_rate` | integer | model native | Output sample rate. With `linear16`: `8000`, `16000`, `24000`, `32000`, `44100`, `48000`. With `mulaw`/`alaw`: `8000` or `16000`.           |
-| `mip_opt_out` | boolean | `false`      | Opt out of the Model Improvement Program.                                                                                                   |
-| `tag`         | string  | —            | Custom tag(s) for request tracking. Repeatable.                                                                                             |
+| Parameter      | Type          | Default      | Description                                                                                                                                                                                                                                                                                |
+| -------------- | ------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `model`        | string        | —            | **Required.** The Flux TTS model to use (e.g. `flux-haley-en`). Must be a `flux-*` model; an Aura model returns an endpoint-specific error.                                                                                                                                                |
+| `encoding`     | enum          | `linear16`   | Raw audio encoding: `linear16`, `mulaw`, or `alaw`.                                                                                                                                                                                                                                        |
+| `sample_rate`  | integer       | model native | Output sample rate. With `linear16`: `8000`, `16000`, `24000`, `32000`, `44100`, `48000`. With `mulaw`/`alaw`: `8000` or `16000`.                                                                                                                                                          |
+| `speed`        | enum (number) | `1.0`        | Initial speech-rate multiplier — one of `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, `1.15`. Not supported by every model or language; unsupported combinations return `SPEED_NOT_SUPPORTED`. Can also be changed mid-stream with [`Configure`](/docs/flux-tts/client-messages#configure). |
+| `expressivity` | integer       | `0`          | **Beta.** Delivery register, `-2` (calmer) to `2` (more animated). See [Expressivity](/docs/tts-expressivity).                                                                                                                                                                             |
+| `mip_opt_out`  | boolean       | `false`      | Opt out of the Model Improvement Program.                                                                                                                                                                                                                                                  |
+| `tag`          | string        | —            | Custom tag(s) for request tracking. Repeatable.                                                                                                                                                                                                                                            |
 
 **Compressed and containerized encodings are batch-only.** `opus`, `mp3`, `flac`, and `aac` (and the `container` / `bit_rate` parameters) are available on the [batch REST transport](#streaming-vs-batch), not on the streaming WebSocket, which emits raw `linear16`/`mulaw`/`alaw`.
 
@@ -60,13 +64,13 @@ The streaming WebSocket produces **raw audio** (no container), so it accepts onl
 
 ### Model naming
 
-Flux TTS model strings follow the format `flux-{voice}-{language}`, mirroring Flux STT:
+Flux TTS model strings follow the format `flux-{voice}-{language}`:
 
 ```
 flux-haley-en      # English voice
 ```
 
-English voices ship first; multilingual voices (`flux-{voice}-multi`) come later. See [Voices & Languages](/docs/flux-tts/voices) for the current catalog. As with Flux STT, model generations roll forward behind a stable model string — there is no version segment in the customer-facing name.
+All Flux TTS voices are English (`-en`) today. See [Voices & Languages](/docs/flux-tts/voices) for the full catalog.
 
 ## The conversation loop
 
@@ -166,14 +170,14 @@ Send **plain text**. The server applies text normalization (e.g. number and date
 
 ## When to use /v2/speak vs /v1/speak
 
-|                    | `/v1/speak` (Aura)                       | `/v2/speak` (Flux TTS)                                   |
-| ------------------ | ---------------------------------------- | -------------------------------------------------------- |
-| Mental model       | Text buffer → audio stream               | Streaming-first, turn-based conversation                 |
-| Flushing           | Manual + customer-facing toggles         | Server-managed; manual `Flush` ends the turn             |
-| Interruption       | `Clear` discards the buffer, no feedback | `Interrupt` with spoken-text feedback *(planned for GA)* |
-| Cross-turn context | None                                     | Model state persists across turns                        |
-| Mid-stream control | Fixed at connection                      | `Configure` speed mid-session *(planned for GA)*         |
-| Voices             | Aura 1 / Aura 2                          | Flux TTS voice portfolio                                 |
+|                    | `/v1/speak` (Aura)                       | `/v2/speak` (Flux TTS)                       |
+| ------------------ | ---------------------------------------- | -------------------------------------------- |
+| Mental model       | Text buffer → audio stream               | Streaming-first, turn-based conversation     |
+| Flushing           | Manual `Flush` + flush toggles           | Server-managed; manual `Flush` ends the turn |
+| Interruption       | `Clear` discards the buffer, no feedback | `Interrupt` with spoken-text feedback        |
+| Cross-turn context | None                                     | Model state persists across turns            |
+| Mid-stream control | Fixed at connection                      | `Configure` speed mid-session                |
+| Voices             | Aura 1 / Aura 2                          | Flux TTS voice portfolio                     |
 
 Build new voice-agent integrations on `/v2/speak`. Stay on `/v1/speak` if you depend on the legacy manual-flush toggles, or if you are using Aura voices and don't yet need the conversational surface. See the [Migration guide](/docs/flux-tts/migrating) for a step-by-step path.
 
@@ -192,7 +196,7 @@ curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
   --output audio.mp3
 ```
 
-The batch path shares `model`, media-output settings, and inline pronunciations with the streaming surface, and adds containerized/compressed encodings (`mp3` default, plus `opus`/`flac`/`aac` with `container`/`bit_rate`). Conversational constructs (`Flush`, `speech_id`, lifecycle events) do not apply to batch; per-request telemetry is returned as response headers, mirroring Aura's REST conventions.
+The batch path shares `model`, `speed`, `expressivity`, and media-output settings with the streaming surface, and adds containerized/compressed encodings (`mp3` default, plus `opus`/`flac`/`aac` with `container`/`bit_rate`). Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch; per-request telemetry is returned as response headers, mirroring Aura's REST conventions.
 
 ## What's next?
 

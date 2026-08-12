@@ -299,11 +299,11 @@ We recommend taking measures to help prevent abuse of your project. For example,
 
 ## Payments 
 
-### Can I pay with PayPal, wire transfer, crypto, or any method other than credit card?
+### What payment methods does Netlify accept?
 
-Netlify only accepts credit cards unless you have a Netlify Enterprise plan, in which case we do accept payment via ACH or wire transfer.
+Netlify accepts credit cards, Apple Pay, and Google Pay. Enterprise plan customers can also pay via ACH or wire transfer. Netlify does not accept payment through PayPal or cryptocurrencies.
 
-You must have a valid credit card saved to your Netlify team account to keep your web projects active with the Personal or Pro Credit-based plans.
+You must have a valid payment method saved to your Netlify team account to keep your web projects active with the Personal or Pro Credit-based plans.
 
 ### When will I be charged?
 

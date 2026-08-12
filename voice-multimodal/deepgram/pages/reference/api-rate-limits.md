@@ -38,7 +38,7 @@ If multiple services are used in one API call (e.g Speech to Text + Sentiment An
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                         | Europe (`api.eu.deepgram.com`)                                                             | Australia (`api.au.deepgram.com`)                                                          |
 | :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| [Flux](/docs/models-languages-overview#flux)                            | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  |
+| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
@@ -54,17 +54,19 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 
 ### Text to Speech REST
 
-| Model                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
-| :----------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- |
-| [Aura](/docs/text-to-speech)   | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
-| [Aura-2](/docs/text-to-speech) | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
+| :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- |
+| [Aura](/docs/text-to-speech)                | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| [Aura-2](/docs/text-to-speech)              | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Up to 15 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       |
 
 ### Text to Speech Streaming
 
-| Model                                    | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
-| :--------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- |
-| [Aura](/docs/streaming-text-to-speech)   | Up to 45 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
-| [Aura-2](/docs/streaming-text-to-speech) | Up to 45 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
+| :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- |
+| [Aura](/docs/streaming-text-to-speech)      | Up to 45 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| [Aura-2](/docs/streaming-text-to-speech)    | Up to 45 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Up to 45 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       |
 
 ### Audio Intelligence
 
@@ -103,7 +105,7 @@ If multiple services are used in one API call (e.g Speech to Text + Sentiment An
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                         | Europe (`api.eu.deepgram.com`)                                                             | Australia (`api.au.deepgram.com`)                                                          |
 | :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| [Flux](/docs/models-languages-overview#flux)                            | `Streaming` Up to 225 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  |
+| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 225 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  | `Streaming` Up to 150 concurrent requests                                                  |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests<br />`Streaming` Up to 150 concurrent requests |
@@ -119,17 +121,19 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 
 ### Text to Speech REST
 
-| Model                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
-| :----------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- |
-| [Aura](/docs/text-to-speech)   | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
-| [Aura-2](/docs/text-to-speech) | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
+| :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- |
+| [Aura](/docs/text-to-speech)                | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| [Aura-2](/docs/text-to-speech)              | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Up to 15 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       |
 
 ### Text to Speech Streaming
 
-| Model                                    | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
-| :--------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- |
-| [Aura](/docs/streaming-text-to-speech)   | Up to 60 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
-| [Aura-2](/docs/streaming-text-to-speech) | Up to 60 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) |
+| :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- |
+| [Aura](/docs/streaming-text-to-speech)      | Up to 60 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| [Aura-2](/docs/streaming-text-to-speech)    | Up to 60 concurrent requests       | Up to 45 concurrent requests   | Up to 45 concurrent requests      |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Up to 60 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       |
 
 ### Audio Intelligence
 
@@ -154,7 +158,7 @@ If you include Audio Intelligence features in requests to `/listen`, you will be
 
 ## Enterprise
 
-Starting limits to consider if you have an Enterprise Contract with Deepgram. Enterprise limits are the same across all regions.
+Starting limits to consider if you have an Enterprise Contract with Deepgram. Enterprise limits are the same across all regions unless a row states otherwise.
 
 New and existing Enterprise customers can request a Service Limit increase by discussing your needs with the [Deepgram Sales Team.](mailto:sales@deepgram.com)
 
@@ -170,7 +174,7 @@ If multiple services are used in one API call (e.g Speech to Text + Sentiment An
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                                      | Europe (`api.eu.deepgram.com`)                                                                          | Australia (`api.au.deepgram.com`)                                                                       |
 | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------ |
-| [Flux](/docs/models-languages-overview#flux)                            | `Streaming` Up to 300 concurrent requests                                                               | `Streaming` Up to 300 concurrent requests                                                               | `Streaming` Up to 300 concurrent requests                                                               |
+| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 300 concurrent requests                                                               | `Streaming` Up to 300 concurrent requests                                                               | `Streaming` Up to 300 concurrent requests                                                               |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests<br />`Streaming` Starting at 300 concurrent requests |
@@ -186,17 +190,19 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 
 ### Text to Speech REST
 
-| Model                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`)     | Australia (`api.au.deepgram.com`)  |
-| :----------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- |
-| [Aura](/docs/text-to-speech)   | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
-| [Aura-2](/docs/text-to-speech) | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
+| Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`)     | Australia (`api.au.deepgram.com`)  |
+| :------------------------------------------ | :--------------------------------- | :--------------------------------- | :--------------------------------- |
+| [Aura](/docs/text-to-speech)                | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
+| [Aura-2](/docs/text-to-speech)              | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
 
 ### Text to Speech Streaming
 
-| Model                                    | North America (`api.deepgram.com`)  | Europe (`api.eu.deepgram.com`)      | Australia (`api.au.deepgram.com`)   |
-| :--------------------------------------- | :---------------------------------- | :---------------------------------- | :---------------------------------- |
-| [Aura](/docs/streaming-text-to-speech)   | Starting at 150 concurrent requests | Starting at 150 concurrent requests | Starting at 150 concurrent requests |
-| [Aura-2](/docs/streaming-text-to-speech) | Starting at 100 concurrent requests | Starting at 100 concurrent requests | Starting at 100 concurrent requests |
+| Model                                       | North America (`api.deepgram.com`)  | Europe (`api.eu.deepgram.com`)      | Australia (`api.au.deepgram.com`)   |
+| :------------------------------------------ | :---------------------------------- | :---------------------------------- | :---------------------------------- |
+| [Aura](/docs/streaming-text-to-speech)      | Starting at 150 concurrent requests | Starting at 150 concurrent requests | Starting at 150 concurrent requests |
+| [Aura-2](/docs/streaming-text-to-speech)    | Starting at 100 concurrent requests | Starting at 100 concurrent requests | Starting at 100 concurrent requests |
+| [Flux TTS](/docs/flux-tts/feature-overview) | Starting at 100 concurrent requests | Starting at 50 concurrent requests  | Starting at 50 concurrent requests  |
 
 ### Audio Intelligence
 

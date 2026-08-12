@@ -12,7 +12,7 @@ path: docs/voice-agent-tts-controls
 
 If you're building with the [Voice Agent API](/docs/voice-agent), Aura-2's [TTS voice controls](/docs/tts-voice-controls) — speed, pronunciation, and pacing — work inside your agent pipeline. Where you apply each control depends on what it does and what context the decision needs.
 
-These controls apply to Aura (`agent.speak.provider.version` `v1`) only. [Flux TTS](/docs/flux-tts/overview) (Early Access, `agent.speak.provider.version` `v2`) does not support the speed, pronunciation, or pacing controls described here.
+The pronunciation and pacing controls described here apply to Aura (`agent.speak.provider.version` `v1`). [Flux TTS](/docs/flux-tts/overview) (`agent.speak.provider.version` `v2`) supports `speed` with its own set of values — see [TTS Models](/docs/voice-agent-tts-models#flux-tts).
 
 ## Where each control belongs
 
@@ -24,7 +24,7 @@ These controls apply to Aura (`agent.speak.provider.version` `v1`) only. [Flux T
 
 ## Speed: configure once at the session level
 
-Speed is a session-level setting on the agent's `speak` provider. Configure it when you initialize the agent, and every response from the agent uses that rate. It applies to Aura (`agent.speak.provider.version` `v1`) only — [Flux TTS](/docs/flux-tts/overview) (Early Access, `v2`) does not support `speed`.
+Speed is a session-level setting on the agent's `speak` provider. Configure it when you initialize the agent, and every response from the agent uses that rate. Aura (`agent.speak.provider.version` `v1`) accepts any value from `0.7` to `1.5`; [Flux TTS](/docs/flux-tts/overview) (`v2`) accepts `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1` or `1.15`.
 
 ```json
 {

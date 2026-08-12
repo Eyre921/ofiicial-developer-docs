@@ -19,7 +19,7 @@ Retrieve account-level email metrics.
   page:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.19.0-preview-headless-dashboard.3
     ```
   </CodeGroup>
@@ -56,7 +56,8 @@ Retrieve account-level email metrics.
 
 <ParamField type="hourly | daily | weekly | monthly">
   The bucket size used when `period` is in `dimensions`. Accepted but has no
-  effect otherwise.
+  effect otherwise. The date range can't produce more than 10,000 periods at the
+  chosen granularity. This limit only applies when `period` is in `dimensions`.
 </ParamField>
 
 <ParamField type="string[]">
@@ -78,8 +79,7 @@ Retrieve account-level email metrics.
 
   Possible values:
 
-  * `period`: one row per `granularity` period, zero-filled for periods with no
-    activity. Only zero-filled when `period` is the only requested dimension.
+  * `period`: one row per `granularity` period, in chronological order.
   * `domain`: one row per sending domain. Cannot be combined with `email`.
   * `email`: one row per email. Cannot be combined with `domain`.
 </ParamField>
@@ -93,27 +93,6 @@ Retrieve account-level email metrics.
   Comma-separated list of email IDs to restrict the response to. Cannot be
   combined with the `domain` dimension. Unrecognized query params are ignored
   rather than rejected.
-</ParamField>
-
-<ParamField type="string">
-  What to sort `data` by. Defaults to `date` when `dimensions` includes
-  `period`, or `sent` when `dimensions` is exactly `domain` or exactly `email`.
-
-  Possible values:
-
-  * `date`: chronological order. Requires `dimensions` to include `period`.
-  * Any metric: `received`, `delivered`, `complained`, `suppressed`, `bounced`,
-    `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
-    `clicked`, `unsubscribed`, `delivery_delayed`, `failed`, `sent`,
-    `unique_opened`, `unique_clicked`, `delivery_rate`, `open_rate`,
-    `click_rate`, `bounce_rate`, `complaint_rate`, `unsubscribe_rate`. Requires
-    `dimensions` to be exactly `domain` or exactly `email`, and must also be
-    included in `metrics`.
-</ParamField>
-
-<ParamField type="asc | desc">
-  The sort direction for `sort_by`. Defaults to `asc` when `dimensions` includes
-  `period`, `desc` otherwise.
 </ParamField>
 
 <RequestExample>
@@ -132,8 +111,6 @@ Retrieve account-level email metrics.
     "metrics": ["sent", "delivered", "open_rate"],
     "dimensions": ["period", "domain"],
     "granularity": "daily",
-    "sort_by": "date",
-    "sort_order": "asc",
     "totals": {
       "sent": 1204,
       "delivered": 1180,

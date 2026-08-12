@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 473 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 459 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -13,7 +13,6 @@
 - `currencies` — [Supported currencies](pages/currencies.md) · [原文](https://docs.stripe.com/currencies.md)
 - `declines` — [Declines](pages/declines.md) · [原文](https://docs.stripe.com/declines.md)
 - `event-destinations` — [Integrate with events](pages/event-destinations.md) · [原文](https://docs.stripe.com/event-destinations.md)
-- `issuing` — [Stripe Issuing](pages/issuing.md) · [原文](https://docs.stripe.com/issuing.md)
 - `js` — [Stripe.js](pages/js.md) · [原文](https://docs.stripe.com/js.md)
 - `payouts` — [Receive payouts](pages/payouts.md) · [原文](https://docs.stripe.com/payouts.md)
 - `projects` — [Stripe Projects CLI](pages/projects.md) · [原文](https://docs.stripe.com/projects.md)
@@ -26,7 +25,6 @@
 - `tax` — [Stripe Tax](pages/tax.md) · [原文](https://docs.stripe.com/tax.md)
 - `terminal` — [features](pages/terminal.md) · [原文](https://docs.stripe.com/terminal.md)
 - `testing` — [Testing](pages/testing.md) · [原文](https://docs.stripe.com/testing.md)
-- `treasury` — [Stripe Treasury](pages/treasury.md) · [原文](https://docs.stripe.com/treasury.md)
 - `upgrades` — [API upgrades](pages/upgrades.md) · [原文](https://docs.stripe.com/upgrades.md)
 - `webhooks` — [Receive Stripe events in your webhook endpoint](pages/webhooks.md) · [原文](https://docs.stripe.com/webhooks.md)
 
@@ -535,39 +533,27 @@
 
 ## treasury
 
-- `treasury/connect/access` — [Get started with API access to Treasury for platforms](pages/treasury/connect/access.md) · [原文](https://docs.stripe.com/treasury/connect/access.md)
-- `treasury/connect/account-management/accounts-structure` — [Accounts structure](pages/treasury/connect/account-management/accounts-structure.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/accounts-structure.md)
-- `treasury/connect/account-management/connected-accounts` — [Working with connected accounts](pages/treasury/connect/account-management/connected-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md)
-- `treasury/connect/account-management/financial-accounts` — [Working with financial accounts](pages/treasury/connect/account-management/financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md)
-- `treasury/connect/account-management/issuing-cards` — [Working with Stripe Issuing cards](pages/treasury/connect/account-management/issuing-cards.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/issuing-cards.md)
-- `treasury/connect/account-management/platform-financial-account` — [Platform financial accounts](pages/treasury/connect/account-management/platform-financial-account.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/platform-financial-account.md)
-- `treasury/connect/account-management/supportability` — [Treasury for platforms supportability for connected accounts](pages/treasury/connect/account-management/supportability.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/supportability.md)
-- `treasury/connect/account-management/working-with-balances-and-transactions` — [Working with balances and transactions](pages/treasury/connect/account-management/working-with-balances-and-transactions.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/working-with-balances-and-transactions.md)
-- `treasury/connect/compliance` — [Treasury for platforms product marketing, design, and compliance guidelines](pages/treasury/connect/compliance.md) · [原文](https://docs.stripe.com/treasury/connect/compliance.md)
-- `treasury/connect/examples/financial-accounts` — [Use Treasury for platforms and Issuing to set up financial accounts and cards](pages/treasury/connect/examples/financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/examples/financial-accounts.md)
-- `treasury/connect/examples/fraud-guide` — [Treasury for platforms fraud guide](pages/treasury/connect/examples/fraud-guide.md) · [原文](https://docs.stripe.com/treasury/connect/examples/fraud-guide.md)
-- `treasury/connect/examples/moving-money` — [Using Treasury for platforms to move money](pages/treasury/connect/examples/moving-money.md) · [原文](https://docs.stripe.com/treasury/connect/examples/moving-money.md)
-- `treasury/connect/examples/onboarding-guide` — [Treasury for platforms connected account onboarding guide](pages/treasury/connect/examples/onboarding-guide.md) · [原文](https://docs.stripe.com/treasury/connect/examples/onboarding-guide.md)
+- `treasury/connect` — [Treasury for platforms v1](pages/treasury/connect.md) · [原文](https://docs.stripe.com/treasury/connect.md)
 - `treasury/connect/examples/sample-app` — [Issuing and Treasury for platforms sample app](pages/treasury/connect/examples/sample-app.md) · [原文](https://docs.stripe.com/treasury/connect/examples/sample-app.md)
-- `treasury/connect/examples/webhooks` — [Webhooks for Stripe Issuing and Treasury for platforms](pages/treasury/connect/examples/webhooks.md) · [原文](https://docs.stripe.com/treasury/connect/examples/webhooks.md)
-- `treasury/connect/fifth-third-get-started` — [Build a new Treasury for platforms integration with Fifth Third Bank](pages/treasury/connect/fifth-third-get-started.md) · [原文](https://docs.stripe.com/treasury/connect/fifth-third-get-started.md)
-- `treasury/connect/handling-complaints` — [Handling complaints](pages/treasury/connect/handling-complaints.md) · [原文](https://docs.stripe.com/treasury/connect/handling-complaints.md)
-- `treasury/connect/marketing-financial-accounts` — [Marketing Treasury for platforms](pages/treasury/connect/marketing-financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/marketing-financial-accounts.md)
-- `treasury/connect/money-movement/timelines` — [Money movement timelines](pages/treasury/connect/money-movement/timelines.md) · [原文](https://docs.stripe.com/treasury/connect/money-movement/timelines.md)
-- `treasury/connect/moving-money/into/credit-reversals` — [Moving money using CreditReversal objects](pages/treasury/connect/moving-money/into/credit-reversals.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/into/credit-reversals.md)
-- `treasury/connect/moving-money/into/inbound-transfers` — [Moving money with using InboundTransfer objects](pages/treasury/connect/moving-money/into/inbound-transfers.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/into/inbound-transfers.md)
-- `treasury/connect/moving-money/into/received-credits` — [Moving money using ReceivedCredit objects](pages/treasury/connect/moving-money/into/received-credits.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/into/received-credits.md)
-- `treasury/connect/moving-money/moving-money-into-financial-accounts` — [Moving money into financial accounts](pages/treasury/connect/moving-money/moving-money-into-financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/moving-money-into-financial-accounts.md)
-- `treasury/connect/moving-money/moving-money-out` — [Moving money out of Treasury for platforms](pages/treasury/connect/moving-money/moving-money-out.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/moving-money-out.md)
-- `treasury/connect/moving-money/noc-sec-handling` — [ACH NOC and SEC handling](pages/treasury/connect/moving-money/noc-sec-handling.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/noc-sec-handling.md)
-- `treasury/connect/moving-money/out-of/debit-reversals` — [Moving money using DebitReversal objects](pages/treasury/connect/moving-money/out-of/debit-reversals.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/debit-reversals.md)
-- `treasury/connect/moving-money/out-of/outbound-payments` — [Moving money using OutboundPayment objects](pages/treasury/connect/moving-money/out-of/outbound-payments.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md)
-- `treasury/connect/moving-money/out-of/outbound-transfers` — [Moving money using OutboundTransfer objects](pages/treasury/connect/moving-money/out-of/outbound-transfers.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md)
-- `treasury/connect/moving-money/out-of/received-debits` — [Moving money using ReceivedDebit objects](pages/treasury/connect/moving-money/out-of/received-debits.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/received-debits.md)
-- `treasury/connect/moving-money/payouts` — [Payouts and top-ups from your payments balance](pages/treasury/connect/moving-money/payouts.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/payouts.md)
-- `treasury/connect/moving-money/regulatory-receipts` — [Regulatory receipts](pages/treasury/connect/moving-money/regulatory-receipts.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/regulatory-receipts.md)
-- `treasury/connect/moving-money/working-with-bankaccount-objects` — [Working with SetupIntents, PaymentMethods, and BankAccounts](pages/treasury/connect/moving-money/working-with-bankaccount-objects.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/working-with-bankaccount-objects.md)
-- `treasury/connect/requirements` — [Treasury for platforms requirements](pages/treasury/connect/requirements.md) · [原文](https://docs.stripe.com/treasury/connect/requirements.md)
+- `treasury/connect/v2` — [Treasury for Platforms](pages/treasury/connect/v2.md) · [原文](https://docs.stripe.com/treasury/connect/v2.md)
+- `treasury/connect/v2/account-management/connected-accounts` — [Connected account financial accounts](pages/treasury/connect/v2/account-management/connected-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/v2/account-management/connected-accounts.md)
+- `treasury/connect/v2/account-management/financial-accounts` — [Financial accounts](pages/treasury/connect/v2/account-management/financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/v2/account-management/financial-accounts.md)
+- `treasury/connect/v2/build-an-integration` — [Build an integration with Treasury for platforms](pages/treasury/connect/v2/build-an-integration.md) · [原文](https://docs.stripe.com/treasury/connect/v2/build-an-integration.md)
+- `treasury/connect/v2/compliance` — [Treasury for platforms marketing compliance](pages/treasury/connect/v2/compliance.md) · [原文](https://docs.stripe.com/treasury/connect/v2/compliance.md)
+- `treasury/connect/v2/examples/cross-border-and-automatic-transfer-rules` — [Cross-border payouts and automatic transfer rules](pages/treasury/connect/v2/examples/cross-border-and-automatic-transfer-rules.md) · [原文](https://docs.stripe.com/treasury/connect/v2/examples/cross-border-and-automatic-transfer-rules.md)
+- `treasury/connect/v2/examples/multi-financial-accounts` — [Multiple financial accounts and external funding](pages/treasury/connect/v2/examples/multi-financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/v2/examples/multi-financial-accounts.md)
+- `treasury/connect/v2/fraud-guide` — [Manage fraud](pages/treasury/connect/v2/fraud-guide.md) · [原文](https://docs.stripe.com/treasury/connect/v2/fraud-guide.md)
+- `treasury/connect/v2/handle-complaints` — [Handle complaints](pages/treasury/connect/v2/handle-complaints.md) · [原文](https://docs.stripe.com/treasury/connect/v2/handle-complaints.md)
+- `treasury/connect/v2/how-treasury-for-platforms-works` — [How Treasury for platforms works](pages/treasury/connect/v2/how-treasury-for-platforms-works.md) · [原文](https://docs.stripe.com/treasury/connect/v2/how-treasury-for-platforms-works.md)
+- `treasury/connect/v2/market-messaging` — [Treasury for platforms messaging](pages/treasury/connect/v2/market-messaging.md) · [原文](https://docs.stripe.com/treasury/connect/v2/market-messaging.md)
+- `treasury/connect/v2/money-movement/timelines` — [Money movement timelines](pages/treasury/connect/v2/money-movement/timelines.md) · [原文](https://docs.stripe.com/treasury/connect/v2/money-movement/timelines.md)
+- `treasury/connect/v2/moving-money/fund-a-financial-account` — [Fund a financial account](pages/treasury/connect/v2/moving-money/fund-a-financial-account.md) · [原文](https://docs.stripe.com/treasury/connect/v2/moving-money/fund-a-financial-account.md)
+- `treasury/connect/v2/moving-money/out-of/outbound-payments` — [Send money to recipients and financial accounts you don't own](pages/treasury/connect/v2/moving-money/out-of/outbound-payments.md) · [原文](https://docs.stripe.com/treasury/connect/v2/moving-money/out-of/outbound-payments.md)
+- `treasury/connect/v2/moving-money/out-of/outbound-transfers` — [Transfer money between owned accounts](pages/treasury/connect/v2/moving-money/out-of/outbound-transfers.md) · [原文](https://docs.stripe.com/treasury/connect/v2/moving-money/out-of/outbound-transfers.md)
+- `treasury/connect/v2/moving-money/received-debits` — [Received debits](pages/treasury/connect/v2/moving-money/received-debits.md) · [原文](https://docs.stripe.com/treasury/connect/v2/moving-money/received-debits.md)
+- `treasury/connect/v2/prebuilt-embedded-finance` — [Prebuilt embedded finance](pages/treasury/connect/v2/prebuilt-embedded-finance.md) · [原文](https://docs.stripe.com/treasury/connect/v2/prebuilt-embedded-finance.md)
+- `treasury/connect/v2/prebuilt-embedded-finance/aff` — [Administrative facilitation fee](pages/treasury/connect/v2/prebuilt-embedded-finance/aff.md) · [原文](https://docs.stripe.com/treasury/connect/v2/prebuilt-embedded-finance/aff.md)
+- `treasury/connect/v2/transactions/working-with-transactions` — [Working with Transactions](pages/treasury/connect/v2/transactions/working-with-transactions.md) · [原文](https://docs.stripe.com/treasury/connect/v2/transactions/working-with-transactions.md)
 
 ## use-stripe-apps
 

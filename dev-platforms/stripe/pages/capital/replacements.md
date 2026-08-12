@@ -10,7 +10,7 @@ Learn how to handle financing offer replacements.
 
 > Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
 
-Replacement financing offers can be created in the following situations:
+In certain situations, the terms of an outstanding financing offer might change (for example, in response to a user providing third-party data). In this scenario, we create a new offer to replace the previous offer. Replacement financing offers can be created in the following situations:
 
 - **Pre-submission upgrade**: A connected account links third-party data and receives improved offer terms before submitting the application.
 - **Post-submission counteroffer**: Stripe declines the original offer application and extends a new offer with different terms.

@@ -15,6 +15,10 @@ Learn how to manage payments, monitor usage, and understand the details of Netli
 
 > **Tip - Enterprise plan questions?:** For credit-based billing details specific to Enterprise plans, see [How credits work for enterprise plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work-for-enterprise-plans/). For the latest and most accurate billing information for your plan, reach out to your account manager or use this [Sales form](https://www.netlify.com/contact/sales/) to share your questions.
 
+Netlify accepts credit cards, Apple Pay, and Google Pay. Enterprise plan customers can also pay via ACH or wire transfer. Payments for monthly plans are scheduled at the start of each monthly billing cycle.  You cannot pay a year in advance unless you have an Enterprise plan.
+
+Learn more about [managing payments](/manage/accounts-and-billing/billing/manage-payments/).
+
 ### Billing for all plans
 
 - [Manage payments](/manage/accounts-and-billing/billing/manage-payments/)

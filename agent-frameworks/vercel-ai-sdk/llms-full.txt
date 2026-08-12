@@ -41988,10 +41988,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.5`.
+first argument is the model id, e.g. `grok-4.6`.
 
 ```ts
-const model = xai('grok-4.5');
+const model = xai('grok-4.6');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -42005,7 +42005,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.6'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -42033,9 +42033,10 @@ await generateText({
 
 The following optional provider options are available for xAI chat models:
 
-- **reasoningEffort** _'low' | 'medium' | 'high'_
+- **reasoningEffort** _'low' | 'medium' | 'high' | 'xhigh'_
 
-  Reasoning effort for reasoning models.
+  Reasoning effort for reasoning models. `xhigh` is supported by `grok-4.6`.
+  Defaults to `high` for models that support reasoning effort.
 
 - **store** _boolean_
 
@@ -42068,7 +42069,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-4.6'),
   messages: [
     {
       role: 'user',
@@ -42258,9 +42259,9 @@ const result = await generateText({
 
 The following provider options are available:
 
-- **reasoningEffort** _'low' | 'high'_
+- **reasoningEffort** _'low' | 'medium' | 'high' | 'xhigh'_
 
-  Control the reasoning effort for the model. Higher effort may produce more thorough results at the cost of increased latency and token usage.
+  Control the reasoning effort for the model. Higher effort may produce more thorough results at the cost of increased latency and token usage. `xhigh` is supported by `grok-4.6`. Defaults to `high` for models that support reasoning effort.
 
 <Note>
   The Responses API only supports server-side tools. You cannot mix server-side
@@ -42543,6 +42544,7 @@ console.log('Sources:', await result.sources);
 
 | Model                       | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
 | --------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-4.6`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.5`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4-fast-non-reasoning` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `grok-4-fast-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -81262,10 +81264,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.5`.
+first argument is the model id, e.g. `grok-4.6`.
 
 ```ts
-const model = xai('grok-4.5');
+const model = xai('grok-4.6');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -81279,7 +81281,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.6'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -81293,16 +81295,19 @@ and support structured data generation with [`Output`](/docs/reference/ai-sdk-co
 For models with configurable reasoning, you can control how much effort the
 model spends thinking before responding with
 `providerOptions.xai.reasoningEffort`. The AI SDK option accepts `'none'`,
-`'low'`, `'medium'`, and `'high'`, but each xAI model supports a subset.
+`'low'`, `'medium'`, `'high'`, and `'xhigh'`, but each xAI model supports a
+subset.
 
 <Note>
-  Support and defaults are model-specific. `grok-4.3` supports `'none'`,
-  `'low'`, `'medium'`, and `'high'`. `grok-4.5` supports `'low'`, `'medium'`,
-  and `'high'`, defaults to `'high'`, and cannot disable reasoning. The
-  `grok-4.20-reasoning` and `grok-4.20-non-reasoning` variants do not accept
-  this option, and neither does `grok-build-0.1`. For
-  `grok-4.20-multi-agent`, `'low'`, `'medium'`, and `'high'` control the number
-  of agents instead of reasoning depth. See xAI's [reasoning
+  Support and defaults are model-specific. `grok-4.6` supports `'low'`,
+  `'medium'`, `'high'`, and `'xhigh'`, defaults to `'high'`, and cannot disable
+  reasoning. `grok-4.3` supports `'none'`, `'low'`, `'medium'`, and `'high'`.
+  `grok-4.5` supports `'low'`, `'medium'`, and `'high'`, defaults to `'high'`,
+  and cannot disable reasoning. The `grok-4.20-reasoning` and
+  `grok-4.20-non-reasoning` variants do not accept this option, and neither does
+  `grok-build-0.1`. For `grok-4.20-multi-agent`, `'low'`, `'medium'`, and
+  `'high'` control the number of agents instead of reasoning depth. See xAI's
+  [reasoning
   docs](https://docs.x.ai/developers/model-capabilities/text/reasoning) and
   [Grok 4.3 model page](https://docs.x.ai/developers/models/grok-4.3) for
   current details.
@@ -81316,7 +81321,7 @@ the [standard call settings](/docs/ai-sdk-core/settings). You can pass them in t
 ```ts
 import { xai, type XaiLanguageModelChatOptions } from '@ai-sdk/xai';
 
-const model = xai('grok-4.5');
+const model = xai('grok-4.6');
 
 await generateText({
   model,
@@ -81351,7 +81356,7 @@ The following optional provider options are available for xAI chat models:
 You can use the xAI Responses API with the `xai.responses(modelId)` factory method for server-side agentic tool calling. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.5');
+const model = xai.responses('grok-4.6');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -81687,7 +81692,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-4.6'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -81699,7 +81704,7 @@ const result = await generateText({
 
 The following provider options are available:
 
-- **reasoningEffort** _'none' | 'low' | 'medium' | 'high'_
+- **reasoningEffort** _'none' | 'low' | 'medium' | 'high' | 'xhigh'_
 
   Control the reasoning effort for supported models. See [Reasoning Effort](#reasoning-effort) for model-specific values and defaults.
 
@@ -82017,6 +82022,7 @@ console.log('Sources:', await result.sources);
 
 | Model                         | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
 | ----------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-4.6`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.5`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-reasoning`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-non-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
@@ -108235,16 +108241,23 @@ The Markdown body contains the actual skill content with no restrictions on stru
 
 To support skills, your agent needs:
 
-1. **Filesystem access** to discover and load skill files (read files, read directories)
+1. **Access to a skill source** to discover skills and load their content. This can be a filesystem, bundled static assets, an API, or a remote registry.
 2. **A load skill tool** that reads the `SKILL.md` content into context
 3. **Command execution** (optional) if skills bundle scripts (e.g. a full sandbox environment)
+
+The `loadSkill` tool is a standard AI SDK tool, so you can implement its
+`execute` function with any data source. A filesystem is only required when
+your implementation reads skills from one. If a skill includes references,
+assets, or scripts, give the agent tools that can access or run those resources.
 
 ## Step 1: Define a Sandbox Abstraction
 
 <Note>
   This guide uses a generic sandbox abstraction for flexibility across
   environments. If you're building for Node.js, you can use `fs/promises` and
-  `child_process` directly instead.
+  `child_process` directly instead. You can also replace this abstraction with
+  bundled asset imports or network requests when your agent does not need a
+  filesystem.
 </Note>
 
 Create a generic sandbox interface that provides a consistent way to interact with the filesystem. This abstraction lets you implement it differently depending on your environment (Node.js fs, a containerized sandbox, cloud storage, etc.):
@@ -133619,6 +133632,27 @@ const { messages, input, handleInputChange, handleSubmit } = useCompletion({
 
 In this example, the `useCompletion` hook sends a POST request to the `/api/completion` endpoint with the specified headers, additional body fields, and credentials for that fetch request. On your server side, you can handle the request with these additional information.
 
+You can provide a type for the additional body fields. The type applies to
+both the body configured on the hook and the body passed to `complete`:
+
+```tsx
+type CompletionBody = {
+  model: 'fast' | 'smart';
+};
+
+const { complete } = useCompletion<CompletionBody>({
+  body: {
+    model: 'fast',
+  },
+});
+
+await complete('What is a completion?', {
+  body: {
+    model: 'smart',
+  },
+});
+```
+
 ---
 title: Object Generation
 description: Learn how to use the useObject hook.
@@ -139058,16 +139092,20 @@ The AI SDK option accepts these values, but each xAI model supports a subset:
 - `'high'` — More reasoning tokens for deeper thinking. Suited for very
   challenging problems, complex math, multi-step logic, and competition-level
   tasks.
+- `'xhigh'` — Uses the most reasoning tokens for the most challenging tasks.
+  This level is only supported by `grok-4.6`.
 
 <Note>
   Support and defaults are model-specific. `grok-4.3` supports `'none'`,
   `'low'`, `'medium'`, and `'high'`. `grok-4.5` supports `'low'`, `'medium'`,
-  and `'high'`, defaults to `'high'`, and cannot disable reasoning. The
-  `grok-4.20-reasoning` and `grok-4.20-non-reasoning` variants do not accept
-  this option. For `grok-4.20-multi-agent`, `'low'`, `'medium'`, and `'high'`
-  control the number of agents instead of reasoning depth. See xAI's [reasoning
+  and `'high'`, defaults to `'high'`, and cannot disable reasoning. `grok-4.6`
+  supports `'low'`, `'medium'`, `'high'`, and `'xhigh'`, and defaults to
+  `'high'`. The `grok-4.20-reasoning` and `grok-4.20-non-reasoning` variants do
+  not accept this option. For `grok-4.20-multi-agent`, `'low'`, `'medium'`, and
+  `'high'` control the number of agents instead of reasoning depth. See xAI's
+  [reasoning
   docs](https://docs.x.ai/developers/model-capabilities/text/reasoning) and
-  [Grok 4.3 model page](https://docs.x.ai/developers/models/grok-4.3) for
+  [Grok 4.6 model page](https://docs.x.ai/developers/models/grok-4.6) for
   current details.
 </Note>
 
@@ -139527,6 +139565,7 @@ The following provider options are available:
 
 | Model                         | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
 | ----------------------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
+| `grok-4.6`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
 | `grok-4.5`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
 | `grok-4.20-reasoning`         | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
 | `grok-4.20-non-reasoning`     | <Check />   | <Check />         | <Check />  | <Check />      | <Cross /> |

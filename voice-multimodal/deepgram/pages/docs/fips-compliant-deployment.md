@@ -65,6 +65,10 @@ Your Deepgram account team provides download links for the FIPS-encrypted models
 
 `.dgv2` and `.dg` models are not interchangeable. The FIPS Engine loads only `.dgv2` models — it will not load `.dg` models.
 
+### Model Support
+
+**Flux STT is not currently supported on FIPS images.** [Flux STT](/docs/flux-self-hosted) can only be run on standard (non-FIPS) images.
+
 ## Caveats
 
 ### TLS 1.3 Only

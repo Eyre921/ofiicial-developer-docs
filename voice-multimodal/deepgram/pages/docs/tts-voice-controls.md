@@ -1,5 +1,5 @@
 ---
-title: "TTS Voice Controls"
+title: "Speed, Pause, Pronunciation"
 source: https://developers.deepgram.com/docs/tts-voice-controls.md
 path: docs/tts-voice-controls
 ---
@@ -8,7 +8,9 @@ path: docs/tts-voice-controls
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
-# TTS Voice Controls
+# Speed, Pause, Pronunciation
+
+**This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.85`–`1.15` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
 
 Aura-2 Controls enable fine-grained adjustments to speech output, allowing you to modify speaking speed and override pronunciation for specific words. These controls are designed for enterprise use cases requiring precise voice quality for industry-specific terminology, brand names, and complex content.
 

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1564 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1574 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -44,6 +44,7 @@
 - `api-reference/deployments-v2/get-free-deployment-count` — [Get Free Deployment Count](pages/api-reference/deployments-v2/get-free-deployment-count.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/get-free-deployment-count)
 - `api-reference/deployments-v2/get-revision` — [Get Revision](pages/api-reference/deployments-v2/get-revision.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/get-revision)
 - `api-reference/deployments-v2/interrupt-deployment-revision` — [Interrupt Deployment Revision](pages/api-reference/deployments-v2/interrupt-deployment-revision.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/interrupt-deployment-revision)
+- `api-reference/deployments-v2/list-deployment-log-entries` — [List Deployment Log Entries](pages/api-reference/deployments-v2/list-deployment-log-entries.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployment-log-entries)
 - `api-reference/deployments-v2/list-deployment-logs` — [List Deployment Logs](pages/api-reference/deployments-v2/list-deployment-logs.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployment-logs)
 - `api-reference/deployments-v2/list-deployments` — [List Deployments](pages/api-reference/deployments-v2/list-deployments.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployments)
 - `api-reference/deployments-v2/list-revision-logs` — [List Revision Logs](pages/api-reference/deployments-v2/list-revision-logs.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-revision-logs)
@@ -56,6 +57,14 @@
 - `api-reference/integrations-v1/list-forge-github-repositories` — [List Forge GitHub Repositories](pages/api-reference/integrations-v1/list-forge-github-repositories.md) · [原文](https://docs.langchain.com/api-reference/integrations-v1/list-forge-github-repositories)
 - `api-reference/integrations-v1/list-github-integrations` — [List GitHub Integrations](pages/api-reference/integrations-v1/list-github-integrations.md) · [原文](https://docs.langchain.com/api-reference/integrations-v1/list-github-integrations)
 - `api-reference/integrations-v1/list-github-repositories` — [List GitHub Repositories](pages/api-reference/integrations-v1/list-github-repositories.md) · [原文](https://docs.langchain.com/api-reference/integrations-v1/list-github-repositories)
+- `api-reference/integrations-v2/create-engine-picker-session-selection` — [Create Engine Picker Session Selection](pages/api-reference/integrations-v2/create-engine-picker-session-selection.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/create-engine-picker-session-selection)
+- `api-reference/integrations-v2/get-engine-picker-session-endpoint` — [Get Engine Picker Session Endpoint](pages/api-reference/integrations-v2/get-engine-picker-session-endpoint.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/get-engine-picker-session-endpoint)
+- `api-reference/integrations-v2/get-forge-github-install-link-endpoint` — [Get Forge Github Install Link Endpoint](pages/api-reference/integrations-v2/get-forge-github-install-link-endpoint.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/get-forge-github-install-link-endpoint)
+- `api-reference/integrations-v2/get-github-install-link-endpoint` — [Get Github Install Link Endpoint](pages/api-reference/integrations-v2/get-github-install-link-endpoint.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/get-github-install-link-endpoint)
+- `api-reference/integrations-v2/list-forge-github-installation-repositories` — [List Forge Github Installation Repositories](pages/api-reference/integrations-v2/list-forge-github-installation-repositories.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/list-forge-github-installation-repositories)
+- `api-reference/integrations-v2/list-forge-github-installations` — [List Forge Github Installations](pages/api-reference/integrations-v2/list-forge-github-installations.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/list-forge-github-installations)
+- `api-reference/integrations-v2/list-github-installation-repositories` — [List Github Installation Repositories](pages/api-reference/integrations-v2/list-github-installation-repositories.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/list-github-installation-repositories)
+- `api-reference/integrations-v2/list-github-installations` — [List Github Installations](pages/api-reference/integrations-v2/list-github-installations.md) · [原文](https://docs.langchain.com/api-reference/integrations-v2/list-github-installations)
 - `api-reference/listeners-v2/create-listener` — [Create Listener](pages/api-reference/listeners-v2/create-listener.md) · [原文](https://docs.langchain.com/api-reference/listeners-v2/create-listener)
 - `api-reference/listeners-v2/delete-listener` — [Delete Listener](pages/api-reference/listeners-v2/delete-listener.md) · [原文](https://docs.langchain.com/api-reference/listeners-v2/delete-listener)
 - `api-reference/listeners-v2/get-listener` — [Get Listener](pages/api-reference/listeners-v2/get-listener.md) · [原文](https://docs.langchain.com/api-reference/listeners-v2/get-listener)
@@ -957,6 +966,7 @@
 - `langsmith/smith-api/sandboxes/get-a-registry` — [Get a registry](pages/langsmith/smith-api/sandboxes/get-a-registry.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-registry)
 - `langsmith/smith-api/sandboxes/get-a-sandbox` — [Get a sandbox](pages/langsmith/smith-api/sandboxes/get-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-sandbox)
 - `langsmith/smith-api/sandboxes/get-a-snapshot` — [Get a snapshot](pages/langsmith/smith-api/sandboxes/get-a-snapshot.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-snapshot)
+- `langsmith/smith-api/sandboxes/get-a-snapshot-name` — [Get a snapshot name](pages/langsmith/smith-api/sandboxes/get-a-snapshot-name.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-snapshot-name)
 - `langsmith/smith-api/sandboxes/get-sandbox-resource-usage` — [Get sandbox resource usage](pages/langsmith/smith-api/sandboxes/get-sandbox-resource-usage.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-sandbox-resource-usage)
 - `langsmith/smith-api/sandboxes/get-sandbox-status` — [Get sandbox status](pages/langsmith/smith-api/sandboxes/get-sandbox-status.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-sandbox-status)
 - `langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem` — [Glob a sandbox filesystem](pages/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem)

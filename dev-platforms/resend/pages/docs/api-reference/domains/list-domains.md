@@ -109,6 +109,8 @@ Retrieve a list of domains for the authenticated user.
         "status": "not_started",
         "created_at": "2026-04-26 20:21:26.347412+00",
         "region": "us-east-1",
+        "open_tracking": true,
+        "click_tracking": false,
         "capabilities": {
           "sending": "enabled",
           "receiving": "disabled"

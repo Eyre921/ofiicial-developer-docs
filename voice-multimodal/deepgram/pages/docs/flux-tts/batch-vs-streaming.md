@@ -10,8 +10,6 @@ path: docs/flux-tts/batch-vs-streaming
 
 # Batch vs Streaming: Which Should I Use?
 
-**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
-
 Flux TTS is served on `/v2/speak` over two transports against the same voices. They're not tiers — pick by how the audio is consumed.
 
 ## The short answer
@@ -27,16 +25,16 @@ Flux TTS is served on `/v2/speak` over two transports against the same voices. T
 | Input                               | Text streamed in as it's produced (LLM tokens)        | One complete block of text                                           |
 | Output                              | Audio streams back incrementally                      | Full audio in one response                                           |
 | Time-to-first-byte                  | Low — playback starts before the full response exists | Whole clip generated before you get it                               |
-| Interruption / barge-in             | Yes *(planned for GA)*                                | N/A                                                                  |
+| Interruption / barge-in             | Yes — `Interrupt` with spoken-text feedback           | N/A                                                                  |
 | Turn lifecycle & cross-turn context | Yes                                                   | N/A (stateless request/response)                                     |
-| Mid-stream control                  | `Configure` speed *(planned for GA)*                  | Fixed per request                                                    |
+| Mid-stream control                  | `Configure` speed mid-session                         | Fixed per request (`speed` query parameter)                          |
 | Encodings                           | Raw `linear16` / `mulaw` / `alaw`                     | Containerized/compressed too: `mp3` (default), `opus`, `flac`, `aac` |
 | Operational model                   | Long-lived connection, lifecycle to manage            | Stateless: simple retries, high fan-out                              |
 
 ## Choose streaming when
 
 * The text is produced incrementally (you're streaming from an LLM).
-* The user may barge in mid-response — when barge-in ships at GA, `Interrupt` will cancel in-flight synthesis and report what they heard.
+* The user may barge in mid-response — `Interrupt` cancels in-flight synthesis and reports what they heard.
 * You want the lowest possible time-to-first-audio in a back-and-forth conversation.
 * You want tone to carry across turns.
 

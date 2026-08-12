@@ -21,6 +21,8 @@ Deepgram is available in LiveKit Agents through two paths:
 
 This guide starts with LiveKit Inference for the fastest setup, then shows how to switch to the Deepgram Plugin for direct API access and advanced features.
 
+Code samples are provided for both Python and TypeScript (Node.js). Choose one language and follow its tab in each step.
+
 ## Before you begin
 
 Before you can use Deepgram, you need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes \$200 in credit.
@@ -68,11 +70,13 @@ If you used the CLI's guided setup, these values are already populated. If not, 
 At the time of writing, the starter template uses Deepgram for STT but Cartesia for TTS. These defaults change frequently and aren't guaranteed, so check the generated code. To use Deepgram for both, find the `tts` argument in the `AgentSession` constructor in `src/agent.py` (Python) or `src/main.ts` (Node.js) and replace it:
 
 ```python
+# Python — src/agent.py
 # Replace the existing tts line with:
 tts=inference.TTS(model="deepgram/aura-2", voice="thalia"),
 ```
 
 ```typescript
+// TypeScript — src/main.ts
 // Replace the existing tts line with:
 tts: new inference.TTS({
   model: 'deepgram/aura-2',
@@ -137,6 +141,7 @@ Replace `YOUR_DEEPGRAM_API_KEY` with the API key from your [Deepgram Console](ht
 Add the Deepgram import at the top of your entrypoint file, then replace the `stt` and `tts` arguments in the `AgentSession`:
 
 ```python
+# Python — src/agent.py
 from livekit.plugins import deepgram
 
 # Replace the stt and tts lines in your AgentSession:
@@ -150,6 +155,7 @@ tts=deepgram.TTS(model="aura-2-thalia-en"),
 ```
 
 ```typescript
+// TypeScript — src/main.ts
 import * as deepgram from "@livekit/agents-plugin-deepgram";
 
 // Replace the stt and tts lines in your AgentSession:
@@ -162,21 +168,24 @@ stt: new deepgram.STT({
 tts: new deepgram.TTS({ model: "aura-2-thalia-en" }),
 ```
 
+Your agent now connects directly to Deepgram's API with your own API key, instead of going through LiveKit Inference. This unlocks the advanced features covered below, such as [keyterm prompting](/docs/keyterm), [speaker diarization](/docs/diarization), and fine-grained STT/TTS parameters.
+
+To verify the change, restart the agent as in [Step 4](#step-4-run-the-agent) (`uv run src/agent.py dev` for Python, or `pnpm run dev` for Node.js) and run through the checks in [Step 5](#step-5-test-the-conversation). The conversation should behave as before, now powered by the Deepgram plugin. If the agent fails to start, confirm `DEEPGRAM_API_KEY` is set in `.env.local`.
+
 ### Use Flux for turn detection
 
-[Flux](/docs/flux/feature-overview) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
+[Flux](/docs/flux) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
 
 To use Flux, replace the `stt` configuration with `STTv2` and set turn detection to `"stt"`:
 
 ```python
 # Replace the stt line and add turn_handling:
 stt=deepgram.STTv2(model="flux-general-en"),
-turn_handling=TurnHandlingOptions(
-  turn_detection="stt",
-),
+turn_handling={"turn_detection": "stt"},
 ```
 
 ```typescript
+// TypeScript — src/main.ts
 // Replace the stt line and add turnDetection:
 stt: new deepgram.STTv2({ model: "flux-general-en" }),
 turnHandling: { turnDetection: "stt" },
@@ -186,13 +195,31 @@ Even when using Flux for turn detection, a [VAD (Voice Activity Detection)](/doc
 
 ### Choose a different voice
 
-Deepgram offers 60+ voices across seven languages. Replace the `model` parameter in `TTS` with any supported voice:
+#### Flux
+
+Flux is the latest conversation-native TTS model, built for real-time voice agents. It's expressive by default, consistent across turns, and responds in under 200ms with native interruption handling, real-time controls, and strong entity accuracy.
 
 ```python
+# Python
+tts = deepgram.TTSv2(model="flux-alexis-en")
+```
+
+```typescript
+// TypeScript
+const tts = new deepgram.TTSv2({ model: "flux-alexis-en" });
+```
+
+#### Aura 2
+
+Deepgram offers 60+ voices across seven languages with Aura 2. Replace the `model` parameter in `TTS` with any supported voice:
+
+```python
+# Python
 tts = deepgram.TTS(model="aura-2-andromeda-en")
 ```
 
 ```typescript
+// TypeScript
 const tts = new deepgram.TTS({ model: "aura-2-andromeda-en" });
 ```
 
@@ -200,9 +227,10 @@ Browse all available voices in the [Deepgram voice library](/docs/tts-models).
 
 ## Go further with Deepgram
 
-* Use [keyterm prompting](/docs/keyterm) to improve recognition of domain-specific vocabulary.
-* Enable [speaker diarization](/docs/diarization) to assign a speaker label to each word in the transcript.
-* See the full list of plugin parameters in the LiveKit Deepgram reference for [Python](https://docs.livekit.io/reference/python/livekit/plugins/deepgram/index.html#livekit.plugins.deepgram.STT) and [Node.js](https://docs.livekit.io/reference/agents-js/classes/plugins_agents_plugin_deepgram.STT.html).
+* **Voices** — Deepgram offers 60+ voices across seven languages. Browse the [voice library](/docs/tts-models) and replace the `model` parameter in `TTS` with any supported voice.
+* **Keyterm prompting** — Improve recognition of domain-specific vocabulary by passing [keyterms](/docs/keyterm) to Nova-3 via the STT plugin settings.
+* **Speaker diarization** — Assign a speaker identifier to each word in the transcript using [diarization](/docs/diarization) via the STT plugin settings.
+* **Plugin reference** — See the full list of plugin parameters in the LiveKit Deepgram reference for [Python](https://docs.livekit.io/reference/python/livekit/plugins/deepgram/index.html#livekit.plugins.deepgram.STT) and [Node.js](https://docs.livekit.io/reference/agents-js/classes/plugins_agents_plugin_deepgram.STT.html).
 
 ## Resources
 

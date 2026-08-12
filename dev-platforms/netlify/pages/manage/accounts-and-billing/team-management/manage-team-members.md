@@ -33,6 +33,8 @@ Members
 
 3. Select **Add members**, follow the prompts, and confirm. 
 
+The invited person will receive an email invitation and will also see the pending invite in their Netlify dashboard the next time they sign in.
+
 Learn more about [roles and permissions](/manage/accounts-and-billing/team-management/roles-and-permissions) and [project access](/manage/accounts-and-billing/team-management/manage-project-access).
 
 Depending on your team [plan](https://www.netlify.com/pricing/?category=developer#features-members), you may need to upgrade in order to add new members. For more information, please [contact sales](https://www.netlify.com/contact/).

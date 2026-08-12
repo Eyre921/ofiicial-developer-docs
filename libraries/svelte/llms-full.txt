@@ -19088,6 +19088,8 @@ A `+page.server.js` file can export _actions_, which allow you to `POST` data to
 
 When using `<form>`, client-side JavaScript is optional, but you can easily _progressively enhance_ your form interactions with JavaScript to provide the best user experience.
 
+> [!NOTE] The experimental [`form` remote function](remote-functions#form) covers the same use cases as form actions, adding type safety and [single-flight mutations](remote-functions#Single-flight-mutations). Form actions are feature-complete and will continue to work, but new development is focused on remote functions, which are intended to become the recommended way to communicate with the server. Consider remote functions for new projects, keeping in mind that the API may change while the feature is experimental.
+
 ## Default actions
 
 In the simplest case, a page declares a `default` action:
@@ -31043,7 +31045,10 @@ which are made available via `$app/env/public` and `$app/env/private`.
 
 ```dts
 function defineEnvVars<
-	T extends Record<string, EnvVarConfig<any>>
+	T extends Record<
+		string,
+		import('@sveltejs/kit').EnvVarConfig<any>
+	>
 >(variables: T): T;
 ```
 
@@ -36318,7 +36323,7 @@ There are four tools, designed to help your agent write correct, robust Svelte c
 
 To get the most out of the [MCP server](mcp) and [skills](skills) we recommend including the following prompt in your [`AGENTS.md`](https://agents.md) (or [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory#claude-md-imports) or [`GEMINI.md`](https://geminicli.com/docs/cli/gemini-md/), if using Claude Code or Gemini). This will tell your agent which tools are available and when it is appropriate to use them.
 
-> [!NOTE] This is already setup for you when using `npx sv add mcp`
+> [!NOTE] This is already setup for you when using `npx sv add ai-tools`
 
 <!-- prettier-ignore-start -->
 ````markdown
@@ -36383,6 +36388,8 @@ claude mcp add -t stdio -s [scope] svelte -- npx -y @sveltejs/mcp
 ```
 
 The `[scope]` must be `user`, `project` or `local`.
+
+Alternatively, install the `svelte` plugin from [the Svelte Claude Code Marketplace](claude-plugin) to configure the local server along with useful [skills](skills).
 
 ## Claude Desktop
 
@@ -36535,6 +36542,8 @@ If we didn't include the MCP client you are using, refer to their documentation 
 
 The remote version of the MCP server is available at `https://mcp.svelte.dev/mcp`.
 
+The Svelte team does not log, store, or inspect code sent to the remote server.
+
 Here's how to set it up in some common MCP clients:
 
 ## Claude Code
@@ -36547,8 +36556,6 @@ claude mcp add -t http -s [scope] svelte https://mcp.svelte.dev/mcp
 
 You can choose your preferred `scope` (it must be `user`, `project` or `local`) and `name`.
 
-If you prefer you can also install the `svelte` plugin in [the Svelte Claude Code Marketplace](claude-plugin) that will give you both the remote server and useful [skills](skills).
-
 ## Claude Desktop
 
 - Open Settings > Connectors
@@ -36559,7 +36566,7 @@ If you prefer you can also install the `svelte` plugin in [the Svelte Claude Cod
 
 ## Codex CLI
 
-You can automatically configure the MCP server using the [Codex plugin](codex-plugin) (recommended). If you prefer to configure the MCP server manually, add the following to your `config.toml` (which defaults to `~/.codex/config.toml`, but refer to [the configuration documentation](https://github.com/openai/codex/blob/main/docs/config.md) for more advanced setups):
+Add the following to your `config.toml` (which defaults to `~/.codex/config.toml`, but refer to [the configuration documentation](https://github.com/openai/codex/blob/main/docs/config.md) for more advanced setups):
 
 ```toml
 experimental_use_rmcp_client = true
@@ -36569,7 +36576,7 @@ url = "https://mcp.svelte.dev/mcp"
 
 ## Copilot CLI
 
-You can automatically configure the MCP server using the [Copilot plugin](copilot-plugin) (recommended). If you prefer to configure the MCP server manually, use the Copilot CLI to interactively add the MCP server:
+Use the Copilot CLI to interactively add the MCP server:
 
 ```bash
 /mcp add
@@ -36603,7 +36610,7 @@ To use the remote MCP version in Antigravity CLI, create or edit `~/.gemini/conf
 
 ## OpenCode
 
-You can automatically configure the MCP server using the [OpenCode plugin](opencode-plugin) (recommended). If you prefer to configure the MCP server manually, run:
+Run:
 
 ```bash
 opencode mcp add
@@ -36637,7 +36644,7 @@ opencode mcp add
 
 ## Cursor
 
-You can automatically configure the MCP server using the [Cursor plugin](cursor-plugin) (recommended). If you prefer to configure the MCP server manually you can:
+To configure the remote server:
 
 - Open the command palette
 - Select "View: Open MCP Settings"
@@ -37376,7 +37383,7 @@ After completing your work, provide:
 
 The open source [repository](https://github.com/sveltejs/ai-tools) containing the code for the MCP server is also a Claude Code [plugin marketplace](https://code.claude.com/docs/en/discover-plugins).
 
-The marketplace allows you to install the `svelte` plugin which will give you the remote MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
+The marketplace allows you to install the `svelte` plugin which will give you the local stdio MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
 
 If possible, we recommend that you instruct the LLM to execute MCP calls with the agent (you can explicitly mention an agent in your message to delegate work to it) when creating or editing `.svelte` files or `.svelte.ts`/`.svelte.js` modules — this will help save context by handling Svelte-specific tasks more efficiently.
 
@@ -37441,7 +37448,7 @@ By default, the MCP server, subagent, skills, instructions, and automatic update
 {
 	"$schema": "https://svelte.dev/opencode/schema.json",
 	"mcp": {
-		"type": "remote", // or "local" — defaults to remote
+		"type": "local", // or "remote"; defaults to local
 		"enabled": true
 	},
 	"subagent": {
@@ -37477,7 +37484,7 @@ Automatic updates are enabled by default. After detecting a newer version, the p
 
 Cursor has a [plugin system](https://cursor.com/docs/plugins) that can bundle rules, skills, agents, commands, MCP servers, and hooks.
 
-The Svelte plugin gives you the remote Svelte MCP server, Cursor [skills](skills), an always-on rule that tells the model how to use the Svelte MCP tools correctly, and the `svelte-file-editor` subagent for working on `.svelte` files and `.svelte.ts`/`.svelte.js` modules. The source is available in the [`sveltejs/ai-tools`](https://github.com/sveltejs/ai-tools/tree/main/plugins/cursor/svelte) repo.
+The Svelte plugin gives you the local stdio Svelte MCP server, Cursor [skills](skills), an always-on rule that tells the model how to use the Svelte MCP tools correctly, and the `svelte-file-editor` subagent for working on `.svelte` files and `.svelte.ts`/`.svelte.js` modules. The source is available in the [`sveltejs/ai-tools`](https://github.com/sveltejs/ai-tools/tree/main/plugins/cursor/svelte) repo.
 
 ## Installation
 
@@ -37501,7 +37508,7 @@ Once installed, Cursor will discover the plugin components automatically:
 
 The open source [repository](https://github.com/sveltejs/ai-tools) containing the code for the MCP server is also a GitHub Copilot CLI [plugin marketplace](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-finding-installing).
 
-The marketplace allows you to install the `svelte` plugin which will give you the remote MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
+The marketplace allows you to install the `svelte` plugin which will give you the local stdio MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
 
 If possible, we recommend that you instruct the LLM to execute MCP calls with the agent (you can explicitly mention an agent in your message to delegate work to it) when creating or editing `.svelte` files or `.svelte.ts`/`.svelte.js` modules — this will help save context by handling Svelte-specific tasks more efficiently.
 
@@ -37536,7 +37543,7 @@ You can also run the same commands from an interactive Copilot CLI session:
 
 The open source [repository](https://github.com/sveltejs/ai-tools) containing the code for the MCP server is also a Codex CLI [plugin marketplace](https://developers.openai.com/codex/plugins).
 
-The marketplace allows you to install the `svelte` plugin which will give you the remote MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
+The marketplace allows you to install the `svelte` plugin which will give you the local stdio MCP server, [skills](skills) to instruct the LLM on how to properly write Svelte 5 code, and a specialized agent for editing Svelte files.
 
 If possible, we recommend that you instruct the LLM to execute MCP calls with the agent (you can explicitly mention an agent in your message to delegate work to it) when creating or editing `.svelte` files or `.svelte.ts`/`.svelte.js` modules — this will help save context by handling Svelte-specific tasks more efficiently.
 

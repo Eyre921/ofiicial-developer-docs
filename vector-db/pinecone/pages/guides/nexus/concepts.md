@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/concepts
 path: guides/nexus/concepts
 ---
 
-Contexts, manifests, artifacts, sessions, and the Query API, and how they fit together.
+Learn the core Pinecone Nexus concepts: sources, workspaces, contexts, manifests, artifacts, tasks, sessions, and the Query API, and how they connect.
 
 Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the core concepts and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [How Nexus works](/guides/nexus/how-it-works).
 
@@ -34,7 +34,7 @@ The condensed knowledge that curation produces. Each artifact has a *type* (its 
 
 ## Query
 
-The single interface into Pinecone Nexus. A *query* asks a question scoped to one or more curated contexts. Pinecone Nexus plans its own retrieval and answers with citations. Query a single context from its **Search this context** box, or drive it from your own code via the [KnowQL query endpoint](/reference/api/nexus/query). See the [quickstart](/guides/nexus/quickstart#3-query-your-context).
+The single interface into Pinecone Nexus. A *query* asks a question scoped to one or more curated contexts. Pinecone Nexus plans its own retrieval and answers with citations. Query a single context from its **Search this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context).
 
 ## KnowQL
 
@@ -46,4 +46,4 @@ A multi-turn conversation. A single query is one turn: a question in, an answer 
 
 ## Use
 
-Query your contexts from other systems: an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients, or the [KnowQL query endpoint](/reference/api/nexus/query) over HTTP.
+Query your contexts from other systems: an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients, or the [Nexus API](/reference/api/nexus/introduction) over HTTP.
