@@ -9,7 +9,7 @@ title: "Next.js Middleware on Netlify"
 description: "Learn about Next.js advanced middleware and add it to your Next.js 10-13.4 application to enhance access to requests and responses."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 > **Note - Legacy Next.js Runtime:** The information on this page applies to Next.js version 10-13.4 and Netlify Next.js Runtime v4, which is currently in maintenance support.
 

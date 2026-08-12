@@ -9,7 +9,7 @@ title: "Create an Edge Functions integration"
 description: "Framework authors can integrate a framework with Edge Functions by dynamically generating edge function files and declarations with the build process."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 It's possible for frameworks and other tools to dynamically create edge function files and declarations through integrations with the build process. For inspiration, you can explore the [framework-specific examples](/build/edge-functions/overview#use-cases) on the Edge Functions overview. The examples highlight different use cases for developing build-generated edge functions.
 

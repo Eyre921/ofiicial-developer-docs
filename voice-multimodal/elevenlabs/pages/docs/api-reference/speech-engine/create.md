@@ -90,6 +90,7 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-engine/create
     - Allowed values: `turn_v2`, `turn_v3`
   - `interruption_ignore_terms` (list of string, optional) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
   - `interruption_ignore_term_languages` (list of string, optional) — Language codes for which preset ignore-term categories have been activated. Stored explicitly so display is not inferred from term overlap.
+  - `merge_with_default_ignore_terms` (boolean, optional, default: false) — When enabled, the curated default terms for interruption_ignore_term_languages are used in addition to interruption_ignore_terms.
   - `transcribe_on_disabled_interruptions` (boolean, optional, default: false) — When interruptions are disabled, still transcribe what the user says so it can carry into the next turn. When off, user speech during a non-interruptible turn is ignored and won't trigger a turn.
 - `vad` (object, optional) — Configuration for voice activity detection
 - `conversation` (object, optional) — Conversation configuration (client events, etc.)
@@ -202,6 +203,7 @@ Successful Response
     - Allowed values: `turn_v2`, `turn_v3`
   - `interruption_ignore_terms` (list of string, optional) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
   - `interruption_ignore_term_languages` (list of string, optional) — Language codes for which preset ignore-term categories have been activated. Stored explicitly so display is not inferred from term overlap.
+  - `merge_with_default_ignore_terms` (boolean, optional, default: false) — When enabled, the curated default terms for interruption_ignore_term_languages are used in addition to interruption_ignore_terms.
   - `transcribe_on_disabled_interruptions` (boolean, optional, default: false) — When interruptions are disabled, still transcribe what the user says so it can carry into the next turn. When off, user speech during a non-interruptible turn is ignored and won't trigger a turn.
 - `vad` (object, required) — Configuration for voice activity detection
 - `conversation` (object, required) — Conversation-level settings including client events and duration limits

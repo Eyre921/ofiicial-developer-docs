@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/projects/manage-service-accounts
 path: guides/projects/manage-service-accounts
 ---
 
-Enable service accounts for programmatic API access.
+Add service accounts to a Pinecone project and assign project roles to enable programmatic API access for automated workflows and CI pipelines.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).

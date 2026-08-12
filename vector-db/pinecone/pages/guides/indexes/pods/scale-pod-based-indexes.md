@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/pods/scale-pod-based-indexes
 path: guides/indexes/pods/scale-pod-based-indexes
 ---
 
-Legacy guide for scaling Pinecone pod-based indexes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes scale automatically with no manual configuration.
+Scale Pinecone pod-based indexes by adding pods or replicas. Legacy guide: pod indexes are unavailable to new customers; serverless scales automatically.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).

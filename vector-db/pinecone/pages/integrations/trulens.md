@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/trulens
 path: integrations/trulens
 ---
 
-Connect Pinecone and TruLens to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Evaluate and track Pinecone RAG apps with TruLens: measure grounding, relevance, and hallucinations to iterate on vector search configurations fast.
 
 TruLens is a powerful open source library for evaluating and tracking large language model-based applications. TruLens provides a set of tools for developing and monitoring neural nets, including large language models (LLMs). This includes both tools for evaluation of LLMs and LLM-based applications with TruLens-Eval and deep learning explainability with TruLens-Explain.
 

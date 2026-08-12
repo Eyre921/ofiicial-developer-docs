@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/configure-audit-logs
 path: guides/production/configure-audit-logs
 ---
 
-Enable audit logging to Amazon S3 for compliance
+Enable Pinecone audit logging to an Amazon S3 bucket to track user, service account, and API actions for compliance, security review, and WORM retention.
 
 This page describes how to configure audit logs in Pinecone. Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/get-started/database-architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 as a destination for audit logs.
 

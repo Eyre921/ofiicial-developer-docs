@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/error-handling
 path: guides/production/error-handling
 ---
 
-Handle errors with retry logic and best practices.
+Handle Pinecone API errors with retry logic, exponential backoff, and best practices for 4xx client errors, 5xx server errors, and rate limit responses.
 
 ## Understand error types
 

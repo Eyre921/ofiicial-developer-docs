@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 327 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 328 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -12,6 +12,7 @@
 - `docs/api-reference/api-keys/create-api-key` — [Create API key](pages/docs/api-reference/api-keys/create-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/create-api-key)
 - `docs/api-reference/api-keys/delete-api-key` — [Delete API key](pages/docs/api-reference/api-keys/delete-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/delete-api-key)
 - `docs/api-reference/api-keys/list-api-keys` — [List API keys](pages/docs/api-reference/api-keys/list-api-keys.md) · [原文](https://resend.com/docs/api-reference/api-keys/list-api-keys)
+- `docs/api-reference/broadcasts/cancel-broadcast` — [Cancel Broadcast](pages/docs/api-reference/broadcasts/cancel-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/cancel-broadcast)
 - `docs/api-reference/broadcasts/create-broadcast` — [Create Broadcast](pages/docs/api-reference/broadcasts/create-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/create-broadcast)
 - `docs/api-reference/broadcasts/delete-broadcast` — [Delete Broadcast](pages/docs/api-reference/broadcasts/delete-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/delete-broadcast)
 - `docs/api-reference/broadcasts/get-broadcast` — [Retrieve Broadcast](pages/docs/api-reference/broadcasts/get-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/get-broadcast)

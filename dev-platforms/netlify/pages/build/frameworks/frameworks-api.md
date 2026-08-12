@@ -9,7 +9,7 @@ title: "Frameworks API"
 description: "Web development frameworks and build tools can use the Frameworks API to generate project deployments that take advantage of Netlify's composable platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Developers optimizing frameworks for Netlify can use the Framework Adapter API (also called Frameworks API) to define the best way for a framework to deploy to Netlify. 
 

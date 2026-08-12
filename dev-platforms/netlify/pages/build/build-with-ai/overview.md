@@ -9,7 +9,7 @@ title: "Overview"
 description: "Optimize your AI workflows using Agent Runners, AI Gateway, the Netlify MCP Server, or other AI tools and learn best practices for building with AI whether you are an experienced developer, new to development, or an AI tool builder."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Optimize your AI workflows using Agent Runners, AI Gateway, the Netlify MCP Server, or other AI tools and learn best practices for building with AI whether you are an experienced developer, new to development, or an AI tool builder.
 

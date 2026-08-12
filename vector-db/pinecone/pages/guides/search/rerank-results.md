@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/rerank-results
 path: guides/search/rerank-results
 ---
 
-Improve the quality of results with reranking.
+Improve retrieval quality by reranking initial search results with a hosted or external model to surface the most relevant matches for RAG.
 
 Reranking is used as part of a two-stage vector retrieval process to improve the quality of results. You first query an index for a given number of relevant results, and then you send the query and results to a reranking model. The reranking model scores the results based on their semantic relevance to the query and returns a new, more accurate ranking. This approach is one of the simplest methods for improving quality in retrieval augmented generation (RAG) pipelines.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-api-keys
 path: guides/assistant/admin/manage-api-keys
 ---
 
-Create and manage API keys with custom permissions.
+Create, view, update, and delete Pinecone API keys for a project, plus assign custom permission roles to control data plane and control plane access.
 
 Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more API keys. In order to [make calls to the Pinecone API](/guides/assistant/quickstart/sdk-quickstart), you must provide a valid API key for the relevant Pinecone project.
 

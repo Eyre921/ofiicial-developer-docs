@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/analytics-and-event-logs
 path: guides/marketplace/analytics-and-event-logs
 ---
 
-Monitor end-user activity, refusals, and feedback for a Pinecone Marketplace deployment.
+Track end-user activity, refusal rates, feedback, and event logs in a Pinecone Marketplace deployment for analytics, auditing, and debugging.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

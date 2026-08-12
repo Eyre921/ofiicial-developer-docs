@@ -9,7 +9,7 @@ title: "Spam filters"
 description: "Rely on built-in spam protection for forms, or set up extra spam protection using a honeypot field or reCAPTCHA."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 All form submissions are filtered for spam [using Akismet](https://www.netlify.com/blog/2019/02/12/improved-netlify-forms-spam-filtering-using-akismet/), an industry leader in spam detection. Only submissions that pass the filter are included in your form's **Verified submissions** list in the [form submissions UI](/manage/forms/submissions#form-submissions-ui). Submissions flagged as spam by Akismet can be found by switching to your form's **Spam submissions** list.
 

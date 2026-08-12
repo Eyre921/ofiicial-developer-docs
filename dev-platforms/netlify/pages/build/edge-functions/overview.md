@@ -9,7 +9,7 @@ title: "Edge Functions overview"
 description: "Edge Functions connect our platform with an open runtime standard at the network edge, allowing fast, personalized web experiences in a dev ecosystem."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Edge Functions connect the Netlify platform and workflow with an open runtime standard at the network edge. This enables you to build fast, personalized web experiences with an ecosystem of development tools.
 

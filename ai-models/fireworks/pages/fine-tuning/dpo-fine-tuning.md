@@ -138,7 +138,7 @@ Use either method for:
           --output-model new-model-id
         ```
 
-        To try your account's reservation capacity before falling back to shared trainer capacity, add `--use-reservation`. For full-parameter DPO, policy and dedicated reference trainers try independently. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
+        For reservation capacity: add `--use-reservation` with firectl (default off). REST and the Python SDK (`>=1.2.8`) default to reservation-first placement; set `useReservation: false` or `use_reservation=False` to opt out. For full-parameter DPO, policy and dedicated reference trainers try independently.
 
         For ORPO, use the same preference dataset and select the ORPO objective:
 

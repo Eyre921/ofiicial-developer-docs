@@ -3771,8 +3771,8 @@ The Session object is a view of the [Checkout Session](https://docs.stripe.com/a
 API object and represents your customer's session on your checkout page.
 
 Because data can change over the lifecycle of a session, avoid storing
-a reference to the Session object. Instead, call `session()` to
-retrieve the current value and listen to the [change event](https://docs.stripe.com/js/custom_checkout/change_event.md)
+a reference to the Session object. Instead, call [getSession](https://docs.stripe.com/js/custom_checkout/session.md) to
+retrieve the current value, or listen to the [change event](https://docs.stripe.com/js/custom_checkout/change_event.md)
 to subscribe to updates.
 
 - `id`

@@ -9,11 +9,25 @@ title: "Get started with Netlify CLI"
 description: "Install our CLI (command line interface) and use it to run a local development environment, deploy your site, manage environment variables, and more."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify's command line interface (CLI) lets you configure [continuous deployment](#continuous-deployment) straight from the command line. You can use Netlify CLI to [create a new project from a prompt](#create-a-project-from-a-prompt), [run a local development server](/api-and-cli-guides/cli-guides/local-development) that you can share with others, [run a local build and plugins](#run-builds-locally), and [deploy your site](#manual-deploys).
 
 The sections below describe how to perform common tasks with Netlify CLI. You can also access a [full command reference](https://cli.netlify.com) online, or get help [within Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli#get-help).
+
+> **Note - Project ID, site_id, and NETLIFY_SITE_ID are the same value:** The Netlify UI labels this identifier **Project ID**, but the API, CLI, and environment variables still use `site`. Every project has exactly one identifier, and all of the following names refer to the same value:
+
+- **Netlify UI** - **Project ID** (labeled **Site ID** before the rename)
+- **Netlify API** - `site_id`, including in paths such as `/api/v1/sites/{site_id}`
+- **Netlify CLI, client libraries, and `.netlify/state.json`** - `siteId, `siteID`, `--site`, and `NETLIFY_SITE_ID`
+
+To copy the value, go to 
+### NavigationPath Component:
+
+Project configuration > General > Project details > Project information
+ and copy **Project ID**.
+
+Project names work the same way: the UI's **Project name** (formerly **Site name**) is the API's `site_slug`. Wherever the API accepts a `{site_id}`, you can also pass the project's domain, such as `mysite.netlify.app`.
 
 ## Installation
 
@@ -403,12 +417,6 @@ netlify link
 
 This will add a `siteId` field to a new file inside your project folder, at `.netlify/state.json`. 
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
-### NavigationPath Component:
-
-Project configuration > General > Project information
-, and copy the value for **Project ID**.
-
 To unlink your folder from the site, you can remove this field, or you can run the following command from inside the project folder:
 
 ```bash
@@ -423,8 +431,8 @@ Alternatively, you can link to a site by finding the site ID in the Netlify UI, 
 ### NavigationPath Component:
 
 Project configuration > General > Project details > Project information
-, and copy the value for **Project ID**. (Also known as Site ID.)
-2. Assign the ID to a `NETLIFY_SITE_ID` environment variable, in your terminal settings or in the UI of a Continuous Integration (CI) tool.
+, and copy the value for **Project ID**.
+2. Assign the ID to a `NETLIFY_SITE_ID` environment variable, in your terminal settings or in the UI of a Continuous Integration (CI) tool. **Project ID** is exactly the value `NETLIFY_SITE_ID` expects.
 
 ## Manage environment variables
 
@@ -468,12 +476,6 @@ To copy environment variables from one project to another, use `env:clone`.
 ```bash
 netlify env:clone --to destinationSiteId --from sourceSiteID
 ```
-
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
-### NavigationPath Component:
-
-Project configuration > General > Project information
-, and copy the value for **Project ID**.
 
 If you are using environment variable secrets with Netlify's [Secrets Controller](/build/environment-variables/secrets-controller), you can flag that an environment variable value is secret using the `--secret` flag when creating or modifying a value.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/create-an-index
 path: guides/index-data/create-an-index
 ---
 
-Create indexes for full-text, semantic, lexical, and hybrid search.
+Create a Pinecone serverless index for full-text (BM25), semantic (dense vector), lexical (sparse), or hybrid search with a document schema.
 
 A Pinecone index can hold any combination of the following:
 

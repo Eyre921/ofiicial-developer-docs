@@ -9,7 +9,7 @@ title: "Ask Netlify overview"
 description: "Leverage the latest Large Language Model (LLM) technologies to find information faster while using Netlify."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Our Ask Netlify AI chatbot assistant can help you find the answers you need to be successful using Netlify.
 

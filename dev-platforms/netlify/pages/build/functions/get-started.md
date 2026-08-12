@@ -9,7 +9,7 @@ title: "Get started with functions"
 description: "Create your first Netlify function in TypeScript or JavaScript, with options for using AI agents and testing locally."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page walks you through creating your first Netlify function. For the conceptual overview of how functions work, see [Functions overview](/build/functions/overview).
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/search-overview
 path: guides/search/search-overview
 ---
 
-Explore full-text, semantic, lexical, and hybrid search options.
+Compare Pinecone search types and choose the right retrieval approach: full-text (BM25), semantic (dense vector), sparse lexical, and hybrid.
 
 <Tip>
   Searches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understanding cost](/guides/manage-cost/understanding-cost#query) for how query cost is calculated.

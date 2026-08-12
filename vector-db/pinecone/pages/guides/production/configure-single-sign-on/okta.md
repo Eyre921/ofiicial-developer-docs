@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/configure-single-sign-on/okta
 path: guides/production/configure-single-sign-on/okta
 ---
 
-Configure SAML SSO with Okta for enterprise.
+Set up SAML single sign-on between Pinecone and Okta so your organization members can log in with corporate credentials.
 
 This page describes how to set up Pinecone with Okta as the single sign-on (SSO) provider. These instructions can be adapted for any provider with SAML 2.0 support.
 

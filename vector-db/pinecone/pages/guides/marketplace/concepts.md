@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/concepts
 path: guides/marketplace/concepts
 ---
 
-Core concepts in Pinecone Marketplace: knowledge applications, deployments, templates, manifests, KAT, layouts, and components.
+Learn Pinecone Marketplace concepts including knowledge applications, deployments, templates, manifests, KAT routing, layouts, and visual components.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

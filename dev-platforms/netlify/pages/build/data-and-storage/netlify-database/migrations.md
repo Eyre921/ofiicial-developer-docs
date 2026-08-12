@@ -9,7 +9,7 @@ title: "Migrations"
 description: "How Netlify Database tracks and applies schema migrations across production deploys and deploy previews, including manual migration workflows."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Migrations are a way to manage and version changes to your database schema. To ensure that the state of the database matches the exact shape that your application expects, you can define that shape in code and co-locate it with the rest of the application.
 

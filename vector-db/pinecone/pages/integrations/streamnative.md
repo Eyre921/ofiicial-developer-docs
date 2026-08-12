@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/streamnative
 path: integrations/streamnative
 ---
 
-Connect Pinecone and StreamNative to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Pipe Apache Pulsar topics to Pinecone via the StreamNative sink connector for real-time vector ingestion, event streaming, and Kafka-compatible RAG.
 
 Founded by the original developers of Apache Pulsar and Apache BookKeeper, [StreamNative](https://streamnative.io) provides StreamNative Cloud, offering Apache Pulsar as a Service. The company also supports on-premise Pulsar deployments and related commercial support. StreamNative Cloud provides a scalable, resilient, and secure messaging and event streaming platform for enterprises. Additionally, StreamNative offers Kafka compatibility, enabling seamless integration with existing Kafka-based systems.
 

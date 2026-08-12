@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/twelve-labs
 path: integrations/twelve-labs
 ---
 
-Connect Pinecone and Twelve Labs to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Store Twelve Labs multimodal video embeddings in Pinecone to power video search, recommendations, and content moderation with fast similarity retrieval.
 
 [Twelve Labs](https://twelvelabs.io) is an AI company that provides state-of-the-art video understanding capabilities through its easy-to-use APIs. Our newly released product is the Embed API, which enables developers to create high-quality multimodal embeddings that capture the rich context and interactions between different modalities in videos, such as visual expressions, body language, spoken words, and overall context.
 

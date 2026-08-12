@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/chat-through-the-openai-compat
 path: guides/assistant/chat-through-the-openai-compatible-interface
 ---
 
-Integrate OpenAI-compatible chat interface with Pinecone Assistant.
+Chat with Pinecone Assistant using the OpenAI-compatible Chat Completion API for inline citations, streaming responses, and easy integration.
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 

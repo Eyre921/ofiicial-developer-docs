@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/sdks/node/overview
 path: reference/sdks/node/overview
 ---
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).

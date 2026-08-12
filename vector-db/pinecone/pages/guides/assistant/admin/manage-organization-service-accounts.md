@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-organization-serv
 path: guides/assistant/admin/manage-organization-service-accounts
 ---
 
-Create service accounts for organization-level API access.
+Create and manage organization-level Pinecone service accounts, retrieve access tokens, and grant programmatic access to the Admin API.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).

@@ -21445,10 +21445,10 @@ If none of those resolve a project, `checkout` prints an error explaining the ch
 
 ## Examples
 
-Pin a branch by name. New Neon projects create a default branch named `production`:
+Pin a branch by name. Projects created with the CLI or API get a default branch named `main`; Console-created projects use `production`. Run `neon branches list` if you're unsure:
 
 ```bash
-neon checkout production --project-id polished-snowflake-12345678
+neon checkout main --project-id polished-snowflake-12345678
 ```
 
 ```text filename="Output"
@@ -22273,6 +22273,7 @@ neon env pull [options]
 
 | Option         | Description                                                                                                                                                                                    | Type   | Default | Required |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--env`, `-e`  |                                                                                                                                                                                                | array  | —       |    No    |
 | `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                     | string | —       |    No    |
 | `--service`    | Pull only these services' variables: postgres, auth, data-api, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
 | `--branch`     | Branch ID or name                                                                                                                                                                              | string | —       |    No    |
@@ -24684,28 +24685,28 @@ Connect to the default branch:
 neon psql
 ```
 
-Connect to a named branch. New Neon projects create a default branch named `production`:
+Connect to a named branch. Projects created with the CLI or API get a default branch named `main`; Console-created projects use `production` (run `neon branches list` if you're unsure):
 
 ```bash
-neon psql production
+neon psql main
 ```
 
 Run a single query:
 
 ```bash
-neon psql production -- -c "SELECT version()"
+neon psql main -- -c "SELECT version()"
 ```
 
 Run an SQL file:
 
 ```bash
-neon psql production -- -f dump.sql
+neon psql main -- -f dump.sql
 ```
 
 Connect to a branch at a specific point in time:
 
 ```bash
-neon psql production@2024-01-01T00:00:00Z
+neon psql main@2024-01-01T00:00:00Z
 ```
 
 Use a pooled connection:
@@ -43858,6 +43859,10 @@ The `pg_uuidv7` extension allows you to generate and work with version 7 Univers
 
 Unlike traditional random UUIDs (like Version 4), UUIDv7 embeds a Unix timestamp in its leading bits, followed by random bits. This structure ensures that newly generated UUIDs are roughly sequential, which is highly beneficial for database indexing (for example, B-trees) and can improve data locality, leading to faster queries and insertions.
 
+**Note: PostgreSQL 18 includes native UUIDv7 support**
+
+PostgreSQL 18 and later include the built-in `uuidv7()` function for generating UUIDv7 values. If you're using PostgreSQL 18 or later and only need to generate UUIDv7 values, you don't need to install the `pg_uuidv7` extension. See [Native UUIDv7 support in PostgreSQL 18](https://neon.com/docs/extensions/pg_uuidv7#native-uuidv7-support-in-postgresql-18) for differences between the native implementation and this extension.
+
 > **Try it on Neon!**
 >
 > Neon is Serverless Postgres built for the cloud. Explore Postgres features and functions in our user-friendly SQL editor. Sign up for a free account to get started.
@@ -43997,6 +44002,41 @@ WHERE
 
 This query can efficiently use an index on `event_id` to find matching records.
 
+## Native UUIDv7 support in PostgreSQL 18
+
+PostgreSQL 18 introduced native support for UUIDv7. The built-in `uuidv7()` function generates time-ordered UUIDv7 values without requiring an extension.
+
+For example:
+
+```sql
+SELECT uuidv7();
+-- 019ff097-80cb-7d78-8694-93b9e1a973d2 (example output; the random bits vary)
+```
+
+PostgreSQL 18 also provides `uuid_extract_timestamp()` for extracting the timestamp from a UUIDv7 value.
+
+The native PostgreSQL implementation doesn't provide everything `pg_uuidv7` does. In particular, `pg_uuidv7` provides `uuid_timestamptz_to_v7()`, which lets you construct a UUIDv7 value from a timestamp. It can also zero the UUID's random bits, which is useful for constructing UUID boundaries for time-based range queries.
+
+For example:
+
+```sql
+SELECT uuid_timestamptz_to_v7(
+  '2026-01-01 00:00:00+00',
+  true
+);
+```
+
+With the random bits zeroed, this returns the same boundary UUID every time:
+
+```text
+        uuid_timestamptz_to_v7
+--------------------------------------
+ 019b76da-a800-7000-8000-000000000000
+(1 row)
+```
+
+If you only need to generate UUIDv7 values on PostgreSQL 18 or later, use the built-in `uuidv7()` function. Use `pg_uuidv7` if your application depends on its additional functions or if you need the same UUIDv7 API across PostgreSQL versions that don't provide native UUIDv7 generation.
+
 ## Comparison with UUID4
 
 UUIDv4 is purely random. While excellent for uniqueness, its randomness leads to poor index locality and fragmentation when used as a primary key for time-sensitive data. UUIDv7 directly addresses this by being time-ordered.
@@ -44070,7 +44110,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [pg\_stat\_statements](https://neon.com/docs/extensions/pg_stat_statements)                                    |     1.9 |    1.10 |      1.10 |      1.11 |      1.12 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pg\_tiktoken](https://neon.com/docs/extensions/pg_tiktoken)                                                   |   0.0.1 |   0.0.1 |     0.0.1 |     0.0.1 |     0.0.1 | The [neon\_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role has `EXECUTE` privilege on the `pg_stat_statements_reset()` function.                                                                                                                                                                                                                                                                                                    |
 | [pg\_trgm](https://neon.com/docs/extensions/pg_trgm)                                                           |     1.6 |     1.6 |       1.6 |       1.6 |       1.6 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [pg\_uuidv7](https://neon.com/docs/extensions/pg_uuidv7)                                                       |     1.6 |     1.6 |       1.6 |       1.6 |       1.6 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [pg\_uuidv7](https://neon.com/docs/extensions/pg_uuidv7)                                                       |     1.6 |     1.6 |       1.6 |       1.6 |       1.6 | PostgreSQL 18 and later include the built-in `uuidv7()` function. If you only need to generate UUIDv7 values on Postgres 18+, you don't need this extension. See [Native UUIDv7 support in PostgreSQL 18](https://neon.com/docs/extensions/pg_uuidv7#native-uuidv7-support-in-postgresql-18).                                                                                                                                                                  |
 | [pgcrypto](https://neon.com/docs/extensions/pgcrypto)                                                          |     1.3 |     1.3 |       1.3 |       1.3 |       1.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgjwt](https://github.com/michelp/pgjwt)                                                                      |   0.2.0 |   0.2.0 |     0.2.0 |     0.2.0 |     0.2.0 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [pgrag](https://neon.com/docs/extensions/pgrag)                                                                |   0.0.0 |   0.0.0 |     0.0.0 |     0.0.0 |     0.0.0 | This extension is **experimental**. Using a separate, dedicated Neon project is recommended. Run `SET neon.allow_unstable_extensions='true';` before installing.                                                                                                                                                                                                                                                                                               |
@@ -68081,7 +68121,7 @@ The job accepts the following parameters:
 
 - `api_key`: (Optional) Environment variable name containing the Neon API key. Defaults to `NEON_API_KEY`. Ensure this variable is set in your CircleCI project settings.
 - `project_id`: (Optional) Environment variable name containing the Neon project ID. Defaults to `NEON_PROJECT_ID`. Ensure this variable is set in your CircleCI project settings.
-- `parent_branch`: (Optional) The branch to fork from. Defaults to your project's default branch (e.g., `production`).
+- `parent_branch`: (Optional) The branch to fork from. Defaults to your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console).
 - `migrate_command`: The command to prepare the database (e.g., run migrations). This command runs after the branch is ready but before tests start. You can chain multiple commands here if needed (for example, installing dependencies and running migrations).
 - `test_command`: The command to execute your tests. This command runs after the `migrate_command` completes. It should be configured to run your test suite (e.g., unit tests, integration tests, or end-to-end tests with Playwright) against the database using the `DATABASE_URL` environment variable.
 - `role`: (Optional) The role to use for the connection. Defaults to `neondb_owner`.
@@ -93384,7 +93424,7 @@ To set a branch as protected:
 
    ![Branch page](https://neon.com/docs/guides/ip_allow_branch_page.png)
 
-3. Select a branch from the table. In this example, we'll configure our default branch `production` as a protected branch.
+3. Select a branch from the table. In this example, we'll configure our default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) as a protected branch.
 
 4. On the branch page, click **Protect**.
 
@@ -112497,10 +112537,10 @@ The older `/consumption_history/projects` endpoint returns different metrics (ac
 | API metric name                  | What it measures                                                                                                                                                                           | Raw unit     | Billing unit  |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | ------------- |
 | `compute_unit_seconds`           | CPU time weighted by compute size                                                                                                                                                          | CU-seconds   | CU-hours      |
-| `root_branch_bytes_month`        | Storage on root branches                                                                                                                                                                   | byte-hours   | GB-months     |
-| `child_branch_bytes_month`       | Storage on child branches (delta from parent)                                                                                                                                              | byte-hours   | GB-months     |
-| `instant_restore_bytes_month`    | Instant restore (point-in-time recovery / PITR) history                                                                                                                                    | byte-hours   | GB-months     |
-| `snapshot_storage_bytes_month`   | Storage for branch snapshots. Manual snapshots are full snapshots; scheduled snapshots are full for the first snapshot, then incremental (delta) for subsequent snapshots in that schedule | byte-hours   | GB-months     |
+| `root_branch_bytes_month`        | Storage on root branches                                                                                                                                                                   | byte-months  | GB-months     |
+| `child_branch_bytes_month`       | Storage on child branches (delta from parent)                                                                                                                                              | byte-months  | GB-months     |
+| `instant_restore_bytes_month`    | Instant restore (point-in-time recovery / PITR) history                                                                                                                                    | byte-months  | GB-months     |
+| `snapshot_storage_bytes_month`   | Storage for branch snapshots. Manual snapshots are full snapshots; scheduled snapshots are full for the first snapshot, then incremental (delta) for subsequent snapshots in that schedule | byte-months  | GB-months     |
 | `public_network_transfer_bytes`  | Outbound (egress) data over the public network                                                                                                                                             | bytes        | GB            |
 | `private_network_transfer_bytes` | Inbound (ingress) and outbound (egress) traffic over private networking (Scale+)                                                                                                           | bytes        | GB            |
 | `extra_branches_month`           | All child branches per hour (subtract plan allowance before billing)                                                                                                                       | branch-hours | branch-months |
@@ -112514,10 +112554,13 @@ Neon uses decimal gigabytes (1 GB = 10^9 bytes), not gibibytes, and a fixed bill
 | From         | To                              | Formula                                |
 | ------------ | ------------------------------- | -------------------------------------- |
 | CU-seconds   | CU-hours                        | `value / 3600`                         |
-| byte-hours   | GB-months (billing unit)        | `value / 744 / 1000000000`             |
+| byte-months  | GB-months (billing unit)        | `value / 1000000000`                   |
+| byte-hours   | GB-months (legacy field)        | `value / 744 / 1000000000`             |
 | byte-hours   | average GB (what Console shows) | `value / hours_in_period / 1000000000` |
 | bytes        | GB                              | `value / 1000000000`                   |
 | branch-hours | branch-months                   | `value / 744`                          |
+
+The v2 storage metrics (`root_branch_bytes_month`, `child_branch_bytes_month`, `instant_restore_bytes_month`, `snapshot_storage_bytes_month`) are reported in **byte-months**: the underlying byte-hours already divided by 744, so converting to GB-months divides by `1000000000` only. The byte-hours rows above apply to the legacy `GET /projects/{project_id}` field `data_storage_bytes_hour`, which is raw byte-hours.
 
 For "average GB," `hours_in_period` is the number of hours between your `from` and `to` timestamps.
 
@@ -112547,9 +112590,9 @@ If the API returns `"value": 500000` for `compute_unit_seconds` on the Scale pla
 
 ### Example: storage
 
-If the API returns `"value": 2500000000000` for `root_branch_bytes_month`:
+If the API returns `"value": 3360000000` for `root_branch_bytes_month`:
 
-1. Convert: 2500000000000 / 744 / 1000000000 = 3.36 GB-months
+1. Convert: 3360000000 / 1000000000 = 3.36 GB-months
 2. Cost: 3.36 x $0.35 = **$1.18**
 
 ## Billing mechanics
@@ -112560,12 +112603,13 @@ Neon defines a billing month as exactly 744 hours (31 x 24). This constant is us
 
 ### Byte-hours
 
-Storage metrics are reported as byte-hours: bytes stored multiplied by hours held. For example, 2 GB stored for a full 31-day month:
+Storage is metered in byte-hours (bytes stored multiplied by hours held). The v2 consumption metrics report this **already divided by 744**, as byte-months. For example, 2 GB stored for a full 31-day month:
 
 1. Per-day byte-hours: 2000000000 x 24 = 48000000000
 2. Full-month byte-hours: 48000000000 x 31 = 1488000000000
-3. Convert: 1488000000000 / 744 / 1000000000 = 2.0 GB-months
-4. Cost: 2.0 x $0.35 = **$0.70**
+3. Byte-months the v2 API returns: 1488000000000 / 744 = 2000000000
+4. Convert to GB-months: 2000000000 / 1000000000 = 2.0 GB-months
+5. Cost: 2.0 x $0.35 = **$0.70**
 
 ### Branch-hours and the allowance
 
@@ -114353,7 +114397,7 @@ To create a branch:
 2. Select **Branches**.
 3. Click **New branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
-4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (e.g, `production`) is selected, but you can choose any existing branch in your project.
+4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.
 5. Specify a branch name, or leave it blank to use the default generated name.
 6. Select what to include in the new branch:
    - **Current data**: Creates a copy of the parent branch's latest data and schema, resulting in an isolated database that reflects the parent at the time of creation.
@@ -114427,7 +114471,7 @@ Neon permits renaming a branch, including your project's default branch. To rena
 
 ## Set a branch as default
 
-Each Neon project is created with a default branch (named `production` in the Console, `main` via API/CLI), but you can designate any branch as your project's default branch. When creating a new branch without specifying the parent, a new branch is created from your project's default branch. Default branch is automatically selected in the UI when creating the new branch, and it's used in the [create branch API call](https://neon.com/docs/reference/api/branches/create-project-branch). The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
+Each Neon project is created with a default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console), but you can designate any branch as your project's default branch. When creating a new branch without specifying the parent, a new branch is created from your project's default branch. Default branch is automatically selected in the UI when creating the new branch, and it's used in the [create branch API call](https://neon.com/docs/reference/api/branches/create-project-branch). The [Neon-Managed Vercel integration](https://neon.com/docs/guides/neon-managed-vercel-integration) also creates preview deployment branches from your project's default branch.
 
 For more information, see [Default branch](https://neon.com/docs/manage/branches#default-branch).
 
@@ -117688,7 +117732,7 @@ A project is a container for all objects except for API keys, which are global a
 
 ## Default branch
 
-Data resides in a branch. Each Neon project is created with a default branch (named `production` in the Console, `main` via API/CLI). This initial branch is also your project's root branch, which cannot be deleted. After creating more branches, you can designate a different branch as your default branch, but your root branch cannot be deleted. You can create child branches from any branch in your project. Each branch can contain multiple databases and roles. Plan limits define the number of branches you can create in a project and the amount of data per branch. To learn more, see [Manage branches](https://neon.com/docs/manage/branches).
+Data resides in a branch. Each Neon project is created with a default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console). This initial branch is also your project's root branch, which cannot be deleted. After creating more branches, you can designate a different branch as your default branch, but your root branch cannot be deleted. You can create child branches from any branch in your project. Each branch can contain multiple databases and roles. Plan limits define the number of branches you can create in a project and the amount of data per branch. To learn more, see [Manage branches](https://neon.com/docs/manage/branches).
 
 ## R/W computes and Read Replicas
 
@@ -130345,7 +130389,7 @@ To create a branch with anonymized data from the Neon Console:
 2. Select **Branches**.
 3. Click **New branch** to open the branch creation dialog.
    ![Neon Console 'Create new branch' dialog with 'Anonymized data' selected](https://neon.com/docs/workflows/anon-create-a-new-branch.png)
-4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (e.g., `production`) is selected, but you can choose any existing branch in your project.
+4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.
 5. Specify a branch name, or leave it blank to use the default generated name.
 6. Select the **Anonymized data** option.
 7. Configure auto-deletion: By default, **Automatically delete branch after** is checked with 1 day selected to help prevent unused branches from accumulating. You can choose 1 hour, 1 day, or 7 days, or uncheck to disable expiration entirely. This is useful for CI/CD pipelines and short-lived development environments. Note: This default only applies when creating branches through the Console; API branches have no expiration by default. Refer to our [Branch expiration guide](https://neon.com/docs/guides/branch-expiration) for details.

@@ -9,7 +9,7 @@ title: "Share Build Plugins"
 description: "Learn what requirements you must meet to share your build plugins by publishing them to npm."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 If you'd like to share your plugin with others, you can [publish it to npm](#publish-to-npm). All Netlify Build Plugins in the [npm Public Registry](https://npmjs.com) can be installed by any Netlify user through [file-based installation](/extend/install-and-use/build-plugins#file-based-installation).
 

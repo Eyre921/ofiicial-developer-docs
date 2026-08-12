@@ -9,7 +9,7 @@ title: "Async Workloads overview"
 description: "Use Async Workloads to add serverless, durable compute and event-driven architecture to your site without managing all of the messy infrastructure."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify Async Workloads is a powerful tool that enables developers to build resilient, scalable, and event-driven applications without the need to manage infrastructure and queues. With Async Workloads, complex workflows such as handling multi-step workflows, retries, and ensuring fault tolerance are simplified, allowing developers to focus on functionality rather than infrastructure management.
 

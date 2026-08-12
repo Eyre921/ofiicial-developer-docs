@@ -202,6 +202,7 @@ Successful Response
             - Allowed values: `turn_v2`, `turn_v3`
           - `interruption_ignore_terms` (list of string, optional, nullable) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
           - `interruption_ignore_term_languages` (list of string, optional, nullable) — Language codes for which preset ignore-term categories have been activated. Stored explicitly so display is not inferred from term overlap.
+          - `merge_with_default_ignore_terms` (boolean, optional, nullable) — When enabled, the curated default terms for interruption_ignore_term_languages are used in addition to interruption_ignore_terms.
           - `transcribe_on_disabled_interruptions` (boolean, optional, nullable) — When interruptions are disabled, still transcribe what the user says so it can carry into the next turn. When off, user speech during a non-interruptible turn is ignored and won't trigger a turn.
           - `soft_timeout_config` (object, optional, nullable) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
             - `timeout_seconds` (double, optional, nullable) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.

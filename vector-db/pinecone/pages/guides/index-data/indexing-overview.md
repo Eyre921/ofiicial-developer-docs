@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/indexing-overview
 path: guides/index-data/indexing-overview
 ---
 
-Understand key concepts related to indexing data in Pinecone.
+Learn how indexing works in Pinecone: serverless indexes, document schemas, namespaces, integrated embedding, and metadata filtering.
 
 ## Indexes
 

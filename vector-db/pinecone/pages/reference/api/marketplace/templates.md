@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/templates
 path: reference/api/marketplace/templates
 ---
 
-List the vertical templates available in Pinecone Marketplace.
+Marketplace Templates API reference for listing vertical template catalogs and retrieving default operating parameters for deployments.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -9,7 +9,7 @@ title: "Agent setup overview"
 description: "Learn how to set up most agents, including custom agents, quickly."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Learn how to set up most agents, including custom agents, quickly. For even more specific setup guidance, check out our agent setup guides for your specific agent.
 

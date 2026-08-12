@@ -9,7 +9,7 @@ title: "Develop Build Plugins"
 description: "Learn how to create your own build plugin for our platform. Hook into different events during the build-deploy lifecycle to expand your site's capabilities."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 In addition to [installing plugins](/extend/install-and-use/build-plugins#install-a-plugin) written by others, you can create your own. To learn how, check out the detailed reference information below and our [Build Plugin template](https://github.com/netlify/build-plugin-template).
 

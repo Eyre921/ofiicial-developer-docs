@@ -9,7 +9,7 @@ title: "Netlify name servers"
 description: "Netlify name servers will vary depending on your domain. Learn how to find your name servers."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify's name servers will vary depending on your domain. Learn how to find your name servers.
 

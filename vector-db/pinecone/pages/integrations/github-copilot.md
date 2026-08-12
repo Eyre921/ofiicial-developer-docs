@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/github-copilot
 path: integrations/github-copilot
 ---
 
-Integrate Pinecone with GitHub Copilot for vector search, RAG, and production AI workloads.
+Install the Pinecone GitHub Copilot Extension to query your indexes, get coding assistance for the Pinecone API, and debug RAG apps from your editor.
 
 Access the Pinecone Copilot Extension through our GitHub Marketplace listing. The Pinecone Copilot Extension serves as a seamless bridge between you and your Pinecone data-- providing product information, coding assistance, troubleshooting capabilities and streamlining the debugging process.
 

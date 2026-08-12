@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/matillion
 path: integrations/matillion
 ---
 
-Connect Pinecone and Matillion to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Matillion Data Productivity Cloud to chunk, embed, and upsert data into Pinecone with low-code AI pipelines for RAG, ETL, and GenAI apps.
 
 [Matillion Data Productivity Cloud](https://www.matillion.com/) is a unified platform that helps your team move faster with one central place to build and manage graphical, low-code data pipelines. It allows data teams to use structured, semi-structured, and unstructured data in analytics; build AI pipelines for new use cases; and be more productive.
 

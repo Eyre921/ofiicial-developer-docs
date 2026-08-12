@@ -9,7 +9,7 @@ title: "Use environment variables with frameworks"
 description: "Learn how to use environment variables during a build with a framework. Access environment variables after deployment."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Projects on Netlify can use [environment variables](/build/environment-variables/overview) at two different stages: during the build process or once the site is built and running in the browser.
 

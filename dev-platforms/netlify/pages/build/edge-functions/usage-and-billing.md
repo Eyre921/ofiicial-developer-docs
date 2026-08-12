@@ -9,7 +9,7 @@ title: "Edge Functions usage and billing"
 description: "Monitor your Edge Functions service usage. Check the number of invocations this billing period."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 You can check your team's Edge Functions service usage under 
 ### NavigationPath Component:

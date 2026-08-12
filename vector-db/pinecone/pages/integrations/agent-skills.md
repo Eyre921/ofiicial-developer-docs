@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/agent-skills
 path: integrations/agent-skills
 ---
 
-Connect Pinecone and Agent Skills to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Install the Pinecone Agent Skills library in any agentic IDE to manage indexes, run semantic search, and build RAG assistants with natural language.
 
 Pinecone's official [Agent Skills](https://github.com/pinecone-io/skills) library brings Pinecone capabilities to any agentic IDE that supports the Agent Skills standard. Use skills to manage indexes, run semantic search, create document Q\&A assistants, and more — all through natural language in your IDE.
 

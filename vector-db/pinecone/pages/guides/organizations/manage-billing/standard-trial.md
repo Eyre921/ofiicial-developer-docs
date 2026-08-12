@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/standard-tr
 path: guides/organizations/manage-billing/standard-trial
 ---
 
-Get $300 credits for 21 days with the Standard plan trial.
+Get $300 in credits over 21 days with the Pinecone Standard plan trial, including RBAC, bulk import, backup and restore, and higher scale limits.
 
 The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits) that are suitable for testing Pinecone at scale.
 

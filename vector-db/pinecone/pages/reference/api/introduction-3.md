@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/introduction
 path: reference/api/introduction
 ---
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 

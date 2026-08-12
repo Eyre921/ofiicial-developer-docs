@@ -9,7 +9,7 @@ title: "Next.js on Netlify"
 description: "Learn about Next.js on our platform. Use App Router, automatic fine-grained caching, image optimization, and more with Next.js 13.5+ on Netlify."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify supports all major Next.js features with zero configuration, via our open-source [OpenNext adapter](https://github.com/opennextjs/opennextjs-netlify). This adapter is thoroughly tested with every Next.js release.
 

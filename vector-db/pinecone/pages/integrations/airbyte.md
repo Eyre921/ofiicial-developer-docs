@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/airbyte
 path: integrations/airbyte
 ---
 
-Connect Pinecone and Airbyte to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Airbyte Pinecone destination connector to build no-code ETL pipelines that embed source data and upsert vectors for semantic search and RAG.
 
 Airbyte offers a platform for creating ETL pipelines without writing integration code. It supports integrations with hundreds of systems, including databases, data warehouses, and SaaS products.
 

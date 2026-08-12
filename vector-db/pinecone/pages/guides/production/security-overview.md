@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/security-overview
 path: guides/production/security-overview
 ---
 
-Understand Pinecone's security features, including authentication, encryption, and audit logs.
+Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints.
 
 ## Access management
 

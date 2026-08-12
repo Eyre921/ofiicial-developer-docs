@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/update-data
 path: guides/manage-data/update-data
 ---
 
-Update vectors and metadata for existing records
+Update Pinecone records by ID to change vector values or metadata, or update metadata across multiple records using a metadata filter expression.
 
 You can [update](/reference/api/latest/data-plane/update) a single record using the record ID or multiple records using a metadata filter.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/manage-storage-i
 path: guides/operations/integrations/manage-storage-integrations
 ---
 
-Update and manage cloud storage integrations.
+Update or delete existing Amazon S3, Google Cloud Storage, and Azure Blob storage integrations for your Pinecone project in the console.
 
 <Note>
   This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).

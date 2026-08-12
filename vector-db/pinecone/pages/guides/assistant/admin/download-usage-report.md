@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/download-usage-report
 path: guides/assistant/admin/download-usage-report
 ---
 
-Export organization usage and cost reports.
+Export a detailed Pinecone usage and cost report for your organization to analyze index consumption, credits, and monthly billing charges.
 
 <Note>
   To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.

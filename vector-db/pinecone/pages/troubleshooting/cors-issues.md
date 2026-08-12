@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/cors-issues
 path: troubleshooting/cors-issues
 ---
 
-Troubleshoot “CORS Issues” in Pinecone: Cross-Origin Resource Sharing (CORS) is an HTTP-header based security feature that
+Troubleshoot Pinecone CORS errors and Access-Control-Allow-Origin issues when calling the API from localhost or browser-based web apps.
 
 Cross-Origin Resource Sharing (CORS) is an HTTP-header based security feature that
 allows a server to indicate which domains, schemes or ports a browser should accept

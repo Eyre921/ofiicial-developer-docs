@@ -474,7 +474,10 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Reservation placement">
-    Add `--use-reservation` to try your account's reservation capacity before falling back to shared trainer capacity:
+    Try your account's reservation capacity before falling back to shared trainer capacity.
+
+    * **firectl**: add `--use-reservation` (default off).
+    * **REST / Python SDK** (`>=1.2.8`): defaults to `useReservation: true` / `use_reservation=True`. Set to `false` to opt out.
 
     ```shell theme={null}
     firectl sftj create \
@@ -483,8 +486,6 @@ Additional tuning settings are available when starting an SFT or preference (DPO
       --dataset cancerset \
       --output-model my-tuned-model
     ```
-
-    Omitting the flag preserves default placement. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
   </Accordion>
 </AccordionGroup>
 

@@ -112,6 +112,12 @@ Stripe can send the following types of emails to your connected accounts through
 
 - **Transactional**: Ongoing weekly updates throughout the payment period, including milestone progress notifications at 25%, 50%, and 75% of payment completion, reminders about outstanding minimum balance payments, and notifications about upcoming bank account debits.
 
+## Financing in the Express Dashboard 
+
+For connected accounts with access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md), we offer a Stripe-branded experience under the Financing tab. Your connected accounts can view their offers, apply, and manage repayments from the Express Dashboard.
+
+[View the demo](https://express.stripe.dev/financing)
+
 ## In-progress financing 
 
 After a connected account accepts an offer and receives their payout, you can provide them with visibility into their financing balance, transaction history, and payment progress.

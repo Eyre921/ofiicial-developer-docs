@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 path: reference/sdks/java/open-telemetry
 ---
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 

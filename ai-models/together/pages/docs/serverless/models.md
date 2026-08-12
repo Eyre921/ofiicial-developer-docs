@@ -64,6 +64,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
 | Thinking Machines | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
 | Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | Free                          | -                                    | Free                           | -            | -                | -                  |
+| Meta              | Muse Glimmer 30B             | meta-models/Muse-Glimmer-30B            | 131072         | \$0.35                        | \$0.04                               | \$1.50                         | FP8          | -                | -                  |
 
 **Chat model examples**
 
@@ -210,6 +211,7 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 | Alibaba           | HappyHorse 1.1 R2V     | alibaba/happyhorse-1.1-r2v  | \$0.14          | -                     |
 | Alibaba           | HappyHorse 1.1 T2V     | alibaba/happyhorse-1.1-t2v  | \$0.14          | -                     |
 | Black Forest Labs | FLUX 3                 | black-forest-labs/FLUX-3    | \$0.17          | -                     |
+| ByteDance         | ByteDance Seedance 2.5 | ByteDance/Seedance-2.5      | \$0.115         | -                     |
 
 ## Audio models
 

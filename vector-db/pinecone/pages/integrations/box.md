@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/box
 path: integrations/box
 ---
 
-Connect Pinecone and Box to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Connect Box folders to Pinecone Database to embed documents with Pinecone Inference and build RAG agents and semantic search over Box content.
 
 Connect a [Box](https://www.box.com/) account to a Pinecone vector database.
 

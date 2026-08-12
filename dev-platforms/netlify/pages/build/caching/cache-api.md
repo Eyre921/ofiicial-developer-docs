@@ -9,7 +9,7 @@ title: "Cache API"
 description: "Improve the performance of your application by caching web requests made from Functions and Edge Functions."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Store responses from web requests made from [Functions](/build/functions/overview) and [Edge Functions](/build/edge-functions/overview), making your application more performant, resilient and cost-efficient.
 

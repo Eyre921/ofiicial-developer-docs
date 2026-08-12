@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/connectors
 path: reference/api/marketplace/connectors
 ---
 
-Manage source connectors for Pinecone Marketplace deployments.
+Marketplace Connectors API reference for attaching source connectors, updating configuration, and triggering syncs across deployments.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -1,7 +1,7 @@
 # Agentic IDEs and CLIs
 Source: https://docs.pinecone.io/guides/get-started/ai-coding-tools
 
-Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, Cursor, and more.
+Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
 
 Pinecone provides official plugins, extensions, and agent skills for agentic IDEs and CLIs. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage vector database indexes, run semantic search, and build RAG applications — all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 
@@ -68,7 +68,7 @@ In addition, the [Pinecone MCP server](/guides/operations/mcp-server) provides t
 # Concepts
 Source: https://docs.pinecone.io/guides/get-started/concepts
 
-Understand concepts in Pinecone and how they relate to each other.
+Learn core Pinecone concepts (organizations, projects, indexes, documents, namespaces, dense and sparse vectors) and how they relate.
 
 <img />
 
@@ -253,7 +253,7 @@ For how write units are calculated, see [Understanding cost](/guides/manage-cost
 # Architecture
 Source: https://docs.pinecone.io/guides/get-started/database-architecture
 
-Learn how Pinecone's architecture enables fast, relevant vector search at any scale.
+Learn how Pinecone's serverless architecture (API gateway, control plane, data plane, and object storage) powers vector search at scale.
 
 ## Overview
 
@@ -1346,7 +1346,7 @@ What's new in Pinecone Database?
 # Test Pinecone at scale
 Source: https://docs.pinecone.io/guides/get-started/test-at-scale
 
-Test Pinecone with a real-world dataset and semantic search workload.
+Benchmark Pinecone at production scale by importing 10M vectors and measuring semantic search throughput, query latency, and costs.
 
 This guide walks you through testing Pinecone at production scale. You'll import 10 million vectors, run a benchmark, and analyze the results to verify Pinecone meets production requirements for semantic search applications.
 
@@ -1754,7 +1754,7 @@ When you no longer need your test index, [delete it](/guides/manage-data/manage-
 # Check data freshness
 Source: https://docs.pinecone.io/guides/index-data/check-data-freshness
 
-Monitor data freshness in Pinecone using log sequence numbers and vector counts.
+Check data freshness in Pinecone serverless indexes using log sequence numbers (LSNs) and vector counts to verify recent upserts and deletes.
 
 Pinecone is eventually consistent, so there can be a slight delay before new or changed records are visible to queries. This page describes two ways of checking the data freshness of a Pinecone index:
 
@@ -2060,7 +2060,7 @@ The response will look like this:
 # Create an index
 Source: https://docs.pinecone.io/guides/index-data/create-an-index
 
-Create indexes for full-text, semantic, lexical, and hybrid search.
+Create a Pinecone serverless index for full-text (BM25), semantic (dense vector), lexical (sparse), or hybrid search with a document schema.
 
 A Pinecone index can hold any combination of the following:
 
@@ -3151,7 +3151,7 @@ The `pinecone-sparse-english-v0` model supports the following parameters:
 # Data ingestion overview
 Source: https://docs.pinecone.io/guides/index-data/data-ingestion-overview
 
-Learn about the different ways to ingest data into Pinecone.
+Compare data ingestion options in Pinecone: bulk import from object storage, upsert operations, and hosted embedding via the Inference API.
 
 <Tip>
   To control costs when ingesting large datasets (10,000,000+ records), use [import](/guides/index-data/import-data) instead of upsert.
@@ -3189,7 +3189,7 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 # Data modeling
 Source: https://docs.pinecone.io/guides/index-data/data-modeling
 
-Learn how to structure records for efficient data retrieval and management in Pinecone.
+Model your data in Pinecone using documents with dense_vector, sparse_vector, full-text string, and metadata fields for efficient retrieval.
 
 Pinecone has two ways to model your data, and the choice is made when you create the index: an index created with a document schema holds documents, while an index created with a dense or sparse vector type holds records. Both hold a unique `_id` and optional metadata and live in [namespaces](/guides/index-data/indexing-overview#namespaces); they differ in how many ranking signals a single item can carry and which API you call. Both are fully supported.
 
@@ -5952,7 +5952,7 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
 # Implement multitenancy
 Source: https://docs.pinecone.io/guides/index-data/implement-multitenancy
 
-Use namespaces to isolate tenant data securely.
+Implement multitenancy in Pinecone with one namespace per tenant on a serverless index to isolate customer data for SaaS RAG or semantic search apps.
 
 [Multitenancy](https://en.wikipedia.org/wiki/Multitenancy) is a software architecture where a single instance of a system serves multiple customers, or tenants, while ensuring data isolation between them for privacy and security.
 
@@ -7663,7 +7663,7 @@ When an import fails, you'll see an error message with the reason for the failur
 # Indexing overview
 Source: https://docs.pinecone.io/guides/index-data/indexing-overview
 
-Understand key concepts related to indexing data in Pinecone.
+Learn how indexing works in Pinecone: serverless indexes, document schemas, namespaces, integrated embedding, and metadata filtering.
 
 ## Indexes
 
@@ -7902,7 +7902,7 @@ Additionally, requests with the following filters will **not** match because the
 # Upsert records
 Source: https://docs.pinecone.io/guides/index-data/upsert-data
 
-Add or update records in Pinecone indexes and manage data with namespaces.
+Upsert dense, sparse, and text records into Pinecone indexes, batch upserts for higher throughput, and partition data with namespaces.
 
 This page shows you how to upsert records into a namespace in an index. [Namespaces](/guides/index-data/indexing-overview#namespaces) let you partition records within an index and are essential for [implementing multitenancy](/guides/index-data/implement-multitenancy) when you need to isolate the data of each customer/user.
 
@@ -10060,7 +10060,7 @@ Deleting the collection takes several minutes. During this time, the [`describe_
 # Choose a pod type and size
 Source: https://docs.pinecone.io/guides/indexes/pods/choose-a-pod-type-and-size
 
-Legacy guide for selecting Pinecone pod types (s1, p1, p2) and sizes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes require no capacity planning.
+Choose a Pinecone pod type and size (s1, p1, p2). Legacy guide: pods are unavailable to new customers as of August 2025; serverless needs no planning.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
@@ -10181,7 +10181,7 @@ So we estimate that we need 54 s1.x1 pods to store very high dimensional data fo
 # Create a pod-based index
 Source: https://docs.pinecone.io/guides/indexes/pods/create-a-pod-based-index
 
-Legacy instructions for creating Pinecone pod-based indexes. New customers cannot create pod indexes as of August 2025. See serverless index creation for current instructions.
+Create a Pinecone pod-based index. Legacy guide: new customers cannot create pod indexes as of August 2025; use serverless index creation instead.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
@@ -10329,7 +10329,7 @@ You can create a pod-based index from a collection. For more details, see [Resto
 # Manage pod-based indexes
 Source: https://docs.pinecone.io/guides/indexes/pods/manage-pod-based-indexes
 
-Legacy guide for managing Pinecone pod-based indexes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes are recommended for all new projects.
+Manage Pinecone pod-based indexes. Legacy guide: pod indexes are unavailable to new customers as of August 2025; serverless is recommended for new projects.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
@@ -11473,7 +11473,7 @@ This [Loom video walkthrough](https://www.loom.com/share/ce6f5dd0c3e14ba0b988fe3
 # Migrate a pod-based index to serverless
 Source: https://docs.pinecone.io/guides/indexes/pods/migrate-a-pod-based-index-to-serverless
 
-Complete guide to migrating a Pinecone pod-based index to serverless. Serverless indexes offer better performance, automatic scaling, and usage-based pricing with no minimum spend.
+Migrate a Pinecone pod-based index to serverless for automatic scaling, better performance, and usage-based pricing with no minimum spend commitment.
 
 This page shows you how to migrate a pod-based index to [serverless](/guides/get-started/database-architecture). The migration process is free; the standard costs of upserting records to a new serverless index are not applied.
 
@@ -12430,7 +12430,7 @@ To create a pod-based index from a [collection](/guides/manage-data/back-up-an-i
 # Scale pod-based indexes
 Source: https://docs.pinecone.io/guides/indexes/pods/scale-pod-based-indexes
 
-Legacy guide for scaling Pinecone pod-based indexes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes scale automatically with no manual configuration.
+Scale Pinecone pod-based indexes by adding pods or replicas. Legacy guide: pod indexes are unavailable to new customers; serverless scales automatically.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
@@ -12827,7 +12827,7 @@ See [Pricing](https://www.pinecone.io/pricing/) for up-to-date pricing informati
 # Understanding pod-based indexes
 Source: https://docs.pinecone.io/guides/indexes/pods/understanding-pod-based-indexes
 
-Legacy documentation for Pinecone pod-based indexes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes are recommended for all new projects.
+Understand Pinecone pod-based indexes, including pod types and sizing. Legacy: pod indexes are unavailable to new customers; use serverless for new projects.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).
@@ -12976,7 +12976,7 @@ To see a calculation of your current usage and costs, go to [**Settings > Usage*
 # Manage cost
 Source: https://docs.pinecone.io/guides/manage-cost/manage-cost
 
-Learn strategies for managing cost in Pinecone.
+Reduce Pinecone spend with strategies like spend alerts, ID-prefix listing, multitenant namespaces, prepaid credits, and support cost optimization help.
 
 For the latest pricing details, see our [pricing page](https://www.pinecone.io/pricing/).
 
@@ -13046,7 +13046,7 @@ Users on Standard and Enterprise plans can [contact Support](https://app.pinecon
 # Monitor usage and costs
 Source: https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs
 
-Monitor usage and costs for your Pinecone organization and indexes.
+Monitor Pinecone usage and costs at the organization, index, and operation level by tracking read units, write units, and storage consumption.
 
 ## Monitor organization-level usage and costs
 
@@ -14061,7 +14061,7 @@ To enable the HIPAA compliance add-on, [contact sales](mailto:sales@pinecone.io)
 # Back up an index
 Source: https://docs.pinecone.io/guides/manage-data/back-up-an-index
 
-Create backups of serverless indexes for protection
+Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console.
 
 ## Create a backup
 
@@ -15253,7 +15253,7 @@ Deleting a schedule does not delete any backups that were previously created by 
 # Backups overview
 Source: https://docs.pinecone.io/guides/manage-data/backups-overview
 
-Learn about backups of serverless indexes in Pinecone.
+Learn how serverless index backups work in Pinecone, including scheduled backups, retention policies, and use cases for restoring or copying data.
 
 A backup is a static copy of a serverless [index](/guides/index-data/indexing-overview) that only consumes storage. It is a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of a serverless index, and you can [create a new serverless index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
 
@@ -15348,7 +15348,7 @@ Backup limitations are as follows:
 # Delete records
 Source: https://docs.pinecone.io/guides/manage-data/delete-data
 
-Delete records by ID or metadata filter from indexes
+Delete records from a Pinecone index namespace by ID or metadata filter, including delete-by-ID, delete-all, and delete-by-metadata operations.
 
 This page shows you how to [delete](/reference/api/latest/data-plane/delete) records from an index [namespace](/guides/index-data/indexing-overview#namespaces).
 
@@ -15743,7 +15743,7 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 # Fetch records
 Source: https://docs.pinecone.io/guides/manage-data/fetch-data
 
-Retrieve complete records by ID or metadata filter.
+Retrieve full Pinecone records by ID from a namespace to inspect vector values, metadata, and IDs, or verify upserts using the fetch operation.
 
 <Tip>
   You can fetch data using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes/-/browser).
@@ -16247,7 +16247,7 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 # List record IDs
 Source: https://docs.pinecone.io/guides/manage-data/list-record-ids
 
-List the IDS of records in an index namespace.
+List the IDs of records in a Pinecone serverless namespace, filter by ID prefix, and paginate results to verify upserts cheaply and quickly.
 
 You can list the IDs of all records in a [namespace](/guides/index-data/indexing-overview#namespaces) or just the records with a common ID prefix.
 
@@ -16959,7 +16959,7 @@ When there are no more IDs to return, the response does not includes a `paginati
 # Manage serverless indexes
 Source: https://docs.pinecone.io/guides/manage-data/manage-indexes
 
-List, describe, and configure serverless indexes.
+List, describe, configure, and delete serverless indexes in Pinecone, including tags, deletion protection, and metadata index configuration.
 
 This page shows you how to manage your existing serverless indexes.
 
@@ -18514,7 +18514,7 @@ The example returns a response like the following:
 # Manage namespaces
 Source: https://docs.pinecone.io/guides/manage-data/manage-namespaces
 
-Create and manage namespaces in serverless indexes.
+Create, describe, list, and delete namespaces in Pinecone serverless indexes, including defining filterable metadata fields and schemas ahead of upsert.
 
 ## Create a namespace
 
@@ -19192,7 +19192,7 @@ Pinecone does not support moving records between namespaces directly. Instead, y
 # Restore an index
 Source: https://docs.pinecone.io/guides/manage-data/restore-an-index
 
-Restore serverless indexes from backup snapshots.
+Restore a Pinecone serverless index from a backup, change the index name, tags, or deletion protection, and preserve embedding model configuration.
 
 ## Create a serverless index from a backup
 
@@ -19814,7 +19814,7 @@ The example returns a response like the following:
 # Target an index
 Source: https://docs.pinecone.io/guides/manage-data/target-an-index
 
-Target an index by host or name for data operations such as upsert and query.
+Target a Pinecone index by host URL (recommended for production) or by name for data operations like upsert, query, and fetch across SDKs.
 
 <Warning>
   **Do not target an index by name in production.**
@@ -20114,7 +20114,7 @@ This method is convenient for testing but is not recommended for production:
 # Update records
 Source: https://docs.pinecone.io/guides/manage-data/update-data
 
-Update vectors and metadata for existing records
+Update Pinecone records by ID to change vector values or metadata, or update metadata across multiple records using a metadata filter expression.
 
 You can [update](/reference/api/latest/data-plane/update) a single record using the record ID or multiple records using a metadata filter.
 
@@ -20722,7 +20722,7 @@ Pinecone is eventually consistent, so there can be a slight delay before updates
 # Integrate with Amazon S3
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-amazon-s3
 
-Set up Amazon S3 integrationfor data import and audit logs.
+Connect Pinecone to an Amazon S3 bucket using an IAM role to import data and export audit logs.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -20888,7 +20888,7 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 # Integrate with Azure Blob Storage
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-azure-blob-storage
 
-Set up Azure Blob Storage integration for data import.
+Connect Pinecone to Azure Blob Storage using a service principal to import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -20951,7 +20951,7 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 # Integrate with Google Cloud Storage
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-google-cloud-storage
 
-Integrate Google Cloud Storage for bulk data import
+Connect Pinecone to a Google Cloud Storage bucket with a service account key to import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -21003,7 +21003,7 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 # Manage storage integrations
 Source: https://docs.pinecone.io/guides/operations/integrations/manage-storage-integrations
 
-Update and manage cloud storage integrations.
+Update or delete existing Amazon S3, Google Cloud Storage, and Azure Blob storage integrations for your Pinecone project in the console.
 
 <Note>
   This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -21043,7 +21043,7 @@ To delete a storage integration through the [Pinecone console](https://app.pinec
 # Local development with Pinecone Local
 Source: https://docs.pinecone.io/guides/operations/local-development
 
-Develop locally with an in-memory Pinecone emulator.
+Run Pinecone Local, an in-memory Docker emulator, to develop and test apps offline without an account or usage fees.
 
 Pinecone Local is an in-memory Pinecone emulator available as a Docker image.
 
@@ -22227,7 +22227,7 @@ When you're ready to run your application against your Pinecone account, be sure
 # Use the Pinecone MCP server
 Source: https://docs.pinecone.io/guides/operations/mcp-server
 
-Use Pinecone MCP server for AI agent integration.
+Connect AI agents to Pinecone through the MCP server to search docs, manage indexes, and query data from Claude, Cursor, Antigravity, or Claude Code.
 
 The Pinecone MCP server enables AI agents to interact directly with Pinecone's functionality and documentation via the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). Using the MCP server, agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information.
 
@@ -22480,7 +22480,7 @@ Antigravity supports MCP via its built-in MCP Store. You can install the Pinecon
 # Decrease latency
 Source: https://docs.pinecone.io/guides/optimize/decrease-latency
 
-Learn techniques to decrease latency for search and upsert operations.
+Reduce query and upsert latency in Pinecone using namespaces, metadata filters, targeting indexes by host, and regional colocation strategies.
 
 ## Use namespaces
 
@@ -22602,7 +22602,7 @@ To handle rate limits effectively:
 # Increase search relevance
 Source: https://docs.pinecone.io/guides/optimize/increase-relevance
 
-Learn techniques to improve search result quality.
+Improve Pinecone search quality with reranking models, metadata filtering, and hybrid search that combines full-text and vector retrieval for RAG.
 
 This page describes helpful techniques for improving search accuracy and relevance.
 
@@ -22683,7 +22683,7 @@ For more details, see [Chunking strategies](https://www.pinecone.io/learn/chunki
 # Increase throughput
 Source: https://docs.pinecone.io/guides/optimize/increase-throughput
 
-Learn techniques to improve data operation performance and query throughput.
+Increase Pinecone throughput with bulk import from object storage, batch upserts, parallel requests, and the Python gRPC SDK for faster ingestion.
 
 ## Import from object storage
 
@@ -22715,7 +22715,7 @@ Read more about [high-throughput optimizations](https://www.pinecone.io/blog/wor
 # Save on costs
 Source: https://docs.pinecone.io/guides/optimize/save-on-costs
 
-Learn techniques to reduce spend when ingesting data, querying, and operating indexes.
+Save on Pinecone costs by using bulk import over upsert, namespaces for multitenancy, and query patterns that reduce read unit consumption.
 
 ## Credits and discounts
 
@@ -22764,7 +22764,7 @@ For sustained, high read throughput, [dedicated read nodes](/guides/index-data/d
 # Access your invoices
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/access-your-invoices
 
-View and download organization billing invoices.
+View and download your Pinecone organization billing invoices in the console, including invoice history, receipts, and payment records.
 
 You can access your billing history and invoices in the Pinecone console:
 
@@ -22778,7 +22778,7 @@ Each invoice includes line items for the services used during the billing period
 # Change your payment method
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/change-payment-method
 
-Update your billing payment method.
+Update your Pinecone organization payment method in the console, including credit card details, billing address, and payment preferences.
 
 You can pay for the [Standard and Enterprise plans](https://www.pinecone.io/pricing/) with a credit/debit card or through the AWS Marketplace, Microsoft Marketplace, or Google Cloud Marketplace. This page describes how to switch between these payment methods.
 
@@ -23309,7 +23309,7 @@ To update your credit card information in the Pinecone console, do the following
 # Downgrade your plan
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/downgrade-billing-plan
 
-Downgrade from a paid plan to the free Starter plan.
+Downgrade your Pinecone organization from a paid plan to the free Starter plan, including plan requirements, index limits, and billing impact.
 
 <Note>
   To change your billing plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).
@@ -23433,7 +23433,7 @@ If you pay through a cloud marketplace, you cannot switch to the Builder plan at
 # Download a usage report
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/download-usage-report
 
-Download detailed usage and cost reports.
+Download detailed Pinecone usage and cost reports from the console, including index consumption, storage metrics, and per-project spend breakdowns.
 
 <Note>
   To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
@@ -23460,7 +23460,7 @@ Dates are shown in UTC to match billing invoices. Cost data is delayed up to thr
 # Account deactivation for non-payment
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/non-payment-account-deactivation
 
-Understand what happens when your account is deactivated for non-payment, including data retention and how to reactivate.
+Learn what happens when a Pinecone account is deactivated for non-payment: 30-day data retention, permanent deletion, and how to reactivate.
 
 If your organization has continued non-payment on a paid billing plan, Pinecone may deactivate your account. While your account is deactivated, you cannot use Pinecone services, but your data is retained for a limited time so you can reactivate and recover it.
 
@@ -23509,7 +23509,7 @@ If you believe your account was deactivated in error, [contact Support](https://
 # Standard trial
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/standard-trial
 
-Get $300 credits for 21 days with the Standard plan trial.
+Get $300 in credits over 21 days with the Pinecone Standard plan trial, including RBAC, bulk import, backup and restore, and higher scale limits.
 
 The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits) that are suitable for testing Pinecone at scale.
 
@@ -23586,7 +23586,7 @@ If you have any questions, [contact Support](https://www.pinecone.io/contact/sup
 # Upgrade your plan
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/upgrade-billing-plan
 
-Upgrade to a paid plan to access advanced features and limits.
+Upgrade to a paid Pinecone plan for higher limits, backups, private endpoints, audit logs, and access to the Builder, Standard, or Enterprise tiers.
 
 This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
 
@@ -23692,7 +23692,7 @@ Once your organization is connected and upgraded, you will receive a confirmatio
 # Manage organization members
 Source: https://docs.pinecone.io/guides/organizations/manage-organization-members
 
-Add and manage organization members and roles.
+Add, invite, and manage members in your Pinecone organization, including assigning organization roles, changing permissions, and removing users.
 
 This page shows how [organization owners](/guides/organizations/understanding-organizations#organization-roles) can add and manage organization members.
 
@@ -23738,7 +23738,7 @@ You can remove a member from your organization in the [Pinecone console](https:/
 # Manage service accounts at the organization-level
 Source: https://docs.pinecone.io/guides/organizations/manage-service-accounts
 
-Create service accounts for organization-level API access.
+Create and manage service accounts at the organization level in Pinecone for programmatic Admin API access, including client secrets and role assignment.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
@@ -23851,7 +23851,7 @@ Deleting a service account will remove it from all projects and will disrupt any
 # Understanding organizations
 Source: https://docs.pinecone.io/guides/organizations/understanding-organizations
 
-Understand organization structure, projects, and billing.
+Learn how Pinecone organizations group projects, share billing, and use organization roles to control member permissions and access to resources.
 
 A Pinecone organization is a set of [projects](/guides/projects/understanding-projects) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
 
@@ -23926,7 +23926,7 @@ Use service accounts to automate infrastructure management and integrate Pinecon
 # CI/CD with Pinecone Local and GitHub Actions
 Source: https://docs.pinecone.io/guides/production/automated-testing
 
-Test Pinecone integration with CI/CD workflows.
+Build a GitHub Actions CI/CD workflow with Pinecone Local to run automated integration tests against an in-memory emulator without touching production.
 
 Pinecone Local is an in-memory Pinecone Database emulator available as a Docker image.
 
@@ -24955,7 +24955,7 @@ For a list of the events that can trigger a workflow and more details about usin
 # Bring your own cloud (BYOC)
 Source: https://docs.pinecone.io/guides/production/bring-your-own-cloud
 
-Deploy Pinecone in your own cloud account (AWS, GCP, or Azure), with full control over your infrastructure
+Deploy Pinecone BYOC in your own AWS, GCP, or Azure account for data sovereignty, network isolation, and regional data residency requirements.
 
 <Note>
   BYOC is in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure.
@@ -25628,7 +25628,7 @@ Billing follows the agent heartbeat connection to Pinecone's control plane:
 # Configure audit logs
 Source: https://docs.pinecone.io/guides/production/configure-audit-logs
 
-Enable audit logging to Amazon S3 for compliance
+Enable Pinecone audit logging to an Amazon S3 bucket to track user, service account, and API actions for compliance, security review, and WORM retention.
 
 This page describes how to configure audit logs in Pinecone. Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/get-started/database-architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 as a destination for audit logs.
 
@@ -25693,7 +25693,7 @@ If you remove the audit log integration, logs not yet saved will be lost. You ca
 # Configure customer-managed encryption keys
 Source: https://docs.pinecone.io/guides/production/configure-cmek
 
-Use customer-managed encryption keys with AWS KMS.
+Set up customer-managed encryption keys (CMEK) with AWS KMS to encrypt Pinecone data with keys you control, using IAM roles and key policies.
 
 <Note>
   This guide applies to **hosted** Pinecone projects where Pinecone manages your infrastructure. If you use [Bring your own cloud (BYOC)](/guides/production/bring-your-own-cloud), you encrypt data with **your** cloud provider KMS on resources in **your** account; follow the BYOC guide and [pulumi-pinecone-byoc](https://github.com/pinecone-io/pulumi-pinecone-byoc) instead of the console CMEK flow below.
@@ -25970,7 +25970,7 @@ Before a key can be deleted from a project, all indexes in the project must be d
 # Configure Private Endpoints
 Source: https://docs.pinecone.io/guides/production/configure-private-endpoints
 
-Secure Pinecone with private endpoints using AWS PrivateLink or Azure Private Link.
+Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet and secure VPCs.
 
 This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
 
@@ -26325,7 +26325,7 @@ To delete a Private Endpoint using the [Pinecone console](https://app.pinecone.i
 # Configure SSO with Okta
 Source: https://docs.pinecone.io/guides/production/configure-single-sign-on/okta
 
-Configure SAML SSO with Okta for enterprise.
+Set up SAML single sign-on between Pinecone and Okta so your organization members can log in with corporate credentials.
 
 This page describes how to set up Pinecone with Okta as the single sign-on (SSO) provider. These instructions can be adapted for any provider with SAML 2.0 support.
 
@@ -26751,7 +26751,7 @@ To rotate or revoke tokens or view the SCIM endpoint, select **Manage** next to 
 # Data deletion on Pinecone
 Source: https://docs.pinecone.io/guides/production/data-deletion
 
-Understand Pinecone's secure data deletion process.
+Learn how Pinecone permanently deletes customer data, including soft deletion, the 90-day retention window, and secure erasure of records and indexes.
 
 Pinecone follows a secure process to ensure that customer data is permanently deleted from our system. This page gives an overview of the process.
 
@@ -26789,7 +26789,7 @@ Before the end of the 90-day retention window, Pinecone permanently deletes the 
 # Error handling
 Source: https://docs.pinecone.io/guides/production/error-handling
 
-Handle errors with retry logic and best practices.
+Handle Pinecone API errors with retry logic, exponential backoff, and best practices for 4xx client errors, 5xx server errors, and rate limit responses.
 
 ## Understand error types
 
@@ -27309,7 +27309,7 @@ For more information, see [Delete a role binding](/reference/api/2026-04/admin/d
 # Monitor performance
 Source: https://docs.pinecone.io/guides/production/monitoring
 
-Monitor performance metrics in the Pinecone console or with Prometheus or Datadog.
+Monitor Pinecone index performance metrics (query latency, throughput, and errors) in the Pinecone console or via Prometheus and Datadog.
 
 Pinecone generates time-series performance metrics for each Pinecone index. You can monitor these metrics directly in the Pinecone console or with tools like Prometheus or Datadog.
 
@@ -27454,7 +27454,7 @@ avg by (shard_id) (pinecone_db_drn_cpu_usage_percent{index_name="docs-example"})
 # Production checklist
 Source: https://docs.pinecone.io/guides/production/production-checklist
 
-Prepare your indexes for production with best practices.
+Prepare Pinecone indexes for production with best practices for project structure, security, scaling, API keys, and reliability across your workloads.
 
 This page provides recommendations and best practices for preparing your Pinecone indexes for production, anticipating production issues, and enabling reliability and growth.
 
@@ -27546,7 +27546,7 @@ If you need help, [contact Support](https://app.pinecone.io/organizations/-/sett
 # Security overview
 Source: https://docs.pinecone.io/guides/production/security-overview
 
-Understand Pinecone's security features, including authentication, encryption, and audit logs.
+Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints.
 
 ## Access management
 
@@ -27738,7 +27738,7 @@ The following Pinecone SDKs support the use of proxies:
 # Create a project
 Source: https://docs.pinecone.io/guides/projects/create-a-project
 
-Create a new Pinecone project in your organization.
+Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
 
 This page shows you how to create a project.
 
@@ -27836,7 +27836,7 @@ If you are an [organization owner or organization manager](/guides/organizations
 # Manage API keys
 Source: https://docs.pinecone.io/guides/projects/manage-api-keys
 
-Create and manage API keys with custom permissions.
+Create, view, update, and delete Pinecone API keys with custom permissions per project, including scoped roles and data plane access controls.
 
 Each Pinecone [project](/guides/projects/understanding-projects) has one or more API keys. In order to [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
@@ -28221,7 +28221,7 @@ If you are a [project owner](/guides/projects/understanding-projects#project-rol
 # Manage project members
 Source: https://docs.pinecone.io/guides/projects/manage-project-members
 
-Add and manage project members with role-based access control.
+Add, remove, and update Pinecone project members using role-based access control (RBAC) to manage permissions and project owner roles.
 
 [Organization owners](/guides/organizations/understanding-organizations#organization-roles) or [project owners](/guides/projects/understanding-projects#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/guides/projects/understanding-projects#project-roles) that determine their permissions within the project.
 
@@ -28274,7 +28274,7 @@ You can remove a member from a project in the [Pinecone console](https://app.pin
 # Manage projects
 Source: https://docs.pinecone.io/guides/projects/manage-projects
 
-View, rename, and delete projects in your organization.
+View project details, rename projects, and delete projects in your Pinecone organization using the console or Admin API with owner permissions.
 
 This page shows you how to view project details, rename a project, and delete a project.
 
@@ -28475,7 +28475,7 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
 # Manage service accounts at the project-level
 Source: https://docs.pinecone.io/guides/projects/manage-service-accounts
 
-Enable service accounts for programmatic API access.
+Add service accounts to a Pinecone project and assign project roles to enable programmatic API access for automated workflows and CI pipelines.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
@@ -28517,7 +28517,7 @@ To remove a service account from a project in the [Pinecone console](https://app
 # Understanding projects
 Source: https://docs.pinecone.io/guides/projects/understanding-projects
 
-Learn about projects, environments, and member roles.
+Learn how Pinecone projects organize indexes, cloud environments, API keys, and members, including project roles and per-role permission summaries.
 
 A Pinecone project belongs to an [organization](/guides/organizations/understanding-organizations) and contains a number of [indexes](/guides/index-data/indexing-overview) and users. Only a user who belongs to the project can access the indexes in that project. Each project also has at least one project owner.
 
@@ -28626,7 +28626,7 @@ To find the ID of a project, go to the project list in the [Pinecone console](ht
 # Filter by metadata
 Source: https://docs.pinecone.io/guides/search/filter-by-metadata
 
-Narrow search results with metadata filtering.
+Narrow Pinecone search results by adding metadata filter expressions to your query, using operators like $eq, $in, $gt, and $and for precise retrieval.
 
 Every [record](/guides/get-started/concepts#record) in an index must contain an ID and a dense or sparse vector. In addition, you can include [metadata key-value pairs](/guides/index-data/indexing-overview#metadata) to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching the filter expression.
 
@@ -30912,7 +30912,7 @@ Reads and writes on indexes with document schemas are metered using the same [re
 # Hybrid search
 Source: https://docs.pinecone.io/guides/search/hybrid-search
 
-Combine semantic and lexical search for better results.
+Combine dense semantic search with sparse lexical search in a single Pinecone query to improve recall for keyword matches, synonyms, and rare terms.
 
 [Semantic search](/guides/search/semantic-search) and [lexical search](/guides/search/lexical-search) are powerful information retrieval techniques, but each has notable limitations. For example:
 
@@ -32336,7 +32336,7 @@ To perform hybrid search with separate indexes, follow these steps:
 # Lexical search
 Source: https://docs.pinecone.io/guides/search/lexical-search
 
-Perform sparse-vector keyword retrieval against a custom sparse encoder.
+Run sparse-vector lexical search in Pinecone with custom sparse encoders like pinecone-sparse-english-v0 for token-weighted keyword retrieval.
 
 This page shows you how to search an [index with sparse vectors](/guides/index-data/indexing-overview#sparse-indexes) for records that most exactly match the words or phrases in a query. This is often called sparse-vector lexical search.
 
@@ -33331,7 +33331,7 @@ Without the `match_terms` filter, you might get results like:
 # Rerank results
 Source: https://docs.pinecone.io/guides/search/rerank-results
 
-Improve the quality of results with reranking.
+Improve retrieval quality by reranking initial search results with a hosted or external model to surface the most relevant matches for RAG.
 
 Reranking is used as part of a two-stage vector retrieval process to improve the quality of results. You first query an index for a given number of relevant results, and then you send the query and results to a reranking model. The reranking model scores the results based on their semantic relevance to the query and returns a new, more accurate ranking. This approach is one of the simplest methods for improving quality in retrieval augmented generation (RAG) pipelines.
 
@@ -34633,7 +34633,7 @@ The following reranking models are hosted by Pinecone.
 # Search overview
 Source: https://docs.pinecone.io/guides/search/search-overview
 
-Explore full-text, semantic, lexical, and hybrid search options.
+Compare Pinecone search types and choose the right retrieval approach: full-text (BM25), semantic (dense vector), sparse lexical, and hybrid.
 
 <Tip>
   Searches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understanding cost](/guides/manage-cost/understanding-cost#query) for how query cost is calculated.
@@ -34710,7 +34710,7 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 # Semantic search
 Source: https://docs.pinecone.io/guides/search/semantic-search
 
-Find semantically similar records using dense vectors.
+Search a Pinecone index of dense vectors to find semantically similar records using text or vector queries, top_k results, and nearest neighbor lookup.
 
 This page shows you how to search an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) for records that are most similar in meaning and context to a query. This is often called semantic search, nearest neighbor search, similarity search, or just vector search.
 
@@ -35579,7 +35579,7 @@ if __name__ == "__main__":
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -35818,7 +35818,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -36687,7 +36687,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -36738,7 +36738,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -41026,7 +41026,7 @@ For guidance and examples, see [Rerank results](https://docs.pinecone.io/guides/
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -41265,7 +41265,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -42134,7 +42134,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -42185,7 +42185,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -42293,7 +42293,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 # CLI authentication
 Source: https://docs.pinecone.io/reference/cli/authentication
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 
@@ -42431,7 +42431,7 @@ Shows your current authentication method, target organization and project, token
 # CLI command reference
 Source: https://docs.pinecone.io/reference/cli/command-reference
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 
@@ -45556,7 +45556,7 @@ This section describes all commands offered by the Pinecone CLI.
 # CLI quickstart
 Source: https://docs.pinecone.io/reference/cli/quickstart
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 
@@ -45848,7 +45848,7 @@ Find community-contributed SDKs for Pinecone. These libraries are not supported 
 # Pinecone Go SDK
 Source: https://docs.pinecone.io/reference/sdks/go/overview
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
@@ -45976,14 +45976,14 @@ func main() {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/go/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 
@@ -46335,7 +46335,7 @@ Use these values to diagnose performance issues:
 # Pinecone Java SDK
 Source: https://docs.pinecone.io/reference/sdks/java/overview
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
@@ -46424,14 +46424,14 @@ For setup instructions and examples, see [OpenTelemetry support](/reference/sdks
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/java/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Java SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # Pinecone Node.js SDK
 Source: https://docs.pinecone.io/reference/sdks/node/overview
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
@@ -46563,7 +46563,7 @@ indexes().then((response) => {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/node/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Node.js SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -46956,7 +46956,7 @@ index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/python/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Python SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -49813,7 +49813,7 @@ Create a backup of an index.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/create_backup_schedule
 
 POST https://api.pinecone.io/indexes/{index_name}/backup-schedules
-Create a recurring backup schedule for an index.
+Create a recurring backup schedule for a Pinecone serverless index using the API, including daily, weekly, or monthly frequency and retention policy.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -49999,7 +49999,7 @@ Delete a backup.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/delete_backup_schedule
 
 DELETE https://api.pinecone.io/backup-schedules/{schedule_id}
-Delete a backup schedule.
+Delete a backup schedule for a Pinecone serverless index using the API by schedule ID, while preserving all previously created backup snapshots.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -50094,7 +50094,7 @@ Get a description of a backup.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/describe_backup_schedule
 
 GET https://api.pinecone.io/backup-schedules/{schedule_id}
-Get details of a specific backup schedule.
+Retrieve details for a Pinecone backup schedule by schedule ID, including frequency, retention days, next scheduled run, and enabled status.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -50204,7 +50204,7 @@ Get a description of a restore job.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/list_backup_schedule_history
 
 GET https://api.pinecone.io/backup-schedules/{schedule_id}/history
-List the execution history for a backup schedule.
+List execution history for a Pinecone backup schedule, including scheduled runs, completed backups, statuses, and cursor-based pagination support.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -50269,7 +50269,7 @@ List backups created by a specific schedule. When a backup's `status` is `Schedu
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/list_backup_schedules
 
 GET https://api.pinecone.io/indexes/{index_name}/backup-schedules
-List all backup schedules for an index.
+List all backup schedules configured for a Pinecone serverless index, including schedule IDs, frequency, retention, and next scheduled run times.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -50532,7 +50532,7 @@ List all restore jobs for a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/update_backup_schedule
 
 PATCH https://api.pinecone.io/backup-schedules/{schedule_id}
-Update a backup schedule.
+Update a Pinecone backup schedule using the API, including pausing with enabled, changing frequency, and adjusting the retention expire_after_days.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.
@@ -51469,7 +51469,7 @@ For guidance and examples, see [Rerank results](https://docs.pinecone.io/guides/
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -51708,7 +51708,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -52577,7 +52577,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -52628,7 +52628,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -52736,7 +52736,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 # CLI authentication
 Source: https://docs.pinecone.io/reference/cli/authentication
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 
@@ -52874,7 +52874,7 @@ Shows your current authentication method, target organization and project, token
 # CLI command reference
 Source: https://docs.pinecone.io/reference/cli/command-reference
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 
@@ -55999,7 +55999,7 @@ This section describes all commands offered by the Pinecone CLI.
 # CLI quickstart
 Source: https://docs.pinecone.io/reference/cli/quickstart
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 
@@ -56291,7 +56291,7 @@ Find community-contributed SDKs for Pinecone. These libraries are not supported 
 # Pinecone Go SDK
 Source: https://docs.pinecone.io/reference/sdks/go/overview
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
@@ -56419,14 +56419,14 @@ func main() {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/go/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 
@@ -56778,7 +56778,7 @@ Use these values to diagnose performance issues:
 # Pinecone Java SDK
 Source: https://docs.pinecone.io/reference/sdks/java/overview
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
@@ -56867,14 +56867,14 @@ For setup instructions and examples, see [OpenTelemetry support](/reference/sdks
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/java/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Java SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # Pinecone Node.js SDK
 Source: https://docs.pinecone.io/reference/sdks/node/overview
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
@@ -57006,7 +57006,7 @@ indexes().then((response) => {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/node/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Node.js SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -57399,7 +57399,7 @@ index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/python/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Python SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -57660,7 +57660,7 @@ To stream upsert embeddings to Pinecone:
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -57899,7 +57899,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -58768,7 +58768,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -58819,7 +58819,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -58927,7 +58927,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 # CLI authentication
 Source: https://docs.pinecone.io/reference/cli/authentication
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 
@@ -59065,7 +59065,7 @@ Shows your current authentication method, target organization and project, token
 # CLI command reference
 Source: https://docs.pinecone.io/reference/cli/command-reference
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 
@@ -62190,7 +62190,7 @@ This section describes all commands offered by the Pinecone CLI.
 # CLI quickstart
 Source: https://docs.pinecone.io/reference/cli/quickstart
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 
@@ -62482,7 +62482,7 @@ Find community-contributed SDKs for Pinecone. These libraries are not supported 
 # Pinecone Go SDK
 Source: https://docs.pinecone.io/reference/sdks/go/overview
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
@@ -62610,14 +62610,14 @@ func main() {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/go/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 
@@ -62969,7 +62969,7 @@ Use these values to diagnose performance issues:
 # Pinecone Java SDK
 Source: https://docs.pinecone.io/reference/sdks/java/overview
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
@@ -63058,14 +63058,14 @@ For setup instructions and examples, see [OpenTelemetry support](/reference/sdks
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/java/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Java SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # Pinecone Node.js SDK
 Source: https://docs.pinecone.io/reference/sdks/node/overview
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
@@ -63197,7 +63197,7 @@ indexes().then((response) => {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/node/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Node.js SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -63590,7 +63590,7 @@ index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/python/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Python SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -63851,7 +63851,7 @@ To stream upsert embeddings to Pinecone:
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -64090,7 +64090,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -64959,7 +64959,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -65010,7 +65010,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -65118,7 +65118,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 # CLI authentication
 Source: https://docs.pinecone.io/reference/cli/authentication
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 
@@ -65256,7 +65256,7 @@ Shows your current authentication method, target organization and project, token
 # CLI command reference
 Source: https://docs.pinecone.io/reference/cli/command-reference
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 
@@ -68381,7 +68381,7 @@ This section describes all commands offered by the Pinecone CLI.
 # CLI quickstart
 Source: https://docs.pinecone.io/reference/cli/quickstart
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 
@@ -68673,7 +68673,7 @@ Find community-contributed SDKs for Pinecone. These libraries are not supported 
 # Pinecone Go SDK
 Source: https://docs.pinecone.io/reference/sdks/go/overview
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
@@ -68801,14 +68801,14 @@ func main() {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/go/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 
@@ -69160,7 +69160,7 @@ Use these values to diagnose performance issues:
 # Pinecone Java SDK
 Source: https://docs.pinecone.io/reference/sdks/java/overview
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
@@ -69249,14 +69249,14 @@ For setup instructions and examples, see [OpenTelemetry support](/reference/sdks
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/java/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Java SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # Pinecone Node.js SDK
 Source: https://docs.pinecone.io/reference/sdks/node/overview
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
@@ -69388,7 +69388,7 @@ indexes().then((response) => {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/node/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Node.js SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -69781,7 +69781,7 @@ index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/python/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Python SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -70242,7 +70242,7 @@ Full-stack sample applications built with Pinecone: semantic search over PDFs, m
 # Agent Skills
 Source: https://docs.pinecone.io/integrations/agent-skills
 
-Connect Pinecone and Agent Skills to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Install the Pinecone Agent Skills library in any agentic IDE to manage indexes, run semantic search, and build RAG assistants with natural language.
 
 Pinecone's official [Agent Skills](https://github.com/pinecone-io/skills) library brings Pinecone capabilities to any agentic IDE that supports the Agent Skills standard. Use skills to manage indexes, run semantic search, create document Q\&A assistants, and more — all through natural language in your IDE.
 
@@ -70321,7 +70321,7 @@ For the full list of MCP tools, see [Use the Pinecone MCP server](/guides/operat
 # Airbyte
 Source: https://docs.pinecone.io/integrations/airbyte
 
-Connect Pinecone and Airbyte to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Airbyte Pinecone destination connector to build no-code ETL pipelines that embed source data and upsert vectors for semantic search and RAG.
 
 Airbyte offers a platform for creating ETL pipelines without writing integration code. It supports integrations with hundreds of systems, including databases, data warehouses, and SaaS products.
 
@@ -70339,7 +70339,7 @@ The Pinecone connector for Airbyte allows users to connect these systems directl
 # Apify
 Source: https://docs.pinecone.io/integrations/apify
 
-Connect Pinecone and Apify to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Apify Pinecone integration to crawl and scrape websites, embed the results, and upsert vectors for RAG and semantic search over web content.
 
 [Apify](https://apify.com) is a web scraping and data extraction platform. It provides an app store with more than a thousand ready-made cloud tools called Actors. These tools are suitable for use cases including extracting structured data from e-commerce sites, social media, search engines, online maps, or any other website.
 
@@ -70353,7 +70353,7 @@ The Apify integration for Pinecone makes it easy to transfer results from Actors
 # Aryn
 Source: https://docs.pinecone.io/integrations/aryn
 
-Connect Pinecone and Aryn to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Aryn Sycamore and the Partitioning Service with Pinecone to extract, chunk, and embed complex PDFs and documents for higher-accuracy RAG pipelines.
 
 Aryn is an AI-powered ETL system for complex, unstructured documents like PDFs, HTML, presentations, and more. It's purpose-built for building RAG and GenAI applications, providing up to 6x better accuracy in chunking and extracting information from documents. This can lead to 30% better recall and 2x improvement in answer accuracy for real-world use cases.
 
@@ -70369,7 +70369,7 @@ The Pinecone integration with Aryn enables developers to easily chunk documents,
 # Box
 Source: https://docs.pinecone.io/integrations/box
 
-Connect Pinecone and Box to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Connect Box folders to Pinecone Database to embed documents with Pinecone Inference and build RAG agents and semantic search over Box content.
 
 Connect a [Box](https://www.box.com/) account to a Pinecone vector database.
 
@@ -70381,7 +70381,7 @@ This integration allows embeddings generation based on content stored in a parti
 # Claude Code Plugin
 Source: https://docs.pinecone.io/integrations/claude-code
 
-Integrate Pinecone with Claude Code Plugin for vector search, RAG, and production AI workloads.
+Install the official Pinecone plugin for Claude Code to manage indexes, run vector search, and build RAG assistants from the terminal with slash commands.
 
 The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides AI-powered skills, MCP server integration, and slash commands directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
 
@@ -70471,7 +70471,7 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 # Confluent
 Source: https://docs.pinecone.io/integrations/confluent
 
-Connect Pinecone and Confluent to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Pinecone Sink Connector for Confluent Kafka to stream events, embed them with LLMs, and upsert vectors for real-time semantic search and RAG.
 
 Confluent allows you to connect and process all of your data in real time with a cloud-native and complete data streaming platform available everywhere you need it. Confluent's Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other data systems. It makes it simple to quickly define connectors that move large data sets in and out of Kafka.
 
@@ -70483,7 +70483,7 @@ Use the Pinecone Sink Connector, a Kafka Connect plugin for Pinecone, to take co
 # Cursor Plugin
 Source: https://docs.pinecone.io/integrations/cursor
 
-Integrate Pinecone with the Cursor plugin for vector search, RAG, and production AI workloads.
+Install the official Pinecone plugin for Cursor to manage indexes, run vector search, and build RAG apps from the editor using MCP and slash commands.
 
 The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-powered skills, MCP server integration, and slash commands directly in your editor. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
 
@@ -70576,7 +70576,7 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 # Databricks
 Source: https://docs.pinecone.io/integrations/databricks
 
-Connect Pinecone and Databricks to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Databricks and the Pinecone Spark connector to distribute embedding jobs across a cluster and upsert vectors at scale for semantic search and RAG.
 
 Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, it is easy to horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of precious computation time and resources. Leveraging GPUs with Spark can produce even better results — enjoying the benefits of the fast computation of a GPU combined with parallelization will ensure optimal performance.
 
@@ -70788,7 +70788,7 @@ As your example dataset, use a collection of news articles from Hugging Face's d
 # Datavolo
 Source: https://docs.pinecone.io/integrations/datavolo
 
-Connect Pinecone and Datavolo to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Datavolo pipelines to source, transform, and enrich unstructured data into Pinecone for retrieval augmented generation and multimodal AI apps.
 
 [Datavolo](https://datavolo.io/) helps data teams build multimodal data pipelines to support their AI initiatives. Every organization has their own private data that they need to incorporate into their AI apps, and a predominant pattern to do so has emerged: retrieval augmented generation (RAG).
 
@@ -70800,7 +70800,7 @@ Datavolo sources, transforms, and enriches data in a continuous, composable and 
 # Estuary
 Source: https://docs.pinecone.io/integrations/estuary
 
-Connect Pinecone and Estuary to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Estuary Pinecone connector to build real-time, millisecond-latency pipelines that incrementally embed source data for LLM search and RAG.
 
 [Estuary](https://estuary.dev/) builds real-time data pipelines that focus on moving data from sources to destinations with millisecond latency. It supports integrations with hundreds of systems including databases, warehouses, SaaS products and streaming solutions.
 
@@ -70814,7 +70814,7 @@ Estuary's Pinecone connector enables a variety of use cases like enabling LLM-ba
 # Fleak
 Source: https://docs.pinecone.io/integrations/fleak
 
-Connect Pinecone and Fleak to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Fleak's low-code workflows with Pinecone to combine SQL, LLM inference, and vector search in serverless APIs for RAG and data enrichment pipelines.
 
 Fleak simplifies the process of building, deploying, and managing data workflows. As a low-code platform, Fleak lets users create and deploy complex workflows using SQL and pre-configured processing nodes. The platform facilitates seamless data processing, microservice interactions, and the inference of large language models (LLMs) within a single, intuitive environment. Fleak makes advanced technology accessible and manageable for Pinecone users without requiring extensive coding hours or infrastructure knowledge.
 
@@ -70828,7 +70828,7 @@ By integrating Pinecone into Fleak's platform, users can access and leverage the
 # FlowiseAI
 Source: https://docs.pinecone.io/integrations/flowise
 
-Connect Pinecone and FlowiseAI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use FlowiseAI with Pinecone to build low-code LLM apps that upsert documents and query vector indexes for RAG chatbots and semantic search flows.
 
 Flowise is a low-code LLM apps development platform. It supports integrations with dozens of systems, including databases and chat models.
 
@@ -70840,7 +70840,7 @@ The Pinecone integration with Flowise allows users to build RAG apps, including 
 # Gathr
 Source: https://docs.pinecone.io/integrations/gathr
 
-Connect Pinecone and Gathr to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Gathr's no-code data-to-outcome platform with Pinecone to build enterprise RAG apps, chatbots, and vector pipelines from ingestion through deployment.
 
 [Gathr](https://www.gathr.one/) is the world's first and only "data to outcome" platform. Leading enterprises use Gathr to build and operationalize data and AI-driven solutions at scale.
 
@@ -70858,7 +70858,7 @@ One of the building blocks is integration with Vector DB and Knowledge Graphs. G
 # Gemini CLI Extension
 Source: https://docs.pinecone.io/integrations/gemini-cli
 
-Integrate Pinecone with Gemini CLI Extension for vector search, RAG, and production AI workloads.
+Install the official Pinecone extension for Gemini CLI to manage indexes, run vector search, and build RAG assistants with natural-language commands.
 
 The official Pinecone extension for [Gemini CLI](https://github.com/google-gemini/gemini-cli) provides AI-powered skills and MCP server integration directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants.
 
@@ -70947,7 +70947,7 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 # Matillion
 Source: https://docs.pinecone.io/integrations/matillion
 
-Connect Pinecone and Matillion to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Matillion Data Productivity Cloud to chunk, embed, and upsert data into Pinecone with low-code AI pipelines for RAG, ETL, and GenAI apps.
 
 [Matillion Data Productivity Cloud](https://www.matillion.com/) is a unified platform that helps your team move faster with one central place to build and manage graphical, low-code data pipelines. It allows data teams to use structured, semi-structured, and unstructured data in analytics; build AI pipelines for new use cases; and be more productive.
 
@@ -70968,7 +70968,7 @@ Matillion's graphical AI Prompt Components integrate with large language models 
 # Integrations
 Source: https://docs.pinecone.io/integrations/overview
 
-Pinecone integrations enable you to build and deploy AI applications faster and more efficiently. Integrate Pinecone with your favorite frameworks, data sources, and infrastructure providers.
+Browse Pinecone integrations across vector embedding providers, data ingestion tools, frameworks, and infrastructure to ship AI apps faster.
 
 <CardGroup>
   <Card href="/integrations/agent-skills">
@@ -71520,7 +71520,7 @@ Pinecone integrations enable you to build and deploy AI applications faster and 
 # Model Gallery
 Source: https://docs.pinecone.io/models/overview
 
-Pinecone integrations enable you to build and deploy AI applications faster and more efficiently. Integrate Pinecone with your favorite frameworks, data sources, and infrastructure providers.
+Browse Pinecone's hosted embedding and reranking model gallery with details on dimensions, sequence length, pricing, and supported tasks.
 
 <div>
   <span>
@@ -71582,7 +71582,7 @@ Pinecone integrations enable you to build and deploy AI applications faster and 
 # Authentication
 Source: https://docs.pinecone.io/reference/api/authentication
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -71821,7 +71821,7 @@ curl https://api.pinecone.io/indexes \
 # Pinecone Database limits
 Source: https://docs.pinecone.io/reference/api/database-limits
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 
@@ -72690,7 +72690,7 @@ The API gateway did not receive a timely response from the backend server. This 
 # API reference
 Source: https://docs.pinecone.io/reference/api/introduction
 
-Pinecone REST API: Pinecone's APIs let you interact programmatically with your Pinecone account.
+Pinecone API reference overview for Database, Inference, and Admin endpoints with supported SDKs including Python, Node.js, Java, and Go.
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
@@ -72741,7 +72741,7 @@ The following Pinecone SDKs support using the Inference API:
 # Known limitations
 Source: https://docs.pinecone.io/reference/api/known-limitations
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 
@@ -72849,7 +72849,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 # CLI authentication
 Source: https://docs.pinecone.io/reference/cli/authentication
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 
@@ -72987,7 +72987,7 @@ Shows your current authentication method, target organization and project, token
 # CLI command reference
 Source: https://docs.pinecone.io/reference/cli/command-reference
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 
@@ -76112,7 +76112,7 @@ This section describes all commands offered by the Pinecone CLI.
 # CLI quickstart
 Source: https://docs.pinecone.io/reference/cli/quickstart
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 
@@ -76404,7 +76404,7 @@ Find community-contributed SDKs for Pinecone. These libraries are not supported 
 # Pinecone Go SDK
 Source: https://docs.pinecone.io/reference/sdks/go/overview
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
@@ -76532,14 +76532,14 @@ func main() {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/go/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
-Monitor Pinecone Java SDK operations with OpenTelemetry metrics, including latency breakdowns and error tracking.
+Monitor Pinecone Java SDK operations with OpenTelemetry metrics for client latency, server processing time, and errors via Prometheus.
 
 The Pinecone Java SDK provides built-in support for capturing per-operation response metadata, making it straightforward to monitor your Pinecone usage with [OpenTelemetry](https://opentelemetry.io/) or any other observability system.
 
@@ -76891,7 +76891,7 @@ Use these values to diagnose performance issues:
 # Pinecone Java SDK
 Source: https://docs.pinecone.io/reference/sdks/java/overview
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
@@ -76980,14 +76980,14 @@ For setup instructions and examples, see [OpenTelemetry support](/reference/sdks
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/java/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Java SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
 # Pinecone Node.js SDK
 Source: https://docs.pinecone.io/reference/sdks/node/overview
 
-Install and use the Pinecone SDK for Pinecone Node.js SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
+Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
 <Tip>
   For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
@@ -77119,7 +77119,7 @@ indexes().then((response) => {
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/node/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Node.js SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -77512,7 +77512,7 @@ index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
 # Reference
 Source: https://docs.pinecone.io/reference/sdks/python/reference
 
-Browse the Pinecone SDK reference for Reference: types and methods.
+Reference documentation for the Pinecone Python SDK, including client setup, types, and methods for managing indexes and vector data operations.
 
 
 
@@ -77773,7 +77773,7 @@ To stream upsert embeddings to Pinecone:
 # Access your invoices
 Source: https://docs.pinecone.io/guides/assistant/admin/access-your-invoices
 
-View and download billing invoices from Pinecone.
+View, download, and manage your Pinecone billing invoices from the console, including past invoice history, payment status, and PDF exports.
 
 You can access your billing history and invoices in the Pinecone console:
 
@@ -77787,7 +77787,7 @@ Each invoice includes line items for the services used during the billing period
 # Change your payment method
 Source: https://docs.pinecone.io/guides/assistant/admin/change-payment-method
 
-Update billing payment method for your organization.
+Update the credit card or payment method on file for your Pinecone organization to keep billing details current and avoid failed charges.
 
 You can pay for the [Standard and Enterprise plans](https://www.pinecone.io/pricing/) with a credit/debit card or through the AWS Marketplace, Microsoft Marketplace, or Google Cloud Marketplace. This page describes how to switch between these payment methods.
 
@@ -78318,7 +78318,7 @@ To update your credit card information in the Pinecone console, do the following
 # Configure audit logs
 Source: https://docs.pinecone.io/guides/assistant/admin/configure-audit-logs
 
-Track user and API actions with audit log configuration.
+Set up Pinecone audit logs streamed to an Amazon S3 bucket to track user, service account, and API actions across the control plane.
 
 This page describes how to configure audit logs in Pinecone. Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/get-started/database-architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 as a destination for audit logs.
 
@@ -78427,7 +78427,7 @@ If you remove the audit log integration, logs not yet saved will be lost. You ca
 # Configure SSO with Okta
 Source: https://docs.pinecone.io/guides/assistant/admin/configure-sso-with-okta
 
-Enable SSO authentication using Okta integration.
+Integrate Okta with Pinecone to enable single sign-on, configure SAML settings, and manage secure user authentication for your organization.
 
 This page describes how to set up Pinecone with Okta as the single sign-on (SSO) provider. These instructions can be adapted for any provider with SAML 2.0 support.
 
@@ -78555,7 +78555,7 @@ Optionally, you can have Pinecone assign organization and project roles automati
 # Downgrade your plan
 Source: https://docs.pinecone.io/guides/assistant/admin/downgrade-billing-plan
 
-Downgrade from a paid plan to the free Starter plan.
+Downgrade your Pinecone subscription from a paid tier back to the free Starter plan, including steps to review usage limits before switching.
 
 <Note>
   To change your billing plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).
@@ -78679,7 +78679,7 @@ If you pay through a cloud marketplace, you cannot switch to the Builder plan at
 # Download a usage report
 Source: https://docs.pinecone.io/guides/assistant/admin/download-usage-report
 
-Export organization usage and cost reports.
+Export a detailed Pinecone usage and cost report for your organization to analyze index consumption, credits, and monthly billing charges.
 
 <Note>
   To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
@@ -78966,7 +78966,7 @@ For more information, see [Delete a role binding](/reference/api/2026-04/admin/d
 # Monitor usage and cost
 Source: https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage
 
-Set monthly spend alerts and monitor usage across your organization.
+Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track token usage across chat, context retrieval, and evaluation.
 
 ## Set monthly spend alerts
 
@@ -79171,7 +79171,7 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
 # Organizations overview
 Source: https://docs.pinecone.io/guides/assistant/admin/organizations-overview
 
-Understand organization structure, projects, and billing.
+Learn how Pinecone organizations group projects under shared billing, and how organization owners, members, and roles control access and permissions.
 
 A Pinecone organization is a set of [projects](/guides/assistant/admin/projects-overview) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
 
@@ -79247,7 +79247,7 @@ Use service accounts to automate infrastructure management and integrate Pinecon
 # Security overview
 Source: https://docs.pinecone.io/guides/assistant/admin/security-overview
 
-Understand Pinecone's security features, including authentication, encryption, and audit logs.
+Overview of Pinecone Assistant admin security features including API keys, single sign-on, service accounts, and audit logs across your organization.
 
 This page describes Pinecone's security protocols, practices, and features.
 
@@ -79415,7 +79415,7 @@ The following Pinecone SDKs support the use of proxies:
 # Upgrade your plan
 Source: https://docs.pinecone.io/guides/assistant/admin/upgrade-billing-plan
 
-Upgrade to a paid plan to access advanced features and limits.
+Learn how Pinecone Assistant admins upgrade to a paid plan to unlock higher limits, more files, evaluations, and advanced access controls.
 
 This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
 
@@ -79521,7 +79521,7 @@ Once your organization is connected and upgraded, you will receive a confirmatio
 # Chat through the OpenAI-compatible interface
 Source: https://docs.pinecone.io/guides/assistant/chat-through-the-openai-compatible-interface
 
-Integrate OpenAI-compatible chat interface with Pinecone Assistant.
+Chat with Pinecone Assistant using the OpenAI-compatible Chat Completion API for inline citations, streaming responses, and easy integration.
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 
@@ -80034,7 +80034,7 @@ To control the sampling temperature for a model, set the `temperarture` paramete
 # Chat through the standard interface
 Source: https://docs.pinecone.io/guides/assistant/chat-with-assistant
 
-Chat with your assistant using the standard interface and API.
+Chat with Pinecone Assistant through the standard interface with default, streaming, or JSON responses, plus citations and chat history support.
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 
@@ -80928,7 +80928,7 @@ The example returns response like the following:
 # Context snippets overview
 Source: https://docs.pinecone.io/guides/assistant/context-snippets-overview
 
-Retrieve context snippets from files uploaded to your assistant.
+Learn how Pinecone Assistant retrieves context snippets with relevancy scores and references for RAG applications and agentic workflows.
 
 You can [retrieve the context snippets](/guides/assistant/retrieve-context-snippets) that Pinecone Assistant uses to generate its responses. This data includes relevant chunks, relevancy scores, and references.
 
@@ -80956,7 +80956,7 @@ Context retrieval usage is [measured in tokens](/guides/assistant/pricing-and-li
 # Create an assistant
 Source: https://docs.pinecone.io/guides/assistant/create-assistant
 
-Create and deploy a Pinecone Assistant with uploaded files for context.
+Create a Pinecone Assistant with custom instructions, metadata, and region settings using the API, Python SDK, Node.js SDK, or console.
 
 This page shows you how to create an [assistant](/guides/assistant/overview).
 
@@ -81020,7 +81020,7 @@ You can [create an assistant](/reference/api/latest/assistant/create_assistant),
 # Evaluate answers
 Source: https://docs.pinecone.io/guides/assistant/evaluate-answers
 
-Measure assistant response quality with LLM-based evaluation.
+Evaluate RAG system answers with Pinecone Assistant using correctness, completeness, and alignment metrics against a ground truth answer.
 
 This page shows you how to [evaluate responses](/guides/assistant/evaluation-overview) from an assistant or other RAG systems using the `metrics_alignment` operation.
 
@@ -81108,7 +81108,7 @@ You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment)
 # Evaluation overview
 Source: https://docs.pinecone.io/guides/assistant/evaluation-overview
 
-Learn about evaluating the correctness and completeness of assistant responses.
+Overview of Pinecone Assistant response evaluation: measure correctness, completeness, and alignment scores to benchmark RAG system quality.
 
 You can [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from an assistant or RAG system.
 
@@ -81226,7 +81226,7 @@ Response evaluation is only available for [Standard and Enterprise plans](https:
 # Files in Pinecone Assistant
 Source: https://docs.pinecone.io/guides/assistant/files-overview
 
-Understand supported file types and metadata in Pinecone Assistant.
+Overview of Pinecone Assistant files: supported file types (PDF, DOCX, JSON, MD, TXT), metadata filters, storage, and signed URL access.
 
 Before you can chat with the assistant, you need to [upload files](/guides/assistant/manage-files#upload-a-local-file). The files provide your assistant with context and information to reference when generating responses. Files are not shared across assistants.
 
@@ -81380,7 +81380,7 @@ Additionally, requests with the following filters will **not** match because the
 # Manage assistants
 Source: https://docs.pinecone.io/guides/assistant/manage-assistants
 
-View, update, and delete, and check the status of assistants.
+List, describe, update, and delete Pinecone assistants and check assistant status using the API, Python SDK, Node.js SDK, or Pinecone console.
 
 ## List assistants for a project
 
@@ -81617,7 +81617,7 @@ You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) 
 # Manage files
 Source: https://docs.pinecone.io/guides/assistant/manage-files
 
-List, check status, and delete files from your assistant.
+List files in your Pinecone assistant, check individual file ingestion status by ID, view metadata, and delete files using the API, SDKs, or console.
 
 <Note>
   File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).
@@ -81991,7 +81991,7 @@ Operations can have the following status values:
 # Use an Assistant MCP server
 Source: https://docs.pinecone.io/guides/assistant/mcp-server
 
-Connect AI agents to Pinecone Assistant via Model Context Protocol.
+Connect AI agents to a Pinecone Assistant MCP server via remote or local Model Context Protocol endpoints, including Cursor and Claude Desktop.
 
 Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This page shows you how to connect an assistant's MCP server with Cursor, Claude Desktop, and LangChain.
 
@@ -82270,7 +82270,7 @@ docker run -i --rm \
 # Multimodal context for assistants
 Source: https://docs.pinecone.io/guides/assistant/multimodal
 
-Process images and charts in PDFs with multimodal assistants.
+Enable multimodal PDF context in Pinecone Assistant to analyze charts, images, and diagrams using OCR and visual understanding for RAG.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -82764,7 +82764,7 @@ To learn about other assistant-related limits, see [Pinecone Assistant limits](/
 # Pinecone Assistant
 Source: https://docs.pinecone.io/guides/assistant/overview
 
-Pinecone Assistant is a service that allow you to build production-grade chat and agent-based applications quickly.
+Overview of Pinecone Assistant, a managed service for building production-grade RAG chat and agent applications grounded in your data.
 
 <CardGroup>
   <Card title="Assistant quickstart" icon="comments" href="/guides/assistant/quickstart/sdk-quickstart">
@@ -83036,7 +83036,7 @@ You can use the Pinecone Assistant through the [Pinecone console](https://app.pi
 # Pricing and limits
 Source: https://docs.pinecone.io/guides/assistant/pricing-and-limits
 
-Understand Pinecone Assistant pricing and service limits.
+Understand Pinecone Assistant pricing for ingestion units, chat tokens, and storage, plus plan-based service limits for file uploads and knowledge size.
 
 Pricing and limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
 
@@ -83235,7 +83235,7 @@ Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` st
 # Pinecone Assistant: n8n quickstart
 Source: https://docs.pinecone.io/guides/assistant/quickstart/n8n-quickstart
 
-Create an n8n workflow to chat with documents using Pinecone Assistant and OpenAI.
+Build an n8n workflow with Pinecone Assistant and OpenAI to download files via HTTP, upload documents, and chat with them from an automation.
 
 Create an [n8n](https://docs.n8n.io/choose-n8n/) workflow that that downloads files via HTTP, uploads them to Pinecone Assistant, and enables you to chat with documents using OpenAI.
 
@@ -83316,7 +83316,7 @@ What support does Pinecone have for MCP?
 # Pinecone Assistant: SDK quickstart
 Source: https://docs.pinecone.io/guides/assistant/quickstart/sdk-quickstart
 
-Use a Pinecone SDK to create an assistant, upload documents, and chat with the assistant.
+Quickstart for Pinecone Assistant using the Python or Node.js SDK to create an assistant, upload documents, and chat with your data via RAG.
 
 Use a Pinecone SDK to create an assistant, upload documents, and chat with the assistant.
 
@@ -83530,7 +83530,7 @@ When you no longer need the `example-assistant`, [delete the assistant](/referen
 # Retrieve context snippets
 Source: https://docs.pinecone.io/guides/assistant/retrieve-context-snippets
 
-Access relevant context and citations from Pinecone Assistant.
+Retrieve context snippets and citations from a Pinecone Assistant to power your own LLM, RAG application, or agentic workflow with signed URLs.
 
 This page shows you how to [retrieve context snippets](/guides/assistant/context-snippets-overview).
 
@@ -83673,7 +83673,7 @@ While additional tokens will be used for other parameters, adjusting the `top_k`
 # Upload files
 Source: https://docs.pinecone.io/guides/assistant/upload-files
 
-Upload local files to an assistant.
+Upload local files to a Pinecone assistant with Python, JavaScript, or curl, track ingestion operations, and see how uploads are billed as ingestion units.
 
 <Note>
   File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).
@@ -83873,7 +83873,7 @@ response = assistant.upload_bytes_stream(
 # AI Engine
 Source: https://docs.pinecone.io/integrations/ai-engine
 
-Connect Pinecone and AI Engine to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the AI Engine WordPress plugin with Pinecone to power chatbots, semantic search, and RAG over site content directly from your WordPress dashboard.
 
 AI Engine seamlessly connects WordPress with the world's leading AI models. Create intelligent chatbots, generate content, build AI forms, and automate tasks—all from your WordPress dashboard.
 
@@ -83889,7 +83889,7 @@ Everything is designed to feel native to WordPress. Whether you're exploring ide
 # Amazon Bedrock
 Source: https://docs.pinecone.io/integrations/amazon-bedrock
 
-Connect Pinecone and Amazon Bedrock to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Select Pinecone as a Knowledge Base for Amazon Bedrock to ground LLMs with your enterprise data and build accurate, low-latency RAG applications on AWS.
 
 Users can now select Pinecone as a Knowledge Base for [Amazon Bedrock](https://aws.amazon.com/bedrock/), a fully managed service from Amazon Web Services (AWS) for building GenAI applications.
 
@@ -84065,7 +84065,7 @@ By inspecting the trace, we can see what chunks were used by the Agent and diagn
 # Amazon SageMaker
 Source: https://docs.pinecone.io/integrations/amazon-sagemaker
 
-Integrate Pinecone with Amazon SageMaker for vector search, RAG, and production AI workloads.
+Combine Amazon SageMaker with Pinecone to host LLMs and embedding models for scalable retrieval augmented generation and vector search workloads.
 
 Amazon SageMaker is a fully managed service that brings together a broad set of tools to enable high-performance, low-cost machine learning (ML) for any use case. With SageMaker, you can build, train and deploy ML models at scale-- all in one integrated development environment (IDE). SageMaker supports governance requirements with simplified access control and transparency over your ML projects. Amazon SageMaker offers access to hundreds of pretrained models, including publicly available foundational models (FMs), and you can build your own FMs with purpose-built tools to fine-tune, experiment, retrain, and deploy FMs.
 
@@ -84081,7 +84081,7 @@ Amazon SageMaker and Pinecone can be used together for high-performance, scalabl
 # Anyscale
 Source: https://docs.pinecone.io/integrations/anyscale
 
-Connect Pinecone and Anyscale to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Pair Anyscale Endpoints with Canopy and Pinecone to build RAG apps on managed open-source LLMs, with vector search and semantic retrieval out of the box.
 
 Anyscale Endpoints offers open-source large language models (LLMs) as fully managed API endpoints. This allows you to focus on building applications powered by LLMs without the need to worry about the underlying infrastructure.
 
@@ -84093,7 +84093,7 @@ Use Anyscale Endpoints with Canopy, an open source SDK that allows you to test, 
 # AWS Marketplace
 Source: https://docs.pinecone.io/integrations/aws-marketplace
 
-Integrate Pinecone with AWS Marketplace for vector search, RAG, and production AI workloads.
+Subscribe to Pinecone through AWS Marketplace for centralized procurement, pay-as-you-go billing, and consolidated invoicing on your AWS account.
 
 Access Pinecone through our AWS Marketplace listing. AWS Marketplace allows you to manage Pinecone and other third-party software from a centralized location, and simplifies software licensing and procurement with flexible pricing options and multiple deployment methods.
 
@@ -84420,7 +84420,7 @@ Your users can [manage the API keys](/guides/projects/manage-api-keys) generated
 # Integration ecosystem
 Source: https://docs.pinecone.io/integrations/build-integration/integration-ecosystem
 
-Understand how native Pinecone integrations are built with public SDKs and APIs, and how curated listings on the Integrations hub are reviewed for partner support.
+How Pinecone integrations are built with public SDKs and APIs and how listings on the Integrations hub are reviewed for partner support and quality.
 
 Anyone can use the [Pinecone SDKs](/reference/pinecone-sdks) or the [Pinecone API](/reference/api/introduction) to build a native Pinecone integration. We encourage you to build and launch freely to support your users.
 
@@ -84435,7 +84435,7 @@ Listing on our official [Integrations](/integrations/overview) page is a curated
 # Cloudera AI
 Source: https://docs.pinecone.io/integrations/cloudera
 
-Connect Pinecone and Cloudera AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Integrate Cloudera AI with Pinecone to run distributed Spark and Python embedding pipelines and power scalable RAG and vector search on enterprise data.
 
 [Cloudera AI](https://www.cloudera.com/) is an enterprise data cloud experience that provides scalable, secure, and agile machine learning and AI workflows. It leverages the power of Python, Apache Spark, R, and a host of other runtimes for distributed data processing, enabling the efficient creation, ingestion, and updating of vector embeddings at scale.
 
@@ -84458,7 +84458,7 @@ Cloudera's Accelerators for Machine Learning Projects (AMPs) drive efficient dep
 # Cohere
 Source: https://docs.pinecone.io/integrations/cohere
 
-Connect Pinecone and Cohere to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Connect Pinecone and Cohere to ship vector search and RAG applications: generate Cohere embeddings, index them in Pinecone, and rerank results.
 
 The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
 
@@ -84700,7 +84700,7 @@ It's clear from this example that the semantic search pipeline is clearly able t
 # Context Data
 Source: https://docs.pinecone.io/integrations/context-data
 
-Connect Pinecone and Context Data to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Context Data with Pinecone to build no-code flows from Postgres, S3, Salesforce, and more, embedding data and querying indexes in Query Studio.
 
 Using [Context Data](https://contextdata.ai/), you can easily create end-to-end data flows by connecting to a myriad of data sources (PostgreSQL, MySQL, Amazon S3, Salesforce, etc.), seamlessly embedding and writing the results to Pinecone using Context Data's super simple no-code web interface. These flows can also be configured to be triggered and run on a user-defined schedule.
 
@@ -84714,7 +84714,7 @@ You also have the ability to "chat" with your Pinecone indexes directly from Con
 # Datadog
 Source: https://docs.pinecone.io/integrations/datadog
 
-Connect Pinecone and Datadog to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Monitor Pinecone with the Datadog integration to track request latency, index fullness, and usage trends, and alert on anomalies in vector workloads.
 
 <Note>
   This feature is available on the [Builder, Standard, and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -84747,7 +84747,7 @@ On the **Monitoring Resources** tab, you'll find dashboards for the pod-based an
 # Genkit
 Source: https://docs.pinecone.io/integrations/genkit
 
-Connect Pinecone and Genkit to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Genkit Pinecone plugin with Firebase to build AI features with type-safe indexers, embedders, and retrievers for RAG and semantic search apps.
 
 The [Genkit](https://firebase.google.com/docs/genkit) Pinecone plugin empowers developers to reduce the complexity of integrating AI components through simple indexers, embedders and retrievers abstractions. Through the Genkit Pinecone plugin, developers can integrate AI models with their own custom logic and data to build AI features optimized for their businesses.
 
@@ -84760,7 +84760,7 @@ The plugin provides a common format for content that supports combinations of te
 # GitHub Copilot
 Source: https://docs.pinecone.io/integrations/github-copilot
 
-Integrate Pinecone with GitHub Copilot for vector search, RAG, and production AI workloads.
+Install the Pinecone GitHub Copilot Extension to query your indexes, get coding assistance for the Pinecone API, and debug RAG apps from your editor.
 
 Access the Pinecone Copilot Extension through our GitHub Marketplace listing. The Pinecone Copilot Extension serves as a seamless bridge between you and your Pinecone data-- providing product information, coding assistance, troubleshooting capabilities and streamlining the debugging process.
 
@@ -84772,7 +84772,7 @@ This extension offers personalized recommendations right to your fingertips, ena
 # Google Cloud Marketplace
 Source: https://docs.pinecone.io/integrations/google-cloud-marketplace
 
-Integrate Pinecone with Google Cloud Marketplace for vector search, RAG, and production AI workloads.
+Subscribe to Pinecone through Google Cloud Marketplace for centralized procurement, pay-as-you-go billing, and consolidated GCP invoicing.
 
 Access Pinecone through our Google Cloud Marketplace listing. Google Cloud Marketplace allows you to manage Pinecone and other third-party software from a centralized location, and simplifies software licensing and procurement with flexible pricing options and multiple deployment methods.
 
@@ -84784,7 +84784,7 @@ You can set up pay-as-you-go billing for a Pinecone organization through the Goo
 # Haystack
 Source: https://docs.pinecone.io/integrations/haystack
 
-Connect Pinecone and Haystack to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Deepset Haystack's PineconeDocumentStore to build production NLP pipelines that index, embed, and query documents for question answering and RAG.
 
 Haystack is the open source Python framework by Deepset for building custom apps with large language models (LLMs). It lets you quickly try out the latest models in natural language processing (NLP) while being flexible and easy to use. Their community of users and builders has helped shape Haystack into what it is today: a complete framework for building production-ready NLP apps.
 
@@ -85097,7 +85097,7 @@ Answers:
 # Hugging Face Inference Endpoints
 Source: https://docs.pinecone.io/integrations/hugging-face-inference-endpoints
 
-Integrate Pinecone with Hugging Face Inference Endpoints for vector search, RAG, and production AI workloads.
+Generate embeddings with Hugging Face Inference Endpoints and index them in Pinecone for semantic search, RAG, and transformer model deployment.
 
 Hugging Face Inference Endpoints offers a secure production solution to easily deploy any Hugging Face Transformers, Sentence-Transformers and Diffusion models from the Hub on dedicated and autoscaling infrastructure managed by Hugging Face.
 
@@ -85405,7 +85405,7 @@ pinecone.delete_index(index_name)
 # Instill AI
 Source: https://docs.pinecone.io/integrations/instill
 
-Connect Pinecone and Instill AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Wire Pinecone into Instill AI no-code pipelines to upsert, query, and power RAG agents, chatbots, and knowledge bases with vector similarity.
 
 Instill AI specializes in developing cutting-edge solutions for data, models, and pipeline orchestration. Their flagship source-available product, Instill Core, is a no-code/low-code platform designed to facilitate the development, deployment, and management of AI workflows. By simplifying the integration of various AI models and data sources, they enable businesses to harness the power of AI without requiring extensive technical expertise. Their solutions cater to a wide range of applications, from predictive analytics and autonomous AI agents to enterprise private knowledge bases, AI assistants, and beyond.
 
@@ -85417,7 +85417,7 @@ The Pinecone integration with Instill allows developers to incorporate its API f
 # Jina AI
 Source: https://docs.pinecone.io/integrations/jina
 
-Connect Pinecone and Jina AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Jina AI long-context embeddings with Pinecone for multilingual semantic search, RAG chatbots, and domain-specific retrieval up to 8K tokens.
 
 Jina Embeddings leverage powerful models to generate high-quality text embeddings that can process inputs up to 8,000 tokens. Jina Embeddings are designed to be highly versatile, catering to both domain-specific use cases, such as e-commerce, and language-specific needs, including Chinese and German. By providing robust models and the expertise to fine-tune them for specific requirements, Jina AI empowers developers to enhance their search functionalities, improve natural language understanding, and drive more insightful data analysis.
 
@@ -85429,7 +85429,7 @@ By integrating Pinecone with Jina, you can add knowledge to LLMs via retrieval a
 # LangChain
 Source: https://docs.pinecone.io/integrations/langchain
 
-Connect Pinecone and LangChain to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build LangChain RAG apps, agents, and chatbots on Pinecone: manage embeddings, vector stores, retrievers, and chains for LLM-powered search.
 
 LangChain provides modules for managing and optimizing the use of large language models (LLMs) in applications. Its core philosophy is to facilitate data-aware applications where the language model interacts with other data sources and its environment. This framework consists of several parts that simplify the entire application lifecycle:
 
@@ -85833,7 +85833,7 @@ pc.delete_index(name=index_name)
 # Langtrace
 Source: https://docs.pinecone.io/integrations/langtrace
 
-Connect Pinecone and Langtrace to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Trace Pinecone API calls with Langtrace's OpenTelemetry SDK to debug RAG pipelines, monitor vector DB latency, and ship LLM observability.
 
 Scale3 Labs recently launched Langtrace AI, an open-source monitoring and evaluation platform for LLM-powered applications. Langtrace is built based on Open Telemetry(OTEL) standards and supports native tracing for the most popular LLM vendors, VectorDBs, and frameworks(like Langchain and LlamaIndex).
 
@@ -85847,7 +85847,7 @@ By having a Pinecone integration, Pinecone users can get access to rich and high
 # LlamaIndex
 Source: https://docs.pinecone.io/integrations/llamaindex
 
-Connect Pinecone and LlamaIndex to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build LlamaIndex RAG pipelines on Pinecone: ingest documents, structure private data, and run semantic search and question-answering over LLMs.
 
 LlamaIndex is a framework for connecting data sources to LLMs, with its chief use case being the end-to-end development of retrieval augmented generation (RAG) applications. LlamaIndex provides the essential abstractions to more easily ingest, structure, and access private or domain-specific data in order to inject these safely and reliably into LLMs for more accurate text generation. It’s available in Python and Typescript.
 
@@ -86240,7 +86240,7 @@ As you have seen, LlamaIndex is a powerful framework to use when building semant
 # Microsoft Marketplace
 Source: https://docs.pinecone.io/integrations/microsoft-marketplace
 
-Integrate Pinecone with Microsoft Marketplace for vector search, RAG, and production AI workloads.
+Buy and manage Pinecone through Microsoft Marketplace with pay-as-you-go billing, centralized SaaS procurement, and simplified Azure licensing.
 
 Access Pinecone through our Microsoft Marketplace listing. Microsoft Marketplace allows you to manage Pinecone and other third-party software from a centralized location, and simplifies software licensing and procurement with flexible pricing options and multiple deployment methods.
 
@@ -86252,7 +86252,7 @@ You can set up pay-as-you-go billing for a Pinecone organization through the Mic
 # n8n
 Source: https://docs.pinecone.io/integrations/n8n
 
-Connect Pinecone and n8n to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Automate Pinecone vector store and Assistant workflows in n8n: build RAG pipelines, semantic search, and no-code AI automations with 400+ apps.
 
 n8n is a workflow automation platform that combines AI capabilities with business process automation, giving technical teams the flexibility of code with the speed of no-code. Integrate Pinecone Vector Database or Pinecone Assistant nodes directly into your automation pipelines to build powerful AI workflows with vector search and retrieval.
 
@@ -86284,7 +86284,7 @@ Or use the [n8n skill](/guides/get-started/ai-coding-tools) to build n8n workflo
 # New Relic
 Source: https://docs.pinecone.io/integrations/new-relic
 
-Connect Pinecone and New Relic to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Monitor Pinecone with New Relic's Prometheus quickstart: dashboards, alerts, and AI observability for vector database latency and RAG performance.
 
 New Relic is an all-in-one observability platform and provides the industry’s first APM solution for AI-powered applications. New Relic is pioneering AI observability with AIM to provide engineers unprecedented visibility and insights across the AI application stack, making it easier to troubleshoot and optimize their AI applications for performance, quality, cost, and responsible use of AI.
 
@@ -86296,7 +86296,7 @@ Implement monitoring and integrate your Pinecone application with New Relic for 
 # Nexla
 Source: https://docs.pinecone.io/integrations/nexla
 
-Connect Pinecone and Nexla to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Nexla no-code data pipelines to ingest from SharePoint, OneDrive, and 500+ sources into Pinecone for enterprise RAG and vector search apps.
 
 Nexla is a Data + AI Integration Platform that makes it easy for users to build data pipelines in a no-code/low-code manner.
 
@@ -86308,7 +86308,7 @@ The Pinecone integration with Nexla makes it easy for enterprise users to ingest
 # Nuclia
 Source: https://docs.pinecone.io/integrations/nuclia
 
-Connect Pinecone and Nuclia to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Power Nuclia RAG-as-a-Service with Pinecone: index documents, customize retrieval and chunking strategies, and deploy LLM knowledge boxes at scale.
 
 [Nuclia](https://nuclia.com/) RAG-as-a-Service automatically indexes files and documents from both internal and external sources, powering diverse company use cases with large language models (LLMs). This comprehensive indexing capability ensures that organizations can leverage unstructured data effectively, transforming it into actionable insights. With Nuclia's modular Retrieval-Augmented Generation (RAG) system, you can deploy solutions tailored to various operational needs across different deployment options, enhancing flexibility and efficiency.
 
@@ -86322,7 +86322,7 @@ When you create a knowledge box at Nuclia, choose to store the index in Pinecone
 # OctoAI
 Source: https://docs.pinecone.io/integrations/octoai
 
-Connect Pinecone and OctoAI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Combine OctoAI's GTE Large embeddings and open-source LLMs with Pinecone and Canopy for cost-effective RAG, semantic search, and generative AI apps.
 
 Harness value from the latest AI innovations by delievering efficient, reliable, and customizable AI systems for your apps. Run your models or checkpoints on OctoAI's cost-effective API endpoints, or run OctoAI's optimized GenAI stack in your environment.
 
@@ -86336,7 +86336,7 @@ As a fully open source solution, Pinecone Canopy and OctoAI is one of the fastes
 # OpenAI
 Source: https://docs.pinecone.io/integrations/openai
 
-Connect Pinecone and OpenAI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Pair OpenAI embeddings and completion models with Pinecone for semantic search, long-term memory, RAG, and context-aware LLM question-answering.
 
 OpenAI's large language models (LLMs) enhance semantic search or “long-term memory” for LLMs. This combo utilizes LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
 
@@ -86599,7 +86599,7 @@ pc.delete_index(name=index_name)
 # Pulumi
 Source: https://docs.pinecone.io/integrations/pulumi
 
-Connect Pinecone and Pulumi to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Provision Pinecone indexes and collections as code with Pulumi in Python, TypeScript, Go, or C# for infrastructure-as-code vector database DevOps.
 
 Pulumi is an infrastructure as code platform that allows you to use familiar programming languages and tools to build, deploy, and manage cloud infrastructure. Pulumi is free, open source, and optionally pairs with the Pulumi Cloud to make managing infrastructure secure, reliable, and hassle-free.
 
@@ -86611,7 +86611,7 @@ This Pulumi Pinecone Provider enables you to manage your Pinecone collections an
 # Redpanda
 Source: https://docs.pinecone.io/integrations/redpanda
 
-Connect Pinecone and Redpanda to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Stream events into Pinecone with Redpanda Connect's declarative YAML pipelines for real-time vector ingestion, at-least-once delivery, and RAG ETL.
 
 Redpanda Connect is a declarative data streaming service that solves a wide range of data engineering problems with simple, chained, stateless processing steps. It implements transaction based resiliency with back pressure, so when connecting to at-least-once sources and sinks, it's able to guarantee at-least-once delivery without needing to persist messages during transit.
 
@@ -86625,7 +86625,7 @@ The Pinecone connector for Redpanda provides a production-ready integration from
 # Snowflake
 Source: https://docs.pinecone.io/integrations/snowflake
 
-Connect Pinecone and Snowflake to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Deploy Pinecone on Snowpark Container Services to run vector search and GenAI apps inside Snowflake without moving data out of your warehouse.
 
 Deploy and run Pinecone with Snowpark Container Services. Snowpark Container Services is a fully managed container offering designed to facilitate the deployment, management, and scaling of containerized applications within the Snowflake ecosystem. This service enables users to run containerized workloads directly within Snowflake, ensuring that data does't need to be moved out of the Snowflake environment for processing. Unlike traditional container orchestration platforms like Docker or Kubernetes, Snowpark Container Services offers an OCI runtime execution environment specifically optimized for Snowflake. This integration allows for the seamless execution of OCI images, leveraging Snowflak's robust data platform.
 
@@ -86639,7 +86639,7 @@ Deploy and run Pinecone with Snowpark Container Services. Snowpark Container Ser
 # StreamNative
 Source: https://docs.pinecone.io/integrations/streamnative
 
-Connect Pinecone and StreamNative to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Pipe Apache Pulsar topics to Pinecone via the StreamNative sink connector for real-time vector ingestion, event streaming, and Kafka-compatible RAG.
 
 Founded by the original developers of Apache Pulsar and Apache BookKeeper, [StreamNative](https://streamnative.io) provides StreamNative Cloud, offering Apache Pulsar as a Service. The company also supports on-premise Pulsar deployments and related commercial support. StreamNative Cloud provides a scalable, resilient, and secure messaging and event streaming platform for enterprises. Additionally, StreamNative offers Kafka compatibility, enabling seamless integration with existing Kafka-based systems.
 
@@ -86651,7 +86651,7 @@ The Pinecone integration with StreamNative allows access to pinecone.io with a P
 # Terraform
 Source: https://docs.pinecone.io/integrations/terraform
 
-Connect Pinecone and Terraform to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Manage Pinecone indexes, collections, API keys, and projects with the Terraform provider for repeatable infrastructure-as-code and DevOps workflows.
 
 Terraform is an infrastructure as code tool that lets you create, update, and version infrastructure by defining resources in configuration files. This allows for a repeated workflow for provisioning and managing your infrastructure.
 
@@ -87255,7 +87255,7 @@ The Terraform Provider for Pinecone doesn't support the following:
 # Traceloop
 Source: https://docs.pinecone.io/integrations/traceloop
 
-Connect Pinecone and Traceloop to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Instrument Pinecone with Traceloop's OpenLLMetry SDK to emit OpenTelemetry traces and metrics for LLM observability in Datadog, Grafana, and more.
 
 [Traceloop](https://www.traceloop.com/) provides observability for your LLM app using OpenTelemetry. Traceloop automatically monitors the quality of your LLM outputs. It helps you to debug and test changes to your models and prompts.
 
@@ -87267,7 +87267,7 @@ The Pinecone integration with Traceloop produces traces and metrics that can be 
 # TruLens
 Source: https://docs.pinecone.io/integrations/trulens
 
-Connect Pinecone and TruLens to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Evaluate and track Pinecone RAG apps with TruLens: measure grounding, relevance, and hallucinations to iterate on vector search configurations fast.
 
 TruLens is a powerful open source library for evaluating and tracking large language model-based applications. TruLens provides a set of tools for developing and monitoring neural nets, including large language models (LLMs). This includes both tools for evaluation of LLMs and LLM-based applications with TruLens-Eval and deep learning explainability with TruLens-Explain.
 
@@ -87577,7 +87577,7 @@ In conclusion, we note that exploring the downstream impact of some Pinecone con
 # Twelve Labs
 Source: https://docs.pinecone.io/integrations/twelve-labs
 
-Connect Pinecone and Twelve Labs to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Store Twelve Labs multimodal video embeddings in Pinecone to power video search, recommendations, and content moderation with fast similarity retrieval.
 
 [Twelve Labs](https://twelvelabs.io) is an AI company that provides state-of-the-art video understanding capabilities through its easy-to-use APIs. Our newly released product is the Embed API, which enables developers to create high-quality multimodal embeddings that capture the rich context and interactions between different modalities in videos, such as visual expressions, body language, spoken words, and overall context.
 
@@ -87605,7 +87605,7 @@ For more detailed information and code examples, please see the [Twelve Labs doc
 # Unstructured
 Source: https://docs.pinecone.io/integrations/unstructured
 
-Connect Pinecone and Unstructured to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Unstructured to parse, chunk, and load PDFs, Word, and 25+ document types into Pinecone for LLM-ready RAG ETL pipelines and semantic search apps.
 
 Unstructured builds ETL tools for LLMs, including an open source Python library, a SaaS API, and an ETL platform. Unstructured extracts content and metadata from 25+ document types, including PDFs, Word documents and PowerPoints. After extracting content and metadata, Unstructured performs additional preprocessing steps for LLMs such as chunking. Unstructured maintains upstream connections to data sources such as SharePoint and Google drive, and downstream connections to databases such as Pinecone.
 
@@ -87617,7 +87617,7 @@ Integrating Pinecone with Unstructured enables developers to load data from an s
 # Vercel
 Source: https://docs.pinecone.io/integrations/vercel
 
-Connect Pinecone and Vercel to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Deploy AI apps on Vercel with Pinecone as long-term memory: one-click setup, scalable vector search, and RAG for Next.js and edge-deployed frontends.
 
 Vercel is a platform for developers that provides the tools, workflows, and infrastructure you need to build and deploy your web apps faster, without the need for additional configuration. Vercel supports popular frontend frameworks out-of-the-box, and its scalable, secure infrastructure is globally distributed to serve content from data centers near your users for optimal speeds.
 
@@ -87629,7 +87629,7 @@ Pinecone provides the long-term memory for your Vercel AI projects. Using Pineco
 # VoltAgent
 Source: https://docs.pinecone.io/integrations/voltagent
 
-Connect Pinecone and VoltAgent to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build TypeScript AI agents with VoltAgent and Pinecone: automatic embeddings, semantic search, metadata filtering, and observable RAG in production.
 
 [VoltAgent](https://voltagent.dev) is a TypeScript-based, AI-agent framework for building production-ready applications with retrieval-augmented generation (RAG) capabilities. It supports two retrieval patterns: automatic search on every interaction, or LLM-decides-when-to-search, with built-in observability and tracking.
 
@@ -87651,7 +87651,7 @@ Use this integration to quickly build AI agents that can intelligently search an
 # Voyage AI
 Source: https://docs.pinecone.io/integrations/voyage
 
-Connect Pinecone and Voyage AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Generate top-ranked Voyage AI embeddings and rerankers, then index them in Pinecone for high-accuracy RAG, semantic search, and code retrieval apps.
 
 [Voyage AI](https://www.voyageai.com) provides cutting-edge embedding and rerankers. Voyage AI's generalist [embedding models](https://docs.voyageai.com/docs/embeddings) continually top the [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard), and the [domain-specific embeddings](https://blog.voyageai.com/2024/01/23/voyage-code-2-elevate-your-code-retrieval/) enhance the retrieval quality for enterprise use cases significantly.
 
@@ -87856,7 +87856,7 @@ The semantic search pipeline with Voyage AI and Pinecone is able to identify the
 # Zapier
 Source: https://docs.pinecone.io/integrations/zapier
 
-Connect Pinecone and Zapier to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Automate Pinecone with Zapier: trigger workflows on index changes, upsert data from spreadsheets, and connect vector search to 6,000+ no-code apps.
 
 [Zapier](https://zapier.com/) lets you connect Pinecone with thousands of the most popular apps, so you can automate your work and have more time for what matters most — no code required.
 
@@ -87870,7 +87870,7 @@ For example, you might use this integration to automatically add spreadsheet ent
 # 2022 releases
 Source: https://docs.pinecone.io/release-notes/2022
 
-Pinecone release notes — 2022 releases:
+Pinecone release notes for 2022: new features, improvements, and API changes.
 
 ## December 22, 2022
 
@@ -88009,7 +88009,7 @@ The [Delete](/reference/api/2024-07/data-plane/delete/) operation now supports f
 # 2023 releases
 Source: https://docs.pinecone.io/release-notes/2023
 
-Pinecone release notes — 2023 releases:
+Pinecone release notes for 2023: new features, improvements, and API changes.
 
 ## December 2023
 
@@ -88136,7 +88136,7 @@ The [latest release of the Python SDK](https://github.com/pinecone-io/pinecone-p
 # 2024 releases
 Source: https://docs.pinecone.io/release-notes/2024
 
-Pinecone release notes — 2024 releases:
+Pinecone release notes for 2024: new features, improvements, and API changes.
 
 ## December 2024
 
@@ -88836,7 +88836,7 @@ Pinecone release notes — 2024 releases:
 # 2025 releases
 Source: https://docs.pinecone.io/release-notes/2025
 
-Pinecone release notes — 2025 releases:
+Pinecone release notes for 2025: new features, improvements, and API changes.
 
 ## December 2025
 
@@ -89545,7 +89545,7 @@ Pinecone release notes — 2025 releases:
 # 2026 releases
 Source: https://docs.pinecone.io/release-notes/2026
 
-Pinecone release notes — 2026 releases:
+Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
@@ -89851,7 +89851,7 @@ Pinecone release notes — 2026 releases:
 # Feature availability
 Source: https://docs.pinecone.io/release-notes/feature-availability
 
-Pinecone release notes — Feature availability:
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
 
 This page defines the different availability phases of a feature in Pinecone.
 
@@ -89915,7 +89915,7 @@ If you have general questions about the platform, pricing, events, and more, [co
 # CORS Issues
 Source: https://docs.pinecone.io/troubleshooting/cors-issues
 
-Troubleshoot “CORS Issues” in Pinecone: Cross-Origin Resource Sharing (CORS) is an HTTP-header based security feature that
+Troubleshoot Pinecone CORS errors and Access-Control-Allow-Origin issues when calling the API from localhost or browser-based web apps.
 
 Cross-Origin Resource Sharing (CORS) is an HTTP-header based security feature that
 allows a server to indicate which domains, schemes or ports a browser should accept
@@ -89946,7 +89946,7 @@ Therefore, while "localhost" itself is not a problem, using it as the hostname f
 # Custom data processing agreements
 Source: https://docs.pinecone.io/troubleshooting/custom-data-processing-agreements
 
-Troubleshoot “Custom data processing agreements” in Pinecone: If you need a data processing agreement (DPA) with Pinecone you can get started by filling out.
+Request a custom data processing agreement (DPA) with Pinecone if your team requires terms beyond the standard agreement available on the Pinecone website.
 
 If you need a data processing agreement (DPA) with Pinecone you can get started by filling out the form in our [Security Center](https://security.pinecone.io/). You'll need to request access first. Simply click the "Get Access" box on that page and enter your information. You should receive a link with further instructions shortly.
 
@@ -90019,7 +90019,7 @@ Once you've downgraded to the Starter plan and deleted your indexes and projects
 # Embedding values changed when upserted
 Source: https://docs.pinecone.io/troubleshooting/embedding-values-changed-when-upserted
 
-Troubleshoot “Embedding values changed when upserted” in Pinecone: There are two distinct cases in which you might notice that the values of your embeddings.
+Diagnose why Pinecone embedding values appear changed after upsert, including float32 precision rounding and how the API serializes numeric vector data.
 
 There are two distinct cases in which you might notice that the values of your embeddings appear different in Pinecone than the floats you upserted.
 
@@ -90121,7 +90121,7 @@ Please include code snippets, version specifications, and the full stack trace o
 # Serverless index creation error - max serverless indexes
 Source: https://docs.pinecone.io/troubleshooting/index-creation-error-max-serverless
 
-Troubleshoot “Serverless index creation error - max serverless indexes” in Pinecone: Each project is limited to 20 serverless indexes. Trying to create more.
+Resolve the Pinecone serverless index creation error caused by hitting the 20-index project limit by deleting unused indexes or upgrading your plan.
 
 ## Problem
 
@@ -90273,7 +90273,7 @@ You no longer need to specify the cloud environment your index is hosted in; the
 # Node.js Troubleshooting
 Source: https://docs.pinecone.io/troubleshooting/nodejs-troubleshooting
 
-Troubleshoot “Node.js Troubleshooting” in Pinecone: There could be several reasons why a Node.js application works in development mode but not in deployment.
+Troubleshoot Pinecone Node.js SDK issues that work locally but fail in deployment, including environment, network, and serverless runtime configuration.
 
 There could be several reasons why a [Node.js application](/reference/sdks/node/overview) works in development mode but not in deployment.
 
@@ -90311,7 +90311,7 @@ It may be necessary to install the `fetch` Python library for compatibility with
 # PineconeAttribute errors with LangChain
 Source: https://docs.pinecone.io/troubleshooting/pinecone-attribute-errors-with-langchain
 
-Troubleshoot “PineconeAttribute errors with LangChain” in Pinecone: When using an outdated version of LangChain, you may encounter errors like the following:
+Resolve PineconeAttribute errors in LangChain caused by outdated packages by upgrading langchain-pinecone and the Pinecone Python SDK to current releases.
 
 ## Problem
 
@@ -90434,7 +90434,7 @@ Upgrade to the latest [Python](https://github.com/pinecone-io/pinecone-python-cl
 # Unable to pip install
 Source: https://docs.pinecone.io/troubleshooting/unable-to-pip-install
 
-Resolve pip install issues for the Pinecone Python SDK: use pip3 on Python 3.x, choose pinecone[grpc] or plain pinecone for HTTP, and upgrade to the latest release.
+Resolve install issues for the Pinecone Python SDK: pick the right Python 3.x command, install pinecone or pinecone with gRPC, and upgrade to the latest.
 
 Python `3.x` uses `pip3`. Use the following commands in your terminal to install the latest version of the [Pinecone Python SDK](/reference/sdks/python/overview):
 
@@ -90452,7 +90452,7 @@ pip3 install -U pinecone
 # Wait for index creation to be complete
 Source: https://docs.pinecone.io/troubleshooting/wait-for-index-creation
 
-The Python SDK and the REST API are designed to interact with the first system during index creation but not the second.
+Wait for Pinecone index creation to finish using describe_index polling in the Python SDK before upserting to avoid 403 or 404 errors.
 
 Pinecone index creation involves several different subsystems, including one which accepts the job of creating the index and one that actually performs the action. The Python SDK and the REST API are designed to interact with the first system during index creation but not the second.
 
@@ -90486,7 +90486,7 @@ Calling `wait_on_index()` would then allow your application to only continue to 
 # Create a project
 Source: https://docs.pinecone.io/guides/assistant/admin/create-a-project
 
-Create a new Pinecone project in your organization.
+Create a new Pinecone project in the console or through the Admin API, add tags, and optionally enable a customer-managed encryption key (CMEK).
 
 This page shows you how to create a project.
 
@@ -90584,7 +90584,7 @@ If you are an [organization owner or organization manager](/guides/assistant/adm
 # Manage API keys
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-api-keys
 
-Create and manage API keys with custom permissions.
+Create, view, update, and delete Pinecone API keys for a project, plus assign custom permission roles to control data plane and control plane access.
 
 Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more API keys. In order to [make calls to the Pinecone API](/guides/assistant/quickstart/sdk-quickstart), you must provide a valid API key for the relevant Pinecone project.
 
@@ -90969,7 +90969,7 @@ If you are a [project owner](/guides/assistant/admin/projects-overview#project-r
 # Manage organization members
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-organization-members
 
-Invite and control organization member access levels.
+Invite new members to your Pinecone organization, change their organization roles, and remove users to control access across all projects.
 
 This page shows how [organization owners](/guides/assistant/admin/organizations-overview#organization-roles) can add and manage organization members.
 
@@ -91015,7 +91015,7 @@ You can remove a member from your organization in the [Pinecone console](https:/
 # Manage service accounts at the organization-level
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-organization-service-accounts
 
-Create service accounts for organization-level API access.
+Create and manage organization-level Pinecone service accounts, retrieve access tokens, and grant programmatic access to the Admin API.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
@@ -91128,7 +91128,7 @@ Deleting a service account will remove it from all projects and will disrupt any
 # Manage project members
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-project-members
 
-Add and manage team members in your project.
+Add users to a Pinecone project, assign project owner or user roles, edit permissions, and remove members to control access to indexes and API keys.
 
 [Organization owners](/guides/assistant/admin/organizations-overview#organization-roles) or [project owners](/guides/assistant/admin/projects-overview#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/guides/assistant/admin/projects-overview#project-roles) that determine their permissions within the project.
 
@@ -91181,7 +91181,7 @@ You can remove a member from a project in the [Pinecone console](https://app.pin
 # Manage service accounts at the project-level
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-project-service-accounts
 
-Enable programmatic access with project-level service accounts.
+Add and manage project-level service accounts in Pinecone Assistant to enable programmatic Admin API access, roles, and permissions.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
@@ -91223,7 +91223,7 @@ To remove a service account from a project in the [Pinecone console](https://app
 # Manage projects
 Source: https://docs.pinecone.io/guides/assistant/admin/manage-projects
 
-View, rename, and delete projects in your organization.
+View project details, rename projects, add project tags, and delete Pinecone projects using the console or the Admin API with an access token.
 
 This page shows you how to view project details, rename a project, and delete a project.
 
@@ -91424,7 +91424,7 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
 # Projects overview
 Source: https://docs.pinecone.io/guides/assistant/admin/projects-overview
 
-Learn about projects, roles, and collaboration.
+Understand how Pinecone projects contain assistants, indexes, and users, and review project owner and project user roles and their permissions.
 
 A Pinecone project belongs to an [organization](/guides/assistant/admin/organizations-overview) and contains a number of [assistants](/guides/assistant/overview) and users. Only a user who belongs to the project can access the assistants in that project. Each project also has at least one project owner.
 
@@ -93209,7 +93209,7 @@ For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/as
 # Pinecone Assistant limits
 Source: https://docs.pinecone.io/reference/api/assistant/assistant-limits
 
-Pinecone REST API:
+Reference for Pinecone Assistant limits, including file size, storage, chat token, and rate limits across the Starter, Builder, Standard, and Enterprise plans.
 
 Pinecone Assistant limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
 
@@ -93268,7 +93268,7 @@ Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` st
 # Authentication
 Source: https://docs.pinecone.io/reference/api/assistant/authentication
 
-Pinecone REST API: All requests to the Pinecone Assistant API must contain a valid API key for the target project.
+Assistant API authentication with API keys, HTTP headers, and SDK client initialization for Pinecone Assistant requests and RAG apps.
 
 All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 
@@ -93349,7 +93349,7 @@ curl "https://api.pinecone.io/assistant/assistants" \
 # Assistant API reference
 Source: https://docs.pinecone.io/reference/api/assistant/introduction
 
-Pinecone REST API: Use the Assistant API to upload documents, ask questions, and receive responses that reference your documents.
+Assistant API reference overview covering document upload, chat, and RAG endpoints supported by the Pinecone Python and Node.js SDKs.
 
 Use the [Assistant API](/guides/assistant/quickstart/sdk-quickstart) to upload documents, ask questions, and receive responses that reference your documents. This is known as [retrieval-augmented generation (RAG)](https://www.pinecone.io/learn/retrieval-augmented-generation/).
 
@@ -93371,7 +93371,7 @@ The Assistant API is versioned to ensure that your applications continue to work
 # Pinecone Assistant architecture
 Source: https://docs.pinecone.io/reference/architecture/assistant-architecture
 
-Pinecone Assistant architecture: This page describes the architecture for Pinecone Assistant.
+Pinecone Assistant architecture overview covering document ingestion, chunking, vector retrieval, and LLM response generation for RAG.
 
 This page describes the architecture for [Pinecone Assistant](/guides/assistant/overview).
 
@@ -93401,7 +93401,7 @@ After retrieving these chunks, the assistant performs a ranking step to determin
 # 2022 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2022
 
-Pinecone release notes — 2022 releases:
+Pinecone release notes for 2022: new features, improvements, and API changes.
 
 ## December 22, 2022
 
@@ -93540,7 +93540,7 @@ The [Delete](/reference/api/2024-07/data-plane/delete/) operation now supports f
 # 2023 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2023
 
-Pinecone release notes — 2023 releases:
+Pinecone release notes for 2023: new features, improvements, and API changes.
 
 ## December 2023
 
@@ -93667,7 +93667,7 @@ The [latest release of the Python SDK](https://github.com/pinecone-io/pinecone-p
 # 2024 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2024
 
-Pinecone release notes — 2024 releases:
+Pinecone release notes for 2024: new features, improvements, and API changes.
 
 ## December 2024
 
@@ -94367,7 +94367,7 @@ Pinecone release notes — 2024 releases:
 # 2025 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2025
 
-Pinecone release notes — 2025 releases:
+Pinecone release notes for 2025: new features, improvements, and API changes.
 
 ## December 2025
 
@@ -95076,7 +95076,7 @@ Pinecone release notes — 2025 releases:
 # 2026 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2026
 
-Pinecone release notes — 2026 releases:
+Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
@@ -95382,7 +95382,7 @@ Pinecone release notes — 2026 releases:
 # Feature availability
 Source: https://docs.pinecone.io/assistant-release-notes/feature-availability
 
-Pinecone release notes — Feature availability:
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
 
 This page defines the different availability phases of a feature in Pinecone.
 
@@ -95408,7 +95408,7 @@ The availability phases are used to communicate the maturity and stability of a 
 # Assistant examples
 Source: https://docs.pinecone.io/examples/assistant
 
-Notebooks and sample apps for Pinecone Assistant: quickstart, context snippets, and a full-stack chat UI.
+Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
 
 <div>
   <ExampleCard title="Quickstart">
@@ -95428,7 +95428,7 @@ Notebooks and sample apps for Pinecone Assistant: quickstart, context snippets, 
 # Marketplace concepts
 Source: https://docs.pinecone.io/guides/marketplace/concepts
 
-Core concepts in Pinecone Marketplace: knowledge applications, deployments, templates, manifests, KAT, layouts, and components.
+Learn Pinecone Marketplace concepts including knowledge applications, deployments, templates, manifests, KAT routing, layouts, and visual components.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -95536,7 +95536,7 @@ An **evaluation** is an automatic quality check that runs on publish. Marketplac
 # Create a deployment
 Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
 
-Create a new deployment in Pinecone Marketplace from a vertical template.
+Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -95597,7 +95597,7 @@ When you finish the wizard, Marketplace saves your work as a building version. T
 # Pinecone Marketplace
 Source: https://docs.pinecone.io/guides/marketplace/overview
 
-Pinecone Marketplace is a no-code platform for creating, publishing, and operating knowledge applications powered by Pinecone.
+Pinecone Marketplace is a no-code platform for building, publishing, and operating grounded knowledge applications from vertical templates and connectors.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -95670,7 +95670,7 @@ flowchart LR
 # Marketplace pricing and limits
 Source: https://docs.pinecone.io/guides/marketplace/pricing-and-limits
 
-How Pinecone Marketplace usage is billed and what limits apply.
+How Pinecone Marketplace usage is billed through Assistant and index consumption, plus deployment limits on connectors, files, and consumer auth.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -95711,7 +95711,7 @@ Marketplace is available to all Pinecone organizations during public preview. Si
 # Marketplace quickstart
 Source: https://docs.pinecone.io/guides/marketplace/quickstart
 
-Pick a template, connect a folder of documents, and publish your first Pinecone Marketplace knowledge application.
+Pinecone Marketplace quickstart: pick a template app, connect a Google Drive folder, configure the deployment, and publish your first knowledge app.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -95786,7 +95786,7 @@ Use the **Support** link in the Marketplace header to reach the Pinecone support
 # Template catalog
 Source: https://docs.pinecone.io/guides/marketplace/template-catalog
 
-The bundled vertical templates available in Pinecone Marketplace.
+Browse the vertical apps in the Pinecone Marketplace template catalog, including Customer Support, HR Benefits, Deal Desk, and Financial Filings Analyzer.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97403,7 +97403,7 @@ One file per request, max 2 GiB. Archives (`.zip`, `.tar`, `.tar.gz`, `.tgz`) ar
 # Pinecone Assistant architecture
 Source: https://docs.pinecone.io/reference/architecture/assistant-architecture
 
-Pinecone Assistant architecture: This page describes the architecture for Pinecone Assistant.
+Pinecone Assistant architecture overview covering document ingestion, chunking, vector retrieval, and LLM response generation for RAG.
 
 This page describes the architecture for [Pinecone Assistant](/guides/assistant/overview).
 
@@ -97433,7 +97433,7 @@ After retrieving these chunks, the assistant performs a ranking step to determin
 # Analytics and event logs
 Source: https://docs.pinecone.io/guides/marketplace/analytics-and-event-logs
 
-Monitor end-user activity, refusals, and feedback for a Pinecone Marketplace deployment.
+Track end-user activity, refusal rates, feedback, and event logs in a Pinecone Marketplace deployment for analytics, auditing, and debugging.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97486,7 +97486,7 @@ Analytics and events surface in the deployment dashboard. Programmatic access th
 # Configure components
 Source: https://docs.pinecone.io/guides/marketplace/configure-components
 
-Enable visual components in a Pinecone Marketplace knowledge application.
+Enable visual components like comparison tables, timelines, and coverage matrices in a Pinecone Marketplace knowledge application interface.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97527,7 +97527,7 @@ Every component cites the documents it was built from. End users can click into 
 # Configure layouts
 Source: https://docs.pinecone.io/guides/marketplace/configure-layouts
 
-Choose the consumer layout for a Pinecone Marketplace knowledge application.
+Choose a chat, search, structured, or hybrid consumer layout for a Pinecone Marketplace knowledge application to match your end-user experience.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97587,7 +97587,7 @@ You can change a deployment's layout from the dashboard. Switching layouts creat
 # Configure operating parameters
 Source: https://docs.pinecone.io/guides/marketplace/configure-operating-parameters
 
-Tune the system prompt and response behavior of a Pinecone Marketplace knowledge application.
+Tune the system prompt, starter prompts, and response style of a Pinecone Marketplace knowledge application through operating parameter settings.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97761,7 +97761,7 @@ Sync frequency and connector behavior are governed by the underlying connector a
 # Consumer authentication
 Source: https://docs.pinecone.io/guides/marketplace/consumer-auth-overview
 
-Choose how end users sign in to a Pinecone Marketplace knowledge application: link access or Google sign-in.
+Configure consumer sign-in for a Pinecone Marketplace deployment using link access or Google sign-in to control who can use your knowledge application.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97848,7 +97848,7 @@ After publishing, copy the deployment URL from the dashboard and share it with e
 # Deployer authentication
 Source: https://docs.pinecone.io/guides/marketplace/deployer-auth
 
-How operators sign in to Pinecone Marketplace.
+Sign in to Pinecone Marketplace as an operator to create deployments, manage sessions across devices, and audit deployer actions in the event log.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -97878,7 +97878,7 @@ Significant operator actions are recorded in the deployment event log. See [Anal
 # Ask questions
 Source: https://docs.pinecone.io/guides/marketplace/end-user/ask-questions
 
-Get the most out of a Pinecone Marketplace knowledge application by asking clear, specific questions.
+Tips for end users on asking clear, specific questions in a Pinecone Marketplace knowledge application, using follow-ups, and handling clarifications.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98024,7 +98024,7 @@ If the operator publishes a new version that addresses your feedback, ask the sa
 # End user guide
 Source: https://docs.pinecone.io/guides/marketplace/end-user/overview
 
-What a Pinecone Marketplace knowledge application is and how to sign in to one.
+End-user overview of Pinecone Marketplace knowledge applications, including how to sign in with link access or Google and read grounded citations.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98077,7 +98077,7 @@ Use the account menu in the application header to sign out. Closing the browser 
 # Evaluations
 Source: https://docs.pinecone.io/guides/marketplace/evaluations
 
-How Pinecone Marketplace evaluates a knowledge application on every publish.
+How Pinecone Marketplace runs automatic evaluations on every publish, scoring faithfulness and relevance to catch regressions in a new version.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98127,7 +98127,7 @@ Evaluations measure the application against generated test cases. End-user feedb
 # Knowledge Agent Toolkit (KAT) overview
 Source: https://docs.pinecone.io/guides/marketplace/kat-overview
 
-How the Knowledge Agent Toolkit orchestrates multi-domain knowledge applications in Pinecone Marketplace, including manifests, disambiguation, slot filling, and guardrails.
+How the Knowledge Agent Toolkit (KAT) orchestrates multi-domain Pinecone Marketplace apps with manifests, disambiguation, slot filling, and guardrails.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98280,7 +98280,7 @@ Every refusal is logged with the outcome (`BLOCKED` or `OUT_OF_SCOPE`) and the o
 # Manage versions and rollback
 Source: https://docs.pinecone.io/guides/marketplace/manage-versions-and-rollback
 
-Use versioned publishing in Pinecone Marketplace to ship safer changes and roll back when needed.
+Use versioned publishing in Pinecone Marketplace to stage edits, compare active and building versions, and roll back a deployment when needed.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98331,7 +98331,7 @@ All published versions are retained for rollback. There is no manual cleanup or 
 # Multi-domain routing
 Source: https://docs.pinecone.io/guides/marketplace/multi-domain-routing
 
-How KAT routes queries across multiple knowledge bases in a Pinecone Marketplace deployment.
+How the Knowledge Agent Toolkit (KAT) routes queries across multiple knowledge bases in a Pinecone Marketplace deployment for multi-domain answers.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98385,7 +98385,7 @@ The deployment dashboard logs every routing decision with the outcome (`CALL_KB`
 # Publish a deployment
 Source: https://docs.pinecone.io/guides/marketplace/publish-a-deployment
 
-How to publish a Pinecone Marketplace deployment so end users can use it.
+Publish a Pinecone Marketplace deployment to promote a building version to active, run introspection, generate starter prompts, and evaluate quality.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98446,7 +98446,7 @@ Editing an active deployment creates a new building version automatically. Publi
 # Authentication
 Source: https://docs.pinecone.io/reference/api/marketplace/authentication
 
-Authenticate to the Pinecone Marketplace API.
+Authenticate to the Pinecone Marketplace API using project-scoped API keys, including the Api-Key header, key scoping, and deployment permissions.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98474,7 +98474,7 @@ For details on how to create and manage Pinecone API keys, see [Manage API keys]
 # Connectors
 Source: https://docs.pinecone.io/reference/api/marketplace/connectors
 
-Manage source connectors for Pinecone Marketplace deployments.
+Marketplace Connectors API reference for attaching source connectors, updating configuration, and triggering syncs across deployments.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98499,7 +98499,7 @@ For the operator-facing guides, see [Connectors overview](/guides/marketplace/co
 # Deployments
 Source: https://docs.pinecone.io/reference/api/marketplace/deployments
 
-Create and manage Pinecone Marketplace deployments programmatically.
+Marketplace Deployments API reference for listing, creating, updating, and deleting knowledge application deployments programmatically.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98523,7 +98523,7 @@ For the operator-facing guides, see [Create a deployment](/guides/marketplace/cr
 # Evaluations
 Source: https://docs.pinecone.io/reference/api/marketplace/evaluations
 
-Trigger and retrieve Pinecone Marketplace evaluation results.
+Marketplace Evaluations API reference for triggering evaluation runs, retrieving scores, and inspecting per-question detail per version.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98545,7 +98545,7 @@ For the operator-facing guides, see [Evaluations](/guides/marketplace/evaluation
 # Events and analytics
 Source: https://docs.pinecone.io/reference/api/marketplace/events
 
-Read deployment events and analytics counters from Pinecone Marketplace.
+Marketplace Events and Analytics API reference for streaming deployment event logs and reading conversation and feedback counters.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98567,7 +98567,7 @@ For the operator-facing guides, see [Analytics and event logs](/guides/marketpla
 # Pinecone Marketplace API
 Source: https://docs.pinecone.io/reference/api/marketplace/introduction
 
-Programmatic access to Pinecone Marketplace deployments, templates, connectors, versions, and analytics.
+Pinecone Marketplace API reference overview covering deployments, templates, connectors, versions, evaluations, and analytics endpoints.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98594,7 +98594,7 @@ For the operator-facing guides, see [Pinecone Marketplace](/guides/marketplace/o
 # Templates
 Source: https://docs.pinecone.io/reference/api/marketplace/templates
 
-List the vertical templates available in Pinecone Marketplace.
+Marketplace Templates API reference for listing vertical template catalogs and retrieving default operating parameters for deployments.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).
@@ -98615,7 +98615,7 @@ For the operator-facing guides, see [Templates overview](/guides/marketplace/tem
 # Versions and publishing
 Source: https://docs.pinecone.io/reference/api/marketplace/versions
 
-Programmatically publish, list, and roll back Pinecone Marketplace deployment versions.
+Marketplace Versions API reference for publishing building versions, listing version history, and rolling back deployments programmatically.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

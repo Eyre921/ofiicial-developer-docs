@@ -9,7 +9,7 @@ title: "Deploy notifications"
 description: "Enable notifications for deploy events triggered by your site's deploy activity. Use Slack, webhooks, email, your Git provider, or other integrations."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Deploy notifications can inform you or external services about a specific site's deploy activity.
 

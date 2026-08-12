@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/known-limitations
 path: reference/api/known-limitations
 ---
 
-Pinecone REST API: This page describes known limitations and feature restrictions in Pinecone.
+Known limitations and feature restrictions for Pinecone indexes, including upsert consistency, metadata rules, and serverless caveats.
 
 This page describes known limitations and feature restrictions in Pinecone.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/quickstart
 path: guides/marketplace/quickstart
 ---
 
-Pick a template, connect a folder of documents, and publish your first Pinecone Marketplace knowledge application.
+Pinecone Marketplace quickstart: pick a template app, connect a Google Drive folder, configure the deployment, and publish your first knowledge app.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

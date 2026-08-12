@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/pods/create-a-pod-based-index
 path: guides/indexes/pods/create-a-pod-based-index
 ---
 
-Legacy instructions for creating Pinecone pod-based indexes. New customers cannot create pod indexes as of August 2025. See serverless index creation for current instructions.
+Create a Pinecone pod-based index. Legacy guide: new customers cannot create pod indexes as of August 2025; use serverless index creation instead.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).

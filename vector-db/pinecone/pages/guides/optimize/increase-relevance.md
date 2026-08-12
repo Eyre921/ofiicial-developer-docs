@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/optimize/increase-relevance
 path: guides/optimize/increase-relevance
 ---
 
-Learn techniques to improve search result quality.
+Improve Pinecone search quality with reranking models, metadata filtering, and hybrid search that combines full-text and vector retrieval for RAG.
 
 This page describes helpful techniques for improving search accuracy and relevance.
 

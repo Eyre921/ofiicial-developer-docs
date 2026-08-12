@@ -9,7 +9,7 @@ title: "File-based configuration"
 description: "Use a netlify.toml configuration file to specify how the platform builds and deploys your project."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 In addition to using the Netlify UI to configure [build settings](/build/configure-builds/overview#build-settings), [deploy settings](/build/post-processing/overview/), and [environment variables](/build/environment-variables/overview), you can also configure many of these settings in a `netlify.toml` file.
 

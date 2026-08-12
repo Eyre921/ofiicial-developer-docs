@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/list_backup_schedule_history
 ---
 
 GET https://api.pinecone.io/backup-schedules/{schedule_id}/history
-List the execution history for a backup schedule.
+List execution history for a Pinecone backup schedule, including scheduled runs, completed backups, statuses, and cursor-based pagination support.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

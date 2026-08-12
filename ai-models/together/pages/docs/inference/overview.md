@@ -139,4 +139,8 @@ Serverless, provisioned throughput, and dedicated model inference all use the sa
   <Card title="Embeddings & rerank" icon="vector-bezier-2" href="/docs/inference/embeddings/embeddings">
     Vectors, rerankers, and RAG.
   </Card>
+
+  <Card title="LLM evaluations" icon="clipboard-check" href="/docs/ai-evaluations">
+    Judge model outputs with classify, score, and compare.
+  </Card>
 </CardGroup>

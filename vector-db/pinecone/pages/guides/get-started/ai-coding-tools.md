@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/get-started/ai-coding-tools
 path: guides/get-started/ai-coding-tools
 ---
 
-Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, Cursor, and more.
+Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
 
 Pinecone provides official plugins, extensions, and agent skills for agentic IDEs and CLIs. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage vector database indexes, run semantic search, and build RAG applications — all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 

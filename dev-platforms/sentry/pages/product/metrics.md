@@ -200,7 +200,7 @@ Application Metrics are best for **application and code-based health signals**, 
 
 ## [AI-Powered Metric Analysis](https://docs.sentry.io/product/metrics.md#ai-powered-metric-analysis)
 
-Your Sentry metrics can be leveraged with AI agents and tooling for debugging and automated analysis:
+Your Sentry metrics can be leveraged with agents and tooling for debugging and automated analysis:
 
 * **[Sentry MCP Server](https://mcp.sentry.dev)**: Enables natural language queries and deep integration with AI tools like Claude, Cursor, and VS Code using the Model Context Protocol
 * **[Seer](https://docs.sentry.io/product/ai-in-sentry/seer.md)**: Sentry's AI debugging agent can use metrics alongside traces, logs, and errors to provide intelligent issue analysis

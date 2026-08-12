@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/instill
 path: integrations/instill
 ---
 
-Connect Pinecone and Instill AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Wire Pinecone into Instill AI no-code pipelines to upsert, query, and power RAG agents, chatbots, and knowledge bases with vector similarity.
 
 Instill AI specializes in developing cutting-edge solutions for data, models, and pipeline orchestration. Their flagship source-available product, Instill Core, is a no-code/low-code platform designed to facilitate the development, deployment, and management of AI workflows. By simplifying the integration of various AI models and data sources, they enable businesses to harness the power of AI without requiring extensive technical expertise. Their solutions cater to a wide range of applications, from predictive analytics and autonomous AI agents to enterprise private knowledge bases, AI assistants, and beyond.
 

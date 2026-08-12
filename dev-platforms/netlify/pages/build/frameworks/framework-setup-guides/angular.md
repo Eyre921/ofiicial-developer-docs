@@ -9,7 +9,7 @@ title: "Angular on Netlify"
 description: "Learn about Angular on our platform. Rely on our automatic framework detection and add redirects for your Angular application."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Angular is a component-based open source framework for building enterprise-grade single-page applications (SPAs) with client-side routing, server-side rendering, and prerendering. Scully, an open source static site generator, is built specifically for Angular apps.
 

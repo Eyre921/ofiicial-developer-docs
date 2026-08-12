@@ -9,7 +9,7 @@ title: "Manage build dependencies"
 description: "Specify dependencies for your project so that our platform can install required languages and software before running a build."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 When you trigger a build on Netlify, our build system starts a virtual machine to build your site. Before running your build command, the build system will search for instructions about required languages and software needed to run your command. These are called _dependencies_, and how you declare them depends on the languages and tools used in your build.
 

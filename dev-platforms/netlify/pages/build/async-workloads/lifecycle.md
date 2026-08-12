@@ -9,7 +9,7 @@ title: "Lifecycle of Async Workloads"
 description: "The lifecycle of Async Workloads to handle asynchronous, durable, event-based workflows, while ensuring system resilience and scalability."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 As an asynchronous, durable, and event-based architecture, the lifecycle of Async Workloads has more considerations than a single client/server transaction. This page will cover the lifecycle of Async Workloads. Generally, this isn't information you need to use Async Workloads effectively but it can be important for some application design considerations.
 

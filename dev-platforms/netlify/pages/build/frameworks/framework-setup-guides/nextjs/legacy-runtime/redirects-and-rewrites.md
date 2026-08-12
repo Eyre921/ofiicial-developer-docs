@@ -9,7 +9,7 @@ title: "Next.js redirects and rewrites on Netlify"
 description: "Implement redirects and rewrites to control routing in your Next.js 10-13.4 application. Learn when to use Next.js or our platform's redirects and rewrites."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 > **Note - Legacy Next.js Runtime:** The information on this page applies to Next.js version 10-13.4 and Netlify Next.js Runtime v4, which is currently in maintenance support.
 

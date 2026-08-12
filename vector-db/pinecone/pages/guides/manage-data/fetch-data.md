@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/fetch-data
 path: guides/manage-data/fetch-data
 ---
 
-Retrieve complete records by ID or metadata filter.
+Retrieve full Pinecone records by ID from a namespace to inspect vector values, metadata, and IDs, or verify upserts using the fetch operation.
 
 <Tip>
   You can fetch data using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes/-/browser).

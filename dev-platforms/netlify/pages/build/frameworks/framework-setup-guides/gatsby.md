@@ -9,7 +9,7 @@ title: "Gatsby on Netlify"
 description: "Learn about Gatsby on our platform. Use the Gatsby adapter for Netlify or the Essential Gatsby build plugin to extend your Gatsby application."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Gatsby is a React-based, open source static site generator that pulls in data using a GraphQL API layer that can connect to a wide array of content sources.
 

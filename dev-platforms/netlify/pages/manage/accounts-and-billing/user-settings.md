@@ -9,7 +9,7 @@ title: "User settings"
 description: "Access user settings to manage items such as your avatar, Git provider connection, UI theme, keyboard shortcuts, 2FA, and connections with other services."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 You can access your Netlify user settings by selecting your avatar (labeled "User" for screen readers) in the Netlify UI, then selecting [**User settings**](https://app.netlify.com/user/settings).
 

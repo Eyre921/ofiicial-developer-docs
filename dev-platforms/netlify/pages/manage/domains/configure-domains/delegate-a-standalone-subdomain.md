@@ -9,7 +9,7 @@ title: "Delegate a standalone subdomain"
 description: "Delegate a subdomain to Netlify DNS without bringing the related apex domain."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 You can bring just a subdomain to Netlify DNS and keep your apex domain on a separate domain registrar. This makes all the benefits of Netlify DNS available to your subdomain, including automated wildcard SSL certificates and expanded use cases for your site with branch subdomains.
 

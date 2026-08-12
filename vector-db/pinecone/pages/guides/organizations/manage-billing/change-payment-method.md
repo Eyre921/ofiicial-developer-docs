@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/change-paym
 path: guides/organizations/manage-billing/change-payment-method
 ---
 
-Update your billing payment method.
+Update your Pinecone organization payment method in the console, including credit card details, billing address, and payment preferences.
 
 You can pay for the [Standard and Enterprise plans](https://www.pinecone.io/pricing/) with a credit/debit card or through the AWS Marketplace, Microsoft Marketplace, or Google Cloud Marketplace. This page describes how to switch between these payment methods.
 

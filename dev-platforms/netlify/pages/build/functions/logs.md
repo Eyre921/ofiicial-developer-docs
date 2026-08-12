@@ -9,7 +9,7 @@ title: "Function logs"
 description: "Use Function logs to observe and troubleshoot serverless functions in your current published deploy, branch deploys, and Deploy Previews."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify provides logs in the Netlify UI to help you observe and troubleshoot serverless functions in your current [published deploy](/deploy/deploy-overview#definitions), branch deploys, and Deploy Previews.
 

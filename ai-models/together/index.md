@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 334 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 335 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -165,6 +165,7 @@
 - `docs/quickstart-how-to-do-ocr` — [Quickstart: How to do OCR](pages/docs/quickstart-how-to-do-ocr.md) · [原文](https://docs.together.ai/docs/quickstart-how-to-do-ocr)
 - `docs/quickstart-retrieval-augmented-generation-rag` — [Retrieval-augmented generation (RAG) quickstart](pages/docs/quickstart-retrieval-augmented-generation-rag.md) · [原文](https://docs.together.ai/docs/quickstart-retrieval-augmented-generation-rag)
 - `docs/quickstart-using-hugging-face-inference` — [Hugging Face Inference quickstart](pages/docs/quickstart-using-hugging-face-inference.md) · [原文](https://docs.together.ai/docs/quickstart-using-hugging-face-inference)
+- `docs/render-chat-api` — [Build a chat API on Render](pages/docs/render-chat-api.md) · [原文](https://docs.together.ai/docs/render-chat-api)
 - `docs/roles-permissions` — [Roles & permissions (RBAC)](pages/docs/roles-permissions.md) · [原文](https://docs.together.ai/docs/roles-permissions)
 - `docs/run-an-evaluation` — [Run an evaluation](pages/docs/run-an-evaluation.md) · [原文](https://docs.together.ai/docs/run-an-evaluation)
 - `docs/seedance2.0-quickstart` — [Seedance 2.0 quickstart](pages/docs/seedance2.0-quickstart.md) · [原文](https://docs.together.ai/docs/seedance2.0-quickstart)

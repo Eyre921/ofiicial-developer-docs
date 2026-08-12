@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/examples/assistant
 path: examples/assistant
 ---
 
-Notebooks and sample apps for Pinecone Assistant: quickstart, context snippets, and a full-stack chat UI.
+Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
 
 <div>
   <ExampleCard title="Quickstart">

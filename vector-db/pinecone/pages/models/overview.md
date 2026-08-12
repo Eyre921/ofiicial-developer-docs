@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/models/overview
 path: models/overview
 ---
 
-Pinecone integrations enable you to build and deploy AI applications faster and more efficiently. Integrate Pinecone with your favorite frameworks, data sources, and infrastructure providers.
+Browse Pinecone's hosted embedding and reranking model gallery with details on dimensions, sequence length, pricing, and supported tasks.
 
 <div>
   <span>

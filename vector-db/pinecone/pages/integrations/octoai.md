@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/octoai
 path: integrations/octoai
 ---
 
-Connect Pinecone and OctoAI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Combine OctoAI's GTE Large embeddings and open-source LLMs with Pinecone and Canopy for cost-effective RAG, semantic search, and generative AI apps.
 
 Harness value from the latest AI innovations by delievering efficient, reliable, and customizable AI systems for your apps. Run your models or checkpoints on OctoAI's cost-effective API endpoints, or run OctoAI's optimized GenAI stack in your environment.
 

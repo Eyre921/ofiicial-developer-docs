@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/back-up-an-index
 path: guides/manage-data/back-up-an-index
 ---
 
-Create backups of serverless indexes for protection
+Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console.
 
 ## Create a backup
 

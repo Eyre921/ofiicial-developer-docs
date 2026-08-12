@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/cloudera
 path: integrations/cloudera
 ---
 
-Connect Pinecone and Cloudera AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Integrate Cloudera AI with Pinecone to run distributed Spark and Python embedding pipelines and power scalable RAG and vector search on enterprise data.
 
 [Cloudera AI](https://www.cloudera.com/) is an enterprise data cloud experience that provides scalable, secure, and agile machine learning and AI workflows. It leverages the power of Python, Apache Spark, R, and a host of other runtimes for distributed data processing, enabling the efficient creation, ingestion, and updating of vector embeddings at scale.
 

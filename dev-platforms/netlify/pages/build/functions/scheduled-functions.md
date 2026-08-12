@@ -9,7 +9,7 @@ title: "Scheduled Functions"
 description: "Enable Scheduled Functions to run serverless functions on a regular and consistent schedule, like a cron job. Some tasks are better suited than others."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 > **Pricing Information:** This feature is available on all pricing plans.
 

@@ -9,7 +9,7 @@ title: "Configure an automatic subdomain for deploys"
 description: "Apply a custom domain to your site's Deploy Previews or branch deploys, so you can share branded deploy URLs and unlock new services and auth flows."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With automatic deploy subdomains, you can set up automatically branded URLs for Deploy Previews or branch deploys - unifying your site's preview environments, auth flows, third-party services, and other site versions with a shared custom domain.
 

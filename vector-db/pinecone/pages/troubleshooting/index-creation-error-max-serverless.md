@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/index-creation-error-max-server
 path: troubleshooting/index-creation-error-max-serverless
 ---
 
-Troubleshoot “Serverless index creation error - max serverless indexes” in Pinecone: Each project is limited to 20 serverless indexes. Trying to create more.
+Resolve the Pinecone serverless index creation error caused by hitting the 20-index project limit by deleting unused indexes or upgrading your plan.
 
 ## Problem
 

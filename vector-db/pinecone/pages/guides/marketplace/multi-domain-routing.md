@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/multi-domain-routing
 path: guides/marketplace/multi-domain-routing
 ---
 
-How KAT routes queries across multiple knowledge bases in a Pinecone Marketplace deployment.
+How the Knowledge Agent Toolkit (KAT) routes queries across multiple knowledge bases in a Pinecone Marketplace deployment for multi-domain answers.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

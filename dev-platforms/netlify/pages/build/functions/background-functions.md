@@ -9,7 +9,7 @@ title: "Background Functions overview"
 description: "Use Background Functions for long-running serverless functions that handle tasks like batch processing, scraping, and more."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 > **Pricing Information:** This feature is available on [Credit-based plans, including Free, Personal, and Pro](https://www.netlify.com/pricing/?category=developer) and on [Enterprise](https://www.netlify.com/pricing/?category=enterprise) plans. [Learn more.](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-legacy-plans/legacy-pricing-plans/)
 

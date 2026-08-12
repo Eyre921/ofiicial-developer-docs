@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/pods/manage-pod-based-indexes
 path: guides/indexes/pods/manage-pod-based-indexes
 ---
 
-Legacy guide for managing Pinecone pod-based indexes. Pod indexes are no longer available to new customers as of August 2025. Serverless indexes are recommended for all new projects.
+Manage Pinecone pod-based indexes. Legacy guide: pod indexes are unavailable to new customers as of August 2025; serverless is recommended for new projects.
 
 <Warning>
   Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes) for large workloads (millions of records or more, and moderate or high query rates).

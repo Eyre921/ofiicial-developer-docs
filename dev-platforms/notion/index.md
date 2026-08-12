@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 201 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 211 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -67,10 +67,15 @@
 
 - `reference/admin/add-legal-hold-users` — [Add users to a legal hold](pages/reference/admin/add-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/add-legal-hold-users)
 - `reference/admin/create-legal-hold` — [Create a legal hold](pages/reference/admin/create-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/create-legal-hold)
+- `reference/admin/delete-agent` — [Delete an agent in a space](pages/reference/admin/delete-agent.md) · [原文](https://developers.notion.com/reference/admin/delete-agent)
 - `reference/admin/enqueue-space-export` — [Enqueue a workspace export](pages/reference/admin/enqueue-space-export.md) · [原文](https://developers.notion.com/reference/admin/enqueue-space-export)
 - `reference/admin/export-legal-hold` — [Export a legal hold](pages/reference/admin/export-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/export-legal-hold)
+- `reference/admin/get-agent-credit-usage` — [Get credit usage for an agent in a space](pages/reference/admin/get-agent-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agent-credit-usage)
+- `reference/admin/get-agent-permissions` — [Get a custom agent's sharing permissions](pages/reference/admin/get-agent-permissions.md) · [原文](https://developers.notion.com/reference/admin/get-agent-permissions)
+- `reference/admin/get-agents-credit-usage` — [Get credit usage for agents in a space](pages/reference/admin/get-agents-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agents-credit-usage)
 - `reference/admin/get-legal-hold` — [Retrieve a legal hold](pages/reference/admin/get-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/get-legal-hold)
 - `reference/admin/get-space-export-status` — [Get workspace export status](pages/reference/admin/get-space-export-status.md) · [原文](https://developers.notion.com/reference/admin/get-space-export-status)
+- `reference/admin/get-workflows-metadata-for-space` — [Get general workflows metadata for a space](pages/reference/admin/get-workflows-metadata-for-space.md) · [原文](https://developers.notion.com/reference/admin/get-workflows-metadata-for-space)
 - `reference/admin/intro` — [Introduction](pages/reference/admin/intro.md) · [原文](https://developers.notion.com/reference/admin/intro)
 - `reference/admin/list-legal-hold-pages` — [List pages on a legal hold](pages/reference/admin/list-legal-hold-pages.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-pages)
 - `reference/admin/list-legal-hold-users` — [List users on a legal hold](pages/reference/admin/list-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-users)
@@ -84,8 +89,13 @@
 - `reference/admin/revoke-personal-access-token` — [Revoke a personal access token in a workspace](pages/reference/admin/revoke-personal-access-token.md) · [原文](https://developers.notion.com/reference/admin/revoke-personal-access-token)
 - `reference/admin/revoke-user-session` — [Revoke a managed user's sessions](pages/reference/admin/revoke-user-session.md) · [原文](https://developers.notion.com/reference/admin/revoke-user-session)
 - `reference/admin/scopes` — [Scopes](pages/reference/admin/scopes.md) · [原文](https://developers.notion.com/reference/admin/scopes)
+- `reference/admin/update-agent-creation-policy` — [Update who can create agents in a space](pages/reference/admin/update-agent-creation-policy.md) · [原文](https://developers.notion.com/reference/admin/update-agent-creation-policy)
+- `reference/admin/update-agent-credit-limit` — [Update credit limit for an agent in a space](pages/reference/admin/update-agent-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-agent-credit-limit)
+- `reference/admin/update-agent-permissions` — [Update a custom agent's sharing permissions](pages/reference/admin/update-agent-permissions.md) · [原文](https://developers.notion.com/reference/admin/update-agent-permissions)
+- `reference/admin/update-agent-status` — [Disable or re-enable an agent in a space](pages/reference/admin/update-agent-status.md) · [原文](https://developers.notion.com/reference/admin/update-agent-status)
 - `reference/admin/update-legal-hold` — [Update a legal hold](pages/reference/admin/update-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/update-legal-hold)
 - `reference/admin/update-mcp-client-connection-enterprise-managed-access` — [Deny or restore enterprise-managed MCP client access](pages/reference/admin/update-mcp-client-connection-enterprise-managed-access.md) · [原文](https://developers.notion.com/reference/admin/update-mcp-client-connection-enterprise-managed-access)
+- `reference/admin/update-workspace-credit-limit` — [Update the default agent credit limit for a workspace](pages/reference/admin/update-workspace-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-workspace-credit-limit)
 - `reference/admin/versioning` — [Versioning](pages/reference/admin/versioning.md) · [原文](https://developers.notion.com/reference/admin/versioning)
 - `reference/authentication` — [Authentication](pages/reference/authentication.md) · [原文](https://developers.notion.com/reference/authentication)
 - `reference/block` — [Block](pages/reference/block.md) · [原文](https://developers.notion.com/reference/block)

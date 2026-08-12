@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/cli/command-reference
 path: reference/cli/command-reference
 ---
 
-CLI command reference: This document provides a complete reference for all Pinecone CLI commands.
+Complete Pinecone CLI command reference covering syntax, subcommands, flags, help output, and exit codes for auth, index, and project.
 
 This document provides a complete reference for all Pinecone CLI commands.
 

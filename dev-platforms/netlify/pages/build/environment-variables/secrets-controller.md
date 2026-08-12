@@ -9,7 +9,7 @@ title: "Enhanced security with Secrets Controller"
 description: "With environment variable secrets, you restrict the access to sensitive data and automatically enable layers of extra protection. Learn how environment variable secrets improve your site's security posture."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With Secrets Controller, your team can protect and manage environment variable values that require additional layers of security. Flag which environment variables are secrets, and Netlify will apply stricter requirements to them. While Netlify handles all environment variables securely, including encrypted storage, Secrets Controller protects environment variable secrets with an opinionated policy and additional security features.
 

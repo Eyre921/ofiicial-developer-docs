@@ -9,7 +9,7 @@ title: "Environment variables overview"
 description: "Learn about the different options for declaring and using environment variables, their limits, and overrides."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify environment variables allow you to configure your site's build and functionality based on different parameters and deploy contexts.
 

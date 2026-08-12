@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/deployments
 path: reference/api/marketplace/deployments
 ---
 
-Create and manage Pinecone Marketplace deployments programmatically.
+Marketplace Deployments API reference for listing, creating, updating, and deleting knowledge application deployments programmatically.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

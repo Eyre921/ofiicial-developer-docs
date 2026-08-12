@@ -9,7 +9,7 @@ title: "Billing FAQ for Credit-based pricing plans"
 description: "Get answers to frequently asked questions about Netlify billing."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page answers frequently asked questions about Netlify billing for our new Credit-based pricing plans.
 

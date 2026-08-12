@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/filter-by-metadata
 path: guides/search/filter-by-metadata
 ---
 
-Narrow search results with metadata filtering.
+Narrow Pinecone search results by adding metadata filter expressions to your query, using operators like $eq, $in, $gt, and $and for precise retrieval.
 
 Every [record](/guides/get-started/concepts#record) in an index must contain an ID and a dense or sparse vector. In addition, you can include [metadata key-value pairs](/guides/index-data/indexing-overview#metadata) to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching the filter expression.
 

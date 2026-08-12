@@ -9,7 +9,7 @@ title: "Get started with Async Workloads"
 description: "Create Async Workload functions in TypeScript and JavaScript. Leverage the AsyncWorkloadClient library to send events to run workloads."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page will help you get started with the Async Workloads extension. It describes how to enable the extension, write basic workloads, and send events to them.
 

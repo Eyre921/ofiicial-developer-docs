@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/files-overview
 path: guides/assistant/files-overview
 ---
 
-Understand supported file types and metadata in Pinecone Assistant.
+Overview of Pinecone Assistant files: supported file types (PDF, DOCX, JSON, MD, TXT), metadata filters, storage, and signed URL access.
 
 Before you can chat with the assistant, you need to [upload files](/guides/assistant/manage-files#upload-a-local-file). The files provide your assistant with context and information to reference when generating responses. Files are not shared across assistants.
 

@@ -9,7 +9,7 @@ title: "Edge Functions limits"
 description: "Keep these limitations in mind when working with Edge Functions, which connect our platform with an open runtime standard at the network edge."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Keep the following limitations in mind when working with Edge Functions.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/create-assistant
 path: guides/assistant/create-assistant
 ---
 
-Create and deploy a Pinecone Assistant with uploaded files for context.
+Create a Pinecone Assistant with custom instructions, metadata, and region settings using the API, Python SDK, Node.js SDK, or console.
 
 This page shows you how to create an [assistant](/guides/assistant/overview).
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/context-snippets-overview
 path: guides/assistant/context-snippets-overview
 ---
 
-Retrieve context snippets from files uploaded to your assistant.
+Learn how Pinecone Assistant retrieves context snippets with relevancy scores and references for RAG applications and agentic workflows.
 
 You can [retrieve the context snippets](/guides/assistant/retrieve-context-snippets) that Pinecone Assistant uses to generate its responses. This data includes relevant chunks, relevancy scores, and references.
 

@@ -9,7 +9,7 @@ title: "DNS & HTTPS troubleshooting tips"
 description: "Reference tips to help get things working if you can't access a site's custom domain or branch subdomain. Review common problems with DNS or HTTPS setup."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 If you're having trouble accessing your site at your custom domain or branch subdomain, there is likely a problem with your DNS or HTTPS setup. This page includes tips and information to help get things working properly.
 

@@ -18,6 +18,7 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 | `managed-user-session`  | Managed users' active sessions                          |
 | `mcp-client-connection` | Members' MCP client connections                         |
 | `personal-access-token` | Personal access tokens in the organization's workspaces |
+| `workflows`             | Custom-agent inventory and governance                   |
 | `workspace`             | Workspace data and settings                             |
 
 <Warning>

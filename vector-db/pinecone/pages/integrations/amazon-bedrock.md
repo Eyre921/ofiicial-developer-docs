@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/amazon-bedrock
 path: integrations/amazon-bedrock
 ---
 
-Connect Pinecone and Amazon Bedrock to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Select Pinecone as a Knowledge Base for Amazon Bedrock to ground LLMs with your enterprise data and build accurate, low-latency RAG applications on AWS.
 
 Users can now select Pinecone as a Knowledge Base for [Amazon Bedrock](https://aws.amazon.com/bedrock/), a fully managed service from Amazon Web Services (AWS) for building GenAI applications.
 

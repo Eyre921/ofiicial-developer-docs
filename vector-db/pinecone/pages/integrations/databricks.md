@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/databricks
 path: integrations/databricks
 ---
 
-Connect Pinecone and Databricks to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Databricks and the Pinecone Spark connector to distribute embedding jobs across a cluster and upsert vectors at scale for semantic search and RAG.
 
 Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, it is easy to horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of precious computation time and resources. Leveraging GPUs with Spark can produce even better results — enjoying the benefits of the fast computation of a GPU combined with parallelization will ensure optimal performance.
 

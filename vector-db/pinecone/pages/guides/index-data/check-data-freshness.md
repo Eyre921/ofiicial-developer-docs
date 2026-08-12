@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/check-data-freshness
 path: guides/index-data/check-data-freshness
 ---
 
-Monitor data freshness in Pinecone using log sequence numbers and vector counts.
+Check data freshness in Pinecone serverless indexes using log sequence numbers (LSNs) and vector counts to verify recent upserts and deletes.
 
 Pinecone is eventually consistent, so there can be a slight delay before new or changed records are visible to queries. This page describes two ways of checking the data freshness of a Pinecone index:
 

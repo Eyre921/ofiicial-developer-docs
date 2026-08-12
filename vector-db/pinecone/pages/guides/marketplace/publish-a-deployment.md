@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/publish-a-deployment
 path: guides/marketplace/publish-a-deployment
 ---
 
-How to publish a Pinecone Marketplace deployment so end users can use it.
+Publish a Pinecone Marketplace deployment to promote a building version to active, run introspection, generate starter prompts, and evaluate quality.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

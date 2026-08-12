@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/projects/manage-projects
 path: guides/projects/manage-projects
 ---
 
-View, rename, and delete projects in your organization.
+View project details, rename projects, and delete projects in your Pinecone organization using the console or Admin API with owner permissions.
 
 This page shows you how to view project details, rename a project, and delete a project.
 

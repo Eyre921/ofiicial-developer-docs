@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/nuclia
 path: integrations/nuclia
 ---
 
-Connect Pinecone and Nuclia to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Power Nuclia RAG-as-a-Service with Pinecone: index documents, customize retrieval and chunking strategies, and deploy LLM knowledge boxes at scale.
 
 [Nuclia](https://nuclia.com/) RAG-as-a-Service automatically indexes files and documents from both internal and external sources, powering diverse company use cases with large language models (LLMs). This comprehensive indexing capability ensures that organizations can leverage unstructured data effectively, transforming it into actionable insights. With Nuclia's modular Retrieval-Augmented Generation (RAG) system, you can deploy solutions tailored to various operational needs across different deployment options, enhancing flexibility and efficiency.
 

@@ -9,7 +9,7 @@ title: "Form notifications"
 description: "Set up notifications for form submissions using email, webhooks, or Slack. Use a third-party integration to trigger an action upon form submission."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Stay updated on the latest form submissions and trigger your own custom workflows with form notifications. Send form notifications to email, webhooks, or a Slack workspace. 
 

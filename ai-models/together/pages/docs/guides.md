@@ -36,6 +36,8 @@ Quickstarts and step-by-step guides for building with Together AI.
   <GuideCard title="Open NotebookLM PDF to Podcast" description="Convert PDF documents into podcast episodes using AI." href="/docs/open-notebooklm-pdf-to-podcast" />
 
   <GuideCard title="AI Tutor" description="Build an intelligent tutoring system with Together AI." href="/docs/ai-tutor" />
+
+  <GuideCard title="Build a Chat API on Render" description="Deploy an authenticated single-turn chat API backed by Together AI to a Render web service." href="/docs/render-chat-api" />
 </GridGuides>
 
 <SubHeading description={"Build intelligent search and retrieval systems"} />

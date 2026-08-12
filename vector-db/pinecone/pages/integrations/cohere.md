@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/cohere
 path: integrations/cohere
 ---
 
-Connect Pinecone and Cohere to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Connect Pinecone and Cohere to ship vector search and RAG applications: generate Cohere embeddings, index them in Pinecone, and rerank results.
 
 The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
 

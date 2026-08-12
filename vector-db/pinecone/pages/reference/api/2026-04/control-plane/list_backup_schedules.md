@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/list_backup_schedules
 ---
 
 GET https://api.pinecone.io/indexes/{index_name}/backup-schedules
-List all backup schedules for an index.
+List all backup schedules configured for a Pinecone serverless index, including schedule IDs, frequency, retention, and next scheduled run times.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

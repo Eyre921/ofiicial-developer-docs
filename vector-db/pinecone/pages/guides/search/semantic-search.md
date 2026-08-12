@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/semantic-search
 path: guides/search/semantic-search
 ---
 
-Find semantically similar records using dense vectors.
+Search a Pinecone index of dense vectors to find semantically similar records using text or vector queries, top_k results, and nearest neighbor lookup.
 
 This page shows you how to search an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) for records that are most similar in meaning and context to a query. This is often called semantic search, nearest neighbor search, similarity search, or just vector search.
 

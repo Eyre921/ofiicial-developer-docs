@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/evaluations
 path: guides/marketplace/evaluations
 ---
 
-How Pinecone Marketplace evaluates a knowledge application on every publish.
+How Pinecone Marketplace runs automatic evaluations on every publish, scoring faithfulness and relevance to catch regressions in a new version.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

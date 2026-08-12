@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/data-ingestion-overview
 path: guides/index-data/data-ingestion-overview
 ---
 
-Learn about the different ways to ingest data into Pinecone.
+Compare data ingestion options in Pinecone: bulk import from object storage, upsert operations, and hosted embedding via the Inference API.
 
 <Tip>
   To control costs when ingesting large datasets (10,000,000+ records), use [import](/guides/index-data/import-data) instead of upsert.

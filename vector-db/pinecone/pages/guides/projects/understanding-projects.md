@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/projects/understanding-projects
 path: guides/projects/understanding-projects
 ---
 
-Learn about projects, environments, and member roles.
+Learn how Pinecone projects organize indexes, cloud environments, API keys, and members, including project roles and per-role permission summaries.
 
 A Pinecone project belongs to an [organization](/guides/organizations/understanding-organizations) and contains a number of [indexes](/guides/index-data/indexing-overview) and users. Only a user who belongs to the project can access the indexes in that project. Each project also has at least one project owner.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-a
 path: guides/operations/integrations/integrate-with-azure-blob-storage
 ---
 
-Set up Azure Blob Storage integration for data import.
+Connect Pinecone to Azure Blob Storage using a service principal to import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).

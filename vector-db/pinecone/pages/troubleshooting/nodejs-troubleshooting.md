@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/nodejs-troubleshooting
 path: troubleshooting/nodejs-troubleshooting
 ---
 
-Troubleshoot “Node.js Troubleshooting” in Pinecone: There could be several reasons why a Node.js application works in development mode but not in deployment.
+Troubleshoot Pinecone Node.js SDK issues that work locally but fail in deployment, including environment, network, and serverless runtime configuration.
 
 There could be several reasons why a [Node.js application](/reference/sdks/node/overview) works in development mode but not in deployment.
 

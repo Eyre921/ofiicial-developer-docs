@@ -9,7 +9,7 @@ title: "Writing Async Workloads"
 description: "Create Async Workloads files in TypeScript and JavaScript. Define how workloads handle retries and errors."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page will go deeper into creating Async Workload functions and the different capabilities available with them.
 

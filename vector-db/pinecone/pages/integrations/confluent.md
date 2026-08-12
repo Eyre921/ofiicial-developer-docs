@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/confluent
 path: integrations/confluent
 ---
 
-Connect Pinecone and Confluent to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Pinecone Sink Connector for Confluent Kafka to stream events, embed them with LLMs, and upsert vectors for real-time semantic search and RAG.
 
 Confluent allows you to connect and process all of your data in real time with a cloud-native and complete data streaming platform available everywhere you need it. Confluent's Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other data systems. It makes it simple to quickly define connectors that move large data sets in and out of Kafka.
 

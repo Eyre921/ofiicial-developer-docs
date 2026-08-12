@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/gathr
 path: integrations/gathr
 ---
 
-Connect Pinecone and Gathr to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Gathr's no-code data-to-outcome platform with Pinecone to build enterprise RAG apps, chatbots, and vector pipelines from ingestion through deployment.
 
 [Gathr](https://www.gathr.one/) is the world's first and only "data to outcome" platform. Leading enterprises use Gathr to build and operationalize data and AI-driven solutions at scale.
 

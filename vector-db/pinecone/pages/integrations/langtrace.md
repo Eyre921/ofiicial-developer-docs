@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/langtrace
 path: integrations/langtrace
 ---
 
-Connect Pinecone and Langtrace to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Trace Pinecone API calls with Langtrace's OpenTelemetry SDK to debug RAG pipelines, monitor vector DB latency, and ship LLM observability.
 
 Scale3 Labs recently launched Langtrace AI, an open-source monitoring and evaluation platform for LLM-powered applications. Langtrace is built based on Open Telemetry(OTEL) standards and supports native tracing for the most popular LLM vendors, VectorDBs, and frameworks(like Langchain and LlamaIndex).
 

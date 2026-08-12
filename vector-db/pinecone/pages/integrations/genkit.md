@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/genkit
 path: integrations/genkit
 ---
 
-Connect Pinecone and Genkit to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Genkit Pinecone plugin with Firebase to build AI features with type-safe indexers, embedders, and retrievers for RAG and semantic search apps.
 
 The [Genkit](https://firebase.google.com/docs/genkit) Pinecone plugin empowers developers to reduce the complexity of integrating AI components through simple indexers, embedders and retrievers abstractions. Through the Genkit Pinecone plugin, developers can integrate AI models with their own custom logic and data to build AI features optimized for their businesses.
 

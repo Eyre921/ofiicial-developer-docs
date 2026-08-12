@@ -9,7 +9,7 @@ title: "Configure external DNS for a custom domain"
 description: "Configure an external DNS provider to point your domain to our platform. You can use external DNS for a subdomain or apex domain you registered externally."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 If you've assigned an externally registered domain to your site, and you don't want to use [Netlify DNS](/manage/domains/why-netlify-dns), you need to configure your external DNS provider to point your domain to Netlify.
 

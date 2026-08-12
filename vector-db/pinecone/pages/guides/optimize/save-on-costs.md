@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/optimize/save-on-costs
 path: guides/optimize/save-on-costs
 ---
 
-Learn techniques to reduce spend when ingesting data, querying, and operating indexes.
+Save on Pinecone costs by using bulk import over upsert, namespaces for multitenancy, and query patterns that reduce read unit consumption.
 
 ## Credits and discounts
 

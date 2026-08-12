@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/list-record-ids
 path: guides/manage-data/list-record-ids
 ---
 
-List the IDS of records in an index namespace.
+List the IDs of records in a Pinecone serverless namespace, filter by ID prefix, and paginate results to verify upserts cheaply and quickly.
 
 You can list the IDs of all records in a [namespace](/guides/index-data/indexing-overview#namespaces) or just the records with a common ID prefix.
 

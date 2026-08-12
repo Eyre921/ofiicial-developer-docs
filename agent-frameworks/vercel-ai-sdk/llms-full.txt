@@ -124160,21 +124160,22 @@ try {
 
 ## Video Models
 
-| Provider                                                                | Model                       | Features                                               |
-| ----------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------ |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video                          |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `minimax-video`             | Text-to-video                                          |
-| [Google](/providers/ai-sdk-providers/google#video-models)               | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                 |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-generate-001`      | Text-to-video, audio generation                        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-fast-generate-001` | Text-to-video, audio generation                        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-generate-001`      | Text-to-video, audio generation                        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-fast-generate-001` | Text-to-video, audio generation                        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                 |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-t2v`            | Text-to-video                                          |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-i2v`            | Image-to-video                                         |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-motion-control` | Motion control                                         |
-| [Replicate](/providers/ai-sdk-providers/replicate#video-models)         | `minimax/video-01`          | Text-to-video                                          |
-| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V |
+| Provider                                                                | Model                       | Features                                                                      |
+| ----------------------------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------- |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video                                                 |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `minimax-video`             | Text-to-video                                                                 |
+| [Google](/providers/ai-sdk-providers/google#video-models)               | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                        |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-generate-001`      | Text-to-video, audio generation                                               |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-fast-generate-001` | Text-to-video, audio generation                                               |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-generate-001`      | Text-to-video, audio generation                                               |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-fast-generate-001` | Text-to-video, audio generation                                               |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                        |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-t2v`            | Text-to-video                                                                 |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-i2v`            | Image-to-video                                                                |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-motion-control` | Motion control                                                                |
+| [Replicate](/providers/ai-sdk-providers/replicate#video-models)         | `minimax/video-01`          | Text-to-video                                                                 |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V                        |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V (with reference audio) |
 
 Above are a small subset of the video models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -128565,7 +128566,8 @@ console.log(preparation.identity);
 - `harness`: the adapter instance.
 - `sandbox`: a `HarnessV1SandboxProvider`.
 - `id`: optional stable agent identifier.
-- `instructions`: instructions applied once to a fresh session.
+- `instructions`: instructions appended to the runtime's system or developer
+  prompt when supported, or prepended to the first user prompt otherwise.
 - `stopWhen`: condition(s) for finishing a result slice after a completed
   harness tool step that can continue into another model step.
 - `tools`: AI SDK tools executed by the host when the harness calls them.
@@ -140158,12 +140160,64 @@ const { video } = await generateVideo({
 });
 ```
 
+`inputReferences` accepts image references only. A reference with a non-image
+media type (for example a video or audio clip) is ignored with a warning, and a
+reference with no media type is treated as an image. If no image reference
+remains, reference-to-video is not selected and no reference images are sent.
+
+#### Reference Audio
+
+Reference-to-video can also give the subject a voice. `referenceVoiceIds` takes
+up to 3 xAI **preset** voice ids — you cannot upload your own audio clips.
+Reference the voices from the prompt with `<AUDIO_0>`, `<AUDIO_1>`, and
+`<AUDIO_2>`, in the order the voices are passed.
+
+```ts
+import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
+import { experimental_generateVideo as generateVideo } from 'ai';
+
+const { video } = await generateVideo({
+  model: xai.video('grok-imagine-video-1.5'),
+  prompt:
+    'The person from <IMAGE_0> stands in the room from <IMAGE_1> and speaks ' +
+    'to the camera with the voice from <AUDIO_0>.',
+  aspectRatio: '9:16',
+  duration: 10,
+  providerOptions: {
+    xai: {
+      mode: 'reference-to-video',
+      referenceImageUrls: [
+        'https://example.com/person.png',
+        'https://example.com/room.png',
+      ],
+      referenceVoiceIds: ['eve'],
+      resolution: '720p',
+      pollTimeoutMs: 600000,
+    } satisfies XaiVideoModelOptions,
+  },
+});
+```
+
+Valid voice ids come from the xAI
+[text-to-speech voice roster](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices).
+Ids are case-insensitive, and an unknown id returns a `400` response listing the
+available voices. `referenceVoiceIds` is ignored with a warning when the
+resolved operation is not reference-to-video.
+
+<Note>
+  xAI documents reference audio as available in the United States only, for
+  trusted partners. Requests from accounts without access are rejected by the
+  xAI API.
+</Note>
+
 <Note>
   Reference-to-video supports `duration`, `aspectRatio`, and `resolution`. Use
   `mode` to select the operation — each mode is mutually exclusive. When both
   are provided, `frameImages` takes precedence over `inputReferences`, and
   `inputReferences` takes precedence over the legacy `referenceImageUrls`
-  provider option. Reference-to-video requires the `grok-imagine-video` model.
+  provider option. Reference-to-video is supported by the `grok-imagine-video`
+  and `grok-imagine-video-1.5` models; native 1080p requires
+  `grok-imagine-video-1.5`.
 </Note>
 
 ### Video Provider Options
@@ -140179,11 +140233,14 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
 
   Maximum wait time in milliseconds for video generation. Defaults to 600000 (10 minutes).
 
-- **resolution** _'480p' | '720p'_
+- **resolution** _'480p' | '720p' | '1080p'_
 
   Video resolution. When using the SDK's standard `resolution` parameter,
-  `1280x720` maps to `720p` and `854x480` maps to `480p`.
-  Use this provider option to pass the native format directly.
+  `1920x1080` maps to `1080p`, `1280x720` maps to `720p`, and `854x480` maps
+  to `480p`. Use this provider option to pass the native format directly.
+  `1080p` requires the `grok-imagine-video-1.5` model and is available for
+  text-to-video and image-to-video; reference-to-video is capped at `720p`
+  (a `1080p` request is downgraded with a warning).
 
 - **user** _string_
 
@@ -140215,6 +140272,17 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
   `<IMAGE_1>`, `<IMAGE_2>`, etc. in the prompt to reference specific
   images. Used with `mode: 'reference-to-video'`.
 
+- **referenceVoiceIds** _string[]_
+
+  Up to 3 xAI preset voice ids that give the subject a voice in
+  reference-to-video (R2V) generation. Preset voices only — audio clips
+  cannot be uploaded. Ids are case-insensitive and come from the
+  [text-to-speech voice roster](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices);
+  an unknown id returns a `400` listing the available voices. Use `<AUDIO_0>`,
+  `<AUDIO_1>`, and `<AUDIO_2>` tags in the prompt to reference the voices.
+  Ignored with a warning outside reference-to-video. Reference audio is
+  documented as US-only and limited to trusted partners.
+
 <Note>
   Video generation is an asynchronous process that can take several minutes.
   Consider setting `pollTimeoutMs` to at least 10 minutes (600000ms) for
@@ -140225,7 +140293,9 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
 ### Aspect Ratio and Resolution
 
 For **text-to-video**, you can specify both `aspectRatio` and `resolution`.
-The default aspect ratio is `16:9` and the default resolution is `480p`.
+The default aspect ratio is `16:9` and the default resolution is `480p`. The
+`grok-imagine-video-1.5` model additionally supports native `1080p` for
+text-to-video and image-to-video.
 
 For **image-to-video**, the output defaults to the input image's aspect ratio.
 If you specify `aspectRatio`, it will override this and stretch the image to the
@@ -140241,13 +140311,18 @@ from the source video. `duration` is supported and controls only the
 extension length.
 
 For **reference-to-video (R2V)**, you can specify `duration`, `aspectRatio`,
-and `resolution` just like text-to-video.
+and `resolution`. Unlike text-to-video, R2V is capped at `720p` — a `1080p`
+request is downgraded to `720p` with a warning.
 
 ### Video Model Capabilities
 
-| Model                | Duration | Aspect Ratios                                     | Resolution     | Image-to-Video | Editing   | Extension | R2V       |
-| -------------------- | -------- | ------------------------------------------------- | -------------- | -------------- | --------- | --------- | --------- |
-| `grok-imagine-video` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p` | <Check />      | <Check /> | <Check /> | <Check /> |
+| Model                    | Duration | Aspect Ratios                                     | Resolution                | Image-to-Video | Editing   | Extension | R2V       |
+| ------------------------ | -------- | ------------------------------------------------- | ------------------------- | -------------- | --------- | --------- | --------- |
+| `grok-imagine-video`     | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p`            | <Check />      | <Check /> | <Check /> | <Check /> |
+| `grok-imagine-video-1.5` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p`, `1080p`\* | <Check />      | <Check /> | <Check /> | <Check /> |
+
+\* Native `1080p` applies to text-to-video and image-to-video. Reference-to-video
+is capped at `720p` — a `1080p` request is downgraded with a warning.
 
 <Note>
   You can also pass any available provider model ID as a string if needed.
@@ -160496,7 +160571,7 @@ import { cerebras } from '@ai-sdk/cerebras';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: cerebras('llama3.1-8b'),
+  model: cerebras('gpt-oss-120b'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -160504,22 +160579,22 @@ const { text } = await generateText({
 Cerebras language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
-You can create Cerebras language models using a provider instance. The first argument is the model ID, e.g. `llama-3.3-70b`:
+You can create Cerebras language models using a provider instance. The first argument is the model ID, e.g. `gpt-oss-120b`:
 
 ```ts
-const model = cerebras('llama-3.3-70b');
+const model = cerebras('gpt-oss-120b');
 ```
 
 You can also use the `.languageModel()` and `.chat()` methods:
 
 ```ts
-const model = cerebras.languageModel('llama-3.3-70b');
-const model = cerebras.chat('llama-3.3-70b');
+const model = cerebras.languageModel('gpt-oss-120b');
+const model = cerebras.chat('gpt-oss-120b');
 ```
 
 ### Reasoning Models
 
-Cerebras offers several reasoning models including `gpt-oss-120b`, `qwen-3-32b`, and `zai-glm-4.7` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
+Cerebras offers reasoning models including `gpt-oss-120b`, `zai-glm-4.7`, and `gemma-4-31b` that generate intermediate thinking tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
 For `gpt-oss-120b`, you can control the reasoning depth using the `reasoningEffort` provider option:
 
@@ -160566,24 +160641,11 @@ The following optional provider options are available for Cerebras language mode
 
 ## Model Capabilities
 
-| Model                            | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
-| -------------------------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
-| `llama3.1-8b`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
-| `llama-3.3-70b`                  | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
-| `gpt-oss-120b`                   | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
-| `qwen-3-32b`                     | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
-| `qwen-3-235b-a22b-instruct-2507` | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
-| `qwen-3-235b-a22b-thinking-2507` | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
-| `zai-glm-4.6`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
-| `zai-glm-4.7`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
-
-<Note>
-  The models `qwen-3-32b` and `llama-3.3-70b` are scheduled for deprecation on
-  February 16, 2026. Please see the [Cerebras
-  docs](https://inference-docs.cerebras.ai/introduction) for more details about
-  the available models and migration guidance. You can also pass any available
-  provider model ID as a string if needed.
-</Note>
+| Model          | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
+| -------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
+| `gpt-oss-120b` | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `zai-glm-4.7`  | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `gemma-4-31b`  | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
 
 ---
 title: Replicate
@@ -164053,6 +164115,11 @@ try {
     unavailable. This requires `providerAuthentication` configuration.
 - `providerAuthentication`: declarative runtime-specific Gateway environment.
 - `modelId`: a known implementation model identifier for Harness metadata.
+- `instructionMapping`: optional mapping from `HarnessAgent` instructions to
+  an implementation's native system or developer prompt. Use `session-meta`
+  for a path below the ACP session request's `_meta` field, or
+  `launch-env-json` for a path within a JSON launch environment variable. When
+  omitted, instructions are prepended to the first user prompt.
 - `permissionModeMapping`: mappings from all three Harness permission modes to
   advertised ACP session modes or configuration options. Set an entry to
   `null` when the ACP implementation does not support that mode. When omitted,
@@ -164207,6 +164274,10 @@ export const claudeCodeACPHarness = createACP({
   env: {
     IS_SANDBOX: '1',
   },
+  instructionMapping: {
+    type: 'session-meta',
+    path: ['systemPrompt', 'append'],
+  },
   permissionModeMapping: {
     'allow-reads': { type: 'session-mode', modeId: 'default' },
     'allow-edits': { type: 'session-mode', modeId: 'acceptEdits' },
@@ -164251,6 +164322,11 @@ export const codexACPHarness = createACP({
   },
   executable: 'codex-acp',
   forwardEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
+  instructionMapping: {
+    type: 'launch-env-json',
+    variable: 'CODEX_CONFIG',
+    path: ['developer_instructions'],
+  },
   permissionModeMapping: {
     'allow-reads': null,
     'allow-edits': null,
@@ -164325,6 +164401,10 @@ export const grokBuildACPHarness = createACP({
   executable: 'grok',
   args: ['agent', 'stdio'],
   forwardEnv: ['XAI_API_KEY'],
+  instructionMapping: {
+    type: 'session-meta',
+    path: ['rules'],
+  },
   providerAuthentication: {
     gateway: {
       env: {

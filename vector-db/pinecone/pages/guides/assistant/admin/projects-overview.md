@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/projects-overview
 path: guides/assistant/admin/projects-overview
 ---
 
-Learn about projects, roles, and collaboration.
+Understand how Pinecone projects contain assistants, indexes, and users, and review project owner and project user roles and their permissions.
 
 A Pinecone project belongs to an [organization](/guides/assistant/admin/organizations-overview) and contains a number of [assistants](/guides/assistant/overview) and users. Only a user who belongs to the project can access the assistants in that project. Each project also has at least one project owner.
 

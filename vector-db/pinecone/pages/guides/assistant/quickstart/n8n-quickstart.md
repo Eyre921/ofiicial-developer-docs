@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/quickstart/n8n-quickstart
 path: guides/assistant/quickstart/n8n-quickstart
 ---
 
-Create an n8n workflow to chat with documents using Pinecone Assistant and OpenAI.
+Build an n8n workflow with Pinecone Assistant and OpenAI to download files via HTTP, upload documents, and chat with them from an automation.
 
 Create an [n8n](https://docs.n8n.io/choose-n8n/) workflow that that downloads files via HTTP, uploads them to Pinecone Assistant, and enables you to chat with documents using OpenAI.
 

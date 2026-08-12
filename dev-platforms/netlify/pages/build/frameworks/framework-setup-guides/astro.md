@@ -9,7 +9,7 @@ title: "Astro on Netlify"
 description: "Learn about Astro and deploy an Astro application with server-side rendering (SSR) on our platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Astro is a framework that focuses on performance - by default, it ships zero client-side JavaScript. When needed, Astro adds partial hydration to make use of the [Islands Architecture](https://docs.astro.build/en/concepts/islands/). You can also use your favorite framework (like Vue, React, or Svelte) inside your Astro projects.
 

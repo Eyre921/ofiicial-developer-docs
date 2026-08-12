@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/gemini-cli
 path: integrations/gemini-cli
 ---
 
-Integrate Pinecone with Gemini CLI Extension for vector search, RAG, and production AI workloads.
+Install the official Pinecone extension for Gemini CLI to manage indexes, run vector search, and build RAG assistants with natural-language commands.
 
 The official Pinecone extension for [Gemini CLI](https://github.com/google-gemini/gemini-cli) provides AI-powered skills and MCP server integration directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants.
 

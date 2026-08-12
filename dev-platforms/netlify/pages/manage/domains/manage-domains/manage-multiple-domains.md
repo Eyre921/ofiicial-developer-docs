@@ -9,7 +9,7 @@ title: "Manage multiple domains"
 description: "Your production site or app can support more than one domain through domain aliases, redirects, subdomains, and more."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Your production site or app can support more than one domain through domain aliases, redirects, subdomains, and more.
 

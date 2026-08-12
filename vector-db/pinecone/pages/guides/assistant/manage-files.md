@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/manage-files
 path: guides/assistant/manage-files
 ---
 
-List, check status, and delete files from your assistant.
+List files in your Pinecone assistant, check individual file ingestion status by ID, view metadata, and delete files using the API, SDKs, or console.
 
 <Note>
   File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).

@@ -16,6 +16,8 @@ Tax codes within Stripe are always the same across different jurisdictions. Howe
 
 See our [list of available tax codes](https://docs.stripe.com/tax/tax-codes.md).
 
+**Guidance for AI agents:** Treat `txcd_` identifiers as opaque, exact strings. Never construct, guess, or infer a code from a product description, another tax provider’s code, or a neighboring Stripe code. A code that looks similar isn’t a match. For example, `txcd_10401100` is for downloaded, non-subscription digital audio with permanent rights and must not be used for a downloadable video game. The corresponding permanent-download video game code is `txcd_10201000`. Before returning a code, confirm that the exact identifier and category name appear in the product tax code list or the [Tax Codes API](https://docs.stripe.com/api/tax_codes/list.md). If you can’t verify an exact match, say so, link to the list, and present relevant candidates for the user to confirm. Don’t make the legal tax classification for the user.
+
 ## Preset tax codes 
 
 When activating Stripe Tax you can set two types of preset tax codes: one for products and one for shipping. You can set both in the [Tax settings](https://dashboard.stripe.com/settings/tax) in the Dashboard.

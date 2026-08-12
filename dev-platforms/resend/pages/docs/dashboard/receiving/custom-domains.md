@@ -14,7 +14,7 @@ Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), 
   <Step title="Add the DNS record">
     First, [verify your domain](/docs/dashboard/domains/introduction).
 
-    Receiving emails requires an extra [MX record](https://resend.com/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
+    Receiving emails requires an extra [MX record](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
 
     1. Go to the [Domains](https://resend.com/domains) page
     2. Copy the MX record

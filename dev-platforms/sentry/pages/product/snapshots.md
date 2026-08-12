@@ -58,7 +58,7 @@ Snapshots works for any platform with a frontend and most platforms have a numbe
 
 - #### [Agentic Workflow](https://docs.sentry.io/product/snapshots/agentic-workflow.md)
 
-  Connect an AI agent to Sentry's MCP server to inspect snapshot diffs, images, and baselines.
+  Connect an agent to Sentry's MCP server to inspect snapshot diffs, images, and baselines.
 
 ## Pages in this section
 

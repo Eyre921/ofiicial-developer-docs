@@ -9,7 +9,7 @@ title: "Build configuration overview"
 description: "Configure build settings for a repository that uses continuous deployment, and understand build image options for your site."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify lets you link a GitHub, GitLab, Bitbucket, or Azure DevOps repository to a site for [continuous deployment](/deploy/create-deploys#deploy-with-git). Each time you push to your Git provider, Netlify runs a build with your tool of choice and deploys the result to our powerful CDN.
 

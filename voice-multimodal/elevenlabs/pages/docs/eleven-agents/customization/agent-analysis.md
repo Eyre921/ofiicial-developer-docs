@@ -23,10 +23,6 @@ Extract structured information from conversations such as contact details and bu
 
 Understand whether users are having positive, neutral, or negative conversations.
 
-#### [Coaching](/docs/eleven-agents/customization/agent-analysis/coaching)
-
-Talk to an internal coach agent to improve your agent's system prompt, memories, and procedures.
-
 #### [Searching conversations](/docs/eleven-agents/customization/agent-analysis/smart-search)
 
 Find messages by keyword or meaning across your conversation history.
@@ -38,7 +34,6 @@ ElevenAgents provides several complementary analysis capabilities:
 * **Success evaluation**: Define custom criteria to assess conversation quality, goal achievement, and customer satisfaction
 * **Data collection**: Extract specific data points from conversations such as contact information, issue details, or any structured information
 * **Sentiment analysis**: Understand user sentiment across completed conversations
-* **Coaching**: Talk to an internal coach agent to improve your agent's configuration
 * **Searching conversations**: Find relevant messages across conversation history
 
 These features process conversation transcripts to provide insights that improve agent performance and business outcomes.

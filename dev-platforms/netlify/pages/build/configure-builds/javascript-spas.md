@@ -9,7 +9,7 @@ title: "JavaScript SPAs"
 description: "Access common build configuration information for JavaScript single-page applications (SPAs) on our platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify supports many frameworks and project architectures. On this page, you'll find generic common configuration information for JavaScript single-page applications (SPAs). For framework-specific configurations, refer to our [frameworks page](/build/frameworks/overview).
 

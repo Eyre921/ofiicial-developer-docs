@@ -123,11 +123,13 @@ Anthropic models include a cache write cost in addition to cached input.
 
 ### Microsoft
 
-| Model            | Release status | Category    | Input | Cached input | Output |
-| ---------------- | -------------- | ----------- | ----: | -----------: | -----: |
-|                  |                |             |       |              |        |
-| MAI-Code-1-Flash | GA             | Lightweight | $0.75 |       $0.075 |  $4.50 |
-|                  |                |             |       |              |        |
+| Model              | Release status | Category    | Input | Cached input | Output |
+| ------------------ | -------------- | ----------- | ----: | -----------: | -----: |
+|                    |                |             |       |              |        |
+| MAI-Code-1-Flash   | GA             | Lightweight | $0.75 |       $0.075 |  $4.50 |
+|                    |                |             |       |              |        |
+| MAI-Code-1.1-Flash | GA             | Lightweight | $0.20 |        $0.02 |  $1.20 |
+|                    |                |             |       |              |        |
 
 ### xAI
 

@@ -9,7 +9,7 @@ title: Deploy overview
 description: "Understand how site deploys work, access information on a deploy's detail page, and control branches, deploy contexts, and deploy permissions."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Understand how deploys work, how to find information about deploys, and how to manage branches, deploy contexts, deploy permissions, and more.
 

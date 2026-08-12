@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/sdks/go/overview
 path: reference/sdks/go/overview
 ---
 
-Install and use the Pinecone SDK for Pinecone Go SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the Go.
+Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
 <Tip>
   For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).

@@ -9,7 +9,7 @@ title: "Protect deploys"
 description: "Learn how to secure your deploys with project visibility, password protection, visitor access controls, and other security measures."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Control who can access your deploys on Netlify with project visibility, password protection, visitor access controls, Netlify team-based restrictions, blocking web traffic, and more.
 

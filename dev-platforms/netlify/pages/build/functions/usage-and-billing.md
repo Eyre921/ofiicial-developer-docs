@@ -9,7 +9,7 @@ title: "Functions usage and billing"
 description: "Monitor your Functions usage at the team and project levels"
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 How functions are billed, and what options you have for monitoring detailed usage, depend on whether you're on a [Credit-based plan](/manage/accounts-and-billing/billing/overview/#credit-based-plans) or a [Legacy plan](/manage/accounts-and-billing/billing/billing-for-legacy-plans/legacy-pricing-plans/).
 

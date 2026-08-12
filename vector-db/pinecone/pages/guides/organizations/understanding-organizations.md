@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/understanding-organization
 path: guides/organizations/understanding-organizations
 ---
 
-Understand organization structure, projects, and billing.
+Learn how Pinecone organizations group projects, share billing, and use organization roles to control member permissions and access to resources.
 
 A Pinecone organization is a set of [projects](/guides/projects/understanding-projects) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
 

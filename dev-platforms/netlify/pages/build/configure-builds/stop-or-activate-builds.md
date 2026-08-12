@@ -9,7 +9,7 @@ title: "Stop or activate builds"
 description: "Stop builds for your site at will for more control of your workflow. When you're ready for Netlify to build your site again, you can activate builds."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 If your site is linked to a Git repository, Netlify will by default build your site according to your continuous deployment settings when you push to your Git provider. You can [stop builds](/build/configure-builds/stop-or-activate-builds#stop-builds) for your site at will for more control of your workflow. When you're ready for Netlify to build your site again, you can [activate builds](/build/configure-builds/stop-or-activate-builds#activate-builds).
 

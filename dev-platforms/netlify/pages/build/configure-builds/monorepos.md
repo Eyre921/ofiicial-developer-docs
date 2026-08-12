@@ -9,7 +9,7 @@ title: "Monorepos"
 description: "Set up your sites to build from a monorepo. Consider where to declare dependencies and how to use workspaces on the platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify provides flexibility in how you organize and build a site or application. Although some sites are built directly from the root of a repository, we also support those with a more complex setup like monorepos - repositories that contain multiple sites or apps, each in its own subdirectory.
 

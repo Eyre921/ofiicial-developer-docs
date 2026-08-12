@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/configure-components
 path: guides/marketplace/configure-components
 ---
 
-Enable visual components in a Pinecone Marketplace knowledge application.
+Enable visual components like comparison tables, timelines, and coverage matrices in a Pinecone Marketplace knowledge application interface.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

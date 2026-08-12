@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/versions
 path: reference/api/marketplace/versions
 ---
 
-Programmatically publish, list, and roll back Pinecone Marketplace deployment versions.
+Marketplace Versions API reference for publishing building versions, listing version history, and rolling back deployments programmatically.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

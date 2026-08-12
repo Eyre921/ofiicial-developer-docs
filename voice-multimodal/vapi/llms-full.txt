@@ -36,6 +36,10 @@
 - [Transcriber fallback configuration](https://docs.vapi.ai/customization/transcriber-fallback-plan.md): Configure fallback transcribers so calls keep working if your primary speech-to-text provider fails. Covers automatic fallback, manual fallback, and HIPAA-compliant provider options.
 - [OpenAI Realtime](https://docs.vapi.ai/openai-realtime.md): Build voice assistants with OpenAI's native speech-to-speech models for ultra-low latency conversations
 - [Provider Keys](https://docs.vapi.ai/customization/provider-keys.md): Bring your own API keys to Vapi.
+- [Versioning](https://docs.vapi.ai/assistants/versioning.md): Versioning saves published assistant and tool configurations so you can make changes in a draft, review their history, and restore an earlier version.
+- [Versioning with assistants](https://docs.vapi.ai/assistants/versioning/versioning-assistants.md): Publish assistant changes, review version history, restore an earlier configuration as a new current version, and select the published assistant version for a call.
+- [Versioning with tools](https://docs.vapi.ai/assistants/versioning/versioning-tools.md): Publish tool changes, review version history, restore an earlier configuration to the draft, and select the specific tool version that an assistant uses.
+- [How versioning works with assistants and tools](https://docs.vapi.ai/assistants/versioning/versioning-with-assistants-and-tools.md): Select a specific or latest tool version for an assistant, and learn how restoring an assistant also restores the tool version selections saved with it.
 - [Model Intelligence for transcribers, models, and voices](https://docs.vapi.ai/assistants/model-intelligence/overview.md): Model Intelligence helps you choose transcribers, models, and voices with curated presets and weekly refreshed performance metrics for latency, cost, and quality.
 - [Model Presets for transcribers, models, and voices](https://docs.vapi.ai/assistants/model-intelligence/presets.md): Model presets optimize for balanced performance, reasoning, low latency, or low cost. Learn when to use each preset and how to apply or customize its configuration.
 - [Performance metrics and methodology reference](https://docs.vapi.ai/assistants/model-intelligence/metrics-methodology.md): The performance metrics reference explains how Vapi sources and calculates latency, cost, and quality data for each supported transcriber, model, and voice.
@@ -86,6 +90,7 @@
 - [Twilio SIP Integration](https://docs.vapi.ai/advanced/sip/twilio.md): How to integrate Twilio SIP with Vapi
 - [Telnyx SIP integration](https://docs.vapi.ai/advanced/sip/telnyx.md): How to integrate SIP Telnyx to Vapi
 - [DIDWW SIP integration](https://docs.vapi.ai/advanced/sip/didww.md): Set up DIDWW SIP trunking with Vapi. Create inbound and outbound trunks, allowlist signaling IPs, and configure authenticated SIP REFER call transfers.
+- [DIDLogic SIP integration](https://docs.vapi.ai/advanced/sip/didlogic.md): Configure DIDLogic and Vapi for inbound calls, outbound calls, and SIP REFER transfers.
 - [Zadarma SIP Integration](https://docs.vapi.ai/advanced/sip/zadarma.md): How to integrate SIP Zadarma to Vapi
 - [Plivo SIP Integration](https://docs.vapi.ai/advanced/sip/plivo.md): Learn to connect your Plivo SIP trunk to Vapi for inbound and outbound calls
 - [Amazon Chime SDK SIP Integration](https://docs.vapi.ai/advanced/sip/amazon-chime.md): How to integrate Amazon Chime SDK Voice Connector with Vapi
@@ -266,6 +271,25 @@
 - API reference [Delete Eval Simulation Id](https://docs.vapi.ai/api-reference/delete-eval-simulation-id.md)
 - API reference [Patch Eval Simulation Id](https://docs.vapi.ai/api-reference/patch-eval-simulation-id.md)
 - API reference [Get Eval Simulation Concurrency](https://docs.vapi.ai/api-reference/get-eval-simulation-concurrency.md)
+- API reference [Get Assistant Draft](https://docs.vapi.ai/api-reference/get-assistant-draft.md)
+- API reference [Get Assistant Id Draft](https://docs.vapi.ai/api-reference/get-assistant-id-draft.md)
+- API reference [Post Assistant Id Draft](https://docs.vapi.ai/api-reference/post-assistant-id-draft.md)
+- API reference [Get Assistant Id Draft Draft Id](https://docs.vapi.ai/api-reference/get-assistant-id-draft-draft-id.md)
+- API reference [Delete Assistant Id Draft Draft Id](https://docs.vapi.ai/api-reference/delete-assistant-id-draft-draft-id.md)
+- API reference [Patch Assistant Id Draft Draft Id](https://docs.vapi.ai/api-reference/patch-assistant-id-draft-draft-id.md)
+- API reference [Get Assistant Id Versions Version](https://docs.vapi.ai/api-reference/get-assistant-id-versions-version.md)
+- API reference [Delete Assistant Id Versions Version](https://docs.vapi.ai/api-reference/delete-assistant-id-versions-version.md)
+- API reference [Patch Assistant Id Versions Version](https://docs.vapi.ai/api-reference/patch-assistant-id-versions-version.md)
+- API reference [Get Tool Draft](https://docs.vapi.ai/api-reference/get-tool-draft.md)
+- API reference [Get Tool Id Draft](https://docs.vapi.ai/api-reference/get-tool-id-draft.md)
+- API reference [Post Tool Id Draft](https://docs.vapi.ai/api-reference/post-tool-id-draft.md)
+- API reference [Get Tool Id Draft Draft Id](https://docs.vapi.ai/api-reference/get-tool-id-draft-draft-id.md)
+- API reference [Delete Tool Id Draft Draft Id](https://docs.vapi.ai/api-reference/delete-tool-id-draft-draft-id.md)
+- API reference [Patch Tool Id Draft Draft Id](https://docs.vapi.ai/api-reference/patch-tool-id-draft-draft-id.md)
+- API reference [Get Tool Id Versions](https://docs.vapi.ai/api-reference/get-tool-id-versions.md)
+- API reference [Get Tool Id Versions Version](https://docs.vapi.ai/api-reference/get-tool-id-versions-version.md)
+- API reference [Delete Tool Id Versions Version](https://docs.vapi.ai/api-reference/delete-tool-id-versions-version.md)
+- API reference [Patch Tool Id Versions Version](https://docs.vapi.ai/api-reference/patch-tool-id-versions-version.md)
 - API reference > Assistants [List Assistants](https://docs.vapi.ai/api-reference/assistants/list.md)
 - API reference > Assistants [Create Assistant](https://docs.vapi.ai/api-reference/assistants/create.md)
 - API reference > Assistants [Get Assistant](https://docs.vapi.ai/api-reference/assistants/get.md)

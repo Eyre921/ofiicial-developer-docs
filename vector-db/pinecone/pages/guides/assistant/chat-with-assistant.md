@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/chat-with-assistant
 path: guides/assistant/chat-with-assistant
 ---
 
-Chat with your assistant using the standard interface and API.
+Chat with Pinecone Assistant through the standard interface with default, streaming, or JSON responses, plus citations and chat history support.
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 

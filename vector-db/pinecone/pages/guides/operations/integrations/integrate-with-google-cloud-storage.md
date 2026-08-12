@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-g
 path: guides/operations/integrations/integrate-with-google-cloud-storage
 ---
 
-Integrate Google Cloud Storage for bulk data import
+Connect Pinecone to a Google Cloud Storage bucket with a service account key to import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).

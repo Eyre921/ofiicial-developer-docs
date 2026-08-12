@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/upgrade-bil
 path: guides/organizations/manage-billing/upgrade-billing-plan
 ---
 
-Upgrade to a paid plan to access advanced features and limits.
+Upgrade to a paid Pinecone plan for higher limits, backups, private endpoints, audit logs, and access to the Builder, Standard, or Enterprise tiers.
 
 This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
 

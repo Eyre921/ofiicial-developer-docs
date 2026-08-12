@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-service-accounts
 path: guides/organizations/manage-service-accounts
 ---
 
-Create service accounts for organization-level API access.
+Create and manage service accounts at the organization level in Pinecone for programmatic Admin API access, including client secrets and role assignment.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).

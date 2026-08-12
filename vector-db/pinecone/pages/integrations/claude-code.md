@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/claude-code
 path: integrations/claude-code
 ---
 
-Integrate Pinecone with Claude Code Plugin for vector search, RAG, and production AI workloads.
+Install the official Pinecone plugin for Claude Code to manage indexes, run vector search, and build RAG assistants from the terminal with slash commands.
 
 The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides AI-powered skills, MCP server integration, and slash commands directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
 

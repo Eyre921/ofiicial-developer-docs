@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/database-limits
 path: reference/api/database-limits
 ---
 
-Pinecone Database limits: This page describes different types of limits for Pinecone Database.
+Reference for Pinecone Database limits, covering upsert, query, fetch, delete, import, namespace, and rate limits for serverless indexes.
 
 This page describes different types of limits for Pinecone Database.
 

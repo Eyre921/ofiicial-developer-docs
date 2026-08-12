@@ -158,7 +158,7 @@ For a detailed list of the features available with GitHub Enterprise, see our [P
 
 To see how GitHub compares to GitLab, Bitbucket, and Jenkins, see [Comparing GitHub to other DevOps solutions](https://github.com/resources/articles/devops-tools-comparison).
 
-You can set up trials to evaluate GitHub Enterprise Cloud and GitHub Enterprise Server. For more information, see [Setting up a trial of GitHub Enterprise Cloud](/en/enterprise-cloud@latest/admin/overview/setting-up-a-trial-of-github-enterprise-cloud) and [Setting up a trial of GitHub Enterprise Server](/en/enterprise-server@3.21/admin/overview/setting-up-a-trial-of-github-enterprise-server).
+You can set up trials to evaluate GitHub Enterprise Cloud and GitHub Enterprise Server. For more information, see [Setting up a trial of GitHub Enterprise Cloud](/en/enterprise-cloud@latest/admin/overview/setting-up-a-trial-of-github-enterprise-cloud) and [Setting up a trial of GitHub Enterprise Server](/en/enterprise-server@3.22/admin/overview/setting-up-a-trial-of-github-enterprise-server).
 
 ## Further reading
 

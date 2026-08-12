@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/authentication
 path: reference/api/marketplace/authentication
 ---
 
-Authenticate to the Pinecone Marketplace API.
+Authenticate to the Pinecone Marketplace API using project-scoped API keys, including the Api-Key header, key scoping, and deployment permissions.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/configure-layouts
 path: guides/marketplace/configure-layouts
 ---
 
-Choose the consumer layout for a Pinecone Marketplace knowledge application.
+Choose a chat, search, structured, or hybrid consumer layout for a Pinecone Marketplace knowledge application to match your end-user experience.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

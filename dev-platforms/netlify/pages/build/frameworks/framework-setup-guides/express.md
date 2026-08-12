@@ -9,7 +9,7 @@ title: "Express on Netlify"
 description: "Learn about Express on our platform. Deploy Express apps as Netlify Functions and create your own serverless REST API."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
 

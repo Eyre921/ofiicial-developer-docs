@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/manage-assistants
 path: guides/assistant/manage-assistants
 ---
 
-View, update, and delete, and check the status of assistants.
+List, describe, update, and delete Pinecone assistants and check assistant status using the API, Python SDK, Node.js SDK, or Pinecone console.
 
 ## List assistants for a project
 

@@ -9,7 +9,7 @@ title: "Team-owned sites"
 description: "Each site belongs to a team, even if it's a team of one. Learn how to transfer projects between teams or block transfers from your team. Add labels to organize your sites."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Each Netlify site belongs to a team, even if it's a team of one. Add labels to organize your sites.
 

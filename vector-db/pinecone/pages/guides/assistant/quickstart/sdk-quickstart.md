@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/quickstart/sdk-quickstart
 path: guides/assistant/quickstart/sdk-quickstart
 ---
 
-Use a Pinecone SDK to create an assistant, upload documents, and chat with the assistant.
+Quickstart for Pinecone Assistant using the Python or Node.js SDK to create an assistant, upload documents, and chat with your data via RAG.
 
 Use a Pinecone SDK to create an assistant, upload documents, and chat with the assistant.
 

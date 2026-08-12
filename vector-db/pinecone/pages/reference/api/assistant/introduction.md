@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/assistant/introduction
 path: reference/api/assistant/introduction
 ---
 
-Pinecone REST API: Use the Assistant API to upload documents, ask questions, and receive responses that reference your documents.
+Assistant API reference overview covering document upload, chat, and RAG endpoints supported by the Pinecone Python and Node.js SDKs.
 
 Use the [Assistant API](/guides/assistant/quickstart/sdk-quickstart) to upload documents, ask questions, and receive responses that reference your documents. This is known as [retrieval-augmented generation (RAG)](https://www.pinecone.io/learn/retrieval-augmented-generation/).
 

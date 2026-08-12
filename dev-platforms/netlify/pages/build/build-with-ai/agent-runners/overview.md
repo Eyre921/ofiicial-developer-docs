@@ -9,7 +9,7 @@ title: "Agent Runners overview"
 description: "Learn about Agent Runners and how to use them to optimize your AI workflows."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Prompt AI agents to [create a new project](/start/quickstarts/create-new-project-with-ai-agent/), fix, update, ship code and ask questions about your project using your unique project context directly from your Netlify dashboard.
 

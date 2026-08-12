@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/configure-operating-paramete
 path: guides/marketplace/configure-operating-parameters
 ---
 
-Tune the system prompt and response behavior of a Pinecone Marketplace knowledge application.
+Tune the system prompt, starter prompts, and response style of a Pinecone Marketplace knowledge application through operating parameter settings.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/voltagent
 path: integrations/voltagent
 ---
 
-Connect Pinecone and VoltAgent to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build TypeScript AI agents with VoltAgent and Pinecone: automatic embeddings, semantic search, metadata filtering, and observable RAG in production.
 
 [VoltAgent](https://voltagent.dev) is a TypeScript-based, AI-agent framework for building production-ready applications with retrieval-augmented generation (RAG) capabilities. It supports two retrieval patterns: automatic search on every interaction, or LLM-decides-when-to-search, with built-in observability and tracking.
 

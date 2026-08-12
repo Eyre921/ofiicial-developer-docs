@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/access-your-invoices
 path: guides/assistant/admin/access-your-invoices
 ---
 
-View and download billing invoices from Pinecone.
+View, download, and manage your Pinecone billing invoices from the console, including past invoice history, payment status, and PDF exports.
 
 You can access your billing history and invoices in the Pinecone console:
 

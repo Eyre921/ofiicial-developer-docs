@@ -9,7 +9,7 @@ title: "Ignore builds"
 description: "Use default ignore builds behavior to avoid builds when they aren't required, or set an ignore command that determines when a site requires rebuilding."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With continuous deployment, Netlify attempts to ignore builds when they're not required, only building when your site requires it.
 

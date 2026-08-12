@@ -9,7 +9,7 @@ title: "Roles and permissions"
 description: "Learn about roles, access, and permissions across the Netlify platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Owners can assign roles to individuals invited to a team and manage their access and permissions across the Netlify platform.
 

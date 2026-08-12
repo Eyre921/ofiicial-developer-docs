@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/get-started/concepts
 path: guides/get-started/concepts
 ---
 
-Understand concepts in Pinecone and how they relate to each other.
+Learn core Pinecone concepts (organizations, projects, indexes, documents, namespaces, dense and sparse vectors) and how they relate.
 
 <img />
 

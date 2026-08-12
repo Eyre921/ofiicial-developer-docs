@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/evaluation-overview
 path: guides/assistant/evaluation-overview
 ---
 
-Learn about evaluating the correctness and completeness of assistant responses.
+Overview of Pinecone Assistant response evaluation: measure correctness, completeness, and alignment scores to benchmark RAG system quality.
 
 You can [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from an assistant or RAG system.
 

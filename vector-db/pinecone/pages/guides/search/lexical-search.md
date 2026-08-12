@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/lexical-search
 path: guides/search/lexical-search
 ---
 
-Perform sparse-vector keyword retrieval against a custom sparse encoder.
+Run sparse-vector lexical search in Pinecone with custom sparse encoders like pinecone-sparse-english-v0 for token-weighted keyword retrieval.
 
 This page shows you how to search an [index with sparse vectors](/guides/index-data/indexing-overview#sparse-indexes) for records that most exactly match the words or phrases in a query. This is often called sparse-vector lexical search.
 

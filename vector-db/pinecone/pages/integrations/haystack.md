@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/haystack
 path: integrations/haystack
 ---
 
-Connect Pinecone and Haystack to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Deepset Haystack's PineconeDocumentStore to build production NLP pipelines that index, embed, and query documents for question answering and RAG.
 
 Haystack is the open source Python framework by Deepset for building custom apps with large language models (LLMs). It lets you quickly try out the latest models in natural language processing (NLP) while being flexible and easy to use. Their community of users and builders has helped shape Haystack into what it is today: a complete framework for building production-ready NLP apps.
 

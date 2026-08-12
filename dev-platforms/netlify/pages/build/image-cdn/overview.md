@@ -9,7 +9,7 @@ title: "Netlify Image CDN"
 description: "Transform images on demand without impacting build times. Handle content negotiation automatically."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With Netlify Image CDN, you can transform images on demand without impacting build times. Netlify Image CDN also handles content negotiation to use the most efficient image format for the requesting client. Optimizing the size and format of your images improves both the runtime performance and reliability of your site. Transformations are integrated natively into the CDN so that repeated requests leverage layers of caching for improved performance.
 

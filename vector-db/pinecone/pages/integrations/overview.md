@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/overview
 path: integrations/overview
 ---
 
-Pinecone integrations enable you to build and deploy AI applications faster and more efficiently. Integrate Pinecone with your favorite frameworks, data sources, and infrastructure providers.
+Browse Pinecone integrations across vector embedding providers, data ingestion tools, frameworks, and infrastructure to ship AI apps faster.
 
 <CardGroup>
   <Card href="/integrations/agent-skills">

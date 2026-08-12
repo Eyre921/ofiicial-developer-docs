@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/bring-your-own-cloud
 path: guides/production/bring-your-own-cloud
 ---
 
-Deploy Pinecone in your own cloud account (AWS, GCP, or Azure), with full control over your infrastructure
+Deploy Pinecone BYOC in your own AWS, GCP, or Azure account for data sovereignty, network isolation, and regional data residency requirements.
 
 <Note>
   BYOC is in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure.

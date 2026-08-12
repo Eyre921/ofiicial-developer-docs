@@ -9,7 +9,7 @@ title: "Get started with domains"
 description: "Find the best setup path and next steps based on your needs for a custom domain."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Find the best setup path and next steps based on your needs for a custom domain.
 

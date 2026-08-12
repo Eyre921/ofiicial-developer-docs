@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-cost/manage-cost
 path: guides/manage-cost/manage-cost
 ---
 
-Learn strategies for managing cost in Pinecone.
+Reduce Pinecone spend with strategies like spend alerts, ID-prefix listing, multitenant namespaces, prepaid credits, and support cost optimization help.
 
 For the latest pricing details, see our [pricing page](https://www.pinecone.io/pricing/).
 

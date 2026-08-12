@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/optimize/decrease-latency
 path: guides/optimize/decrease-latency
 ---
 
-Learn techniques to decrease latency for search and upsert operations.
+Reduce query and upsert latency in Pinecone using namespaces, metadata filters, targeting indexes by host, and regional colocation strategies.
 
 ## Use namespaces
 

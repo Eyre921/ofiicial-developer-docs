@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/cursor
 path: integrations/cursor
 ---
 
-Integrate Pinecone with the Cursor plugin for vector search, RAG, and production AI workloads.
+Install the official Pinecone plugin for Cursor to manage indexes, run vector search, and build RAG apps from the editor using MCP and slash commands.
 
 The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-powered skills, MCP server integration, and slash commands directly in your editor. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
 

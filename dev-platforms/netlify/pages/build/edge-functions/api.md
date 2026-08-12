@@ -9,7 +9,7 @@ title: "Edge Functions API"
 description: "Use this API reference to write edge function files with JavaScript or TypeScript that export default functions responsible for processing requests."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page provides an overview of key concepts as well as a full reference.
 

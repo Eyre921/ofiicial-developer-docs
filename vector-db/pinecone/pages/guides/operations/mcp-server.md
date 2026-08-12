@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/mcp-server
 path: guides/operations/mcp-server
 ---
 
-Use Pinecone MCP server for AI agent integration.
+Connect AI agents to Pinecone through the MCP server to search docs, manage indexes, and query data from Claude, Cursor, Antigravity, or Claude Code.
 
 The Pinecone MCP server enables AI agents to interact directly with Pinecone's functionality and documentation via the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). Using the MCP server, agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information.
 

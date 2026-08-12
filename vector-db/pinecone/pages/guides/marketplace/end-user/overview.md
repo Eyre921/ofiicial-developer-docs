@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/end-user/overview
 path: guides/marketplace/end-user/overview
 ---
 
-What a Pinecone Marketplace knowledge application is and how to sign in to one.
+End-user overview of Pinecone Marketplace knowledge applications, including how to sign in with link access or Google and read grounded citations.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

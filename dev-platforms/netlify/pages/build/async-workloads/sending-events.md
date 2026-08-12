@@ -9,7 +9,7 @@ title: "Sending Async Workload events"
 description: "Trigger Async Workload functions using the AsyncWorkloadClient or API to process events immediately or to schedule for the future."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Async Workloads brings a durable, event-based architecture to Netlify functions. This means that workloads are centered around subscribing and broadcasting events. Unlike traditional client/server architecture patterns where a single URL corresponds to a specific function or logic, event-based architectures send events that could trigger many functions, and any function could correspond to many different events. This is why Async Workload functions [subscribe to events by name](/build/async-workloads/writing-workloads#config-events) and why events are [sent by name](/build/async-workloads/sending-events#send-eventName).
 

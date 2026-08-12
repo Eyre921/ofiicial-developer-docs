@@ -9,7 +9,7 @@ title: 'Available software at build time'
 description: 'Learn about the software and tools that are available for your builds at build time.'
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 These are the languages and tools available to your build during the build process.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/terraform
 path: integrations/terraform
 ---
 
-Connect Pinecone and Terraform to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Manage Pinecone indexes, collections, API keys, and projects with the Terraform provider for repeatable infrastructure-as-code and DevOps workflows.
 
 Terraform is an infrastructure as code tool that lets you create, update, and version infrastructure by defining resources in configuration files. This allows for a repeated workflow for provisioning and managing your infrastructure.
 

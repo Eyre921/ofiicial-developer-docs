@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/wait-for-index-creation
 path: troubleshooting/wait-for-index-creation
 ---
 
-The Python SDK and the REST API are designed to interact with the first system during index creation but not the second.
+Wait for Pinecone index creation to finish using describe_index polling in the Python SDK before upserting to avoid 403 or 404 errors.
 
 Pinecone index creation involves several different subsystems, including one which accepts the job of creating the index and one that actually performs the action. The Python SDK and the REST API are designed to interact with the first system during index creation but not the second.
 

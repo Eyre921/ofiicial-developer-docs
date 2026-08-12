@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 600 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 601 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -45,6 +45,7 @@
 - `docs/box/overall/attach-headers` — [Attach Headers](pages/docs/box/overall/attach-headers.md) · [原文](https://upstash.com/docs/box/overall/attach-headers)
 - `docs/box/overall/browser/ai-actions` — [AI Actions](pages/docs/box/overall/browser/ai-actions.md) · [原文](https://upstash.com/docs/box/overall/browser/ai-actions)
 - `docs/box/overall/browser/connect` — [Connect over CDP](pages/docs/box/overall/browser/connect.md) · [原文](https://upstash.com/docs/box/overall/browser/connect)
+- `docs/box/overall/browser/cookbook` — [Cookbook](pages/docs/box/overall/browser/cookbook.md) · [原文](https://upstash.com/docs/box/overall/browser/cookbook)
 - `docs/box/overall/browser/live-view` — [Live View](pages/docs/box/overall/browser/live-view.md) · [原文](https://upstash.com/docs/box/overall/browser/live-view)
 - `docs/box/overall/browser/overview` — [Browser](pages/docs/box/overall/browser/overview.md) · [原文](https://upstash.com/docs/box/overall/browser/overview)
 - `docs/box/overall/browser/reading-pages` — [Reading Pages](pages/docs/box/overall/browser/reading-pages.md) · [原文](https://upstash.com/docs/box/overall/browser/reading-pages)

@@ -61,7 +61,7 @@ To access accounts on GitHub Enterprise Cloud with data residency using GitHub M
 
 You must install GitHub Mobile 1.4 or later on your device to use GitHub Mobile with GitHub Enterprise Server.
 
-To use GitHub Mobile with GitHub Enterprise Server, GitHub must be version 3.0 or greater, and your enterprise owner must enable mobile support for your enterprise. For more information, see [Managing GitHub Mobile for your enterprise](/en/enterprise-server@3.21/admin/configuring-settings/configuring-user-applications-for-your-enterprise/managing-github-mobile-for-your-enterprise) in the GitHub Enterprise Server documentation.
+To use GitHub Mobile with GitHub Enterprise Server, GitHub must be version 3.0 or greater, and your enterprise owner must enable mobile support for your enterprise. For more information, see [Managing GitHub Mobile for your enterprise](/en/enterprise-server@3.22/admin/configuring-settings/configuring-user-applications-for-your-enterprise/managing-github-mobile-for-your-enterprise) in the GitHub Enterprise Server documentation.
 
 During the public preview for GitHub Mobile with GitHub Enterprise Server, you must be signed in with a personal account on GitHub.com.
 

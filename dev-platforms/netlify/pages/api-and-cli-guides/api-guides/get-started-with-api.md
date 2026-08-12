@@ -9,7 +9,7 @@ title: "Get started with the Netlify API"
 description: "Use our REST API to interact with our platform. Learn the basics for using the API, instructions for deploying sites, and notes on commonly used endpoints."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Use the Netlify REST API to manage atomic deploys of your sites and apps, manage form submissions, inject JavaScript snippets, manage DNS, and so much more.
 
@@ -18,6 +18,20 @@ Use the Netlify REST API to manage atomic deploys of your sites and apps, manage
 This document covers the basics for interacting with the Netlify API, plus instructions for [deploying sites](/api-and-cli-guides/api-guides/get-started-with-api#deploy-with-the-api) and notes on some [commonly used endpoints](/api-and-cli-guides/api-guides/get-started-with-api#commonly-used-endpoints).
 
 You can browse the [OpenAPI reference for the Netlify API](https://open-api.netlify.com) to explore available endpoints. Visit our Forums for more tips and conversation about [understanding and using Netlify's API](https://answers.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
+
+> **Note - Project ID, site_id, and NETLIFY_SITE_ID are the same value:** The Netlify UI labels this identifier **Project ID**, but the API, CLI, and environment variables still use `site`. Every project has exactly one identifier, and all of the following names refer to the same value:
+
+- **Netlify UI** - **Project ID** (labeled **Site ID** before the rename)
+- **Netlify API** - `site_id`, including in paths such as `/api/v1/sites/{site_id}`
+- **Netlify CLI, client libraries, and `.netlify/state.json`** - `siteId, `siteID`, `--site`, and `NETLIFY_SITE_ID`
+
+To copy the value, go to 
+### NavigationPath Component:
+
+Project configuration > General > Project details > Project information
+ and copy **Project ID**.
+
+Project names work the same way: the UI's **Project name** (formerly **Site name**) is the API's `site_slug`. Wherever the API accepts a `{site_id}`, you can also pass the project's domain, such as `mysite.netlify.app`.
 
 Additionally, we have two API clients for your convenience:
 
@@ -339,7 +353,7 @@ To update or retrieve your site's environment variables, leverage the [environme
 ### NavigationPath Component:
 
 Project configuration > General > Project details > Project information
-. Project IDs (formerly called site IDs) are also available in the response when you [create a site](#create-site) or [get a list of sites](#get-sites).
+ and copying **Project ID**, which is the UI label for `site_id`. The same value is returned as `id` when you [create a site](#create-site) or [get a list of sites](#get-sites), and it's the value the `NETLIFY_SITE_ID` environment variable expects.
 - Whenever the API requires a `{site_id}`, you can either use the `id` of a site obtained through the API, or the domain of the site (for example, `mysite.netlify.app` or `www.example.com`). These two are interchangeable whenever they're used in API paths.
 
 `GET /api/v1/sites/3970e0fe-8564-4903-9a55-c5f8de49fb8b` returns the site with a matching `id`.

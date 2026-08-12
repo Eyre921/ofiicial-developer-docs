@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/backups-overview
 path: guides/manage-data/backups-overview
 ---
 
-Learn about backups of serverless indexes in Pinecone.
+Learn how serverless index backups work in Pinecone, including scheduled backups, retention policies, and use cases for restoring or copying data.
 
 A backup is a static copy of a serverless [index](/guides/index-data/indexing-overview) that only consumes storage. It is a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of a serverless index, and you can [create a new serverless index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
 

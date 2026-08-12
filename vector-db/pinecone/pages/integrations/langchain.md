@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/langchain
 path: integrations/langchain
 ---
 
-Connect Pinecone and LangChain to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build LangChain RAG apps, agents, and chatbots on Pinecone: manage embeddings, vector stores, retrievers, and chains for LLM-powered search.
 
 LangChain provides modules for managing and optimizing the use of large language models (LLMs) in applications. Its core philosophy is to facilitate data-aware applications where the language model interacts with other data sources and its environment. This framework consists of several parts that simplify the entire application lifecycle:
 

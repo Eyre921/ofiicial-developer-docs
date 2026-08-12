@@ -9,7 +9,7 @@ title: "Get started with environment variables"
 description: "Use environment variables to configure your site's build and functionality. Learn how to declare and use environment variables with your site."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify offers multiple ways to securely create, update, and use environment variables for your sites.
 

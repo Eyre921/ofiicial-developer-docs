@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/estuary
 path: integrations/estuary
 ---
 
-Connect Pinecone and Estuary to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Estuary Pinecone connector to build real-time, millisecond-latency pipelines that incrementally embed source data for LLM search and RAG.
 
 [Estuary](https://estuary.dev/) builds real-time data pipelines that focus on moving data from sources to destinations with millisecond latency. It supports integrations with hundreds of systems including databases, warehouses, SaaS products and streaming solutions.
 

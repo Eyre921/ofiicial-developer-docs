@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/automated-testing
 path: guides/production/automated-testing
 ---
 
-Test Pinecone integration with CI/CD workflows.
+Build a GitHub Actions CI/CD workflow with Pinecone Local to run automated integration tests against an in-memory emulator without touching production.
 
 Pinecone Local is an in-memory Pinecone Database emulator available as a Docker image.
 

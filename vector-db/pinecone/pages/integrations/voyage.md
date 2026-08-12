@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/voyage
 path: integrations/voyage
 ---
 
-Connect Pinecone and Voyage AI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Generate top-ranked Voyage AI embeddings and rerankers, then index them in Pinecone for high-accuracy RAG, semantic search, and code retrieval apps.
 
 [Voyage AI](https://www.voyageai.com) provides cutting-edge embedding and rerankers. Voyage AI's generalist [embedding models](https://docs.voyageai.com/docs/embeddings) continually top the [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard), and the [domain-specific embeddings](https://blog.voyageai.com/2024/01/23/voyage-code-2-elevate-your-code-retrieval/) enhance the retrieval quality for enterprise use cases significantly.
 

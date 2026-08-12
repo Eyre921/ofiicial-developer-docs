@@ -149,7 +149,7 @@ Learn more about [Alerts](https://docs.sentry.io/product/monitors-and-alerts/ale
 
 ## [AI-Powered Log Analysis](https://docs.sentry.io/product/logs.md#ai-powered-log-analysis)
 
-Your Sentry logs can be leveraged with AI agents and tooling for debugging, summarizing, and automated analysis.
+Your Sentry logs can be leveraged with agents and tooling for debugging, summarizing, and automated analysis.
 
 * **[Sentry CLI](https://docs.sentry.io/cli/logs.md)**: Provides command-line access to your logs, making it easy to feed log data directly into AI tools and scripts for analysis.
 * **[Sentry MCP Server](https://mcp.sentry.dev)**: Provides secure connectivity between your Sentry data and LLM clients using the Model Context Protocol. This enables natural language queries and deep integration with AI tools like Claude, Cursor, and VS Code.

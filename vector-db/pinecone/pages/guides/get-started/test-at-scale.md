@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/get-started/test-at-scale
 path: guides/get-started/test-at-scale
 ---
 
-Test Pinecone with a real-world dataset and semantic search workload.
+Benchmark Pinecone at production scale by importing 10M vectors and measuring semantic search throughput, query latency, and costs.
 
 This guide walks you through testing Pinecone at production scale. You'll import 10 million vectors, run a benchmark, and analyze the results to verify Pinecone meets production requirements for semantic search applications.
 

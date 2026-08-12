@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/mcp-server
 path: guides/assistant/mcp-server
 ---
 
-Connect AI agents to Pinecone Assistant via Model Context Protocol.
+Connect AI agents to a Pinecone Assistant MCP server via remote or local Model Context Protocol endpoints, including Cursor and Claude Desktop.
 
 Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This page shows you how to connect an assistant's MCP server with Cursor, Claude Desktop, and LangChain.
 

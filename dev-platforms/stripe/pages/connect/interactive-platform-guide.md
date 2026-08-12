@@ -51,7 +51,7 @@ Create destination charges on your platform to immediately transfer funds to con
 
 This charge type is best suited for marketplaces such as home rental marketplaces (like Airbnb) or ridesharing apps (like Lyft).
 
-Destination charges are created on the platform, but as part of the charge operation, funds immediately transfer to the connected account you specify. You can decide whether to transfer some or all of those funds.
+You create destination charges on your platform, and as part of the charge operation, funds immediately transfer to the connected account you specify. You can decide whether to transfer some or all of those funds.
 
 Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md), your platform and the connected account you transfer funds to must be in the same region to create a destination charge. Attempting to transfer funds across a disallowed border returns an error.
 
@@ -87,16 +87,16 @@ Learn about [managing refunds and disputes in your marketplace](https://docs.str
 
 #### Item 3
 
-Stripe monitors risk signals on connected accounts, implements risk interventions on connected accounts in response to observed signals, and seeks to recover negative balances from your connected accounts.
+Stripe monitors risk signals on connected accounts, implements risk interventions in response to those signals, and seeks to recover negative balances from your connected accounts.
 
-For most software as a service platforms, this is the best choice, especially for those that are new to embedding payments:
+For most software as a service platforms, this is the best choice, especially if you’re new to embedding payments:
 
 - Stripe monitors your connected accounts for credit and fraud risk, as well as protection against risk of loss in the event of negative balances attributed to business risk.
 - Stripe handles all the end to end communications and remediations directly with your connected accounts through hosted flows or embedded components.
 
 Learn about [managing funds movement for payment reversals specifically for SaaS platforms](https://docs.stripe.com/connect/saas/tasks/refunds-disputes.md), including how to handle refunds and dispute chargebacks effectively.
 
-This configuration works with both the full Stripe Dashboard and the Express Dashboard. If you want a lightweight, platform-branded dashboard for your connected accounts, you can pair [Managed Risk](https://docs.stripe.com/connect/risk-management/managed-risk.md) with the Express Dashboard.
+This configuration works with both the full Stripe Dashboard and the Express Dashboard. If you want a lightweight, platform-branded dashboard for your connected accounts, pair [Managed Risk](https://docs.stripe.com/connect/risk-management/managed-risk.md) with the Express Dashboard.
 
 ## Preview the user experience
 
@@ -105,15 +105,15 @@ Connected accounts use hosted onboarding and manage their accounts from a hosted
 #### Onboarding
 
 [Stripe-hosted onboarding](https://docs.stripe.com/connect/hosted-onboarding.md) handles the collection of business and identity verification information from connected accounts, requiring minimal effort from the platform. A web form hosted by Stripe renders dynamically, based on the capabilities, country, and business type of each connected account.
-![](https://b.stripecdn.com/docs-statics-srv/assets/hosted_onboarding_form.e59ba8300f563e43489953f06127f52c.png)
+![Stripe-hosted onboarding form for a connected account, shown alongside Furever branding](https://b.stripecdn.com/docs-statics-srv/assets/hosted_onboarding_form.e59ba8300f563e43489953f06127f52c.png)
 
 #### Dashboard
 
 #### Item 1
 
-Provide access to the Stripe Dashboard to connected accounts.
+Provide connected accounts with access to the Stripe Dashboard.
 
-The Stripe Dashboard provides connected accounts with access to Stripe functionality, including viewing payouts, managing refunds, handling disputes, accessing reporting, and processing charges on their own. Users can sign into their Stripe Dashboard at any time and can access the Dashboard by visiting Stripe directly. Users have access to Stripe support and Stripe can reach out and communicate with users about their account.
+The Stripe Dashboard provides connected accounts with access to Stripe functionality, including viewing payouts, managing refunds, handling disputes, accessing reporting, and processing charges on their own. Users can sign in to their Stripe Dashboard at any time and access the Dashboard by visiting Stripe directly. Users have access to Stripe support, and Stripe can reach out and communicate with users about their account.
 
 Use the Stripe Dashboard when your connected accounts:
 
@@ -126,28 +126,27 @@ You can always add [embedded components](https://docs.stripe.com/connect/get-sta
 
 #### Item 2
 
-Provide access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md) for connected accounts to manage their account.
+Provide connected accounts with access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md).
+
+The Express Dashboard lets connected accounts view their available balance, see upcoming payouts, and track their earnings in real time. Your users can use the Express Dashboard to manage refunds and disputes, view financing offers, update their KYC information, and more. Users have access to Stripe support and might receive Stripe communications about their account.
+
+Use the Express Dashboard when your connected accounts:
+
+- Need to track their payouts and payment activity.
+- Benefit from a lightweight, platform-branded UI, with basic reporting.
+- Don’t require developer tools or advanced reporting.
+
+[View the demo](https://express.stripe.dev)
+
+You can [add your platform’s brand name and icon](https://docs.stripe.com/connect/customize-express-dashboard.md#add-platform-branding) and [customize which features appear](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features) in the Express Dashboard, such as disputes, refunds, and manual payouts.
+
+You can always add [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) to your own website in tandem with providing access to the Express Dashboard.
 
 > #### Preview API version required with the Express Dashboard
 > 
 > Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-07-29.preview`) in your Stripe SDK configuration when you create connected accounts.
 > 
 > The generated code and prompt on this page use the current generally available API version. Replace that version with the preview version string if you use this combination.
-
-The Express Dashboard enables connected accounts to view their available balance, see upcoming payouts, and track their earnings in real time. You can enable users to manage refunds or disputes through their Express Dashboard in the [Express Dashboard settings](https://dashboard.stripe.com/settings/connect/express-dashboard/features). Users have access to Stripe support and Stripe can reach out and communicate with users about their account.
-
-Use the Express Dashboard when your connected accounts:
-
-- Primarily need to track their payouts and payment activity.
-- Don’t require developer tools or advanced reporting.
-- Benefit from a lightweight, platform-branded UI.
-
-[View the demo](https://express.stripe.dev)
-
-You can [configure the Express Dashboard](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features) to customize which features, such as disputes, refunds, and manual payouts, your connected accounts can access.
-
-You can always add [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) to your own website in tandem with providing access to the Express Dashboard.
-![Example of the Express Dashboard](https://b.stripecdn.com/docs-statics-srv/assets/express_dashboard_example.efcd6a5b157d03a610f6fc788a7c07a0.png)
 
 > **Integration guides available:**We've generated integration guides for you. View the quickstart guide or copy integration details for use with an LLM assistant.
 

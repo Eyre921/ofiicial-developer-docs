@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/production-checklist
 path: guides/production/production-checklist
 ---
 
-Prepare your indexes for production with best practices.
+Prepare Pinecone indexes for production with best practices for project structure, security, scaling, API keys, and reliability across your workloads.
 
 This page provides recommendations and best practices for preparing your Pinecone indexes for production, anticipating production issues, and enabling reliability and growth.
 

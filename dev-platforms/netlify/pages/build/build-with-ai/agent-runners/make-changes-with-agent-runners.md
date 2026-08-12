@@ -9,7 +9,7 @@ title: "Make changes with Agent Runners"
 description: "Learn how to use Agent Runners to build and iterate."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Learn how to make changes and iterate on an existing project with your preferred AI agent using Agent Runners.
 

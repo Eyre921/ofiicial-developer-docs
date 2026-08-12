@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/introduction
 path: reference/api/marketplace/introduction
 ---
 
-Programmatic access to Pinecone Marketplace deployments, templates, connectors, versions, and analytics.
+Pinecone Marketplace API reference overview covering deployments, templates, connectors, versions, evaluations, and analytics endpoints.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

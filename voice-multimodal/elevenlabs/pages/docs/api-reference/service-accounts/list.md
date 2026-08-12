@@ -58,7 +58,6 @@ Successful Response
       - `group_usage_limit` (integer or "unlimited", optional, nullable)
       - `group_pvc_limit` (integer or "unlimited", optional, nullable)
       - `character_count` (integer, optional, nullable)
-      - `scim_external_id` (string, optional, nullable)
       - `is_scim_synced` (boolean, optional, default: false)
       - `scim_group` (object, optional, nullable)
         - `scim_external_id` (string, required, nullable)
@@ -73,71 +72,57 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "service-accounts": [
     {
-      "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
-      "name": "Audio Processing Service",
+      "service_account_user_id": "string",
+      "name": "string",
       "api-keys": [
         {
-          "name": "Primary API Key",
-          "hint": "Key for main audio processing",
-          "key_id": "key_123abc456def789ghi",
-          "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
-          "hashed_xi_api_key": "a1b2c3d4e5f67890",
-          "created_at_unix": 1688006400,
+          "name": "string",
+          "hint": "string",
+          "key_id": "string",
+          "service_account_user_id": "string",
+          "hashed_xi_api_key": "string",
+          "created_at_unix": 1,
           "is_disabled": false,
           "permissions": [
-            "text_to_speech",
-            "voice_generation",
-            "models_read"
+            "text_to_speech"
           ],
-          "disable_reason": null,
-          "character_limit": 1000000,
-          "character_count": 250000,
+          "disable_reason": "trial_ended",
+          "character_limit": 1,
+          "character_count": 1,
           "allowed_ips": [
-            "192.168.1.100",
-            "10.0.0.5"
+            "string"
           ],
           "third_party_disable_allowed": true
         }
       ],
-      "created_at_unix": 1688006400,
+      "created_at_unix": 1,
       "default_sharing_groups": [
         {
           "group": {
-            "name": "Audio Engineers",
-            "id": "grp_456def789abc123ghi",
+            "name": "string",
+            "id": "string",
             "members": [
-              "user_001",
-              "user_002",
-              "user_003"
+              "string"
             ],
             "permissions": [
-              "text_to_speech",
-              "voice_lab",
-              "projects"
+              "text_to_speech"
             ],
-            "group_usage_limit": 5000000,
-            "group_pvc_limit": 1000,
-            "character_count": 1200000,
-            "scim_external_id": "scim_group_789xyz",
-            "is_scim_synced": true,
+            "group_usage_limit": 1,
+            "group_pvc_limit": 1,
+            "character_count": 1,
+            "is_scim_synced": false,
             "scim_group": {
-              "scim_external_id": "scim_group_789xyz",
-              "display_name": "Audio Engineers SCIM",
-              "created_at_unix": 1672531200,
-              "updated_at_unix": 1680393600,
-              "seat_type": "workspace_member"
+              "scim_external_id": "string",
+              "display_name": "string",
+              "created_at_unix": 1,
+              "updated_at_unix": 1,
+              "seat_type": "workspace_admin"
             },
             "scim_frozen": false
           },
@@ -176,7 +161,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -185,11 +169,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -212,8 +192,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -224,8 +202,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/service-accounts")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -235,12 +211,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts');
 
 echo $response->getBody();
 ```
@@ -250,25 +221,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/service-accounts")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

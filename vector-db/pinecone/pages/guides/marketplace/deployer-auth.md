@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/deployer-auth
 path: guides/marketplace/deployer-auth
 ---
 
-How operators sign in to Pinecone Marketplace.
+Sign in to Pinecone Marketplace as an operator to create deployments, manage sessions across devices, and audit deployer actions in the event log.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

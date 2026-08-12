@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/projects/create-a-project
 path: guides/projects/create-a-project
 ---
 
-Create a new Pinecone project in your organization.
+Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
 
 This page shows you how to create a project.
 

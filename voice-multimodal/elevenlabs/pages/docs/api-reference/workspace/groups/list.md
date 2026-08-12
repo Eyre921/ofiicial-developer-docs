@@ -37,7 +37,6 @@ Successful Response
   - `group_usage_limit` (integer or "unlimited", optional, nullable)
   - `group_pvc_limit` (integer or "unlimited", optional, nullable)
   - `character_count` (integer, optional, nullable)
-  - `scim_external_id` (string, optional, nullable)
   - `is_scim_synced` (boolean, optional, default: false)
   - `scim_group` (object, optional, nullable)
     - `scim_external_id` (string, required, nullable)
@@ -50,68 +49,10 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
-{
-  "engineering_group": {
-    "name": "Engineering Group",
-    "id": "grp-4b7e9f2a",
-    "members": [
-      "user_11223",
-      "user_44556"
-    ],
-    "permissions": [
-      "speech_to_text",
-      "voice_isolator",
-      "ai_speech_classifier",
-      "workspace_analytics_full_read",
-      "webhooks_manage"
-    ],
-    "group_usage_limit": "unlimited",
-    "group_pvc_limit": 1000,
-    "character_count": 1200000,
-    "scim_external_id": null,
-    "is_scim_synced": false,
-    "scim_group": null,
-    "scim_frozen": false
-  },
-  "marketing_team": {
-    "name": "Marketing Team",
-    "id": "grp-8f3a2c1d",
-    "members": [
-      "user_12345",
-      "user_67890",
-      "user_54321"
-    ],
-    "permissions": [
-      "text_to_speech",
-      "voice_lab",
-      "projects",
-      "workspace_members_invite",
-      "group_members_manage"
-    ],
-    "group_usage_limit": 500000,
-    "group_pvc_limit": "unlimited",
-    "character_count": 350000,
-    "scim_external_id": "scim-ext-001",
-    "is_scim_synced": true,
-    "scim_group": {
-      "scim_external_id": "scim-ext-001",
-      "display_name": "Marketing Team SCIM",
-      "created_at_unix": 1672531200,
-      "updated_at_unix": 1688208000,
-      "seat_type": "workspace_member"
-    },
-    "scim_frozen": false
-  }
-}
+{}
 ```
 
 **SDK Code**
@@ -141,7 +82,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -150,11 +90,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/groups"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -177,8 +113,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -189,8 +123,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/groups")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -200,12 +132,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups');
 
 echo $response->getBody();
 ```
@@ -215,25 +142,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/groups");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/groups")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

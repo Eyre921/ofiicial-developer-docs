@@ -14,6 +14,8 @@ The recommended way to install `ntn` on macOS and Linux:
 curl -fsSL https://ntn.dev | bash
 ```
 
+To inspect the installer before running it, view the [install script](https://ntn.dev/install.sh).
+
 To update:
 
 ```bash theme={null}

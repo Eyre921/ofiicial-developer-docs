@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/pinecone-attribute-errors-with-
 path: troubleshooting/pinecone-attribute-errors-with-langchain
 ---
 
-Troubleshoot “PineconeAttribute errors with LangChain” in Pinecone: When using an outdated version of LangChain, you may encounter errors like the following:
+Resolve PineconeAttribute errors in LangChain caused by outdated packages by upgrading langchain-pinecone and the Pinecone Python SDK to current releases.
 
 ## Problem
 

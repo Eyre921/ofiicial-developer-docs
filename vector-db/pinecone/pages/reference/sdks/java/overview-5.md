@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/sdks/java/overview
 path: reference/sdks/java/overview
 ---
 
-Install and use the Pinecone SDK for Pinecone Java SDK: auth, typed clients, and API operations. For installation instructions and usage examples, see the.
+Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
 <Tip>
   For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/architecture/assistant-architecture
 path: reference/architecture/assistant-architecture
 ---
 
-Pinecone Assistant architecture: This page describes the architecture for Pinecone Assistant.
+Pinecone Assistant architecture overview covering document ingestion, chunking, vector retrieval, and LLM response generation for RAG.
 
 This page describes the architecture for [Pinecone Assistant](/guides/assistant/overview).
 

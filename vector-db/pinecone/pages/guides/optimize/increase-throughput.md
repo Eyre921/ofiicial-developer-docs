@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/optimize/increase-throughput
 path: guides/optimize/increase-throughput
 ---
 
-Learn techniques to improve data operation performance and query throughput.
+Increase Pinecone throughput with bulk import from object storage, batch upserts, parallel requests, and the Python gRPC SDK for faster ingestion.
 
 ## Import from object storage
 

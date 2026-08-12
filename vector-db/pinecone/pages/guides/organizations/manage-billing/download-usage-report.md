@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/download-us
 path: guides/organizations/manage-billing/download-usage-report
 ---
 
-Download detailed usage and cost reports.
+Download detailed Pinecone usage and cost reports from the console, including index consumption, storage metrics, and per-project spend breakdowns.
 
 <Note>
   To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.

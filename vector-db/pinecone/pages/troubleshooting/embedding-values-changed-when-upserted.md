@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/embedding-values-changed-when-u
 path: troubleshooting/embedding-values-changed-when-upserted
 ---
 
-Troubleshoot “Embedding values changed when upserted” in Pinecone: There are two distinct cases in which you might notice that the values of your embeddings.
+Diagnose why Pinecone embedding values appear changed after upsert, including float32 precision rounding and how the API serializes numeric vector data.
 
 There are two distinct cases in which you might notice that the values of your embeddings appear different in Pinecone than the floats you upserted.
 

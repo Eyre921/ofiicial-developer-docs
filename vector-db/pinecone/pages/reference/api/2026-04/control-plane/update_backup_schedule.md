@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/update_backup_schedule
 ---
 
 PATCH https://api.pinecone.io/backup-schedules/{schedule_id}
-Update a backup schedule.
+Update a Pinecone backup schedule using the API, including pausing with enabled, changing frequency, and adjusting the retention expire_after_days.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

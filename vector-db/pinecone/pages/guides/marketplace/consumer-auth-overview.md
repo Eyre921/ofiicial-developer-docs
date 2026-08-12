@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/consumer-auth-overview
 path: guides/marketplace/consumer-auth-overview
 ---
 
-Choose how end users sign in to a Pinecone Marketplace knowledge application: link access or Google sign-in.
+Configure consumer sign-in for a Pinecone Marketplace deployment using link access or Google sign-in to control who can use your knowledge application.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

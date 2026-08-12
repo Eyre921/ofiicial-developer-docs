@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/events
 path: reference/api/marketplace/events
 ---
 
-Read deployment events and analytics counters from Pinecone Marketplace.
+Marketplace Events and Analytics API reference for streaming deployment event logs and reading conversation and feedback counters.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

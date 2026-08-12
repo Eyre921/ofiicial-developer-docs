@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/local-development
 path: guides/operations/local-development
 ---
 
-Develop locally with an in-memory Pinecone emulator.
+Run Pinecone Local, an in-memory Docker emulator, to develop and test apps offline without an account or usage fees.
 
 Pinecone Local is an in-memory Pinecone emulator available as a Docker image.
 

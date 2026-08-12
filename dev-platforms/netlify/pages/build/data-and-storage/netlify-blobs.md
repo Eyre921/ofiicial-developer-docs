@@ -9,7 +9,7 @@ title: "Netlify Blobs"
 description: "Store and retrieve unstructured data. Use blob storage as a simple key/value store or basic database."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With Netlify Blobs, you can store and retrieve [blobs](https://developer.mozilla.org/en-US/docs/Web/API/Blob) and unstructured data. You can also use this feature as a simple key/value store or basic database.
 
@@ -61,22 +61,22 @@ Opens a site-wide store for reading and writing blobs. Data added to that store 
 const store = getStore(name, { siteID, token })
 ```
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
+> **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
 ### NavigationPath Component:
 
 Project configuration > General > Project information
-, and copy the value for **Project ID**.
+, and copy the value for **Project ID**. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 #### Parameters
 
 - **`name`:** the name of the store; this can be any string that adheres to the [store naming requirements](/build/data-and-storage/netlify-blobs/#requirements-and-limitations)
 - **`siteID`** (optional)**:** the ID of the Netlify site associated with the store; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins. You can also set the `siteID` to the ID of another site you own to access its blobs via the `getStore` method.
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
+> **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
 ### NavigationPath Component:
 
 Project configuration > General > Project information
-, and copy the value for **Project ID**.
+, and copy the value for **Project ID**. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 - **`token`** (optional)**:** a [Netlify Personal Access Token](/api-and-cli-guides/cli-guides/get-started-with-cli#obtain-a-token-in-the-netlify-ui) that grants access to Blobs on the given site; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins
 
@@ -100,11 +100,11 @@ Opens a [deploy-specific store](#deploy-specific-stores) for reading and writing
 const store = getDeployStore(name, { deployID, region, siteID, token })
 ```
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
+> **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
 ### NavigationPath Component:
 
 Project configuration > General > Project information
-, and copy the value for **Project ID**.
+, and copy the value for **Project ID**. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 #### Parameters
 
@@ -113,11 +113,11 @@ Project configuration > General > Project information
 - **`region`** (optional)**:** the [region](#regions) associated with the store; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins
 - **`siteID`** (optional)**:** the ID of the Netlify site associated with the store; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins.
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
+> **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
 ### NavigationPath Component:
 
 Project configuration > General > Project information
-, and copy the value for **Project ID**.
+, and copy the value for **Project ID**. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 - **`token`** (optional)**:** a [Netlify Personal Access Token](/api-and-cli-guides/cli-guides/get-started-with-cli#obtain-a-token-in-the-netlify-ui) that grants access to Blobs on the given site; this is set automatically when you use Blobs from Functions, Edge Functions or Build Plugins
 

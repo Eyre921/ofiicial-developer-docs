@@ -9,7 +9,7 @@ title: "Eleventy on Netlify"
 description: "Learn about Eleventy on our platform and requirements for build plugins in Eleventy applications. Use edge functions to dynamically render templates."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Eleventy (11ty) is a flexible and configurable open source static site generator. Although it's written in JavaScript, it doesn't depend on a specific framework for generating or serving content.
 

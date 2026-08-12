@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/vercel
 path: integrations/vercel
 ---
 
-Connect Pinecone and Vercel to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Deploy AI apps on Vercel with Pinecone as long-term memory: one-click setup, scalable vector search, and RAG for Next.js and edge-deployed frontends.
 
 Vercel is a platform for developers that provides the tools, workflows, and infrastructure you need to build and deploy your web apps faster, without the need for additional configuration. Vercel supports popular frontend frameworks out-of-the-box, and its scalable, secure infrastructure is globally distributed to serve content from data centers near your users for optimal speeds.
 

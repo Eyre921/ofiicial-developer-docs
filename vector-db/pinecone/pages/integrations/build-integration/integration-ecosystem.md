@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/build-integration/integration-ecos
 path: integrations/build-integration/integration-ecosystem
 ---
 
-Understand how native Pinecone integrations are built with public SDKs and APIs, and how curated listings on the Integrations hub are reviewed for partner support.
+How Pinecone integrations are built with public SDKs and APIs and how listings on the Integrations hub are reviewed for partner support and quality.
 
 Anyone can use the [Pinecone SDKs](/reference/pinecone-sdks) or the [Pinecone API](/reference/api/introduction) to build a native Pinecone integration. We encourage you to build and launch freely to support your users.
 

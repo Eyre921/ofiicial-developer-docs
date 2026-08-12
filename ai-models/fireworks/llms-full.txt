@@ -147,6 +147,8 @@ Fireworks reports billing along two dimensions:
 * **Usage** — metered quantities such as tokens, accelerator-seconds, and audio input seconds. You can break usage down by deployment, model, API key, or custom tags.
 * **Cost** — rated dollar amounts. Costs are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). They aren't broken down by the same dimensions as usage, so per-API-key or per-deployment dollar figures aren't returned today — to approximate them, multiply usage by the published [serverless prices](/serverless/pricing).
 
+For Enterprise accounts, these rated costs match monthly spend alerts: they include usage paid for with credits. Credit grants and purchases are reported separately.
+
 Two tools expose this data:
 
 * **CLI** — [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) shows the account cost total alongside the usage breakdown. Best for ad-hoc queries and shell scripting.
@@ -6251,7 +6253,7 @@ Fireworks operates on a **pre-paid credits** billing system. You purchase credit
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
 
 <Note>
-  Enterprise accounts do not have the same self-serve limits. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
+  Enterprise accounts do not have the same self-serve limits. Their monthly spend alerts track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
 </Note>
 
 <Tip>
@@ -6471,6 +6473,7 @@ Your account may be suspended due to several factors:
 
 3. **Post-paid contract terms**:
    * Contracted customers on post-paid billing may have different suspension rules under their agreement.
+   * Enterprise monthly spend alerts are informational and do not pause service.
 
 <Note>
   If you're experiencing account suspension issues or need assistance with your spend limit or billing settings, please contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai).
@@ -7975,7 +7978,7 @@ Use either method for:
           --output-model new-model-id
         ```
 
-        To try your account's reservation capacity before falling back to shared trainer capacity, add `--use-reservation`. For full-parameter DPO, policy and dedicated reference trainers try independently. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
+        For reservation capacity: add `--use-reservation` with firectl (default off). REST and the Python SDK (`>=1.2.8`) default to reservation-first placement; set `useReservation: false` or `use_reservation=False` to opt out. For full-parameter DPO, policy and dedicated reference trainers try independently.
 
         For ORPO, use the same preference dataset and select the ORPO objective:
 
@@ -8504,7 +8507,10 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Reservation placement">
-    Add `--use-reservation` to try your account's reservation capacity before falling back to shared trainer capacity:
+    Try your account's reservation capacity before falling back to shared trainer capacity.
+
+    * **firectl**: add `--use-reservation` (default off).
+    * **REST / Python SDK** (`>=1.2.8`): defaults to `useReservation: true` / `use_reservation=True`. Set to `false` to opt out.
 
     ```shell theme={null}
     firectl sftj create \
@@ -8513,8 +8519,6 @@ Additional tuning settings are available when starting an SFT or preference (DPO
       --dataset cancerset \
       --output-model my-tuned-model
     ```
-
-    Omitting the flag preserves default placement. The equivalent REST and Python SDK fields are `useReservation: true` and `use_reservation=True`.
   </Accordion>
 </AccordionGroup>
 
@@ -11126,6 +11130,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `extra_args`                  | `list[str] \| None` | `None`  | Extra trainer arguments.                                                                                                                                                                                                                                            |
 | `replica_count`               | `int \| None`       | `None`  | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it.                                                                                       |
 | `skip_validations`            | `bool`              | `False` | Skip server-side shape validation. Requires elevated permissions.                                                                                                                                                                                                   |
+| `use_reservation`             | `bool`              | `True`  | Try reservation capacity first. Set to `False` for shared capacity only.                                                                                                                                                                                            |
 | `purpose`                     | `str \| None`       | `None`  | Optional platform purpose enum name for internal scheduling metadata. Most users leave this unset.                                                                                                                                                                  |
 
 To request replicated HSDP for a run:
@@ -19685,7 +19690,9 @@ Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) i
 
 ### Enterprise accounts
 
-Enterprise accounts do not have the same spend limits. If you have an Enterprise account, the spending tiers and spend-limit controls described on this page do not apply to you. For information about Enterprise quotas and resource allocation, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your enterprise account representative.
+Enterprise accounts can configure monthly spend alerts, but those alerts do not pause service. They track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend.
+
+For Enterprise quota details, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your account representative.
 
 ## Manage your quotas
 
@@ -19707,8 +19714,6 @@ Set a monthly spend limit that fits your needs and adjust it anytime.
 For prepaid accounts, the limit tracks the dollar value of your usage regardless of whether credits pay for that usage. Adding credits increases your available balance, but does not raise or reset your monthly spend limit.
 
 Auto Reload is separate from the spend limit. Auto Reload purchases credits when your balance is low; it does not change how much usage your account can accrue during the month.
-
-Contracted postpaid accounts may have different billing terms. Contact your account representative if you have questions about how a postpaid limit is calculated.
 
 ### View and adjust your spend limit
 
@@ -19737,7 +19742,7 @@ By default, Fireworks sends a warning email when usage reaches 80% of your month
 When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
 <Note>
-  The self-serve spend-limit behavior described here does not apply to Enterprise accounts. Refer to your contract or contact your account representative for your account's billing and suspension terms.
+  The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.
 </Note>
 
 ### On-demand deployment quotas

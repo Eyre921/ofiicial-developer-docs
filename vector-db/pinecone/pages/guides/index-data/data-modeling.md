@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/data-modeling
 path: guides/index-data/data-modeling
 ---
 
-Learn how to structure records for efficient data retrieval and management in Pinecone.
+Model your data in Pinecone using documents with dense_vector, sparse_vector, full-text string, and metadata fields for efficient retrieval.
 
 Pinecone has two ways to model your data, and the choice is made when you create the index: an index created with a document schema holds documents, while an index created with a dense or sparse vector type holds records. Both hold a unique `_id` and optional metadata and live in [namespaces](/guides/index-data/indexing-overview#namespaces); they differ in how many ranking signals a single item can carry and which API you call. Both are fully supported.
 

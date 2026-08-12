@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/delete_backup_schedule
 ---
 
 DELETE https://api.pinecone.io/backup-schedules/{schedule_id}
-Delete a backup schedule.
+Delete a backup schedule for a Pinecone serverless index using the API by schedule ID, while preserving all previously created backup snapshots.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

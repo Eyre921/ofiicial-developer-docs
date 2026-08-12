@@ -208,6 +208,9 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 | [Stablecoin payments](https://docs.stripe.com/payments/stablecoin-payments.md)
 
 `crypto_payments` | Yes | Yes | No | Connected account must be in the US. | Yes |
+| [Sunbit](https://docs.stripe.com/payments/sunbit.md)
+
+`sunbit_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/sunbit.md#prohibited-and-restricted-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/sunbit.md?pm-info=business-locations). | Yes |
 | [TWINT](https://docs.stripe.com/payments/twint.md)
 
 `twint_payments` | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | Activate the payment method in the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |
@@ -317,6 +320,9 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 | [Stablecoin payments](https://docs.stripe.com/payments/stablecoin-payments.md)
 
 `crypto_payments` | Yes | Yes | No | Connected account must be in the US. | Yes |
+| [Sunbit](https://docs.stripe.com/payments/sunbit.md)
+
+`sunbit_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/sunbit.md#prohibited-and-restricted-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/sunbit.md?pm-info=business-locations). | Yes |
 | [TWINT](https://docs.stripe.com/payments/twint.md)
 
 `twint_payments` | Yes | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |

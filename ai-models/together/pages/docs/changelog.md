@@ -4,6 +4,22 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 11, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `meta-models/Muse-Glimmer-30B`: 131,072 context length, FP8 quantization. Pricing: \$0.35 input / \$1.50 output / \$0.04 cached input (per 1M tokens).
+
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `deepseek-ai/DeepSeek-V4-Flash-0731`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
 <Update label="August 8, 2026">
   ## Longer context for GLM-5.2
 
@@ -12,7 +28,15 @@ path: docs/changelog
   See the [GLM-5.2 quickstart](/docs/glm-5.2-quickstart).
 </Update>
 
-<Update label="August 5, 2026">
+<Update label="August 7, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `Prism-ML/Ternary-Bonsai-27B`: 262,144 context length. Pricing: Free.
+  * `prunaai/p-image-ideogram`: Pricing: from \$0.00225 per image.
+  * `black-forest-labs/FLUX-3`: Pricing: \$0.17/sec at 720p.
+
   ## Expert LoRA for DeepSeek-V3.1
 
   LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.

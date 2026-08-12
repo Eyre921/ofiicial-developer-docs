@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/target-an-index
 path: guides/manage-data/target-an-index
 ---
 
-Target an index by host or name for data operations such as upsert and query.
+Target a Pinecone index by host URL (recommended for production) or by name for data operations like upsert, query, and fetch across SDKs.
 
 <Warning>
   **Do not target an index by name in production.**

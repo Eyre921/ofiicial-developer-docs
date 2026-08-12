@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-project-service-a
 path: guides/assistant/admin/manage-project-service-accounts
 ---
 
-Enable programmatic access with project-level service accounts.
+Add and manage project-level service accounts in Pinecone Assistant to enable programmatic Admin API access, roles, and permissions.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).

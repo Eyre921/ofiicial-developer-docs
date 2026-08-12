@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/downgrade-b
 path: guides/organizations/manage-billing/downgrade-billing-plan
 ---
 
-Downgrade from a paid plan to the free Starter plan.
+Downgrade your Pinecone organization from a paid plan to the free Starter plan, including plan requirements, index limits, and billing impact.
 
 <Note>
   To change your billing plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).

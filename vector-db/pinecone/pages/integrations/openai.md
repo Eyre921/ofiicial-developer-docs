@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/openai
 path: integrations/openai
 ---
 
-Connect Pinecone and OpenAI to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Pair OpenAI embeddings and completion models with Pinecone for semantic search, long-term memory, RAG, and context-aware LLM question-answering.
 
 OpenAI's large language models (LLMs) enhance semantic search or “long-term memory” for LLMs. This combo utilizes LLMs' embedding and completion (or generation) endpoints alongside Pinecone's vector search capabilities for nuanced information retrieval.
 

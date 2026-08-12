@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/projects/manage-project-members
 path: guides/projects/manage-project-members
 ---
 
-Add and manage project members with role-based access control.
+Add, remove, and update Pinecone project members using role-based access control (RBAC) to manage permissions and project owner roles.
 
 [Organization owners](/guides/organizations/understanding-organizations#organization-roles) or [project owners](/guides/projects/understanding-projects#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/guides/projects/understanding-projects#project-roles) that determine their permissions within the project.
 

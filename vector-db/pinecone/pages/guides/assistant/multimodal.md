@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/multimodal
 path: guides/assistant/multimodal
 ---
 
-Process images and charts in PDFs with multimodal assistants.
+Enable multimodal PDF context in Pinecone Assistant to analyze charts, images, and diagrams using OCR and visual understanding for RAG.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

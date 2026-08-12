@@ -9,7 +9,7 @@ title: "Form submissions"
 description: "Manage form submissions in our UI or through our API. Learn how to delete a form and its submissions if needed."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This document covers features you can use to manage your form submissions and recommendations for sensitive data. To learn how you can be made aware of new form submissions, visit our [form notifications](/manage/forms/notifications) page.
 

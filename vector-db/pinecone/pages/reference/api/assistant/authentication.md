@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/assistant/authentication
 path: reference/api/assistant/authentication
 ---
 
-Pinecone REST API: All requests to the Pinecone Assistant API must contain a valid API key for the target project.
+Assistant API authentication with API keys, HTTP headers, and SDK client initialization for Pinecone Assistant requests and RAG apps.
 
 All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 

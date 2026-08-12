@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/security-overview
 path: guides/assistant/admin/security-overview
 ---
 
-Understand Pinecone's security features, including authentication, encryption, and audit logs.
+Overview of Pinecone Assistant admin security features including API keys, single sign-on, service accounts, and audit logs across your organization.
 
 This page describes Pinecone's security protocols, practices, and features.
 

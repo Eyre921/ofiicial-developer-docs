@@ -368,6 +368,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets
 /en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository
 /en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository
+/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/converting-branch-protections-to-rulesets
 /en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets
 /en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/troubleshooting-rules
 /en/repositories/working-with-files

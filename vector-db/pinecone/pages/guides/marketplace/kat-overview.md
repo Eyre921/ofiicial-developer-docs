@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/kat-overview
 path: guides/marketplace/kat-overview
 ---
 
-How the Knowledge Agent Toolkit orchestrates multi-domain knowledge applications in Pinecone Marketplace, including manifests, disambiguation, slot filling, and guardrails.
+How the Knowledge Agent Toolkit (KAT) orchestrates multi-domain Pinecone Marketplace apps with manifests, disambiguation, slot filling, and guardrails.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-project-members
 path: guides/assistant/admin/manage-project-members
 ---
 
-Add and manage team members in your project.
+Add users to a Pinecone project, assign project owner or user roles, edit permissions, and remove members to control access to indexes and API keys.
 
 [Organization owners](/guides/assistant/admin/organizations-overview#organization-roles) or [project owners](/guides/assistant/admin/projects-overview#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/guides/assistant/admin/projects-overview#project-roles) that determine their permissions within the project.
 

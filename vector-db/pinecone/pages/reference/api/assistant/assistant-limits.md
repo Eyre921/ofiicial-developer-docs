@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/assistant/assistant-limits
 path: reference/api/assistant/assistant-limits
 ---
 
-Pinecone REST API:
+Reference for Pinecone Assistant limits, including file size, storage, chat token, and rate limits across the Starter, Builder, Standard, and Enterprise plans.
 
 Pinecone Assistant limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
 

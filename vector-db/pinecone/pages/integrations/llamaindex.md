@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/llamaindex
 path: integrations/llamaindex
 ---
 
-Connect Pinecone and LlamaIndex to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Build LlamaIndex RAG pipelines on Pinecone: ingest documents, structure private data, and run semantic search and question-answering over LLMs.
 
 LlamaIndex is a framework for connecting data sources to LLMs, with its chief use case being the end-to-end development of retrieval augmented generation (RAG) applications. LlamaIndex provides the essential abstractions to more easily ingest, structure, and access private or domain-specific data in order to inject these safely and reliably into LLMs for more accurate text generation. It’s available in Python and Typescript.
 

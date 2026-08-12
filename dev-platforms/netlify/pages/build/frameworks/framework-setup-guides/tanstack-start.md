@@ -9,7 +9,7 @@ title: "TanStack Start on Netlify"
 description: "Learn about TanStack on our platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 TanStack Start is a React-based full-stack framework that is optimized for serving dynamic apps with an Enterprise-grade fully-featured routing system. TanStack Start is powered by TanStack Router, which you can use with any JavaScript framework. TanStack Start for Solid.js is also fully supported.
 

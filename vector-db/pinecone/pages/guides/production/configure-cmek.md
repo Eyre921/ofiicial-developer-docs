@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/configure-cmek
 path: guides/production/configure-cmek
 ---
 
-Use customer-managed encryption keys with AWS KMS.
+Set up customer-managed encryption keys (CMEK) with AWS KMS to encrypt Pinecone data with keys you control, using IAM roles and key policies.
 
 <Note>
   This guide applies to **hosted** Pinecone projects where Pinecone manages your infrastructure. If you use [Bring your own cloud (BYOC)](/guides/production/bring-your-own-cloud), you encrypt data with **your** cloud provider KMS on resources in **your** account; follow the BYOC guide and [pulumi-pinecone-byoc](https://github.com/pinecone-io/pulumi-pinecone-byoc) instead of the console CMEK flow below.

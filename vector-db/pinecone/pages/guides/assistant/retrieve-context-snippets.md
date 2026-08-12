@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/retrieve-context-snippets
 path: guides/assistant/retrieve-context-snippets
 ---
 
-Access relevant context and citations from Pinecone Assistant.
+Retrieve context snippets and citations from a Pinecone Assistant to power your own LLM, RAG application, or agentic workflow with signed URLs.
 
 This page shows you how to [retrieve context snippets](/guides/assistant/context-snippets-overview).
 

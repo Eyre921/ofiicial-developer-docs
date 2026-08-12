@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-projects
 path: guides/assistant/admin/manage-projects
 ---
 
-View, rename, and delete projects in your organization.
+View project details, rename projects, add project tags, and delete Pinecone projects using the console or the Admin API with an access token.
 
 This page shows you how to view project details, rename a project, and delete a project.
 

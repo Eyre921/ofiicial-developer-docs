@@ -9,7 +9,7 @@ title: "Forms setup"
 description: "Use built-in form handling to simplify adding and managing forms for your project. There's no need to make an API call or include extra form handling code."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify's serverless form handling allows you to manage forms without extra API calls or additional JavaScript. Once enabled, the built-in form detection feature allows our build system to automatically parse your HTML at deploy time, so there's no need for you to make an API call or include extra JavaScript on your site.
 

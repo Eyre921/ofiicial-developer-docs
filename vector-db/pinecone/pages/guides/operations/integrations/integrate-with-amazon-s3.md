@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-a
 path: guides/operations/integrations/integrate-with-amazon-s3
 ---
 
-Set up Amazon S3 integrationfor data import and audit logs.
+Connect Pinecone to an Amazon S3 bucket using an IAM role to import data and export audit logs.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).

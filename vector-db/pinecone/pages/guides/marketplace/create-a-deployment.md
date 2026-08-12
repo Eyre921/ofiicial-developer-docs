@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
 path: guides/marketplace/create-a-deployment
 ---
 
-Create a new deployment in Pinecone Marketplace from a vertical template.
+Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

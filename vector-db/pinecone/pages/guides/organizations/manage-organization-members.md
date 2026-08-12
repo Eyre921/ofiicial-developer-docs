@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-organization-member
 path: guides/organizations/manage-organization-members
 ---
 
-Add and manage organization members and roles.
+Add, invite, and manage members in your Pinecone organization, including assigning organization roles, changing permissions, and removing users.
 
 This page shows how [organization owners](/guides/organizations/understanding-organizations#organization-roles) can add and manage organization members.
 

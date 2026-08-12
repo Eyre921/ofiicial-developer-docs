@@ -9,7 +9,7 @@ title: "Functions overview"
 description: "Use serverless functions to run on-demand, server-side code without having to run a dedicated server."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 With Netlify Functions, you can build full-stack applications without having to manage servers. Whether you're experimenting with your first application or handling millions of requests, Netlify gives you the infrastructure that automatically scales as you grow.
 

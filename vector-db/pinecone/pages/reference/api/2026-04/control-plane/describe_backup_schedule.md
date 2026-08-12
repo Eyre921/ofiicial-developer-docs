@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/describe_backup_schedule
 ---
 
 GET https://api.pinecone.io/backup-schedules/{schedule_id}
-Get details of a specific backup schedule.
+Retrieve details for a Pinecone backup schedule by schedule ID, including frequency, retention days, next scheduled run, and enabled status.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

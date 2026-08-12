@@ -9,7 +9,7 @@ title: "Team management"
 description: "Create and manage a team, add a team logo, and get an overview of team information such as sites, usage, builds, members, and the latest audit log entries."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Teams can have multiple Netlify users as members, and your Netlify user can be a member of multiple teams.
 

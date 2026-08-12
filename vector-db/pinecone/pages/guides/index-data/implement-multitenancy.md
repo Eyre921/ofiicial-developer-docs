@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/implement-multitenancy
 path: guides/index-data/implement-multitenancy
 ---
 
-Use namespaces to isolate tenant data securely.
+Implement multitenancy in Pinecone with one namespace per tenant on a serverless index to isolate customer data for SaaS RAG or semantic search apps.
 
 [Multitenancy](https://en.wikipedia.org/wiki/Multitenancy) is a software architecture where a single instance of a system serves multiple customers, or tenants, while ensuring data isolation between them for privacy and security.
 

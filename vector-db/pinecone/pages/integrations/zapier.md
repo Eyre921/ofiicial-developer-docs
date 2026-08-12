@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/zapier
 path: integrations/zapier
 ---
 
-Connect Pinecone and Zapier to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Automate Pinecone with Zapier: trigger workflows on index changes, upsert data from spreadsheets, and connect vector search to 6,000+ no-code apps.
 
 [Zapier](https://zapier.com/) lets you connect Pinecone with thousands of the most popular apps, so you can automate your work and have more time for what matters most — no code required.
 

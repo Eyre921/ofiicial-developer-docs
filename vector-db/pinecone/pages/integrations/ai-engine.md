@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/ai-engine
 path: integrations/ai-engine
 ---
 
-Connect Pinecone and AI Engine to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the AI Engine WordPress plugin with Pinecone to power chatbots, semantic search, and RAG over site content directly from your WordPress dashboard.
 
 AI Engine seamlessly connects WordPress with the world's leading AI models. Create intelligent chatbots, generate content, build AI forms, and automate tasks—all from your WordPress dashboard.
 

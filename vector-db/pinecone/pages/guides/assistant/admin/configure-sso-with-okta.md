@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/configure-sso-with-okta
 path: guides/assistant/admin/configure-sso-with-okta
 ---
 
-Enable SSO authentication using Okta integration.
+Integrate Okta with Pinecone to enable single sign-on, configure SAML settings, and manage secure user authentication for your organization.
 
 This page describes how to set up Pinecone with Okta as the single sign-on (SSO) provider. These instructions can be adapted for any provider with SAML 2.0 support.
 

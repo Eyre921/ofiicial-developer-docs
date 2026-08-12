@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/upload-files
 path: guides/assistant/upload-files
 ---
 
-Upload local files to an assistant.
+Upload local files to a Pinecone assistant with Python, JavaScript, or curl, track ingestion operations, and see how uploads are billed as ingestion units.
 
 <Note>
   File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).

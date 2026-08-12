@@ -9,7 +9,7 @@ title: "Manage functions with Netlify CLI"
 description: "With the CLI, you can create, run, and test your serverless functions locally."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 The Netlify CLI offers the ability to create, serve, and test Netlify Functions locally. Once you create a serverless function, you have the option to invoke the function in a local development environment using Netlify Dev, or to invoke the functions with a local standalone server.
 

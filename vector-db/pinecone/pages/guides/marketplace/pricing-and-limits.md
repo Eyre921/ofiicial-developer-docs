@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/pricing-and-limits
 path: guides/marketplace/pricing-and-limits
 ---
 
-How Pinecone Marketplace usage is billed and what limits apply.
+How Pinecone Marketplace usage is billed through Assistant and index consumption, plus deployment limits on connectors, files, and consumer auth.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

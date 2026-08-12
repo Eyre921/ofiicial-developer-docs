@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/evaluate-answers
 path: guides/assistant/evaluate-answers
 ---
 
-Measure assistant response quality with LLM-based evaluation.
+Evaluate RAG system answers with Pinecone Assistant using correctness, completeness, and alignment metrics against a ground truth answer.
 
 This page shows you how to [evaluate responses](/guides/assistant/evaluation-overview) from an assistant or other RAG systems using the `metrics_alignment` operation.
 

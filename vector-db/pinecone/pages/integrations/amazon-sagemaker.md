@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/amazon-sagemaker
 path: integrations/amazon-sagemaker
 ---
 
-Integrate Pinecone with Amazon SageMaker for vector search, RAG, and production AI workloads.
+Combine Amazon SageMaker with Pinecone to host LLMs and embedding models for scalable retrieval augmented generation and vector search workloads.
 
 Amazon SageMaker is a fully managed service that brings together a broad set of tools to enable high-performance, low-cost machine learning (ML) for any use case. With SageMaker, you can build, train and deploy ML models at scale-- all in one integrated development environment (IDE). SageMaker supports governance requirements with simplified access control and transparency over your ML projects. Amazon SageMaker offers access to hundreds of pretrained models, including publicly available foundational models (FMs), and you can build your own FMs with purpose-built tools to fine-tune, experiment, retrain, and deploy FMs.
 

@@ -9,7 +9,7 @@ title: "Caching overview"
 description: "Customize cache key variations and set Cache-Control headers to control the granularity and freshness of your cache. Purge the cache by site or cache tag."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify's global caching infrastructure is built to provide stellar performance without any stale pages or broken assets for your visitors.
 
@@ -444,11 +444,11 @@ To purge by site with a direct API call, specify the site with one of the follow
 - **`site_id`:** for example, `3970e0fe-8564-4903-9a55-c5f8de49fb8b`
 - **`site_slug`:** for example, `mysitename`
 
-You can find these values for your site by visiting the Netlify UI at 
+You can find these values in the Netlify UI at 
 ### NavigationPath Component:
 
 Project configuration > General > Project details > Project information
- and checking the **Project ID** or **Project name** (Also known as Site ID in the Netlify API and formerly as Site ID and Site name in the Netlify UI.)
+: **Project ID** is the `site_id` and **Project name** is the `site_slug`. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 ```sh
 curl -X POST \ 
@@ -574,11 +574,11 @@ list of `cache_tags`, no purge will be applied.
    - **`site_id`:** for example, `3970e0fe-8564-4903-9a55-c5f8de49fb8b`
    - **`site_slug`:** for example, `mysitename`
 
-   You can find these values for your site by visiting the Netlify UI at 
+   You can find these values in the Netlify UI at 
 ### NavigationPath Component:
 
 Project configuration > General > Project details > Project information
- and checking the **Project ID** or **Project name** (Also known as Site ID in the Netlify API and formerly as Site ID and Site name in the Netlify UI).
+: **Project ID** is the `site_id` and **Project name** is the `site_slug`. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 By default, tag-based purges apply to all of the site's deploys. To target a specific deploy, specify one or more of the following
 - **`deploy_alias`** (optional)**:** for example, `deploy-preview-11`. On its own, targets the specified alias on the primary domain.

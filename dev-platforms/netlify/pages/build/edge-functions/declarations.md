@@ -9,7 +9,7 @@ title: "Edge Functions declarations"
 description: "Create declarations to configure edge functions to run on specific URL patterns as edge functions aren't auto-assigned a URL route to use as an endpoint."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Unlike regular functions, edge functions aren't automatically assigned a URL route for you to use as a function endpoint. Instead, you configure your edge functions to run on specific URL patterns.
 

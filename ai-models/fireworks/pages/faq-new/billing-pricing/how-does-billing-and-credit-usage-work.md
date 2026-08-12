@@ -17,7 +17,7 @@ Fireworks operates on a **pre-paid credits** billing system. You purchase credit
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
 
 <Note>
-  Enterprise accounts do not have the same self-serve limits. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
+  Enterprise accounts do not have the same self-serve limits. Their monthly spend alerts track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
 </Note>
 
 <Tip>

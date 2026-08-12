@@ -9,7 +9,7 @@ title: "Hugo on Netlify"
 description: "Learn about Hugo on our platform. Manage your Hugo version and themes to ensure they work optimally with our platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Hugo is a fast and flexible open source static site generator written in Go.
 

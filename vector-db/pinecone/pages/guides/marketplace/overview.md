@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/overview
 path: guides/marketplace/overview
 ---
 
-Pinecone Marketplace is a no-code platform for creating, publishing, and operating knowledge applications powered by Pinecone.
+Pinecone Marketplace is a no-code platform for building, publishing, and operating grounded knowledge applications from vertical templates and connectors.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

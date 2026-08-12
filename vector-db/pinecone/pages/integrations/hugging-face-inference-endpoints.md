@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/hugging-face-inference-endpoints
 path: integrations/hugging-face-inference-endpoints
 ---
 
-Integrate Pinecone with Hugging Face Inference Endpoints for vector search, RAG, and production AI workloads.
+Generate embeddings with Hugging Face Inference Endpoints and index them in Pinecone for semantic search, RAG, and transformer model deployment.
 
 Hugging Face Inference Endpoints offers a secure production solution to easily deploy any Hugging Face Transformers, Sentence-Transformers and Diffusion models from the Hub on dedicated and autoscaling infrastructure managed by Hugging Face.
 

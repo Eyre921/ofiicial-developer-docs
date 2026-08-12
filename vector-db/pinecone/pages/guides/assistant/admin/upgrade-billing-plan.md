@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/upgrade-billing-plan
 path: guides/assistant/admin/upgrade-billing-plan
 ---
 
-Upgrade to a paid plan to access advanced features and limits.
+Learn how Pinecone Assistant admins upgrade to a paid plan to unlock higher limits, more files, evaluations, and advanced access controls.
 
 This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
 

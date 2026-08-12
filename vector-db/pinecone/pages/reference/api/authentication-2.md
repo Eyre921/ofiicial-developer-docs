@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/authentication
 path: reference/api/authentication
 ---
 
-Pinecone REST API: All requests to Pinecone APIs must contain a valid API key for the target project.
+Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
 All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
 

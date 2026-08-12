@@ -9,7 +9,7 @@ title: "Manage deploys"
 description: "Roll back, lock, cancel, skip, cleanup, or delete a deploy for your site, or use environment variables to control the deploy environment."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify versions all deploys. From the **Deploys** tab for your site in the Netlify UI, you can browse any deploy you've ever made and preview it from a unique URL.
 

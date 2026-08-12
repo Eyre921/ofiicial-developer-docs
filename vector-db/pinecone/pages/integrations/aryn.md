@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/aryn
 path: integrations/aryn
 ---
 
-Connect Pinecone and Aryn to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Aryn Sycamore and the Partitioning Service with Pinecone to extract, chunk, and embed complex PDFs and documents for higher-accuracy RAG pipelines.
 
 Aryn is an AI-powered ETL system for complex, unstructured documents like PDFs, HTML, presentations, and more. It's purpose-built for building RAG and GenAI applications, providing up to 6x better accuracy in chunking and extracting information from documents. This can lead to 30% better recall and 2x improvement in answer accuracy for real-world use cases.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/unable-to-pip-install
 path: troubleshooting/unable-to-pip-install
 ---
 
-Resolve pip install issues for the Pinecone Python SDK: use pip3 on Python 3.x, choose pinecone[grpc] or plain pinecone for HTTP, and upgrade to the latest release.
+Resolve install issues for the Pinecone Python SDK: pick the right Python 3.x command, install pinecone or pinecone with gRPC, and upgrade to the latest.
 
 Python `3.x` uses `pip3`. Use the following commands in your terminal to install the latest version of the [Pinecone Python SDK](/reference/sdks/python/overview):
 

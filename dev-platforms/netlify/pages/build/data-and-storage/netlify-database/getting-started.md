@@ -9,7 +9,7 @@ title: "Getting started"
 description: "How to start a new project with Netlify Database, or add Netlify Database to an existing project."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Start using Netlify Database in just a few steps, no matter how far along you are in your building journey.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/pricing-and-limits
 path: guides/assistant/pricing-and-limits
 ---
 
-Understand Pinecone Assistant pricing and service limits.
+Understand Pinecone Assistant pricing for ingestion units, chat tokens, and storage, plus plan-based service limits for file uploads and knowledge size.
 
 Pricing and limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
 

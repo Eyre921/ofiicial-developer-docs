@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/manage-versions-and-rollback
 path: guides/marketplace/manage-versions-and-rollback
 ---
 
-Use versioned publishing in Pinecone Marketplace to ship safer changes and roll back when needed.
+Use versioned publishing in Pinecone Marketplace to stage edits, compare active and building versions, and roll back a deployment when needed.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

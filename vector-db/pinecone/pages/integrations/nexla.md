@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/nexla
 path: integrations/nexla
 ---
 
-Connect Pinecone and Nexla to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Nexla no-code data pipelines to ingest from SharePoint, OneDrive, and 500+ sources into Pinecone for enterprise RAG and vector search apps.
 
 Nexla is a Data + AI Integration Platform that makes it easy for users to build data pipelines in a no-code/low-code manner.
 

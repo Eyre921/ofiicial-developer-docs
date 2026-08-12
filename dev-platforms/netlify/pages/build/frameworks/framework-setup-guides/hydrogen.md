@@ -9,7 +9,7 @@ title: "Hydrogen on Netlify"
 description: "Learn about Hydrogen on our platform. Deploy your Hydrogen app to our edge network by using Edge Functions."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Hydrogen is a headless stack built by Shopify on top of React Router 7 that enables you to build custom Shopify storefronts. With Netlify, you can deploy your storefront using Netlify Edge Functions for improved performance and faster rendering.
 

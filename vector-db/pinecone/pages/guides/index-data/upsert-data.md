@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/index-data/upsert-data
 path: guides/index-data/upsert-data
 ---
 
-Add or update records in Pinecone indexes and manage data with namespaces.
+Upsert dense, sparse, and text records into Pinecone indexes, batch upserts for higher throughput, and partition data with namespaces.
 
 This page shows you how to upsert records into a namespace in an index. [Namespaces](/guides/index-data/indexing-overview#namespaces) let you partition records within an index and are essential for [implementing multitenancy](/guides/index-data/implement-multitenancy) when you need to isolate the data of each customer/user.
 

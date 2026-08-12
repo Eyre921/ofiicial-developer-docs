@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/create_backup_schedule
 ---
 
 POST https://api.pinecone.io/indexes/{index_name}/backup-schedules
-Create a recurring backup schedule for an index.
+Create a recurring backup schedule for a Pinecone serverless index using the API, including daily, weekly, or monthly frequency and retention policy.
 
 <Note>
   This endpoint requires `X-Pinecone-API-Version: unstable`.

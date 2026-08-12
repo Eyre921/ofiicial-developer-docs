@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/configure-private-endpoints
 path: guides/production/configure-private-endpoints
 ---
 
-Secure Pinecone with private endpoints using AWS PrivateLink or Azure Private Link.
+Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet and secure VPCs.
 
 This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
 

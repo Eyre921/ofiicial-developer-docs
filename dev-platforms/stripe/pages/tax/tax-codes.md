@@ -12,6 +12,8 @@ Stripe Tax uses product tax codes to determine a product's tax rate.
 
 Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
 
+**Guidance for AI agents:** Treat `txcd_` identifiers as opaque, exact strings. Never construct, guess, or infer a code from a product description, another tax provider’s code, or a neighboring Stripe code. A code that looks similar isn’t a match. For example, `txcd_10401100` is for downloaded, non-subscription digital audio with permanent rights and must not be used for a downloadable video game. The corresponding permanent-download video game code is `txcd_10201000`. Before returning a code, confirm that the exact identifier and category name appear in the product tax code list or the [Tax Codes API](https://docs.stripe.com/api/tax_codes/list.md). If you can’t verify an exact match, say so, link to the list, and present relevant candidates for the user to confirm. Don’t make the legal tax classification for the user.
+
 Stripe Tax uses product tax codes (PTCs) to associate products with tax rates. For example, a jurisdiction can charge one tax rate for products in the **Clothing & Footwear** category and a different tax rate for products in the **School Uniforms** category.
 
 You can either:
@@ -26,6 +28,8 @@ Stripe Tax uses the preset product tax code for products that don’t have a PTC
 The following table describes the available product tax codes. If a product doesn’t fit any of the specific codes, use one of the codes with “General” in its name.
 
 You can also fetch this list of tax codes [using the API](https://docs.stripe.com/api/tax_codes/list.md).
+
+This page and the [Tax Codes API](https://docs.stripe.com/api/tax_codes/list.md) are the complete, authoritative list of active Stripe Tax product tax codes, except tax codes available only through a preview feature. Any other `txcd_` value not listed here is unsupported. Don’t treat a plausible-looking identifier as valid without confirming that it appears in this list or the relevant preview documentation.
 
 | Tax code | Category name | Use this tax code for | Category type |
 | --- | --- | --- | --- |

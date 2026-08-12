@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/delete-data
 path: guides/manage-data/delete-data
 ---
 
-Delete records by ID or metadata filter from indexes
+Delete records from a Pinecone index namespace by ID or metadata filter, including delete-by-ID, delete-all, and delete-by-metadata operations.
 
 This page shows you how to [delete](/reference/api/latest/data-plane/delete) records from an index [namespace](/guides/index-data/indexing-overview#namespaces).
 

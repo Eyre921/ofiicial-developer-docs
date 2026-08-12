@@ -9,7 +9,7 @@ title: "Manage team members"
 description: "Manage who belongs to your Netlify team, what they can access, and how they contribute to projects and review workflows."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Manage who belongs to your Netlify team, what they can access, and how they contribute to projects and review workflows. Learn how to invite members and Reviewers, assign roles, and remove members so the right people can contribute to, review, and ship projects without friction.
 

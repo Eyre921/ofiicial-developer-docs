@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1565 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1564 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -724,7 +724,6 @@
 - `langsmith/smith-api/feedback/create-feedback-with-token-post` — [Create feedback with token post](pages/langsmith/smith-api/feedback/create-feedback-with-token-post.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-with-token-post)
 - `langsmith/smith-api/feedback/delete-feedback` — [Delete feedback](pages/langsmith/smith-api/feedback/delete-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/delete-feedback)
 - `langsmith/smith-api/feedback/delete-feedback-formula-endpoint` — [Delete feedback formula endpoint](pages/langsmith/smith-api/feedback/delete-feedback-formula-endpoint.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/delete-feedback-formula-endpoint)
-- `langsmith/smith-api/feedback/eagerly-create-feedback` — [Eagerly create feedback](pages/langsmith/smith-api/feedback/eagerly-create-feedback.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/eagerly-create-feedback)
 - `langsmith/smith-api/feedback/get-feedback-formula-ep` — [Get feedback formula ep](pages/langsmith/smith-api/feedback/get-feedback-formula-ep.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/get-feedback-formula-ep)
 - `langsmith/smith-api/feedback/list-feedback-formula-ep` — [List feedback formula ep](pages/langsmith/smith-api/feedback/list-feedback-formula-ep.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/list-feedback-formula-ep)
 - `langsmith/smith-api/feedback/list-feedback-ingest-tokens` — [List feedback ingest tokens](pages/langsmith/smith-api/feedback/list-feedback-ingest-tokens.md) · [原文](https://docs.langchain.com/langsmith/smith-api/feedback/list-feedback-ingest-tokens)

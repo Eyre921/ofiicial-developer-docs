@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/cli/quickstart
 path: reference/cli/quickstart
 ---
 
-Pinecone CLI: The Pinecone CLI ( ) lets you manage Pinecone resources directly from your terminal.
+Pinecone CLI quickstart for installing pc, authenticating, and managing indexes, vectors, and data imports directly from your terminal.
 
 The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your terminal.
 

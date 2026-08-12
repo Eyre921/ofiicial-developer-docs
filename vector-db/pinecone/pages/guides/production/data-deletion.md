@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/production/data-deletion
 path: guides/production/data-deletion
 ---
 
-Understand Pinecone's secure data deletion process.
+Learn how Pinecone permanently deletes customer data, including soft deletion, the 90-day retention window, and secure erasure of records and indexes.
 
 Pinecone follows a secure process to ensure that customer data is permanently deleted from our system. This page gives an overview of the process.
 

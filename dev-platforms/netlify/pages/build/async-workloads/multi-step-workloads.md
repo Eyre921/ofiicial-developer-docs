@@ -9,7 +9,7 @@ title: "Multi-step Async Workloads"
 description: "Break up tasks into discrete steps that can run independently, handle failures, and retry automatically, ensuring efficient and durable execution."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 When using event-driven architectures, it's common to break up the code into discrete steps so that those steps can run, fail, and retry on their own. While there are many patterns to solve this, Async Workloads has a built-in method of doing multi-step processes that allows developers to code workflows together without having to create separate workloads.
 

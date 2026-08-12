@@ -9,7 +9,7 @@ title: "Netlify Database"
 description: "A zero-config, fully integrated Postgres database primitive for Netlify. Build full-stack apps with isolated database branches and platform-managed migrations."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify Database is a fully managed Postgres database built into the Netlify platform. We automatically handle provisioning, [migrations](/build/data-and-storage/netlify-database/migrations/), and [branching](#database-branches) for you, so you can focus on building your application.
 

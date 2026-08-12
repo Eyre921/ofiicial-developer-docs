@@ -9,7 +9,7 @@ title: "On-demand Builders"
 description: "Use On-demand Builders to build pages for your site when users visit them for the first time, then cache the built pages at the edge for subsequent visits."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 On-demand Builders are serverless functions used to generate web content as needed that's automatically cached on Netlify's Edge CDN. They enable you to build pages for your site when a user visits them for the first time and then cache them at the edge for subsequent visits.
 

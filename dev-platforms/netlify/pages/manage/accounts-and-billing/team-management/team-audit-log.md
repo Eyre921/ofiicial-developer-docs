@@ -9,7 +9,7 @@ title: "Team audit log"
 description: "Refer to the team audit log to note actions made by members of your team so you can keep track of what changes were made, when, and by whom."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 > **Pricing Information:** This feature is available on [Pro](https://www.netlify.com/pricing/?category=developer) and [Enterprise](https://www.netlify.com/pricing/?category=enterprise) plans.
 

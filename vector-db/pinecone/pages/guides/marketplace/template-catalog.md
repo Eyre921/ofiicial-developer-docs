@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/template-catalog
 path: guides/marketplace/template-catalog
 ---
 
-The bundled vertical templates available in Pinecone Marketplace.
+Browse the vertical apps in the Pinecone Marketplace template catalog, including Customer Support, HR Benefits, Deal Desk, and Financial Filings Analyzer.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/search/hybrid-search
 path: guides/search/hybrid-search
 ---
 
-Combine semantic and lexical search for better results.
+Combine dense semantic search with sparse lexical search in a single Pinecone query to improve recall for keyword matches, synonyms, and rare terms.
 
 [Semantic search](/guides/search/semantic-search) and [lexical search](/guides/search/lexical-search) are powerful information retrieval techniques, but each has notable limitations. For example:
 

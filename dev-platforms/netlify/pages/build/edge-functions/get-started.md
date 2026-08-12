@@ -9,7 +9,7 @@ title: "Get started with Edge Functions"
 description: "Get started with Edge Functions by trying out a basic use case."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This page will help you get started with Edge Functions. It describes how to create, test, deploy, invoke, and monitor your edge functions. 
 

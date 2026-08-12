@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/assistant-release-notes/feature-availability
 path: assistant-release-notes/feature-availability
 ---
 
-Pinecone release notes — Feature availability:
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
 
 This page defines the different availability phases of a feature in Pinecone.
 

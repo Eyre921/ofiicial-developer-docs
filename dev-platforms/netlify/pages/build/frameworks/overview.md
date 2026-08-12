@@ -9,7 +9,7 @@ title: "Overview"
 description: "Find configuration information for common development frameworks on our platform."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify automatically detects and configures your project based on the framework you're using. This page describes commonly used [build settings](/build/configure-builds/overview#build-settings) and other configuration tips for popular build tools and project architectures. Your particular settings may be different. For projects that require more advanced setup, check out common configurations for:
 

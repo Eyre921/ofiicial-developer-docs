@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/microsoft-marketplace
 path: integrations/microsoft-marketplace
 ---
 
-Integrate Pinecone with Microsoft Marketplace for vector search, RAG, and production AI workloads.
+Buy and manage Pinecone through Microsoft Marketplace with pay-as-you-go billing, centralized SaaS procurement, and simplified Azure licensing.
 
 Access Pinecone through our Microsoft Marketplace listing. Microsoft Marketplace allows you to manage Pinecone and other third-party software from a centralized location, and simplifies software licensing and procurement with flexible pricing options and multiple deployment methods.
 

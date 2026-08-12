@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/marketplace/evaluations
 path: reference/api/marketplace/evaluations
 ---
 
-Trigger and retrieve Pinecone Marketplace evaluation results.
+Marketplace Evaluations API reference for triggering evaluation runs, retrieving scores, and inspecting per-question detail per version.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

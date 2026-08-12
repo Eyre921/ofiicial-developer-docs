@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/cli/authentication
 path: reference/cli/authentication
 ---
 
-Pinecone CLI: This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
+Authenticate the Pinecone CLI using user login, service accounts, or API keys, including auth priority and Admin API access rules.
 
 This document describes how to authenticate the Pinecone CLI to manage your Pinecone resources.
 

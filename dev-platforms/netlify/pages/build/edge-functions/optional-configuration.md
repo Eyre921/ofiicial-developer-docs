@@ -9,7 +9,7 @@ title: "Optional configuration for edge functions"
 description: "Learn about optional configuration settings you can use for more control over how your edge functions are built and executed, such as response caching."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 This document describes optional configuration settings you can use for more control over how your edge functions are built and executed.
 

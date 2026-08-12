@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/marketplace/end-user/ask-questions
 path: guides/marketplace/end-user/ask-questions
 ---
 
-Get the most out of a Pinecone Marketplace knowledge application by asking clear, specific questions.
+Tips for end users on asking clear, specific questions in a Pinecone Marketplace knowledge application, using follow-ups, and handling clarifications.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability).

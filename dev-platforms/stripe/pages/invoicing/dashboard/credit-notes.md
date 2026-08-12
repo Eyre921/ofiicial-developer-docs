@@ -93,6 +93,8 @@ You also can’t credit a negative amount on a custom credit note line item. We 
 
 ### Custom credit notes
 
+> You can’t add a custom line item to a credit note when automatic tax is enabled. Custom line items aren’t tied to a specific invoice line item, so when the original invoice has line items with different tax treatments, Stripe can’t determine which tax treatment to apply. To credit an amount from the original invoice, use an invoice line item instead.
+
 When using [custom_line_item](https://docs.stripe.com/api/credit_notes/create.md#create_credit_note-lines), you must provide the credit amount using `unit_amount` (or `unit_amount_decimal`) and quantity, instead of a flat amount. You can describe the line item with description, and apply taxes using either `tax_rates` or `tax_amounts`, but not both.
 
 ## See also

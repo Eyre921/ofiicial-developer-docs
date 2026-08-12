@@ -65,7 +65,9 @@ Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) i
 
 ### Enterprise accounts
 
-Enterprise accounts do not have the same spend limits. If you have an Enterprise account, the spending tiers and spend-limit controls described on this page do not apply to you. For information about Enterprise quotas and resource allocation, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your enterprise account representative.
+Enterprise accounts can configure monthly spend alerts, but those alerts do not pause service. They track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend.
+
+For Enterprise quota details, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your account representative.
 
 ## Manage your quotas
 
@@ -87,8 +89,6 @@ Set a monthly spend limit that fits your needs and adjust it anytime.
 For prepaid accounts, the limit tracks the dollar value of your usage regardless of whether credits pay for that usage. Adding credits increases your available balance, but does not raise or reset your monthly spend limit.
 
 Auto Reload is separate from the spend limit. Auto Reload purchases credits when your balance is low; it does not change how much usage your account can accrue during the month.
-
-Contracted postpaid accounts may have different billing terms. Contact your account representative if you have questions about how a postpaid limit is calculated.
 
 ### View and adjust your spend limit
 
@@ -117,7 +117,7 @@ By default, Fireworks sends a warning email when usage reaches 80% of your month
 When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and fine-tuning. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
 <Note>
-  The self-serve spend-limit behavior described here does not apply to Enterprise accounts. Refer to your contract or contact your account representative for your account's billing and suspension terms.
+  The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.
 </Note>
 
 ### On-demand deployment quotas

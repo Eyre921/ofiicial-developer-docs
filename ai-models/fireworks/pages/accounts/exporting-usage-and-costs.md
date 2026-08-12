@@ -13,6 +13,8 @@ Fireworks reports billing along two dimensions:
 * **Usage** — metered quantities such as tokens, accelerator-seconds, and audio input seconds. You can break usage down by deployment, model, API key, or custom tags.
 * **Cost** — rated dollar amounts. Costs are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). They aren't broken down by the same dimensions as usage, so per-API-key or per-deployment dollar figures aren't returned today — to approximate them, multiply usage by the published [serverless prices](/serverless/pricing).
 
+For Enterprise accounts, these rated costs match monthly spend alerts: they include usage paid for with credits. Credit grants and purchases are reported separately.
+
 Two tools expose this data:
 
 * **CLI** — [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) shows the account cost total alongside the usage breakdown. Best for ad-hoc queries and shell scripting.

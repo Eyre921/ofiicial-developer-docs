@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/apify
 path: integrations/apify
 ---
 
-Connect Pinecone and Apify to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use the Apify Pinecone integration to crawl and scrape websites, embed the results, and upsert vectors for RAG and semantic search over web content.
 
 [Apify](https://apify.com) is a web scraping and data extraction platform. It provides an app store with more than a thousand ready-made cloud tools called Actors. These tools are suitable for use cases including extracting structured data from e-commerce sites, social media, search engines, online maps, or any other website.
 

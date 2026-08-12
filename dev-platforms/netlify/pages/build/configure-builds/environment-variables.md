@@ -9,7 +9,7 @@ title: "Build environment variables"
 description: "Identify environment variables available in the build environment, set your own environment variables, and use environment variables during builds."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Netlify [environment variables](/build/environment-variables/overview) are accessible during your build. This allows you to change behaviors based on deploy parameters or to include information you don't want to save in your repository, such as API keys.
 

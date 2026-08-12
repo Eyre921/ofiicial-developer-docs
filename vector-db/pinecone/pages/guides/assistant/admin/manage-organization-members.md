@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/manage-organization-memb
 path: guides/assistant/admin/manage-organization-members
 ---
 
-Invite and control organization member access levels.
+Invite new members to your Pinecone organization, change their organization roles, and remove users to control access across all projects.
 
 This page shows how [organization owners](/guides/assistant/admin/organizations-overview#organization-roles) can add and manage organization members.
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage
 path: guides/assistant/admin/monitor-spend-and-usage
 ---
 
-Set monthly spend alerts and monitor usage across your organization.
+Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track token usage across chat, context retrieval, and evaluation.
 
 ## Set monthly spend alerts
 

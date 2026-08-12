@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/n8n
 path: integrations/n8n
 ---
 
-Connect Pinecone and n8n to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Automate Pinecone vector store and Assistant workflows in n8n: build RAG pipelines, semantic search, and no-code AI automations with 400+ apps.
 
 n8n is a workflow automation platform that combines AI capabilities with business process automation, giving technical teams the flexibility of code with the speed of no-code. Integrate Pinecone Vector Database or Pinecone Assistant nodes directly into your automation pipelines to build powerful AI workflows with vector search and retrieval.
 

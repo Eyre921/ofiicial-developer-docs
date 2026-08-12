@@ -9,7 +9,7 @@ title: "Local development with Netlify CLI"
 description: "Set up and run a local development environment with the CLI (command line interface)."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 The Netlify CLI brings the functionality of your Netlify production environment directly to your local machine through the `dev` command. This CLI functionality is also referred to as Netlify Dev. 
 
@@ -29,11 +29,11 @@ Before you begin, make sure you complete the following if you haven't already:
   - If you're setting up a new site, use [`netlify init`](/api-and-cli-guides/cli-guides/get-started-with-cli#continuous-deployment) to set up continuous deployment
   - If you've already cloned a repository manually, use [`netlify link`](/api-and-cli-guides/cli-guides/get-started-with-cli#link-an-existing-local-project) to connect it to a Netlify site
 
-> **Note - Site ID same as Project ID:** Your Site ID appears as the Project ID in the Netlify app UI at `app.netlify.com`. To find this ID in the Netlify UI, go to 
+> **Note - Site ID same as Project ID:** Site ID, the API's `site_id`, and the `NETLIFY_SITE_ID` environment variable all hold the same value, which the Netlify UI labels **Project ID**. To find it in the Netlify UI, go to 
 ### NavigationPath Component:
 
 Project configuration > General > Project information
-, and copy the value for **Project ID**.
+, and copy the value for **Project ID**. Learn more about [Netlify project identifiers](/api-and-cli-guides/api-guides/get-started-with-api#get-site).
 
 To start a local development server for the build tool you're using, run the following command from the root of your linked repository:
 

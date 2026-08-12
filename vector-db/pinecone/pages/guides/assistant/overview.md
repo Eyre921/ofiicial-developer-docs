@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/assistant/overview
 path: guides/assistant/overview
 ---
 
-Pinecone Assistant is a service that allow you to build production-grade chat and agent-based applications quickly.
+Overview of Pinecone Assistant, a managed service for building production-grade RAG chat and agent applications grounded in your data.
 
 <CardGroup>
   <Card title="Assistant quickstart" icon="comments" href="/guides/assistant/quickstart/sdk-quickstart">

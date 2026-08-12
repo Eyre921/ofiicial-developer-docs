@@ -9,7 +9,7 @@ title: "Forms usage and billing"
 description: "Monitor your Forms service usage. Check the number of submissions and the storage size for file uploads, or change levels for the service."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 Forms billing is metered differently depending on the type of plan you have.
 

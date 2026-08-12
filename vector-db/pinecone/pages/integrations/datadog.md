@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/datadog
 path: integrations/datadog
 ---
 
-Connect Pinecone and Datadog to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Monitor Pinecone with the Datadog integration to track request latency, index fullness, and usage trends, and alert on anomalies in vector workloads.
 
 <Note>
   This feature is available on the [Builder, Standard, and Enterprise plans](https://www.pinecone.io/pricing/).

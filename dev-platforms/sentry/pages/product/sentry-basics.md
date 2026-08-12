@@ -75,7 +75,7 @@ Our **[Guides](https://docs.sentry.io/guides.md)** cover real-world patterns for
 
 ### [Cookbook](https://docs.sentry.io/product/sentry-basics.md#cookbook)
 
-The **[Sentry Cookbook](https://sentry.io/cookbook/)** has step-by-step recipes for common workflows, including debugging with MCP + Cursor, setting up AI observability, creating dashboards with AI agents, and more.
+The **[Sentry Cookbook](https://sentry.io/cookbook/)** has step-by-step recipes for common workflows, including debugging with MCP + Cursor, setting up AI observability, creating dashboards with agents, and more.
 
 ### [Interactive Resources](https://docs.sentry.io/product/sentry-basics.md#interactive-resources)
 

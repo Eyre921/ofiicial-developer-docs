@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/fleak
 path: integrations/fleak
 ---
 
-Connect Pinecone and Fleak to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Fleak's low-code workflows with Pinecone to combine SQL, LLM inference, and vector search in serverless APIs for RAG and data enrichment pipelines.
 
 Fleak simplifies the process of building, deploying, and managing data workflows. As a low-code platform, Fleak lets users create and deploy complex workflows using SQL and pre-configured processing nodes. The platform facilitates seamless data processing, microservice interactions, and the inference of large language models (LLMs) within a single, intuitive environment. Fleak makes advanced technology accessible and manageable for Pinecone users without requiring extensive coding hours or infrastructure knowledge.
 

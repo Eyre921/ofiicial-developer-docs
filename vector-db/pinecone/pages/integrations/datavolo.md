@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/datavolo
 path: integrations/datavolo
 ---
 
-Connect Pinecone and Datavolo to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Use Datavolo pipelines to source, transform, and enrich unstructured data into Pinecone for retrieval augmented generation and multimodal AI apps.
 
 [Datavolo](https://datavolo.io/) helps data teams build multimodal data pipelines to support their AI initiatives. Every organization has their own private data that they need to incorporate into their AI apps, and a predominant pattern to do so has emerged: retrieval augmented generation (RAG).
 

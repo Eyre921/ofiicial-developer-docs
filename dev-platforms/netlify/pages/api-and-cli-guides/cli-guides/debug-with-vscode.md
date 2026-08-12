@@ -9,7 +9,7 @@ title: "Debug with VS Code and Netlify CLI"
 description: "Learn how to debug projects with Netlify CLI and VS Code."
 ---
 
-> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
+> For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
 You can use the VS Code debugger while you run your project with the Netlify CLI. This document outlines how to configure VS Code and how to launch the debugger.
 

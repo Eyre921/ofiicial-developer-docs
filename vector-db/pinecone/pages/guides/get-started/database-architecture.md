@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/get-started/database-architecture
 path: guides/get-started/database-architecture
 ---
 
-Learn how Pinecone's architecture enables fast, relevant vector search at any scale.
+Learn how Pinecone's serverless architecture (API gateway, control plane, data plane, and object storage) powers vector search at scale.
 
 ## Overview
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/restore-an-index
 path: guides/manage-data/restore-an-index
 ---
 
-Restore serverless indexes from backup snapshots.
+Restore a Pinecone serverless index from a backup, change the index name, tags, or deletion protection, and preserve embedding model configuration.
 
 ## Create a serverless index from a backup
 

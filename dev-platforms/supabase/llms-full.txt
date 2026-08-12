@@ -283,6 +283,7 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **[Kiro](https://supabase.com/docs/guides/ai-tools/mcp):** Move beyond AI coding to agentic engineering.
 - **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp):** The open source AI coding agent.
 - **[VS Code](https://supabase.com/docs/guides/ai-tools/plugins):** The open source AI code editor — your home for multi-agent development.
+- **[Warp](https://supabase.com/docs/guides/ai-tools/mcp):** Connect using the Supabase MCP server or plugin.
 - **[Windsurf](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
 
 ## Key concepts
@@ -929,6 +930,24 @@ To configure MCP servers and complete the Supabase OAuth login, run:
 ```bash
 /mcp-config
 ```
+
+**Warp**
+
+Add this configuration to `~/.warp/.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+Warp supports remote MCP servers natively, so no local proxy is needed. You can also add the server from the UI: open the MCP servers page (**Settings** > **Agents** > **MCP Servers**, or search for MCP in the command palette), click **+ Add**, and paste the same JSON.
+
+After adding the server, Warp opens a browser window to complete the Supabase OAuth flow and stores the credentials securely on your device.
 
 **Authentication**
 
@@ -36626,18 +36645,18 @@ ON pg_stat_ssl.pid = pg_stat_activity.pid;
 
 Interpreting the query:
 
-| Column             | Description                                         |
-| ------------------ | --------------------------------------------------- |
-| `connection_id`    | connection id                                       |
-| `ssl`              | Indicates if SSL is in use                          |
-| `database`         | Name of the connected database (usually `postgres`) |
-| `usename`          | Role of the connected user                          |
-| `application_name` | Name of the connecting application                  |
-| `client_addr`      | IP address of the connecting server                 |
-| `query`            | Last query executed by the connection               |
-| `query_start`      | Time when the last query was executed               |
-| `state`            | Querying state: active or idle                      |
-| `backend_start`    | Timestamp of the connection's establishment         |
+| Column             | Description                                                                                                |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `connection_id`    | connection id                                                                                              |
+| `ssl`              | Indicates if SSL is in use                                                                                 |
+| `database`         | Name of the connected database (usually `postgres`)                                                        |
+| `usename`          | Role of the connected user                                                                                 |
+| `application_name` | Name of the connecting application                                                                         |
+| `client_addr`      | IP address of the connecting server                                                                        |
+| `query`            | Last query executed by the connection                                                                      |
+| `query_start`      | Time when the last query was executed                                                                      |
+| `state`            | Querying state. See [Session states](#session-states) for the full list of values and what each one means. |
+| `backend_start`    | Timestamp of the connection's establishment                                                                |
 
 The username can be used to identify the source:
 
@@ -36650,6 +36669,76 @@ The username can be used to identify the source:
 | `supabase_replication_admin` | Synchronizes Read Replicas                                                |
 | `postgres`                   | Supabase Dashboard and External Tools (e.g., Prisma, SQLAlchemy, PSQL...) |
 | Custom roles defined by user | External Tools (e.g., Prisma, SQLAlchemy, PSQL...)                        |
+
+## Diagnosing stuck and blocked queries
+
+If your application is slow or hanging, the cause is usually visible right now in `pg_stat_activity` - a query that's stuck, one session blocking others, or a transaction left open by mistake. This section covers how to read a session's state, find out what's blocking a query, and stop the session responsible.
+
+### Session states
+
+The `state` column on `pg_stat_activity` can be one of six values:
+
+| State                           | Meaning                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `active`                        | The session is currently executing a query. A query running longer than expected is worth investigating, but a nonzero count of active sessions is normal on its own.                                                                                                                                                                                                                                  |
+| `idle`                          | The session is connected and waiting for the client to send a new command. Normal for pooled or long-lived connections.                                                                                                                                                                                                                                                                                |
+| `idle in transaction`           | The session has an open transaction but isn't currently running a query. This holds locks and blocks table cleanup for as long as it stays open, and almost always means the application forgot to commit or roll back.                                                                                                                                                                                |
+| `idle in transaction (aborted)` | The last statement in the transaction failed. Postgres releases the transaction's ordinary locks as part of the abort - the exception is session-level advisory locks (`pg_advisory_lock`, not `pg_advisory_xact_lock`), which are held until explicitly unlocked or the session ends. The client still needs to send `rollback` to close the transaction before the session will accept new commands. |
+| `fastpath function call`        | The session is executing a function through Postgres's low-level fastpath protocol, most commonly for large object reads or writes. Rare, and normally brief.                                                                                                                                                                                                                                          |
+| `disabled`                      | Activity tracking (`track_activities`) is turned off for this session, so Postgres isn't recording its state or query.                                                                                                                                                                                                                                                                                 |
+
+`idle in transaction` is the state most worth watching. Unlike a slow `active` query, which is at least making progress, an idle-in-transaction session is holding its locks indefinitely while doing nothing.
+
+### Finding blocked queries
+
+Postgres tracks which sessions are waiting on a lock held by another session. Query `pg_stat_activity` and `pg_blocking_pids()` together to see this directly:
+
+```sql
+select
+  a.pid,
+  a.usename as role_name,
+  a.application_name,
+  a.state,
+  a.query,
+  a.wait_event_type,
+  a.wait_event,
+  a.xact_start as transaction_start,
+  a.query_start,
+  a.state_change,
+  pg_blocking_pids(a.pid) as blocked_by
+from pg_stat_activity as a
+where
+  a.datname = current_database()
+  and a.pid != pg_backend_pid()
+  and a.backend_type = 'client backend'
+order by a.query_start asc nulls last;
+```
+
+The `where` clause excludes the query's own session and Postgres's internal background workers (autovacuum, the WAL writer, extensions like `pg_cron`), so the results only show sessions a client opened.
+
+`blocked_by` is an array, not a single value, for two reasons:
+
+- A session can be waiting on more than one session at once, if several sessions hold a lock that all conflict with what it's requesting.
+- Blocking can chain: session A holds a lock, session B waits on A, session C waits on B. `blocked_by` only ever lists the *direct* blocker, so tracing a long queue back to its root cause may mean following the chain through more than one session.
+
+### Cancelling or terminating a session
+
+Postgres gives you two ways to stop a session, and they behave differently:
+
+- `select pg_cancel_backend(pid);` cancels the session's *currently running query* but leaves the connection open. The application gets one failed query back and can continue using that connection.
+- `select pg_terminate_backend(pid);` ends the session's connection entirely.
+
+Which one to use depends on the session's state:
+
+- For an `active` session that's stuck waiting on a lock or running longer than expected, cancel it first. It's the less disruptive option, and it's usually enough to unstick the wait or stop the runaway query.
+- For a session that's `idle in transaction`, cancelling does nothing - there's no running query to cancel, and the open transaction stays open regardless. Terminating the session is the only way to force the transaction closed and release its locks.
+- For a session that's `idle in transaction (aborted)`, its ordinary locks were already released when the transaction aborted. The correct fix is for the client to issue `rollback`, which closes the transaction cleanly. Reserve `pg_terminate_backend` for a client that's unresponsive or a connection that needs to close regardless - it won't release anything further in this case, aside from a session-level advisory lock, which persists until the session ends.
+
+Both functions require you to either be a superuser, hold the `pg_signal_backend` role, or be signalling your own session - and even `pg_signal_backend` can't be used to stop a session belonging to an actual superuser role. If you hit a permission error while terminating a session, see [this troubleshooting guide](https://supabase.com/docs/guides/troubleshooting/high-cpu-and-slow-queries-with-error-must-be-a-superuser-to-terminate-superuser-process).
+
+***
+
+If you're on Supabase, you can see all of this - session states, blocking chains, and a way to terminate a stuck session - on your project's [Database Connections](https://supabase.com/dashboard/project/_/observability/connections) page in the dashboard, without writing any SQL.
 
 
 ---
@@ -68128,8 +68217,8 @@ Supabase branches create separate environments that spin off from your main proj
 ## How branching works
 
 - **Separate Environments**: Each branch is a separate environment with its own Supabase instance and API credentials.
-- **Preview Branches**: Preview branches are ephemeral and best suited for focused testing. They are automatically paused after inactivity or deleted when a PR is merged or closed.
-- **Persistent Branches**: Persistent branches are long-lived and recommended for environments like staging, QA, or development. Unlike preview branches, they aren't automatically paused or deleted due to inactivity or when a PR is merged or closed.
+- **Preview Branches**: Preview branches are ephemeral and best suited for focused testing. They are automatically deleted when a PR is merged or closed.
+- **Persistent Branches**: Persistent branches are long-lived and recommended for environments like staging, QA, or development. They aren't automatically paused or deleted due to inactivity or when a PR is merged or closed.
 - **Managing Branches**: You can create, review, and merge branches either automatically via our [GitHub integration](https://supabase.com/docs/guides/deployment/branching/github-integration) or directly [through the dashboard](https://supabase.com/docs/guides/deployment/branching/dashboard) (currently in beta). All branches show up in the branches page in the dashboard, regardless of how they were created.
 - **Data-less**: New branches do not start with any data from your main project. This is meant to better protect your sensitive production data. To start your branches with data, you can use a [seed file](https://supabase.com/docs/guides/deployment/branching/github-integration#seeding) if using the GitHub integration.
 
@@ -71678,16 +71767,30 @@ export default {
 }
 ```
 
-This approach ensures that when new headers are added to the Supabase SDK, your Edge Functions automatically include them, preventing CORS errors.
+Importing from the SDK keeps your allow-list aligned with the headers the client libraries send: when you upgrade the SDK version in your function and redeploy, newly added headers are picked up with it. As of `@supabase/supabase-js` v2.112.3 the list includes the trace context headers (`traceparent`, `tracestate`, `baggage`) used by [client-side tracing](https://supabase.com/docs/guides/monitoring-and-debugging/client-side-tracing) — functions deployed with an older version need a redeploy before browsers can call them with trace propagation enabled.
+
+Note: The allow-list only states what a browser *may* send — it doesn't change what the SDK sends. Trace context headers are sent exclusively by clients that explicitly opt in to trace propagation (`tracePropagation: true`, disabled by default). Clients that haven't opted in send exactly the same headers as before.
+
+The full list, and when each header is sent:
+
+| Header                                 | Sent                                                                                                                                                      |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `authorization`                        | Every request (session token or API key)                                                                                                                  |
+| `apikey`                               | Every request                                                                                                                                             |
+| `x-client-info`                        | Every request (SDK name and version)                                                                                                                      |
+| `content-type`                         | Requests with a body                                                                                                                                      |
+| `x-retry-count`                        | Only on automatic retry attempts (`postgrest-js` retries failed idempotent requests by default)                                                           |
+| `traceparent`, `tracestate`, `baggage` | **Only when [trace propagation](https://supabase.com/docs/guides/monitoring-and-debugging/client-side-tracing) is explicitly enabled** — never by default |
 
 ### For versions before 2.95.0
 
-If you're using `@supabase/supabase-js` before v2.95.0, you'll need to hardcode the CORS headers. Add a `cors.ts` file within a [`_shared` folder](https://supabase.com/docs/guides/functions/development-environment#recommended-project-structure):
+If you're using `@supabase/supabase-js` before v2.95.0, you'll need to hardcode the CORS headers. Add a `cors.ts` file within a [`_shared` folder](https://supabase.com/docs/guides/functions/development-environment#recommended-project-structure). The list must cover every header your calling clients send — include the trace context headers if any client enables `tracePropagation`:
 
 ```ts _shared/cors.ts
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers':
+    'authorization, x-client-info, apikey, content-type, x-retry-count, traceparent, tracestate, baggage',
 }
 ```
 
@@ -82319,7 +82422,7 @@ npm run dev
 ## Next steps
 
 - Learn how to [protect routes and check sessions](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=tanstack) with the server client
-- Set up a complete [login and sign-up flow](https://supabase.com/ui/docs/tanstack/password-based-auth) from the Supabase UI Library
+- Set up a complete [login and sign-up flow](https://supabase.com/library/docs/tanstack/password-based-auth) from Supabase Library
 - Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -86408,7 +86511,7 @@ At this stage you have a fully functional application!
 
 - See the complete [example on GitHub](https://github.com/supabase/supabase/tree/master/examples/user-management/nextjs-user-management) and deploy it to Vercel
 - [Build a Twitter Clone with the Next.js App Router and Supabase - free egghead course](https://egghead.io/courses/build-a-twitter-clone-with-the-next-js-app-router-and-supabase-19bebadb)
-- Explore the [pre-built Auth components](https://supabase.com/ui/docs/nextjs/password-based-auth)
+- Explore the [pre-built Auth components](https://supabase.com/library/docs/nextjs/password-based-auth)
 - Explore the [Supabase Cache Helpers](https://github.com/psteinroe/supabase-cache-helpers)
 - See the [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments) template on GitHub
 
@@ -95802,7 +95905,7 @@ Caution: Before transferring the project to your user's org, make sure to remove
 
 ## Platform kit
 
-Docs: [https://supabase.com/ui/docs/platform/platform-kit](https://supabase.com/ui/docs/platform/platform-kit)
+Docs: [https://supabase.com/library/docs/platform/platform-kit](https://supabase.com/library/docs/platform/platform-kit)
 
 
 
@@ -99035,6 +99138,7 @@ Monitor your project, debug errors, and understand what's happening across the S
 - **[Logging](https://supabase.com/docs/guides/monitoring-and-debugging/logs):** Query events from any Supabase service using the Logs Explorer.
 - **[Advanced log filtering](https://supabase.com/docs/guides/monitoring-and-debugging/advanced-log-filtering):** Regex filtering, structured-field queries, and field discovery in ClickHouse.
 - **[Troubleshooting index](https://supabase.com/docs/guides/troubleshooting):** Searchable index of known error codes, symptoms, and fixes.
+- **[Diagnosing stuck and blocked queries](https://supabase.com/docs/guides/database/connection-management#diagnosing-stuck-and-blocked-queries):** Find sessions blocked by a lock, and cancel or terminate the one responsible.
 
 ## Monitoring
 
@@ -99042,6 +99146,7 @@ Monitor your project, debug errors, and understand what's happening across the S
 - **[Reports](https://supabase.com/docs/guides/monitoring-and-debugging/reports):** Built-in dashboards for API, Auth, Storage, and Realtime activity.
 - **[Metrics](https://supabase.com/docs/guides/monitoring-and-debugging/metrics):** Prometheus-compatible database metrics for Grafana and other tools.
 - **[Client-side tracing](https://supabase.com/docs/guides/monitoring-and-debugging/client-side-tracing):** Correlate browser requests end-to-end using W3C Trace Context.
+- **[Query optimization](https://supabase.com/docs/guides/database/query-optimization):** Find and fix slow queries using indexes and query plan analysis.
 - **[Sentry integration](https://supabase.com/docs/guides/monitoring-and-debugging/sentry-monitoring):** Send errors to Sentry for alerting and grouping.
 
 
@@ -99340,9 +99445,9 @@ limit 100;
 
 Propagate W3C trace context from the Supabase JS, Swift, and Dart SDKs through Supabase services
 
-The Supabase JS, Swift, and Dart SDKs can attach [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers (`traceparent`, `tracestate`, `baggage`) to outgoing requests. The resulting `trace_id` flows through Supabase services and appears in API Gateway and Edge Function logs, so you can correlate client-side spans with the server-side logs they produced — end-to-end, across the network boundary.
+The Supabase JS, Swift, Dart and Python SDKs can attach [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers (`traceparent`, `tracestate`, `baggage`) to outgoing requests. The resulting `trace_id` flows through Supabase services and appears in API Gateway and Edge Function logs, so you can correlate client-side spans with the server-side logs they produced — end-to-end, across the network boundary.
 
-Because the headers follow the W3C standard, any compliant tracing SDK (such as OpenTelemetry, Sentry, Datadog, or Honeycomb) can pick up the trace on the server side, including in self-hosted collectors.
+Because the headers follow the W3C standard, any compliant tracing SDK (such as OpenTelemetry, Sentry, Datadog, or Honeycomb) can pick up the trace on the server side, including in self-hosted collectors. On the client side, some vendor SDKs need a small configuration change before they emit the standard headers — see [Using a vendor tracing SDK](#using-a-vendor-tracing-sdk) in the JavaScript tab.
 
 **JavaScript**
 
@@ -99395,6 +99500,8 @@ await tracer.startActiveSpan('fetch-users', async (span) => {
 
 For security, trace headers are only attached to requests targeting Supabase domains (`*.supabase.co`, `*.supabase.in`, and `localhost` for local development). Third-party hosts called through a custom `fetch` are never tagged.
 
+Note: Calling Edge Functions from the browser with trace propagation enabled requires the function's CORS allow-list to include the trace headers. In the function, import `corsHeaders` from `npm:@supabase/supabase-js@^2.112.3/cors` or add `traceparent`, `tracestate`, and `baggage` to your own allow-list, then redeploy the function. See [CORS support for Edge Functions](https://supabase.com/docs/guides/functions/cors).
+
 ## Advanced configuration
 
 Pass an object instead of `true` for fine-grained control:
@@ -99405,22 +99512,33 @@ import '@supabase/supabase-js/tracing'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   tracePropagation: {
     enabled: true,
-    // Default: true. When false, headers are attached even if the
-    // upstream trace is not sampled — useful when you want every
-    // Supabase request tagged with a trace_id for log correlation.
+    // Default: true. Non-sampled requests carry only `traceparent` (with the
+    // sampled flag preserved, so nothing is recorded downstream) — log
+    // correlation keeps working while `tracestate` and `baggage` are withheld.
+    // Set to false to always send the full trace context regardless of sampling.
     respectSamplingDecision: false,
   },
 })
 ```
 
-| Option                    | Type      | Default | Description                                                         |
-| ------------------------- | --------- | ------- | ------------------------------------------------------------------- |
-| `enabled`                 | `boolean` | `false` | Enable trace propagation.                                           |
-| `respectSamplingDecision` | `boolean` | `true`  | If `true`, skip propagation when the upstream trace is not sampled. |
+| Option                    | Type      | Default | Description                                                                                                                                                                                                                                                   |
+| ------------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`                 | `boolean` | `false` | Enable trace propagation.                                                                                                                                                                                                                                     |
+| `respectSamplingDecision` | `boolean` | `true`  | When `true`, non-sampled requests send only `traceparent` (sampled flag preserved) and omit `tracestate` and `baggage`; `false` always sends the full trace context. On versions before `2.112.3`, `true` skipped all trace headers for non-sampled requests. |
 
 ## Using a vendor tracing SDK
 
-Many tracing SDKs are built on top of OpenTelemetry. They work with this guide as long as a W3C-compliant propagator is registered. Some vendor SDKs inject only their proprietary headers by default and need extra configuration to also emit the standard `traceparent` header. Check your vendor's OTel integration docs for the exact setup.
+Many tracing SDKs are built on top of OpenTelemetry, but they differ in whether their propagator emits the standard `traceparent` header by default:
+
+| Vendor setup                                                    | Works with `tracePropagation`?   | Required configuration                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OpenTelemetry SDK (also Honeycomb, Grafana, New Relic via OTLP) | Yes                              | None — the W3C propagator is the default                                                                                                                                                                                                                                                                                                                 |
+| Sentry (Node.js, including Next.js server-side)                 | Yes, with one flag               | Set `propagateTraceparent: true` in `Sentry.init()` — Sentry's propagator omits `traceparent` by default                                                                                                                                                                                                                                                 |
+| Sentry (browser)                                                | Via Sentry's own instrumentation | Set `propagateTraceparent: true` and add your project URL (`https://<ref>.supabase.co`) to `tracePropagationTargets` — Sentry's browser SDK only attaches headers cross-origin for listed targets. For Edge Functions, also add `sentry-trace` to the function's CORS allow-list: Sentry always sends its own header, and it isn't part of `corsHeaders` |
+| Datadog `dd-trace` (Node.js)                                    | Out of the box                   | None — `dd-trace` injects W3C headers at the HTTP layer itself, even without `tracePropagation`                                                                                                                                                                                                                                                          |
+| Datadog Browser RUM                                             | Yes, with configuration          | Add your project URL to `allowedTracingUrls` with the `tracecontext` propagator type                                                                                                                                                                                                                                                                     |
+
+If a propagator is active but doesn't emit `traceparent`, the SDK logs a one-time console warning naming the headers the propagator wrote (version `2.112.3` and later).
 
 ## Troubleshooting
 
@@ -99430,7 +99548,8 @@ The SDK never throws when it can't propagate, which keeps it safe to enable but 
 - **No active span at request time.** The SDK reads the *current* context. If `supabase.from(...)` is called outside `tracer.startActiveSpan(...)` (or equivalent), there's nothing to propagate. Wrap the call in a span or use OpenTelemetry's automatic instrumentation.
 - **`@opentelemetry/api` is not installed** in the app making the request. On `2.112.0` and later the tracing subpath imports it directly, so a missing package surfaces as a module resolution error. On `2.106.0`–`2.111.x` it's loaded dynamically and the SDK silently no-ops.
 - **No `TracerProvider` registered.** `@opentelemetry/api` defaults to a noop provider that produces non-recorded spans. Ensure your app calls `provider.register()` (or your vendor SDK's equivalent) before making requests.
-- **The upstream trace is not sampled.** By default the SDK respects upstream sampling decisions. Set `respectSamplingDecision: false` to propagate every request regardless of sampling.
+- **Your tracing SDK's propagator doesn't emit W3C `traceparent`.** Sentry's propagator, for example, only emits it when `propagateTraceparent: true` is set. From version `2.112.3` the SDK logs a one-time warning naming the headers the propagator wrote — see [Using a vendor tracing SDK](#using-a-vendor-tracing-sdk).
+- **The upstream trace is not sampled** (versions before `2.112.3`). Older versions skip all trace headers when the upstream trace is not sampled. From `2.112.3`, non-sampled requests still carry `traceparent`, so log correlation keeps working by default. Set `respectSamplingDecision: false` to always send the full trace context.
 - **You're calling a non-Supabase host through a custom `fetch`.** Trace headers are only attached to Supabase domains (`*.supabase.co`, `*.supabase.in`, `localhost`).
 - **You're using the CDN (UMD) build.** Trace propagation isn't available there — the tracing runtime can't be loaded from a script tag.
 
@@ -99525,6 +99644,44 @@ Requires `supabase` `2.x` or later (Flutter or Dart-only).
 | `traceContextProvider`    | `TraceContextProvider?` | `null`  | Callback returning the current `TraceContext`. Return `null` when there is no active span.                                                                                        |
 
 Headers are only injected on requests targeting Supabase hosts (`*.supabase.co`, `*.supabase.in`, your project host, and loopback addresses for local development). Third-party hosts never receive trace headers.
+
+**Python**
+
+The Python `opentelemetry` propagation is handled entirely through the `opentelemetry-instrumentation-httpx` package.
+
+1. **Add** the `opentelemetry-sdk` and `opentelemetry-instrumentation-httpx` package:
+
+```sh
+uv add opentelemetry-sdk opentelemetry-instrumentation-httpx
+```
+
+2. **Instrument** the `httpx` client using the `HTTPXClientInstrumentor`:
+
+```python
+from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+HTTPXClientInstrumentor().instrument()
+```
+
+Note: This will instrument all `httpx` clients in your process. If you want to instrument only the Supabase client, you can use `HTTPXClientInstrumentor.instrument_client` in the specific sub-package client you want to trace.
+
+3. **Create** your `SupabaseClient`. Any active span is now propagated automatically:
+
+```python
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+
+from supabase import AsyncClient
+
+trace.set_tracer_provider(TracerProvider())
+tracer = trace.get_tracer(__name__)
+
+async def query(client: AsyncClient):
+    with tracer.start_as_current_span("orchestral_query") as span:
+        await client.table("orchestral_sections") \
+                    .select("name, instruments(name)") \
+                    .order("name", desc=True, foreign_table="instruments") \
+                    .execute()
+```
 
 ## Correlating with Supabase logs
 
@@ -112480,7 +112637,7 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit-acce
 
 Once temporary access has been enabled, project users must be authorized and mapped to Postgres roles they are allowed to access. Each user can be authorized to "assume" one or more Postgres roles using temporary access.
 
-When a user is authorized to assume a Postgres role, the user's access token (Personal Access Token (PAT) or Scoped PAT) will be used as the password for the Postgres role.
+When a user is authorized to assume a Postgres role, the user's Personal Access Token (PAT) will be used as the password for the Postgres role.
 
 Note: Postgres roles can still be accessed using the password configured on the role. This allows long-lived service connections to continue using the existing credentials.
 
@@ -114025,9 +114182,9 @@ Supabase provides a globally distributed [Realtime](https://github.com/supabase/
 ## Examples
 
 - **[Multiplayer.dev](https://multiplayer.dev):** Showcase application displaying cursor movements and chat messages using Broadcast.
-- **[Chat](https://supabase.com/ui/docs/nextjs/realtime-chat):** Supabase UI chat component using Broadcast to send message between users.
-- **[Avatar Stack](https://supabase.com/ui/docs/nextjs/realtime-avatar-stack):** Supabase UI avatar stack component using Presence to track connected users.
-- **[Realtime Cursor](https://supabase.com/ui/docs/nextjs/realtime-cursor):** Supabase UI realtime cursor component using Broadcast to share users' cursors to build collaborative applications.
+- **[Chat](https://supabase.com/library/docs/nextjs/realtime-chat):** Supabase Library chat component using Broadcast to send messages between users.
+- **[Avatar Stack](https://supabase.com/library/docs/nextjs/realtime-avatar-stack):** Supabase Library avatar stack component using Presence to track connected users.
+- **[Realtime Cursor](https://supabase.com/library/docs/nextjs/realtime-cursor):** Supabase Library realtime cursor component using Broadcast to share users' cursors to build collaborative applications.
 
 ## Resources
 
@@ -122534,7 +122691,7 @@ done
 
 Note: For large migrations, consider adding `--transfers 4` to increase parallelism, or `--checkers 8` to speed up the comparison phase. See the [flags documentation](https://rclone.org/flags/) for all options.
 
-## Verify
+## Verify the copy
 
 Compare object counts between source and destination:
 
@@ -123086,7 +123243,7 @@ A shallow clone of the full Supabase repository. Works on any OS with `git` inst
 
 ```sh
 # Get the code
-git clone --depth 1 --branch self-hosted/v0.7.2 https://github.com/supabase/supabase
+git clone --depth 1 --branch self-hosted/v0.8.0 https://github.com/supabase/supabase
 
 # Make your new supabase project directory
 mkdir supabase-project
@@ -123103,7 +123260,7 @@ cp -rf supabase/docker/. supabase-project
 cd supabase-project && cp .env.example .env
 
 # Record the base version so update.sh can upgrade this install later
-printf 'ref=self-hosted/v0.7.2\n' > .supabase-version
+printf 'ref=self-hosted/v0.8.0\n' > .supabase-version
 
 # Pull the latest images
 docker compose pull
@@ -123115,7 +123272,7 @@ Only downloads the `docker/` directory from the repository, saving bandwidth and
 
 ```sh
 # Get the code using git sparse checkout
-git clone --filter=blob:none --no-checkout --depth=1 --quiet --branch self-hosted/v0.7.2 https://github.com/supabase/supabase
+git clone --filter=blob:none --no-checkout --depth=1 --quiet --branch self-hosted/v0.8.0 https://github.com/supabase/supabase
 cd supabase
 git sparse-checkout init --cone
 git sparse-checkout set docker
@@ -123137,7 +123294,7 @@ cp -rf supabase/docker/. supabase-project
 cd supabase-project && cp .env.example .env
 
 # Record the base version so update.sh can upgrade this install later
-printf 'ref=self-hosted/v0.7.2\n' > .supabase-version
+printf 'ref=self-hosted/v0.8.0\n' > .supabase-version
 
 # Pull the latest images
 docker compose pull
@@ -123181,7 +123338,7 @@ Review and change URL configuration variables:
 
 Note: Throughout the self-hosting guides, `<your-domain>` stands for the host where your Supabase instance is reachable: your domain name, your server's IP, or `localhost`, depending on your setup.
 
-- **Default setup:** The API gateway (Kong) listens on port `8000`, so the full URL is `http://<your-domain>:8000`.
+- **Default setup:** The API gateway (Envoy by default) listens on port `8000`, so the full URL is `http://<your-domain>:8000`.
 - **Behind a [reverse proxy](https://supabase.com/docs/guides/self-hosting/self-hosted-proxy-https):** the proxy terminates TLS on port `443`, so the URL becomes `https://<your-domain>`.
 
 ### Where to find your credentials
@@ -123241,7 +123398,7 @@ To stop Supabase, use:
 sh run.sh stop
 ```
 
-Caution: If the API gateway (Kong) fails to start with an entrypoint error, your local files may have been checked out with CRLF line endings instead of LF. Re-clone the repository, or normalize everything in the `docker/` directory to LF, then restart Supabase. Fresh clones should already use LF because of `.gitattributes`.
+Caution: If the API gateway fails to start with an entrypoint error, your local files may have been checked out with CRLF line endings instead of LF. Re-clone the repository, or normalize everything in the `docker/` directory to LF, then restart Supabase. Fresh clones should already use LF because of `.gitattributes`.
 
 ## Accessing Supabase Studio (Dashboard)
 
@@ -123392,10 +123549,10 @@ Supabase is built from open source tools, each chosen or developed for productio
 
 If the tools and communities already exist, with an MIT, Apache 2, PostgreSQL, or equivalent open source license, we will use and support that tool. If the tool doesn't exist, we build and open source it ourselves.
 
-![Diagram showing the architecture of Supabase. The API gateway (Kong) sits in front of 7 services: GoTrue, PostgREST, Realtime, Storage, pg_meta, Functions, and pg_graphql. All the services talk to a single Postgres instance.](https://supabase.com/docs/img/supabase-architecture.svg)
+![Diagram showing the architecture of self-hosted Supabase. The API gateway (Envoy) sits in front of 7 services: Auth, PostgREST, Realtime, Storage, Edge Runtime, postgres-meta, and Studio. The services connect to a single Postgres instance, with Studio reaching it through pg-meta. Supavisor pools connections to the same Postgres instance.](https://supabase.com/docs/img/supabase-self-hosted-architecture.svg)
 
 - **[Studio](https://github.com/supabase/supabase/tree/master/apps/studio)** - A dashboard for managing your self-hosted Supabase project
-- **[Kong](https://github.com/Kong/kong)** - Kong API gateway
+- **[Envoy](https://www.envoyproxy.io/)** - API gateway (default; Kong available as an optional override)
 - **[Auth](https://github.com/supabase/auth)** - JWT-based authentication API for user sign-ups, logins, and session management
 - **[PostgREST](https://github.com/PostgREST/postgrest)** - Web server that turns your Postgres database directly into a RESTful API
 - **[Realtime](https://github.com/supabase/realtime)** - Elixir server that listens to Postgres database changes and broadcasts them to subscribed clients
@@ -123594,15 +123751,6 @@ Caution: Do not allow connections to the self-hosted MCP server from the Interne
 
 When connecting via an SSH tunnel to the Studio Docker container, the source IP will be that of the Docker bridge gateway. You need to allow connections from this IP address.
 
-**Kong**
-
-Determine the Docker bridge gateway IP on the host running your Supabase containers:
-
-```sh
-docker inspect supabase-kong \
-  --format '{{range .NetworkSettings.Networks}}{{println .Gateway}}{{end}}'
-```
-
 **Envoy**
 
 Determine the Docker bridge gateway IP on the host running your Supabase containers:
@@ -123612,51 +123760,18 @@ docker inspect supabase-envoy \
   --format '{{range .NetworkSettings.Networks}}{{println .Gateway}}{{end}}'
 ```
 
+**Kong**
+
+Determine the Docker bridge gateway IP on the host running your Supabase containers:
+
+```sh
+docker inspect supabase-kong \
+  --format '{{range .NetworkSettings.Networks}}{{println .Gateway}}{{end}}'
+```
+
 This command will output an IP address, e.g., `172.18.0.1`.
 
 ### Step 2: Allow connections from the gateway IP
-
-**Kong**
-
-Add the IP address you discovered to the Kong configuration by editing the following section in `./volumes/api/kong.yml`:
-
-1. Comment out the request-termination section
-2. Remove the # symbols from the entire section starting with `- name: cors`, including `deny: []`
-3. Add your local IP to the 'allow' list
-4. **Preserve the existing indentation** - YAML is whitespace-sensitive and the config will fail to load if it changes
-5. Your edited configuration should look like the example below:
-
-```yaml name=volumes/api/kong.yml
-## MCP endpoint - local access
-- name: mcp
-  _comment: 'MCP: /mcp -> http://studio:3000/api/mcp (local access)'
-  url: http://studio:3000/api/mcp
-  routes:
-    - name: mcp
-      strip_path: true
-      paths:
-        - /mcp
-  plugins:
-    # Block access to /mcp by default
-    #- name: request-termination
-    #  config:
-    #    status_code: 403
-    #    message: "Access is forbidden."
-    # Enable local access (danger zone!)
-    # 1. Comment out the 'request-termination' section above
-    # 2. Uncomment the entire section below, including 'deny'
-    # 3. Add your local IPs to the 'allow' list
-    - name: cors
-    - name: ip-restriction
-      config:
-        allow:
-          - 127.0.0.1
-          - ::1
-          # Add your Docker bridge gateway IP below
-          - 172.18.0.1
-        # Do not remove deny!
-        deny: []
-```
 
 **Envoy**
 
@@ -123722,23 +123837,55 @@ Add the IP address you discovered to the Envoy configuration by editing the `/mc
                     prefix_len: 32
 ```
 
+**Kong**
+
+Add the IP address you discovered to the Kong configuration by editing the following section in `./volumes/api/kong.yml`:
+
+1. Comment out the request-termination section
+2. Remove the # symbols from the entire section starting with `- name: cors`, including `deny: []`
+3. Add your local IP to the 'allow' list
+4. **Preserve the existing indentation** - YAML is whitespace-sensitive and the config will fail to load if it changes
+5. Your edited configuration should look like the example below:
+
+```yaml name=volumes/api/kong.yml
+## MCP endpoint - local access
+- name: mcp
+  _comment: 'MCP: /mcp -> http://studio:3000/api/mcp (local access)'
+  url: http://studio:3000/api/mcp
+  routes:
+    - name: mcp
+      strip_path: true
+      paths:
+        - /mcp
+  plugins:
+    # Block access to /mcp by default
+    #- name: request-termination
+    #  config:
+    #    status_code: 403
+    #    message: "Access is forbidden."
+    # Enable local access (danger zone!)
+    # 1. Comment out the 'request-termination' section above
+    # 2. Uncomment the entire section below, including 'deny'
+    # 3. Add your local IPs to the 'allow' list
+    - name: cors
+    - name: ip-restriction
+      config:
+        allow:
+          - 127.0.0.1
+          - ::1
+          # Add your Docker bridge gateway IP below
+          - 172.18.0.1
+        # Do not remove deny!
+        deny: []
+```
+
 ### Step 3: Restart API gateway
 
 After you've added the local IP address as above, restart your gateway:
 
-**Kong**
-
-```sh
-sh run.sh restart kong
-```
-
-**Envoy**
-
 ```sh
 sh run.sh restart api-gw
 ```
-
-This assumes the Envoy override is already active (`sh run.sh config add envoy`).
 
 ### Step 4: Create the SSH tunnel
 
@@ -123798,10 +123945,9 @@ Start your MCP client (Claude Code, Cursor, etc.) and verify access to the MCP t
 
 If you are unable to connect to the MCP server:
 
-1. Update Kong configuration file to the [latest version](https://github.com/supabase/supabase/blob/master/docker/volumes/api/kong.yml) and edit carefully
-2. Confirm the Docker bridge gateway IP is correctly added in `./volumes/api/kong.yml`
-3. Check Kong's logs for errors: `docker compose logs kong`
-4. Make sure your SSH tunnel is active
+1. Confirm the Docker bridge gateway IP is correctly added to the API gateway configuration
+2. Check the API gateway's logs for errors: `docker compose logs api-gw`
+3. Make sure your SSH tunnel is active
 
 
 ---
@@ -124339,13 +124485,12 @@ You can configure self-hosted Supabase to use the [new API keys](https://supabas
 ## Before you begin
 
 - Complete the [Docker setup guide](https://supabase.com/docs/guides/self-hosting/docker) so that `JWT_SECRET`, `ANON_KEY`, and `SERVICE_ROLE_KEY` are set in your `.env` file. [Quick start (Linux)](https://supabase.com/docs/guides/self-hosting/docker#quick-start-linux) handles this automatically; the manual path runs [`generate-keys.sh`](https://supabase.com/docs/guides/self-hosting/docker#generate-keys-and-secrets).
-- If you are upgrading an existing self-hosted Supabase environment, make sure to check the [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md) and add/update the following files:
+- If you are upgrading from a legacy self-hosted Supabase environment, make sure to check the [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md#2026-03-16) and [add/update](https://supabase.com/docs/guides/self-hosting/updating) the following files:
   - `.env.example` (merge new sections into your `.env` file)
   - `docker-compose.yml`
   - `utils/add-new-auth-keys.sh`
   - `utils/rotate-new-api-keys.sh`
-  - `volumes/api/kong-entrypoint.sh`
-  - `volumes/api/kong.yml`
+  - `volumes/api/envoy/*`
 
 ## Adding the new keys
 
@@ -124355,11 +124500,11 @@ From your project directory where you have `docker-compose.yml`:
 sh utils/add-new-auth-keys.sh --update-env
 ```
 
-This generates new configuration environment variables and writes them to `.env`. Without `--update-env`, the script prints the values and prompts you interactively.
+This generates new configuration environment variables and writes them to `.env`. Omit `--update-env` to review and confirm the changes interactively.
 
 Caution: The script reads `JWT_SECRET` from `.env` and includes it as a symmetric key inside both `JWT_KEYS` and `JWT_JWKS`. If you later change `JWT_SECRET`, you must regenerate the JWKS as well.
 
-The following configuration should be uncommented in the `.env` file for the new authentication to work correctly:
+In addition, the following configuration is uncommented automatically by the script for the new authentication to work correctly:
 
 ```yaml name=docker-compose.yml
 auth:
@@ -124381,6 +124526,11 @@ storage:
   environment:
     # JWKS for token verification (EC public + legacy symmetric)
     JWT_JWKS: ${JWT_JWKS:-{"keys":[]}}
+
+functions:
+  environment:
+    # JWKS for token verification (EC public + legacy symmetric).
+    SUPABASE_JWKS: ${JWT_JWKS:-{"keys":[]}}
 ```
 
 Caution: Nested variable interpolation (`${A:-${B}}`) requires `podman-compose >= 1.6.0`. Earlier versions (still shipped by some Linux distributions) do not support it - if you are on an older `podman-compose`, either upgrade or replace each nested expression with the required variable directly, see the inline comments in `docker-compose.yml` for the exact substitutions.
@@ -124440,7 +124590,7 @@ New variables default to empty values in `.env.example`. When empty, the API gat
 | `SUPABASE_PUBLISHABLE_KEY`              | Opaque           | **New:** Short random key with checksum. Replaces `ANON_KEY` for **client-side** use.                                                 |
 | `SUPABASE_SECRET_KEY`                   | Opaque           | **New:** Short random key with checksum. Replaces `SERVICE_ROLE_KEY` for **server-side** use.                                         |
 | `JWT_KEYS`                              | JSON array       | **New:** JSON array of signing JWKs containing the new asymmetric key pair and the legacy symmetric key. Used by Auth to sign tokens. |
-| `JWT_JWKS`                              | JWKS (JSON)      | **New:** Contains the new public key and the legacy symmetric key. Used by PostgREST, Realtime, and Storage to verify tokens.         |
+| `JWT_JWKS`                              | JWKS (JSON)      | **New:** Contains the new public key and the legacy symmetric key. Used by PostgREST, Realtime, Storage, and Functions.               |
 
 ### Differences from the Supabase platform
 
@@ -124491,93 +124641,16 @@ Danger: Regenerating asymmetric keys invalidates all ES256 user sessions. Plan a
 
 ## How it works
 
-Below are a few notes on the details of the new authentication architecture.
-
-### What client SDK sends
-
-Every request via `supabase-js` includes two headers:
+Requests via `supabase-js` include two headers for every service except Edge Functions:
 
 - `apikey` - the API key (`sb_` or legacy JWT)
 - `Authorization` - when unauthenticated, the client SDK copies the API key here (`Bearer sb_publishable_xxx` or `Bearer eyJ...`). When authenticated, this contains the user session JWT minted by Auth.
 
 For **Realtime WebSocket** connections, the API key is sent as a `?apikey=` query parameter in the upgrade URL instead of an `apikey` header.
 
-**Storage** and **Edge Functions** accept requests without an API key. These services handle their own authentication.
+**Storage** and **Edge Functions** also accept requests without an API key. These services handle their own authentication.
 
-### Kong API gateway routing
-
-Kong is configured with two consumers that each accept both the legacy and new API keys:
-
-```yaml name=volumes/api/kong.yml
-consumers:
-  - username: anon
-    keyauth_credentials:
-      - key: $SUPABASE_ANON_KEY # legacy HS256 JWT (ANON_KEY)
-      - key: $SUPABASE_PUBLISHABLE_KEY # new opaque key (omitted when not configured)
-  - username: service_role
-    keyauth_credentials:
-      - key: $SUPABASE_SERVICE_KEY # legacy HS256 JWT (SERVICE_ROLE_KEY)
-      - key: $SUPABASE_SECRET_KEY # new opaque key (omitted when not configured)
-```
-
-When new API keys have not been added yet, the `kong-entrypoint.sh` script removes the empty credential entries before Kong loads the config.
-
-To assist with the authorization flows a specialized configuration in `kong.yml` substitutes internal, gateway-level-only pre-signed JWTs for `sb_publishable` and `sb_secret` API keys. These pre-signed JWTs are also auto-configured in `.env` but **should not** be used in any application code.
-
-| Route                      | Service              | API key required | Header substitution |
-| -------------------------- | -------------------- | ---------------- | ------------------- |
-| `/auth/v1/*`               | Auth                 | Yes              | `Authorization`     |
-| `/rest/v1/*`               | PostgREST            | Yes              | `Authorization`     |
-| `/graphql/v1`              | PostgREST            | Yes              | `Authorization`     |
-| `/realtime/v1/api/tenants` | Realtime (REST)      | Denied (blocked) | -                   |
-| `/realtime/v1/api/openapi` | Realtime (REST)      | Denied (blocked) | -                   |
-| `/realtime/v1/api/*`       | Realtime (REST)      | Yes              | `Authorization`     |
-| `/realtime/v1/*`           | Realtime (WebSocket) | Yes              | `x-api-key`         |
-| `/storage/v1/*`            | Storage              | No               | `Authorization`     |
-| `/functions/v1/*`          | Edge Functions       | No               | -                   |
-
-### Request flows
-
-The API gateway (Kong) configuration has the logic to decide what `Authorization` header the upstream service, such as Auth, receives. The logic handles two cases: requests that only carry an API key (no user session), and requests that carry a user session JWT.
-
-#### Unauthenticated requests (API key only, no user session JWT)
-
-When the client sends only an `apikey` header with the API key (no `Authorization` header), or also the API key duplicated in `Authorization` by `supabase-js`:
-
-1. The client sends `apikey: sb_publishable_xxx` (or legacy `apikey: eyJ...`).
-2. The API gateway checks the key and identifies the consumer (`anon` or `service_role`).
-3. The API gateway inspects the `Authorization` header. Since it is either absent or starts with `Bearer sb_` (an opaque key, not a session JWT), the plugin replaces it:
-   - **The new `sb_` key:** `Authorization` header is set to the internal pre-signed ES256 JWT that corresponds to the role.
-   - **The Legacy JWT key:** `Authorization` header is set to the legacy HS256 JWT (the `apikey` value is copied as-is).
-4. The upstream service receives a valid JWT in `Authorization` and verifies it using `JWT_JWKS` (or `JWT_SECRET`).
-
-#### Authenticated requests (user session JWT)
-
-When the client has previously signed in through Auth and has a valid user session JWT token:
-
-1. The client sends `Authorization: Bearer eyJ...` (a JWT session token from Auth) alongside `apikey: sb_publishable_xxx` (or legacy `apikey: eyJ...`).
-2. The API gateway checks the API key and identifies the consumer.
-3. The API gateway inspects the `Authorization` header. Since it exists and does **not** start with `Bearer sb_` (it's a real JWT, not an `sb_` API key), the plugin **passes it through unchanged**. This works the same way regardless of whether the `apikey` is a new `sb_` key or a legacy JWT - the gateway only looks at the `Authorization` header to decide whether a user session is present.
-4. The upstream service verifies the session JWT. If Auth signed it with ES256 (when `JWT_KEYS` is configured), verification uses the EC public key. If Auth signed it with HS256 (legacy), verification uses the symmetric key. Both keys are available in `JWT_JWKS`.
-
-The `request-transformer` expression in `kong.yml` implements this as a single Lua conditional:
-
-```lua
--- Pseudocode for the Authorization header logic:
-if authorization exists AND does not start with "Bearer sb_" then
-  -- User session JWT: pass through unchanged
-  keep authorization
-elseif apikey matches secret key then
-  -- Replace with pre-signed service_role ES256 JWT
-  set authorization = "Bearer <service_role ES256 JWT>"
-elseif apikey matches publishable key then
-  -- Replace with pre-signed anon ES256 JWT
-  set authorization = "Bearer <anon ES256 JWT>"
-else
-  -- Legacy JWT key: copy apikey as authorization
-  set authorization = apikey
-end
-```
+For details on how the API gateway routes and authenticates requests, see the [Envoy API Gateway guide](https://supabase.com/docs/guides/self-hosting/self-hosted-envoy#authentication).
 
 ## Additional resources
 
@@ -124591,6 +124664,7 @@ On GitHub:
 
 - [Upcoming changes to Supabase API Keys (Discussion #29260)](https://github.com/orgs/supabase/discussions/29260)
 - [Supabase Auth: Asymmetric Keys support (Discussion #29289)](https://github.com/orgs/supabase/discussions/29289)
+- [Self-hosted Supabase: Envoy becomes the default API gateway (Discussion #48048)](https://github.com/orgs/supabase/discussions/48048)
 
 
 ---
@@ -124599,33 +124673,15 @@ On GitHub:
 
 Architecture and configuration of the Envoy API gateway for self-hosted Supabase.
 
-Self-hosted Supabase ships with an optional [Envoy](https://www.envoyproxy.io/)-based API gateway. It accepts incoming client requests, routes them to internal services (Auth, PostgREST, Realtime, Storage, Edge Functions, postgres-meta, Studio), and enforces API key authentication by translating opaque `sb_` keys into the internal credentials used by those services.
+Self-hosted Supabase uses an [Envoy](https://www.envoyproxy.io/)-based API gateway by default. It accepts incoming client requests, routes them to internal services (Auth, PostgREST, Realtime, Storage, Edge Functions, postgres-meta, Studio), and enforces API key authentication by translating opaque `sb_` keys into the internal credentials used by those services.
 
 This guide explains the architecture, configuration layout, and security posture of the Envoy gateway for operators who want to understand or customize it. It is not an Envoy tutorial - for reference on filters, routes, and clusters, see the [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest/).
 
-## Before you begin
+## Using the gateway
 
-- Complete the [Self-Hosting with Docker](https://supabase.com/docs/guides/self-hosting/docker) setup
-- To enable opaque `sb_` key translation, see [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys)
+Envoy is the default API gateway and runs automatically when you start the stack - no extra configuration is required.
 
-## Enabling the Envoy gateway
-
-The Envoy gateway is provided as a Docker Compose override.
-
-Note: If your stack is already running from the initial setup, bring it down first with `sh run.sh stop`.
-
-Enable the Envoy override, then start the stack:
-
-```sh
-sh run.sh config add envoy
-sh run.sh start
-```
-
-The override disables the default Kong gateway and starts Envoy on the same port (default `8000`). It also reconfigures the Functions service to wait for Envoy via a dependency.
-
-Envoy is registered as the `api-gw` service and also exposes `kong` as a network alias; the base Kong service likewise exposes `api-gw`. Either hostname resolves to whichever gateway is currently active, so internal configs that hardcode `kong:8000` (for example, in Edge Functions or Studio) keep working without changes.
-
-### Verify
+Envoy is registered as the `api-gw` service and also exposes `envoy` and `kong` as network aliases to help transition from legacy configurations.
 
 Confirm the gateway is routing requests and enforcing API keys:
 
@@ -124804,16 +124860,15 @@ Note: If you customize the `cors:` block in `lds.template.yaml` to enable `allow
 
 The gateway is configured with these production-oriented settings:
 
-| Setting                                               | Purpose                                                                                                                                                                                            |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `normalize_path: true`, `merge_slashes: true`         | Prevents path-confusion bypass of RBAC prefix rules                                                                                                                                                |
-| `path_with_escaped_slashes_action: REJECT_REQUEST`    | Rejects requests that contain URL-encoded slashes in the path                                                                                                                                      |
-| `use_remote_address: true`                            | Treats Envoy as an edge proxy: uses the peer connection IP as the trusted client address (rather than trusting client-supplied `X-Forwarded-For`) and strips untrusted `x-envoy-*` request headers |
-| `headers_with_underscores_action: REJECT_REQUEST`     | Blocks header smuggling attacks that exploit underscore-vs-hyphen normalization                                                                                                                    |
-| `per_connection_buffer_limit_bytes: 32768`            | Caps per-connection buffer memory to 32 KiB                                                                                                                                                        |
-| `max_active_downstream_connections: 30000`            | Overload manager limit on total downstream connections                                                                                                                                             |
-| Admin interface bound to `127.0.0.1:9901`             | The admin API is reachable only from inside the container, not from other containers or the host                                                                                                   |
-| Image pinned to `envoyproxy/envoy:v1.37.2` (or newer) | Includes published security patches for Envoy 1.37.x                                                                                                                                               |
+| Setting                                            | Purpose                                                                                                                                                                                            |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `normalize_path: true`, `merge_slashes: true`      | Prevents path-confusion bypass of RBAC prefix rules                                                                                                                                                |
+| `path_with_escaped_slashes_action: REJECT_REQUEST` | Rejects requests that contain URL-encoded slashes in the path                                                                                                                                      |
+| `use_remote_address: true`                         | Treats Envoy as an edge proxy: uses the peer connection IP as the trusted client address (rather than trusting client-supplied `X-Forwarded-For`) and strips untrusted `x-envoy-*` request headers |
+| `headers_with_underscores_action: REJECT_REQUEST`  | Blocks header smuggling attacks that exploit underscore-vs-hyphen normalization                                                                                                                    |
+| `per_connection_buffer_limit_bytes: 32768`         | Caps per-connection buffer memory to 32 KiB                                                                                                                                                        |
+| `max_active_downstream_connections: 30000`         | Overload manager limit on total downstream connections                                                                                                                                             |
+| Admin interface bound to `127.0.0.1:9901`          | The admin API is reachable only from inside the container, not from other containers or the host                                                                                                   |
 
 Caution: The Envoy admin interface at `127.0.0.1:9901` exposes `/config_dump`, which contains the fully rendered configuration including all API keys, JWTs, and the basic auth hash in plaintext. Never expose port 9901 to other containers or to the host.
 
@@ -124825,7 +124880,7 @@ All routing, filter, and cluster changes are made in the YAML files under `./vol
 
 - **Adding or modifying routes.** Edit `lds.template.yaml`. Routes are ordered - place new routes before the catch-all `/` route to ensure they match. Keep per-route `basic_auth: disabled` for API routes and set an appropriate RBAC override if the route should bypass the global policy.
 - **Adding a new upstream service.** Add a cluster definition to `cds.yaml` with the service's DNS name and port, then reference it from a route's `cluster:` field.
-- **Adding a new environment variable.** Placeholders in the template use the `${VAR_NAME}` form. If you add a placeholder, update both `docker-compose.envoy.yml` (to pass the variable into the container) and `docker-entrypoint.sh` (to substitute it with `sed`).
+- **Adding a new environment variable.** Placeholders in the template use the `${VAR_NAME}` form. If you add a placeholder, update both the `api-gw` service in `docker-compose.yml` (to pass the variable into the container) and `docker-entrypoint.sh` (to substitute it with `sed`).
 - **Applying changes.** Envoy reads the rendered `lds.yaml` from the filesystem. Configuration changes require restarting the container so the entrypoint re-renders the template:
 
 ```sh
@@ -124880,6 +124935,7 @@ The access log format is a standard combined log with the request method, origin
 - [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys) - Background on opaque keys and asymmetric JWTs
 - [Configure Reverse Proxy and HTTPS](https://supabase.com/docs/guides/self-hosting/self-hosted-proxy-https) - Caddy or Nginx in front of the gateway
 - [Envoy documentation](https://www.envoyproxy.io/docs/envoy/latest/) - Filter, route, and cluster reference
+- [Self-hosted Supabase: Envoy becomes the default API gateway (Discussion #48048)](https://github.com/orgs/supabase/discussions/48048)
 
 
 ---
@@ -124961,8 +125017,7 @@ functions:
   env_file:
     - .env.functions
   environment:
-    JWT_SECRET: ${JWT_SECRET}
-    SUPABASE_URL: http://kong:8000
+    # ... existing variables ...
 ```
 
 Caution: Don't commit `.env.functions` to version control if it contains secrets. Add it to your `.gitignore`.
@@ -124982,9 +125037,7 @@ functions:
   environment:
     # Custom variables
     MY_CUSTOM_VAR: ${MY_CUSTOM_VAR}
-    # Required variables
-    JWT_SECRET: ${JWT_SECRET}
-    SUPABASE_URL: http://kong:8000
+    # ... existing variables ...
 ```
 
 Then define `MY_CUSTOM_VAR` in your main `.env` file, or specify the value directly.
@@ -125003,7 +125056,7 @@ The functions service is pre-configured with the following environment variables
 
 | Variable                    | Value                             | Purpose                                           |
 | --------------------------- | --------------------------------- | ------------------------------------------------- |
-| `SUPABASE_URL`              | `http://kong:8000`                | Internal API gateway URL                          |
+| `SUPABASE_URL`              | `http://api-gw:8000`              | Internal API gateway URL                          |
 | `SUPABASE_PUBLIC_URL`       | `http(s)://<your-domain>`         | Base URL for accessing Supabase from the Internet |
 | `JWT_SECRET`                | `your-jwt-secret`                 | Legacy symmetric encryption key for JWTs          |
 | `SUPABASE_ANON_KEY`         | `your-anon-key`                   | Client-side API key (`anon` role).                |
@@ -125011,6 +125064,7 @@ The functions service is pre-configured with the following environment variables
 | `SUPABASE_DB_URL`           | `postgresql://...`                | Postgres connection string                        |
 | `SUPABASE_PUBLISHABLE_KEYS` | `{"default":"sb_publishable_...}` | New publishable API key                           |
 | `SUPABASE_SECRET_KEYS`      | `{"default":"sb_secret_...}`      | New secret API key                                |
+| `SUPABASE_JWKS`             | `{"keys":[{...}]}`                | JWKS used to verify JWTs issued by Auth           |
 
 Here's an example function that queries a table using `@supabase/supabase-js`:
 
@@ -125781,8 +125835,6 @@ Note: If you already run [HAProxy](https://www.haproxy.com/), [Traefik](https://
 - Update `SUPABASE_PUBLIC_URL`, `API_EXTERNAL_URL`, and `SITE_URL` in `.env` to your HTTPS URL
 - See `volumes/proxy` for example proxy configuration files
 
-Note: Envoy is an optional [API gateway](https://supabase.com/docs/guides/self-hosting/self-hosted-envoy), enabled via the `docker-compose.envoy.yml` override. If you already run Envoy instead of Kong, edit `docker-compose.caddy.yml` or `docker-compose.nginx.yml` to comment out the `kong:` block and uncomment the `api-gw:` block (and the matching `depends_on` entry) so the reverse proxy sits in front of Envoy.
-
 ### Step 1: Update environment variables
 
 Update the URL configuration in your `.env` file to use your HTTPS domain:
@@ -125793,7 +125845,7 @@ API_EXTERNAL_URL=https://<your-domain>/auth/v1
 SITE_URL=https://<your-app-domain>
 ```
 
-Note: `<your-app-domain>` is the URL of your own frontend application (where users land after signing in) - not your Supabase instance. It's often a different domain, and possibly a different service entirely, from `<your-domain>` used above.
+Note: `<your-app-domain>` is the URL of your own frontend application where users land after signing in - not your Supabase instance.
 
 For Nginx, change the following to your domain name and a **valid** email address:
 
@@ -125852,7 +125904,7 @@ docker logs supabase-caddy
 
 Caution: Self-signed certificates trigger browser warnings and are rejected by most OAuth providers. Use this approach only in development environment or internal networks.
 
-For development or internal networks where you cannot use Let's Encrypt, here's how you can configure Kong (the current default API gateway) to serve HTTPS directly using self-signed certificates.
+For development or internal networks where you cannot use Let's Encrypt, here's how you can configure the legacy Kong API gateway to serve HTTPS directly using self-signed certificates. This requires the Kong override (`sh run.sh config add kong`); the default Envoy gateway does not terminate TLS, so use Caddy or Nginx above instead.
 
 ### Step 1: Generate a self-signed certificate
 
@@ -125871,20 +125923,23 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 Comment out Kong's **HTTP** port mapping in `docker-compose.yml`:
 
-```yaml name=docker-compose.yml
-kong:
+```yaml name=docker-compose.kong.yml
+api-gw:
   # ...
-  ports:
-    #- ${KONG_HTTP_PORT}:8000/tcp
+  # prettier-ignore
+  ports: !override
+    #- ${API_GW_HTTP_PORT:-${KONG_HTTP_PORT:-8000}}:8000/tcp
+    - ${KONG_HTTPS_PORT:-8443}:8443/tcp
 ```
 
 Uncomment the certificate volume mounts and SSL environment variables in `docker-compose.yml`:
 
-```yaml name=docker-compose.yml
-kong:
+```yaml name=docker-compose.kong.yml
+api-gw:
   # ... existing configuration ...
-  volumes:
+  volumes: !override
     - ./volumes/api/kong.yml:/home/kong/temp.yml:ro,z
+    - ./volumes/api/kong-entrypoint.sh:/home/kong/kong-entrypoint.sh:ro,z
     - ./volumes/api/server.crt:/home/kong/server.crt:ro
     - ./volumes/api/server.key:/home/kong/server.key:ro
   environment:
@@ -126097,7 +126152,7 @@ storage:
     REGION: your-region
 ```
 
-## Verify
+## Verify the setup
 
 - Open Studio and upload a file to a bucket. List the file using the AWS CLI or `rclone` to confirm the S3 endpoint works.
 - If using an S3 backend: confirm the file appears in your S3 provider's console.
@@ -126881,7 +126936,8 @@ Long-running deployments are usually assembled from several upstream points over
 4. Back up your database separately - `update.sh` backs up configuration only.
 5. Apply the update, then resolve conflicts. Most conflicts will be in "vendor files" you never meant to own - `run.sh`, `setup.sh`, `tests/*`, the override templates. For those, copy the new version as-is. The conflicts that need manual editing are usually in the compose configuration you deliberately changed. Your `.env` is never conflicted - `update.sh` appends new keys for you to review separately. The tool surfaces everything for you to triage. Refer to [Resolving conflicts](#resolving-conflicts) for more details.
 6. Handle Postgres. Postgres 17 became the default in v0.6.0. If you are still on Postgres 15, do not recreate straight onto 17 - follow [Upgrade to Postgres 17](https://supabase.com/docs/guides/self-hosting/postgres-upgrade-17), or pin Postgres 15 with the `docker-compose.pg15.yml` override. Read the [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md) for the breaking changes across the range you are crossing.
-7. Run `sh run.sh pull`, then `sh run.sh recreate`.
+7. Upgrade the API gateway. Envoy became the default in v0.8.0, replacing Kong. If you customized `volumes/api/kong.yml` or the gateway service, use the Kong override to keep Kong; otherwise the merge switches you to Envoy. The gateway service is renamed from `kong` to `api-gw`, but the `kong` hostname alias still resolves.
+8. Run `sh run.sh pull`, then `sh run.sh recreate`.
 
 Note: If you only ever customized `.env` and never edited compose configuration or scripts, taking the new version for every conflict is exactly right - your real configuration lives in `.env`, which `update.sh` never merges. If instead the deployment has drifted heavily and the dry run shows an unmanageable number of conflicts, a clean reinstall at the latest release with `setup.sh` (reusing your `.env` and data volumes) can be less work than resolving them all.
 
@@ -138038,6 +138094,8 @@ where
   not blockedl.granted
   and blockinga.datname = current_database();
 ```
+
+For a more detailed look at session states, blocking chains, and how to stop the session responsible, see [Diagnosing stuck and blocked queries](https://supabase.com/docs/guides/database/connection-management#diagnosing-stuck-and-blocked-queries).
 
 
 ---
@@ -169467,7 +169525,7 @@ All API requests require an access token to be included in the Authorization hea
 There are two ways to generate an access token:
 
 1. **Personal access token (PAT):**
-   PATs are long-lived tokens that you manually generate to access the Management API. They are useful for automating workflows or developing against the Management API. PATs carry the same privileges as your user account, so be sure to keep it secret.
+   PATs are tokens with a custom expiry that you manually generate to access the Management API. They are useful for automating workflows or developing against the Management API. PATs carry the same privileges as your user account, so be sure to keep it secret.
 
 To generate or manage your personal access tokens, visit your [account](https://supabase.com/dashboard/account/tokens) page.
 
@@ -169603,6 +169661,16 @@ Note: Unless the `sql` parameter is provided, only edge\_logs will be queried. S
 ## List project log drains
 
 `GET /v2/projects/{ref}/analytics/log-drains`
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
+## Scrape a project's metrics
+
+`GET /v1/projects/{ref}/analytics/endpoints/metrics`
+
+Prometheus scrape endpoint. Returns metrics of a customer project in the Prometheus open exposition format.
 
 ### Parameters
 
@@ -169820,8 +169888,6 @@ Accepts the invitation to JIT database access
 
 `POST /v1/projects/{ref}/database/migrations`
 
-Only available to selected partner OAuth apps
-
 ### Parameters
 
 - `ref` (string, required): Project ref
@@ -169905,8 +169971,6 @@ Returns the TypeScript types of your schema for use with supabase-js.
 ## Fetch an existing entry from migration history
 
 `GET /v1/projects/{ref}/database/migrations/{version}`
-
-Only available to selected partner OAuth apps
 
 ### Parameters
 
@@ -170052,8 +170116,6 @@ Mappings of roles a user can assume in the project database
 
 `GET /v1/projects/{ref}/database/migrations`
 
-Only available to selected partner OAuth apps
-
 ### Parameters
 
 - `ref` (string, required): Project ref
@@ -170061,8 +170123,6 @@ Only available to selected partner OAuth apps
 ## Patch an existing entry in migration history
 
 `PATCH /v1/projects/{ref}/database/migrations/{version}`
-
-Only available to selected partner OAuth apps
 
 ### Parameters
 
@@ -170098,8 +170158,6 @@ All entity references must be schema qualified.
 ## Rollback database migrations and remove them from history table
 
 `DELETE /v1/projects/{ref}/database/migrations`
-
-Only available to selected partner OAuth apps
 
 ### Parameters
 
@@ -170185,8 +170243,6 @@ Modifies the roles that can be assumed and for how long
 ## Upsert a database migration without applying
 
 `PUT /v1/projects/{ref}/database/migrations`
-
-Only available to selected partner OAuth apps
 
 ### Parameters
 
@@ -170282,8 +170338,8 @@ This endpoint is deprecated - use the deploy endpoint. Creates a function and ad
 - `ref` (string, required): Project ref
 - `slug` (string, optional)
 - `name` (string, optional)
-- `verify_jwt` (boolean, optional): Boolean string, true or false
-- `import_map` (boolean, optional): Boolean string, true or false
+- `verify_jwt` (string, optional)
+- `import_map` (string, optional)
 - `entrypoint_path` (string, optional)
 - `import_map_path` (string, optional)
 - `ezbr_sha256` (string, optional)
@@ -170309,7 +170365,7 @@ A new endpoint to deploy functions. It will create if function does not exist.
 
 - `ref` (string, required): Project ref
 - `slug` (string, optional)
-- `bundleOnly` (boolean, optional): Boolean string, true or false
+- `bundleOnly` (string, optional)
 
 ## Retrieve a function
 
@@ -170355,8 +170411,8 @@ Updates a function with the specified slug and project.
 - `function_slug` (string, required): Function slug
 - `slug` (string, optional)
 - `name` (string, optional)
-- `verify_jwt` (boolean, optional): Boolean string, true or false
-- `import_map` (boolean, optional): Boolean string, true or false
+- `verify_jwt` (string, optional)
+- `import_map` (string, optional)
 - `entrypoint_path` (string, optional)
 - `import_map_path` (string, optional)
 - `ezbr_sha256` (string, optional)
@@ -170392,7 +170448,7 @@ Deletes the specified database branch. By default, deletes immediately. Use forc
 ### Parameters
 
 - `branch_id_or_ref` (string, required): Branch ref or deprecated branch ID
-- `force` (boolean, optional): If set to false, schedule deletion with 1-hour grace period (only when soft deletion is enabled).
+- `force` (string, optional): If set to false, schedule deletion with 1-hour grace period (only when soft deletion is enabled).
 
 ## \[Beta] Diffs a database branch
 
@@ -170404,7 +170460,12 @@ Diffs the specified database branch
 
 - `branch_id_or_ref` (string, required): Branch ref or deprecated branch ID
 - `included_schemas` (string, optional)
-- `pgdelta` (boolean, optional): Use pg-delta instead of Migra for diffing when true
+- `pgdelta` (string, optional): Use pg-delta instead of Migra for diffing when true.
+  Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Disables preview branching
 
@@ -170630,6 +170691,24 @@ Returns the entitlements available to the organization based on their plan and a
 
 Returns a list of organizations that you currently belong to.
 
+## List GitHub connections of an organization
+
+`GET /v2/organizations/{slug}/integrations/github/connections`
+
+Returns a cursor-paginated list of the GitHub connections of the organization's projects.
+
+Use `page[after]` and `page[before]` to navigate pages and `page[size]` to control the page size.
+Paging walks the organization projects, so a page holds at most `page[size]` connections and can hold fewer (or none) when some of its projects are not connected.
+Follow `links.next` until it is `null` rather than stopping on a short page.
+
+Use `filter[project_ref]` to narrow the list down to a single project.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `page` (object, optional)
+- `filter` (object, optional)
+
 ## List members of an organization
 
 `GET /v1/organizations/{slug}/members`
@@ -170650,6 +170729,21 @@ Returns a cursor-paginated list of organization members including their roles an
 - `page` (object, optional)
 - `filter` (object, optional)
 
+## List projects of an organization
+
+`GET /v2/organizations/{slug}/projects`
+
+Returns a cursor-paginated list of projects for the specified organization, including their databases.
+
+Use `page[after]` and `page[before]` to navigate pages and `page[size]` to control the number of projects returned per page.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `page` (object, optional)
+- `sort` (string, optional): Sort order by creation time: `inserted_at` (oldest first) or `-inserted_at` (newest first). Defaults to `inserted_at`.
+- `search` (string, optional): Case-insensitive substring match on the project name.
+
 ## List roles of an organization
 
 `GET /v2/organizations/{slug}/roles`
@@ -170667,6 +170761,16 @@ Returns a list of org-level roles for the organization.
 `POST /v2/organizations/{slug}/members/invitations`
 
 Creates member invitations for an organization. Each invitation can have different role and project scope settings.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+
+## Deletes organization invitations by email
+
+`DELETE /v2/organizations/{slug}/members/invitations`
+
+Bulk delete member invitations for an organization by email address.
 
 ### Parameters
 
@@ -170722,12 +170826,24 @@ Adds an AWS account to the project's PrivateLink configuration and schedules the
 
 `DELETE /v2/projects/{ref}/private-link/associations/aws-account/{aws_account_id}`
 
-Removes an AWS account from the project's PrivateLink configuration. Cleans up the associated AWS resources.
+Removes an AWS account from the project's PrivateLink configuration (targeting the primary database). Cleans up the associated AWS resources.
 
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `aws_account_id` (string, optional): AWS account ID used in PrivateLink association
+- `aws_account_id` (string, required): AWS account ID used in PrivateLink association
+
+## Remove an AWS account from a specific database PrivateLink share
+
+`DELETE /v2/projects/{ref}/private-link/associations/aws-account/{aws_account_id}/database/{database_identifier}`
+
+Removes an AWS account from the project's PrivateLink configuration for the given read replica. Cleans up the associated AWS resources.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `aws_account_id` (string, required): AWS account ID used in PrivateLink association
+- `database_identifier` (string, required): Identifier of the read replica this PrivateLink association targets
 
 ## Gets all projects for the given organization
 
@@ -170822,7 +170938,7 @@ The following values are supported: `ACTIVE_HEALTHY`, `INACTIVE`.
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `services` (array, required)
+- `services` (string, required): Comma-separated list of enums or array of enums.
 - `timeout_ms` (integer, optional)
 
 ## \[Beta] Gets project's network bans
@@ -171016,7 +171132,11 @@ Deletes all secrets with the given names from the specified project
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `reveal` (boolean, optional): Boolean string, true or false
+- `reveal` (string, optional): Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Deletes an API key for the project
 
@@ -171026,8 +171146,8 @@ Deletes all secrets with the given names from the specified project
 
 - `ref` (string, required): Project ref
 - `id` (string, required)
-- `reveal` (boolean, optional): Boolean string, true or false
-- `was_compromised` (boolean, optional): Boolean string, true or false
+- `reveal` (string, optional): Boolean string, true or false
+- `was_compromised` (string, optional): Boolean string, true or false
 - `reason` (string, optional)
 
 ## \[Beta] Gets project's pgsodium config
@@ -171046,7 +171166,11 @@ Deletes all secrets with the given names from the specified project
 
 - `ref` (string, required): Project ref
 - `id` (string, required)
-- `reveal` (boolean, optional): Boolean string, true or false
+- `reveal` (string, optional): Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Get project api keys
 
@@ -171055,7 +171179,11 @@ Deletes all secrets with the given names from the specified project
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `reveal` (boolean, optional): Boolean string, true or false
+- `reveal` (string, optional): Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Check whether JWT based legacy (anon, service\_role) API keys are enabled. This API endpoint will be removed in the future, check for HTTP 404 Not Found.
 
@@ -171091,7 +171219,11 @@ Returns all secrets you've previously added to the specified project.
 
 - `ref` (string, required): Project ref
 - `id` (string, required)
-- `reveal` (boolean, optional): Boolean string, true or false
+- `reveal` (string, optional): Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Disable or re-enable JWT based legacy (anon, service\_role) API keys. This API endpoint will be removed in the future, check for HTTP 404 Not Found.
 
@@ -171100,7 +171232,11 @@ Returns all secrets you've previously added to the specified project.
 ### Parameters
 
 - `ref` (string, required): Project ref
-- `enabled` (boolean, required): Boolean string, true or false
+- `enabled` (string, required): Boolean string.
+
+Truthy values: `true`, `1`, `yes`, `on`, `y`, `enabled`
+
+Falsy values: `false`, `0`, `no`, `off`, `n`, `disabled`
 
 ## Storage
 

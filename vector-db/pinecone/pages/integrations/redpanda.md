@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/integrations/redpanda
 path: integrations/redpanda
 ---
 
-Connect Pinecone and Redpanda to ship vector search and RAG: embed, index, and query at scale with managed infrastructure.
+Stream events into Pinecone with Redpanda Connect's declarative YAML pipelines for real-time vector ingestion, at-least-once delivery, and RAG ETL.
 
 Redpanda Connect is a declarative data streaming service that solves a wide range of data engineering problems with simple, chained, stateless processing steps. It implements transaction based resiliency with back pressure, so when connecting to at-least-once sources and sinks, it's able to guarantee at-least-once delivery without needing to persist messages during transit.
 

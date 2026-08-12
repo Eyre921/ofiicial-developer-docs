@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/organizations/manage-billing/access-your
 path: guides/organizations/manage-billing/access-your-invoices
 ---
 
-View and download organization billing invoices.
+View and download your Pinecone organization billing invoices in the console, including invoice history, receipts, and payment records.
 
 You can access your billing history and invoices in the Pinecone console:
 

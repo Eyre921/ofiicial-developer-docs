@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/manage-namespaces
 path: guides/manage-data/manage-namespaces
 ---
 
-Create and manage namespaces in serverless indexes.
+Create, describe, list, and delete namespaces in Pinecone serverless indexes, including defining filterable metadata fields and schemas ahead of upsert.
 
 ## Create a namespace
 

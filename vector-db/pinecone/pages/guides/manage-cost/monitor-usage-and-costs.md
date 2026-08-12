@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs
 path: guides/manage-cost/monitor-usage-and-costs
 ---
 
-Monitor usage and costs for your Pinecone organization and indexes.
+Monitor Pinecone usage and costs at the organization, index, and operation level by tracking read units, write units, and storage consumption.
 
 ## Monitor organization-level usage and costs
 
