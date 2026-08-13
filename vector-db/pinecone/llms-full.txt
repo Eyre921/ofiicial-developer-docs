@@ -3384,7 +3384,7 @@ The same document model supports several common schema shapes. Pick the one that
     )
     ```
 
-    **Option B — run BM25 and dense searches separately and merge client-side** (when you want both signals to contribute to ranking, e.g. via reciprocal rank fusion):
+    **Option B — run BM25 and dense searches separately and merge client-side** (when you want both signals to contribute to ranking, e.g. via [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)):
 
     ```python Python theme={null}
     dense_hits = index.documents.search(
@@ -30936,7 +30936,7 @@ Pinecone supports three hybrid patterns, split by API surface and data shape. Pi
 | Pattern                                                                                                 | API      | Data shape                                                                        | How signals combine                                                                                                                     | Trade-offs                                                                                                                                  |
 | ------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | **[Single index for dense and sparse vectors](#use-a-single-index-for-dense-and-sparse-vectors)**       | Vector   | One record carries both a dense and a sparse vector                               | Server-side dotproduct of weighted dense + sparse query vectors                                                                         | Simplest single-request architecture, but BM25/sparse scores are unbounded — requires `alpha` weighting per query. No integrated embedding. |
-| **[Separate indexes for dense and sparse vectors](#use-separate-indexes-for-dense-and-sparse-vectors)** | Vector   | Two indexes, linked by shared `_id`                                               | Two queries, merged client-side (e.g., RRF)                                                                                             | More moving parts, but supports sparse-only queries, integrated embedding, and independent reranking per index.                             |
+| **[Separate indexes for dense and sparse vectors](#use-separate-indexes-for-dense-and-sparse-vectors)** | Vector   | Two indexes, linked by shared `_id`                                               | Two queries, merged client-side (e.g., [RRF](/guides/search/reciprocal-rank-fusion))                                                    | More moving parts, but supports sparse-only queries, integrated embedding, and independent reranking per index.                             |
 | **[Multi-field document schema](/guides/search/full-text-search)**                                      | Document | One document with `dense_vector` + FTS-enabled `string` fields in the same schema | Either: dense ranking *narrowed* by a text-match filter (`$match_phrase`/`$match_all`/`$match_any`); or two searches merged client-side | Text-centric workloads; no `alpha` tuning needed. Doesn't support integrated embedding in public preview.                                   |
 
 **Rule of thumb:** if your hybrid signal is "I have both vectors per record," reach for a vector-API pattern (single index or separate indexes). If your hybrid signal is "I have text plus an embedding for the same document," reach for the document API (multi-field document schema).
@@ -33326,6 +33326,114 @@ Without the `match_terms` filter, you might get results like:
 * **Post-processing filter**: The filtering happens after the initial query, so potential matches that weren't included in the initial `top_k` results won't appear in the final results
 * **No phrase matching**: Terms are matched individually in any order and location.
 * **No case-sensitivity**: Terms are normalized during processing.
+
+
+# Reciprocal rank fusion
+Source: https://docs.pinecone.io/guides/search/reciprocal-rank-fusion
+
+Combine the results of separate searches into a single ranking with reciprocal rank fusion (RRF), a client-side method that fuses rankings instead of raw scores.
+
+<Note>
+  The examples below use the [document API](/guides/search/full-text-search), which is in [public preview](/guides/search/full-text-search#public-preview). Reciprocal rank fusion itself is a client-side method and works with the results of any Pinecone search.
+</Note>
+
+When you rank the same set of documents two different ways, for example, a [full-text (BM25) search](/guides/search/full-text-search) and a [semantic (dense-vector) search](/guides/search/semantic-search), the scores live on different, incomparable scales. Adding or averaging the raw scores is not meaningful, and one signal usually dominates. **Reciprocal rank fusion (RRF)** combines them by fusing the *rankings* instead of the scores, so no normalization or per-signal weighting is required.
+
+Today, you run each search separately, then apply RRF to their results in your client (server-side fusion is coming).
+
+## When to use it
+
+Reach for RRF whenever you combine results from separate searches and want each to contribute to the final ranking, most commonly full-text (BM25) with semantic (dense-vector). It's a robust default that works without normalizing scores or tuning per-signal weights.
+
+## How it works
+
+RRF scores each document by summing `1 / (k + rank)` across every ranking it appears in, where `rank` is the document's 1-based position in that ranking and `k` is a constant (the [original RRF paper](https://dl.acm.org/doi/10.1145/1571941.1572114) uses `k=60`). A document ranked highly in multiple searches accumulates the highest fused score. A document absent from a ranking gets nothing from it. Because only rank position matters, scores never need to be normalized.
+
+```python Python theme={null}
+def reciprocal_rank_fusion(rankings, k=60):
+    """Fuse ranked lists of document IDs into one RRF-scored ranking.
+
+    Each ranking is a list of `_id`s in rank order (best first).
+    Returns a dict mapping `_id` to its fused score.
+    """
+    scores = {}
+    for ranking in rankings:
+        for rank, doc_id in enumerate(ranking, start=1):
+            scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)
+    return scores
+```
+
+## Combine two searches
+
+This assumes an index whose [schema](/guides/search/full-text-search#schema-definition) declares an FTS-enabled `string` field (`body`) and a `dense_vector` field (`embedding`).
+
+Run each search independently, pass the ranked `_id`s to `reciprocal_rank_fusion`, then sort by the fused score. Here, a full-text search and a semantic search over the same index are fused into one top-10 ranking:
+
+```python Python theme={null}
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+index = pc.preview.index(name="docs-example")
+
+query = "how do I reset my password?"
+fetch_k = 50  # fetch deeper than the final top_k so weaker-but-present signals still count
+
+# 1. Full-text (BM25) search.
+text_hits = index.documents.search(
+    namespace="__default__",
+    top_k=fetch_k,
+    score_by=[{"type": "text", "field": "body", "query": query}],
+    include_fields=["*"],
+).matches
+
+# 2. Semantic (dense-vector) search. Embed the query with the same model as your documents.
+query_embedding = pc.inference.embed(
+    model="llama-text-embed-v2",
+    inputs=[query],
+    parameters={"input_type": "query"},
+)
+dense_hits = index.documents.search(
+    namespace="__default__",
+    top_k=fetch_k,
+    score_by=[{"type": "dense_vector", "field": "embedding", "values": query_embedding[0]["values"]}],
+    include_fields=["*"],
+).matches
+
+# 3. Fuse the two rankings client-side (reciprocal_rank_fusion is defined in "How it works" above).
+fused = reciprocal_rank_fusion([
+    [m._id for m in text_hits],
+    [m._id for m in dense_hits],
+])
+
+# 4. Sort by fused score and keep the top results.
+by_id = {m._id: m for m in text_hits}
+for m in dense_hits:
+    by_id.setdefault(m._id, m)
+
+top_k = 10
+for doc_id in sorted(fused, key=fused.get, reverse=True)[:top_k]:
+    print(doc_id, fused[doc_id], getattr(by_id[doc_id], "body", ""))
+```
+
+## Tuning and extensions
+
+* **`fetch_k`** (a variable in this example, not an API parameter) controls how deep each ranking is fetched before fusing. Raise it so a document that ranks well in one search but outside the top of the other still contributes. It should be at least your final `top_k`.
+* **`k`** (default 60) controls how much a single ranking's top positions dominate the fused order. A larger `k` flattens the influence of any single top-ranked result.
+* **Latency.** Run the searches in parallel (for example with `asyncio` or threads) so you pay the slowest search's latency, not the sum.
+* **Weighting.** To favor one signal over another, weight each ranking's contribution (multiply its `1 / (k + rank)` terms by a per-ranking weight). It's a powerful relevance-tuning lever and can warrant its own guide; this page uses the unweighted default.
+
+### Merge more than two rankings
+
+RRF extends to any number of rankings. Pass more lists to `reciprocal_rank_fusion`; each additional search contributes another ranked list of `_id`s:
+
+```python Python theme={null}
+fused = reciprocal_rank_fusion([
+    [m._id for m in text_hits],
+    [m._id for m in dense_hits],
+    [m._id for m in sparse_hits],  # e.g., a sparse-vector search
+])
+```
 
 
 # Rerank results
@@ -40447,41 +40555,6 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
       "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
     }
   }
-  ```
-</ResponseExample>
-
-
-# Update a record
-Source: https://docs.pinecone.io/reference/api/2026-04/data-plane/update
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_data_2026-04.oas.yaml post /vectors/update
-Update records by ID or by metadata in a namespace. Updating by ID changes the vector and/or metadata of a single record. Updating by metadata changes metadata across multiple records using a metadata filter.
-If a vector value is included, it will overwrite the previous value. If `set_metadata` is included, only the specified metadata fields are modified, and if a specified metadata field does not exist, it is added.
-For guidance and examples, see [Update data](https://docs.pinecone.io/guides/manage-data/update-data).
-
-<RequestExample>
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
-
-  curl "https://$INDEX_HOST/vectors/update" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
-    -d '{
-          "id": "id-3",
-          "values": [4.0, 2.0],
-          "setMetadata": {"type": "comedy"},
-          "namespace": "example-namespace"
-        }'
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {}
   ```
 </ResponseExample>
 
@@ -51007,6 +51080,41 @@ For guidance and examples, see [Import data](https://docs.pinecone.io/guides/ind
   {
      "id": "101"
   }
+  ```
+</ResponseExample>
+
+
+# Update a record
+Source: https://docs.pinecone.io/reference/api/2026-04/data-plane/update
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_data_2026-04.oas.yaml post /vectors/update
+Update records by ID or by metadata in a namespace. Updating by ID changes the vector and/or metadata of a single record. Updating by metadata changes metadata across multiple records using a metadata filter.
+If a vector value is included, it will overwrite the previous value. If `set_metadata` is included, only the specified metadata fields are modified, and if a specified metadata field does not exist, it is added.
+For guidance and examples, see [Update data](https://docs.pinecone.io/guides/manage-data/update-data).
+
+<RequestExample>
+  ```shell curl theme={null}
+  # To get the unique host for an index,
+  # see https://docs.pinecone.io/guides/manage-data/target-an-index
+  PINECONE_API_KEY="YOUR_API_KEY"
+  INDEX_HOST="INDEX_HOST"
+
+  curl "https://$INDEX_HOST/vectors/update" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-04" \
+    -d '{
+          "id": "id-3",
+          "values": [4.0, 2.0],
+          "setMetadata": {"type": "comedy"},
+          "namespace": "example-namespace"
+        }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {}
   ```
 </ResponseExample>
 
@@ -70944,27 +71052,6 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 * [Gemini CLI documentation](https://github.com/google-gemini/gemini-cli)
 
 
-# Matillion
-Source: https://docs.pinecone.io/integrations/matillion
-
-Use Matillion Data Productivity Cloud to chunk, embed, and upsert data into Pinecone with low-code AI pipelines for RAG, ETL, and GenAI apps.
-
-[Matillion Data Productivity Cloud](https://www.matillion.com/) is a unified platform that helps your team move faster with one central place to build and manage graphical, low-code data pipelines. It allows data teams to use structured, semi-structured, and unstructured data in analytics; build AI pipelines for new use cases; and be more productive.
-
-Matillion Data Productivity Cloud and Pinecone can be used together for retrieval augmented generation (RAG) use cases, helping to contextualize business insights without code.
-
-Matillion supports 150+ pre-built data source connectors, as well as the ability to build custom connectors to any REST API source system, making it easy to chunk unstructured datasets, create embeddings, and upsert to Pinecone.
-Matillion's graphical AI Prompt Components integrate with large language models (LLM) running in OpenAI, Amazon Bedrock, Azure OpenAI, and Snowpark Container Services. They enable no-code lookup of external knowledge stored in Pinecone, enabling data engineers to enrich GenAI answers with contextualized and proprietary data.
-
-<PrimarySecondaryCTA />
-
-## Additional resources
-
-* Video: [Use RAG with a Pinecone Vector database on the Data Productivity Cloud](https://www.youtube.com/watch?v=BsH7WlJdoFs)
-* Video: [How to upsert to your Pinecone Vector database](https://www.youtube.com/watch?v=l9qt-EzLkgY)
-* [Unlock the power of AI in Data Engineering](https://www.matillion.com/blog/matillion-new-ai-capabilities-for-data-engineering)
-
-
 # Integrations
 Source: https://docs.pinecone.io/integrations/overview
 
@@ -78963,211 +79050,6 @@ curl -X DELETE "https://api.pinecone.io/admin/role-bindings/9a8e3528-b9c0-4358-8
 For more information, see [Delete a role binding](/reference/api/2026-04/admin/delete_role_binding).
 
 
-# Monitor usage and cost
-Source: https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage
-
-Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track token usage across chat, context retrieval, and evaluation.
-
-## Set monthly spend alerts
-
-You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
-
-<Note>
-  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They are not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
-</Note>
-
-To set a spend alert:
-
-1. Go to [Settings > Spend alerts](https://app.pinecone.io/organizations/-/settings/spend-alerts) in the Pinecone console
-2. Click **+ Add Alert**.
-3. Enter the dollar amount for the spend alert.
-4. Enter the email addresses to send the alert to. [Organization owners](/guides/organizations/understanding-organizations#organization-roles) are listed by default.
-5. Click **Create**.
-
-To edit a spend alert:
-
-1. In the row of the spend alert you want to edit, click **ellipsis (...) menu > Edit**.
-2. Change the dollar amount and/or email addresses for the spend alert.
-3. Click **Update**.
-
-<Note>
-  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert cannot be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
-</Note>
-
-## Monitor organization-level usage
-
-<Note>
-  You must be an [organization owner or billing admin](/guides/assistant/admin/organizations-overview#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
-</Note>
-
-To view and download a report of your usage and costs for your Pinecone organization, go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.
-
-All dates are given in UTC to match billing invoices.
-
-## Monitor token usage
-
-Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context retrieval](/reference/api/latest/assistant/context_assistant), and [evaluation](/reference/api/latest/assistant/metrics_alignment) API endpoints return a `usage` parameter with `prompt_tokens`, `completion_tokens`, and `total_tokens` generated.
-
-<Tabs>
-  <Tab title="Chat">
-    For [chat](/guides/assistant/chat-with-assistant), tokens are defined as follows:
-
-    * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
-
-      `prompt_tokens` appear as **Assistants Input Tokens** on invoices.
-    * `completion_tokens` are based on the answer from the model.
-
-      `completion_tokens` appear as **Assistants Output Tokens** on invoices.
-    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
-
-    ```json Example chat response {9-13} theme={null}
-    {
-        "finish_reason": "stop",
-        "message": {
-            "role": "assistant",
-            "content": "The Chief Financial Officer (CFO) of Netflix is Spencer Neumann."
-        },
-        "id": "000000000000000030513193ccc52814",
-        "model": "gpt-4o-2024-11-20",
-        "usage": {
-            "prompt_tokens": 23626,
-            "completion_tokens": 21,
-            "total_tokens": 23647
-        },
-        "citations": [
-            {
-                "position": 63,
-                "references": [
-                    {
-                        "file": {
-                            "status": "Available",
-                            "id": "99305805-3844-41b5-af56-ee693ab80527",
-                            "name": "Netflix-10-K-01262024.pdf",
-                            "size": 1073470,
-                            "metadata": null,
-                            "updated_on": "2025-07-29T20:07:53.171752661Z",
-                            "created_on": "2025-07-29T20:07:36.361322699Z",
-                            "signed_url": "https://storage.googleapis.com/..."
-                        },
-                        "pages": [
-                            78,
-                            79,
-                            80
-                        ],
-                        "highlight": null
-                    },
-                    {
-                        "file": {
-                            "status": "Available",
-                            "id": "99305805-3844-41b5-af56-ee693ab80527",
-                            "name": "Netflix-10-K-01262024.pdf",
-                            "size": 1073470,
-                            "metadata": null,
-                            "updated_on": "2025-07-29T20:07:53.171752661Z",
-                            "created_on": "2025-07-29T20:07:36.361322699Z",
-                            "signed_url": "https://storage.googleapis.com/..."
-                        },
-                        "pages": [
-                            77,
-                            78
-                        ],
-                        "highlight": null
-                    }
-                ]
-            }
-        ]
-    }
-    ```
-  </Tab>
-
-  <Tab title="Context retrieval">
-    For [context retrieval](/guides/assistant/context-snippets-overview), tokens are defined as follows:
-
-    * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the chat history in addition to the newest message.
-
-      `prompt_tokens` appear as **Assistants Context Tokens Processed** on invoices.
-
-    * `completion_tokens` do not apply for context retrieval because, unlike for chat, there is no answer from a model. `completion_tokens` will always be 0.
-
-    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
-
-    ```json Example context response {30-34} theme={null}
-    {
-        "snippets": [
-            {
-                "type": "text",
-                "content": "edures, or caused such disclosure controls and procedures to be designed under our supervision, to\r\nensure that material information relating to the registrant, including its consolidated subsidiaries, ...",
-                "score": 0.86632514,
-                "reference": {
-                    "type": "pdf",
-                    "file": {
-                        "status": "Available",
-                        "id": "99305805-3844-41b5-af56-ee693ab80527",
-                        "name": "Netflix-10-K-01262024.pdf",
-                        "size": 1073470,
-                        "metadata": null,
-                        "updated_on": "2025-07-29T20:07:53.171752661Z",
-                        "created_on": "2025-07-29T20:07:36.361322699Z",
-                        "signed_url": "https://storage.googleapis.com/..."
-                    },
-                    "pages": [
-                        78,
-                        79,
-                        80
-                    ]
-                }
-            },
-            ...
-        ],
-        "usage": {
-            "prompt_tokens": 22914,
-            "completion_tokens": 0,
-            "total_tokens": 22914
-        },
-        "id": "00000000000000007b6ad859184a31b3"
-    }
-    ```
-  </Tab>
-
-  <Tab title="Response evaluation">
-    For [response evaluation](/guides/assistant/evaluation-overview), tokens are defined as follows:
-
-    * `prompt_tokens` are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
-
-      `prompt_tokens` appear as **Assistants Evaluation Tokens Processed** on invoices.
-    * `completion_tokens` are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
-
-      `completion_tokens` appear as **Assistants Evaluation Tokens Out** on invoices.
-    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
-
-    ```json Response evaluation response {17-21} theme={null}
-    {
-      "metrics": {
-        "correctness": 123,
-        "completeness": 123,
-        "alignment": 123
-      },
-      "reasoning": {
-        "evaluated_facts": [
-          {
-            "fact": {
-              "content": "<string>"
-            },
-            "entailment": "entailed"
-          }
-        ]
-      },
-      "usage": {
-        "prompt_tokens": 123,
-        "completion_tokens": 123,
-        "total_tokens": 123
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-
 # Organizations overview
 Source: https://docs.pinecone.io/guides/assistant/admin/organizations-overview
 
@@ -86237,6 +86119,27 @@ As expected, when you send an out-of-scope question through your RAG pipeline, y
 As you have seen, LlamaIndex is a powerful framework to use when building semantic search and RAG applications – and we have only gotten to the tip of the iceberg! [Explore more](https://docs.llamaindex.ai/en/index.html) on your own and [let us know how it goes](https://community.pinecone.io/).
 
 
+# Matillion
+Source: https://docs.pinecone.io/integrations/matillion
+
+Use Matillion Data Productivity Cloud to chunk, embed, and upsert data into Pinecone with low-code AI pipelines for RAG, ETL, and GenAI apps.
+
+[Matillion Data Productivity Cloud](https://www.matillion.com/) is a unified platform that helps your team move faster with one central place to build and manage graphical, low-code data pipelines. It allows data teams to use structured, semi-structured, and unstructured data in analytics; build AI pipelines for new use cases; and be more productive.
+
+Matillion Data Productivity Cloud and Pinecone can be used together for retrieval augmented generation (RAG) use cases, helping to contextualize business insights without code.
+
+Matillion supports 150+ pre-built data source connectors, as well as the ability to build custom connectors to any REST API source system, making it easy to chunk unstructured datasets, create embeddings, and upsert to Pinecone.
+Matillion's graphical AI Prompt Components integrate with large language models (LLM) running in OpenAI, Amazon Bedrock, Azure OpenAI, and Snowpark Container Services. They enable no-code lookup of external knowledge stored in Pinecone, enabling data engineers to enrich GenAI answers with contextualized and proprietary data.
+
+<PrimarySecondaryCTA />
+
+## Additional resources
+
+* Video: [Use RAG with a Pinecone Vector database on the Data Productivity Cloud](https://www.youtube.com/watch?v=BsH7WlJdoFs)
+* Video: [How to upsert to your Pinecone Vector database](https://www.youtube.com/watch?v=l9qt-EzLkgY)
+* [Unlock the power of AI in Data Engineering](https://www.matillion.com/blog/matillion-new-ai-capabilities-for-data-engineering)
+
+
 # Microsoft Marketplace
 Source: https://docs.pinecone.io/integrations/microsoft-marketplace
 
@@ -89549,6 +89452,12 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
+<Update label="2026-08-11">
+  ### New guide: reciprocal rank fusion (RRF)
+
+  Added a guide on [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion), a client-side method for combining the results of separate searches (for example, full-text and semantic) into one ranking without normalizing scores. RRF fuses rankings rather than raw scores, so it needs no per-signal weighting.
+</Update>
+
 <Update label="2026-08-01">
   ### Released Pinecone Terraform Provider v4.0.0
 
@@ -91417,6 +91326,211 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
       pc project delete -i $PINECONE_PROJECT_ID
       ```
     </CodeGroup>
+  </Tab>
+</Tabs>
+
+
+# Monitor usage and cost
+Source: https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage
+
+Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track token usage across chat, context retrieval, and evaluation.
+
+## Set monthly spend alerts
+
+You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
+
+<Note>
+  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They are not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
+</Note>
+
+To set a spend alert:
+
+1. Go to [Settings > Spend alerts](https://app.pinecone.io/organizations/-/settings/spend-alerts) in the Pinecone console
+2. Click **+ Add Alert**.
+3. Enter the dollar amount for the spend alert.
+4. Enter the email addresses to send the alert to. [Organization owners](/guides/organizations/understanding-organizations#organization-roles) are listed by default.
+5. Click **Create**.
+
+To edit a spend alert:
+
+1. In the row of the spend alert you want to edit, click **ellipsis (...) menu > Edit**.
+2. Change the dollar amount and/or email addresses for the spend alert.
+3. Click **Update**.
+
+<Note>
+  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert cannot be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
+</Note>
+
+## Monitor organization-level usage
+
+<Note>
+  You must be an [organization owner or billing admin](/guides/assistant/admin/organizations-overview#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
+</Note>
+
+To view and download a report of your usage and costs for your Pinecone organization, go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.
+
+All dates are given in UTC to match billing invoices.
+
+## Monitor token usage
+
+Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context retrieval](/reference/api/latest/assistant/context_assistant), and [evaluation](/reference/api/latest/assistant/metrics_alignment) API endpoints return a `usage` parameter with `prompt_tokens`, `completion_tokens`, and `total_tokens` generated.
+
+<Tabs>
+  <Tab title="Chat">
+    For [chat](/guides/assistant/chat-with-assistant), tokens are defined as follows:
+
+    * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+
+      `prompt_tokens` appear as **Assistants Input Tokens** on invoices.
+    * `completion_tokens` are based on the answer from the model.
+
+      `completion_tokens` appear as **Assistants Output Tokens** on invoices.
+    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
+
+    ```json Example chat response {9-13} theme={null}
+    {
+        "finish_reason": "stop",
+        "message": {
+            "role": "assistant",
+            "content": "The Chief Financial Officer (CFO) of Netflix is Spencer Neumann."
+        },
+        "id": "000000000000000030513193ccc52814",
+        "model": "gpt-4o-2024-11-20",
+        "usage": {
+            "prompt_tokens": 23626,
+            "completion_tokens": 21,
+            "total_tokens": 23647
+        },
+        "citations": [
+            {
+                "position": 63,
+                "references": [
+                    {
+                        "file": {
+                            "status": "Available",
+                            "id": "99305805-3844-41b5-af56-ee693ab80527",
+                            "name": "Netflix-10-K-01262024.pdf",
+                            "size": 1073470,
+                            "metadata": null,
+                            "updated_on": "2025-07-29T20:07:53.171752661Z",
+                            "created_on": "2025-07-29T20:07:36.361322699Z",
+                            "signed_url": "https://storage.googleapis.com/..."
+                        },
+                        "pages": [
+                            78,
+                            79,
+                            80
+                        ],
+                        "highlight": null
+                    },
+                    {
+                        "file": {
+                            "status": "Available",
+                            "id": "99305805-3844-41b5-af56-ee693ab80527",
+                            "name": "Netflix-10-K-01262024.pdf",
+                            "size": 1073470,
+                            "metadata": null,
+                            "updated_on": "2025-07-29T20:07:53.171752661Z",
+                            "created_on": "2025-07-29T20:07:36.361322699Z",
+                            "signed_url": "https://storage.googleapis.com/..."
+                        },
+                        "pages": [
+                            77,
+                            78
+                        ],
+                        "highlight": null
+                    }
+                ]
+            }
+        ]
+    }
+    ```
+  </Tab>
+
+  <Tab title="Context retrieval">
+    For [context retrieval](/guides/assistant/context-snippets-overview), tokens are defined as follows:
+
+    * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the chat history in addition to the newest message.
+
+      `prompt_tokens` appear as **Assistants Context Tokens Processed** on invoices.
+
+    * `completion_tokens` do not apply for context retrieval because, unlike for chat, there is no answer from a model. `completion_tokens` will always be 0.
+
+    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
+
+    ```json Example context response {30-34} theme={null}
+    {
+        "snippets": [
+            {
+                "type": "text",
+                "content": "edures, or caused such disclosure controls and procedures to be designed under our supervision, to\r\nensure that material information relating to the registrant, including its consolidated subsidiaries, ...",
+                "score": 0.86632514,
+                "reference": {
+                    "type": "pdf",
+                    "file": {
+                        "status": "Available",
+                        "id": "99305805-3844-41b5-af56-ee693ab80527",
+                        "name": "Netflix-10-K-01262024.pdf",
+                        "size": 1073470,
+                        "metadata": null,
+                        "updated_on": "2025-07-29T20:07:53.171752661Z",
+                        "created_on": "2025-07-29T20:07:36.361322699Z",
+                        "signed_url": "https://storage.googleapis.com/..."
+                    },
+                    "pages": [
+                        78,
+                        79,
+                        80
+                    ]
+                }
+            },
+            ...
+        ],
+        "usage": {
+            "prompt_tokens": 22914,
+            "completion_tokens": 0,
+            "total_tokens": 22914
+        },
+        "id": "00000000000000007b6ad859184a31b3"
+    }
+    ```
+  </Tab>
+
+  <Tab title="Response evaluation">
+    For [response evaluation](/guides/assistant/evaluation-overview), tokens are defined as follows:
+
+    * `prompt_tokens` are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
+
+      `prompt_tokens` appear as **Assistants Evaluation Tokens Processed** on invoices.
+    * `completion_tokens` are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
+
+      `completion_tokens` appear as **Assistants Evaluation Tokens Out** on invoices.
+    * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
+
+    ```json Response evaluation response {17-21} theme={null}
+    {
+      "metrics": {
+        "correctness": 123,
+        "completeness": 123,
+        "alignment": 123
+      },
+      "reasoning": {
+        "evaluated_facts": [
+          {
+            "fact": {
+              "content": "<string>"
+            },
+            "entailment": "entailed"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 123,
+        "total_tokens": 123
+      }
+    }
+    ```
   </Tab>
 </Tabs>
 
@@ -95511,6 +95625,12 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
+<Update label="2026-08-11">
+  ### New guide: reciprocal rank fusion (RRF)
+
+  Added a guide on [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion), a client-side method for combining the results of separate searches (for example, full-text and semantic) into one ranking without normalizing scores. RRF fuses rankings rather than raw scores, so it needs no per-signal weighting.
+</Update>
+
 <Update label="2026-08-01">
   ### Released Pinecone Terraform Provider v4.0.0
 
@@ -95962,67 +96082,6 @@ A **connector** is the integration that ingests documents from a source system. 
 ## Evaluation
 
 An **evaluation** is an automatic quality check that runs on publish. Marketplace generates test questions from the connected sources, asks the application to answer them, and scores responses on faithfulness and relevance. Results are visible from the deployment dashboard. See [Evaluations](/guides/marketplace/evaluations).
-
-
-# Create a deployment
-Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
-
-Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
-
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability).
-</Note>
-
-This page shows you how to create a [deployment](/guides/marketplace/concepts#deployment) in Pinecone Marketplace.
-
-## Before you begin
-
-* A Marketplace account. See the [Quickstart](/guides/marketplace/quickstart) for access.
-* A clear use case in mind, so you can pick a starting [template](/guides/marketplace/template-catalog).
-
-## 1. Open the catalog
-
-Go to [marketplace.pinecone.io](https://marketplace.pinecone.io) and select **New deployment**. The catalog lists the available vertical templates.
-
-## 2. Pick a template
-
-Choose the template that most closely matches your use case. Templates set the initial system prompt, recommended layout, suggested components, and starter prompts. You can change any of these later.
-
-## 3. Name the deployment
-
-In the setup wizard:
-
-* Give the deployment a short, descriptive name.
-* Add a one-line description that end users see in the application header.
-* Select the Pinecone organization and project the deployment belongs to.
-
-## 4. Choose a layout
-
-Pick the consumer layout that fits the experience you want: chat, search, structured, or hybrid. The template suggests a default, which you can override. See [Configure layouts](/guides/marketplace/configure-layouts).
-
-## 5. Configure operating parameters
-
-Tune the system prompt, response style, and other operating parameters. For details, see [Configure operating parameters](/guides/marketplace/configure-operating-parameters).
-
-## 6. Add a knowledge base
-
-A deployment must have at least one knowledge base. For each knowledge base:
-
-* Give it a name that describes the domain (for example, `policies`, `product-docs`).
-* Connect a source. See [Connectors](/guides/marketplace/connectors-overview).
-
-You can add additional knowledge bases now or later. Multi-knowledge-base deployments use the [Knowledge Agent Toolkit (KAT)](/guides/marketplace/kat-overview) to route between domains.
-
-## 7. Save as a building version
-
-When you finish the wizard, Marketplace saves your work as a building version. The deployment is not yet live. From the dashboard, you can:
-
-* Continue editing the building version.
-* Publish it. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
-
-<Note>
-  You can edit a building version as many times as you want before publishing. Each edit replaces the in-progress configuration; nothing is sent to end users until you publish.
-</Note>
 
 
 # Pinecone Marketplace
@@ -97843,6 +97902,67 @@ Link access does not establish an end-user identity. Events from link-accessed a
 ## Sharing the application
 
 After publishing, copy the deployment URL from the dashboard and share it with end users. The URL is the entry point regardless of which consumer authentication provider is configured.
+
+
+# Create a deployment
+Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
+
+Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
+
+<Note>
+  This feature is in [public preview](/release-notes/feature-availability).
+</Note>
+
+This page shows you how to create a [deployment](/guides/marketplace/concepts#deployment) in Pinecone Marketplace.
+
+## Before you begin
+
+* A Marketplace account. See the [Quickstart](/guides/marketplace/quickstart) for access.
+* A clear use case in mind, so you can pick a starting [template](/guides/marketplace/template-catalog).
+
+## 1. Open the catalog
+
+Go to [marketplace.pinecone.io](https://marketplace.pinecone.io) and select **New deployment**. The catalog lists the available vertical templates.
+
+## 2. Pick a template
+
+Choose the template that most closely matches your use case. Templates set the initial system prompt, recommended layout, suggested components, and starter prompts. You can change any of these later.
+
+## 3. Name the deployment
+
+In the setup wizard:
+
+* Give the deployment a short, descriptive name.
+* Add a one-line description that end users see in the application header.
+* Select the Pinecone organization and project the deployment belongs to.
+
+## 4. Choose a layout
+
+Pick the consumer layout that fits the experience you want: chat, search, structured, or hybrid. The template suggests a default, which you can override. See [Configure layouts](/guides/marketplace/configure-layouts).
+
+## 5. Configure operating parameters
+
+Tune the system prompt, response style, and other operating parameters. For details, see [Configure operating parameters](/guides/marketplace/configure-operating-parameters).
+
+## 6. Add a knowledge base
+
+A deployment must have at least one knowledge base. For each knowledge base:
+
+* Give it a name that describes the domain (for example, `policies`, `product-docs`).
+* Connect a source. See [Connectors](/guides/marketplace/connectors-overview).
+
+You can add additional knowledge bases now or later. Multi-knowledge-base deployments use the [Knowledge Agent Toolkit (KAT)](/guides/marketplace/kat-overview) to route between domains.
+
+## 7. Save as a building version
+
+When you finish the wizard, Marketplace saves your work as a building version. The deployment is not yet live. From the dashboard, you can:
+
+* Continue editing the building version.
+* Publish it. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
+
+<Note>
+  You can edit a building version as many times as you want before publishing. Each edit replaces the in-progress configuration; nothing is sent to end users until you publish.
+</Note>
 
 
 # Deployer authentication

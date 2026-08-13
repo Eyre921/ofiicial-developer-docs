@@ -444,7 +444,7 @@ components:
           description: The punctuated word of the word
         speaker:
           type: integer
-          description: The speaker of the word
+          description: The speaker of the word, present when diarization is enabled
       required:
         - word
         - start

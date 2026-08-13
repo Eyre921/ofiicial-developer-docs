@@ -46,7 +46,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "gbp"
     },
     "amount": {
-        "value": 100,
+        "value": 30000,
         "currency": "gbp"
     },
     "description": "Funds transfer from platform to connected account"
@@ -77,7 +77,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "gbp"
     },
     "amount": {
-        "value": 78,
+        "value": 30000,
         "currency": "gbp"
     },
     "description": "Payout to a financial account of another connected account",
@@ -113,7 +113,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "gbp"
     },
     "amount": {
-        "value": 1,
+        "value": 30000,
         "currency": "gbp"
     },
     "description": "Streamer earnings"
@@ -147,7 +147,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payment_quotes 
         "currency": "eur"
     },
     "amount": {
-        "value": 50,
+        "value": 30000,
         "currency": "gbp"
     }
   }'
@@ -160,7 +160,7 @@ The response contains the estimated fees, currency exchange rate, and payout amo
   "id": "{{OUTBOUND_PAYMENT_QUOTE_ID}}",
   "object": "v2.money_management.outbound_payment_quote",
   "amount": {
-    "value": 50,
+    "value": 30000,
     "currency": "gbp"
   },
   "created": "2025-09-09T09:21:17.201Z",
@@ -175,14 +175,14 @@ The response contains the estimated fees, currency exchange rate, and payout amo
     },
     {
       "amount": {
-        "value": 50,
+        "value": 300,
         "currency": "gbp"
       },
       "type": "standard_payout_fee"
     },
     {
       "amount": {
-        "value": 1,
+        "value": 100,
         "currency": "gbp"
       },
       "type": "foreign_exchange_fee"
@@ -190,7 +190,7 @@ The response contains the estimated fees, currency exchange rate, and payout amo
   ],
   "from": {
     "debited": {
-      "value": 50,
+      "value": 30000,
       "currency": "gbp"
     },
     "financial_account": "{{FINANCIAL_ACCOUNT_ID}}"
@@ -208,7 +208,7 @@ The response contains the estimated fees, currency exchange rate, and payout amo
   },
   "to": {
     "credited": {
-      "value": 56.65,
+      "value": 34443,
       "currency": "eur"
     },
     "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
@@ -240,7 +240,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "eur"
     },
     "amount": {
-        "value": 50,
+        "value": 30000,
         "currency": "gbp"
     },
     "outbound_payment_quote": "{{OUTBOUNDPAYMENTQUOTEID_ID}}"

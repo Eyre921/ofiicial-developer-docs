@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (7) for https://docs.x.ai/llms.txt: curl: (7) Failed to connect to docs.x.ai port 443 after 8 ms: Could not connect to server\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -13,7 +13,7 @@
     "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "status": "error: curl failed (28) for https://code.claude.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (7) for https://code.claude.com/docs/llms-full.txt: curl: (7) Failed to connect to code.claude.com port 443 after 12 ms: Could not connect to server\n"
   },
   "ai-models/groq": {
     "status": "error: curl failed (22) for https://console.groq.com/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
@@ -42,10 +42,10 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
+    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "agent-frameworks/langchain": {
-    "pages": 1574,
+    "pages": 1585,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -57,7 +57,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 575,
+    "pages": 576,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -80,7 +80,8 @@
     "status": "ok"
   },
   "dev-platforms/supabase": {
-    "status": "error: curl failed (28) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 1687552 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_read: OpenSSL/3"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/prisma": {
     "pages": 0,
@@ -95,11 +96,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 328,
+    "pages": 329,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -145,7 +146,7 @@
     "status": "ok"
   },
   "dev-platforms/sentry": {
-    "pages": 122,
+    "pages": 121,
     "status": "ok"
   },
   "dev-platforms/notion": {
@@ -184,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 97,
+    "pages": 108,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,5 +204,5 @@
     "pages": 1248,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-13T11:31:00Z"
+  "_last_crawl": "2026-08-13T23:30:43Z"
 }

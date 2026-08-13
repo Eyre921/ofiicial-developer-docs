@@ -3756,7 +3756,7 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
     if (configError) {
         NSLog(@"Error building connection configuration, check location id!");
     } else {
-#pragma mark - SCPBluetoothReaderDelegate
+#pragma mark - SCPMobileReaderDelegate
 
 - (void)reader:(SCPReader *)reader didRequestReaderInput:(SCPReaderInputOptions)inputOptions {
     // Update UI requesting reader input
@@ -3995,7 +3995,7 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener
             ConnectionConfiguration.BluetoothConnectionConfiguration(
               locationId = reader.location!!.id!!,
               autoReconnectOnUnexpectedDisconnect = true,
-              bluetoothReaderListener = TerminalBluetoothReaderListener(),
+              bluetoothReaderListener = TerminalMobileReaderListener(),
             )
         val connectionConfig =
             ConnectionConfiguration.InternetConnectionConfiguration(
@@ -4144,7 +4144,7 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener;
                   new ConnectionConfiguration.BluetoothConnectionConfiguration(
                     locationId,
                     true,
-                    new TerminalBluetoothReaderListener()
+                    new TerminalMobileReaderListener()
                   );
       Terminal.getInstance().connectReader(
               reader,

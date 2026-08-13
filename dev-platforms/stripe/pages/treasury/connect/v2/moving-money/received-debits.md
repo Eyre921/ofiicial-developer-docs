@@ -149,7 +149,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
   "id": "rd_123",
   "object": "v2.money_management.received_debit",
   "amount": {
-    "value": 500,
+    "value": 5000,
     "currency": "usd"
   },
   "bank_transfer": {
@@ -249,7 +249,7 @@ curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_a
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "amount": {
-        "value": 101,
+        "value": 1000,
         "currency": "usd"
     },
     "statement_descriptor": "my descriptor",

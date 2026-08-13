@@ -514,6 +514,7 @@ type ConversationStatus =
   | 'awaiting_approval'
   | 'awaiting_hitl'
   | 'awaiting_client_tools'
+  | 'awaiting_async_tools'
   | 'complete'
   | 'interrupted';
 ```

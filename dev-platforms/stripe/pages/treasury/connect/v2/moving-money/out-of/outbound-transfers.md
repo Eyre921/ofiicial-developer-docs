@@ -1,10 +1,10 @@
 ---
-title: "Transfer money between owned accounts"
+title: "Transfer money between same-owner accounts"
 source: https://docs.stripe.com/treasury/connect/v2/moving-money/out-of/outbound-transfers.md
 path: treasury/connect/v2/moving-money/out-of/outbound-transfers
 ---
 
-# Transfer money between owned accounts
+# Transfer money between same-owner accounts
 
 Learn how to transfer money from financial accounts to other accounts owned by the same business.
 
@@ -40,7 +40,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
         "currency": "gbp"
     },
     "amount": {
-        "value": 1,
+        "value": 30000,
         "currency": "gbp"
     },
     "description": "Payout to own bank account"
@@ -250,7 +250,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
         "currency": "gbp"
     },
     "amount": {
-        "value": 1,
+        "value": 30000,
         "currency": "gbp"
     },
     "description": "Transfer to a connected account'\''s bank account"

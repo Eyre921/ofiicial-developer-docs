@@ -98,9 +98,9 @@ Stripe and Fundbox handle the following servicing functions:
 
 ## Escalate complaints
 
-In every region, escalate all complaints to [capital+support@stripe.com](mailto:capital+support@stripe.com). Stripe has a legal obligation to report all Capital-related complaints. To learn how to manage complaints, see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md).
+In every region, escalate all Capital-related complaints to [capital+support@stripe.com](mailto:capital+support@stripe.com). Stripe has a legal obligation to report all Capital-related complaints. To learn how to manage complaints, see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md).
 
-Trigger words that indicate a complaint include:
+These terms can indicate a complaint, among other possible signals:
 
 - Angry
 - Attorney
@@ -117,5 +117,5 @@ Trigger words that indicate a complaint include:
 ## See also
 
 - [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md)
-- [Metrics](https://docs.stripe.com/capital/reporting.md)
+- [How Capital for platforms works](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
 

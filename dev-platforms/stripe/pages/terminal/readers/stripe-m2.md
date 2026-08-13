@@ -6,7 +6,7 @@ path: terminal/readers/stripe-m2
 
 # Stripe Reader M2
 
-Learn about the Stripe Reader M2 Bluetooth reader.
+Learn about the Stripe Reader M2 mobile reader.
 Available in: US![](https://b.stripecdn.com/docs-statics-srv/assets/stripem2.bf6a7eabd353369bfa596a81ab51ca9a.png)
 
 The [Stripe Reader M2](https://docs.stripe.com/terminal/payments/setup-reader/stripe-m2.md) is a small, robust reader for use with mobile applications. It uses [Bluetooth Low Energy (LE)](https://docs.stripe.com/terminal/payments/connect-reader.md?reader-type=bluetooth) or [USB](https://docs.stripe.com/terminal/payments/connect-reader.md?terminal-sdk-platform=android&reader-type=usb) (Android only) to connect to the Stripe Terminal SDK on a mobile device.

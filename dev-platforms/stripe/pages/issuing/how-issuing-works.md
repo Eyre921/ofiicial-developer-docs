@@ -33,7 +33,7 @@ Complete the following steps to set up a commercial card program with Issuing:
 | **Use case** | **Description** |
 | --- | --- |
 | **Commercial card program** | Create, manage, and distribute payment cards for your business. |
-| **Consumer card program**(private preview) | Create, launch, and run a bank-sponsored credit program for your customers with [Credit Consumer Issuing](https://docs.stripe.com/issuing/consumer-issuing.md). |
+| **Consumer card program**(Private preview) | Create, launch, and run a bank-sponsored credit program for your customers with [Credit Consumer Issuing](https://docs.stripe.com/issuing/consumer-issuing.md). |
 
 ## Integration options
 
@@ -45,7 +45,7 @@ You can integrate Issuing with [Treasury for platforms](https://docs.stripe.com/
 
 You can integrate Issuing with [Stripe Connect](https://docs.stripe.com/connect.md) to issue cards to users who aren’t directly employed by your business. See [Set up an Issuing and Connect integration](https://docs.stripe.com/issuing/connect.md) for more details.
 
-### Stablecoin-backed cards (private preview)
+### Stablecoin-backed cards (Private preview)
 
 You can integrate Issuing with [Bridge](https://apidocs.bridge.xyz/platform/cards/overview/overview) to attach cards to Bridge Custodial Wallets, Privy wallets, or third-party non-custodial wallets. Bridge manages cardholder creation and KYC for consumer programs that use this integration. Learn more about [Stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md).
 

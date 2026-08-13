@@ -56,7 +56,7 @@ If a quote has at least one recurring price, you can only convert it to a subscr
 
 1. In the quote editor, choose a customer and create or select a product with a recurring price.
 
-2. Enter the quote details and choose to either **Start the subscription immediately** or **Schedule a subscription start date**.
+2. Enter the quote details and either **Start the subscription immediately** or **Schedule a subscription start date**.
 
 3. Finalize the quote. This marks the quote as **Accepted**.
 

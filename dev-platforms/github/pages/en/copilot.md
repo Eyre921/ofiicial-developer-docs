@@ -146,6 +146,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Tool search keeps your context small by letting Copilot CLI load external tools only when a task needs them.
 
+* [Understanding filesystem policies for local sandboxing in GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/understanding-local-sandboxing)
+
+  When local sandboxing is enabled, Copilot CLI runs each sandboxed process or operation under a filesystem policy that controls which files and directories it can read and write. Learn how that policy is built and how to check the access it grants.
+
 * [About the GitHub Copilot app](/en/copilot/concepts/agents/github-copilot-app)
 
   The GitHub Copilot app is a desktop application for agent-driven development that brings parallel workstreams, GitHub integration, and PR lifecycle management into one place.
@@ -1661,6 +1665,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Reducing security debt in your company with GitHub Copilot](/en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/reduce-security-debt)
 
   Understand features, enable developers, and measure Copilot's impact.
+
+* [Measure and demonstrate the impact of GitHub Copilot](/en/copilot/tutorials/roll-out-at-scale/measure-copilot-impact)
+
+  Understanding how Copilot is used across your enterprise is the first step to demonstrating its value. Follow this path to establish a usage baseline, see how code is being generated, and connect adoption to measurable outcomes.
 
 * [Measuring the success of a GitHub Copilot trial](/en/copilot/tutorials/roll-out-at-scale/measure-success)
 

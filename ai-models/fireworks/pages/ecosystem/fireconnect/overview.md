@@ -127,7 +127,7 @@ fireconnect <harness> on --model glm-fast-latest
 
 ## FireRouter
 
-[FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 4.8. In FireConnect, select it like any other model:
+[FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 5. In FireConnect, select it like any other model:
 
 ```bash theme={null}
 fireconnect <harness> on --model firerouter

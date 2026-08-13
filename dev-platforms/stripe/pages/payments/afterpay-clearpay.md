@@ -15,12 +15,10 @@ Access type: Instant provisional access
 Payment confirmation timing: Immediate
 Settlement timing: Standard payout schedule
 Pricing: https://stripe.com/en-us/pricing/local-payment-methods#cash-app-afterpay
-> Afterpay has rebranded to Cash App Afterpay in the US. This update gives your business access to Cash App users without requiring any changes, unless you have custom Afterpay components. For more information about the change, see the [Cash App Afterpay support page](https://support.stripe.com/questions/afterpay-is-now-branded-as-cash-app-afterpay-in-the-us).
-
 ## Eligibility and availability 
 
 ### Account eligibility
-Business location: AU, CA, GB, NZ
+Business location: AU, CA, GB, NZ, US
 Account type: ✓ Merchant, ✓ Platform or marketplace (Connect)
 Business model: ✗ B2B, ✓ B2C
 Business category: View list of prohibited and restricted business categories
@@ -113,7 +111,7 @@ EMEA: GB
 APAC: AU, NZ
 
 ### Payment support
-Buyer location: AU, CA, GB, NZ
+Buyer location: AU, CA, GB, NZ, US
 Presentment currency: AUD, NZD, GBP, USD, CAD
 Geographic coverage: ✓ Domestic, ✓ Crossborder
 Transaction limits: Minimum amount: 1.00 USD

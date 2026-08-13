@@ -75,7 +75,7 @@ Set the connection to **Gateway** and enter your OpenRouter credentials:
 | **Credential kind**     | `Static API key`                              |
 
 <Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=cdec4906d217428012c38a98fee8f18a" alt="Claude Desktop third-party inference configuration panel showing Gateway selected with OpenRouter credentials" width="1897" height="1136" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png" />
+  <img src="https://mintcdn.com/openrouter-d02e98a0/UJAi9la2xaRSVbm0/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png?fit=max&auto=format&n=UJAi9la2xaRSVbm0&q=85&s=36ba965652ac6367679f4e58d08a3b21" alt="Claude Desktop third-party inference configuration panel showing Gateway selected with OpenRouter credentials" width="1800" height="1542" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png" />
 </Frame>
 
 **Credential kind** pins which credential source the gateway uses. Set it to **Static API key** so Claude Desktop always authenticates with the OpenRouter API key you entered above and does not fall back to another source.

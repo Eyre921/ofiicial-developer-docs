@@ -204,25 +204,27 @@ curl -X DELETE https://api.stripe.com/v1/coupons/free-period \
 
 ### Coupon duration
 
-A coupon’s duration indicates how long the redeemed [discount](https://docs.stripe.com/api/.md#discounts) is valid for. For example, a coupon for 50% off with a duration of 4 months applies to all invoices in the 4 month period starting when the coupon is first applied. If a customer applies this coupon to a yearly subscription during the coupon’s 4 month period, the 50% discount applies to the entire yearly subscription. In a monthly subscription, the coupon applies to the first 4 months. For a weekly subscription, a 4 month coupon applies to every invoice in the first 4 months.
+A coupon’s duration indicates how long the redeemed [discount](https://docs.stripe.com/api/.md#discounts) is valid for. Duration defaults to `once`, which applies only to the first invoice. Set `duration=repeating` with `duration_in_months` to apply a discount for multiple months, or `duration=forever` to apply it to all invoices indefinitely.
 
-If you’re configuring a coupon’s duration in the API, when you use the value `repeating` you must specify `duration_in_months` as the number of months that the coupon repeatedly applies to. If you set the duration to `once`, the coupon applies only to the first invoice. If you set the duration to `forever`, the coupon applies to all invoices indefinitely.
+For example, a coupon for 50% off with `duration_in_months=4` applies to all invoices in the 4-month period starting when the coupon is first applied. In a monthly subscription, the coupon applies to the first 4 invoices. In a yearly subscription, the 50% discount applies to the entire year if the subscription renews within the 4-month window. In a weekly subscription, it applies to every invoice in the first 4 months.
 
-> When a subscription uses a coupon with `duration=once`, the coupon applies only to the next invoice and is considered used after the invoice finalizes. After the coupon has been applied, the subscription’s `discounts` array no longer includes that discount. Specifically:
-> 
-> - Before a coupon is applied to any invoice, the subscription’s `discounts` includes the discount object.
-- After the invoice that used the coupon is finalized or paid, the subscription’s `discounts` stops showing that discount.
+When a subscription uses a coupon with `duration=once`, the coupon is considered used after the invoice finalizes and is removed from the subscription’s `discounts` array:
+
+- Before the coupon is applied to any invoice, the subscription’s `discounts` includes the discount object.
+- After the invoice finalizes, the subscription’s `discounts` no longer includes that discount.
 - The invoice that consumed the coupon still shows the applied discount on the invoice resource and line items.
-> 
-> This behavior can lead to two commonly observed states: a subscription response that doesn’t show any discount (because a `duration=once` coupon was already consumed), or a subscription response that shows the discount in `discounts` only if the coupon hasn’t been applied.
+
+This means a subscription may appear to have no discount even though a coupon was applied.
 
 > If you apply a coupon to a [backdated subscription](https://docs.stripe.com/billing/subscriptions/backdating.md), the coupon’s duration starts counting from the backdated start date, not from when you make the API call. For `repeating` coupons, this means the backdated period consumes part of the coupon’s duration. The coupon’s `duration_in_months` must be longer than the backdated period if you want the discount to apply to invoices after the backdated period. See [Backdating and discounts](https://docs.stripe.com/billing/subscriptions/backdating.md#backdating-discounts) for more details.
 
 ### Redemption limits
 
-Redemption limits apply to the coupon across every customer. For example, if you limit the number of times a coupon can be redeemed to 50, you can apply it to your customers only 50 times. This can be one time each for 50 different customers, one customer 50 times, or multiple customers multiple times until the max of 50 times.
+Applying a coupon means attaching it directly to a subscription, customer, or invoice using the API or Dashboard. Redeeming a promotion code means a customer enters a code at checkout to activate the underlying coupon. Both actions count toward the same `max_redemptions` limit on the coupon.
 
-If you set a coupon to last forever when a customer uses it but the coupon has an expiration date, any customer given that coupon will have that coupon’s discount forever. No new customers can apply the coupon after the expiration date.
+Redemption limits cap how many times a coupon can be applied across all customers. For example, setting `max_redemptions=50` means the coupon can only be applied 50 times total: once each to 50 different customers, 50 times to the same customer, or any combination until the limit is reached. When using promotion codes, a customer’s redemption of the code counts toward this limit.
+
+If you set a coupon to last forever when a customer uses it, but the coupon has an expiration date, any customer given that coupon has this coupon’s discount forever. New customers can’t apply the coupon after the expiration date.
 
 ## Promotion codes 
 
@@ -432,7 +434,7 @@ curl https://api.stripe.com/v1/subscriptions \
 
 ### Add promotion codes to Checkout
 
-Enable promotion codes with the API by setting the [allow_promotion_codes](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-allow_promotion_codes) parameter in Checkout Sessions. When `allow_promotion_codes` is enabled on a Checkout Session, Checkout includes a promotion code redemption box for your customers to use.
+Enable promotion codes with the API by setting the [allow_promotion_codes](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-allow_promotion_codes) parameter in Checkout Sessions. When `allow_promotion_codes` is enabled on a Checkout Session, Checkout includes a promotion code redemption box for your customers to use.
 ![Promotion code field in Checkout](https://b.stripecdn.com/docs-statics-srv/assets/promo_code_checkout.c07ef6d4f0b1b3f9a8a7e4bbba83d56f.png)
 
 Promotion code field in Checkout

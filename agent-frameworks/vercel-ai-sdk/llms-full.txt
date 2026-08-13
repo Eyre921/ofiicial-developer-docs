@@ -48978,6 +48978,79 @@ AssemblyAI's documentation for per-language availability.
 | `best`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 ---
+title: GMI Cloud
+description: Learn how to use GMI Cloud's models with the AI SDK.
+---
+
+# GMI Cloud Provider
+
+The [GMI Cloud](https://www.gmicloud.ai) provider offers access to open-weight language models through GMI Cloud's GPU inference platform, over an OpenAI-compatible API.
+
+API keys can be obtained from the [GMI Cloud console](https://console.gmicloud.ai).
+
+## Setup
+
+The GMI Cloud provider is available via the `@ai-sdk/gmicloud` module. You can install it with:
+
+<InstallPackages packages="@ai-sdk/gmicloud" />
+
+## Provider Instance
+
+You can import the default provider instance `gmicloud` from `@ai-sdk/gmicloud`:
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+```
+
+For custom configuration, you can import `createGmicloud` and create a provider instance with your settings:
+
+```ts
+import { createGmicloud } from '@ai-sdk/gmicloud';
+
+const gmicloud = createGmicloud({
+  apiKey: process.env.GMI_CLOUD_APIKEY ?? '',
+});
+```
+
+You can use the following optional settings to customize the GMI Cloud provider instance:
+
+- **baseURL** _string_
+
+  Use a different URL prefix for API calls.
+  The default prefix is `https://api.gmi-serving.com/v1`.
+
+- **apiKey** _string_
+
+  API key that is being sent using the `Authorization` header. It defaults to
+  the `GMI_CLOUD_APIKEY` environment variable.
+
+- **headers** _Record&lt;string,string&gt;_
+
+  Custom headers to include in the requests.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation.
+
+## Language Models
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: gmicloud('deepseek-ai/DeepSeek-V4-Flash-0731'),
+  prompt: 'What is the capital of France?',
+});
+```
+
+GMI Cloud serves an evolving catalog of open-weight models, so model ids are typed as `string`. Embedding and image models are not supported.
+
+## Error diagnostics
+
+GMI Cloud's edge reports a generic banner in `error.message` on rejections and nests the backend engine's diagnostic in `error.details`. This provider unwraps the nested diagnostic, so `AI_APICallError.message` carries the engine's reason (e.g. `The request is invalid: Invalid max_tokens value, the valid range of max_tokens is [1, 393216].`) instead of `Backend request failed with status 400`.
+
+---
 title: DeepInfra
 description: Learn how to use DeepInfra's models with the AI SDK.
 ---
@@ -51014,6 +51087,7 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.7-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash-lite`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -51974,6 +52048,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
 | ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.7-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash-lite` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -81351,6 +81426,37 @@ The following optional provider options are available for xAI chat models:
 
   Whether to enable parallel function calling during tool use. When true, the model can call multiple functions in parallel. When false, the model will call functions sequentially. Defaults to `true`.
 
+### Priority Processing
+
+`providerOptions.xai.serviceTier` requests higher scheduling priority, which
+typically lowers time-to-first-token and speeds up inter-token latency. This
+works for both the Responses API (default) and the Chat Completions API
+(`xai.chat()`).
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { generateText } from 'ai';
+
+const { providerMetadata } = await generateText({
+  model: xai('grok-4.6'),
+  prompt: 'Explain quantum entanglement.',
+  providerOptions: {
+    xai: { serviceTier: 'priority' },
+  },
+});
+
+// 'priority' when the request was served at the priority tier,
+// 'default' when priority capacity was unavailable.
+console.log(providerMetadata?.xai?.serviceTier);
+```
+
+Priority requests are billed at a premium per-token rate, and xAI only charges
+that rate when the response confirms the priority tier — so read the applied
+tier back from `providerMetadata.xai.serviceTier` rather than assuming the
+request you sent is the tier you got. Omitting the option is equivalent to
+`'default'`. See xAI's [priority processing
+docs](https://docs.x.ai/developers/advanced-api-usage/priority-processing).
+
 ## Responses API (Agentic Tools)
 
 You can use the xAI Responses API with the `xai.responses(modelId)` factory method for server-side agentic tool calling. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
@@ -81727,6 +81833,10 @@ The following provider options are available:
 - **previousResponseId** _string_
 
   The ID of the previous response from the model. You can use it to continue a conversation.
+
+- **serviceTier** _'default' | 'priority'_
+
+  Scheduling priority for the request. `'priority'` buys lower time-to-first-token and faster inter-token latency at a premium per-token price. The tier xAI actually applied comes back on `providerMetadata.xai.serviceTier`, and is `'default'` when priority capacity was unavailable. See [Priority Processing](https://docs.x.ai/developers/advanced-api-usage/priority-processing).
 
 <Note>
   The Responses API only supports server-side tools. You cannot mix server-side
@@ -91493,6 +91603,79 @@ AssemblyAI's documentation for per-language availability.
 | `best`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 ---
+title: GMI Cloud
+description: Learn how to use GMI Cloud's models with the AI SDK.
+---
+
+# GMI Cloud Provider
+
+The [GMI Cloud](https://www.gmicloud.ai) provider offers access to open-weight language models through GMI Cloud's GPU inference platform, over an OpenAI-compatible API.
+
+API keys can be obtained from the [GMI Cloud console](https://console.gmicloud.ai).
+
+## Setup
+
+The GMI Cloud provider is available via the `@ai-sdk/gmicloud` module. You can install it with:
+
+<InstallPackages packages="@ai-sdk/gmicloud" />
+
+## Provider Instance
+
+You can import the default provider instance `gmicloud` from `@ai-sdk/gmicloud`:
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+```
+
+For custom configuration, you can import `createGmicloud` and create a provider instance with your settings:
+
+```ts
+import { createGmicloud } from '@ai-sdk/gmicloud';
+
+const gmicloud = createGmicloud({
+  apiKey: process.env.GMI_CLOUD_APIKEY ?? '',
+});
+```
+
+You can use the following optional settings to customize the GMI Cloud provider instance:
+
+- **baseURL** _string_
+
+  Use a different URL prefix for API calls.
+  The default prefix is `https://api.gmi-serving.com/v1`.
+
+- **apiKey** _string_
+
+  API key that is being sent using the `Authorization` header. It defaults to
+  the `GMI_CLOUD_APIKEY` environment variable.
+
+- **headers** _Record&lt;string,string&gt;_
+
+  Custom headers to include in the requests.
+
+- **fetch** _FetchFunction_
+
+  Custom fetch implementation.
+
+## Language Models
+
+```ts
+import { gmicloud } from '@ai-sdk/gmicloud';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: gmicloud('deepseek-ai/DeepSeek-V4-Flash-0731'),
+  prompt: 'What is the capital of France?',
+});
+```
+
+GMI Cloud serves an evolving catalog of open-weight models, so model ids are typed as `string`. Embedding and image models are not supported.
+
+## Error diagnostics
+
+GMI Cloud's edge reports a generic banner in `error.message` on rejections and nests the backend engine's diagnostic in `error.details`. This provider unwraps the nested diagnostic, so `AI_APICallError.message` carries the engine's reason (e.g. `The request is invalid: Invalid max_tokens value, the valid range of max_tokens is [1, 393216].`) instead of `Backend request failed with status 400`.
+
+---
 title: DeepInfra
 description: Learn how to use DeepInfra's models with the AI SDK.
 ---
@@ -94110,6 +94293,7 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.7-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash-lite`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -96038,6 +96222,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
 | ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.7-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash-lite` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -100974,6 +101159,52 @@ console.log(text);
 
 See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
 
+### Video Input
+
+Kimi K3, Kimi K2.7 Code, Kimi K2.6, and Kimi K2.5 support video input. Pass the video as a `file` content part with a video media type:
+
+```ts
+import { moonshotai } from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+import fs from 'node:fs';
+
+const { text } = await generateText({
+  model: moonshotai('kimi-k3'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Summarize what happens in this video.' },
+        {
+          type: 'file',
+          data: fs.readFileSync('./video.mp4'),
+          mediaType: 'video/mp4',
+        },
+      ],
+    },
+  ],
+});
+
+console.log(text);
+```
+
+You can also pass a URL. Since Moonshot AI does not fetch external URLs, the AI SDK downloads the video and inlines it as base64 before sending:
+
+```ts
+{
+  type: 'file',
+  data: new URL('https://example.com/video.mp4'),
+  mediaType: 'video/mp4',
+}
+```
+
+<Note>
+  Moonshot AI recommends videos up to 1080p. For larger videos, or videos you
+  reuse across many requests, upload them with the [Moonshot Files
+  API](https://platform.moonshot.ai/docs/api/files) instead. Audio and PDF
+  inputs are not supported by Moonshot AI chat completions.
+</Note>
+
 ### Provider Options
 
 The following optional provider options are available for Moonshot AI language models:
@@ -100998,21 +101229,24 @@ The following optional provider options are available for Moonshot AI language m
   Controls how reasoning history is handled in multi-turn conversations:
   - `'disabled'`: Remove reasoning from history
   - `'interleaved'`: Include reasoning between tool calls within a single turn
-  - `'preserved'`: Keep all reasoning in history
+  - `'preserved'`: Keep all reasoning in history. Mapped to Moonshot's
+    `thinking.keep: 'all'` request field.
 
 ## Model Capabilities
 
-| Model                    | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `moonshot-v1-8k`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-32k`        | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-128k`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-turbo`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                    | Image Input         | Video Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `moonshot-v1-8k`         | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-32k`        | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `moonshot-v1-128k`       | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2`                | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2-thinking`       | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2-turbo`          | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.6`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k2.7-code`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
@@ -139109,6 +139343,37 @@ The AI SDK option accepts these values, but each xAI model supports a subset:
   current details.
 </Note>
 
+### Priority Processing
+
+`providerOptions.xai.serviceTier` requests higher scheduling priority, which
+typically lowers time-to-first-token and speeds up inter-token latency. This
+works for both the Responses API (default) and the Chat Completions API
+(`xai.chat()`).
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { generateText } from 'ai';
+
+const { providerMetadata } = await generateText({
+  model: xai('grok-4.6'),
+  prompt: 'Explain quantum entanglement.',
+  providerOptions: {
+    xai: { serviceTier: 'priority' },
+  },
+});
+
+// 'priority' when the request was served at the priority tier,
+// 'default' when priority capacity was unavailable.
+console.log(providerMetadata?.xai?.serviceTier);
+```
+
+Priority requests are billed at a premium per-token rate, and xAI only charges
+that rate when the response confirms the priority tier — so read the applied
+tier back from `providerMetadata.xai.serviceTier` rather than assuming the
+request you sent is the tier you got. Omitting the option is equivalent to
+`'default'`. See xAI's [priority processing
+docs](https://docs.x.ai/developers/advanced-api-usage/priority-processing).
+
 ## Realtime Models
 
 <Note type="warning">Realtime is an experimental feature.</Note>
@@ -139555,6 +139820,10 @@ The following provider options are available:
 - **previousResponseId** _string_
 
   The ID of the previous response from the model. You can use it to continue a conversation.
+
+- **serviceTier** _'default' | 'priority'_
+
+  Scheduling priority for the request. `'priority'` buys lower time-to-first-token and faster inter-token latency at a premium per-token price. The tier xAI actually applied comes back on `providerMetadata.xai.serviceTier`, and is `'default'` when priority capacity was unavailable. See [Priority Processing](https://docs.x.ai/developers/advanced-api-usage/priority-processing).
 
 <Note>
   The Responses API only supports server-side tools. You cannot mix server-side
@@ -140366,122 +140635,6 @@ is capped at `720p` — a `1080p` request is downgraded with a warning.
 <Note>
   You can also pass any available provider model ID as a string if needed.
 </Note>
-
----
-title: Vercel
-description: Learn how to use Vercel's v0 models with the AI SDK.
----
-
-# Vercel Provider
-
-The [Vercel](https://vercel.com) provider gives you access to the [v0 API](https://v0.app/docs/api/model), designed for building modern web applications. The v0 models support text and image inputs and provide fast streaming responses.
-
-You can create your Vercel API key at [v0.dev](https://v0.dev/chat/settings/keys).
-
-<Note>
-  The v0 API is currently in beta and requires a Premium or Team plan with
-  usage-based billing enabled. For details, visit the [pricing
-  page](https://v0.dev/pricing). To request a higher limit, contact Vercel at
-  support@v0.dev.
-</Note>
-
-## Features
-
-- **Framework aware completions**: Evaluated on modern stacks like Next.js and Vercel
-- **Auto-fix**: Identifies and corrects common coding issues during generation
-- **Quick edit**: Streams inline edits as they're available
-- **Multimodal**: Supports both text and image inputs
-
-## Setup
-
-The Vercel provider is available via the `@ai-sdk/vercel` module. You can install it with:
-
-<InstallPackages packages="@ai-sdk/vercel" />
-
-## Provider Instance
-
-You can import the default provider instance `vercel` from `@ai-sdk/vercel`:
-
-```ts
-import { vercel } from '@ai-sdk/vercel';
-```
-
-If you need a customized setup, you can import `createVercel` from `@ai-sdk/vercel` and create a provider instance with your settings:
-
-```ts
-import { createVercel } from '@ai-sdk/vercel';
-
-const vercel = createVercel({
-  apiKey: process.env.VERCEL_API_KEY ?? '',
-});
-```
-
-You can use the following optional settings to customize the Vercel provider instance:
-
-- **baseURL** _string_
-
-  Use a different URL prefix for API calls. The default prefix is `https://api.v0.dev/v1`.
-
-- **apiKey** _string_
-
-  API key that is being sent using the `Authorization` header. It defaults to
-  the `VERCEL_API_KEY` environment variable.
-
-- **headers** _Record&lt;string,string&gt;_
-
-  Custom headers to include in the requests.
-
-- **fetch** _(input: RequestInfo, init?: RequestInit) => Promise&lt;Response&gt;_
-
-  Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
-  Defaults to the global `fetch` function.
-  You can use it as a middleware to intercept requests,
-  or to provide a custom fetch implementation for e.g. testing.
-
-## Language Models
-
-You can create language models using a provider instance. The first argument is the model ID, for example:
-
-```ts
-import { vercel } from '@ai-sdk/vercel';
-import { generateText } from 'ai';
-
-const { text } = await generateText({
-  model: vercel('v0-1.5-md'),
-  prompt: 'Create a Next.js AI chatbot',
-});
-```
-
-Vercel language models can also be used in the `streamText` function (see [AI SDK Core](/docs/ai-sdk-core)).
-
-## Models
-
-### v0-1.5-md
-
-The `v0-1.5-md` model is for everyday tasks and UI generation.
-
-### v0-1.5-lg
-
-The `v0-1.5-lg` model is for advanced thinking or reasoning.
-
-### v0-1.0-md (legacy)
-
-The `v0-1.0-md` model is the legacy model served by the v0 API.
-
-All v0 models have the following capabilities:
-
-- Supports text and image inputs (multimodal)
-- Supports function/tool calls
-- Streaming responses with low latency
-- Optimized for frontend and full-stack web development
-
-## Model Capabilities
-
-| Model       | Image Input | Object Generation | Tool Usage | Tool Streaming |
-| ----------- | ----------- | ----------------- | ---------- | -------------- |
-| `v0-1.5-md` | <Check />   | <Check />         | <Check />  | <Check />      |
-| `v0-1.5-lg` | <Check />   | <Check />         | <Check />  | <Check />      |
-| `v0-1.0-md` | <Check />   | <Check />         | <Check />  | <Check />      |
 
 ---
 title: OpenAI
@@ -152441,6 +152594,7 @@ The following Zod features are known to not work with Google:
 
 | Model                                 | Image Input | Object Generation | Tool Usage | Tool Streaming | Google Search | URL Context |
 | ------------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------- | ----------- |
+| `gemini-3.7-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.6-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.5-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.5-flash-lite`               | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
@@ -154588,6 +154742,7 @@ The following Zod features are known to not work with Google Vertex:
 
 | Model                   | Image Input | Object Generation | Tool Usage | Tool Streaming |
 | ----------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `gemini-3.7-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.6-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.5-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
 | `gemini-3.5-flash-lite` | <Check />   | <Check />         | <Check />  | <Check />      |
@@ -163287,7 +163442,7 @@ const harness = createClaudeCode({
 
 Settings:
 
-- `auth`: direct Anthropic or AI Gateway authentication settings.
+- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: Anthropic model id passed to the underlying Claude Code runtime.
 - `maxTurns`: maximum internal turns before yielding.
@@ -163306,8 +163461,13 @@ Settings:
 
 ## Authentication
 
-By default, authentication is resolved from the host environment and forwarded
-to the sandbox bridge. The adapter checks for AI Gateway and Anthropic credentials.
+The `auth` setting selects how credentials are resolved from the host
+environment:
+
+- `auto` (default): use AI Gateway credentials when available, then fall back
+  to direct Anthropic credentials.
+- `direct`: use Anthropic credentials.
+- `ai-gateway`: use AI Gateway credentials.
 
 Supported environment variables:
 
@@ -163318,16 +163478,11 @@ Supported environment variables:
 - `ANTHROPIC_AUTH_TOKEN`
 - `ANTHROPIC_BASE_URL`
 
-You can also pass explicit auth settings:
+Select a specific authentication mode when you do not want automatic detection:
 
 ```ts
-const harness = createClaudeCode({
-  auth: {
-    gateway: {
-      apiKey: process.env.AI_GATEWAY_API_KEY,
-    },
-  },
-});
+const directHarness = createClaudeCode({ auth: 'direct' });
+const gatewayHarness = createClaudeCode({ auth: 'ai-gateway' });
 ```
 
 ## Sandbox
@@ -163453,7 +163608,7 @@ const harness = createCodex({
 
 Settings:
 
-- `auth`: OpenAI, OpenAI-compatible, or AI Gateway authentication settings.
+- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenAI model id. If omitted, the adapter uses its pinned default.
 - `reasoningEffort`: `low`, `medium`, or `high`.
@@ -163467,8 +163622,13 @@ Settings:
 
 ## Authentication
 
-By default, authentication is resolved from the host environment and forwarded
-to the sandbox bridge. The adapter checks for AI Gateway and OpenAI credentials.
+The `auth` setting selects how credentials are resolved from the host
+environment:
+
+- `auto` (default): use AI Gateway credentials when available, then fall back
+  to direct OpenAI credentials.
+- `direct`: use OpenAI credentials.
+- `ai-gateway`: use AI Gateway credentials.
 
 Supported environment variables:
 
@@ -163481,19 +163641,14 @@ Supported environment variables:
 - `OPENAI_ORGANIZATION`
 - `OPENAI_PROJECT`
 
-You can also pass explicit auth settings:
+Select a specific authentication mode when you do not want automatic detection:
 
 ```ts
-const harness = createCodex({
-  auth: {
-    openai: {
-      apiKey: process.env.OPENAI_API_KEY,
-    },
-  },
-});
+const directHarness = createCodex({ auth: 'direct' });
+const gatewayHarness = createCodex({ auth: 'ai-gateway' });
 ```
 
-For OpenAI-compatible endpoints, use `auth.openaiCompatible`.
+For OpenAI-compatible endpoints, select `direct` and set `OPENAI_BASE_URL`.
 
 ## Sandbox
 
@@ -163619,7 +163774,8 @@ const harness = createPi({
 
 Settings:
 
-- `auth`: AI Gateway or custom provider environment configuration.
+- `auth`: authentication mode: `auto`, `openai`, `anthropic`, `custom`, or
+  `ai-gateway`.
 - `extensionFactories`: trusted inline Pi extension factories that run in the
   host Node.js process.
 - `mcpServers`: MCP server definitions keyed by server name.
@@ -163655,23 +163811,25 @@ prompt templates also remain disabled.
 
 ## Authentication
 
-Pi can use AI Gateway credentials or custom provider environment variables.
-When no explicit auth is configured, it checks the host environment for
-`AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN`.
+The `auth` setting selects which credentials Pi reads from the host environment:
+
+- `auto` (default): use AI Gateway credentials when available, then fall back
+  to all provider credentials found in the environment.
+- `openai`: use `OPENAI_API_KEY` and the optional `OPENAI_BASE_URL`.
+- `anthropic`: use `ANTHROPIC_API_KEY` and the optional
+  `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_BASE_URL`.
+- `custom`: register all providers configured through environment variables.
+- `ai-gateway`: use `AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` and the
+  optional `AI_GATEWAY_BASE_URL`.
 
 ```ts
-const harness = createPi({
-  auth: {
-    gateway: {
-      apiKey: process.env.AI_GATEWAY_API_KEY,
-    },
-  },
-});
+const harness = createPi({ auth: 'ai-gateway' });
 ```
 
-For multiple providers, pass `auth.customEnv` with standard environment pairs
-such as `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `ANTHROPIC_API_KEY`, or
-`ANTHROPIC_BASE_URL`.
+With `custom`, standard providers use environment variables such as
+`OPENAI_API_KEY`, `OPENAI_BASE_URL`, `ANTHROPIC_API_KEY`, and
+`ANTHROPIC_BASE_URL`. Other providers use a `<PREFIX>_API_KEY` and matching
+`<PREFIX>_BASE_URL` pair.
 
 ## Sandbox
 
@@ -163797,8 +163955,7 @@ const harness = createOpenCode({
 
 Settings:
 
-- `auth`: Anthropic, OpenAI, OpenAI-compatible, or AI Gateway authentication
-  settings.
+- `auth`: authentication mode: `auto`, `anthropic`, `openai`, or `ai-gateway`.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenCode model id. Provider-prefixed values such as
   `anthropic/claude-sonnet-4-6` are passed through to OpenCode.
@@ -163814,9 +163971,14 @@ Settings:
 
 ## Authentication
 
-By default, authentication is resolved from the host environment and forwarded
-to the sandbox bridge. The adapter checks for AI Gateway, Anthropic, and OpenAI
-credentials.
+The `auth` setting selects how credentials are resolved from the host
+environment:
+
+- `auto` (default): use AI Gateway credentials when available, then use the
+  credentials for the selected model provider.
+- `anthropic`: use Anthropic credentials.
+- `openai`: use OpenAI credentials.
+- `ai-gateway`: use AI Gateway credentials.
 
 Supported environment variables:
 
@@ -163831,20 +163993,15 @@ Supported environment variables:
 - `OPENAI_ORGANIZATION`
 - `OPENAI_PROJECT`
 
-You can also pass explicit auth settings:
+Select a specific authentication mode when you do not want automatic detection:
 
 ```ts
-const harness = createOpenCode({
-  auth: {
-    gateway: {
-      apiKey: process.env.AI_GATEWAY_API_KEY,
-    },
-  },
-});
+const anthropicHarness = createOpenCode({ auth: 'anthropic' });
+const openAIHarness = createOpenCode({ auth: 'openai' });
+const gatewayHarness = createOpenCode({ auth: 'ai-gateway' });
 ```
 
-For OpenAI-compatible endpoints, use `auth.openaiCompatible` and set `name` to
-the OpenCode provider id.
+For OpenAI-compatible endpoints, select `openai` and set `OPENAI_BASE_URL`.
 
 ## Sandbox
 
@@ -163974,7 +164131,7 @@ const harness = createDeepAgents({
 
 Settings:
 
-- `auth`: Anthropic or AI Gateway authentication settings.
+- `auth`: authentication mode: `auto`, `anthropic`, or `ai-gateway`.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: model id passed to the Deep Agents (LangChain) runtime. Through AI
   Gateway, use the `creator/model` slug (e.g. `anthropic/claude-sonnet-4-6`,
@@ -163992,10 +164149,15 @@ Settings:
 
 Deep Agents always drives the Anthropic client. Non-Anthropic models reach it
 through AI Gateway's Anthropic-compatible endpoint, which translates to any
-model (Gemini, OpenAI, etc.), tool calls included. Authentication is resolved
-from the host environment and forwarded to the sandbox bridge: explicit
-Anthropic auth first, then AI Gateway credentials, then ambient Anthropic
-credentials.
+model (Gemini, OpenAI, etc.), tool calls included.
+
+The `auth` setting selects how credentials are resolved from the host
+environment:
+
+- `auto` (default): use AI Gateway credentials when available, then fall back
+  to Anthropic credentials.
+- `anthropic`: use Anthropic credentials.
+- `ai-gateway`: use AI Gateway credentials.
 
 Supported environment variables:
 
@@ -164006,17 +164168,12 @@ Supported environment variables:
 - `ANTHROPIC_AUTH_TOKEN`
 - `ANTHROPIC_BASE_URL`
 
-You can also pass explicit auth settings (`anthropic` or `gateway`). To run a
-non-Anthropic model, route it through AI Gateway:
+To run a non-Anthropic model, select `ai-gateway`:
 
 ```ts
 const harness = createDeepAgents({
   model: 'google/gemini-2.5-flash',
-  auth: {
-    gateway: {
-      apiKey: process.env.AI_GATEWAY_API_KEY,
-    },
-  },
+  auth: 'ai-gateway',
 });
 ```
 

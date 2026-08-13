@@ -64,7 +64,7 @@ Track and manage your invoices
 
 You can turn on automatic email reminders for unpaid, one-off invoices. You can schedule reminders to be sent prior to an invoice’s due date, on the due date, or after. Learn more about [automatic reminders](https://docs.stripe.com/invoicing/automatic-collection.md#automatic-reminders-for-one-off-invoices).
 
-You can choose to [automatically charge](https://docs.stripe.com/invoicing/automatic-charging.md) your customer’s payment method on file. For one-off invoices that are charged automatically, you can turn on Smart Retries or scheduled retries to automatically re-attempt the payment if it fails on the first attempt.
+You can [automatically charge](https://docs.stripe.com/invoicing/automatic-charging.md) your customer’s payment method on file. For one-off invoices that are charged automatically, you can turn on Smart Retries or scheduled retries to automatically re-attempt the payment if it fails on the first attempt.
 ![Automate invoicing](https://b.stripecdn.com/docs-statics-srv/assets/advanced-invoicing-features.70dfe42ac952e7924876201c06e5902d.png)
 
 Automate invoicing

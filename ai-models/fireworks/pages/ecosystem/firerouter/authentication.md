@@ -13,9 +13,12 @@ FireRouter uses a **bring-your-own-key** contract. The service validates your Fi
 | Key                              | Header or env                                    | Used for                                           |
 | -------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
 | Fireworks API key (`fw_...`)     | `Authorization: Bearer` or `X-Fireworks-Api-Key` | FireRouter auth and redirected Fireworks inference |
-| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Claude pass-through                                |
+| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Calls to Claude models                             |
+| OpenAI API key (`sk-...`)        | `x-openai-api-key`                               | Calls to OpenAI models                             |
 
-The FireRouter model currently routes pass-through requests to **Claude Opus 4.8** (`claude-opus-4-8`), so an Anthropic key is required on every request. This pass-through model is subject to change.
+The default `firerouter` model uses **Claude Opus 5** as its primary model, so every request requires an Anthropic key. FireRouter fails closed when the primary model's credential is missing; it does not silently restrict the route to Fireworks models.
+
+For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), the first model's credential is required. Later models are eligible only when their credentials are present. Slugs that contain only Fireworks models need no additional provider key beyond the Fireworks API key.
 
 ## Fireworks key header
 
@@ -27,7 +30,7 @@ Send your Fireworks API key with either header:
 -H "X-Fireworks-Api-Key: $FIREWORKS_API_KEY"
 ```
 
-The legacy header `X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
+`X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
 
 ## Anthropic provider key
 
@@ -49,13 +52,36 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -d '{"model": "firerouter", "messages": [...]}'
 ```
 
+## OpenAI provider key
+
+When the selected FireRouter slug includes an OpenAI model, send your OpenAI API key as:
+
+```bash theme={null}
+-H "x-openai-api-key: $OPENAI_API_KEY"
+```
+
+Do not put the OpenAI provider key in the OpenAI client's `api_key` field. That field supplies the `Authorization` header used to authenticate to the Fireworks gateway, so it must contain your Fireworks API key. Pass the OpenAI provider key as a custom header:
+
+```python theme={null}
+import os
+
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+    default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
+)
+```
+
 ## Common errors
 
-| Response                             | Cause                                 | Fix                                                                                           |
-| ------------------------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `401 Missing Fireworks API key`      | Fireworks key header missing or empty | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
-| `401 invalid Fireworks API key`      | Key rejected                          | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
-| Pass-through fails with provider 401 | Anthropic key missing or wrong header | Send the Anthropic key as `x-anthropic-api-key`                                               |
+| Response                        | Cause                                                        | Fix                                                                                           |
+| ------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `401 Missing Fireworks API key` | Fireworks key header missing or empty                        | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
+| `401 invalid Fireworks API key` | Key rejected                                                 | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
+| `400` with `no_credential`      | Required provider key missing or sent under the wrong header | Send the key under the provider-specific header                                               |
+| Provider `401`                  | Provider key is invalid                                      | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                             |
 
 ## Related
 

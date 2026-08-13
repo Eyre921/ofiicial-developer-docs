@@ -20061,6 +20061,12 @@ Manage Neon Auth.
 | `neon neon-auth user delete <user-id>`          | Delete an auth user                 |
 | `neon neon-auth user set-role <user-id>`        | Set roles for an auth user          |
 
+### open
+
+Open the linked project in the Neon Console.
+
+Usage: `neon open [options]`
+
 ### operations (alias: `operation`)
 
 Manage operations.
@@ -24047,6 +24053,46 @@ neon neon-auth user set-role <user-id> [options]
 
 ```bash
 neon neon-auth user set-role <user-id> --roles admin
+```
+
+--- [Document source](https://neon.com/docs/cli/open.md) ---
+
+> Summary: The Neon CLI `open` command opens your linked project's dashboard in the Neon Console in your default browser. It resolves the project from your local `.neon` context file, or from an explicit `--project-id`. Use it to jump from the terminal to the Console without looking up the project URL.
+
+# Neon CLI command: open
+
+Open the linked project in the Neon Console in your browser
+
+The `open` command opens the linked project's dashboard in the [Neon Console](https://console.neon.tech) in your default browser. It resolves the project from your local `.neon` [context file](https://neon.com/docs/cli/set-context), so run [`neon link`](https://neon.com/docs/cli/link) or [`neon set-context`](https://neon.com/docs/cli/set-context) first, or pass `--project-id` to target a project directly. If no project is linked and you don't pass `--project-id`, the command tells you to run `neon link`.
+
+## Usage
+
+```bash
+neon open [options]
+```
+
+## Options
+
+| Option         | Description                                          | Type   | Default | Required |
+| -------------- | ---------------------------------------------------- | ------ | ------- | :------: |
+| `--project-id` | Project ID (defaults to the project linked in .neon) | string | —       |    No    |
+
+## Examples
+
+Open the project linked in the current directory's `.neon` context file:
+
+```bash
+neon open
+```
+
+```text
+INFO: Opening https://console.neon.tech/app/projects/cold-grass-40154007 in your browser.
+```
+
+Open a specific project without relying on the linked context:
+
+```bash
+neon open --project-id cold-grass-40154007
 ```
 
 --- [Document source](https://neon.com/docs/cli/operations.md) ---
@@ -110687,8 +110733,7 @@ The **Replication delay seconds** graph shows the time delay, in seconds, betwee
 
 ![compute cache hit rate graph](https://neon.com/docs/introduction/compute_cache_hit_rate.png)
 
-The **Compute cache hit rate** graph shows the percentage of read requests served from your compute's cache.
-Queries not served from the compute cache retrieve data from storage, which is more costly and can result in slower query performance. To learn more about how Neon caches data, see [Monitoring compute cache usage](https://neon.com/docs/extensions/neon#monitoring-compute-cache-usage).
+The **Compute cache hit rate** graph shows the percentage of read requests served from your [compute cache](https://neon.com/docs/reference/glossary#compute-cache) rather than from storage. Reads served from storage are more costly and can result in slower query performance. To learn more about how Neon caches data, see [Monitoring compute cache usage](https://neon.com/docs/extensions/neon#monitoring-compute-cache-usage).
 
 ## Working set size
 
@@ -110701,9 +110746,9 @@ The **Working set size** graph visualizes the amount of data accessed (calculate
 - **5m** (5 minutes): This line shows the data accessed in the last 5 minutes.
 - **15m** (15 minutes): Similar to the 5-minute window, this metric tracks the data accessed in the last 15 minutes.
 - **1h** (1 hour): This line represents the data accessed in the last hour.
-- **Compute cache size**: This is the size of your compute cache, which is determined by the size of your compute. Larger computes have larger caches. For cache sizes, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
-  For optimal performance the compute cache should be larger than your working set size for a given time interval.
-  If your working set size is larger than the compute cache size it is recommended to increase the maximum size of the compute to improve the cache hit rate and achieve good performance.
+- **Compute cache size**: The size of your compute cache, determined by the size of your compute. Larger computes have larger caches. For cache sizes, see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute).
+
+For optimal performance your compute cache should be larger than your working set size for a given time interval. If your working set size is larger than the compute cache size it is recommended to increase the maximum size of the compute to improve the cache hit rate and achieve good performance.
 
 If your workload pattern doesn't change much over time it is recommended to compare the 1h time interval working set size with the compute cache size and make sure that working set size is smaller than the compute cache size.
 

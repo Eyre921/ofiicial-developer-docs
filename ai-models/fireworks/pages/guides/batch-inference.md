@@ -48,10 +48,11 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     **Requirements:**
 
     * **File format:** JSONL (each line is a valid JSON object)
-    * **Size limit:** Under 1GB
+    * **Size limit:** Up to 80 GiB
     * **Required fields:** `custom_id` (unique) and `body` (request parameters)
+    * **Input mode:** `body.messages` (standard) or `body.prompt_token_ids` (pre-tokenized) — mutually exclusive
 
-    **Example dataset:**
+    **Example dataset (messages):**
 
     ```json theme={null}
     {"custom_id": "request-1", "body": {"messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "What is the capital of France?"}], "max_tokens": 100}}
@@ -59,11 +60,31 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     {"custom_id": "request-3", "body": {"messages": [{"role": "user", "content": "Tell me a joke"}]}}
     ```
 
-    Save as `batch_input_data.jsonl` locally.
-
     <Tip>
       If every row shares the same `system` message, you can omit it from the dataset and set it once at the job level with `--system-prompt` instead — see [Job-level system prompt](#job-level-system-prompt). This shrinks your upload and keeps prompt-caching intact.
     </Tip>
+
+    **Example dataset (pre-tokenized):**
+
+    When you need byte-identical inputs (e.g. a custom tokenizer or renderer), use `prompt_token_ids` instead of `messages`. The server skips chat-template rendering and feeds your token IDs directly to generation. Mutually exclusive with `messages` — do not include both.
+
+    ```json theme={null}
+    {"custom_id": "request-1", "body": {"prompt_token_ids": [163587, 2482, 163601, 71079, 17522, 13], "max_tokens": 100}}
+    ```
+
+    <Warning>
+      Token IDs must be valid for the vocabulary of the **specific model** the job targets. An out-of-vocabulary ID fails that row with a terminal 400 (no retry), so re-tokenize when you change models.
+    </Warning>
+
+    <Warning>
+      A job-level `system_prompt` cannot be combined with `prompt_token_ids` — the prompt is already tokenized, so there is nowhere to prepend a system message. Set `system_prompt` only for `messages`-based jobs.
+    </Warning>
+
+    <Warning>
+      Set `user` or `prompt_cache_key` in the body. Without message text, the gateway has nothing to hash for content-based cache affinity, so each row routes independently and prompt-cache hit rates drop.
+    </Warning>
+
+    Save as `batch_input_data.jsonl` locally.
   </Accordion>
 
   <Accordion title="2. Upload Your Dataset">
@@ -235,7 +256,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 
 Set one static `system` message for the entire job instead of repeating it on every dataset row. When provided, the batch runner injects it as a leading `system` message into **every input row that does not already begin with a `system` message** — a row's own leading `system` message always takes precedence, so you can override the job-level prompt per-row when needed.
 
-This is useful when all rows share a large, fixed system prompt (e.g. a rubric or output-schema spec). Removing it from every row shrinks the input dataset (less upload, stays under the 1GB limit), and because the injected prefix is byte-identical across rows, [prompt caching](/guides/prompt-caching) still applies.
+This is useful when all rows share a large, fixed system prompt (e.g. a rubric or output-schema spec). Removing it from every row shrinks the input dataset (less upload, stays under the 80 GiB limit), and because the injected prefix is byte-identical across rows, [prompt caching](/guides/prompt-caching) still applies.
 
 ```bash theme={null}
 firectl batch-inference-job create \
@@ -292,7 +313,7 @@ The equivalent HTTP field is `systemPrompt`:
 
   <Accordion title="Limits and constraints">
     * **Per-request limits:** Same as [Chat Completion API limits](/api-reference/post-chatcompletions)
-    * **Input dataset:** Max 1GB
+    * **Input dataset:** Up to 80 GiB
     * **Output dataset:** Max 8GB (job may expire early if limit is reached)
     * **Job expiration:** Select from 12, 24, 48, 72 hours maximum in Optional Settings
   </Accordion>

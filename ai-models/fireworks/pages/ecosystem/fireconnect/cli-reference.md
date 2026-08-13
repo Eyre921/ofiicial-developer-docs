@@ -107,7 +107,7 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
 
 FireRouter flags (when using `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 4.8 pass-through (where the harness supports it)
+* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 5 pass-through (where the harness supports it)
 * `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution

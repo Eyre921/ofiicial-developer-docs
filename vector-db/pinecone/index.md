@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 575 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 576 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -233,6 +233,7 @@
 - `guides/search/full-text-search` — [Full-text search](pages/guides/search/full-text-search.md) · [原文](https://docs.pinecone.io/guides/search/full-text-search)
 - `guides/search/hybrid-search` — [Hybrid search](pages/guides/search/hybrid-search.md) · [原文](https://docs.pinecone.io/guides/search/hybrid-search)
 - `guides/search/lexical-search` — [Lexical search](pages/guides/search/lexical-search.md) · [原文](https://docs.pinecone.io/guides/search/lexical-search)
+- `guides/search/reciprocal-rank-fusion` — [Reciprocal rank fusion](pages/guides/search/reciprocal-rank-fusion.md) · [原文](https://docs.pinecone.io/guides/search/reciprocal-rank-fusion)
 - `guides/search/rerank-results` — [Rerank results](pages/guides/search/rerank-results.md) · [原文](https://docs.pinecone.io/guides/search/rerank-results)
 - `guides/search/search-overview` — [Search overview](pages/guides/search/search-overview.md) · [原文](https://docs.pinecone.io/guides/search/search-overview)
 - `guides/search/semantic-search` — [Semantic search](pages/guides/search/semantic-search.md) · [原文](https://docs.pinecone.io/guides/search/semantic-search)

@@ -37,7 +37,6 @@ export const connector = connectors.mcp({
     langchainDocs: {
       transport: "http",
       url: "https://docs.langchain.com/mcp",
-      includeTools: ["search_docs_by_lang_chain"],
     },
   },
 });

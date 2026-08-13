@@ -77,7 +77,7 @@ Route requests through [FireRouter](/ecosystem/firerouter/overview):
 
 ```bash theme={null}
 fireconnect codex on --model firerouter
-export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
+export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 5
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
 ```
 

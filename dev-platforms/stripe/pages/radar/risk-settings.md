@@ -155,27 +155,27 @@ Radar runs your Radar rules on payments made to your platform, including transac
 
 To apply your Radar rules on transactions where your connected account is the merchant of record, such as [direct charges](https://docs.stripe.com/connect/charges.md#direct), do the following:
 
-1. In the Dashboard, go to **Settings** > [Radar](https://dashboard.stripe.com/settings/radar).
-2. Under **Platform controls for direct charges**, click **Update configuration** for **Platform payments controls**.
-3. Choose how you want to manage fraud prevention:
+1. In the Stripe Dashboard, go to **Settings** > [Radar](https://dashboard.stripe.com/settings/radar).
+2. Under **Platform controls for direct charges** > **Platform payments controls**, click **Update configuration**.
+3. Choose who can manage fraud prevention on connected account transactions:
    - **Only connected accounts**
-     - Connected accounts manage Radar rules, settings, and tiers.
+     - Connected accounts manage their own Radar rules, settings, and plan.
      - The Radar rules and settings for your connected accounts apply to all payments, including direct charges on connected accounts.
-     - If your platform pays the fees for your connected accounts, you can choose whether your connected accounts use Radar Lite instead of their own Radar tiers. Enabling Radar Lite prevents connected accounts from incurring fees on platform transactions.
-     - You can also choose whether your connected accounts can see Radar in their Dashboard. For more information, see [Hide Radar from connected accounts](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
+     - If your platform pays the fees for your connected accounts, you can override connected account plans with the free Radar Lite plan.
+     - You can choose whether your connected accounts [can see Radar in their Dashboard](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
    - **Only my platform**
-     - Your platform manages Radar rules, settings, and tiers.
+     - Your platform manages Radar rules, settings, and plans.
      - Your Radar rules and settings apply to all payments, including direct charges on connected accounts.
      - Your connected accounts can’t manage Radar, write their own rules, or change Radar settings.
      - Connected accounts can’t see your rules, but they can see when a platform rule blocked their payments.
      - This setting overrides a connected account’s Radar rules, if they exist.
-     - You can choose whether your connected accounts can see Radar in their Dashboard. For more information, see [Hide Radar from connected accounts](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
+     - You can choose whether your connected accounts [can see Radar in their Dashboard](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
    - **Both my platform and connected accounts**
-     - Your platform and the connected accounts manage Radar rules, settings, and tiers.
+     - Your platform and connected accounts manage Radar rules, settings, and plans.
      - Your Radar rules and settings apply to all payments, including direct charges on connected accounts.
      - Connected accounts can configure Radar rules.
      - Radar evaluates platform and connected account rules as a single rule set, with platform rules evaluated first. Rules follow [transaction rule processing and ordering](https://docs.stripe.com/radar/rules/reference.md#transaction-rule-processing-and-ordering), so a platform allow rule overrides a connected account block rule, and a connected account allow rule overrides a platform block rule.
-4. Click **Update configuration**.
+4. Click **Confirm**.
 
 > These settings apply only to connected accounts controlled solely by your platform.
 

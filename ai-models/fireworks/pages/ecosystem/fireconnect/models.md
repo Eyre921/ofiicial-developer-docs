@@ -46,14 +46,14 @@ Prefer `*-latest` / `*-fast-latest` unless you need a pin. Browse live IDs and p
 
 ## Which model when
 
-| ID                  | Use when                                                          | Notes                                                  |
-| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------------ |
-| `kimi-fast-latest`  | Default interactive coding; screenshots / UI                      | Vision. Default for most harnesses and Claude `fable`. |
-| `kimi-latest`       | Strong agentic coding with vision, lower \$/token than Fast       | Vision. Standard path.                                 |
-| `glm-fast-latest`   | Fast text-only agent loops (Claude `opus` / `sonnet` defaults)    | Text-only. 1M context.                                 |
-| `glm-latest`        | Cheaper text-only coding / long context                           | Text-only. Same family as Fast at standard price.      |
-| `deepseek-v4-flash` | Haiku / subagent / high-volume background work                    | Text-only. Lowest cost in the coding catalog.          |
-| `firerouter`        | Auto-route easy work to open models, hard work to Claude Opus 4.8 | See [FireRouter](/ecosystem/firerouter/overview).      |
+| ID                  | Use when                                                        | Notes                                                  |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------ |
+| `kimi-fast-latest`  | Default interactive coding; screenshots / UI                    | Vision. Default for most harnesses and Claude `fable`. |
+| `kimi-latest`       | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                 |
+| `glm-fast-latest`   | Fast text-only agent loops (Claude `opus` / `sonnet` defaults)  | Text-only. 1M context.                                 |
+| `glm-latest`        | Cheaper text-only coding / long context                         | Text-only. Same family as Fast at standard price.      |
+| `deepseek-v4-flash` | Haiku / subagent / high-volume background work                  | Text-only. Lowest cost in the coding catalog.          |
+| `firerouter`        | Auto-route easy work to open models, hard work to Claude Opus 5 | See [FireRouter](/ecosystem/firerouter/overview).      |
 
 Also useful from `fireconnect model list`: `minimax-latest` / `qwen-plus-latest` (cheaper vision), `deepseek-v4-pro` (stronger text coding than Flash), `kimi-k2p7-code` / `kimi-k2p7-code-fast` (code-focused Kimi).
 

@@ -124,6 +124,8 @@ Returns either transcription results, or a request_id when using a callback.
             - `start` (double, optional)
             - `end` (double, optional)
             - `confidence` (double, optional)
+            - `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
+            - `speaker_confidence` (double, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
           - `paragraphs` (object, optional)
             - `transcript` (string, optional)
             - `paragraphs` (list of object, optional)

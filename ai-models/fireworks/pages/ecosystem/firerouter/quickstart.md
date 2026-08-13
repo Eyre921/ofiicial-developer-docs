@@ -13,7 +13,7 @@ For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview): `firec
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An **Anthropic API key** (`sk-ant-...`) for pass-through to Claude Opus 4.8
+* An **Anthropic API key** (`sk-ant-...`) for the default pass-through to Claude Opus 5
 
 ## Chat Completions
 
@@ -30,7 +30,11 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-Simple prompts are usually redirected to GLM 5.2 on Fireworks. Harder prompts pass through to Claude Opus 4.8 using your Anthropic key.
+With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.2 Fast on Fireworks. Harder prompts pass through to Claude Opus 5 using your Anthropic key.
+
+To use a different model combination, replace `firerouter` with one of the [model-specific FireRouter slugs](/ecosystem/firerouter/overview#choose-different-models).
+
+If the selected slug includes an OpenAI model, send its key as `-H "x-openai-api-key: $OPENAI_API_KEY"`. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Anthropic Messages
 
@@ -52,7 +56,7 @@ curl https://api.fireworks.ai/inference/v1/messages \
 ## Verify routing
 
 1. Send a trivial prompt (for example "rename foo to bar"). Expect a fast response routed to the open model.
-2. Send a hard reasoning prompt. Expect pass-through to Claude Opus 4.8.
+2. Send a hard reasoning prompt. With the default `firerouter` model ID, expect pass-through to Claude Opus 5.
 3. Optionally set `x-routing-preference` to bias routing. See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
 You can also send the Fireworks key as `X-Fireworks-Api-Key` instead of `Authorization: Bearer`. See [Authentication](/ecosystem/firerouter/authentication) for the full header reference.

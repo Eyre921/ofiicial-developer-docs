@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1574 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1585 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -173,6 +173,14 @@
 - `langsmith/billing` — [Manage billing in your account](pages/langsmith/billing.md) · [原文](https://docs.langchain.com/langsmith/billing)
 - `langsmith/bind-evaluator-to-dataset` — [Automatically run evaluators on experiments](pages/langsmith/bind-evaluator-to-dataset.md) · [原文](https://docs.langchain.com/langsmith/bind-evaluator-to-dataset)
 - `langsmith/bind-evaluator-to-dataset-link` — [Automatically run evaluators on experiments](pages/langsmith/bind-evaluator-to-dataset-link.md) · [原文](https://docs.langchain.com/langsmith/bind-evaluator-to-dataset-link)
+- `langsmith/byoc` — [Bring Your Own Cloud (BYOC)](pages/langsmith/byoc.md) · [原文](https://docs.langchain.com/langsmith/byoc)
+- `langsmith/byoc-architecture` — [BYOC architecture](pages/langsmith/byoc-architecture.md) · [原文](https://docs.langchain.com/langsmith/byoc-architecture)
+- `langsmith/byoc-billing` — [BYOC billing](pages/langsmith/byoc-billing.md) · [原文](https://docs.langchain.com/langsmith/byoc-billing)
+- `langsmith/byoc-faq` — [BYOC FAQ](pages/langsmith/byoc-faq.md) · [原文](https://docs.langchain.com/langsmith/byoc-faq)
+- `langsmith/byoc-onboarding` — [BYOC onboarding](pages/langsmith/byoc-onboarding.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding)
+- `langsmith/byoc-operations` — [BYOC operations](pages/langsmith/byoc-operations.md) · [原文](https://docs.langchain.com/langsmith/byoc-operations)
+- `langsmith/byoc-usage` — [BYOC usage](pages/langsmith/byoc-usage.md) · [原文](https://docs.langchain.com/langsmith/byoc-usage)
+- `langsmith/byoc-why` — [Why BYOC](pages/langsmith/byoc-why.md) · [原文](https://docs.langchain.com/langsmith/byoc-why)
 - `langsmith/caching` — [Use server-side caching](pages/langsmith/caching.md) · [原文](https://docs.langchain.com/langsmith/caching)
 - `langsmith/cancel-run` — [How to cancel a run](pages/langsmith/cancel-run.md) · [原文](https://docs.langchain.com/langsmith/cancel-run)
 - `langsmith/changelog` — [LangSmith Cloud changelog](pages/langsmith/changelog.md) · [原文](https://docs.langchain.com/langsmith/changelog)
@@ -196,6 +204,7 @@
 - `langsmith/configurable-logs` — [Include HTTP headers in server logs](pages/langsmith/configurable-logs.md) · [原文](https://docs.langchain.com/langsmith/configurable-logs)
 - `langsmith/configuration-cloud` — [Manage assistants](pages/langsmith/configuration-cloud.md) · [原文](https://docs.langchain.com/langsmith/configuration-cloud)
 - `langsmith/configure-checkpointer` — [Configure checkpointer backend](pages/langsmith/configure-checkpointer.md) · [原文](https://docs.langchain.com/langsmith/configure-checkpointer)
+- `langsmith/configure-iam-auth` — [Configure IAM authentication for data stores](pages/langsmith/configure-iam-auth.md) · [原文](https://docs.langchain.com/langsmith/configure-iam-auth)
 - `langsmith/configure-input-output-preview` — [Configure run input and output preview](pages/langsmith/configure-input-output-preview.md) · [原文](https://docs.langchain.com/langsmith/configure-input-output-preview)
 - `langsmith/configure-ttl` — [How to add TTLs to your application](pages/langsmith/configure-ttl.md) · [原文](https://docs.langchain.com/langsmith/configure-ttl)
 - `langsmith/context-engineering-concepts` — [Context engineering concepts](pages/langsmith/context-engineering-concepts.md) · [原文](https://docs.langchain.com/langsmith/context-engineering-concepts)
@@ -206,6 +215,7 @@
 - `langsmith/create-account-api-key` — [Create an account and API key](pages/langsmith/create-account-api-key.md) · [原文](https://docs.langchain.com/langsmith/create-account-api-key)
 - `langsmith/create-few-shot-evaluators` — [How to improve your evaluator with few-shot examples](pages/langsmith/create-few-shot-evaluators.md) · [原文](https://docs.langchain.com/langsmith/create-few-shot-evaluators)
 - `langsmith/cron-jobs` — [Use cron jobs](pages/langsmith/cron-jobs.md) · [原文](https://docs.langchain.com/langsmith/cron-jobs)
+- `langsmith/custom-apps` — [Custom Apps](pages/langsmith/custom-apps.md) · [原文](https://docs.langchain.com/langsmith/custom-apps)
 - `langsmith/custom-auth` — [Add custom authentication](pages/langsmith/custom-auth.md) · [原文](https://docs.langchain.com/langsmith/custom-auth)
 - `langsmith/custom-checkpointer` — [How to use a custom checkpointer](pages/langsmith/custom-checkpointer.md) · [原文](https://docs.langchain.com/langsmith/custom-checkpointer)
 - `langsmith/custom-docker` — [How to customize the Dockerfile](pages/langsmith/custom-docker.md) · [原文](https://docs.langchain.com/langsmith/custom-docker)
@@ -348,7 +358,7 @@
 - `langsmith/javascript/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-schedules)
 - `langsmith/javascript/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-skills)
 - `langsmith/javascript/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools)
-- `langsmith/javascript/managed-deep-agents-tutorial` — [Build a scheduled research agent](pages/langsmith/javascript/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial)
+- `langsmith/javascript/managed-deep-agents-tutorial` — [Add memory and a schedule to your research assistant](pages/langsmith/javascript/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial)
 - `langsmith/jit-invite-sso` — [Manage user access in SSO organizations](pages/langsmith/jit-invite-sso.md) · [原文](https://docs.langchain.com/langsmith/jit-invite-sso)
 - `langsmith/kubernetes` — [Self-host LangSmith on Kubernetes](pages/langsmith/kubernetes.md) · [原文](https://docs.langchain.com/langsmith/kubernetes)
 - `langsmith/langchain-runnable` — [How to evaluate a runnable](pages/langsmith/langchain-runnable.md) · [原文](https://docs.langchain.com/langsmith/langchain-runnable)
@@ -452,7 +462,7 @@
 - `langsmith/python/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-schedules)
 - `langsmith/python/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-skills)
 - `langsmith/python/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tools)
-- `langsmith/python/managed-deep-agents-tutorial` — [Build a scheduled research agent](pages/langsmith/python/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial)
+- `langsmith/python/managed-deep-agents-tutorial` — [Add memory and a schedule to your research assistant](pages/langsmith/python/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial)
 - `langsmith/query-threads` — [Query threads using the SDK](pages/langsmith/query-threads.md) · [原文](https://docs.langchain.com/langsmith/query-threads)
 - `langsmith/quick-start-studio` — [Get started with Studio](pages/langsmith/quick-start-studio.md) · [原文](https://docs.langchain.com/langsmith/quick-start-studio)
 - `langsmith/rbac` — [Role-based access control](pages/langsmith/rbac.md) · [原文](https://docs.langchain.com/langsmith/rbac)
@@ -1117,6 +1127,7 @@
 - `langsmith/trace-voice-fundamentals` — [Voice tracing fundamentals](pages/langsmith/trace-voice-fundamentals.md) · [原文](https://docs.langchain.com/langsmith/trace-voice-fundamentals)
 - `langsmith/trace-with-api` — [Trace with API](pages/langsmith/trace-with-api.md) · [原文](https://docs.langchain.com/langsmith/trace-with-api)
 - `langsmith/trace-with-autogen` — [Trace AutoGen applications](pages/langsmith/trace-with-autogen.md) · [原文](https://docs.langchain.com/langsmith/trace-with-autogen)
+- `langsmith/trace-with-claude-managed-agents` — [Trace Claude Managed Agents](pages/langsmith/trace-with-claude-managed-agents.md) · [原文](https://docs.langchain.com/langsmith/trace-with-claude-managed-agents)
 - `langsmith/trace-with-codex` — [Trace OpenAI Codex sessions](pages/langsmith/trace-with-codex.md) · [原文](https://docs.langchain.com/langsmith/trace-with-codex)
 - `langsmith/trace-with-crewai` — [Trace CrewAI applications](pages/langsmith/trace-with-crewai.md) · [原文](https://docs.langchain.com/langsmith/trace-with-crewai)
 - `langsmith/trace-with-cursor` — [Trace Cursor sessions](pages/langsmith/trace-with-cursor.md) · [原文](https://docs.langchain.com/langsmith/trace-with-cursor)

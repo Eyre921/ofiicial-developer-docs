@@ -2169,6 +2169,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/increase-test-coverage
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/accelerate-pull-requests
 /en/copilot/tutorials/roll-out-at-scale/drive-downstream-impact/reduce-security-debt
+/en/copilot/tutorials/roll-out-at-scale/measure-copilot-impact
 /en/copilot/tutorials/roll-out-at-scale/measure-success
 /en/copilot/tutorials/explore-a-codebase
 /en/copilot/tutorials/explore-issues-and-discussions

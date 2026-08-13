@@ -35,7 +35,7 @@ If set, a subscription’s `payment_settings.payment_method_types` takes priorit
 
 You can further specify a subscription’s `default_payment_method`, or the older `default_source`, to prioritize which payment method is attempted.
 
-If you enable **Save customer payment information** in the Dashboard invoice settings or the [save_default_payment_method](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-payment_settings-save_default_payment_method) parameter of the `Subscription`, any payment method the customer uses to pay the invoice becomes the new default.
+If you enable **Save customer payment information** in the Dashboard invoice settings or the [payment_settings.save_default_payment_method](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-payment_settings) parameter of the `Subscription`, any payment method the customer uses to pay the invoice becomes the new default.
 
 ## Enable customers to update their payment method 
 

@@ -287,7 +287,7 @@ The response includes the ID of the financial account.
   "balance": {
     "available": {
       "gbp": {
-        "value": 78,
+        "value": 7800,
         "currency": "gbp"
       }
     },
@@ -366,7 +366,7 @@ curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANC
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "amount": {
-        "value": 250,
+        "value": 25000,
         "currency": "gbp"
     },
     "network": "fps"
@@ -392,7 +392,7 @@ curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALAC
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
-The response includes different types of [balances](https://docs.stripe.com/treasury/connect/v2/account-management/financial-accounts.md#balances). The available balance shows the 250 GBP you funded.
+The response includes different types of [balances](https://docs.stripe.com/treasury/connect/v2/account-management/financial-accounts.md#balances). The available balance shows the 250 GBP you added to the 78 GBP that was in the account previously.
 
 ```json
 {
@@ -401,7 +401,7 @@ The response includes different types of [balances](https://docs.stripe.com/trea
   "balance": {
     "available": {
       "gbp": {
-        "value": 250,
+        "value": 32800,
         "currency": "gbp"
       }
     },
@@ -577,7 +577,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "gbp"
     },
     "amount": {
-        "value": 100,
+        "value": 1000,
         "currency": "gbp"
     },
     "description": "Payout from a platform financial account to connected account financial account"
@@ -591,7 +591,7 @@ The response includes the outbound payment ID and transaction details.
   "id": "obp_test_65SlAavriewxesYj6PN16SiAU68AE9NQclWBzpoRJEmCR6",
   "object": "v2.money_management.outbound_payment",
   "amount": {
-    "value": 100,
+    "value": 1000,
     "currency": "gbp"
   },
   "cancelable": false,
@@ -601,7 +601,7 @@ The response includes the outbound payment ID and transaction details.
   "expected_arrival_date": "2025-06-19T17:52:34.803Z",
   "from": {
     "debited": {
-      "value": 100,
+      "value": 1000,
       "currency": "gbp"
     },
     "financial_account": "{{FINANCIAL_ACCOUNT_ID}}"
@@ -622,7 +622,7 @@ The response includes the outbound payment ID and transaction details.
   },
   "to": {
     "credited": {
-      "value": 78,
+      "value": 780,
       "currency": "gbp"
     },
     "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",

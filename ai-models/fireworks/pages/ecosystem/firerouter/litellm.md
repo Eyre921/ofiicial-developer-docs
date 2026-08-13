@@ -8,7 +8,7 @@ Add FireRouter to a LiteLLM Proxy deployment
 
 Add FireRouter to an existing [LiteLLM Proxy](/ecosystem/integrations/litellm) deployment so developers request one model instead of choosing between open and closed-source models on every call.
 
-FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
+FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
 
 ## Prerequisites
 

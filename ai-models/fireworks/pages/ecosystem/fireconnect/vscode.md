@@ -62,7 +62,7 @@ fireconnect vscode on --model firerouter
 fireconnect vscode on --model firerouter --anthropic-api-key sk-ant-...
 ```
 
-The Fireworks key stays encrypted in `state.vscdb`. An Anthropic BYOK key is optional for pass-through to Claude Opus 4.8.
+The Fireworks key stays encrypted in `state.vscdb`. An Anthropic BYOK key is optional for pass-through to Claude Opus 5.
 
 ## What gets written
 

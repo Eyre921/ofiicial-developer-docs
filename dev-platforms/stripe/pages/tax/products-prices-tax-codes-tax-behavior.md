@@ -41,6 +41,8 @@ To charge tax on shipping for subscriptions, you can create a Product or pass `p
 
 You must specify a `tax_behavior` on a price, or a default tax behavior in the tax settings in the Dashboard, which determines how tax is presented to the customer. This allows you to localize your checkout depending on the market.
 
+> Stripe recommends setting the tax behavior to **Automatic**. This selects exclusive pricing for USD and CAD and inclusive pricing for all other currencies, matching the conventions most customers expect in each market. You can [set a default tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#set-default-tax-behavior) in the [Stripe Tax settings](https://dashboard.stripe.com/settings/tax) to apply this automatically to every price that doesn’t have a defined `tax_behavior`.
+
 Tax-exclusive prices are common in the US and Canada and for B2B sales in other countries. Set the tax behavior to exclusive to add tax to the subtotal amount specified in your price.
 
 Tax-inclusive prices are common for B2C sales in many markets outside the US. When set to inclusive, the amount your customer pays remains constant, regardless of the tax amount (zero or positive). This applies to sales subject to reverse charge as well. The unit price differs between transactions subject to reverse charge and those that aren’t. If no tax applies, the tax-inclusive price is the unit price. If the tax amount is positive, the unit price is lower, excluding the tax amount.

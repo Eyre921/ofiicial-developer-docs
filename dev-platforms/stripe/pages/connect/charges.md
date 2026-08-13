@@ -164,6 +164,12 @@ If there’s a negative balance on the connected account, Stripe attempts to deb
 
 If you’re using Express or Custom [legacy account types](https://docs.stripe.com/connect/accounts.md), your platform is responsible for disputes and fraud. For more details, see [Disputes and fraud](https://docs.stripe.com/disputes.md) and [Dispute categories](https://docs.stripe.com/disputes/categories.md), and follow [Best practices for risk management](https://docs.stripe.com/connect/risk-management/best-practices.md). You can also use [Fraud Stripe Apps](https://marketplace.stripe.com/categories/fraud) to automate dispute management and handle chargebacks.
 
+## Payment methods
+
+For most payment methods, you can control which ones your connected accounts accept. (Some payment methods can only be enabled by the account owner.) If you use [dynamic payment methods](https://docs.stripe.com/connect/manage-payment-methods.md), you can configure one or more payment method configurations for your connected accounts that use either direct charges or indirect charges with `on_behalf_of`. Connected accounts using indirect charges without `on_behalf_of` use the payment method configurations that you set up for charges on your platform.
+
+For more information, see [Manage payment methods for connected accounts](https://docs.stripe.com/connect/manage-payment-methods.md).
+
 ## See also
 
 - [Create direct charges](https://docs.stripe.com/connect/direct-charges.md)

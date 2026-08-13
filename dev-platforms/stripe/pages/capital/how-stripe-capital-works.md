@@ -243,7 +243,7 @@ The total amount you owe is your financing amount plus a fixed fee, which is pai
 
 After you pay your financing, we automatically evaluate your business for a new offer. Paying your financing early doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your Dashboard.
 
-If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins once your active financing offer is paid off so you’ll only pay off one financing offer at a time.
+If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins after your active financing offer is paid off so you’ll only pay off one financing offer at a time.
 
 **Example: You’re currently paying Financing Offer 1 at a 20% payment percentage rate and received additional financing.**
 
@@ -338,7 +338,7 @@ The total amount you owe is your financing amount plus a fixed fee, which is pai
 
 As you pay your financing, we automatically evaluate your business for a new offer. Paying your financing early doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your Dashboard.
 
-If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins once your active financing offer is paid off so you’ll only pay off one financing offer at a time.
+If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins after your active financing offer is paid off so you’ll only pay off one financing offer at a time.
 
 For example, assume that you’re currently paying the first financing offer at a 20% payment percentage rate and have received an offer for additional financing.
 

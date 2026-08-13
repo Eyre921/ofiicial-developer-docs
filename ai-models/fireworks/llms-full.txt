@@ -3135,7 +3135,7 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
 
 FireRouter flags (when using `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 4.8 pass-through (where the harness supports it)
+* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 5 pass-through (where the harness supports it)
 * `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution
@@ -3286,7 +3286,7 @@ Route requests through [FireRouter](/ecosystem/firerouter/overview):
 
 ```bash theme={null}
 fireconnect codex on --model firerouter
-export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
+export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 5
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
 ```
 
@@ -4088,14 +4088,14 @@ Prefer `*-latest` / `*-fast-latest` unless you need a pin. Browse live IDs and p
 
 ## Which model when
 
-| ID                  | Use when                                                          | Notes                                                  |
-| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------------ |
-| `kimi-fast-latest`  | Default interactive coding; screenshots / UI                      | Vision. Default for most harnesses and Claude `fable`. |
-| `kimi-latest`       | Strong agentic coding with vision, lower \$/token than Fast       | Vision. Standard path.                                 |
-| `glm-fast-latest`   | Fast text-only agent loops (Claude `opus` / `sonnet` defaults)    | Text-only. 1M context.                                 |
-| `glm-latest`        | Cheaper text-only coding / long context                           | Text-only. Same family as Fast at standard price.      |
-| `deepseek-v4-flash` | Haiku / subagent / high-volume background work                    | Text-only. Lowest cost in the coding catalog.          |
-| `firerouter`        | Auto-route easy work to open models, hard work to Claude Opus 4.8 | See [FireRouter](/ecosystem/firerouter/overview).      |
+| ID                  | Use when                                                        | Notes                                                  |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------ |
+| `kimi-fast-latest`  | Default interactive coding; screenshots / UI                    | Vision. Default for most harnesses and Claude `fable`. |
+| `kimi-latest`       | Strong agentic coding with vision, lower \$/token than Fast     | Vision. Standard path.                                 |
+| `glm-fast-latest`   | Fast text-only agent loops (Claude `opus` / `sonnet` defaults)  | Text-only. 1M context.                                 |
+| `glm-latest`        | Cheaper text-only coding / long context                         | Text-only. Same family as Fast at standard price.      |
+| `deepseek-v4-flash` | Haiku / subagent / high-volume background work                  | Text-only. Lowest cost in the coding catalog.          |
+| `firerouter`        | Auto-route easy work to open models, hard work to Claude Opus 5 | See [FireRouter](/ecosystem/firerouter/overview).      |
 
 Also useful from `fireconnect model list`: `minimax-latest` / `qwen-plus-latest` (cheaper vision), `deepseek-v4-pro` (stronger text coding than Flash), `kimi-k2p7-code` / `kimi-k2p7-code-fast` (code-focused Kimi).
 
@@ -4443,7 +4443,7 @@ fireconnect <harness> on --model glm-fast-latest
 
 ## FireRouter
 
-[FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 4.8. In FireConnect, select it like any other model:
+[FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 5. In FireConnect, select it like any other model:
 
 ```bash theme={null}
 fireconnect <harness> on --model firerouter
@@ -4676,7 +4676,7 @@ fireconnect vscode on --model firerouter
 fireconnect vscode on --model firerouter --anthropic-api-key sk-ant-...
 ```
 
-The Fireworks key stays encrypted in `state.vscdb`. An Anthropic BYOK key is optional for pass-through to Claude Opus 4.8.
+The Fireworks key stays encrypted in `state.vscdb`. An Anthropic BYOK key is optional for pass-through to Claude Opus 5.
 
 ## What gets written
 
@@ -4899,9 +4899,12 @@ FireRouter uses a **bring-your-own-key** contract. The service validates your Fi
 | Key                              | Header or env                                    | Used for                                           |
 | -------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
 | Fireworks API key (`fw_...`)     | `Authorization: Bearer` or `X-Fireworks-Api-Key` | FireRouter auth and redirected Fireworks inference |
-| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Claude pass-through                                |
+| Anthropic API key (`sk-ant-...`) | `x-anthropic-api-key`                            | Calls to Claude models                             |
+| OpenAI API key (`sk-...`)        | `x-openai-api-key`                               | Calls to OpenAI models                             |
 
-The FireRouter model currently routes pass-through requests to **Claude Opus 4.8** (`claude-opus-4-8`), so an Anthropic key is required on every request. This pass-through model is subject to change.
+The default `firerouter` model uses **Claude Opus 5** as its primary model, so every request requires an Anthropic key. FireRouter fails closed when the primary model's credential is missing; it does not silently restrict the route to Fireworks models.
+
+For a model-specific [FireRouter slug](/ecosystem/firerouter/overview#choose-different-models), the first model's credential is required. Later models are eligible only when their credentials are present. Slugs that contain only Fireworks models need no additional provider key beyond the Fireworks API key.
 
 ## Fireworks key header
 
@@ -4913,7 +4916,7 @@ Send your Fireworks API key with either header:
 -H "X-Fireworks-Api-Key: $FIREWORKS_API_KEY"
 ```
 
-The legacy header `X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
+`X-FireRouter-Fireworks-Key` is also accepted. New integrations should prefer `X-Fireworks-Api-Key`.
 
 ## Anthropic provider key
 
@@ -4935,13 +4938,36 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -d '{"model": "firerouter", "messages": [...]}'
 ```
 
+## OpenAI provider key
+
+When the selected FireRouter slug includes an OpenAI model, send your OpenAI API key as:
+
+```bash theme={null}
+-H "x-openai-api-key: $OPENAI_API_KEY"
+```
+
+Do not put the OpenAI provider key in the OpenAI client's `api_key` field. That field supplies the `Authorization` header used to authenticate to the Fireworks gateway, so it must contain your Fireworks API key. Pass the OpenAI provider key as a custom header:
+
+```python theme={null}
+import os
+
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+    default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
+)
+```
+
 ## Common errors
 
-| Response                             | Cause                                 | Fix                                                                                           |
-| ------------------------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `401 Missing Fireworks API key`      | Fireworks key header missing or empty | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
-| `401 invalid Fireworks API key`      | Key rejected                          | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
-| Pass-through fails with provider 401 | Anthropic key missing or wrong header | Send the Anthropic key as `x-anthropic-api-key`                                               |
+| Response                        | Cause                                                        | Fix                                                                                           |
+| ------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `401 Missing Fireworks API key` | Fireworks key header missing or empty                        | Set `X-Fireworks-Api-Key` to your `fw_...` key                                                |
+| `401 invalid Fireworks API key` | Key rejected                                                 | Confirm the key is valid in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) |
+| `400` with `no_credential`      | Required provider key missing or sent under the wrong header | Send the key under the provider-specific header                                               |
+| Provider `401`                  | Provider key is invalid                                      | Check the key sent as `x-anthropic-api-key` or `x-openai-api-key`                             |
 
 ## Related
 
@@ -4965,7 +4991,7 @@ This page is only for manual `~/.claude/settings.json` setup when you cannot use
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An Anthropic API key if you need pass-through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
+* An Anthropic API key if you need pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication).
 
 Add one of the configs below to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`), then restart Claude Code.
 
@@ -5016,7 +5042,7 @@ Add FireRouter to a LiteLLM Proxy deployment
 
 Add FireRouter to an existing [LiteLLM Proxy](/ecosystem/integrations/litellm) deployment so developers request one model instead of choosing between open and closed-source models on every call.
 
-FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
+FireRouter uses bring-your-own-key (BYOK): your Fireworks API key pays for redirected calls, and an Anthropic API key pays for pass-through to Claude Opus 5. See [Authentication](/ecosystem/firerouter/authentication). FireRouter does not store provider keys.
 
 ## Prerequisites
 
@@ -5112,7 +5138,7 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/overview
 
 Route LLM requests between closed-source and open models with FireRouter
 
-FireRouter is a managed routing service for **any LLM workload**. Request the FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to decide whether it can be served by a cheaper Fireworks open model or should pass through to a closed-source model.
+FireRouter is a managed routing service for **any LLM workload**. Request a FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to select a model from the configured set. By default, it routes between a Fireworks open model and a closed-source model.
 
 The result is lower cost on simpler requests without giving up closed-source quality on harder ones.
 
@@ -5126,21 +5152,22 @@ Use FireRouter when you want **automatic cost optimization** without picking a d
 
 * You want closed-source quality (for example Claude Opus) on hard prompts but do not need it on every call.
 * Many of your requests are straightforward (summaries, formatting, simple Q\&A) and can be served by a Fireworks open model.
-* You are fine sending both a Fireworks API key and a provider API key on each request.
+* You want to select the models available to the router without choosing a target for every request.
+* For the default configuration, you are able to send both a Fireworks API key and a provider API key on each request.
 
 ## How it works
 
-FireRouter scores each request independently and picks one of two paths:
+FireRouter evaluates each new user request. The default `firerouter` configuration picks one of two paths:
 
-| Path             | When                                      | What runs                                           | Billing                           |
-| ---------------- | ----------------------------------------- | --------------------------------------------------- | --------------------------------- |
-| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (for example GLM 5.2)        | Your Fireworks API key            |
-| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (for example Claude Opus 4.8) | Your provider API key (Anthropic) |
+| Path             | When                                      | What runs                                         | Billing                           |
+| ---------------- | ----------------------------------------- | ------------------------------------------------- | --------------------------------- |
+| **Redirect**     | Simple or low-complexity work             | A Fireworks open model (for example GLM 5.2 Fast) | Your Fireworks API key            |
+| **Pass-through** | Hard reasoning, judgment, or long context | A closed-source model (by default Claude Opus 5)  | Your provider API key (Anthropic) |
 
 FireRouter uses a bring-your-own-key (BYOK) model:
 
-* Your **Fireworks API key** authenticates to FireRouter and pays for redirected calls.
-* Your **provider API key** pays for pass-through calls to closed-source models.
+* Your **Fireworks API key** authenticates to FireRouter and pays for calls to Fireworks models.
+* A third-party **provider API key** pays for calls to that provider's models.
 
 FireRouter never stores your provider keys server-side. You send them on each request.
 
@@ -5157,7 +5184,7 @@ See [FireConnect Models](/ecosystem/fireconnect/models) for how `firerouter` fit
 
 Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
-Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. Without an Anthropic key, FireRouter still redirects to open models but cannot pass through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
+Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. The default `firerouter` requires an Anthropic key because Claude Opus 5 is its primary model; FireRouter fails closed instead of silently restricting the route to GLM. See [Authentication](/ecosystem/firerouter/authentication).
 
 Cursor and Deep Agents need workspace BYOK for FireRouter (no local Anthropic key).
 
@@ -5193,20 +5220,38 @@ accounts/fireworks/routers/firerouter
 
 For [LiteLLM](/ecosystem/firerouter/litellm), use the full router path in `litellm_params.model`.
 
-FireRouter routes each request between a configured closed-source model and a Fireworks open model. You do not pick the target model per request; FireRouter decides based on request complexity.
+FireRouter decides the target model for each request based on request complexity. The model ID selects the set of models FireRouter can route to.
 
 ### Current routing pair
 
-The FireRouter model currently routes between:
+The short `firerouter` model ID currently routes between:
 
-| Role                         | Model                                   |
-| ---------------------------- | --------------------------------------- |
-| Pass-through (closed-source) | **Claude Opus 4.8** (`claude-opus-4-8`) |
-| Redirect (open)              | **GLM 5.2** (`glm-5p2`)                 |
+| Role                         | Model                             |
+| ---------------------------- | --------------------------------- |
+| Pass-through (closed-source) | **Claude Opus 5**                 |
+| Redirect (open)              | **GLM 5.2 Fast** (`glm-5p2-fast`) |
 
 These models are subject to change as FireRouter is updated. This page reflects the current configuration.
 
-Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic API key. See [Authentication](/ecosystem/firerouter/authentication).
+Because the default pass-through target is Claude Opus 5, supply an Anthropic API key to use that path. See [Authentication](/ecosystem/firerouter/authentication).
+
+### Choose different models
+
+Use a slash-delimited FireRouter slug to change the models available to the router. The first model is the primary; the remaining models are alternatives that FireRouter ranks for each request. Each member must be an exact deployed model ID or a unique model alias, and a slug can contain up to eight distinct models.
+
+Examples:
+
+| Model ID                                                 | Models                                              |
+| -------------------------------------------------------- | --------------------------------------------------- |
+| `firerouter/kimi-k3/glm-5p2-fast`                        | Kimi K3 and GLM 5.2 Fast                            |
+| `firerouter/kimi-k3/deepseek-v4-flash-0731`              | Kimi K3 and DeepSeek V4 Flash (0731)                |
+| `firerouter/kimi-k3/glm-5p2-fast/deepseek-v4-flash-0731` | Kimi K3, GLM 5.2 Fast, and DeepSeek V4 Flash (0731) |
+| `firerouter/claude-opus-5/kimi-k3/glm-5p2-fast`          | Claude Opus 5, Kimi K3, and GLM 5.2 Fast            |
+| `firerouter/gpt-5.6-sol/glm-5p2-fast`                    | GPT 5.6 Sol and GLM 5.2 Fast                        |
+
+Set the selected slug in the `model` field just as you would use `firerouter`. FireRouter still chooses the target for each request.
+
+The primary model's credential is required. A later model is eligible only when its credential is present. Use `x-anthropic-api-key` for Claude models and `x-openai-api-key` for OpenAI models. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Client integrations
 
@@ -5220,7 +5265,6 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 ## What FireRouter is not
 
 * **Not a deployment router.** FireRouter is different from [deployment routers](/deployments/routers), which load-balance traffic across your own Fireworks deployments.
-* **Not request-sticky.** Each request is scored independently.
 
 ## Next steps
 
@@ -5263,7 +5307,7 @@ For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview): `firec
 ## Prerequisites
 
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An **Anthropic API key** (`sk-ant-...`) for pass-through to Claude Opus 4.8
+* An **Anthropic API key** (`sk-ant-...`) for the default pass-through to Claude Opus 5
 
 ## Chat Completions
 
@@ -5280,7 +5324,11 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-Simple prompts are usually redirected to GLM 5.2 on Fireworks. Harder prompts pass through to Claude Opus 4.8 using your Anthropic key.
+With the default `firerouter` model ID, simple prompts are usually redirected to GLM 5.2 Fast on Fireworks. Harder prompts pass through to Claude Opus 5 using your Anthropic key.
+
+To use a different model combination, replace `firerouter` with one of the [model-specific FireRouter slugs](/ecosystem/firerouter/overview#choose-different-models).
+
+If the selected slug includes an OpenAI model, send its key as `-H "x-openai-api-key: $OPENAI_API_KEY"`. See [Authentication](/ecosystem/firerouter/authentication).
 
 ## Anthropic Messages
 
@@ -5302,7 +5350,7 @@ curl https://api.fireworks.ai/inference/v1/messages \
 ## Verify routing
 
 1. Send a trivial prompt (for example "rename foo to bar"). Expect a fast response routed to the open model.
-2. Send a hard reasoning prompt. Expect pass-through to Claude Opus 4.8.
+2. Send a hard reasoning prompt. With the default `firerouter` model ID, expect pass-through to Claude Opus 5.
 3. Optionally set `x-routing-preference` to bias routing. See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
 You can also send the Fireworks key as `X-Fireworks-Api-Key` instead of `Authorization: Bearer`. See [Authentication](/ecosystem/firerouter/authentication) for the full header reference.
@@ -16440,10 +16488,11 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     **Requirements:**
 
     * **File format:** JSONL (each line is a valid JSON object)
-    * **Size limit:** Under 1GB
+    * **Size limit:** Up to 80 GiB
     * **Required fields:** `custom_id` (unique) and `body` (request parameters)
+    * **Input mode:** `body.messages` (standard) or `body.prompt_token_ids` (pre-tokenized) — mutually exclusive
 
-    **Example dataset:**
+    **Example dataset (messages):**
 
     ```json theme={null}
     {"custom_id": "request-1", "body": {"messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "What is the capital of France?"}], "max_tokens": 100}}
@@ -16451,11 +16500,31 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     {"custom_id": "request-3", "body": {"messages": [{"role": "user", "content": "Tell me a joke"}]}}
     ```
 
-    Save as `batch_input_data.jsonl` locally.
-
     <Tip>
       If every row shares the same `system` message, you can omit it from the dataset and set it once at the job level with `--system-prompt` instead — see [Job-level system prompt](#job-level-system-prompt). This shrinks your upload and keeps prompt-caching intact.
     </Tip>
+
+    **Example dataset (pre-tokenized):**
+
+    When you need byte-identical inputs (e.g. a custom tokenizer or renderer), use `prompt_token_ids` instead of `messages`. The server skips chat-template rendering and feeds your token IDs directly to generation. Mutually exclusive with `messages` — do not include both.
+
+    ```json theme={null}
+    {"custom_id": "request-1", "body": {"prompt_token_ids": [163587, 2482, 163601, 71079, 17522, 13], "max_tokens": 100}}
+    ```
+
+    <Warning>
+      Token IDs must be valid for the vocabulary of the **specific model** the job targets. An out-of-vocabulary ID fails that row with a terminal 400 (no retry), so re-tokenize when you change models.
+    </Warning>
+
+    <Warning>
+      A job-level `system_prompt` cannot be combined with `prompt_token_ids` — the prompt is already tokenized, so there is nowhere to prepend a system message. Set `system_prompt` only for `messages`-based jobs.
+    </Warning>
+
+    <Warning>
+      Set `user` or `prompt_cache_key` in the body. Without message text, the gateway has nothing to hash for content-based cache affinity, so each row routes independently and prompt-cache hit rates drop.
+    </Warning>
+
+    Save as `batch_input_data.jsonl` locally.
   </Accordion>
 
   <Accordion title="2. Upload Your Dataset">
@@ -16627,7 +16696,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 
 Set one static `system` message for the entire job instead of repeating it on every dataset row. When provided, the batch runner injects it as a leading `system` message into **every input row that does not already begin with a `system` message** — a row's own leading `system` message always takes precedence, so you can override the job-level prompt per-row when needed.
 
-This is useful when all rows share a large, fixed system prompt (e.g. a rubric or output-schema spec). Removing it from every row shrinks the input dataset (less upload, stays under the 1GB limit), and because the injected prefix is byte-identical across rows, [prompt caching](/guides/prompt-caching) still applies.
+This is useful when all rows share a large, fixed system prompt (e.g. a rubric or output-schema spec). Removing it from every row shrinks the input dataset (less upload, stays under the 80 GiB limit), and because the injected prefix is byte-identical across rows, [prompt caching](/guides/prompt-caching) still applies.
 
 ```bash theme={null}
 firectl batch-inference-job create \
@@ -16684,7 +16753,7 @@ The equivalent HTTP field is `systemPrompt`:
 
   <Accordion title="Limits and constraints">
     * **Per-request limits:** Same as [Chat Completion API limits](/api-reference/post-chatcompletions)
-    * **Input dataset:** Max 1GB
+    * **Input dataset:** Up to 80 GiB
     * **Output dataset:** Max 8GB (job may expire early if limit is reached)
     * **Job expiration:** Select from 12, 24, 48, 72 hours maximum in Optional Settings
   </Accordion>
@@ -22797,29 +22866,31 @@ Embeddings are billed only on input tokens.
 
 Per-model pricing for headline models. Fast variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
 
-| Model                                                                                                 | Standard                  | Priority                      |
-| ----------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- |
-| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                          | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    |
-| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                     | \$4.50 / \$0.45 / \$22.50 | —                             |
-| [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                       | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |
-| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                            | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |
-| [Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                       | \$1.90 / \$0.38 / \$8.00  | —                             |
-| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                      | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
-| [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                 | \$2.00 / \$0.30 / \$8.00  | —                             |
-| [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                          | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
-| [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                      | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
-| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)          | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
-| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                          | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
-| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                     | \$2.10 / \$0.21 / \$6.60  | —                             |
-| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                  | \$2.10 / \$0.21 / \$6.60  | —                             |
-| [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)                                          | \$1.40 / \$0.26 / \$4.40  | \$2.10 / \$0.39 / \$6.60      |
-| [GLM 5.1 Fast](https://app.fireworks.ai/models/fireworks/glm-5p1)                                     | \$2.80 / \$0.52 / \$8.80  | —                             |
-| [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                               | \$0.40 / \$0.08 / \$1.60  | —                             |
-| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                    | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
-| [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
-| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                         | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |
-| [OpenAI GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)                           | \$0.07 / \$0.035 / \$0.30 | —                             |
-| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4) | \$0.60 / \$0.12 / \$2.40  | —                             |
+| Model                                                                                                             | Standard                  | Priority                      |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------- |
+| [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                      | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75    |
+| [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                 | \$4.50 / \$0.45 / \$22.50 | —                             |
+| [Kimi K3 US](https://app.fireworks.ai/models/fireworks/kimi-k3)                                                   | \$3.30 / \$0.33 / \$16.50 | \$4.125 / \$0.4125 / \$20.625 |
+| [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                        | \$0.95 / \$0.19 / \$4.00  | \$1.425 / \$0.285 / \$6.00    |
+| [Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)                                   | \$1.90 / \$0.38 / \$8.00  | —                             |
+| [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
+| [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                             | \$2.00 / \$0.30 / \$8.00  | —                             |
+| [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                                      | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
+| [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                                  | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
+| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
+| [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
+| [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
+| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                              | \$2.10 / \$0.21 / \$6.60  | —                             |
+| [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)                                                      | \$1.40 / \$0.26 / \$4.40  | \$2.10 / \$0.39 / \$6.60      |
+| [GLM 5.1 Fast](https://app.fireworks.ai/models/fireworks/glm-5p1)                                                 | \$2.80 / \$0.52 / \$8.80  | —                             |
+| [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                                           | \$0.40 / \$0.08 / \$1.60  | —                             |
+| [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)                                                | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
+| [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                            | \$0.30 / \$0.06 / \$1.20  | \$0.45 / \$0.09 / \$1.80      |
+| [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)                                     | \$0.15 / \$0.015 / \$0.60 | \$0.18 / \$0.018 / \$0.72     |
+| [OpenAI GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)                                       | \$0.07 / \$0.035 / \$0.30 | —                             |
+| [Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)                                    | \$0.35 / \$0.04 / \$1.50  | \$0.525 / \$0.06 / \$2.25     |
+| [NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b) | \$0.05 / \$0.01 / \$0.20  | —                             |
+| [NVIDIA Nemotron 3 Ultra (Preview)](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)             | \$0.60 / \$0.12 / \$2.40  | —                             |
 
 **—** in the Priority column means Priority is not available for that model. This pricing table is the source of truth for Priority availability.
 

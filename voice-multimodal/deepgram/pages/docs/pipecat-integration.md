@@ -112,7 +112,7 @@ from pipecat.services.deepgram.flux.tts import DeepgramFluxTTSService
 tts = DeepgramFluxTTSService(
     api_key=os.getenv("DEEPGRAM_API_KEY"),
     settings=DeepgramFluxTTSService.Settings(
-        voice="flux-alexis-en",
+        voice=os.getenv("DEEPGRAM_VOICE_ID", "flux-alexis-en")
     ),
 )
 ```
@@ -183,7 +183,7 @@ cp .env.example .env
 Replace the placeholder values with your API keys:
 
 * **DEEPGRAM\_API\_KEY** — from your [Deepgram Console](https://console.deepgram.com/)
-* **DEEPGRAM\_VOICE\_ID**=aura-2-thalia-en — See: [Deepgram Voices & Languages](https://developers.deepgram.com/docs/tts-models) for a full list of options. **Leaving this value empty may result in a 400 error.**
+* **DEEPGRAM\_VOICE\_ID** — the voice setting when using `.env`. Choose from [Flux voices](/docs/flux-tts/voices) or [Aura-2 voices](/docs/tts-models), depending on your TTS model.
 * **OPENAI\_API\_KEY** — from your [OpenAI dashboard](https://platform.openai.com/api-keys)
 * **DAILY\_API\_KEY** — from your [Daily dashboard](https://dashboard.daily.co/u/signup). Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
 

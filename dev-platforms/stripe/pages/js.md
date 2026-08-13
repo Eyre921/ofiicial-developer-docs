@@ -3940,6 +3940,8 @@ when creating the Checkout Session or when creating the Product's
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
     - `recurring`
       The recurring components of a price such as `interval` and `intervalCount`.
       - `interval`
@@ -4113,6 +4115,8 @@ or other and may contain more values in the future.
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `shippingAddress`
   Shipping address of the Customer.
@@ -4193,6 +4197,8 @@ i.e. the Customer's address has not been collected yet.
       Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
     - `displayName`
       A user-facing description of the tax.
+    - `percentage`
+      The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -5407,6 +5413,8 @@ when creating the Checkout Session or when creating the Product's
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
     - `recurring`
       The recurring components of a price such as `interval` and `intervalCount`.
       - `interval`
@@ -5580,6 +5588,8 @@ or other and may contain more values in the future.
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `shippingAddress`
   Shipping address of the Customer.
@@ -5660,6 +5670,8 @@ i.e. the Customer's address has not been collected yet.
       Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
     - `displayName`
       A user-facing description of the tax.
+    - `percentage`
+      The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -5897,6 +5909,8 @@ when creating the Checkout Session or when creating the Product's
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
     - `recurring`
       The recurring components of a price such as `interval` and `intervalCount`.
       - `interval`
@@ -6070,6 +6084,8 @@ or other and may contain more values in the future.
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `shippingAddress`
   Shipping address of the Customer.
@@ -6150,6 +6166,8 @@ i.e. the Customer's address has not been collected yet.
       Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
     - `displayName`
       A user-facing description of the tax.
+    - `percentage`
+      The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -7394,6 +7412,8 @@ when creating the Checkout Session or when creating the Product's
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
     - `recurring`
       The recurring components of a price such as `interval` and `intervalCount`.
       - `interval`
@@ -7567,6 +7587,8 @@ or other and may contain more values in the future.
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `shippingAddress`
   Shipping address of the Customer.
@@ -7647,6 +7669,8 @@ i.e. the Customer's address has not been collected yet.
       Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
     - `displayName`
       A user-facing description of the tax.
+    - `percentage`
+      The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -7884,6 +7908,8 @@ when creating the Checkout Session or when creating the Product's
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
     - `recurring`
       The recurring components of a price such as `interval` and `intervalCount`.
       - `interval`
@@ -8057,6 +8083,8 @@ or other and may contain more values in the future.
         Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
       - `displayName`
         A user-facing description of the tax.
+      - `percentage`
+        The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `shippingAddress`
   Shipping address of the Customer.
@@ -8137,6 +8165,8 @@ i.e. the Customer's address has not been collected yet.
       Whether this tax amount is [inclusive or exclusive](https://docs.stripe.com/tax/faq.md#what-is-the-difference-between-inclusive-and-exclusive-tax).
     - `displayName`
       A user-facing description of the tax.
+    - `percentage`
+      The tax rate percentage. This value is absent for flat-amount tax rates.
 
 - `total`
   Tax and discount details for the computed total amount. Use this

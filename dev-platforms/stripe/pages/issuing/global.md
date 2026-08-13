@@ -71,7 +71,7 @@ Stripe Issuing:
 
 For enterprise issuers serving large multinational companies, we support Visa’s Multinational Program and Mastercard’s Extension of Area of Use programs. Platforms can issue cards to subsidiaries of US multinational companies in over 40 countries where the US multinational is already an accountholder.
 
-### Stablecoin cards (private preview)
+### Stablecoin cards (Private preview)
 
 Stablecoin-backed card programs let platforms issue prepaid or debit cards backed by stablecoin balances in more than 30 countries across Latin America, the Caribbean, and Africa. Platforms can enter additional markets with a single integration, without launching separate local card programs in each country.
 

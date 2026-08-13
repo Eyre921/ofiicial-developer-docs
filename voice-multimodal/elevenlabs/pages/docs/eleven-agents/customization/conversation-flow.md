@@ -12,6 +12,10 @@ path: docs/eleven-agents/customization/conversation-flow
 
 Conversation flow settings determine how your assistant handles periods of user silence, interruptions during speech, and turn-taking behavior. These settings help create more natural conversations and can be customized based on your use case.
 
+#### [Maximum conversation duration](#maximum-conversation-duration)
+
+Limit the total duration of each conversation
+
 #### [Take turn after silence](#turn-timeout)
 
 Configure how long your assistant waits during periods of silence
@@ -28,6 +32,82 @@ Control whether users can interrupt your assistant while speaking
 
 Adjust how quickly your assistant responds to user input
 
+## Maximum conversation duration
+
+The **Max conversation duration** setting limits the total time a conversation can remain active.
+This global limit starts when the conversation begins and applies independently of turn-level
+timeouts. The default is 600 seconds (10 minutes). You can set a value from 60 to 7,200 seconds.
+
+### Configuration
+
+In the CLI and API, configure this setting with the
+`conversation_config.conversation.max_duration_seconds` field.
+
+#### Update via the dashboard
+
+Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust **Max conversation
+duration** under **Call limits**. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
+
+```bash
+elevenlabs agents pull --agent agent_7101k5zvyjhmfg983brhmhkd98n6
+```
+
+#### Edit the agent configuration
+
+Set `conversation_config.conversation.max_duration_seconds`:
+
+```json
+{
+  "conversation_config": {
+    "conversation": {
+      "max_duration_seconds": 1200
+    }
+  }
+}
+```
+
+#### Push the agent configuration
+
+```bash
+elevenlabs agents push --agent agent_7101k5zvyjhmfg983brhmhkd98n6
+```
+
+#### Update via the API
+
+```python
+from elevenlabs import ElevenLabs
+
+elevenlabs = ElevenLabs()
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    conversation_config={
+        "conversation": {"max_duration_seconds": 1200},
+    },
+)
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient();
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  conversationConfig: {
+    conversation: { maxDurationSeconds: 1200 },
+  },
+});
+```
+
+WhatsApp message conversations have a default 15-minute inactivity timeout, measured from the
+agent's most recent response. This timeout can end a message conversation before the configured
+maximum duration. Enterprise customers whose use case requires a different timeout should [contact
+support](https://help.elevenlabs.io/hc/en-us/requests/new).
+
 ## Take turn after silence
 
 The **Take turn after silence** setting determines how long your assistant waits during periods of user silence before taking the next turn and prompting for a response.
@@ -40,7 +120,7 @@ The value is specified in seconds and must be between 1 and 30 seconds. In the C
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Take turn after silence** value. Save your changes.
 
-![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T112844Z&X-Amz-Expires=604800&X-Amz-Signature=702dddfbfc3b910dd43dba78618b8b52dae7c61586cd9519d4fe50392dd692d1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Take turn after silence setting](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T232027Z&X-Amz-Expires=604800&X-Amz-Signature=a38c6c0a376559353cea544f00a61e21bf5af516105e946c18483fa00bf108d0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -135,7 +215,7 @@ Soft timeout triggers only once per turn to prevent multiple fillers in successi
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Soft timeout** settings. Save your changes.
 
-![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T112844Z&X-Amz-Expires=604800&X-Amz-Signature=b7e628f2d2b21929b0504eb217f855425a0483990b2042ca60e6cf382a833b79&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Soft timeout settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T232027Z&X-Amz-Expires=604800&X-Amz-Signature=ad300f26cd685b14d0e49bfd5fe01b304ebb88e3667711e5c6329a9dae416378&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -265,11 +345,11 @@ To enable interruptions, make sure interruption is a selected client event.
 
 #### Interruptions enabled
 
-![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T112844Z&X-Amz-Expires=604800&X-Amz-Signature=cede55b47079708576188c87db09caae09e8fe2eb35c654ff54187cb637ef9c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption allowed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157/assets/images/conversational-ai/interruptions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T232027Z&X-Amz-Expires=604800&X-Amz-Signature=33e94bd23ffe5fddb711257258726094d6909fec99516eb5106b28b603a78ebe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Interruptions disabled
 
-![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T112844Z&X-Amz-Expires=604800&X-Amz-Signature=c97f34344793c017ef7aeb4b239d040550c787e8b8e7cc48c899e5b7d08d015f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Interruption ignored](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff/assets/images/conversational-ai/no-interruption.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T232027Z&X-Amz-Expires=604800&X-Amz-Signature=8d3a320bfd72e294298c6e1da262c32822deb3bb02519fce62876a71dcd400e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Disable interruptions when the complete delivery of information is crucial, such as legal
 disclaimers or safety instructions.

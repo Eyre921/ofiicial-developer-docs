@@ -17,7 +17,7 @@ path: home
 * [MCP Server](/developer-tools/agentic-tools)
 * [Deepgram CLI](/developer-tools/agentic-tools#deepgram-cli)
 * [Agent Skills](https://github.com/deepgram/skills)
-* [Slack Support](/support#deepgram-slack)
+* [Slack Support](/support#instant-answers)
 
 ## Build with Deepgram
 

@@ -199,7 +199,7 @@ The same document model supports several common schema shapes. Pick the one that
     )
     ```
 
-    **Option B — run BM25 and dense searches separately and merge client-side** (when you want both signals to contribute to ranking, e.g. via reciprocal rank fusion):
+    **Option B — run BM25 and dense searches separately and merge client-side** (when you want both signals to contribute to ranking, e.g. via [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)):
 
     ```python Python theme={null}
     dense_hits = index.documents.search(

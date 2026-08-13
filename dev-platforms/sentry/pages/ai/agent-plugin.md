@@ -18,13 +18,17 @@ Supports **Claude Code**, **Cursor**, **Codex**, and **Grok**.
 
 ## [Install](https://docs.sentry.io/ai/agent-plugin.md#install)
 
-Run this in your terminal:
+Run one of these in your terminal:
 
 ```bash
-npx @sentry/ai install
+npx @sentry/agent-plugin install
 ```
 
-The installer detects which assistants you have on your machine, lets you pick the ones you want, and wires the plugin into each. Already have it? The same command updates you to the latest version.
+*Other available variations of the above snippet: dotagents*
+
+`@sentry/agent-plugin` detects which assistants you have on your machine, lets you pick the ones you want, and wires the plugin into each. Already have it? The same command updates you to the latest version.
+
+[dotagents](https://docs.sentry.io/ai/dotagents.md) is an alternative if you already manage agent tooling that way.
 
 Restart your AI tools afterward so they load the plugin.
 
@@ -65,7 +69,7 @@ The plugin configures the [Sentry MCP server](https://mcp.sentry.dev) for you du
 ## [Remove the Plugin](https://docs.sentry.io/ai/agent-plugin.md#remove-the-plugin)
 
 ```bash
-npx @sentry/ai remove
+npx @sentry/agent-plugin remove
 ```
 
 This only offers the assistants that currently have the plugin and removes just the Sentry plugin, leaving each tool's marketplace registered. Restart your AI tools afterward to drop it.
