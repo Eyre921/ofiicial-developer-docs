@@ -130,24 +130,4 @@ Note that the name and color of an existing option cannot be updated. Use `group
 
 ## Limitations
 
-### Formula maximum depth
-
-Formulas in Notion can have high levels of complexity beyond what the API can compute in a single request. For `formula` property values that exceed *have or exceed depth of 10* referenced tables, the API will return a "Formula depth" error as a [`"validation_error"`](/reference/errors)
-
-As a workaround, you can retrieve the `formula` property object from the Retrieve a Database endpoint and use the formula expression to compute the value of more complex formulas.
-
-### Unsupported Rollup Aggregations
-
-Due to the encoded cursor nature of computing rollup values, a subset of aggregation types are not supported. Instead the endpoint returns a list of *all* property\_item objects for the following rollup aggregations:
-
-* `show_unique` (Show unique values)
-* `unique` (Count unique values)
-* `median` (Median)
-
-### `Could not find page/database` Error
-
-A page property of type `rollup` and `formula` can involve computing a value based on the properties in another `relation` page. As such the connection needs permissions to the other `relation` page. If the connection doesn't have permissions page needed to compute the property value, the API will return a [`"object_not_found"`](/reference/errors) error specifying the page the connection lacks permissions to.
-
-### Property value doesn't match UI after pagination
-
-If a property value involves [pagination](/reference/pagination) and the underlying properties or pages used to compute the property value change whilst the connection is paginating through results, the final value will impacted and is not guaranteed to be accurate.
+Reading computed [formula](/reference/page-property-values#formula) and [rollup](/reference/page-property-values#rollup) property values has its own limitations, such as values that are too complex to compute.

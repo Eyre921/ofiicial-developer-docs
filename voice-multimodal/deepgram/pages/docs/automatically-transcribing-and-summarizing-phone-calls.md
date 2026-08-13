@@ -100,7 +100,7 @@ Now that you have created a function to receive incoming calls, apply it to your
 3. Under **Service**, select your service.
 4. Under **Function Path**, select `/inbound`.
 
-![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260812%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260812T233225Z&X-Amz-Expires=604800&X-Amz-Signature=725a962342079d598d20d01148e10142c88b5aa8f7ce74aac107c16201738c50&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![When a call comes in, use a Function. Default service with the /inbound function path.](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c/images/set-inbound-endpoint.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T112317Z&X-Amz-Expires=604800&X-Amz-Signature=c957d8a421a002e4a17323d723fdebc71101dc9d3fc8c2bfa74184c84daf2b15&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Transcribing and Summarizing Calls
 

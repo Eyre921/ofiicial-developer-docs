@@ -16,6 +16,8 @@ This guide covers deploying Deepgram's Text-to-Speech (TTS) services for convers
 
 Looking to deploy Speech-to-Text (STT) services instead? See the [Deploy STT Services](/docs/deploy-stt-services) guide.
 
+**Deploying Flux TTS?** Flux TTS has unique deployment requirements and must be hosted on a separate Engine from Aura models. See the [Deploying Flux TTS](/docs/deploy-flux-tts) guide for Flux TTS-specific instructions.
+
 As with other Deepgram self-hosted services, Deepgram TTS services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as STT deployments. However, **Deepgram strongly recommends configuring each node for a specific service type—either STT or TTS—for optimal performance and resource utilization**.
 
 You need to download and deploy these images from a container image repository, along with TTS-specific configuration files and environment variables that will be provided by Deepgram.
@@ -65,9 +67,9 @@ TTS hardware requirements are higher than standard STT deployments due to the co
 
 ## TTS Models and Language Support
 
-### Aura-2 (Latest Generation)
+### Aura and Aura-2
 
-Aura-2 supports both English and Spanish languages with superior quality and performance. You can choose to deploy:
+This guide covers the Aura family of TTS models. Aura-2 supports both English and Spanish languages with superior quality and performance. You can choose to deploy:
 
 * **Single language, single instance** - One API and Engine service pair
 * **Single language, multiple instances** - Multiple API and Engine pairs for the same language (load balancing/redundancy)
@@ -83,6 +85,10 @@ For multiple service deployments (same language or different languages), you'll 
 ### Legacy Aura Models
 
 Previous generation Aura models may have different configuration requirements. Contact your Deepgram Account Representative for guidance on legacy model deployment.
+
+### Flux TTS
+
+Flux TTS is documented separately. See [Deploying Flux TTS](/docs/deploy-flux-tts).
 
 ## Get Deepgram Products
 

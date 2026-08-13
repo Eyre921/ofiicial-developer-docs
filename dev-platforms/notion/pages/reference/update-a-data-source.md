@@ -47,7 +47,6 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Warning>
   **The following data source properties cannot be updated via the API:**
 
-  * `formula`
   * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * `place`
 </Warning>

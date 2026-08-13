@@ -135,8 +135,9 @@ This table provides the expected timing for fund settlement based on the region 
 | USA (USD) | ACH Credit Transfer | 1-3 days |
 | USA (USD) | ACH Debit Transfer | 5 days |
 | EU (EUR) | SEPA Credit Transfer | 1-2 days |
-| UK (GBP) | FPS | 2 hours - 1 day |
-| UK (GBP) | BACS | 2-3 days |
+| UK (GBP) | FPS | 1 hour |
+| UK (GBP) | CHAPS | 1 hour |
+| UK (GBP) | Bacs | 2-3 days |
 | Other currencies | Wire transfer | 1-7 days (if you provide the correct wire information to Stripe) |
 
 Depending on your account configuration, you might not have access to all the methods mentioned above immediately after launching.

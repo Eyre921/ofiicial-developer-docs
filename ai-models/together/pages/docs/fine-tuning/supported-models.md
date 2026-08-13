@@ -28,6 +28,7 @@ The tables below list every model available through the fine-tuning API. Context
 
 | Organization | Model                                              | API ID                                               | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
 | ------------ | -------------------------------------------------- | ---------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
+| DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
 | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
 | DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
 | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |

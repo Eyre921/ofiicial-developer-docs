@@ -4,6 +4,36 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 13, 2026">
+  ### Relation, person, and status filters in Notion MCP view tools
+
+  Filters on relation, person, and status properties now apply when you configure a view with `notion-create-view` or `notion-update-view`. Previously these calls succeeded but the filter was silently dropped, so the view showed every row.
+
+  Relation values must be a page URL or ID, and person values must be a user ID or `"me"` — names aren't accepted, and a value that can't be resolved now returns a validation error instead of writing a filter that never applies. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+</Update>
+
+<Update label="August 12, 2026">
+  ### `prop()` references in formula property writes
+
+  Formula expressions submitted through [Update a data source](/reference/update-a-data-source) now store `prop("Property Name")` references exactly as written. Previously, the API accepted some expressions but silently rewrote them — most visibly, a reference to a unique ID property dropped the ID's prefix from computed values, and a `prop()` reference inside an array literal emptied the array. Expressions the API can't store now return a [`validation_error`](/reference/errors) instead. Formulas saved before this fix keep their old stored expression until you resubmit the update.
+
+  Formula properties created through the API also now keep their result type, so number formatting options stay available in Notion and other formulas can reference them with `prop()`.
+
+  ### Readable formula expressions in data source schemas
+
+  [Retrieve a data source](/reference/retrieve-a-data-source) is beginning to return formula expressions using the same `prop("Property Name")` syntax you write. This change is rolling out gradually over the coming days; expressions that can't be rendered faithfully in this syntax continue to use the internal property reference syntax.
+
+  ### Admin API reference for agents
+
+  The [Admin API](/reference/admin/intro) reference now covers the endpoints for managing agents in a workspace: credit usage and limits, permissions, status, creation policy, and workflow metadata.
+
+  ### Filter properties on page writes
+
+  [Create a page](/reference/post-page) and [Update page properties](/reference/patch-page) now accept the same `filter_properties` query parameter as [Retrieve a page](/reference/retrieve-a-page). Pass the IDs of the properties you want, and the write response includes only those properties. This keeps responses small and fast for pages with many properties.
+
+  **SDK support**: `@notionhq/client` [`v5.25.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.0) adds `filter_properties` to `pages.create()` and `pages.update()`.
+</Update>
+
 <Update label="August 10, 2026">
   ### Reorganizing query tools in Notion MCP
 

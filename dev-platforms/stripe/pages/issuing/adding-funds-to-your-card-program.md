@@ -60,7 +60,7 @@ Pull-funded top-ups are best for users who want to build their own logic around 
 Push-funded top-ups also fund your Issuing balance from an external bank account. However, unlike pull-funded top-ups, you don’t need to add your external bank account to Stripe. Instead, push-funded top-ups use an account or routing number to push funds to your Issuing balance using:
 
 - Same-day wire or ACH credit transfer (US) (preview)
-- BACS / FPS (UK)
+- Bacs, FPS, or CHAPS (UK)
 - Sepa Credit Transfer (Europe)
 
 You can find routing information in the [Dashboard](https://docs.stripe.com/issuing/funding/balance.md?issuing-currency=usd#access-account-information-for-push-funding-in-the-dashboard) or by making a `create` or `list` call to the [Funding Instruction](https://docs.stripe.com/api/issuing/funding_instructions.md) endpoint. However, connected accounts can only view routing information by calling [List Funding Instructions](https://docs.stripe.com/api/issuing/funding_instructions/list.md).

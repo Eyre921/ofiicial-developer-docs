@@ -12014,6 +12014,10 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Create a new view on a Notion database. Supports table, board, list, calendar, timeline, gallery, form, chart, map, and dashboard view types. Use the optional configuration DSL for filters, sorts, grouping, and display options.
 
+    <Note>
+      Filter values in the configuration DSL are matched against the property's type: relation values must be a page URL or ID, person values must be a user ID or `"me"`, and status values must be an option or group name. Page and people names aren't accepted — resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
+    </Note>
+
     **Example prompts:**
 
     * "Create a board view grouped by Status in my tasks database"
@@ -12028,7 +12032,7 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Update a view">
     `notion-update-view`
 
-    Update a view's name, filters, sorts, or display configuration. Only the fields you specify will be changed. Supports clearing existing configuration like filters, sorts, and grouping.
+    Update a view's name, filters, sorts, or display configuration. Only the fields you specify will be changed. Supports clearing existing configuration like filters, sorts, and grouping. Uses the same configuration DSL — and the same filter value formats — as `notion-create-view`.
 
     **Example prompts:**
 
@@ -16442,6 +16446,36 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="August 13, 2026">
+  ### Relation, person, and status filters in Notion MCP view tools
+
+  Filters on relation, person, and status properties now apply when you configure a view with `notion-create-view` or `notion-update-view`. Previously these calls succeeded but the filter was silently dropped, so the view showed every row.
+
+  Relation values must be a page URL or ID, and person values must be a user ID or `"me"` — names aren't accepted, and a value that can't be resolved now returns a validation error instead of writing a filter that never applies. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+</Update>
+
+<Update label="August 12, 2026">
+  ### `prop()` references in formula property writes
+
+  Formula expressions submitted through [Update a data source](/reference/update-a-data-source) now store `prop("Property Name")` references exactly as written. Previously, the API accepted some expressions but silently rewrote them — most visibly, a reference to a unique ID property dropped the ID's prefix from computed values, and a `prop()` reference inside an array literal emptied the array. Expressions the API can't store now return a [`validation_error`](/reference/errors) instead. Formulas saved before this fix keep their old stored expression until you resubmit the update.
+
+  Formula properties created through the API also now keep their result type, so number formatting options stay available in Notion and other formulas can reference them with `prop()`.
+
+  ### Readable formula expressions in data source schemas
+
+  [Retrieve a data source](/reference/retrieve-a-data-source) is beginning to return formula expressions using the same `prop("Property Name")` syntax you write. This change is rolling out gradually over the coming days; expressions that can't be rendered faithfully in this syntax continue to use the internal property reference syntax.
+
+  ### Admin API reference for agents
+
+  The [Admin API](/reference/admin/intro) reference now covers the endpoints for managing agents in a workspace: credit usage and limits, permissions, status, creation policy, and workflow metadata.
+
+  ### Filter properties on page writes
+
+  [Create a page](/reference/post-page) and [Update page properties](/reference/patch-page) now accept the same `filter_properties` query parameter as [Retrieve a page](/reference/retrieve-a-page). Pass the IDs of the properties you want, and the write response includes only those properties. This keeps responses small and fast for pages with many properties.
+
+  **SDK support**: `@notionhq/client` [`v5.25.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.0) adds `filter_properties` to `pages.create()` and `pages.update()`.
+</Update>
 
 <Update label="August 10, 2026">
   ### Reorganizing query tools in Notion MCP
@@ -25322,6 +25356,21 @@ Contains values derived from a provided expression. The `formula` type object ha
 | :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------- | :---------------------- |
 | `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.com/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
 
+Example expressions and the values they produce:
+
+| Expression                                | Result type | Example result |
+| :---------------------------------------- | :---------- | :------------- |
+| `prop("Price") * 1.1`                     | Number      | `11`           |
+| `if(prop("In stock"), "yes", "no")`       | String      | `"yes"`        |
+| `format(prop("ID"))`                      | String      | `"TASK-1"`     |
+| `dateBetween(prop("Due"), now(), "days")` | Number      | `6`            |
+
+<Note>
+  * `prop("Name")` matches a property by its current name, but the saved formula references the property by ID, so renaming the property later doesn't break the formula.
+  * Expressions are validated when you save them. An expression that doesn't parse or type check — for example, a `prop()` reference to a property that doesn't exist — returns a [`validation_error`](/reference/errors).
+  * When you read the schema back, formula expressions use the same `prop("Name")` syntax you write. If an expression can't be rendered faithfully in this syntax, the API returns it in the internal reference syntax (`{{notion:block_property:...}}`) instead; both forms are valid in expressions you write.
+</Note>
+
 <Tabs>
   <Tab title="Property">
     ```json Example formula data source property theme={null}
@@ -28249,7 +28298,6 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Warning>
   **The following data source properties cannot be updated via the API:**
 
-  * `formula`
   * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * `place`
 </Warning>
@@ -28477,27 +28525,7 @@ Note that the name and color of an existing option cannot be updated. Use `group
 
 ## Limitations
 
-### Formula maximum depth
-
-Formulas in Notion can have high levels of complexity beyond what the API can compute in a single request. For `formula` property values that exceed *have or exceed depth of 10* referenced tables, the API will return a "Formula depth" error as a [`"validation_error"`](/reference/errors)
-
-As a workaround, you can retrieve the `formula` property object from the [Retrieve a data source](/reference/retrieve-a-data-source) endpoint and use the formula expression to compute the value of more complex formulas.
-
-### Unsupported Rollup Aggregations
-
-Due to the encoded cursor nature of computing rollup values, a subset of aggregation types are not supported. Instead the endpoint returns a list of *all* property\_item objects for the following rollup aggregations:
-
-* `show_unique` (Show unique values)
-* `unique` (Count unique values)
-* `median` (Median)
-
-### "Could not find page/data source" Error
-
-A page property of type `rollup` and `formula` can involve computing a value based on the properties in another `relation` page. As such the connection needs permissions to the other `relation` page. If the connection doesn't have permissions page needed to compute the property value, the API will return a [`"object_not_found"`](/reference/errors) error specifying the page the connection lacks permissions to.
-
-### Property value doesn't match UI after pagination
-
-If a property value involves [pagination](/reference/pagination) and the underlying properties or pages used to compute the property value change whilst the connection is paginating through results, the final value will impacted and is not guaranteed to be accurate.
+Reading computed [formula](/reference/page-property-values#formula) and [rollup](/reference/page-property-values#rollup) property values has its own limitations, such as values that are too complex to compute.
 
 
 # Update a database
@@ -28725,27 +28753,7 @@ Note that the name and color of an existing option cannot be updated. Use `group
 
 ## Limitations
 
-### Formula maximum depth
-
-Formulas in Notion can have high levels of complexity beyond what the API can compute in a single request. For `formula` property values that exceed *have or exceed depth of 10* referenced tables, the API will return a "Formula depth" error as a [`"validation_error"`](/reference/errors)
-
-As a workaround, you can retrieve the `formula` property object from the Retrieve a Database endpoint and use the formula expression to compute the value of more complex formulas.
-
-### Unsupported Rollup Aggregations
-
-Due to the encoded cursor nature of computing rollup values, a subset of aggregation types are not supported. Instead the endpoint returns a list of *all* property\_item objects for the following rollup aggregations:
-
-* `show_unique` (Show unique values)
-* `unique` (Count unique values)
-* `median` (Median)
-
-### `Could not find page/database` Error
-
-A page property of type `rollup` and `formula` can involve computing a value based on the properties in another `relation` page. As such the connection needs permissions to the other `relation` page. If the connection doesn't have permissions page needed to compute the property value, the API will return a [`"object_not_found"`](/reference/errors) error specifying the page the connection lacks permissions to.
-
-### Property value doesn't match UI after pagination
-
-If a property value involves [pagination](/reference/pagination) and the underlying properties or pages used to compute the property value change whilst the connection is paginating through results, the final value will impacted and is not guaranteed to be accurate.
+Reading computed [formula](/reference/page-property-values#formula) and [rollup](/reference/page-property-values#rollup) property values has its own limitations, such as values that are too complex to compute.
 
 
 # Send a file upload

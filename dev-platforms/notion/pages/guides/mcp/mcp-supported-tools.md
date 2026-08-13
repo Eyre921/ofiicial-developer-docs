@@ -190,6 +190,10 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Create a new view on a Notion database. Supports table, board, list, calendar, timeline, gallery, form, chart, map, and dashboard view types. Use the optional configuration DSL for filters, sorts, grouping, and display options.
 
+    <Note>
+      Filter values in the configuration DSL are matched against the property's type: relation values must be a page URL or ID, person values must be a user ID or `"me"`, and status values must be an option or group name. Page and people names aren't accepted — resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
+    </Note>
+
     **Example prompts:**
 
     * "Create a board view grouped by Status in my tasks database"
@@ -204,7 +208,7 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Update a view">
     `notion-update-view`
 
-    Update a view's name, filters, sorts, or display configuration. Only the fields you specify will be changed. Supports clearing existing configuration like filters, sorts, and grouping.
+    Update a view's name, filters, sorts, or display configuration. Only the fields you specify will be changed. Supports clearing existing configuration like filters, sorts, and grouping. Uses the same configuration DSL — and the same filter value formats — as `notion-create-view`.
 
     **Example prompts:**
 

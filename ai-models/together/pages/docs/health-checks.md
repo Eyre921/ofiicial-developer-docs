@@ -27,6 +27,7 @@ Active health checks let you run targeted diagnostic tests on your GPU nodes to 
    * **NVBandwidth: GPU to CPU Bandwidth:** PCIe bandwidth test.
    * **NVBandwidth: GPU-CPU Latency:** PCIe latency test.
    * **InfiniBand Write Bandwidth:** InfiniBand network performance test.
+   * **Pairwise InfiniBand Write Bandwidth (Preview):** Two-node InfiniBand network performance test.
    * **Storage Performance (Preview):** Storage throughput and data-integrity test.
 5. Select **Next: Select Nodes**.
 6. Choose which nodes to test.
@@ -73,6 +74,14 @@ Each health check validates different aspects of your GPU infrastructure:
 * Measures InfiniBand network write throughput.
 * Validates high-speed interconnect performance.
 * **Use for:** Distributed training and multi-node workloads.
+
+**Pairwise InfiniBand Write Bandwidth**
+
+* Measures InfiniBand write throughput between exactly two GPU nodes across InfiniBand rails.
+* Validates node-to-node interconnect performance and rail-level connectivity.
+* **Requires:** A cluster with at least two GPU nodes. Select exactly two nodes; the first selected node is the server and the second is the client.
+* **Configurable:** RDMA memory (`cpu` or `gpu`, default `cpu`); direction (`both`, `client-to-server`, or `server-to-client`, default `both`).
+* **Use for:** Investigating slow or degraded links between specific node pairs before distributed training.
 
 #### PCIe performance
 
@@ -128,19 +137,20 @@ Health check results are displayed in the Health Checks table:
 
 Performance-based health checks compare the measured result against a reference value. For bandwidth tests, a test **passes** when the measured value is greater than or equal to the threshold. For latency tests, lower is better, so a test passes when the measured value is less than or equal to the threshold. The following thresholds are the defaults applied during health checks and automatic acceptance testing.
 
-| Test                               | Metric                           | Pass threshold | Test configuration                                                             |
-| ---------------------------------- | -------------------------------- | -------------- | ------------------------------------------------------------------------------ |
-| Single-Node NCCL                   | Average bus bandwidth            | ≥ 300 GB/s     | `all_reduce_perf` across 8 GPUs, 32 GiB message size.                          |
-| Multi-Node NCCL                    | Average bus bandwidth            | ≥ 330 GB/s     | `all_reduce_perf` across all GPUs on the selected nodes.                       |
-| InfiniBand Write Bandwidth         | Reported write bandwidth         | ≥ 320 Gb/s     | `ib_write_bw` per device, 8 MiB message size, 2-second duration.               |
-| NVBandwidth: CPU to GPU Bandwidth  | Per-GPU host-to-device bandwidth | ≥ 30 GB/s      | `host_to_device_memcpy_ce`, averaged across 8 GPUs.                            |
-| NVBandwidth: GPU to CPU Bandwidth  | Per-GPU device-to-host bandwidth | ≥ 30 GB/s      | `device_to_host_memcpy_ce`, averaged across 8 GPUs.                            |
-| NVBandwidth: GPU-CPU Latency       | Per-GPU host-device latency      | ≤ 2000 ns      | `host_device_latency_sm`, averaged across 8 GPUs.                              |
-| Storage (shared): Sequential Read  | Bandwidth                        | ≥ 10 GiB/s     | `fio` sequential read, 1 MiB blocks across 64 jobs at iodepth 32.              |
-| Storage (shared): Sequential Write | Bandwidth                        | ≥ 5 GiB/s      | `fio` sequential write, 1 MiB blocks across 64 jobs at iodepth 32.             |
-| Storage (local): Sequential Read   | Bandwidth                        | ≥ 2 GiB/s      | `fio` sequential read, 1 MiB blocks across 16 jobs at iodepth 16.              |
-| Storage (local): Sequential Write  | Bandwidth                        | ≥ 1 GiB/s      | `fio` sequential write, 1 MiB blocks across 16 jobs at iodepth 16.             |
-| TorchTitan Training                | Steady-state median MFU          | ≥ 30%          | Llama 3 8B on a single B200 node, 40 training steps (the single-node default). |
+| Test                                | Metric                                     | Pass threshold                   | Test configuration                                                                               |
+| ----------------------------------- | ------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Single-Node NCCL                    | Average bus bandwidth                      | ≥ 300 GB/s                       | `all_reduce_perf` across 8 GPUs, 32 GiB message size.                                            |
+| Multi-Node NCCL                     | Average bus bandwidth                      | ≥ 330 GB/s                       | `all_reduce_perf` across all GPUs on the selected nodes.                                         |
+| InfiniBand Write Bandwidth          | Reported write bandwidth                   | ≥ 320 Gb/s                       | `ib_write_bw` per device, 8 MiB message size, 2-second duration.                                 |
+| Pairwise InfiniBand Write Bandwidth | Minimum bandwidth across rail measurements | ≥ threshold shown in run details | `ib_write_bw` between two nodes across InfiniBand rails; configurable RDMA memory and direction. |
+| NVBandwidth: CPU to GPU Bandwidth   | Per-GPU host-to-device bandwidth           | ≥ 30 GB/s                        | `host_to_device_memcpy_ce`, averaged across 8 GPUs.                                              |
+| NVBandwidth: GPU to CPU Bandwidth   | Per-GPU device-to-host bandwidth           | ≥ 30 GB/s                        | `device_to_host_memcpy_ce`, averaged across 8 GPUs.                                              |
+| NVBandwidth: GPU-CPU Latency        | Per-GPU host-device latency                | ≤ 2000 ns                        | `host_device_latency_sm`, averaged across 8 GPUs.                                                |
+| Storage (shared): Sequential Read   | Bandwidth                                  | ≥ 10 GiB/s                       | `fio` sequential read, 1 MiB blocks across 64 jobs at iodepth 32.                                |
+| Storage (shared): Sequential Write  | Bandwidth                                  | ≥ 5 GiB/s                        | `fio` sequential write, 1 MiB blocks across 64 jobs at iodepth 32.                               |
+| Storage (local): Sequential Read    | Bandwidth                                  | ≥ 2 GiB/s                        | `fio` sequential read, 1 MiB blocks across 16 jobs at iodepth 16.                                |
+| Storage (local): Sequential Write   | Bandwidth                                  | ≥ 1 GiB/s                        | `fio` sequential write, 1 MiB blocks across 16 jobs at iodepth 16.                               |
+| TorchTitan Training                 | Steady-state median MFU                    | ≥ 30%                            | Llama 3 8B on a single B200 node, 40 training steps (the single-node default).                   |
 
 <Note>
   **Units differ by test:** NCCL and NVBandwidth bandwidth thresholds are reported in gigabytes per second (GB/s), while InfiniBand write bandwidth is reported in gigabits per second (Gb/s). The two are not directly comparable (320 Gb/s is 40 GB/s). Latency is reported in nanoseconds (ns), and TorchTitan MFU is reported as a percentage.
@@ -225,7 +235,7 @@ Automatic acceptance testing provides several benefits:
 * **Training instability:** Run GPU Burn and DCGM Diag.
 * **Slow data loading:** Run Storage Performance and NVBandwidth tests.
 * **Multi-GPU failures:** Run Single-Node NCCL.
-* **Distributed training issues:** Run InfiniBand tests.
+* **Distributed training issues:** Run InfiniBand tests. Use Pairwise InfiniBand Write Bandwidth to isolate slow links between specific node pairs.
 * **Low training throughput:** Run TorchTitan Training.
 
 ### Best practices

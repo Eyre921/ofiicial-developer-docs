@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -78,6 +78,7 @@
 - `docs/deepgram-with-amazon-connect` — [Amazon Connect and Deepgram](pages/docs/deepgram-with-amazon-connect.md) · [原文](https://developers.deepgram.com/docs/deepgram-with-amazon-connect.md)
 - `docs/deploy-amazon-sagemaker` — [Deploy Deepgram on Amazon SageMaker](pages/docs/deploy-amazon-sagemaker.md) · [原文](https://developers.deepgram.com/docs/deploy-amazon-sagemaker.md)
 - `docs/deploy-deepgram-on-modal` — [Deploy Deepgram on Modal](pages/docs/deploy-deepgram-on-modal.md) · [原文](https://developers.deepgram.com/docs/deploy-deepgram-on-modal.md)
+- `docs/deploy-flux-tts` — [Deploying Flux TTS](pages/docs/deploy-flux-tts.md) · [原文](https://developers.deepgram.com/docs/deploy-flux-tts.md)
 - `docs/deploy-stt-services` — [Deploy Speech-to-Text (STT) Services](pages/docs/deploy-stt-services.md) · [原文](https://developers.deepgram.com/docs/deploy-stt-services.md)
 - `docs/deploy-tts-services` — [Deploy Text-to-Speech (TTS) Services](pages/docs/deploy-tts-services.md) · [原文](https://developers.deepgram.com/docs/deploy-tts-services.md)
 - `docs/deploy-voice-agent` — [Deploy Voice Agent](pages/docs/deploy-voice-agent.md) · [原文](https://developers.deepgram.com/docs/deploy-voice-agent.md)

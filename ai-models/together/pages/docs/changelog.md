@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 12, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `Qwen/Qwen3.8-2.4T-A95B`: FP4 quantization. Pricing: \$2.50 input / \$6.25 output / \$0.50 cached input (per 1M tokens).
+</Update>
+
 <Update label="August 11, 2026">
   ## New serverless models
 
@@ -345,6 +353,14 @@ path: docs/changelog
   * `zai-org/GLM-5`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
+<Update label="July 21, 2026">
+  ## Pairwise InfiniBand write bandwidth health check
+
+  You can now run a Pairwise InfiniBand Write Bandwidth active health check on GPU clusters. It measures `ib_write_bw` throughput between exactly two nodes across InfiniBand rails, with configurable RDMA memory and traffic direction.
+
+  See [Health checks](/docs/health-checks) for the available tests, thresholds, and results.
 </Update>
 
 <Update label="July 20, 2026">

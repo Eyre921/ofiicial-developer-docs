@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1235 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1248 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -41,6 +41,10 @@
 - `docs/api-reference/analytics/workspace/usage` — [Get workspace usage](pages/docs/api-reference/analytics/workspace/usage.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/usage.md)
 - `docs/api-reference/api-keys/disable` — [Disable API key](pages/docs/api-reference/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/disable.md)
 - `docs/api-reference/api-keys/set-third-party-disabling-policy` — [Set workspace third-party disabling policy](pages/docs/api-reference/api-keys/set-third-party-disabling-policy.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy.md)
+- `docs/api-reference/assets/create` — [Upload Asset](pages/docs/api-reference/assets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/create.md)
+- `docs/api-reference/assets/delete` — [Delete Asset](pages/docs/api-reference/assets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/delete.md)
+- `docs/api-reference/assets/get` — [Get Asset](pages/docs/api-reference/assets/get.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/get.md)
+- `docs/api-reference/assets/list` — [List Assets](pages/docs/api-reference/assets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/list.md)
 - `docs/api-reference/audio-isolation/convert` — [Audio isolation](pages/docs/api-reference/audio-isolation/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/convert.md)
 - `docs/api-reference/audio-isolation/delete` — [Delete Audio Isolation History Item](pages/docs/api-reference/audio-isolation/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/delete.md)
 - `docs/api-reference/audio-isolation/list` — [Get Audio Isolation History](pages/docs/api-reference/audio-isolation/list.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/list.md)
@@ -102,6 +106,15 @@
 - `docs/api-reference/environment-variables/list` — [List environment variables](pages/docs/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/list.md)
 - `docs/api-reference/environment-variables/update` — [Update environment variable](pages/docs/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/update.md)
 - `docs/api-reference/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/api-reference/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/exotel/outbound-call.md)
+- `docs/api-reference/flows/image/create` — [Create Image Generation](pages/docs/api-reference/flows/image/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/create.md)
+- `docs/api-reference/flows/image/get` — [Get Image Generation](pages/docs/api-reference/flows/image/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/get.md)
+- `docs/api-reference/flows/image/list` — [List Image Generations](pages/docs/api-reference/flows/image/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/list.md)
+- `docs/api-reference/flows/text-to-speech/create` — [Create Speech Generation](pages/docs/api-reference/flows/text-to-speech/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/create.md)
+- `docs/api-reference/flows/text-to-speech/get` — [Get Speech Generation](pages/docs/api-reference/flows/text-to-speech/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/get.md)
+- `docs/api-reference/flows/text-to-speech/list` — [List Speech Generations](pages/docs/api-reference/flows/text-to-speech/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/list.md)
+- `docs/api-reference/flows/video/create` — [Create Video Generation](pages/docs/api-reference/flows/video/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/video/create.md)
+- `docs/api-reference/flows/video/get` — [Get Video Generation](pages/docs/api-reference/flows/video/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/video/get.md)
+- `docs/api-reference/flows/video/list` — [List Video Generations](pages/docs/api-reference/flows/video/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/video/list.md)
 - `docs/api-reference/forced-alignment/create` — [Create Forced Alignment](pages/docs/api-reference/forced-alignment/create.md) · [原文](https://elevenlabs.io/docs/api-reference/forced-alignment/create.md)
 - `docs/api-reference/history/delete` — [Delete history item](pages/docs/api-reference/history/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/history/delete.md)
 - `docs/api-reference/history/download` — [Download history items](pages/docs/api-reference/history/download.md) · [原文](https://elevenlabs.io/docs/api-reference/history/download.md)

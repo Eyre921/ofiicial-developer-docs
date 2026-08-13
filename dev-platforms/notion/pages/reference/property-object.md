@@ -252,6 +252,21 @@ Contains values derived from a provided expression. The `formula` type object ha
 | :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------- | :---------------------- |
 | `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.com/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
 
+Example expressions and the values they produce:
+
+| Expression                                | Result type | Example result |
+| :---------------------------------------- | :---------- | :------------- |
+| `prop("Price") * 1.1`                     | Number      | `11`           |
+| `if(prop("In stock"), "yes", "no")`       | String      | `"yes"`        |
+| `format(prop("ID"))`                      | String      | `"TASK-1"`     |
+| `dateBetween(prop("Due"), now(), "days")` | Number      | `6`            |
+
+<Note>
+  * `prop("Name")` matches a property by its current name, but the saved formula references the property by ID, so renaming the property later doesn't break the formula.
+  * Expressions are validated when you save them. An expression that doesn't parse or type check — for example, a `prop()` reference to a property that doesn't exist — returns a [`validation_error`](/reference/errors).
+  * When you read the schema back, formula expressions use the same `prop("Name")` syntax you write. If an expression can't be rendered faithfully in this syntax, the API returns it in the internal reference syntax (`{{notion:block_property:...}}`) instead; both forms are valid in expressions you write.
+</Note>
+
 <Tabs>
   <Tab title="Property">
     ```json Example formula data source property theme={null}

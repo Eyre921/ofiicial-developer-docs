@@ -33,8 +33,14 @@ The table below shows which models are supported on commonly used NVIDIA GPUs.
 | Nova-3, Nova-2 STT |  ✅  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
 | Aura-1, Aura-2 TTS |  ✅  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
 | Flux STT           |  ❌  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
+| Flux TTS           |  ❌  |      ❌     |  ✅  |   ✅  |   ✅  |   ✅  |
 
-For Flux STT, use a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, or H100. GPUs like the NVIDIA T4 are incompatible with Flux.
+The Flux models support fewer GPUs than Nova and Aura do:
+
+* **Flux STT** requires a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, or H100. GPUs like the NVIDIA T4 are incompatible.
+* **Flux TTS** runs on the NVIDIA L4, L40S, A100, and H100. The NVIDIA T4 and A10 are not supported. Contact [Support](https://deepgram.com/contact-us/) before provisioning any other GPU for Flux TTS.
+
+Flux TTS also requires more system RAM than the other models. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
 
 ## Amazon SageMaker
 
@@ -92,6 +98,8 @@ For each machine running an STT Engine container, we recommend a machine with th
   * We recommend more if you intend on deploying multiple STT models.
 
 ##### Text-to-Speech (TTS) Engine
+
+These specifications describe Aura and Aura-2. Flux TTS requires a single GPU rather than two, supports fewer GPU models, and needs more system RAM. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
 
 For each machine running a TTS Engine container, we recommend a machine with the following minimum specifications:
 

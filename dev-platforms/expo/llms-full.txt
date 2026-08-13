@@ -727,6 +727,7 @@ Install the CLI and start a project:
 - [NavigationBar](https://docs.expo.dev/versions/latest/sdk/navigation-bar.md)
 - [Network](https://docs.expo.dev/versions/latest/sdk/network.md)
 - [Notifications](https://docs.expo.dev/versions/latest/sdk/notifications.md)
+- [Observe](https://docs.expo.dev/versions/latest/sdk/observe.md)
 - [Pedometer](https://docs.expo.dev/versions/latest/sdk/pedometer.md)
 - [Print](https://docs.expo.dev/versions/latest/sdk/print.md)
 - [ScreenCapture](https://docs.expo.dev/versions/latest/sdk/screen-capture.md)

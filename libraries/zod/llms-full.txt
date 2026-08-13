@@ -1069,6 +1069,14 @@ z.any(); // inferred type: `any`
 z.unknown(); // inferred type: `unknown`
 ```
 
+As object properties, their keys are required, matching `{ a: any }` in TypeScript.
+
+```ts
+z.object({ a: z.any() }).parse({}); // ❌
+z.object({ a: z.any() }).parse({ a: undefined }); // ✅
+z.object({ a: z.any().optional() }).parse({}); // ✅
+```
+
 ## Never
 
 No value will pass validation.
@@ -5069,6 +5077,8 @@ z.toJSONSchema(z.bigint(), { unrepresentable: "any" });
 // => {}
 ```
 
+To represent some of these types but keep the error for the rest, use [`override`](#override) instead. It runs first, and only the types it doesn't handle throw.
+
 ### `cycles`
 
 How to handle cycles. If a cycle is encountered as `z.toJSONSchema()` traverses the schema, it will be represented using `$ref`.
@@ -5153,12 +5163,11 @@ z.toJSONSchema(mySchema, {
 });
 ```
 
-Note that unrepresentable types will throw an `Error` before this function is called. If you are trying to define custom behavior for an unrepresentable type, you'll need to set the `unrepresentable: "any"` alongside `override`.
+`override` runs before the [`unrepresentable`](#unrepresentable) error is thrown, so you can represent an unrepresentable type here without disabling the error for the others.
 
 ```ts
 // support z.date() as ISO datetime strings
 const result = z.toJSONSchema(z.date(), {
-  unrepresentable: "any",
   override: (ctx) => {
     const def = ctx.zodSchema._zod.def;
     if(def.type ==="date"){
@@ -5167,6 +5176,21 @@ const result = z.toJSONSchema(z.date(), {
     }
   },
 });
+```
+
+Any unrepresentable type your `override` doesn't give a JSON Schema still throws. Annotations don't count as handling one — adding a `description` to every schema won't suppress the error.
+
+```ts
+z.toJSONSchema(z.object({ createdAt: z.date(), id: z.bigint() }), {
+  override: (ctx) => {
+    const def = ctx.zodSchema._zod.def;
+    if(def.type ==="date"){
+      ctx.jsonSchema.type = "string";
+      ctx.jsonSchema.format = "date-time";
+    }
+  },
+});
+// => throws Error (BigInt cannot be represented in JSON Schema)
 ```
 
 ## Conversion
@@ -6441,6 +6465,16 @@ const mySchema = z.object({
 });
 // Zod 3: { a?: any; b?: unknown };
 // Zod 4: { a: any; b: unknown };
+```
+
+As of `v4.4.0`, the key is required at parse time too. Zod 4.0–4.3 accepted a missing key despite the inferred type above; requiring it is a soundness fix.
+
+```ts
+mySchema.parse({}); // ❌ (✅ in v4.3 and earlier)
+mySchema.parse({ a: undefined, b: undefined }); // ✅
+
+// use .optional() for a key that may be absent
+z.object({ a: z.any().optional() }).parse({}); // ✅
 ```
 
 ### deprecates `.merge()`
