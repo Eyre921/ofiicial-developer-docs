@@ -8,10 +8,12 @@ path: docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-a
 
 # How can I access usage analytics for my account?
 
-To access [Usage Analytics](https://elevenlabs.io/app/usage) for your account, click <strong>Developers</strong> in the sidebar and select the <strong>Usage</strong> tab.
+To access [usage analytics](https://elevenlabs.io/app/usage) for your account, click **Developers** at the bottom of the sidebar, then open the **Analytics** tab.
 
-Usage Analytics lets you view all the activity on the platform for your account or Workspace.
+The Analytics tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period and at different levels of granularity. Use the **Request Log** tab to search and inspect individual API requests.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/38545177912849" alt="" />
+![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113358Z&X-Amz-Expires=604800&X-Amz-Signature=6ae6c8eab0548d2aaa18d58ceb448594d13bcd56d66f51d85495f2633080c7b5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-If you're in a multi-seat Workspace, the you will be able to switch between Account and Workspace. Account shows data for your individual account, while Workspace covers all accounts in your Workspace. If you’re not in a multi-seat Workspace, you will not see this option.
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
+
+For a full walkthrough of metrics and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).

@@ -28,7 +28,8 @@ To send the `UpdateSpeak` message, you need to send the following JSON message t
     "speak": {
         "provider": {
             "type": "deepgram",
-            "model": "aura-2-thalia-en"
+            "version": "v2",
+            "model": "flux-alexis-en"
         }
     }
 }

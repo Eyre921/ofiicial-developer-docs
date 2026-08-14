@@ -8,12 +8,22 @@ path: docs/help-center/technical/how-can-i-see-information-about-api-requests-fo
 
 # How can I see information about API requests for my account?
 
-You can access information about API requests for your account in Usage Analytics, under the API Requests section.
+You can view API request data for your account in [usage analytics](https://elevenlabs.io/app/usage). Click **Developers** at the bottom of the sidebar, open the **Analytics** tab, then select **API Requests**.
 
-There are two tabs in Usage Analytics. The Account tab shows data for your individual account, whereas the Workspace tab covers all accounts under your Workspace. If you’re not in a multi-seat Workspace, the data will be the same across the two tabs.
+The API Requests view shows request volume and performance for your account or workspace. Metrics include:
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/32811193768465" alt="" />
+* Total requests, which you can break down and filter
+* Success rate
+* Average latency
+* Top called path
 
-In the API Requests section, you’ll find not only the total number of requests made within a specific timeframe but also the number of concurrent requests during that period.
+![API Requests metrics in
+Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113551Z&X-Amz-Expires=604800&X-Amz-Signature=bba76b074d8e1d4b9d32fc26dc0e76137d2a3caa29e39e07d5301c41658ab54e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-You can view data by different time periods, for example, hour, day, month and year, and at different levels of granularity.
+You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
+
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. If you are not in a multi-seat workspace, you will not see this option.
+
+To search and inspect individual API requests, open the **Request Log** tab.
+
+For a full walkthrough, see [Usage analytics](/docs/overview/administration/usage-analytics).

@@ -175,4 +175,4 @@ nvidia-smi
 * [Learn cluster management operations](/docs/gpu-clusters-management)
 * [Understand capacity types and billing](/docs/gpu-clusters-capacity-types)
 * [Explore API and CLI options](/docs/gpu-clusters-api)
-* [Review pricing](https://www.together.ai/instant-gpu-clusters)
+* [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)

@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233129Z&X-Amz-Expires=604800&X-Amz-Signature=9ba8ed669e358ab0ba3cf39fe5fc4b8d1423d594d744ee3f073c74085602d148&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T092639Z&X-Amz-Expires=604800&X-Amz-Signature=d3f29a3ed30c54d468abc6667fcceb1566e37b761cb298554f8b6860b577071c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233129Z&X-Amz-Expires=604800&X-Amz-Signature=815400919e75f9c20fa0b2ddb921eee7458509189197c007ca8d134a607851dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T092639Z&X-Amz-Expires=604800&X-Amz-Signature=832f18bbc1bb8d18ae19503e78a6b581b8aded4b5fe299d8ed2e4669b84f19de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,7 +72,7 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233129Z&X-Amz-Expires=604800&X-Amz-Signature=8a0b59f69424bfd1ca7a5d1475f1ea523c4236318cb29c168e3aee3649ee5b1c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T092639Z&X-Amz-Expires=604800&X-Amz-Signature=40e7f7b43c37bb57f32c9527fc803d8eac891efd8aad882ed3114a28f552931d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
@@ -93,6 +93,18 @@ Dramatic delivery and performance
 5,000 character limit
 
 Support for natural multi-speaker dialogue
+
+#### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
+
+Our most expressive, realtime speech synthesis model
+
+Low latency (\~280ms)
+
+Dramatic delivery and performance
+
+70+ languages supported
+
+Audio tags for fine-grained control
 
 #### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
 
@@ -125,7 +137,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233129Z&X-Amz-Expires=604800&X-Amz-Signature=203ba24f3b3eeb165bae7ab7324d370f16a6e23b3960eca7227d6302d618b208&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T092639Z&X-Amz-Expires=604800&X-Amz-Signature=a850a12a6866e200273188e93fba36fd7253f5c5990d2e8674ce731a144128a7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -233,24 +245,18 @@ We are working on more advanced workflows to allow you to influence the AI's del
       Eleven v3 is our latest and most expressive Text to Speech model, offering:
 
       * More human-like generations with higher quality overall
-
       * Support for audio tags
-
-      * emotions: \[sad] \[angry] \[happily]
-
-      * delivery direction: \[whispers] \[shouts]
-
-      * non-verbal reactions: \[laughs]\[clears throat] \[sighs]
-
+        * emotions: `[sad]` `[angry]` `[happily]`
+        * delivery direction: `[whispers]` `[shouts]`
+        * non-verbal reactions: `[laughs]` `[clears throat]` `[sighs]`
       * Dialogue mode to support natural sounding audio with multiple speakers
-
       * Support for 70+ languages
 
-      It can produce breathtaking output, but its more variable consistency and higher latency mean it’s not suitable for real-time or conversational use cases. For those, we recommend the v2/v2.5 Turbo or Flash models. We’re working on a real-time version of Eleven v3.
+      It can produce breathtaking output, but its more variable consistency and higher latency mean it’s not suitable for real-time or conversational use cases. For those, we recommend Flash v2 (English) or v2.5 (Multilingual). We’re working on a real-time version of Eleven v3.
 
-      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
+      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
 
-      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue ](/docs/api-reference/text-to-dialogue/stream)endpoints to create a natural sounding dialogue with multiple speakers.
+      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream) endpoints to create a natural sounding dialogue with multiple speakers.
 
       Visit the following resources for more information:
 
@@ -301,7 +307,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Previously generated files can be downloaded from your history. 
 
-      To access your history, log in to your account and select "Text to Speech" in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the "Generate speech" button.
+      To access your history, log in to your account and select **Text to Speech** in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the **Generate speech** button.
 
       From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file. 
 
@@ -318,7 +324,9 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### Can you make voices produce the sound of breathing?
 
-      This is currently not possible.
+      Yes. With Eleven v3, you can use audio tags such as `[sighs]` or `[exhales]` to add breathing and similar reactions to generated speech.
+
+      See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail on audio tags and delivery control.
     </td>
   </tr>
 
@@ -328,7 +336,8 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Our Flash and Turbo models have been specially developed for low-latency applications.
 
-      Flash v2 and Flash v2.5 are our ultra-low-latency models, generating audio in less than 75ms. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages here.
+      Flash v2 and Flash v2.5 are our ultra-low-latency models, generating audio in less than 75ms. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages
+      [here](/docs/help-center/other/what-languages-do-you-support).
 
       Our Turbo models are also low-latency, but as the Flash models give very similar results, we recommend using the Flash models over Turbo. Turbo v2 is English only, while Turbo v2.5 supports 32 languages, and is 25% faster than Turbo v2, generating audio in around 300ms.
 
@@ -336,7 +345,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Both models are discounted when you generate via API. For details, see our API Pricing.
 
-      We also offer ElevenAgents, our platform for deploying customized, interactive voice agents.  Visit our ElevenAgents documentation to learn more.
+      We also offer ElevenAgents, our platform for deploying customized, interactive voice agents. Visit our ElevenAgents documentation to learn more.
     </td>
   </tr>
 
@@ -344,31 +353,39 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### How can I add pauses?
 
-      There are a few ways to introduce a pause or break and influence the rhythm and cadence of the speaker. The most consistent way is programmatically using the syntax `<break time="1.5s" />`. This will create an exact and natural pause in the speech. It is not just added silence between words, but the AI has an actual understanding of this syntax and will add a natural pause.
+      There are a few ways to introduce a pause or break and influence the rhythm and cadence of the speaker. The method you use depends on the model.
 
-      However, since this is more than just inserted silence, how the AI handles these pauses can vary. As usual, the voice used plays a pivotal role in the output. Some voices, those trained with a few "uh"s and "ah"s in them, have shown to sometimes insert those vocal mannerisms during the pauses, like a real speaker might.
+      ## Audio tags (Eleven v3 only)
+
+      With Eleven v3, use audio tags and punctuation to control pacing and delivery. Eleven v3 does not support SSML break tags.
+
+      See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for guidance on prompting pauses and delivery with v3.
+
+      ## Break tags (Multilingual v2, Flash v2, and Flash v2.5)
+
+      The most consistent way to add a pause on Multilingual v2, Flash v2, and Flash v2.5 is with the SSML break tag syntax `<break time="1.5s" />`. This creates an exact and natural pause in the speech. It is not just inserted silence between words—the model understands the syntax and adds a natural pause.
+
+      How the model handles these pauses can vary. The voice used plays a pivotal role in the output. Some voices, those trained with a few "uh"s and "ah"s, may insert those vocal mannerisms during pauses, like a real speaker might.
 
       An example could look like this:
 
       "Give me one second to think about it." `<break time="1.0s" />` "Yes, that would work."
 
-      Break time should be described in seconds, and the AI can handle pauses of up to 3 seconds in length and can be used in Speech Synthesis and via the API.
+      Break time should be described in seconds. The AI can handle pauses of up to 3 seconds and can be used in Text to Speech and via the API.
 
-      There is one caveat when using SSML breaks; if you use an excessive amount in your text, it might cause issues. The speech of the AI might start speeding up and become very fast, or it might introduce more noise in the audio and a few other strange artifacts. We are working on resolving this.
+      If you use an excessive number of SSML breaks in your text, it might cause issues. The speech might speed up, or the audio might introduce more noise and other artifacts. We are working on resolving this.
 
-      <strong>
-        Alternatives
-      </strong>
+      ## Punctuation
 
-      These options are inconsistent and might not always work. We recommend using the syntax above for consistency.
+      These options are less consistent than break tags or audio tags, but can still influence pacing.
 
-      One trick that seems to provide the most consistent output - sans the above option - is a simple dash `-` or the em-dash `—`. You can even add multiple dashes such as `-- --` for a longer pause.
+      A simple dash `-` or the em-dash `—` often works well. You can add multiple dashes such as `-- --` for a longer pause.
 
       "It - is - getting late."
 
-      Ellipsis `...` can sometimes also work to add a pause between words but usually also adds some "hesitation" or "nervousness" to the voice that might not always fit.
+      Ellipsis `...` can sometimes add a pause between words, but it usually also adds some hesitation or nervousness to the voice that might not always fit.
 
-      I... yeah, I guess so..."
+      "I... yeah, I guess so..."
     </td>
   </tr>
 
@@ -376,13 +393,13 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### How can I force a certain pronunciation of a word or name?
 
-      If you want to force a certain pronunciation, you can use SSML phoneme tags. We support both IPA and CMU. However, we have found that CMU, with the current implementation, seems to be a bit more predictable, consistent, and better overall. You can find out more about this in our [guide to Prompting.](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+      Eleven v3 includes native support for International Phonetic Alphabet (IPA). Learn more in [IPA with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#ipa-with-eleven-v3).
 
-      This is available on the following models:
+      ## SSML phoneme tags (Flash v2 and Turbo v2 only)
 
-      * English v1
-      * Turbo v2
-      * Flash v2
+      On Flash v2 and Turbo v2, you can force a certain pronunciation with SSML phoneme tags. We support both IPA and CMU. CMU tends to be a bit more predictable and consistent with the current implementation. You can find out more in our [pronunciation guide](/docs/overview/capabilities/text-to-speech/best-practices#pronunciation).
+
+      ## Alternative spellings
 
       Alternatively, a workaround is to find an alternative spelling and write a word more phonetically. You can employ various tricks such as capital letters, dashes, apostrophes, or even single quotation marks around a single letter or letters.
 
@@ -396,15 +413,15 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Eleven v3 supports audio tags, giving unprecedented control over your generated audio:
 
-      * Emotions: \[curious] \[crying] \[mischievously]
-      * Delivery direction: \[whispers] \[shouts]
-      * Human reactions: \[laughs] \[clears throat] \[sighs]
+      * Emotions: `[curious]` `[crying]` `[mischievously]`
+      * Delivery direction: `[whispers]` `[shouts]`
+      * Human reactions: `[laughs]` `[clears throat]` `[sighs]`
 
-      For more detailed information, see our[ guide to prompting with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3). 
+      For more detailed information, see our [guide to prompting with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3).
 
-      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
+      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
 
-      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue ](/docs/api-reference/text-to-dialogue/stream)endpoints to create a natural sounding dialogue with multiple speakers.
+      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream) endpoints to create a natural sounding dialogue with multiple speakers.
 
       Visit the following resources for more information:
 
@@ -453,7 +470,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This can be useful for short or ambiguous prompts, such as when the text includes only numbers. Specifying the language ensures the normalizer applies the correct rules for that language.
 
-      For more information on normalization, see [this article. ](/docs/help-center/product/speech-synthesis/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language)
+      For more information on normalization, see [this article. ](/docs/help-center/product/core-capabilities/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language)
 
        
 
@@ -494,7 +511,9 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### How to make the voice laugh?
 
-      We plan on introducing features allowing emotions such as laughter in the future.
+      With Eleven v3, you can use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) such as `[laughs]` to add laughter and other reactions to generated speech. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
+
+      For other models, emotional delivery depends on context, punctuation, and voice settings. See [How to produce emotions?](/docs/help-center/product/core-capabilities/text-to-speech/how-to-produce-emotions).
     </td>
   </tr>
 
@@ -504,21 +523,16 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       The model is sensitive to the wider situation surrounding each utterance - it assesses whether something makes sense by how it ties to preceding and succeeding text. This zoomed-out perspective allows it to intonate longer fragments properly by overlaying a particular train of thought stretching multiple sentences with a unifying emotional pattern.
 
-      There are a couple of tips for producing emotions: 
+      Tips for producing emotions:
 
-      Context is key for generating specific emotions. Thus, if one inputs laughing/funny text they
-      might get a happy output. Similarly with anger, sadness, and other emotions, setting the context
-      is key. 
+      * Context is key for generating specific emotions. If you input laughing or funny text, you might get a happy output. The same applies for anger, sadness, and other emotions — setting the context is key.
+      * Punctuation and voice settings play the leading role in how the output is delivered.
+      * Add emphasis by putting the relevant words or phrases in quotation marks.
+      * For speech generated using a cloned voice, the speaking style in the samples you upload for cloning is replicated in the output. If the speech in the uploaded sample is monotone, the model will struggle to produce expressive output.
 
-      Punctuation and voice settings play the leading role in how the output is delivered. 
+      With Eleven v3, you can also use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) to control emotion and delivery more directly, for example `[happy]`, `[sad]`, `[angry]`, `[whispers]`, and `[laughs]`. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
 
-      Add emphasis by putting the relevant words/phrases in quotation marks.
-
-      For speech generated using a cloned voice, the speaking style contained in the samples you
-      upload for cloning is replicated in the output. So if the speech in the uploaded sample is
-      monotone, the model will struggle to produce expressive output. 
-
-      These are the best tips for producing emotions but do not guarantee the result. We will be introducing features that will allow for the control of emotions within the text.
+      These tips help guide emotional delivery but do not guarantee a specific result.
     </td>
   </tr>
 
@@ -528,11 +542,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Unfortunately, at this time, we do not offer download-based deduction as an alternative to generation-based deduction. There is currently no way to preview generations without deducting quota.
 
-      When you press 'Generate' on the website, you will be deducted credits since the servers need to spin up and the audio needs to be generated.  There's no way to test or preview a voice using your own text without using credits.
+      When you press 'Generate' on the website, you will be deducted credits since the servers need to spin up and the audio needs to be generated. There's no way to test or preview a voice using your own text without using credits.
 
-      We do permit two free regenerations in Speech Synthesis via the website in the following circumstances:
+      We do permit two free regenerations in Text to Speech via the website in the following circumstances:
 
-      * The prompt (for text-to-speech) or file (for speech-to-speech), voice and model remain the same.  You can change the voice setting sliders.
+      * The prompt (for Text to Speech) or file (for Voice Changer), voice and model remain the same. You can change the voice setting sliders.
       * The first generation was made less than two hours ago.
       * You haven't refreshed the page since generating the original audio.
 
@@ -540,15 +554,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       <img src="https://help.elevenlabs.io/hc/article_attachments/28015504910609" alt="" />
 
-       
-
       Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
       <img src="https://help.elevenlabs.io/hc/article_attachments/28015488674961" alt="" />
 
-       
-
-      Free regenerations are only available in Speech Synthesis via the website.  They are not available via the API.
+      Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 
       We are looking into whether there's a way for us to facilitate previews at this quality without raising prices or costs. We are also exploring ways to make the AI more controllable, so you don't have to preview and instead get the desired result, hopefully on the first try.
     </td>
@@ -597,16 +607,14 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### What's the maximum amount of characters and text I can generate?
 
-      In [Speech Synthesis](/docs/speech-synthesis/), using the website, you can generate up to 5,000 characters in a single generation on any paid plan and up to 2,500 on all free plans.
+      In [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech), using the website, you can generate up to 5,000 characters in a single generation on any paid plan and up to 2,500 on all free plans.
 
-      However, if you plan on generating longer-form content of more than a few thousand characters, we highly recommend using [Studio](/docs/projects) (previously Projects) which allows you to generate extremely long-form content such as books and novels very easily. You can read more about it [here](/docs/projects).
-
-       
+      However, if you plan on generating longer-form content of more than a few thousand characters, we highly recommend using [Studio](https://elevenlabs.io/app/studio) which allows you to generate extremely long-form content such as books and novels very easily. You can read more about it [here](https://elevenlabs.io/docs/eleven-creative/products/studio).
 
       If you're generating using the API, the maximum length of input varies depending on which model you're using:
 
       <strong>
-        Text-to-speech
+        Text to Speech
       </strong>
 
       Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
@@ -617,17 +625,13 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Turbo v2 - up to 30,000 characters (\~30 minutes of audio)
 
-      Multilingual v1 and v2 - up to 10,000 characters (\~10 minutes of audio)
-
-      English v1 and v2 - up to 10,000 characters (\~10 minutes of audio)
+      Multilingual v2 - up to 10,000 characters (\~10 minutes of audio)
 
       <strong>
-        Speech-to-speech
+        Voice Changer
       </strong>
 
       Multilingual v2 - up to 10 minutes of audio
-
-      English v2 - up to 5 minutes of audio
     </td>
   </tr>
 
@@ -697,9 +701,9 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Mispronunciations can happen for a few different reasons. The most common one is that the word is just misspelled. The AI will not try to correct any words that are misspelled, and it will try to read them exactly as they are written. So it's important to double-check and make sure that the text is proofread and finished before having the AI read it.
 
-      If you want to force a certain pronunciation, you can use SSML phoneme tags with our English V1 and Turbo V2 models. You can find out more about this in our [guide to Prompting.](/docs/best-practices/prompting/controls#pronunciation)  
+      If you want to force a certain pronunciation, you can use SSML phoneme tags with our Flash v2 model. You can find out more about this in our [pronunciation guide](/docs/overview/capabilities/text-to-speech/best-practices#pronunciation).
 
-      Sometimes, the AI might mispronounce words or have a strange accent that is not the one you are expecting. This can happen for a few reasons, and in most cases, it's very voice-dependent and language-dependent. The best way to ensure the correct accent and pronunciation is to clone a voice with the correct accent and pronunciation. This will give the AI the most context when generating the voiceover.
+      Sometimes, the AI might mispronounce words or have a strange accent that is not the one you are expecting. This can happen for a few reasons, and in most cases, it's very voice-dependent and language-dependent. The best way to ensure the correct accent and pronunciation is to clone a voice with the correct accent and pronunciation. This will give the AI the most context when generating the audio.
 
       The language is specified by the text, and the accent is specified by the voice. So if you're writing in a language that might share a lot of common words or is fairly closely related to another language, the AI might have a hard time understanding how to pronounce certain words or switch between accents.
 

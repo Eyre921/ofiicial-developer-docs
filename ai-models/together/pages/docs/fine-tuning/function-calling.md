@@ -17,6 +17,8 @@ The following models support function-calling fine-tuning. See [supported models
 <Accordion title="Supported models">
   | Organization | Model                                              | API ID                                               |
   | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
+  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
   | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
@@ -33,6 +35,7 @@ The following models support function-calling fine-tuning. See [supported models
   | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          |
   | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               |
   | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          |

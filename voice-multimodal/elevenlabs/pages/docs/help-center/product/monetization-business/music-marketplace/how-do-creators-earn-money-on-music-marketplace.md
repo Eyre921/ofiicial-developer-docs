@@ -12,7 +12,7 @@ When a song is published, it becomes available in the Eleven Music Marketplace. 
 
 Creators can see how many times each song has been purchased, along with their total earnings across all published songs. Earnings start at 25% of the purchase price and will increase for active users over time. Applicable fees and taxes may be withheld.
 
-Payouts are processed through the existing ElevenLabs payout system. You can learn more about it <a href="https://help.elevenlabs.io/hc/en-us/sections/24489825613713-Payouts">here</a>.
+Payouts are processed through the existing ElevenLabs payout system. You can learn more about it [here](/docs/help-center/product/monetization-business/payouts).
 
 When publishing, the following rules apply:
 

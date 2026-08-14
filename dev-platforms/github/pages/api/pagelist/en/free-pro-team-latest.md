@@ -1686,6 +1686,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli/lsp-servers
 /en/copilot/concepts/agents/copilot-cli/about-cli-extensions
 /en/copilot/concepts/agents/copilot-cli/tool-search
+/en/copilot/concepts/agents/copilot-cli/understanding-local-sandboxing
 /en/copilot/concepts/agents/github-copilot-app
 /en/copilot/concepts/agents/copilot-in-jetbrains
 /en/copilot/concepts/agents/code-review

@@ -417,7 +417,7 @@ start creating.
       * <strong>Iterate and Refine:</strong> If the first generation isn't perfect, don't start over!
         Adjust your prompt and regenerate. Small changes can have a big impact.
 
-      For a complete list of tips and examples, please see our official [Prompting Guide](/docs/best-practices/prompting/eleven-music).
+      For a complete list of tips and examples, please see our official [Prompting Guide](/docs/overview/capabilities/music/best-practices).
     </td>
   </tr>
 
@@ -513,7 +513,7 @@ start creating.
 
       Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
 
-      Audio Reference is available with Music v2 on all plans, including the Free plan.
+      Audio Reference is available with Music v2 on all paid subscriptions.
     </td>
   </tr>
 

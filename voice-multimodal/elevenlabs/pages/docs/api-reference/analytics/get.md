@@ -27,6 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/analytics/get
 ### Query parameters
 
 - `agent_id` (string, optional, nullable) — The id of an agent to restrict the analytics to.
+- `agent_ids` (list of string, optional, nullable) — Restrict analytics to the union of the given agents. Takes precedence over `agent_id` when both are supplied.
 
 ## Response
 

@@ -15,7 +15,6 @@ path: docs/help-center/technical
 | [API - Error Code 429](/docs/help-center/technical/api-error-code-429)                                                                                                    |
 | [Can I reduce API latency?](/docs/help-center/technical/can-i-reduce-api-latency)                                                                                         |
 | [Do pauses and SSML phoneme tags work with the API?](/docs/help-center/technical/do-pauses-and-ssml-phoneme-tags-work-with-the-api)                                       |
-| [How are voices updated & changed?](/docs/help-center/technical/how-are-voices-updated-changed)                                                                           |
 | [How can I keep the WebSocket open?](/docs/help-center/technical/how-can-i-keep-the-websocket-open)                                                                       |
 | [How do I authorize myself using an API key?](/docs/help-center/technical/how-do-i-authorize-myself-using-an-api-key)                                                     |
 | [How do I find the model ID?](/docs/help-center/technical/how-do-i-find-the-model-id)                                                                                     |

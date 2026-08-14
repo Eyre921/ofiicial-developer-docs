@@ -5572,10 +5572,12 @@ function ChatClient({ chatId, initialMessages, initialSessions }) {
 </Info>
 
 <Note>
-  After resuming, `useChat`'s built-in `stop()` won't send the stop signal to the backend because
-  the AI SDK doesn't pass its abort signal through `reconnectToStream`. Use
-  `transport.stopGeneration(chatId)` for reliable stop behavior after resume — see
-  [Stop generation](#stop-generation) for the recommended pattern.
+  After resuming, `useChat`'s built-in `stop()` won't send the stop signal to the backend. The
+  transport accepts an abort signal on `reconnectToStream` but doesn't treat it as owning the turn,
+  so aborting a resumed subscription only closes your local stream while the run keeps generating.
+  Use `transport.stopGeneration(chatId)` for reliable stop behavior after resume — see
+  [Stop generation](#stop-generation) for the recommended pattern. Pass `stopOnAbort: true` to
+  `reconnectToStream` only when that subscriber owns the turn.
 </Note>
 
 <Warning>
@@ -5697,11 +5699,10 @@ const stop = useCallback(() => {
 </Info>
 
 <Tip>
-  A [PR to the AI SDK](https://github.com/vercel/ai/pull/14350) has been
-  submitted to pass `abortSignal` through `reconnectToStream`, which would make
-  `useChat`'s built-in `stop()` work after resume without needing
-  `stopGeneration`. Until that lands, use the pattern above for reliable stop
-  behavior after page refresh.
+  Aborting a resumed stream never stops the run by itself, so `useChat`'s
+  built-in `stop()` isn't enough after a page refresh. Use the pattern above, or
+  pass `stopOnAbort: true` to `reconnectToStream` when that subscriber owns the
+  turn.
 </Tip>
 
 See [Stop generation](/docs/ai-chat/backend#stop-generation) in the backend docs for how to handle stop signals in your task.
@@ -7491,7 +7492,7 @@ See [Quick Start](/docs/ai-chat/quick-start) for the matching server actions and
 
 ## Why use AI Agents on Trigger.dev
 
-* **Resume across refreshes, deploys, and crashes.** A chat in progress when you redeploy keeps streaming on the new version. Mid-stream refreshes pick up where they left off.
+* **Resume across refreshes, deploys, and crashes.** A chat in progress keeps streaming through a redeploy, pinned to the version it started on. Move it onto new code when you choose with a [version upgrade](/docs/ai-chat/patterns/version-upgrades). Mid-stream refreshes pick up where they left off.
 * **Native AI SDK support.** Text, tool calls, reasoning, and custom `data-*` parts all flow through `useChat` over a custom `ChatTransport`. No custom protocol to maintain.
 * **Multi-turn for free.** Each turn is a step inside the same durable task; conversation history accumulates server-side, so clients only ship the new message.
 * **Fast cold starts.** Opt-in [Head Start](/docs/ai-chat/fast-starts#head-start) runs the first `streamText` step in your warm Next.js / Hono / SvelteKit server while the agent boots in parallel — cuts time-to-first-chunk roughly in half.
@@ -14442,6 +14443,182 @@ If continuations boot empty:
 * [Frontend setup](/docs/ai-chat/frontend)
 * [Client Protocol](/docs/ai-chat/client-protocol) — wire format reference
 * [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay) — snapshot model end-to-end
+
+
+# LLM observability
+Source: https://trigger.dev/docs/ai/observability
+
+Capture Vercel AI SDK calls in a task as spans in the run trace, with model, token usage, cost, and latency. Opt in per call, link calls to prompt versions, and query usage across runs.
+
+**LLM observability turns a Vercel AI SDK call inside a task into its own span in the run trace, next to your logs and other spans.** Each span carries the model, provider, input, output, and total token counts, cost, and latency, so you can see what each generation did and what it cost without leaving the run.
+
+Everything shows up inline in the run trace you already use to debug runs. There is no separate product and no dashboard to set up.
+
+<Note>
+  Observability is opt-in per call and only covers [Vercel AI SDK](https://ai-sdk.dev) functions (`generateText`, `streamText`, `generateObject`). Calls you make with a raw `fetch`, a provider's own SDK, or any other HTTP client are not captured automatically.
+</Note>
+
+## Turn it on
+
+Set `experimental_telemetry: { isEnabled: true }` on the AI SDK call. There is nothing to install for AI SDK 6, and nothing to configure on the Trigger.dev side.
+
+```ts /trigger/summarize.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { generateText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+export const summarize = task({
+  id: "summarize",
+  run: async (payload: { text: string }) => {
+    const result = await generateText({
+      model: openai("gpt-4o"),
+      prompt: `Summarize the following text:\n\n${payload.text}`,
+      experimental_telemetry: { isEnabled: true },
+    });
+
+    return { summary: result.text };
+  },
+});
+```
+
+Trigger the task and open the run. The `generateText` call appears as a span in the trace. `streamText` and `generateObject` work the same way: add the same `experimental_telemetry` flag to each call you want captured.
+
+<Note>
+  **AI SDK 7** moved span emission out of `ai` core into the `@ai-sdk/otel` adapter. In a task, install `@ai-sdk/otel` and register it once yourself, for example at the top of your task file:
+
+  ```ts /trigger/summarize.ts theme={"theme":"css-variables"}
+  import { registerTelemetry } from "ai";
+  import { OpenTelemetry } from "@ai-sdk/otel";
+
+  registerTelemetry(new OpenTelemetry());
+  ```
+
+  A [`chat.agent()`](/docs/ai-chat/overview) run registers the adapter for you at run start, so chat agents need only the install. On AI SDK 5 and 6, `ai` core emits spans directly and no adapter is needed.
+</Note>
+
+## What each span shows
+
+Open an AI generation span in the run trace to get a dedicated inspector with three tabs:
+
+* **Overview**: model, provider, token usage, cost, and a preview of the input and output.
+* **Messages**: the full message thread, including the system prompt and any tool results.
+* **Tools**: the tool definitions passed to the model, plus every tool call the model made with its arguments.
+
+A fourth **Prompt** tab appears when the call is linked to an [AI Prompt](/docs/ai/prompts) (see below).
+
+## Link a call to its prompt
+
+If you manage prompts with [AI Prompts](/docs/ai/prompts), resolve the prompt and spread `toAISDKTelemetry()` into the call. This sets `experimental_telemetry` for you and links the span back to the exact prompt version that produced it.
+
+```ts /trigger/support.ts theme={"theme":"css-variables"}
+import { task, prompts } from "@trigger.dev/sdk";
+import { generateText } from "ai";
+import { openai } from "@ai-sdk/openai";
+import type { supportPrompt } from "./prompts";
+
+export const handleSupport = task({
+  id: "handle-support",
+  run: async (payload: { name: string; plan: string; issue: string }) => {
+    const resolved = await prompts.resolve<typeof supportPrompt>("customer-support", {
+      customerName: payload.name,
+      plan: payload.plan,
+      issue: payload.issue,
+    });
+
+    const result = await generateText({
+      model: openai(resolved.model ?? "gpt-4o"),
+      system: resolved.text,
+      prompt: payload.issue,
+      ...resolved.toAISDKTelemetry(),
+    });
+
+    return { response: result.text };
+  },
+});
+```
+
+The span's **Prompt** tab now shows the linked template, its version, and the input variables the prompt was resolved with.
+
+Pass custom attributes to `toAISDKTelemetry()` to tag the span with your own metadata:
+
+```ts theme={"theme":"css-variables"}
+const result = await generateText({
+  model: openai(resolved.model ?? "gpt-4o"),
+  system: resolved.text,
+  prompt: payload.issue,
+  ...resolved.toAISDKTelemetry({
+    "task.type": "summarization",
+    "customer.tier": "enterprise",
+  }),
+});
+```
+
+Custom attributes are stored on the span's `metadata`, so you can filter or group by them in TRQL, for example `metadata['task.type']`.
+
+<Note>
+  When you build an agent with `chat.agent()` and store a prompt with `chat.prompt.set()`, `chat.toStreamTextOptions()` sets `experimental_telemetry` for you, so those generations are captured without adding the flag by hand. Without a stored prompt, set `experimental_telemetry` on the call yourself. See [Prompts](/docs/ai/prompts#using-with-chatagent).
+</Note>
+
+## Query usage across runs
+
+Every captured generation is also written to the `llm_metrics` table, which you can query with [TRQL](/docs/observability/query). This lets you aggregate token usage, cost, and latency across many runs rather than inspecting one span at a time.
+
+Cost and token usage by model:
+
+```sql theme={"theme":"css-variables"}
+SELECT
+  response_model,
+  gen_ai_system AS provider,
+  count() AS calls,
+  sum(total_tokens) AS tokens,
+  round(sum(total_cost), 4) AS cost_usd
+FROM llm_metrics
+GROUP BY response_model, gen_ai_system
+ORDER BY cost_usd DESC
+LIMIT 20
+```
+
+Spend per task:
+
+```sql theme={"theme":"css-variables"}
+SELECT
+  task_identifier,
+  sum(input_tokens) AS input_tokens,
+  sum(output_tokens) AS output_tokens,
+  round(sum(total_cost), 4) AS cost_usd
+FROM llm_metrics
+GROUP BY task_identifier
+ORDER BY cost_usd DESC
+LIMIT 20
+```
+
+Cost by prompt version, when calls are linked to an [AI Prompt](/docs/ai/prompts):
+
+```sql theme={"theme":"css-variables"}
+SELECT
+  prompt_slug,
+  prompt_version,
+  count() AS calls,
+  round(sum(total_cost), 4) AS cost_usd
+FROM llm_metrics
+WHERE prompt_slug != ''
+GROUP BY prompt_slug, prompt_version
+ORDER BY prompt_slug, prompt_version
+```
+
+Set the time window with the query's [period filter](/docs/observability/query#time-ranges) rather than in the SQL itself. Run these from the [Query dashboard](/docs/observability/query#using-the-query-dashboard), the SDK with `query.execute()`, or the REST API. `llm_metrics` also exposes `ms_to_first_chunk` and `tokens_per_second` for latency and throughput, plus `finish_reason`, `request_model`, `cached_read_tokens`, `reasoning_tokens`, and per-direction `input_cost` / `output_cost` for finer breakdowns.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Prompts" icon="message-lines" href="/ai/prompts">
+    Version prompts as code and link generations to the exact prompt version that produced them.
+  </Card>
+
+  <Card title="Query (TRQL)" icon="magnifying-glass-chart" href="/observability/query">
+    Write custom queries against your runs, metrics, and LLM usage.
+  </Card>
+</CardGroup>
 
 
 # Prompts
@@ -21687,6 +21864,134 @@ Trigger.dev is [Open Source on GitHub](https://github.com/triggerdotdev/trigger.
 You can also [self-host](/docs/self-hosting/overview) the project if you want to run it on your own infrastructure.
 
 
+# Build a chat agent
+Source: https://trigger.dev/docs/guides/ai-agents/chat-agent
+
+Create a durable, multi-turn chat agent with chat.agent(), then add tools to it like any AI SDK agent.
+
+## Overview
+
+Build a **durable, multi-turn chat agent**. A durable session owns the conversation, streams tokens to your UI, and stays alive across many back-and-forth messages. The other guides in this section are one-shot workflows (trigger a task, run a fixed sequence of LLM calls, return a result); a chat agent instead owns the session for its whole lifetime.
+
+[`chat.agent()`](/docs/ai-chat/overview) handles the queuing, retries, resumability and streaming for you. You write the model call, Trigger.dev owns the session. For the full feature set (sessions, fast starts, compaction, sub-agents, the frontend transport), see the [AI chat docs](/docs/ai-chat/overview).
+
+## A minimal agent
+
+Define an agent with `chat.agent()`. The `run` function receives the conversation `messages` (already converted from the frontend's `UIMessage[]`) and an abort `signal`. Return a `StreamTextResult` and it's piped to the frontend automatically.
+
+```typescript trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { streamText, stepCountIs } from "ai";
+
+export const myChat = chat.agent({
+  id: "my-chat",
+  run: async ({ messages, signal }) => {
+    return streamText({
+      // Spread chat.toStreamTextOptions() FIRST: it wires up prepareStep
+      // (compaction, steering, background injection) and telemetry.
+      ...chat.toStreamTextOptions(),
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      abortSignal: signal,
+      stopWhen: stepCountIs(15),
+    });
+  },
+});
+```
+
+<Warning>
+  Always spread `chat.toStreamTextOptions()` into your `streamText` call, and spread it first. It
+  wires up the `prepareStep` callback that drives compaction, mid-turn steering and background
+  injection. Those features silently no-op if the spread is missing.
+</Warning>
+
+## Add tools
+
+A chat agent uses tools exactly like any other AI SDK agent. Declare them on the config so their results survive across turns, then pass the `tools` you receive in `run` straight to `streamText`:
+
+```typescript trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { streamText, stepCountIs, tool } from "ai";
+import { z } from "zod";
+
+const getCurrentTime = tool({
+  description: "Get the current server time as an ISO string.",
+  inputSchema: z.object({}),
+  execute: async () => ({ now: new Date().toISOString() }),
+});
+
+export const myChat = chat.agent({
+  id: "my-chat",
+  // Declared here so tool results survive history re-conversion across turns.
+  tools: { getCurrentTime },
+  run: async ({ messages, tools, signal }) => {
+    return streamText({
+      // Pass tools INTO toStreamTextOptions (not separately to streamText): it
+      // merges them with any auto-injected skill tools and sets streamText's
+      // `tools`. Passing tools separately after the spread drops the skill tools.
+      ...chat.toStreamTextOptions({ tools }),
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      stopWhen: stepCountIs(15),
+      abortSignal: signal,
+    });
+  },
+});
+```
+
+Swap `getCurrentTime` for whatever your agent needs to do: query a database, call an API, or trigger another Trigger.dev task. See [Tools](/docs/ai-chat/tools) for how tool results are persisted and replayed across turns.
+
+## Wire up the frontend
+
+The browser talks to Trigger.dev directly through the [chat transport](/docs/ai-chat/frontend), so there's no API route to maintain. Expose two server actions (one to start the session, one to mint a session-scoped token) and pass them to `useTriggerChatTransport`, then hand the transport to the AI SDK's `useChat`:
+
+```typescript app/actions.ts theme={"theme":"css-variables"}
+"use server";
+
+import { auth } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+
+export const startChatSession = chat.createStartSessionAction("my-chat");
+
+export async function mintChatAccessToken(chatId: string) {
+  // Authorize the caller for this chatId before minting: confirm the logged-in
+  // user owns this session (e.g. look it up in your database). Otherwise anyone
+  // who learns a session ID could mint read/write access to it.
+  return auth.createPublicToken({
+    scopes: { read: { sessions: chatId }, write: { sessions: chatId } },
+    expirationTime: "1h",
+  });
+}
+```
+
+See the [Quick Start](/docs/ai-chat/quick-start) for the complete frontend component.
+
+## A full example
+
+For a complete, real-world chat agent, see the ClickHouse chat agent example. It builds on everything above with generative UI, a versioned system prompt, and real tools against a live database.
+
+<CardGroup>
+  <Card title="ClickHouse chat agent" icon="chart-column" href="/guides/example-projects/clickhouse-chat-agent">
+    A full example project: a chat agent that answers questions about your data with charts, tables
+    and maps.
+  </Card>
+
+  <Card title="AI chat overview" icon="message-bot" href="/ai-chat/overview">
+    How chat agents, sessions and the turn loop work.
+  </Card>
+
+  <Card title="Tools" icon="wrench" href="/ai-chat/tools">
+    Declaring tools on your agent and how they persist across turns.
+  </Card>
+
+  <Card title="Fast starts" icon="bolt" href="/ai-chat/fast-starts">
+    Cut first-turn latency with preload and head start.
+  </Card>
+</CardGroup>
+
+
 # Claude Agent SDK setup guide
 Source: https://trigger.dev/docs/guides/ai-agents/claude-code-trigger
 
@@ -21889,14 +22194,14 @@ In this example, we'll create a workflow that generates and translates copy. Thi
 
 **This task:**
 
-* Uses `generateText` from [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) to interact with OpenAI models
-* Uses `experimental_telemetry` to provide LLM logs
+* Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
+* Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Generates marketing copy based on subject and target word count
 * Validates the generated copy meets word count requirements (±10 words)
 * Translates the validated copy to the target language while preserving tone
 
 ```typescript theme={"theme":"css-variables"}
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { task } from "@trigger.dev/sdk";
 import { generateText } from "ai";
 
@@ -21912,7 +22217,7 @@ export const generateAndTranslateTask = task({
   run: async (payload: TranslatePayload) => {
     // Step 1: Generate marketing copy
     const generatedCopy = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -21945,7 +22250,7 @@ export const generateAndTranslateTask = task({
 
     // Step 2: Translate to target language
     const translatedCopy = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -21976,9 +22281,9 @@ On the Test page in the dashboard, select the `generate-and-translate-copy` task
 
 ```json theme={"theme":"css-variables"}
 {
-  marketingSubject: "The controversial new Jaguar electric concept car",
-  targetLanguage: "Spanish",
-  targetWordCount: 100,
+  "marketingSubject": "The controversial new Jaguar electric concept car",
+  "targetLanguage": "Spanish",
+  "targetWordCount": 100
 }
 ```
 
@@ -22001,6 +22306,11 @@ Real world AI agent example tasks using Trigger.dev
 
   <Card icon="book" title="Claude GitHub wiki agent" href="/guides/example-projects/claude-github-wiki">
     Generate and maintain GitHub wiki documentation with Claude-powered analysis.
+  </Card>
+
+  <Card icon="chart-column" title="ClickHouse chat agent" href="/guides/example-projects/clickhouse-chat-agent">
+    Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps
+    using `chat.agent()` and generative UI.
   </Card>
 
   <Card icon="hand" title="Human-in-the-loop workflow" href="/guides/example-projects/human-in-the-loop-workflow">
@@ -22027,6 +22337,16 @@ Real world AI agent example tasks using Trigger.dev
 
   <Card title="Smart Spreadsheet" icon="table" href="/guides/example-projects/smart-spreadsheet">
     Enrich company data using Exa search and Claude with real-time streaming results.
+  </Card>
+</CardGroup>
+
+## Chat agents
+
+Build a durable, multi-turn chat agent with [`chat.agent()`](/docs/ai-chat/overview). A durable session per conversation, with streaming and resumability handled for you.
+
+<CardGroup>
+  <Card title="Chat agent" icon="message-bot" href="/guides/ai-agents/chat-agent">
+    Create a durable, multi-turn chat agent with `chat.agent()`, then add tools to it.
   </Card>
 </CardGroup>
 
@@ -22074,14 +22394,14 @@ In this example, we'll create a workflow that simultaneously checks content for 
 
 **This task:**
 
-* Uses `generateText` from [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) to interact with OpenAI models
-* Uses `experimental_telemetry` to provide LLM logs
+* Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
+* Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Uses [`batch.triggerByTaskAndWait`](/docs/triggering#batch-triggerbytaskandwait) to run customer response and content moderation tasks in parallel
-* Generates customer service responses using an AI model
+* Answers with `claude-sonnet-4-5` and moderates with the faster, cheaper `claude-haiku-4-5`
 * Simultaneously checks for inappropriate content while generating responses
 
 ```typescript theme={"theme":"css-variables"}
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { batch, task } from "@trigger.dev/sdk";
 import { generateText } from "ai";
 
@@ -22090,7 +22410,7 @@ export const generateCustomerResponse = task({
   id: "generate-customer-response",
   run: async (payload: { question: string }) => {
     const response = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -22113,7 +22433,7 @@ export const checkInappropriateContent = task({
   id: "check-inappropriate-content",
   run: async (payload: { text: string }) => {
     const response = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-haiku-4-5"),
       messages: [
         {
           role: "system",
@@ -22204,86 +22524,65 @@ In this example, we'll create a workflow that routes a question to a different A
 
 **This task:**
 
-* Uses `generateText` from [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) to interact with OpenAI models
-* Uses `experimental_telemetry` in the source verification and historical analysis tasks to provide LLM logs
-* Routes questions using a lightweight model (`o1-mini`) to classify complexity
-* Directs simple questions to `gpt-4o` and complex ones to `gpt-o3-mini`
+* Uses `generateObject` from the [AI SDK](https://ai-sdk.dev/) to classify the question into a typed routing decision
+* Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
+* Classifies complexity with a fast, cheap model (`claude-haiku-4-5`)
+* Directs simple questions to `claude-haiku-4-5` and complex ones to `claude-sonnet-4-5`
 * Returns both the answer and metadata about the routing decision
 
-````typescript theme={"theme":"css-variables"}
-import { openai } from "@ai-sdk/openai";
+```typescript theme={"theme":"css-variables"}
+import { anthropic } from "@ai-sdk/anthropic";
 import { task } from "@trigger.dev/sdk";
-import { generateText } from "ai";
+import { generateObject, generateText } from "ai";
 import { z } from "zod";
 
-// Schema for router response
+// The router's structured decision. generateObject validates the model
+// output against this schema, so there's no manual JSON parsing.
 const routingSchema = z.object({
-  model: z.enum(["gpt-4o", "gpt-o3-mini"]),
+  model: z.enum(["claude-haiku-4-5", "claude-sonnet-4-5"]),
   reason: z.string(),
 });
-
-// Router prompt template
-const ROUTER_PROMPT = `You are a routing assistant that determines the complexity of questions.
-Analyze the following question and route it to the appropriate model:
-
-- Use "gpt-4o" for simple, common, or straightforward questions
-- Use "gpt-o3-mini" for complex, unusual, or questions requiring deep reasoning
-
-Respond with a JSON object in this exact format:
-{"model": "gpt-4o" or "gpt-o3-mini", "reason": "your reasoning here"}
-
-Question: `;
 
 export const routeAndAnswerQuestion = task({
   id: "route-and-answer-question",
   run: async (payload: { question: string }) => {
-    // Step 1: Route the question
-    const routingResponse = await generateText({
-      model: openai("o1-mini"),
-      messages: [
-        {
-          role: "system",
-          content:
-            "You must respond with a valid JSON object containing only 'model' and 'reason' fields. No markdown, no backticks, no explanation.",
-        },
-        {
-          role: "user",
-          content: ROUTER_PROMPT + payload.question,
-        },
-      ],
-      temperature: 0.1,
+    // Step 1: Classify the question and pick a model
+    const { object: routing } = await generateObject({
+      model: anthropic("claude-haiku-4-5"),
+      schema: routingSchema,
+      system:
+        "You are a routing assistant. Pick the model best suited to answer the question:\n" +
+        "- claude-haiku-4-5 for simple, common, or straightforward questions\n" +
+        "- claude-sonnet-4-5 for complex, unusual, or questions needing deep reasoning",
+      prompt: payload.question,
       experimental_telemetry: {
         isEnabled: true,
-        functionId: "route-and-answer-question",
+        functionId: "route-question",
       },
     });
 
-    // Add error handling and cleanup
-    let jsonText = routingResponse.text.trim();
-    if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/```json\n|\n```/g, "");
-    }
-
-    const routingResult = routingSchema.parse(JSON.parse(jsonText));
-
-    // Step 2: Get the answer using the selected model
-    const answerResult = await generateText({
-      model: openai(routingResult.model),
-      messages: [{ role: "user", content: payload.question }],
+    // Step 2: Answer with the selected model
+    const answer = await generateText({
+      model: anthropic(routing.model),
+      prompt: payload.question,
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: "answer-question",
+      },
     });
 
     return {
-      answer: answerResult.text,
-      selectedModel: routingResult.model,
-      routingReason: routingResult.reason,
+      answer: answer.text,
+      selectedModel: routing.model,
+      routingReason: routing.reason,
     };
   },
 });
-````
+```
 
 ## Run a test
 
-Triggering our task with a simple question shows it routing to the gpt-4o model and returning the answer with reasoning:
+Triggering our task with a simple question shows it routing to the `claude-haiku-4-5` model and returning the answer with reasoning:
 
 ```json theme={"theme":"css-variables"}
 {
@@ -22320,7 +22619,7 @@ This example task translates text into a target language and refines the transla
 ```typescript theme={"theme":"css-variables"}
 import { task } from "@trigger.dev/sdk";
 import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 
 interface TranslationPayload {
   text: string;
@@ -22330,9 +22629,17 @@ interface TranslationPayload {
   rejectionCount?: number;
 }
 
+interface TranslationResult {
+  finalTranslation: string | undefined;
+  iterations: number;
+  status: "MAX_ITERATIONS_REACHED" | "APPROVED";
+}
+
 export const translateAndRefine = task({
   id: "translate-and-refine",
-  run: async (payload: TranslationPayload) => {
+  // Explicit return type: the task returns its own recursive result, so
+  // annotate it to avoid TypeScript's circular-inference error.
+  run: async (payload: TranslationPayload): Promise<TranslationResult> => {
     const rejectionCount = payload.rejectionCount || 0;
 
     // Bail out if we've hit the maximum attempts
@@ -22350,7 +22657,7 @@ export const translateAndRefine = task({
       : `Translate this text into ${payload.targetLanguage}, preserving style and meaning: "${payload.text}"`;
 
     const translation = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -22370,7 +22677,7 @@ export const translateAndRefine = task({
 
     // Evaluate the translation
     const evaluation = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -22378,7 +22685,7 @@ export const translateAndRefine = task({
                  Your goal is to ensure translations are accurate and natural, but not necessarily perfect.
                  This is iteration ${
                    rejectionCount + 1
-                 } of a maximum 5 iterations.
+                 } of a maximum 10 iterations.
                  
                  RESPONSE FORMAT:
                  - If the translation meets 90%+ quality: Respond with exactly "APPROVED" (nothing else)
@@ -22429,8 +22736,9 @@ export const translateAndRefine = task({
       };
     }
 
-    // If not approved, recursively call the task with feedback
-    await translateAndRefine
+    // If not approved, recursively refine with feedback and return the
+    // refined result so the final translation propagates back up.
+    return await translateAndRefine
       .triggerAndWait({
         text: payload.text,
         targetLanguage: payload.targetLanguage,
@@ -22476,17 +22784,17 @@ Our example task uses multiple LLM calls to extract claims from a news article a
 
 **This task:**
 
-* Uses `generateText` from [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) to interact with OpenAI models
-* Uses `experimental_telemetry` to provide LLM logs
+* Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
+* Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Uses [`batch.triggerByTaskAndWait`](/docs/triggering#batch-triggerbytaskandwait) to orchestrate parallel processing of claims
-* Extracts factual claims from news articles using the `o1-mini` model
+* Extracts factual claims from news articles using `claude-sonnet-4-5`
 * Evaluates claims against recent sources and analyzes historical context in parallel
 * Combines results into a structured analysis report
 
 ```typescript theme={"theme":"css-variables"}
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { batch, logger, task } from "@trigger.dev/sdk";
-import { CoreMessage, generateText } from "ai";
+import { ModelMessage, generateText } from "ai";
 
 // Define types for our workers' outputs
 interface Claim {
@@ -22512,7 +22820,7 @@ export const extractClaims = task({
   id: "extract-claims",
   run: async ({ article }: { article: string }) => {
     try {
-      const messages: CoreMessage[] = [
+      const messages: ModelMessage[] = [
         {
           role: "system",
           content:
@@ -22525,8 +22833,12 @@ export const extractClaims = task({
       ];
 
       const response = await generateText({
-        model: openai("o1-mini"),
+        model: anthropic("claude-sonnet-4-5"),
         messages,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: "extract-claims",
+        },
       });
 
       const claims = response.text
@@ -22553,7 +22865,7 @@ export const verifySource = task({
   id: "verify-source",
   run: async (claim: Claim) => {
     const response = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -22585,7 +22897,7 @@ export const analyzeHistory = task({
   id: "analyze-history",
   run: async (claim: Claim) => {
     const response = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -31827,6 +32139,7 @@ Get set up fast using our detailed walk-through guides.
 
 | Guide                                                                                      | Description                                                            |
 | :----------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| [AI Agent: Chat agent](/docs/guides/ai-agents/chat-agent)                                       | Build a durable, multi-turn chat agent with `chat.agent()`             |
 | [AI Agent: Content moderation](/docs/guides/ai-agents/respond-and-check-content)                | Parallel check content while responding to customers                   |
 | [AI Agent: Generate and translate copy](/docs/guides/ai-agents/generate-translate-copy)         | Chain prompts to generate and translate content                        |
 | [AI Agent: News verification](/docs/guides/ai-agents/verify-news-article)                       | Orchestrate fact checking of news articles                             |
@@ -31871,26 +32184,27 @@ Get set up fast using our detailed walk-through guides.
 
 Example projects are full projects with example repos you can fork and use. These are a great way of learning how to use Trigger.dev in your projects.
 
-| Example project                                                                                                 | Description                                                                                                                            | Framework | GitHub                                                                                                         |
-| :-------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------- |
-| [Anchor Browser web scraper](/docs/guides/example-projects/anchor-browser-web-scraper)                               | Monitor a website and find the cheapest tickets for a show.                                                                            | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)                |
-| [Batch LLM Evaluator](/docs/guides/example-projects/batch-llm-evaluator)                                             | Evaluate multiple LLM models and stream the results to the frontend.                                                                   | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)                       |
-| [Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)                               | Automatically generate professional changelogs from git commits using Claude.                                                          | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/changelog-generator)                       |
-| [Claude GitHub wiki agent](/docs/guides/example-projects/claude-github-wiki)                                         | Generate and maintain GitHub wiki documentation with Claude-powered analysis.                                                          | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki)                  |
-| [Claude thinking chatbot](/docs/guides/example-projects/claude-thinking-chatbot)                                     | Use Vercel's AI SDK and Anthropic's Claude 3.7 model to create a thinking chatbot.                                                     | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/claude-thinking-chatbot)                   |
-| [Cursor background agent](/docs/guides/example-projects/cursor-background-agent)                                     | Run Cursor's headless CLI agent as a background task, streaming live output to the browser.                                            | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/cursor-cli-demo)                           |
-| [Human-in-the-loop workflow](/docs/guides/example-projects/human-in-the-loop-workflow)                               | Create audio summaries of newspaper articles using a human-in-the-loop workflow built with ReactFlow and Trigger.dev waitpoint tokens. | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/article-summary-workflow)                  |
-| [Mastra agents with memory](/docs/guides/example-projects/mastra-agents-with-memory)                                 | Use Mastra to create a weather agent that can collect live weather data and generate clothing recommendations.                         | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/mastra-agents)                             |
-| [OpenAI Agents SDK for Python guardrails](/docs/guides/example-projects/openai-agent-sdk-guardrails)                 | Use the OpenAI Agents SDK for Python to create a guardrails system for your AI agents.                                                 | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/openai-agent-sdk-guardrails-examples)      |
-| [OpenAI Agents SDK for TypeScript playground](/docs/guides/example-projects/openai-agents-sdk-typescript-playground) | A playground containing 7 AI agents using the OpenAI Agents SDK for TypeScript with Trigger.dev.                                       | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/openai-agents-sdk-with-trigger-playground) |
-| [Product image generator](/docs/guides/example-projects/product-image-generator)                                     | Transform basic product photos into professional marketing shots using Replicate's image generation models.                            | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/product-image-generator)                   |
-| [Python web crawler](/docs/guides/python/python-crawl4ai)                                                            | Use Python, Crawl4AI and Playwright to create a headless web crawler with Trigger.dev.                                                 | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai)                           |
-| [Realtime CSV Importer](/docs/guides/example-projects/realtime-csv-importer)                                         | Upload a CSV file and see the progress of the task streamed to the frontend.                                                           | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/realtime-csv-importer)                     |
-| [Realtime Fal.ai image generation](/docs/guides/example-projects/realtime-fal-ai)                                    | Generate an image from a prompt using Fal.ai and show the progress of the task on the frontend using Realtime.                         | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation)          |
-| [Smart Spreadsheet](/docs/guides/example-projects/smart-spreadsheet)                                                 | Enrich company data using Exa search and Claude with real-time streaming results.                                                      | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/smart-spreadsheet)                         |
-| [Turborepo monorepo with Prisma](/docs/guides/example-projects/turborepo-monorepo-prisma)                            | Use Prisma in a Turborepo monorepo with Trigger.dev.                                                                                   | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package)  |
-| [Vercel AI SDK image generator](/docs/guides/example-projects/vercel-ai-sdk-image-generator)                         | Use the Vercel AI SDK to generate images from a prompt.                                                                                | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-image-generator)             |
-| [Vercel AI SDK deep research agent](/docs/guides/example-projects/vercel-ai-sdk-deep-research)                       | Use the Vercel AI SDK to generate comprehensive PDF reports using a deep research agent.                                               | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-deep-research-agent)         |
+| Example project                                                                                                 | Description                                                                                                                               | Framework | GitHub                                                                                                         |
+| :-------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------- |
+| [Anchor Browser web scraper](/docs/guides/example-projects/anchor-browser-web-scraper)                               | Monitor a website and find the cheapest tickets for a show.                                                                               | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)                |
+| [Batch LLM Evaluator](/docs/guides/example-projects/batch-llm-evaluator)                                             | Evaluate multiple LLM models and stream the results to the frontend.                                                                      | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)                       |
+| [Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)                               | Automatically generate professional changelogs from git commits using Claude.                                                             | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/changelog-generator)                       |
+| [Claude GitHub wiki agent](/docs/guides/example-projects/claude-github-wiki)                                         | Generate and maintain GitHub wiki documentation with Claude-powered analysis.                                                             | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki)                  |
+| [Claude thinking chatbot](/docs/guides/example-projects/claude-thinking-chatbot)                                     | Use Vercel's AI SDK and Anthropic's Claude 3.7 model to create a thinking chatbot.                                                        | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/claude-thinking-chatbot)                   |
+| [ClickHouse chat agent](/docs/guides/example-projects/clickhouse-chat-agent)                                         | Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps using `chat.agent()` and generative UI. | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent)                     |
+| [Cursor background agent](/docs/guides/example-projects/cursor-background-agent)                                     | Run Cursor's headless CLI agent as a background task, streaming live output to the browser.                                               | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/cursor-cli-demo)                           |
+| [Human-in-the-loop workflow](/docs/guides/example-projects/human-in-the-loop-workflow)                               | Create audio summaries of newspaper articles using a human-in-the-loop workflow built with ReactFlow and Trigger.dev waitpoint tokens.    | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/article-summary-workflow)                  |
+| [Mastra agents with memory](/docs/guides/example-projects/mastra-agents-with-memory)                                 | Use Mastra to create a weather agent that can collect live weather data and generate clothing recommendations.                            | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/mastra-agents)                             |
+| [OpenAI Agents SDK for Python guardrails](/docs/guides/example-projects/openai-agent-sdk-guardrails)                 | Use the OpenAI Agents SDK for Python to create a guardrails system for your AI agents.                                                    | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/openai-agent-sdk-guardrails-examples)      |
+| [OpenAI Agents SDK for TypeScript playground](/docs/guides/example-projects/openai-agents-sdk-typescript-playground) | A playground containing 7 AI agents using the OpenAI Agents SDK for TypeScript with Trigger.dev.                                          | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/openai-agents-sdk-with-trigger-playground) |
+| [Product image generator](/docs/guides/example-projects/product-image-generator)                                     | Transform basic product photos into professional marketing shots using Replicate's image generation models.                               | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/product-image-generator)                   |
+| [Python web crawler](/docs/guides/python/python-crawl4ai)                                                            | Use Python, Crawl4AI and Playwright to create a headless web crawler with Trigger.dev.                                                    | —         | [View the repo](https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai)                           |
+| [Realtime CSV Importer](/docs/guides/example-projects/realtime-csv-importer)                                         | Upload a CSV file and see the progress of the task streamed to the frontend.                                                              | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/realtime-csv-importer)                     |
+| [Realtime Fal.ai image generation](/docs/guides/example-projects/realtime-fal-ai)                                    | Generate an image from a prompt using Fal.ai and show the progress of the task on the frontend using Realtime.                            | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation)          |
+| [Smart Spreadsheet](/docs/guides/example-projects/smart-spreadsheet)                                                 | Enrich company data using Exa search and Claude with real-time streaming results.                                                         | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/smart-spreadsheet)                         |
+| [Turborepo monorepo with Prisma](/docs/guides/example-projects/turborepo-monorepo-prisma)                            | Use Prisma in a Turborepo monorepo with Trigger.dev.                                                                                      | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package)  |
+| [Vercel AI SDK image generator](/docs/guides/example-projects/vercel-ai-sdk-image-generator)                         | Use the Vercel AI SDK to generate images from a prompt.                                                                                   | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-image-generator)             |
+| [Vercel AI SDK deep research agent](/docs/guides/example-projects/vercel-ai-sdk-deep-research)                       | Use the Vercel AI SDK to generate comprehensive PDF reports using a deep research agent.                                                  | Next.js   | [View the repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-deep-research-agent)         |
 
 ## Example tasks
 
@@ -47050,179 +47364,186 @@ Source: https://trigger.dev/docs/self-hosting/env/webapp
 
 Environment variables for the webapp container.
 
-| Name                                             | Required | Default                                        | Description                                                                                                                                                                                                   |
-| :----------------------------------------------- | :------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Secrets**                                      |          |                                                |                                                                                                                                                                                                               |
-| `SESSION_SECRET`                                 | Yes      | —                                              | Session encryption secret. Run: `openssl rand -hex 16`                                                                                                                                                        |
-| `MAGIC_LINK_SECRET`                              | Yes      | —                                              | Magic link encryption secret. Run: `openssl rand -hex 16`                                                                                                                                                     |
-| `ENCRYPTION_KEY`                                 | Yes      | —                                              | Secret store encryption key. Run: `openssl rand -hex 16`                                                                                                                                                      |
-| `MANAGED_WORKER_SECRET`                          | Yes      | —                                              | Managed worker secret. Must be set and match supervisor. Run: `openssl rand -hex 32`                                                                                                                          |
-| `ALLOW_INSECURE_DEFAULT_SECRETS`                 | No       | false                                          | Boot even if a secret is still a known-insecure published default. Temporary escape hatch for values you can't safely rotate yet (see [Secrets](/docs/self-hosting/kubernetes#secrets)).                           |
-| **Domains & ports**                              |          |                                                |                                                                                                                                                                                                               |
-| `REMIX_APP_PORT`                                 | No       | 3030                                           | Remix app port.                                                                                                                                                                                               |
-| `APP_ORIGIN`                                     | Yes      | [http://localhost:3030](http://localhost:3030) | App origin URL.                                                                                                                                                                                               |
-| `LOGIN_ORIGIN`                                   | Yes      | [http://localhost:3030](http://localhost:3030) | Login origin URL. Most likely the same as `APP_ORIGIN`.                                                                                                                                                       |
-| `API_ORIGIN`                                     | No       | `APP_ORIGIN`                                   | API origin URL.                                                                                                                                                                                               |
-| `STREAM_ORIGIN`                                  | No       | `APP_ORIGIN`                                   | Realtime stream origin URL.                                                                                                                                                                                   |
-| `ELECTRIC_ORIGIN`                                | No       | [http://localhost:3060](http://localhost:3060) | Electric origin URL.                                                                                                                                                                                          |
-| **Postgres**                                     |          |                                                |                                                                                                                                                                                                               |
-| `DATABASE_URL`                                   | Yes      | —                                              | PostgreSQL connection string.                                                                                                                                                                                 |
-| `DIRECT_URL`                                     | Yes      | —                                              | Direct DB connection string used for migrations etc.                                                                                                                                                          |
-| `DATABASE_CONNECTION_LIMIT`                      | No       | 10                                             | Max DB connections.                                                                                                                                                                                           |
-| `DATABASE_POOL_TIMEOUT`                          | No       | 60                                             | DB pool timeout (s).                                                                                                                                                                                          |
-| `DATABASE_CONNECTION_TIMEOUT`                    | No       | 20                                             | DB connect timeout (s).                                                                                                                                                                                       |
-| `DATABASE_WRITER_POOL_TIMEOUT`                   | No       | `DATABASE_POOL_TIMEOUT`                        | Writer pool timeout (s); overrides the shared default for the writer only.                                                                                                                                    |
-| `DATABASE_WRITER_CONNECTION_TIMEOUT`             | No       | `DATABASE_CONNECTION_TIMEOUT`                  | Writer connect timeout (s); overrides the shared default for the writer only.                                                                                                                                 |
-| `DATABASE_READ_REPLICA_URL`                      | No       | `DATABASE_URL`                                 | Read-replica DB string.                                                                                                                                                                                       |
-| `DATABASE_READ_REPLICA_POOL_TIMEOUT`             | No       | `DATABASE_POOL_TIMEOUT`                        | Read-replica pool timeout (s); overrides the shared default for the replica only.                                                                                                                             |
-| `DATABASE_READ_REPLICA_CONNECTION_TIMEOUT`       | No       | `DATABASE_CONNECTION_TIMEOUT`                  | Read-replica connect timeout (s); overrides the shared default for the replica only.                                                                                                                          |
-| **Redis**                                        |          |                                                |                                                                                                                                                                                                               |
-| `REDIS_HOST`                                     | Yes      | —                                              | Redis host.                                                                                                                                                                                                   |
-| `REDIS_PORT`                                     | Yes      | —                                              | Redis port.                                                                                                                                                                                                   |
-| `REDIS_READER_HOST`                              | No       | `REDIS_HOST`                                   | Redis reader host.                                                                                                                                                                                            |
-| `REDIS_READER_PORT`                              | No       | `REDIS_PORT`                                   | Redis reader port.                                                                                                                                                                                            |
-| `REDIS_USERNAME`                                 | No       | —                                              | Redis username.                                                                                                                                                                                               |
-| `REDIS_PASSWORD`                                 | No       | —                                              | Redis password.                                                                                                                                                                                               |
-| `REDIS_TLS_DISABLED`                             | No       | —                                              | Disable Redis TLS.                                                                                                                                                                                            |
-| **Auth**                                         |          |                                                |                                                                                                                                                                                                               |
-| `WHITELISTED_EMAILS`                             | No       | —                                              | Whitelisted emails regex.                                                                                                                                                                                     |
-| `LOGIN_RATE_LIMITS_ENABLED`                      | No       | true                                           | Enable rate limiting on magic-link login.                                                                                                                                                                     |
-| `AUTH_GITHUB_CLIENT_ID`                          | No       | —                                              | GitHub client ID.                                                                                                                                                                                             |
-| `AUTH_GITHUB_CLIENT_SECRET`                      | No       | —                                              | GitHub client secret.                                                                                                                                                                                         |
-| **Email**                                        |          |                                                |                                                                                                                                                                                                               |
-| `EMAIL_TRANSPORT`                                | No       | —                                              | Email transport type. One of `resend`, `smtp`, `aws-ses`.                                                                                                                                                     |
-| `FROM_EMAIL`                                     | No       | —                                              | From email address.                                                                                                                                                                                           |
-| `REPLY_TO_EMAIL`                                 | No       | —                                              | Reply-to email address.                                                                                                                                                                                       |
-| `RESEND_API_KEY`                                 | No       | —                                              | Resend API key.                                                                                                                                                                                               |
-| `SMTP_HOST`                                      | No       | —                                              | SMTP host.                                                                                                                                                                                                    |
-| `SMTP_PORT`                                      | No       | —                                              | SMTP port.                                                                                                                                                                                                    |
-| `SMTP_SECURE`                                    | No       | —                                              | SMTP secure flag.                                                                                                                                                                                             |
-| `SMTP_USER`                                      | No       | —                                              | SMTP user.                                                                                                                                                                                                    |
-| `SMTP_PASSWORD`                                  | No       | —                                              | SMTP password.                                                                                                                                                                                                |
-| `AWS_REGION`                                     | No       | —                                              | AWS region for SES.                                                                                                                                                                                           |
-| `AWS_ACCESS_KEY_ID`                              | No       | —                                              | AWS access key ID for SES.                                                                                                                                                                                    |
-| `AWS_SECRET_ACCESS_KEY`                          | No       | —                                              | AWS secret access key for SES.                                                                                                                                                                                |
-| **Worker**                                       |          |                                                |                                                                                                                                                                                                               |
-| `GRACEFUL_SHUTDOWN_TIMEOUT`                      | No       | 60000 (1m)                                     | Graceful shutdown timeout (ms). Affects shutdown time.                                                                                                                                                        |
-| **Concurrency limits**                           |          |                                                |                                                                                                                                                                                                               |
-| `DEFAULT_ENV_EXECUTION_CONCURRENCY_LIMIT`        | No       | 100                                            | Default env execution concurrency.                                                                                                                                                                            |
-| `DEFAULT_ORG_EXECUTION_CONCURRENCY_LIMIT`        | No       | 300                                            | Default org execution concurrency, needs to be 3x env concurrency.                                                                                                                                            |
-| `DEFAULT_ENV_EXECUTION_CONCURRENCY_BURST_FACTOR` | No       | 1.0                                            | Burst factor for env concurrency.                                                                                                                                                                             |
-| `DEFAULT_DEV_ENV_EXECUTION_ATTEMPTS`             | No       | 1                                              | Default max attempts for dev environment runs.                                                                                                                                                                |
-| **Dev**                                          |          |                                                |                                                                                                                                                                                                               |
-| `DEV_MAX_CONCURRENT_RUNS`                        | No       | 25                                             | Sets the max concurrency for dev runs via the CLI.                                                                                                                                                            |
-| `DEV_OTEL_EXPORTER_OTLP_ENDPOINT`                | No       | `APP_ORIGIN/otel`                              | OTel endpoint for dev runs.                                                                                                                                                                                   |
-| **Rate limiting**                                |          |                                                |                                                                                                                                                                                                               |
-| `API_RATE_LIMIT_REFILL_INTERVAL`                 | No       | 10s                                            | API rate limit refill interval.                                                                                                                                                                               |
-| `API_RATE_LIMIT_MAX`                             | No       | 750                                            | API rate limit max.                                                                                                                                                                                           |
-| `API_RATE_LIMIT_REFILL_RATE`                     | No       | 250                                            | API rate limit refill rate.                                                                                                                                                                                   |
-| `API_RATE_LIMIT_REQUEST_LOGS_ENABLED`            | No       | 0                                              | API rate limit request logs.                                                                                                                                                                                  |
-| `API_RATE_LIMIT_REJECTION_LOGS_ENABLED`          | No       | 1                                              | API rate limit rejection logs.                                                                                                                                                                                |
-| `API_RATE_LIMIT_LIMITER_LOGS_ENABLED`            | No       | 0                                              | API rate limit limiter logs.                                                                                                                                                                                  |
-| `API_RATE_LIMIT_JWT_WINDOW`                      | No       | 1m                                             | API rate limit JWT window.                                                                                                                                                                                    |
-| `API_RATE_LIMIT_JWT_TOKENS`                      | No       | 60                                             | API rate limit JWT tokens.                                                                                                                                                                                    |
-| **Deploy & Registry**                            |          |                                                |                                                                                                                                                                                                               |
-| `DEPLOY_REGISTRY_HOST`                           | Yes      | —                                              | Deploy registry host.                                                                                                                                                                                         |
-| `DEPLOY_REGISTRY_USERNAME`                       | No       | —                                              | Deploy registry username.                                                                                                                                                                                     |
-| `DEPLOY_REGISTRY_PASSWORD`                       | No       | —                                              | Deploy registry password.                                                                                                                                                                                     |
-| `DEPLOY_REGISTRY_NAMESPACE`                      | No       | trigger                                        | Deploy registry namespace.                                                                                                                                                                                    |
-| `DEPLOY_REGISTRY_ECR_DEFAULT_REPOSITORY_POLICY`  | No       | —                                              | Raw IAM policy JSON applied via SetRepositoryPolicy to every ECR repo created by the webapp. Use to grant cross-account pull access to EKS workers when the ECR account is separate from the cluster account. |
-| `DEPLOY_IMAGE_PLATFORM`                          | No       | linux/amd64                                    | Deploy image platform, same values as docker `--platform` flag.                                                                                                                                               |
-| `DEPLOY_TIMEOUT_MS`                              | No       | 480000 (8m)                                    | Deploy timeout (ms).                                                                                                                                                                                          |
-| `DEPLOY_QUEUE_TIMEOUT_MS`                        | No       | 900000 (15m)                                   | Deploy queue timeout (ms).                                                                                                                                                                                    |
-| **Object store (S3)**                            |          |                                                |                                                                                                                                                                                                               |
-| `OBJECT_STORE_BASE_URL`                          | No       | —                                              | Object store base URL (default provider).                                                                                                                                                                     |
-| `OBJECT_STORE_BUCKET`                            | No       | —                                              | Object store bucket name (default provider).                                                                                                                                                                  |
-| `OBJECT_STORE_ACCESS_KEY_ID`                     | No       | —                                              | Object store access key (default provider).                                                                                                                                                                   |
-| `OBJECT_STORE_SECRET_ACCESS_KEY`                 | No       | —                                              | Object store secret key (default provider).                                                                                                                                                                   |
-| `OBJECT_STORE_REGION`                            | No       | —                                              | Object store region (default provider).                                                                                                                                                                       |
-| `OBJECT_STORE_SERVICE`                           | No       | s3                                             | Object store service (default provider).                                                                                                                                                                      |
-| `OBJECT_STORE_DEFAULT_PROTOCOL`                  | No       | —                                              | Protocol for new uploads (e.g. `s3`, `r2`). Enables protocol-prefixed storage. See migration guide below.                                                                                                     |
-| `OBJECT_STORE_{PROTOCOL}_BASE_URL`               | No       | —                                              | Named provider base URL (replace `{PROTOCOL}`, e.g. `OBJECT_STORE_S3_BASE_URL`).                                                                                                                              |
-| `OBJECT_STORE_{PROTOCOL}_ACCESS_KEY_ID`          | No       | —                                              | Named provider access key.                                                                                                                                                                                    |
-| `OBJECT_STORE_{PROTOCOL}_SECRET_ACCESS_KEY`      | No       | —                                              | Named provider secret key.                                                                                                                                                                                    |
-| `OBJECT_STORE_{PROTOCOL}_REGION`                 | No       | —                                              | Named provider region.                                                                                                                                                                                        |
-| `OBJECT_STORE_{PROTOCOL}_SERVICE`                | No       | —                                              | Named provider service.                                                                                                                                                                                       |
-| `ARTIFACTS_OBJECT_STORE_BUCKET`                  | No       | —                                              | Optional separate bucket for artifacts. If not set, uses main object store.                                                                                                                                   |
-| `ARTIFACTS_OBJECT_STORE_BASE_URL`                | No       | —                                              | Optional artifacts store base URL.                                                                                                                                                                            |
-| `ARTIFACTS_OBJECT_STORE_ACCESS_KEY_ID`           | No       | —                                              | Optional artifacts store access key.                                                                                                                                                                          |
-| `ARTIFACTS_OBJECT_STORE_SECRET_ACCESS_KEY`       | No       | —                                              | Optional artifacts store secret key.                                                                                                                                                                          |
-| `ARTIFACTS_OBJECT_STORE_REGION`                  | No       | —                                              | Optional artifacts store region.                                                                                                                                                                              |
-| **Alerts**                                       |          |                                                |                                                                                                                                                                                                               |
-| `ORG_SLACK_INTEGRATION_CLIENT_ID`                | No       | —                                              | Slack client ID. Required for Slack alerts.                                                                                                                                                                   |
-| `ORG_SLACK_INTEGRATION_CLIENT_SECRET`            | No       | —                                              | Slack client secret. Required for Slack alerts.                                                                                                                                                               |
-| `ALERT_EMAIL_TRANSPORT`                          | No       | —                                              | Alert email transport.                                                                                                                                                                                        |
-| `ALERT_FROM_EMAIL`                               | No       | —                                              | Alert from email.                                                                                                                                                                                             |
-| `ALERT_REPLY_TO_EMAIL`                           | No       | —                                              | Alert reply-to email.                                                                                                                                                                                         |
-| `ALERT_RESEND_API_KEY`                           | No       | —                                              | Alert Resend API key.                                                                                                                                                                                         |
-| `ALERT_SMTP_HOST`                                | No       | —                                              | Alert SMTP host.                                                                                                                                                                                              |
-| `ALERT_SMTP_PORT`                                | No       | —                                              | Alert SMTP port.                                                                                                                                                                                              |
-| `ALERT_SMTP_SECURE`                              | No       | —                                              | Alert SMTP secure.                                                                                                                                                                                            |
-| `ALERT_SMTP_USER`                                | No       | —                                              | Alert SMTP user.                                                                                                                                                                                              |
-| `ALERT_SMTP_PASSWORD`                            | No       | —                                              | Alert SMTP password.                                                                                                                                                                                          |
-| **Limits**                                       |          |                                                |                                                                                                                                                                                                               |
-| `TASK_PAYLOAD_OFFLOAD_THRESHOLD`                 | No       | 524288 (512KB)                                 | Max task payload size before offloading to S3.                                                                                                                                                                |
-| `TASK_PAYLOAD_MAXIMUM_SIZE`                      | No       | 3145728 (3MB)                                  | Max task payload size.                                                                                                                                                                                        |
-| `BATCH_TASK_PAYLOAD_MAXIMUM_SIZE`                | No       | 1000000 (1MB)                                  | Max batch payload size.                                                                                                                                                                                       |
-| `BATCH_CONCURRENCY_LIMIT_DEFAULT`                | No       | 5                                              | Default concurrency for batch processing.                                                                                                                                                                     |
-| `BATCH_RATE_LIMIT_REFILL_RATE`                   | No       | 100                                            | Batch rate limit refill rate.                                                                                                                                                                                 |
-| `BATCH_RATE_LIMIT_MAX`                           | No       | 1200                                           | Batch rate limit max.                                                                                                                                                                                         |
-| `BATCH_RATE_LIMIT_REFILL_INTERVAL`               | No       | 10s                                            | Batch rate limit refill interval.                                                                                                                                                                             |
-| `TASK_RUN_METADATA_MAXIMUM_SIZE`                 | No       | 262144 (256KB)                                 | Max metadata size.                                                                                                                                                                                            |
-| `MAX_BATCH_V2_TRIGGER_ITEMS`                     | No       | 500                                            | Max batch size (legacy v2 API).                                                                                                                                                                               |
-| `STREAMING_BATCH_MAX_ITEMS`                      | No       | 1000                                           | Max items in streaming batch (v3 API, requires SDK 4.3.1+).                                                                                                                                                   |
-| `STREAMING_BATCH_ITEM_MAXIMUM_SIZE`              | No       | 3145728 (3MB)                                  | Max size per item in streaming batch.                                                                                                                                                                         |
-| `STREAMING_BATCH_INGEST_CONCURRENCY`             | No       | 10                                             | Items ingested concurrently per streaming batch request. Peak memory ≈ this × item size. Set to 1 for sequential.                                                                                             |
-| **OTel limits**                                  |          |                                                |                                                                                                                                                                                                               |
-| `TRIGGER_OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT`        | No       | 1024                                           | OTel span attribute count limit.                                                                                                                                                                              |
-| `TRIGGER_OTEL_LOG_ATTRIBUTE_COUNT_LIMIT`         | No       | 1024                                           | OTel log attribute count limit.                                                                                                                                                                               |
-| `TRIGGER_OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT` | No       | 131072                                         | OTel span attribute value length limit.                                                                                                                                                                       |
-| `TRIGGER_OTEL_LOG_ATTRIBUTE_VALUE_LENGTH_LIMIT`  | No       | 131072                                         | OTel log attribute value length limit.                                                                                                                                                                        |
-| `TRIGGER_OTEL_SPAN_EVENT_COUNT_LIMIT`            | No       | 10                                             | OTel span event count limit.                                                                                                                                                                                  |
-| `TRIGGER_OTEL_LINK_COUNT_LIMIT`                  | No       | 2                                              | OTel link count limit.                                                                                                                                                                                        |
-| `TRIGGER_OTEL_ATTRIBUTE_PER_LINK_COUNT_LIMIT`    | No       | 10                                             | OTel attribute per link count limit.                                                                                                                                                                          |
-| `TRIGGER_OTEL_ATTRIBUTE_PER_EVENT_COUNT_LIMIT`   | No       | 10                                             | OTel attribute per event count limit.                                                                                                                                                                         |
-| `SERVER_OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT`  | No       | 8192                                           | OTel span attribute value length limit.                                                                                                                                                                       |
-| **Task events**                                  |          |                                                |                                                                                                                                                                                                               |
-| `EVENT_REPOSITORY_DEFAULT_STORE`                 | No       | postgres                                       | Where to store task events. Set to `clickhouse_v2` to store in ClickHouse (recommended for production).                                                                                                       |
-| `EVENT_REPOSITORY_POSTGRES_WRITES_DISABLED`      | No       | 0                                              | Skip all PostgreSQL task-event writes (set to `1`). Only enable when `EVENT_REPOSITORY_DEFAULT_STORE` is `clickhouse_v2`, otherwise task events are lost.                                                     |
-| **Realtime**                                     |          |                                                |                                                                                                                                                                                                               |
-| `REALTIME_STREAM_VERSION`                        | No       | v1                                             | Stream version exposed to tasks via the `TRIGGER_REALTIME_STREAM_VERSION` variable. Distinct from `REALTIME_STREAMS_DEFAULT_VERSION`. One of `v1`, `v2`.                                                      |
-| `REALTIME_STREAM_MAX_LENGTH`                     | No       | 1000                                           | Realtime stream max length.                                                                                                                                                                                   |
-| `REALTIME_STREAM_TTL`                            | No       | 86400 (1d)                                     | Realtime stream TTL (s).                                                                                                                                                                                      |
-| `REALTIME_STREAMS_DEFAULT_VERSION`               | No       | v1                                             | Server-side default the webapp uses when a stream request doesn't pin a version (modern SDKs request `v2`). The Docker and Helm self-hosting defaults set this to `v2`. One of `v1`, `v2`.                    |
-| `REALTIME_STREAMS_S2_BASIN`                      | No       | —                                              | S2 basin that holds v2 realtime streams. Required for `v2`. Must be at least 8 characters.                                                                                                                    |
-| `REALTIME_STREAMS_S2_ENDPOINT`                   | No       | —                                              | Custom S2 API endpoint, including the `/v1` suffix (e.g. `http://s2/v1` for the bundled s2-lite). Omit to use hosted S2 at s2.dev.                                                                            |
-| `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS`         | No       | false                                          | Skip minting per-stream access tokens. Set to `true` for s2-lite, which needs no authentication.                                                                                                              |
-| `REALTIME_STREAMS_S2_ACCESS_TOKEN`               | No       | —                                              | S2 access token. Required for hosted S2 unless `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS` is `true`.                                                                                                            |
-| **Bootstrap**                                    |          |                                                |                                                                                                                                                                                                               |
-| `TRIGGER_BOOTSTRAP_ENABLED`                      | No       | 0                                              | Trigger bootstrap enabled.                                                                                                                                                                                    |
-| `TRIGGER_BOOTSTRAP_WORKER_GROUP_NAME`            | No       | —                                              | Trigger bootstrap worker group name.                                                                                                                                                                          |
-| `TRIGGER_BOOTSTRAP_WORKER_TOKEN_PATH`            | No       | —                                              | Trigger bootstrap worker token path.                                                                                                                                                                          |
-| **Run engine**                                   |          |                                                |                                                                                                                                                                                                               |
-| `RUN_ENGINE_WORKER_COUNT`                        | No       | 4                                              | Run engine worker count.                                                                                                                                                                                      |
-| `RUN_ENGINE_TASKS_PER_WORKER`                    | No       | 10                                             | Run engine tasks per worker.                                                                                                                                                                                  |
-| `RUN_ENGINE_WORKER_CONCURRENCY_LIMIT`            | No       | 10                                             | Run engine worker concurrency limit.                                                                                                                                                                          |
-| `RUN_ENGINE_WORKER_POLL_INTERVAL`                | No       | 100                                            | Run engine worker poll interval (ms).                                                                                                                                                                         |
-| `RUN_ENGINE_WORKER_IMMEDIATE_POLL_INTERVAL`      | No       | 100                                            | Run engine worker immediate poll interval (ms).                                                                                                                                                               |
-| `RUN_ENGINE_WORKER_SHUTDOWN_TIMEOUT_MS`          | No       | 60000 (1m)                                     | Run engine worker shutdown timeout (ms).                                                                                                                                                                      |
-| `RUN_ENGINE_RATE_LIMIT_REFILL_INTERVAL`          | No       | 10s                                            | Run engine rate limit refill interval.                                                                                                                                                                        |
-| `RUN_ENGINE_RATE_LIMIT_MAX`                      | No       | 1200                                           | Run engine rate limit max.                                                                                                                                                                                    |
-| `RUN_ENGINE_RATE_LIMIT_REFILL_RATE`              | No       | 400                                            | Run engine rate limit refill rate.                                                                                                                                                                            |
-| `RUN_ENGINE_RATE_LIMIT_REQUEST_LOGS_ENABLED`     | No       | 0                                              | Run engine rate limit request logs.                                                                                                                                                                           |
-| `RUN_ENGINE_RATE_LIMIT_REJECTION_LOGS_ENABLED`   | No       | 1                                              | Run engine rate limit rejection logs.                                                                                                                                                                         |
-| `RUN_ENGINE_RATE_LIMIT_LIMITER_LOGS_ENABLED`     | No       | 0                                              | Run engine rate limit limiter logs.                                                                                                                                                                           |
-| `RUN_ENGINE_DEFAULT_MAX_TTL`                     | No       | —                                              | Maximum TTL for all runs (e.g. "14d"). Runs without a TTL use this as default; runs with a larger TTL are clamped.                                                                                            |
-| `MAXIMUM_DEV_QUEUE_SIZE`                         | No       | —                                              | Maximum queued runs per queue in development environments.                                                                                                                                                    |
-| `MAXIMUM_DEPLOYED_QUEUE_SIZE`                    | No       | —                                              | Maximum queued runs per queue in deployed (staging/prod) environments.                                                                                                                                        |
-| **Misc**                                         |          |                                                |                                                                                                                                                                                                               |
-| `TRIGGER_TELEMETRY_DISABLED`                     | No       | —                                              | Disable telemetry.                                                                                                                                                                                            |
-| `NODE_MAX_OLD_SPACE_SIZE`                        | No       | 8192                                           | Maximum memory allocation for Node.js heap in MiB (e.g. "4096" for 4GB).                                                                                                                                      |
-| `OPENAI_API_KEY`                                 | No       | —                                              | OpenAI API key.                                                                                                                                                                                               |
-| `MACHINE_PRESETS_OVERRIDE_PATH`                  | No       | —                                              | Path to machine presets override file. See [machine overrides](/docs/self-hosting/overview#machine-overrides).                                                                                                     |
-| `APP_ENV`                                        | No       | `NODE_ENV`                                     | App environment. Used for things like the title tag.                                                                                                                                                          |
-| `ADMIN_EMAILS`                                   | No       | —                                              | Regex of user emails to automatically promote to admin on signup. Does not apply to existing users.                                                                                                           |
-| `EVENT_LOOP_MONITOR_ENABLED`                     | No       | 1                                              | Node.js event loop lag monitor.                                                                                                                                                                               |
+| Name                                             | Required | Default                                        | Description                                                                                                                                                                                                                         |
+| :----------------------------------------------- | :------- | :--------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Secrets**                                      |          |                                                |                                                                                                                                                                                                                                     |
+| `SESSION_SECRET`                                 | Yes      | —                                              | Session encryption secret. Run: `openssl rand -hex 16`                                                                                                                                                                              |
+| `MAGIC_LINK_SECRET`                              | Yes      | —                                              | Magic link encryption secret. Run: `openssl rand -hex 16`                                                                                                                                                                           |
+| `ENCRYPTION_KEY`                                 | Yes      | —                                              | Secret store encryption key. Run: `openssl rand -hex 16`                                                                                                                                                                            |
+| `MANAGED_WORKER_SECRET`                          | Yes      | —                                              | Managed worker secret. Must be set and match supervisor. Run: `openssl rand -hex 32`                                                                                                                                                |
+| `ALLOW_INSECURE_DEFAULT_SECRETS`                 | No       | false                                          | Boot even if a secret is still a known-insecure published default. Temporary escape hatch for values you can't safely rotate yet (see [Secrets](/docs/self-hosting/kubernetes#secrets)).                                                 |
+| **Domains & ports**                              |          |                                                |                                                                                                                                                                                                                                     |
+| `REMIX_APP_PORT`                                 | No       | 3030                                           | Remix app port.                                                                                                                                                                                                                     |
+| `APP_ORIGIN`                                     | Yes      | [http://localhost:3030](http://localhost:3030) | App origin URL.                                                                                                                                                                                                                     |
+| `LOGIN_ORIGIN`                                   | Yes      | [http://localhost:3030](http://localhost:3030) | Login origin URL. Most likely the same as `APP_ORIGIN`.                                                                                                                                                                             |
+| `API_ORIGIN`                                     | No       | `APP_ORIGIN`                                   | API origin URL.                                                                                                                                                                                                                     |
+| `STREAM_ORIGIN`                                  | No       | `APP_ORIGIN`                                   | Realtime stream origin URL.                                                                                                                                                                                                         |
+| `ELECTRIC_ORIGIN`                                | No       | [http://localhost:3060](http://localhost:3060) | Electric origin URL.                                                                                                                                                                                                                |
+| **Postgres**                                     |          |                                                |                                                                                                                                                                                                                                     |
+| `DATABASE_URL`                                   | Yes      | —                                              | PostgreSQL connection string.                                                                                                                                                                                                       |
+| `DIRECT_URL`                                     | Yes      | —                                              | Direct DB connection string used for migrations etc.                                                                                                                                                                                |
+| `DATABASE_CONNECTION_LIMIT`                      | No       | 10                                             | Max DB connections.                                                                                                                                                                                                                 |
+| `DATABASE_POOL_TIMEOUT`                          | No       | 60                                             | DB pool timeout (s).                                                                                                                                                                                                                |
+| `DATABASE_CONNECTION_TIMEOUT`                    | No       | 20                                             | DB connect timeout (s).                                                                                                                                                                                                             |
+| `DATABASE_WRITER_POOL_TIMEOUT`                   | No       | `DATABASE_POOL_TIMEOUT`                        | Writer pool timeout (s); overrides the shared default for the writer only.                                                                                                                                                          |
+| `DATABASE_WRITER_CONNECTION_TIMEOUT`             | No       | `DATABASE_CONNECTION_TIMEOUT`                  | Writer connect timeout (s); overrides the shared default for the writer only.                                                                                                                                                       |
+| `DATABASE_READ_REPLICA_URL`                      | No       | `DATABASE_URL`                                 | Read-replica DB string.                                                                                                                                                                                                             |
+| `DATABASE_READ_REPLICA_POOL_TIMEOUT`             | No       | `DATABASE_POOL_TIMEOUT`                        | Read-replica pool timeout (s); overrides the shared default for the replica only.                                                                                                                                                   |
+| `DATABASE_READ_REPLICA_CONNECTION_TIMEOUT`       | No       | `DATABASE_CONNECTION_TIMEOUT`                  | Read-replica connect timeout (s); overrides the shared default for the replica only.                                                                                                                                                |
+| **Redis**                                        |          |                                                |                                                                                                                                                                                                                                     |
+| `REDIS_HOST`                                     | Yes      | —                                              | Redis host.                                                                                                                                                                                                                         |
+| `REDIS_PORT`                                     | Yes      | —                                              | Redis port.                                                                                                                                                                                                                         |
+| `REDIS_READER_HOST`                              | No       | `REDIS_HOST`                                   | Redis reader host.                                                                                                                                                                                                                  |
+| `REDIS_READER_PORT`                              | No       | `REDIS_PORT`                                   | Redis reader port.                                                                                                                                                                                                                  |
+| `REDIS_USERNAME`                                 | No       | —                                              | Redis username.                                                                                                                                                                                                                     |
+| `REDIS_PASSWORD`                                 | No       | —                                              | Redis password.                                                                                                                                                                                                                     |
+| `REDIS_TLS_DISABLED`                             | No       | —                                              | Disable Redis TLS.                                                                                                                                                                                                                  |
+| **Auth**                                         |          |                                                |                                                                                                                                                                                                                                     |
+| `WHITELISTED_EMAILS`                             | No       | —                                              | Whitelisted emails regex.                                                                                                                                                                                                           |
+| `LOGIN_RATE_LIMITS_ENABLED`                      | No       | true                                           | Enable rate limiting on magic-link login.                                                                                                                                                                                           |
+| `AUTH_GITHUB_CLIENT_ID`                          | No       | —                                              | GitHub client ID.                                                                                                                                                                                                                   |
+| `AUTH_GITHUB_CLIENT_SECRET`                      | No       | —                                              | GitHub client secret.                                                                                                                                                                                                               |
+| `CSP_IMG_SRC_ALLOWLIST`                          | No       | —                                              | Extra hosts the dashboard may load images from, e.g. an SSO or avatar host serving profile images. A comma-separated list of exact origins (`https://sso.example.com`); a wildcard host such as `https://*.example.com` is refused. |
+| **Email**                                        |          |                                                |                                                                                                                                                                                                                                     |
+| `EMAIL_TRANSPORT`                                | No       | —                                              | Email transport type. One of `resend`, `smtp`, `aws-ses`.                                                                                                                                                                           |
+| `FROM_EMAIL`                                     | No       | —                                              | From email address.                                                                                                                                                                                                                 |
+| `REPLY_TO_EMAIL`                                 | No       | —                                              | Reply-to email address.                                                                                                                                                                                                             |
+| `RESEND_API_KEY`                                 | No       | —                                              | Resend API key.                                                                                                                                                                                                                     |
+| `SMTP_HOST`                                      | No       | —                                              | SMTP host.                                                                                                                                                                                                                          |
+| `SMTP_PORT`                                      | No       | —                                              | SMTP port.                                                                                                                                                                                                                          |
+| `SMTP_SECURE`                                    | No       | —                                              | SMTP secure flag.                                                                                                                                                                                                                   |
+| `SMTP_USER`                                      | No       | —                                              | SMTP user.                                                                                                                                                                                                                          |
+| `SMTP_PASSWORD`                                  | No       | —                                              | SMTP password.                                                                                                                                                                                                                      |
+| `AWS_REGION`                                     | No       | —                                              | AWS region for SES.                                                                                                                                                                                                                 |
+| `AWS_ACCESS_KEY_ID`                              | No       | —                                              | AWS access key ID for SES.                                                                                                                                                                                                          |
+| `AWS_SECRET_ACCESS_KEY`                          | No       | —                                              | AWS secret access key for SES.                                                                                                                                                                                                      |
+| **Worker**                                       |          |                                                |                                                                                                                                                                                                                                     |
+| `GRACEFUL_SHUTDOWN_TIMEOUT`                      | No       | 60000 (1m)                                     | Graceful shutdown timeout (ms). Affects shutdown time.                                                                                                                                                                              |
+| **Concurrency limits**                           |          |                                                |                                                                                                                                                                                                                                     |
+| `DEFAULT_ENV_EXECUTION_CONCURRENCY_LIMIT`        | No       | 100                                            | Default env execution concurrency.                                                                                                                                                                                                  |
+| `DEFAULT_ORG_EXECUTION_CONCURRENCY_LIMIT`        | No       | 300                                            | Default org execution concurrency, needs to be 3x env concurrency.                                                                                                                                                                  |
+| `DEFAULT_ENV_EXECUTION_CONCURRENCY_BURST_FACTOR` | No       | 1.0                                            | Burst factor for env concurrency.                                                                                                                                                                                                   |
+| `DEFAULT_DEV_ENV_EXECUTION_ATTEMPTS`             | No       | 1                                              | Default max attempts for dev environment runs.                                                                                                                                                                                      |
+| **Dev**                                          |          |                                                |                                                                                                                                                                                                                                     |
+| `DEV_MAX_CONCURRENT_RUNS`                        | No       | 25                                             | Sets the max concurrency for dev runs via the CLI.                                                                                                                                                                                  |
+| `DEV_OTEL_EXPORTER_OTLP_ENDPOINT`                | No       | `APP_ORIGIN/otel`                              | OTel endpoint for dev runs.                                                                                                                                                                                                         |
+| **Rate limiting**                                |          |                                                |                                                                                                                                                                                                                                     |
+| `API_RATE_LIMIT_REFILL_INTERVAL`                 | No       | 10s                                            | API rate limit refill interval.                                                                                                                                                                                                     |
+| `API_RATE_LIMIT_MAX`                             | No       | 750                                            | API rate limit max.                                                                                                                                                                                                                 |
+| `API_RATE_LIMIT_REFILL_RATE`                     | No       | 250                                            | API rate limit refill rate.                                                                                                                                                                                                         |
+| `API_RATE_LIMIT_REQUEST_LOGS_ENABLED`            | No       | 0                                              | API rate limit request logs.                                                                                                                                                                                                        |
+| `API_RATE_LIMIT_REJECTION_LOGS_ENABLED`          | No       | 1                                              | API rate limit rejection logs.                                                                                                                                                                                                      |
+| `API_RATE_LIMIT_LIMITER_LOGS_ENABLED`            | No       | 0                                              | API rate limit limiter logs.                                                                                                                                                                                                        |
+| `API_RATE_LIMIT_JWT_WINDOW`                      | No       | 1m                                             | API rate limit JWT window.                                                                                                                                                                                                          |
+| `API_RATE_LIMIT_JWT_TOKENS`                      | No       | 60                                             | API rate limit JWT tokens.                                                                                                                                                                                                          |
+| `DEPLOYMENT_RATE_LIMIT_REFILL_INTERVAL`          | No       | 10s                                            | Deployment endpoints rate limit refill interval.                                                                                                                                                                                    |
+| `DEPLOYMENT_RATE_LIMIT_MAX`                      | No       | 1500                                           | Deployment endpoints rate limit max.                                                                                                                                                                                                |
+| `DEPLOYMENT_RATE_LIMIT_REFILL_RATE`              | No       | 500                                            | Deployment endpoints rate limit refill rate.                                                                                                                                                                                        |
+| `DEPLOYMENT_RATE_LIMIT_REQUEST_LOGS_ENABLED`     | No       | 0                                              | Deployment endpoints rate limit request logs.                                                                                                                                                                                       |
+| `DEPLOYMENT_RATE_LIMIT_REJECTION_LOGS_ENABLED`   | No       | 1                                              | Deployment endpoints rate limit rejection logs.                                                                                                                                                                                     |
+| `DEPLOYMENT_RATE_LIMIT_LIMITER_LOGS_ENABLED`     | No       | 0                                              | Deployment endpoints rate limit limiter logs.                                                                                                                                                                                       |
+| **Deploy & Registry**                            |          |                                                |                                                                                                                                                                                                                                     |
+| `DEPLOY_REGISTRY_HOST`                           | Yes      | —                                              | Deploy registry host.                                                                                                                                                                                                               |
+| `DEPLOY_REGISTRY_USERNAME`                       | No       | —                                              | Deploy registry username.                                                                                                                                                                                                           |
+| `DEPLOY_REGISTRY_PASSWORD`                       | No       | —                                              | Deploy registry password.                                                                                                                                                                                                           |
+| `DEPLOY_REGISTRY_NAMESPACE`                      | No       | trigger                                        | Deploy registry namespace.                                                                                                                                                                                                          |
+| `DEPLOY_REGISTRY_ECR_DEFAULT_REPOSITORY_POLICY`  | No       | —                                              | Raw IAM policy JSON applied via SetRepositoryPolicy to every ECR repo created by the webapp. Use to grant cross-account pull access to EKS workers when the ECR account is separate from the cluster account.                       |
+| `DEPLOY_IMAGE_PLATFORM`                          | No       | linux/amd64                                    | Deploy image platform, same values as docker `--platform` flag.                                                                                                                                                                     |
+| `DEPLOY_TIMEOUT_MS`                              | No       | 480000 (8m)                                    | Deploy timeout (ms).                                                                                                                                                                                                                |
+| `DEPLOY_QUEUE_TIMEOUT_MS`                        | No       | 900000 (15m)                                   | Deploy queue timeout (ms).                                                                                                                                                                                                          |
+| **Object store (S3)**                            |          |                                                |                                                                                                                                                                                                                                     |
+| `OBJECT_STORE_BASE_URL`                          | No       | —                                              | Object store base URL (default provider).                                                                                                                                                                                           |
+| `OBJECT_STORE_BUCKET`                            | No       | —                                              | Object store bucket name (default provider).                                                                                                                                                                                        |
+| `OBJECT_STORE_ACCESS_KEY_ID`                     | No       | —                                              | Object store access key (default provider).                                                                                                                                                                                         |
+| `OBJECT_STORE_SECRET_ACCESS_KEY`                 | No       | —                                              | Object store secret key (default provider).                                                                                                                                                                                         |
+| `OBJECT_STORE_REGION`                            | No       | —                                              | Object store region (default provider).                                                                                                                                                                                             |
+| `OBJECT_STORE_SERVICE`                           | No       | s3                                             | Object store service (default provider).                                                                                                                                                                                            |
+| `OBJECT_STORE_DEFAULT_PROTOCOL`                  | No       | —                                              | Protocol for new uploads (e.g. `s3`, `r2`). Enables protocol-prefixed storage. See migration guide below.                                                                                                                           |
+| `OBJECT_STORE_{PROTOCOL}_BASE_URL`               | No       | —                                              | Named provider base URL (replace `{PROTOCOL}`, e.g. `OBJECT_STORE_S3_BASE_URL`).                                                                                                                                                    |
+| `OBJECT_STORE_{PROTOCOL}_ACCESS_KEY_ID`          | No       | —                                              | Named provider access key.                                                                                                                                                                                                          |
+| `OBJECT_STORE_{PROTOCOL}_SECRET_ACCESS_KEY`      | No       | —                                              | Named provider secret key.                                                                                                                                                                                                          |
+| `OBJECT_STORE_{PROTOCOL}_REGION`                 | No       | —                                              | Named provider region.                                                                                                                                                                                                              |
+| `OBJECT_STORE_{PROTOCOL}_SERVICE`                | No       | —                                              | Named provider service.                                                                                                                                                                                                             |
+| `ARTIFACTS_OBJECT_STORE_BUCKET`                  | No       | —                                              | Optional separate bucket for artifacts. If not set, uses main object store.                                                                                                                                                         |
+| `ARTIFACTS_OBJECT_STORE_BASE_URL`                | No       | —                                              | Optional artifacts store base URL.                                                                                                                                                                                                  |
+| `ARTIFACTS_OBJECT_STORE_ACCESS_KEY_ID`           | No       | —                                              | Optional artifacts store access key.                                                                                                                                                                                                |
+| `ARTIFACTS_OBJECT_STORE_SECRET_ACCESS_KEY`       | No       | —                                              | Optional artifacts store secret key.                                                                                                                                                                                                |
+| `ARTIFACTS_OBJECT_STORE_REGION`                  | No       | —                                              | Optional artifacts store region.                                                                                                                                                                                                    |
+| **Alerts**                                       |          |                                                |                                                                                                                                                                                                                                     |
+| `ORG_SLACK_INTEGRATION_CLIENT_ID`                | No       | —                                              | Slack client ID. Required for Slack alerts.                                                                                                                                                                                         |
+| `ORG_SLACK_INTEGRATION_CLIENT_SECRET`            | No       | —                                              | Slack client secret. Required for Slack alerts.                                                                                                                                                                                     |
+| `ALERT_EMAIL_TRANSPORT`                          | No       | —                                              | Alert email transport.                                                                                                                                                                                                              |
+| `ALERT_FROM_EMAIL`                               | No       | —                                              | Alert from email.                                                                                                                                                                                                                   |
+| `ALERT_REPLY_TO_EMAIL`                           | No       | —                                              | Alert reply-to email.                                                                                                                                                                                                               |
+| `ALERT_RESEND_API_KEY`                           | No       | —                                              | Alert Resend API key.                                                                                                                                                                                                               |
+| `ALERT_SMTP_HOST`                                | No       | —                                              | Alert SMTP host.                                                                                                                                                                                                                    |
+| `ALERT_SMTP_PORT`                                | No       | —                                              | Alert SMTP port.                                                                                                                                                                                                                    |
+| `ALERT_SMTP_SECURE`                              | No       | —                                              | Alert SMTP secure.                                                                                                                                                                                                                  |
+| `ALERT_SMTP_USER`                                | No       | —                                              | Alert SMTP user.                                                                                                                                                                                                                    |
+| `ALERT_SMTP_PASSWORD`                            | No       | —                                              | Alert SMTP password.                                                                                                                                                                                                                |
+| **Limits**                                       |          |                                                |                                                                                                                                                                                                                                     |
+| `TASK_PAYLOAD_OFFLOAD_THRESHOLD`                 | No       | 524288 (512KB)                                 | Max task payload size before offloading to S3.                                                                                                                                                                                      |
+| `TASK_PAYLOAD_MAXIMUM_SIZE`                      | No       | 3145728 (3MB)                                  | Max task payload size.                                                                                                                                                                                                              |
+| `BATCH_TASK_PAYLOAD_MAXIMUM_SIZE`                | No       | 1000000 (1MB)                                  | Max batch payload size.                                                                                                                                                                                                             |
+| `BATCH_CONCURRENCY_LIMIT_DEFAULT`                | No       | 5                                              | Default concurrency for batch processing.                                                                                                                                                                                           |
+| `BATCH_RATE_LIMIT_REFILL_RATE`                   | No       | 100                                            | Batch rate limit refill rate.                                                                                                                                                                                                       |
+| `BATCH_RATE_LIMIT_MAX`                           | No       | 1200                                           | Batch rate limit max.                                                                                                                                                                                                               |
+| `BATCH_RATE_LIMIT_REFILL_INTERVAL`               | No       | 10s                                            | Batch rate limit refill interval.                                                                                                                                                                                                   |
+| `TASK_RUN_METADATA_MAXIMUM_SIZE`                 | No       | 262144 (256KB)                                 | Max metadata size.                                                                                                                                                                                                                  |
+| `MAX_BATCH_V2_TRIGGER_ITEMS`                     | No       | 500                                            | Max batch size (legacy v2 API).                                                                                                                                                                                                     |
+| `STREAMING_BATCH_MAX_ITEMS`                      | No       | 1000                                           | Max items in streaming batch (v3 API, requires SDK 4.3.1+).                                                                                                                                                                         |
+| `STREAMING_BATCH_ITEM_MAXIMUM_SIZE`              | No       | 3145728 (3MB)                                  | Max size per item in streaming batch.                                                                                                                                                                                               |
+| `STREAMING_BATCH_INGEST_CONCURRENCY`             | No       | 10                                             | Items ingested concurrently per streaming batch request. Peak memory ≈ this × item size. Set to 1 for sequential.                                                                                                                   |
+| **OTel limits**                                  |          |                                                |                                                                                                                                                                                                                                     |
+| `TRIGGER_OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT`        | No       | 1024                                           | OTel span attribute count limit.                                                                                                                                                                                                    |
+| `TRIGGER_OTEL_LOG_ATTRIBUTE_COUNT_LIMIT`         | No       | 1024                                           | OTel log attribute count limit.                                                                                                                                                                                                     |
+| `TRIGGER_OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT` | No       | 131072                                         | OTel span attribute value length limit.                                                                                                                                                                                             |
+| `TRIGGER_OTEL_LOG_ATTRIBUTE_VALUE_LENGTH_LIMIT`  | No       | 131072                                         | OTel log attribute value length limit.                                                                                                                                                                                              |
+| `TRIGGER_OTEL_SPAN_EVENT_COUNT_LIMIT`            | No       | 10                                             | OTel span event count limit.                                                                                                                                                                                                        |
+| `TRIGGER_OTEL_LINK_COUNT_LIMIT`                  | No       | 2                                              | OTel link count limit.                                                                                                                                                                                                              |
+| `TRIGGER_OTEL_ATTRIBUTE_PER_LINK_COUNT_LIMIT`    | No       | 10                                             | OTel attribute per link count limit.                                                                                                                                                                                                |
+| `TRIGGER_OTEL_ATTRIBUTE_PER_EVENT_COUNT_LIMIT`   | No       | 10                                             | OTel attribute per event count limit.                                                                                                                                                                                               |
+| `SERVER_OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT`  | No       | 8192                                           | OTel span attribute value length limit.                                                                                                                                                                                             |
+| **Task events**                                  |          |                                                |                                                                                                                                                                                                                                     |
+| `EVENT_REPOSITORY_DEFAULT_STORE`                 | No       | postgres                                       | Where to store task events. Set to `clickhouse_v2` to store in ClickHouse (recommended for production).                                                                                                                             |
+| `EVENT_REPOSITORY_POSTGRES_WRITES_DISABLED`      | No       | 0                                              | Skip all PostgreSQL task-event writes (set to `1`). Only enable when `EVENT_REPOSITORY_DEFAULT_STORE` is `clickhouse_v2`, otherwise task events are lost.                                                                           |
+| **Realtime**                                     |          |                                                |                                                                                                                                                                                                                                     |
+| `REALTIME_STREAM_VERSION`                        | No       | v1                                             | Stream version exposed to tasks via the `TRIGGER_REALTIME_STREAM_VERSION` variable. Distinct from `REALTIME_STREAMS_DEFAULT_VERSION`. One of `v1`, `v2`.                                                                            |
+| `REALTIME_STREAM_MAX_LENGTH`                     | No       | 1000                                           | Realtime stream max length.                                                                                                                                                                                                         |
+| `REALTIME_STREAM_TTL`                            | No       | 86400 (1d)                                     | Realtime stream TTL (s).                                                                                                                                                                                                            |
+| `REALTIME_STREAMS_DEFAULT_VERSION`               | No       | v1                                             | Server-side default the webapp uses when a stream request doesn't pin a version (modern SDKs request `v2`). The Docker and Helm self-hosting defaults set this to `v2`. One of `v1`, `v2`.                                          |
+| `REALTIME_STREAMS_S2_BASIN`                      | No       | —                                              | S2 basin that holds v2 realtime streams. Required for `v2`. Must be at least 8 characters.                                                                                                                                          |
+| `REALTIME_STREAMS_S2_ENDPOINT`                   | No       | —                                              | Custom S2 API endpoint, including the `/v1` suffix (e.g. `http://s2/v1` for the bundled s2-lite). Omit to use hosted S2 at s2.dev.                                                                                                  |
+| `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS`         | No       | false                                          | Skip minting per-stream access tokens. Set to `true` for s2-lite, which needs no authentication.                                                                                                                                    |
+| `REALTIME_STREAMS_S2_ACCESS_TOKEN`               | No       | —                                              | S2 access token. Required for hosted S2 unless `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS` is `true`.                                                                                                                                  |
+| **Bootstrap**                                    |          |                                                |                                                                                                                                                                                                                                     |
+| `TRIGGER_BOOTSTRAP_ENABLED`                      | No       | 0                                              | Trigger bootstrap enabled.                                                                                                                                                                                                          |
+| `TRIGGER_BOOTSTRAP_WORKER_GROUP_NAME`            | No       | —                                              | Trigger bootstrap worker group name.                                                                                                                                                                                                |
+| `TRIGGER_BOOTSTRAP_WORKER_TOKEN_PATH`            | No       | —                                              | Trigger bootstrap worker token path.                                                                                                                                                                                                |
+| **Run engine**                                   |          |                                                |                                                                                                                                                                                                                                     |
+| `RUN_ENGINE_WORKER_COUNT`                        | No       | 4                                              | Run engine worker count.                                                                                                                                                                                                            |
+| `RUN_ENGINE_TASKS_PER_WORKER`                    | No       | 10                                             | Run engine tasks per worker.                                                                                                                                                                                                        |
+| `RUN_ENGINE_WORKER_CONCURRENCY_LIMIT`            | No       | 10                                             | Run engine worker concurrency limit.                                                                                                                                                                                                |
+| `RUN_ENGINE_WORKER_POLL_INTERVAL`                | No       | 100                                            | Run engine worker poll interval (ms).                                                                                                                                                                                               |
+| `RUN_ENGINE_WORKER_IMMEDIATE_POLL_INTERVAL`      | No       | 100                                            | Run engine worker immediate poll interval (ms).                                                                                                                                                                                     |
+| `RUN_ENGINE_WORKER_SHUTDOWN_TIMEOUT_MS`          | No       | 60000 (1m)                                     | Run engine worker shutdown timeout (ms).                                                                                                                                                                                            |
+| `RUN_ENGINE_RATE_LIMIT_REFILL_INTERVAL`          | No       | 10s                                            | Run engine rate limit refill interval.                                                                                                                                                                                              |
+| `RUN_ENGINE_RATE_LIMIT_MAX`                      | No       | 1200                                           | Run engine rate limit max.                                                                                                                                                                                                          |
+| `RUN_ENGINE_RATE_LIMIT_REFILL_RATE`              | No       | 400                                            | Run engine rate limit refill rate.                                                                                                                                                                                                  |
+| `RUN_ENGINE_RATE_LIMIT_REQUEST_LOGS_ENABLED`     | No       | 0                                              | Run engine rate limit request logs.                                                                                                                                                                                                 |
+| `RUN_ENGINE_RATE_LIMIT_REJECTION_LOGS_ENABLED`   | No       | 1                                              | Run engine rate limit rejection logs.                                                                                                                                                                                               |
+| `RUN_ENGINE_RATE_LIMIT_LIMITER_LOGS_ENABLED`     | No       | 0                                              | Run engine rate limit limiter logs.                                                                                                                                                                                                 |
+| `RUN_ENGINE_DEFAULT_MAX_TTL`                     | No       | —                                              | Maximum TTL for all runs (e.g. "14d"). Runs without a TTL use this as default; runs with a larger TTL are clamped.                                                                                                                  |
+| `MAXIMUM_DEV_QUEUE_SIZE`                         | No       | —                                              | Maximum queued runs per queue in development environments.                                                                                                                                                                          |
+| `MAXIMUM_DEPLOYED_QUEUE_SIZE`                    | No       | —                                              | Maximum queued runs per queue in deployed (staging/prod) environments.                                                                                                                                                              |
+| **Misc**                                         |          |                                                |                                                                                                                                                                                                                                     |
+| `TRIGGER_TELEMETRY_DISABLED`                     | No       | —                                              | Disable telemetry.                                                                                                                                                                                                                  |
+| `NODE_MAX_OLD_SPACE_SIZE`                        | No       | 8192                                           | Maximum memory allocation for Node.js heap in MiB (e.g. "4096" for 4GB).                                                                                                                                                            |
+| `OPENAI_API_KEY`                                 | No       | —                                              | OpenAI API key.                                                                                                                                                                                                                     |
+| `MACHINE_PRESETS_OVERRIDE_PATH`                  | No       | —                                              | Path to machine presets override file. See [machine overrides](/docs/self-hosting/overview#machine-overrides).                                                                                                                           |
+| `APP_ENV`                                        | No       | `NODE_ENV`                                     | App environment. Used for things like the title tag.                                                                                                                                                                                |
+| `ADMIN_EMAILS`                                   | No       | —                                              | Regex of user emails to automatically promote to admin on signup. Does not apply to existing users.                                                                                                                                 |
+| `EVENT_LOOP_MONITOR_ENABLED`                     | No       | 1                                              | Node.js event loop lag monitor.                                                                                                                                                                                                     |
 
 ## Multi-Provider Object Storage
 

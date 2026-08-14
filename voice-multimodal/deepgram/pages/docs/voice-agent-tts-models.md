@@ -366,7 +366,8 @@ Fallback providers do not need to use the same `provider.type`. You can mix prov
       {
         "provider": {
           "type": "deepgram",
-          "model": "aura-2-zeus-en"
+          "version": "v2",
+          "model": "flux-kit-en"
         }
       },
       {

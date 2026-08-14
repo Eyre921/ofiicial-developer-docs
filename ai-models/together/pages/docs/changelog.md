@@ -4,6 +4,31 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 13, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.2`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## Endpoint events in the CLI
+
+  `tg beta endpoints events` lists a [dedicated endpoint's](/docs/dedicated-endpoints/overview) audit and lifecycle events from the terminal: replica scaling, traffic shifts, status changes, and pauses across every deployment under the endpoint.
+
+  See [Monitoring endpoint events](/docs/dedicated-endpoints/monitoring#events) and the [`tg beta endpoints events` CLI command](/reference/cli/endpoints-beta#events).
+
+  ## Fine-tuning limits and tokenized datasets in the CLI
+
+  Two new fine-tuning commands are available:
+
+  * `tg ft model-limits <model>` prints a model's fine-tuning constraints, including sequence-length, batch-size, and LoRA rank limits.
+  * `tg ft download-tokenized-dataset <ft_id>` downloads the tokenized dataset a job trained on, so you can audit exactly what the model saw.
+
+  See the [fine-tuning CLI reference](/reference/cli/finetune).
+</Update>
+
 <Update label="August 12, 2026">
   ## New serverless models
 

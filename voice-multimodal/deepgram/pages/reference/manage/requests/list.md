@@ -78,26 +78,26 @@ A list of requests for a specific project
       "path": "/v1/listen?",
       "api_key_id": "b1e2c3d4-5678-90ab-cdef-1234567890ab",
       "response": {
+        "code": 200,
+        "completed": "2024-01-15T09:48:21.000Z",
+        "deployment": "hosted:us",
         "details": {
-          "usd": 0.0075,
-          "duration": 30,
-          "total_audio": 30,
           "channels": 1,
-          "streams": 1,
-          "tier": "base",
+          "config": {},
+          "duration": 30,
+          "features": [],
           "metadata": {},
+          "method": "sync",
           "models": [
             "1a2b3c4d-5e6f-4a8b-9c0d-1e2f3a4b5c6d"
           ],
-          "method": "sync",
+          "streams": 1,
           "tags": [],
-          "features": [],
-          "config": {}
+          "tier": "base",
+          "total_audio": 30,
+          "usd": 0.0075
         },
-        "token_details": [],
-        "code": 200,
-        "completed": "2024-01-15T09:48:21.000Z",
-        "deployment": "hosted:us"
+        "token_details": []
       },
       "callback": null
     }

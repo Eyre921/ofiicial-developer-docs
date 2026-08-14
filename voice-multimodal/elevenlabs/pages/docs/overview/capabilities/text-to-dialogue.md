@@ -16,7 +16,7 @@ The ElevenLabs [Text to Dialogue](/docs/api-reference/text-to-dialogue/convert) 
 * Creating immersive dialogue for podcasts and other audio content
 * Bring audiobooks to life with expressive narration
 
-Text to Dialogue is not intended for use in real-time applications like conversational agents. Several generations might be required to achieve the desired results. When integrating Text to Dialogue into your application, consider generating several generations and allowing the user to select the best one.
+Several generations might be required to achieve the desired results. When integrating Text to Dialogue into your application, consider generating several generations and allowing the user to select the best one.
 
 Listen to a sample:
 

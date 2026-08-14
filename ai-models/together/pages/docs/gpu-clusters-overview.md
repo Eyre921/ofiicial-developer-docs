@@ -177,7 +177,7 @@ Ready to create your first cluster?
 
 1. [Follow the Quickstart guide](/docs/gpu-clusters-quickstart) for step-by-step instructions
 2. Review the Capacity Options above to choose the right billing mode
-3. Check [Pricing](https://www.together.ai/instant-gpu-clusters) for current rates
+3. [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
 ## Support
 

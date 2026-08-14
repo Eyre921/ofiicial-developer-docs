@@ -530,9 +530,12 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 ### Verification
 
-| Field  | Type   | Description                                                                                                                                                                                      | Example value |
-| :----- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| status | string | The verification status being queried. Valid options are: `verified`, `expired`, `none` <br /> <br /> Returns database entries where the current verification status matches the queried status. | "verified"    |
+| Field            | Type   | Description                                                         | Example value |
+| :--------------- | :----- | :------------------------------------------------------------------ | :------------ |
+| `status`         | string | Returns entries whose verification status matches the value.        | `"verified"`  |
+| `does_not_equal` | string | Returns entries whose verification status does not match the value. | `"expired"`   |
+
+Both fields accept `verified`, `expired`, or `none`.
 
 <CodeGroup>
   ```json Example verification filter condition for getting verified pages theme={null}

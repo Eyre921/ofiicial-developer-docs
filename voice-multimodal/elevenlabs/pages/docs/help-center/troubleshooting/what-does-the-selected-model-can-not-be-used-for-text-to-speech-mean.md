@@ -8,8 +8,8 @@ path: docs/help-center/troubleshooting/what-does-the-selected-model-can-not-be-u
 
 # What does 'The selected model can not be used for text to speech' mean?
 
-This error sometimes occurs when switching between text-to-speech and voice changer (previously speech-to-speech), if the model does not switch correctly.  You might also see the message 'The selected model can not be used for voice conversion'.
+This error sometimes occurs when switching between Text to Speech and Voice Changer (previously Speech to Speech), if the model does not switch correctly. You might also see the message 'The selected model can not be used for voice conversion'.
 
-You should be able to resolve this issue by reselecting the model you want to use.  
+You should be able to resolve this issue by reselecting the model you want to use.
 
 If this does not resolve it, you might need to select a different model, then switch back to the model you want to use.

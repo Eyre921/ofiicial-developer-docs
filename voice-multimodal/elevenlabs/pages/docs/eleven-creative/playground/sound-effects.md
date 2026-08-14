@@ -27,7 +27,7 @@ grass").
 #### Adjust settings
 
 ![Sound effects
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233127Z&X-Amz-Expires=604800&X-Amz-Signature=1a3830ac5839d7640413bf694cab9d0e61c48f8f85ace943a4d6e0ebb08f7064&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T095634Z&X-Amz-Expires=604800&X-Amz-Signature=35daac021980449f1ce400607a30253884a8b49801d6dc2c2731e5a5a444ad04&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 <ul>
   <li>
@@ -62,7 +62,7 @@ a vinyl sample, stem, 88 bpm in F# minor.
 
 ## Explore the library
 
-![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233127Z&X-Amz-Expires=604800&X-Amz-Signature=b5f932bd35619caf119f8c277806f73c38d9b850e5a0326e42c5dbb31e0c4212&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T095634Z&X-Amz-Expires=604800&X-Amz-Signature=99e62bdc65fbf475555ca41465ff766d7b955dd6f522d238e36888d2dd53780b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Browse community-made sound effects in the **Explore** tab.
 
@@ -77,7 +77,7 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       Our sound effects generator allows you to generate any sound imaginable by inputting a prompt.  Create anything from blockbuster sound design for films, to everyday sounds for your video game.
 
-      To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select 'Sound Effects' in the sidebar on the left while logged into your account. 
+      To get started, visit [Sound Effects](https://elevenlabs.io/app/sound-effects) or select **Sound Effects** in the sidebar on the left while logged into your account. 
 
       Enter your prompt in the text box.  There is a maximum length of 450 characters for your prompt.  
 
@@ -97,21 +97,7 @@ For more on prompting and how sound effects work, visit our [overview page](/doc
 
       The cost for generating sound effects varies based on the settings you choose, and whether you are using the website or API platform. The settings affect how many sound effects are produced and the duration of each sound effect.
 
-      <strong>
-        For Website Users:
-      </strong>
-
-      * Each generation produces 4 sound effects.
-      * By default, the AI decides the duration of the sound effect, costing 200 credits per generation.
-      * If you set the duration yourself, the cost is 40 credits per second of sound effect duration, with a maximum duration of 30 seconds.
-
-      <strong>
-        For API Users:
-      </strong>
-
-      * Each generation produces 1 sound effect.
-      * By default, the AI decides the duration of the sound effect, costing 100 credits per generation.
-      * If you set the duration yourself, the cost is 11 credits per second of sound effect duration, with a maximum duration of 30 seconds.
+      For current rates, see [ElevenCreative](https://elevenlabs.io/pricing?price.section=sound_effects#pricing-table) and [ElevenAPI](https://elevenlabs.io/pricing/api).
 
       The cost is not influenced by the text input you use.
     </td>

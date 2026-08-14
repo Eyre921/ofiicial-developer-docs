@@ -97,7 +97,7 @@ python3 server.py
 
 ## Make a test call
 
-You can now start making calls to the phone number your `TwiML Bin` is using. Without any further code modifications, you should hear Deepgram Aura say simply: "Hello, how are you today?"
+You can now start making calls to the phone number your `TwiML Bin` is using. Without any further code modifications, you should hear the agent's Flux TTS voice say simply: "Hello, how are you today?"
 
 ## Code Tour
 
@@ -115,7 +115,7 @@ import ssl
 ```
 
 * We are using `asyncio` and `websockets` to build an asynchronous websocket server.
-* We will use `base64` to handle encoding audio from Aura to pass data to Twilio.
+* We will use `base64` to handle encoding the agent's TTS audio to pass data to Twilio.
 * We will use `json` to deal with parsing text messages from Twilio .
 * We will use `sys` to provides access to some variables and functions used or maintained by the Python interpreter.
 * We will use `ssl`(optional) to create secure encrypted connections between client and server.
@@ -203,7 +203,8 @@ To learn more about supported media inputs and outputs for the Voice Agent [revi
               "speak": {
                   "provider": {
                       "type": "deepgram",
-                      "model": "aura-2-thalia-en"
+                      "version": "v2",
+                      "model": "flux-kit-en"
                   }
               },
               "greeting": "Hello! How can I help you today?"

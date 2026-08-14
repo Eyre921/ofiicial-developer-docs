@@ -185,7 +185,7 @@ session.updatePrompt("You are now a customer support agent.");
 
 ```javascript
 session.updateSpeak({
-  provider: { type: "deepgram", model: "aura-2-orion-en" },
+  provider: { type: "deepgram", version: "v2", model: "flux-alexis-en" },
 });
 ```
 

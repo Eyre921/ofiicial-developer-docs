@@ -11,3 +11,11 @@ path: docs/help-center/product/mobile-apps
 #### [ElevenLabs for iOS and Android](/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android)
 
 Use ElevenLabs on your mobile device with our iOS and Android apps
+
+#### [ElevenReader](/docs/help-center/product/mobile-apps/eleven-reader)
+
+Listen to articles, PDFs, and ePubs with AI narration
+
+#### [ElevenMusic](/docs/help-center/product/mobile-apps/eleven-music)
+
+Discover, create, and remix music in the ElevenMusic app

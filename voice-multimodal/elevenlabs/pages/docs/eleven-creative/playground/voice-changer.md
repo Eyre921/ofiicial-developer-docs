@@ -24,7 +24,7 @@ Voice changer can be used to complement Text-to-Speech (TTS) by fixing pronuncia
 
 ## Guide
 
-![Voice changer demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55/assets/images/product-guides/voice-changer/voice-changer-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223457Z&X-Amz-Expires=604800&X-Amz-Signature=d99c0881c9e2c86f549a3f5e34fb133c9e0f7ec6ef8941db3a13852e4f26b651&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice changer demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55/assets/images/product-guides/voice-changer/voice-changer-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100016Z&X-Amz-Expires=604800&X-Amz-Signature=9ad002cd5147554a40ce54554935e22d6a21cfdc05e711cd870285254c58d562&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Audio can be uploaded either directly with an audio file, or spoken live through a microphone. The audio file must be less than **50mb in size**, and either the audio file or your live recording cannot exceed **5 minutes in length**.
 
@@ -44,7 +44,7 @@ You will then see the audio file of this recording, which you can then playback 
 
 ## Settings
 
-![Voice changer settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3/assets/images/product-guides/voice-changer/voice-changer-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223457Z&X-Amz-Expires=604800&X-Amz-Signature=7cb1cfe695f45dca7079568936f0582e59f307e94cd97022f8771cd294648b56&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice changer settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3/assets/images/product-guides/voice-changer/voice-changer-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100016Z&X-Amz-Expires=604800&X-Amz-Signature=328b6c3c98e1272c3b45445d63fe2eef3f5fc2f2d5b8eab890273cae7d2a3adf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Learn more about the different voice settings [here](/docs/eleven-creative/playground/text-to-speech#settings).
 
@@ -82,7 +82,7 @@ Voice changer excels at **preserving accents** and **natural speech cadences** a
 
       The possibilities are endless. It can be used to complement Text to Speech by fixing pronunciations or infusing that special performance you've been wanting. It can also be used to help extend the range of voice actors by giving them access to a wide selection of different voices and tones. We do offer an end-to-end solution for dubbing, but if you still want to dub in the traditional way, you can take advantage of voice changer to help get the right voice for your project.
 
-      Voice Changer costs 1,000 credits per minute of audio, and the maximum length of audio that can be converted is 5 minutes.
+      The maximum length of audio that can be converted is 5 minutes. For current pricing, see [ElevenCreative](https://elevenlabs.io/pricing?price.section=speech_to_speech#pricing-table) and [ElevenAPI](https://elevenlabs.io/pricing/api).
 
       For more information, please see our [guide.](/docs/product-guides/playground/voice-changer)
     </td>
@@ -92,7 +92,9 @@ Voice changer excels at **preserving accents** and **natural speech cadences** a
     <td>
       #### How much does Voice Changer cost?
 
-      Voice Changer, previously known as Speech to Speech, costs 1,000 credits per minute of audio.
+      Voice Changer, previously known as Speech to Speech, pricing depends on whether you generate via the website or the API.
+
+      For current rates, see [ElevenCreative](https://elevenlabs.io/pricing?price.section=speech_to_speech#pricing-table) and [ElevenAPI](https://elevenlabs.io/pricing/api).
     </td>
   </tr>
 
@@ -100,7 +102,7 @@ Voice changer excels at **preserving accents** and **natural speech cadences** a
     <td>
       #### What is the max input length when using Voice Changer?
 
-      The current maximum input length when using voice changer, previously known as speech-to-speech, is 300 seconds or 5 minutes of audio. This is the same across all subscriptions.
+      The current maximum input length when using Voice Changer, previously known as Speech to Speech, is 300 seconds or 5 minutes of audio. This is the same across all subscriptions.
     </td>
   </tr>
 

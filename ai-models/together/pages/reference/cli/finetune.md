@@ -201,6 +201,21 @@ Pass `--json` to print the full API response instead of the table.
 | `--train-on-inputs/--no-train-on-inputs` | Whether prompt or user-message tokens contribute to training loss. When omitted, the API default applies.  |
 | `--training-method [sft]`                | Fine-tuning method to preview. Only supervised fine-tuning (`sft`) is currently supported. Default: `sft`. |
 
+## Model limits
+
+To check a model's fine-tuning limits before you configure a job:
+
+```bash theme={null}
+tg fine-tuning model-limits [MODEL]
+
+# Shorthand
+tg ft model-limits -M [MODEL]
+```
+
+The command prints the model's fine-tuning constraints, including learning-rate bounds, epoch and checkpoint maximums, the maximum sequence lengths for SFT and DPO, and the per-method limits for LoRA and full training (batch-size bounds, maximum LoRA rank, and available LoRA target modules). Models that only support LoRA report `Supports Full Training: False`. Pass `--json` for the raw response.
+
+See [Supported models](/docs/fine-tuning/supported-models) for the list of models available for fine-tuning.
+
 ## List checkpoints
 
 To list saved checkpoints of a job:
@@ -251,6 +266,23 @@ The command downloads Zstandard-compressed (`.zst`) weights. To extract them, ru
 | `--output-dir/-o [Path]`                              | Output directory.                                                                                                                                                         |
 | `--checkpoint-step/-s [integer]`                      | Download a specific checkpoint's weights. Defaults to the latest checkpoint.                                                                                              |
 | `--checkpoint-type/-c [merged \| adapter \| default]` | Checkpoint type. `merged` and `adapter` apply to LoRA jobs only. `default` resolves to `merged` for LoRA jobs and to the full model for non-LoRA jobs. Default: `merged`. |
+
+## Download tokenized dataset
+
+To download the tokenized dataset a job trained on:
+
+```bash theme={null}
+tg fine-tuning download-tokenized-dataset [FT_ID] \
+  --output-dir ./datasets
+```
+
+The command saves a Zstandard-compressed archive named `[FT_ID]_tokenized_datasets.tar.zst` to the output directory (default: the current working directory). To extract it, run `tar -xf filename`. Use it to audit exactly what the model was trained on, for example to inspect the tokenization and loss masking of a finished job.
+
+### Parameters
+
+| Flag                     | Description                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. Default: the current working directory. |
 
 ## Delete
 

@@ -66,18 +66,18 @@ A model object that can be either STT or TTS
 
 ```json
 {
-  "name": "general",
-  "canonical_name": "enhanced-general",
   "architecture": "polaris",
+  "batch": true,
+  "canonical_name": "enhanced-general",
+  "formatted_output": false,
   "languages": [
     "en",
     "en-us"
   ],
-  "version": "2022-05-18.1",
-  "uuid": "c7226e9e-ae1c-4057-ae2a-a71a6b0dc588",
-  "batch": true,
+  "name": "general",
   "streaming": true,
-  "formatted_output": false
+  "uuid": "c7226e9e-ae1c-4057-ae2a-a71a6b0dc588",
+  "version": "2022-05-18.1"
 }
 ```
 

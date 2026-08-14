@@ -88,7 +88,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agents \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": \"You are a helpful customer service agent.\"}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"aura-2-thalia-en\"}}}",
+    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": \"You are a helpful customer service agent.\"}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"version\": \"v2\", \"model\": \"flux-kit-en\"}}}",
     "metadata": {
       "name": "customer-service-agent",
       "environment": "production"
@@ -321,7 +321,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agents \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": DG_SYSTEM_PROMPT}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"aura-2-thalia-en\"}}, \"greeting\": \"Hello! How can I help you today?\"}",
+    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": DG_SYSTEM_PROMPT}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"version\": \"v2\", \"model\": \"flux-kit-en\"}}, \"greeting\": \"Hello! How can I help you today?\"}",
     "metadata": {
       "name": "acme-support-agent"
     }

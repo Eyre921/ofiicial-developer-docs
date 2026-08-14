@@ -47,6 +47,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
 | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
@@ -83,3 +84,7 @@ For the list of models that support vision-language fine-tuning on image and tex
 ## LoRA target modules
 
 See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full#default-target-modules) for the default target modules per model. Pass `lora_trainable_modules="all-linear"` to train every linear layer.
+
+## Model limits from the CLI
+
+To get more detailed fine-tuning constraints for a specific model, including learning-rate bounds, batch-size limits, and the LoRA rank and target modules, run [`tg fine-tuning model-limits <model>`](/reference/cli/finetune#model-limits).

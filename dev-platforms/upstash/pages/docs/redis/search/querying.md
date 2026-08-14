@@ -6,6 +6,8 @@ path: docs/redis/search/querying
 
 Queries are JSON strings that describe which documents to return. If the index doesn't exist, queries return `null`.
 
+Use the [`SEARCH.QUERY`](/docs/redis/commands/search/search-query) command to run a query.
+
 We recommend searching by field values directly because we automatically provide intelligent matching behavior out of the box:
 
 <Tabs>
@@ -109,7 +111,7 @@ When `select` / `NOCONTENT` is used, the response shape changes — see [Control
 
 If no documents match, an empty array is returned. If the index doesn't exist, `null` is returned.
 
-For a detailed breakdown of the raw response structure, see the [Command Reference](/docs/redis/search/command-reference#searchquery).
+For exact syntax and a detailed breakdown of the raw response structure, see the [`SEARCH.QUERY` command reference](/docs/redis/commands/search/search-query).
 
 ***
 

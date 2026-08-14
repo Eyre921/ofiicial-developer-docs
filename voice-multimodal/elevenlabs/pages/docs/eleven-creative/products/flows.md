@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/flows
 
 # ElevenCreative Flows
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/476f79826c3bb57f85d46b402ec330dbb8a992fafa9c0a18bc81b9418898fb34/assets/images/product-guides/flows/flows-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=597817c0855babc77032092206ea5c8597d9f8f70162374a90ddfcc59bea383b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Flows canvas overview" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/476f79826c3bb57f85d46b402ec330dbb8a992fafa9c0a18bc81b9418898fb34/assets/images/product-guides/flows/flows-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=4688b14b14ef72bef327cf7b83eae4cd84085b67e06dff7932652e4311c7fc76&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Flows canvas overview" />
 
 ## Overview
 
@@ -50,25 +50,25 @@ Select **+ New Flow** from the dashboard to open a blank canvas.
 
 {' '}
 
-![Create a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c55e68567471280f6d4e713b2f46a23b0479ef64e4a48144e3876e0330fb3532/assets/images/product-guides/flows/flows-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=43fa594429a51faf8aed98cecd8ac08e8ab7944f08f429781de25fd02e44ea33&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c55e68567471280f6d4e713b2f46a23b0479ef64e4a48144e3876e0330fb3532/assets/images/product-guides/flows/flows-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=80bb12034e7d36c7d07d8440afad24f7f1423feb22a1236ed5b81d45e9cf83a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Add nodes
 
 Right-click anywhere on the canvas or use the toolbar at the bottom to add a node. Nodes represent specific models or utility tools.
 
-![Add nodes](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3db741756fcf67e9969c2503dbae5bf00fc05103e1c22a2fe3334d962e0654b9/assets/images/product-guides/flows/flows-add-node.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=001e580ae14f5b6cb4bd3efa3ee6640dc6ac585dc4455c924a3b48c1c3634231&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add nodes](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3db741756fcf67e9969c2503dbae5bf00fc05103e1c22a2fe3334d962e0654b9/assets/images/product-guides/flows/flows-add-node.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=6f016259920617bd2430628f95306619a71109491e48aaed3c5beca6ef632f8c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Connect your workflow
 
 Click and drag from an output port of one node to the input port of another to chain them together. For example, connect a generated image to a video generation node.
 
-![Connect workflow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ea59847d2a725e920b5a03ecee5cc003f51d7f701c10d2b83c90679a469df685/assets/images/product-guides/flows/flows-connect-workflow.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=4db913ef2d26c8de5508a58162d504bf3d566281baa642196d1affc5ea55318b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Connect workflow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ea59847d2a725e920b5a03ecee5cc003f51d7f701c10d2b83c90679a469df685/assets/images/product-guides/flows/flows-connect-workflow.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=c323d877336938d18a5ed56062d48f232e318915357a2b831d46e180f568109c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Execute and iterate
 
 Click the **Run** button on individual nodes to generate content. Re-run a single node to test variations without affecting the rest of the chain.
 
-![Generate and iterate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5055f58da10a7c0ec9f79fb826ed9fd8f5f329e4d6169b58b47608bbdc362eb/assets/images/product-guides/flows/flows-run.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=57333fc0d58fb783223b6d7f83004ded02bf8ba5f2b313994f7be684c66ea72e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Generate and iterate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5055f58da10a7c0ec9f79fb826ed9fd8f5f329e4d6169b58b47608bbdc362eb/assets/images/product-guides/flows/flows-run.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=ffde7974497a1d0918f7f3eca8d98c8b662a170570d4b367c8efb6147b8eb113&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Export or move to ElevenCreative Studio
 
@@ -101,14 +101,14 @@ Select from preset shortcuts at the center of the canvas to load pre-configured 
 
 Flows Agent is a conversational AI co-editor built directly into ElevenCreative Flows. To begin working with the agent, enter a description of what you want to create in the agent chat box. You have the option to upload existing files or start from scratch. The agent may ask clarifying questions, then builds your flow by placing nodes directly onto the canvas. Continue the conversation to keep iterating on your flow by providing feedback and requesting changes.
 
-![Flows Agent creating a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ce96a9170d9367e98816346dffbf429eaec694bdffa0eb0134b56b5fee5976b8/assets/images/product-guides/flows/flows-agent-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=319dae71f4651f2bea149f1962d09291a7b01bfe1b7f85247e3050168adc0e1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flows Agent creating a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ce96a9170d9367e98816346dffbf429eaec694bdffa0eb0134b56b5fee5976b8/assets/images/product-guides/flows/flows-agent-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=a079d4fa3b920ef5ed9876ad6a9a8adb02c1cac28e8df327762917d6b3256730&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Using the agent with existing flows
 
 You can also work with Flows Agent on existing flows. Just enter a description of what you want to do in the agent chat box, and the agent will analyse your existing nodes and carry out your instructions.
 
 ![Flows Agent working with existing
-flows](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e76725a28de83ec701d984fb9620e8fddd22cdbded7858d0f31edd2f0f8d9d8/assets/images/product-guides/flows/flows-agent-existing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=419122ec9473ce3f551323532a4ed43e415ed0a68b86b6a8a717a8418054fabb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+flows](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e76725a28de83ec701d984fb9620e8fddd22cdbded7858d0f31edd2f0f8d9d8/assets/images/product-guides/flows/flows-agent-existing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=e96e05c10a9c35bf68d95ce1a028b687414d39504189c011b10c70bf46b00d49&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Agent permissions
 
@@ -123,7 +123,7 @@ You can set permissions for the agent, with the following options:
 Flows Agent does not replace manual editing. You can take over at any point to make adjustments, then hand control back to the agent. Manual and agent-assisted editing work side by side throughout your workflow.
 
 ![Completed flow with agent
-conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a394d1cf4a62de6640bb7127063ddb92c733afc234123f9e46b3c7c99797240/assets/images/product-guides/flows/flows-agent-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=74036e6617c48f5cafe58d5b7321c43d69036ac3b7b6642eed080b63111d2a49&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a394d1cf4a62de6640bb7127063ddb92c733afc234123f9e46b3c7c99797240/assets/images/product-guides/flows/flows-agent-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=e39d9982e56ee156714cacea086d8bc2466e031f065be29f02f799c257ae720b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Pricing
 
@@ -171,7 +171,7 @@ When you drag a connection from an output port, ElevenCreative Flows automatical
 
 Unlike linear editors, ElevenCreative Flows allows for non-destructive iteration.
 
-![Flow execution](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee84dc60f09c24b1ce7b170935640aedf5f158c153fb8a5e1947cf4a1ec0ade/assets/images/product-guides/flows/flows-run-from-here.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=3aa9b78f1274a95ac8d28304e97b039e82896ca16c2923cab44fefe67a6d4b2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flow execution](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee84dc60f09c24b1ce7b170935640aedf5f158c153fb8a5e1947cf4a1ec0ade/assets/images/product-guides/flows/flows-run-from-here.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=a2496c8887f05fbec16b440aa4d2e86f84f9fdfd7eeca69d3112da633adca217&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Partial generation:** If you want to change the voiceover but keep the generated video, you only need to re-run the [Text to Speech](/docs/overview/capabilities/text-to-speech) node. Only the subsequent nodes in that specific path will need to be updated.
 
@@ -193,7 +193,7 @@ Programmatic execution via API for mass creative production is planned for a fut
 
 You can create a template from an existing flow, allowing you to reuse the same flow with different inputs each time. Templates can be kept for personal use or shared with others.
 
-![Creating a template from a flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c42cf66b656de0e6764fa615b20986a40cee9f329416b2a80c50a76718c8f795/assets/images/product-guides/flows/flows-create-template.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223622Z&X-Amz-Expires=604800&X-Amz-Signature=a8ffc5e4bf7a825afb4a7aeb5d52fad5ce9bd2b97a0f571037fb1937b3cb08eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Creating a template from a flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c42cf66b656de0e6764fa615b20986a40cee9f329416b2a80c50a76718c8f795/assets/images/product-guides/flows/flows-create-template.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=5ac225a10fb42ae36379a225c6a0c0a29986eb7992a27ff6f371bdde7346ea1c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### To create a template
 
@@ -225,25 +225,23 @@ For more information on using and managing templates, see the [Templates documen
 <tbody>
   <tr>
     <td>
-      #### What models are available in ElevenCreative Flows?
+      #### What models are available in Flows?
 
-      ElevenCreative Flows supports over 50 image and video models alongside ElevenLabs' [text
-      to speech](/docs/overview/capabilities/text-to-speech),
-      [music](/docs/overview/capabilities/music), and [sound
-      effects](/docs/overview/capabilities/sound-effects) models. See our [Images & Video
-      guide](/docs/eleven-creative/playground/image-video#models) for a complete list.
+      Flows supports over 50 image and video models alongside ElevenLabs' [Text to Speech](/docs/overview/capabilities/text-to-speech), [Music](/docs/overview/capabilities/music), and [Sound Effects](/docs/overview/capabilities/sound-effects) models.
+
+      See the [Images & Video guide](/docs/eleven-creative/playground/image-video#models) for a complete list of supported models.
     </td>
   </tr>
 
   <tr>
     <td>
-      #### How does ElevenCreative Flows differ from ElevenCreative Studio?
+      #### How does Flows differ from Studio?
 
-      [ElevenCreative Studio](/docs/eleven-creative/products/studio) uses a linear timeline for
-      precise frame-by-frame editing with tracks for video, audio, music, and captions.
-      ElevenCreative Flows uses a node-based canvas for building multi-step generative
-      pipelines. Use ElevenCreative Flows to orchestrate complex generation chains, then export
-      to ElevenCreative Studio for final editing.
+      [Studio](/docs/eleven-creative/products/studio) uses a linear timeline for precise frame-by-frame editing with tracks for video, audio, music, and captions.
+
+      Flows uses a node-based canvas for building multi-step generative pipelines. Use Flows to orchestrate complex generation chains, then export to Studio for final editing.
+
+      For more details, see the [Flows documentation](/docs/eleven-creative/products/flows).
     </td>
   </tr>
 
@@ -251,11 +249,9 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### Can I save and reuse flows?
 
-      Yes. Each flow is automatically saved as a project. You can reload a flow, modify prompts
-      or settings, and re-execute to create variations without rebuilding the entire pipeline.
-      You can also create a template from any flow, allowing you to reuse the same flow
-      structure with different inputs each time. See [Creating a template](#creating-a-template)
-      for more details.
+      Yes. In Flows, each flow is automatically saved as a project. You can reload a flow, modify prompts or settings, and re-execute to create variations without rebuilding the entire pipeline.
+
+      You can also create a template from any flow, allowing you to reuse the same flow structure with different inputs each time. See [Creating a template](/docs/eleven-creative/products/flows#creating-a-template) and the [Templates documentation](/docs/eleven-creative/products/templates) for more details.
     </td>
   </tr>
 
@@ -263,20 +259,17 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### Do I need to regenerate everything if I change one step?
 
-      No. ElevenCreative Flows supports non-destructive iteration. You can re-run a single node,
-      and only downstream nodes connected to that path will need to be updated. Unconnected
-      branches remain unchanged.
+      No. Flows supports non-destructive iteration. You can re-run a single node, and only downstream nodes connected to that path will need to be updated. Unconnected branches remain unchanged.
     </td>
   </tr>
 
   <tr>
     <td>
-      #### How are credits charged in ElevenCreative Flows?
+      #### How are credits charged in Flows?
 
-      Each node generation costs credits based on the model and settings used, identical to
-      standalone tool pricing. Re-running a node triggers a new generation and a new credit
-      charge. The number of credits you will be charged is displayed when you hover over the
-      **Run** button.
+      In Flows, each node generation costs credits based on the model and settings used, identical to standalone tool pricing. Re-running a node triggers a new generation and a new credit charge.
+
+      The number of credits you will be charged is displayed when you hover over the **Run** button.
     </td>
   </tr>
 
@@ -284,30 +277,25 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### Can I export flows to other formats?
 
-      You can export individual assets or the final composition as downloadable files. To
-      continue working with your outputs in [ElevenCreative
-      Studio](/docs/eleven-creative/products/studio), save them to your Files library and import
-      them from there.
+      In Flows, you can export individual assets or the final composition as downloadable files.
+
+      To continue working with your outputs in [Studio](/docs/eleven-creative/products/studio), save them to your Files library and import them from there.
     </td>
   </tr>
 
   <tr>
     <td>
-      #### Is there an API for ElevenCreative Flows?
+      #### Is there an API for Flows?
 
-      Programmatic execution via API is planned for a future release. This will enable mass
-      creative production use cases, such as connecting a CMS to a flow for automated content
-      generation.
+      Programmatic execution of Flows via API is planned for a future release. This will enable mass creative production use cases, such as connecting a CMS to a flow for automated content generation.
     </td>
   </tr>
 
   <tr>
     <td>
-      #### What happens if a node fails?
+      #### What happens if a node fails in Flows?
 
-      If a node fails during execution, only that node is affected and you are not charged for
-      that execution. You can re-run the failed node without affecting other branches of your
-      flow.
+      If a node fails during execution in Flows, only that node is affected and you are not charged for that execution. You can re-run the failed node without affecting other branches of your flow.
     </td>
   </tr>
 
@@ -315,9 +303,7 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### Can multiple people edit the same flow at the same time?
 
-      Yes. When a flow is shared with your workspace, any team member can open it and start
-      working. Changes sync instantly. You can see who else is in the flow and work on different
-      parts of the pipeline simultaneously.
+      Yes. When a flow is shared with your workspace in Flows, any team member can open it and start working. Changes sync instantly. You can see who else is in the flow and work on different parts of the pipeline simultaneously.
     </td>
   </tr>
 
@@ -325,17 +311,15 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### How do I share a flow with my team?
 
-      Share a flow with anyone in your workspace. Shared flows appear in each collaborator's
-      flows list automatically — no separate link required.
+      In Flows, share a flow with anyone in your workspace. Shared flows appear in each collaborator's flows list automatically — no separate link required.
     </td>
   </tr>
 
   <tr>
     <td>
-      #### Can Basic Seat members collaborate in ElevenCreative Flows?
+      #### Can Basic Seat members collaborate in Flows?
 
-      Yes. Basic Seat members can open shared flows, watch pipelines run, review outputs, and
-      leave comments. They do not need a full workspace seat.
+      Yes. [Basic Seat](/docs/help-center/account/workspaces/what-are-basic-seats) members can open shared flows, watch pipelines run, review outputs, and leave comments. They do not need a full workspace seat.
     </td>
   </tr>
 
@@ -343,17 +327,19 @@ For more information on using and managing templates, see the [Templates documen
     <td>
       #### Can people outside my workspace see my flow?
 
-      On public flows, collaborators outside your workspace can view and follow along. They
-      appear as anonymous participants.
+      Yes, if you make the flow public.
+
+      When a flow is public in Flows, people outside your workspace can view it and follow along. They appear as anonymous participants.
+
+      If the flow is not public, only members of your workspace who have access can see it. See [How do I share a flow with my team?](/docs/help-center/product/flows-image-video/flows/how-do-i-share-a-flow-with-my-team).
     </td>
   </tr>
 
   <tr>
     <td>
-      #### Does real-time collaboration cost additional credits?
+      #### Does real-time collaboration cost additional credits in Flows?
 
-      No. Collaboration itself does not consume credits. Credits are consumed when nodes are
-      executed, as normal.
+      No. Collaboration itself does not consume credits in Flows. Credits are consumed when nodes are executed, as normal.
     </td>
   </tr>
 </tbody>

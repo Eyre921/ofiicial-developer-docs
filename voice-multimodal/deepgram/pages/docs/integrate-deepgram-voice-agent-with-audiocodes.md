@@ -20,7 +20,7 @@ This guide will focus on LiveHub, as it is accessible to all users. However, if 
 
 ## Before you Begin
 
-Before you start, you'll need to follow the steps in the [Make Your First API Request](/docs/make-your-first-api-request) guide to obtain a Deepgram API key.
+Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key.
 
 You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
 
@@ -70,7 +70,8 @@ bridge = DeepgramBridge(BridgeConfig(
             "speak": {
                 "provider": {
                     "type": "deepgram", 
-                    "model": "aura-2-helena-en"
+                    "version": "v2",
+                    "model": "flux-kit-en"
                     }
                 },
             "greeting": "Hi! How can I help today?",

@@ -10,19 +10,21 @@ Build marketing assets for Capital.
 
 > Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
 
-This guide helps you create marketing assets for Capital that educate your users and promote your Capital program. Learn how to co-brand your product with Stripe and develop content that adheres to [regulatory requirements](https://docs.stripe.com/capital/regulatory-compliance.md) applicable to Capital.
+This guide helps you create marketing assets for Capital that educate your connected accounts and promote your Capital program. Learn how to co-brand your product with Stripe and develop content that adheres to [regulatory requirements](https://docs.stripe.com/capital/regulatory-compliance.md) applicable to Capital.
 
 Financing is a highly regulated space in every market where Capital operates. All new or updated customer-facing material referencing Stripe Capital must be reviewed and approved by Stripe and its financial partners before publication. This requirement applies throughout the entire lifespan of your Capital program.
 
 If you plan to use Capital marketing material in multiple regions, you must obtain approval to use it in each region.
 
+> You must submit any customer-facing materials related to Capital to Stripe for review through the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835) before you publish them.
+
 ## Marketing requirements
 
 Depending on your Capital integration type, additional platform marketing might be optional.
 
-- **No-code integration**: For no-code integrations, Stripe sends offer emails on your behalf. While this isn’t required, we recommend that you [send an announcement email](https://docs.stripe.com/capital/marketing.md#announcement-email) and develop a marketing landing page using our [messaging guidelines](https://docs.stripe.com/capital/marketing.md#messaging).
-- **Embedded components:** You can use embedded components to notify users of their offers within your product. You can either use Stripe’s no-code promotional offer emails or send your own offer notifications. You must review and comply with the [requirements for sending offer notifications](https://docs.stripe.com/capital/marketing.md#financing-notifications).
-- **API integration**: For API integrations where you’re responsible for notifying users about their Capital offers, you must review and comply with the section on [sending offer notifications](https://docs.stripe.com/capital/marketing.md#financing-notifications) to build an email campaign or in-Dashboard notifications with the [Capital API](https://docs.stripe.com/capital/api-integration.md#retrieve-financing-offers).
+- **No-code integration**: For no-code integrations, Stripe sends offer emails on your behalf. While this isn’t required, we recommend that you [send an announcement email](https://docs.stripe.com/capital/marketing.md#announcement-email) and develop a Capital landing page using our [messaging guidelines](https://docs.stripe.com/capital/marketing.md#messaging).
+- **Embedded components:** You can use embedded components to notify connected accounts of their offers within your product. You can either use Stripe’s no-code promotional offer emails or send your own offer notifications. You must review and comply with the [requirements for sending offer notifications](https://docs.stripe.com/capital/marketing.md#financing-notifications).
+- **API integration**: For API integrations where you’re responsible for notifying connected accounts about their Capital offers, you must review and comply with the section on [sending offer notifications](https://docs.stripe.com/capital/marketing.md#financing-notifications) to build an email campaign or in-app notifications with the [Capital API](https://docs.stripe.com/capital/api-integration.md#retrieve-financing-offers).
 
 > You must submit any customer-facing materials related to Capital to Stripe for review prior to being published using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
 
@@ -41,7 +43,7 @@ Items that must be submitted to Stripe for approval include:
 
 This approval is not a one-time requirement. You must resubmit any update, modification, or addition to marketing materials—no matter how minor—for compliance review before using them.
 
-Also, approval in one market doesn’t automatically extend to other markets. For example, materials approved for the US require a separate review before use in France, Germany, or Australia.
+Also, approval in one market doesn’t automatically extend to other markets. For example, materials approved for the US require a separate review before use in France, Germany, or Australia due to different regulatory requirements.
 
 You must submit any marketing materials that you create or modify to Stripe’s compliance team using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835) prior to use or publication. We respond by email with edits or an approval. The standard turnaround time is 5-7 business days.
 
@@ -53,15 +55,16 @@ When submitting your materials:
 
 - Read and adhere to the guidelines on this page.
 - Provide your platform name.
+- Include the countries where you plan to use the marketing materials.
 - Provide full screenshots or mockups that include headers and footers in a legible, high-resolution format.
-- Submit materials as an editable Google Doc where possible; PDF is also acceptable.
+- Submit materials as an editable Google or Microsoft Word doc.
 - Describe the type of marketing material you’re submitting (for example, landing pages, web banners, emails, search engine marketing) and whether it includes images, text, or both. Include associated URLs if submitting web pages.
 - Describe where all CTA links direct (for example, a landing page URL or login screen).
 - For email marketing, include a sample of your standard email footer showing an opt-out link and physical address.
 
 ## Sending offer notifications 
 
-As part of your Capital marketing program, you can set up offer notifications so your connected accounts know when they’re eligible for financing. You must notify all eligible connected accounts about available offers.
+As part of your Capital marketing program, set up offer notifications so connected accounts know when they’re eligible for financing. You must notify all eligible connected accounts about available offers. You can meet this requirement by sending either a Stripe-sent or platform-sent offer email that informs the connected account about the offer, or by using [Capital embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) to present the offer in your Dashboard.
 
 With the no-code option, Stripe sends co-branded offer emails on your behalf. If you’re using the API integration, you must build and deploy your own email campaign.
 
@@ -69,7 +72,7 @@ To get started select your integration type below.
 
 #### No-Code
 
-For customers in the US and Australia, Stripe Capital’s no-code email service sends a series of emails to notify them of their offers and keep them informed about payment progress. All emails are co-branded with your logo and brand colors.
+For connected accounts in the US and Australia, Stripe Capital’s no-code email service sends a series of emails to notify them of their offers and keep them informed about payment progress. All emails are co-branded with your logo and brand colors. While the offer details are dynamic, the majority of the text in the following emails is static and unable to be altered on the platform level.
 
 The no-code email service sends the following emails:
 
@@ -89,23 +92,31 @@ All emails are co-branded with your logo and brand colors. To see the end-to-end
 
 ### Send your own offer emails 
 
-If you want to send your own financing offer emails instead of using our no-code email services, you can do so with the [Capital API](https://docs.stripe.com/capital/api-integration.md). You must notify all eligible connected accounts of their offer.
+If you want to send your own financing offer emails instead of using our no-code email service, you can do so with the [Capital API](https://docs.stripe.com/capital/api-integration.md). You must notify all eligible connected accounts about available offers. You can meet this requirement by sending either a Stripe-sent or platform-sent offer email that informs the connected account about the offer, or by using [Capital embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) to show the offer in your Dashboard.
 
-Below are email program recommendations and sample email templates. Before sending any emails, you must submit them for review using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
+Below are email program recommendations and sample email templates. Before sending any emails, you must submit them for review and approval by using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
 
 ### Request Capital Marketing Templates
 
 Stripe can provide Capital Marketing template materials to help you structure your offer notification campaign. Contact your Stripe account team or Stripe Support to request templates.
 
+Templates include:
+
+- Landing page
+- Offer email
+- Launch email
+- Frequently asked questions
+- Support responses
+
 Stripe-provided templates are not pre-approved materials. If you use them, you must still submit all materials for approval through the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835), even if you use unmodified templates. Standard turnaround is 5–7 business days.
 
 ### Email cadence guidance
 
-We recommend a drip campaign for first offers, with re-engagement every 30 days for eligible users who haven’t accepted. A typical program includes:
+We recommend a drip campaign for first offers, with re-engagement every 30 days for eligible connected accounts who haven’t accepted. A typical program includes:
 
 1. **First offer email**: Sent as soon as a customer becomes eligible.
 2. **Reminder emails**: Sent 7 and 14 days after the first offer, if not accepted. Configure these to stop after a customer accepts.
-3. **Refill offer email**: Sent when a user is [eligible for a refill](https://docs.stripe.com/capital/refills.md) (offered before current financing is completely paid, if a user is making good progress on paying existing financing).
+3. **Refill offer email**: Sent when a connected account is [eligible for a refill](https://docs.stripe.com/capital/refills.md) (offered before current financing is completely paid, if a connected account is making good progress on paying existing financing).
 4. **Repeat offer email**: Sent after a customer fully repays and becomes eligible again.
 5. **Re-engagement email**: Sent every 30 days for customers who remain eligible but haven’t accepted.
 
@@ -117,13 +128,13 @@ When delivering these emails, you must comply with:
 
 ### In-product marketing
 
-In-product upsells, such as banners or dialogs, help deliver targeted marketing messages directly to your customers. You can also use Stripe’s [Capital promotional component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md). Use the Capital API to make sure upsells only appear for eligible users and present accurate offer information. Stripe can provide template copy and UX guidance for in-product marketing placements on request. Contact your Stripe account team to request these materials.
+In-product upsells, such as banners or notifications, help deliver targeted marketing messages directly to your customers. You can also use Stripe’s [Capital promotional component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md). Use the Capital API to make sure upsells only appear for eligible connected accounts and present accurate offer information. Stripe can provide template copy and UX guidance for in-product marketing placements on request. Contact your Stripe account team to request these materials.
 
-Templates require compliance review. All in-product marketing materials, including templates provided by Stripe, must be submitted for compliance review before deployment. This applies to each market separately.
+All in-product marketing materials, including templates provided by Stripe, must be submitted for compliance review before deployment. This applies to each market separately.
 
 ## Required disclaimers 
 
-All marketing collateral must mention our banking partners Celtic Bank, Lead Bank, and YouLend. You must add the following disclaimer on any user-facing materials wherever you reference Stripe Capital, such as promotional offer emails and marketing pages. The disclaimer doesn’t need to be the same font size as the marketing message, but it must be clear, conspicuous, and in a font color or drop shadow that’s in contrast to its background.
+All marketing collateral must mention our banking partners Celtic Bank, Lead Bank, and YouLend for the relevant country of the connected account. You must add the following disclaimer on any customer-facing materials wherever you reference Stripe Capital, such as promotional offer emails and marketing pages. The disclaimer doesn’t need to be the same font size as the marketing message, but it must be clear, conspicuous, and in a font color or drop shadow that’s in contrast to its background.
 
 The table below lists the required disclaimer based on the location of your connected account’s business. For financing offer emails sent by your platform via the Capital API or custom banner notifications, the [disclaimer_variant](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-disclaimer_variant) property identifies the required disclaimer.
 
@@ -162,7 +173,7 @@ Follow this format for partnership logos
 
 ## Messaging 
 
-Refer to the following copy guidelines when you write marketing copy for Stripe Capital on any marketing assets. You can modify the wording to suit your platform’s voice, as long as it conveys the same message and uses the correct terminology as detailed below.
+Refer to the following copy guidelines when you write marketing copy for Stripe Capital on any marketing assets. You can write your messaging to suit your platform’s voice, as long as it conveys the approved messaging and uses the correct terminology as detailed below.
 
 Before publishing, you must submit all customer-facing materials for review using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
 
@@ -251,7 +262,7 @@ When your Capital program goes live, you’ll want to share information about it
 
 Review our messaging guide for help crafting your marketing materials. We also recommend referencing your broader vision for embedded finance if you’re also using Stripe Treasury or Stripe Issuing.
 
-Before publishing, you must submit all customer-facing materials for review using the [Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
+Before publishing, you must submit all customer-facing materials for review using the [Compliance Intake Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
 
 ### Announcement email 
 
@@ -290,7 +301,7 @@ Here are a few examples for landing page URL options and site navigation categor
 - `/financing`
 - `/business-financing`
 
-## Marketing to ineligible users
+## Marketing to ineligible connected accounts
 
 Not all customers are eligible for a Capital offer. Marketing available to both eligible and ineligible customers must clearly explain how eligibility is determined. Don’t market Capital offers directly to confirmed ineligible recipients.
 

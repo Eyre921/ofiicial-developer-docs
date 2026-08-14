@@ -14,7 +14,7 @@ GenFM is available in [Studio](https://elevenlabs.io/app/studio). It allows you 
   Studio
 </strong>
 
-Go to [Studio](https://elevenlabs.io/app/projects), and under <strong>Get started</strong>, choose <strong>Generate audio</strong>. Select <strong>Generate a podcast</strong> from the available options, and you can then select options for your podcast.
+Go to [Studio](https://elevenlabs.io/app/projects), and choose <strong>Generate audio</strong>. Select <strong>Generate a podcast</strong> from the available options, and you can then select options for your podcast.
 
 For the source material for your podcast, you can upload a document (EPUB, PDF, TXT, or HTML), provide a URL, or link to an existing project. Either use the suggested voice pairing or choose any voice from My Voices for the Host and Guest. Choose your model and quality setting, then click <strong>Generate</strong>, and the text for your podcast will be generated.
 

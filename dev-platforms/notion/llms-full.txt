@@ -11724,17 +11724,7 @@ You can also start the connection from Notion:
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
-    Yes. Notion MCP accepts a [personal access token (PAT)](/guides/get-started/personal-access-tokens) from MCP clients that can send custom HTTP headers. Connect to `https://mcp.notion.com/mcp` and send the PAT in the authorization header:
-
-    ```http theme={null}
-    Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
-    ```
-
-    The PAT must have the **Notion API** capability. It uses the permissions of the person who created it, so store it in an environment variable or secret manager and don't put it in shared client configuration.
-
-    Not every MCP client supports custom HTTP headers. PAT-authenticated requests also don't appear in [List MCP client connections](/reference/admin/list-mcp-client-connections). Organization owners can manage these credentials with [List personal access tokens](/reference/admin/list-personal-access-tokens) and [Revoke a personal access token](/reference/admin/revoke-personal-access-token).
-
-    Review [security best practices](/guides/mcp/mcp-security-best-practices) before allowing an MCP client to take actions without confirmation.
+    Not yet. Notion MCP currently requires you to complete the OAuth authorization flow. We're working on support for non-interactive authorization for automated workflows.
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
@@ -11744,7 +11734,7 @@ You can also start the connection from Notion:
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">
-    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth and PAT bearer authentication and requires no infrastructure setup.
+    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and requires no infrastructure setup.
 
     The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It supports bearer token authentication and the original JSON-based v1 APIs, which may be useful for automated workflows, but requires you to manage your own connection and deployment.
 
@@ -11861,7 +11851,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. For `query_data_sources`, the status describes single-data-source SQL access; view mode is always available, while queries across multiple data sources still require Enterprise with Notion AI. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
@@ -12015,7 +12005,7 @@ An MCP client can call several tools in one task. For example, it can search for
     Create a new view on a Notion database. Supports table, board, list, calendar, timeline, gallery, form, chart, map, and dashboard view types. Use the optional configuration DSL for filters, sorts, grouping, and display options.
 
     <Note>
-      Filter values in the configuration DSL are matched against the property's type: relation values must be a page URL or ID, person values must be a user ID or `"me"`, and status values must be an option or group name. Page and people names aren't accepted — resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
+      Use a page URL or ID for relation filters. Use a user ID or `"me"` for person, created-by, and last-edited-by filters. Use an option or group name for status filters, and use `"verified"`, `"expired"`, or `"none"` for verification filters. Page and people names aren't accepted, so resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
     </Note>
 
     **Example prompts:**
@@ -12048,29 +12038,13 @@ An MCP client can call several tools in one task. For example, it can search for
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      View mode is available on every plan without a tool-specific quota. Single-data-source SQL is unlimited on Business and Enterprise plans with Notion AI; other plans share a per-workspace usage limit and receive an upgrade prompt after the allowance is exhausted. Queries across multiple data sources require an Enterprise plan with Notion AI.
+      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted.
     </Note>
 
     **Example prompts:**
 
     * "What's due for me this week across all tasks and meeting note action items? Group by priority."
     * "Show all risks from Engineering and Product databases this month, grouped by owner."
-  </Accordion>
-
-  <Accordion title="Query a database view">
-    `notion-query-database-view`
-
-    Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
-
-    <Warning>
-      This tool is deprecated and will be removed in a future release. Use `notion-query-data-sources` with `mode: "view"` and pass the same `view_url`. Existing calls continue to work and include migration guidance in successful responses.
-    </Warning>
-
-    **Example prompts:**
-
-    * "Query my 'In Progress' tasks view to see what I'm currently working on"
-    * "Get all items from the 'High Priority' view in our feature requests database"
-    * "Export the filtered data from the 'Q1 Goals' view for analysis"
   </Accordion>
 
   <Accordion title="Query meeting notes">
@@ -16448,11 +16422,29 @@ Source: https://developers.notion.com/page/changelog
 
 
 <Update label="August 13, 2026">
-  ### Relation, person, and status filters in Notion MCP view tools
+  ### More filters in Notion MCP view tools
 
-  Filters on relation, person, and status properties now apply when you configure a view with `notion-create-view` or `notion-update-view`. Previously these calls succeeded but the filter was silently dropped, so the view showed every row.
+  The `notion-create-view` and `notion-update-view` tools now apply relation, person, status, created by, last edited by, unique ID, last visited, verification, and place filters. Previously, some calls succeeded but saved a view without the requested filter.
 
-  Relation values must be a page URL or ID, and person values must be a user ID or `"me"` — names aren't accepted, and a value that can't be resolved now returns a validation error instead of writing a filter that never applies. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+  Use a page URL or ID for relation filters and a user ID or `"me"` for person filters. Invalid values now return an error. See [Supported tools](/guides/mcp/mcp-supported-tools) for accepted values, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+
+  Verification filters now round-trip through view responses for both matching (`status`) and non-matching (`does_not_equal`) conditions. Data source queries accept the same conditions.
+
+  ### Updating the query tool list in Notion MCP
+
+  New tool-list responses no longer include `notion-query-database-view`. Use `notion-query-data-sources` with `mode: "view"` for saved views. Clients with a cached tool list can still call `notion-query-database-view`; those calls continue to work and return migration guidance.
+
+  The `current_tool_access` map returned by `notion-fetch` with the id `self` no longer has a `query_database_view` entry, since the map describes the tools that a current tool list advertises. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list.
+
+  ### Multi-source SQL on Business plans in Notion MCP
+
+  `notion-query-data-sources` SQL queries that span multiple data sources now work on Business plans with Notion AI, which previously required an Enterprise plan. SQL is unlimited on Business and Enterprise plans with Notion AI; other plans keep the metered single-data-source allowance, and saved-view mode stays free on every plan.
+
+  ### JS SDK updates
+
+  `@notionhq/client` [`v5.25.1`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.1) fixes the `isFullDataSource` and `isFullDatabase` type guards, which previously accepted partial responses and narrowed them to the full type. Both now require the `title` field, the same structural check the other full-object guards use. `isFullPageOrDataSource` picks up the fix.
+
+  [`v5.25.2`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.2) adds the `does_not_equal` condition to `verification` property filters in data source and database query request types, alongside the existing `status` condition.
 </Update>
 
 <Update label="August 12, 2026">
@@ -17334,7 +17326,7 @@ The organization bot token must have the following scopes:
 
 * `mcp-client-connection:read`
 
-This endpoint lists OAuth connections that members use to connect MCP clients, such as Claude Code or Codex, to Notion MCP. It does not include MCP requests authenticated with [personal access tokens](/guides/get-started/personal-access-tokens) or workspace-owned internal connections.
+This endpoint lists OAuth connections that members use to connect MCP clients, such as Claude Code or Codex, to Notion MCP. It does not include workspace-owned internal connections.
 
 For workspace settings that control which MCP clients members can connect, see [Admin controls for Notion MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp).
 
@@ -20987,9 +20979,12 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 ### Verification
 
-| Field  | Type   | Description                                                                                                                                                                                        | Example value |
-| :----- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| status | string | The verification status being queried. Valid options are: `verified`, `expired`, `none` <br /><br /> Returns data source entries where the current verification status matches the queried status. | "verified"    |
+| Field            | Type   | Description                                                         | Example value |
+| :--------------- | :----- | :------------------------------------------------------------------ | :------------ |
+| `status`         | string | Returns entries whose verification status matches the value.        | `"verified"`  |
+| `does_not_equal` | string | Returns entries whose verification status does not match the value. | `"expired"`   |
+
+Both fields accept `verified`, `expired`, or `none`.
 
 <CodeGroup>
   ```json Example verification filter condition for getting verified pages theme={null}
@@ -24061,9 +24056,12 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 ### Verification
 
-| Field  | Type   | Description                                                                                                                                                                                      | Example value |
-| :----- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| status | string | The verification status being queried. Valid options are: `verified`, `expired`, `none` <br /> <br /> Returns database entries where the current verification status matches the queried status. | "verified"    |
+| Field            | Type   | Description                                                         | Example value |
+| :--------------- | :----- | :------------------------------------------------------------------ | :------------ |
+| `status`         | string | Returns entries whose verification status matches the value.        | `"verified"`  |
+| `does_not_equal` | string | Returns entries whose verification status does not match the value. | `"expired"`   |
+
+Both fields accept `verified`, `expired`, or `none`.
 
 <CodeGroup>
   ```json Example verification filter condition for getting verified pages theme={null}

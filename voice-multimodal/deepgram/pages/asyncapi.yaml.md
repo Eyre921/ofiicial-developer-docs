@@ -19,7 +19,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: agent-v-1-publish
+      operationId: subpackage_agent/v1.agent.v1-publish
       summary: Server messages
       message:
         oneOf:
@@ -43,7 +43,7 @@ channels:
           - $ref: '#/components/messages/subpackage_agent/v1.agent.v1-server-17-AgentV1History'
           - $ref: '#/components/messages/subpackage_agent/v1.agent.v1-server-18-AgentV1Audio'
     subscribe:
-      operationId: agent-v-1-subscribe
+      operationId: subpackage_agent/v1.agent.v1-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -145,7 +145,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: listen-v-1-publish
+      operationId: subpackage_listen/v1.listen.v1-publish
       summary: Server messages
       message:
         oneOf:
@@ -154,7 +154,7 @@ channels:
           - $ref: '#/components/messages/subpackage_listen/v1.listen.v1-server-2-ListenV1UtteranceEnd'
           - $ref: '#/components/messages/subpackage_listen/v1.listen.v1-server-3-ListenV1SpeechStarted'
     subscribe:
-      operationId: listen-v-1-subscribe
+      operationId: subpackage_listen/v1.listen.v1-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -207,7 +207,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: listen-v-2-publish
+      operationId: subpackage_listen/v2.listen.v2-publish
       summary: Server messages
       message:
         oneOf:
@@ -217,7 +217,7 @@ channels:
           - $ref: '#/components/messages/subpackage_listen/v2.listen.v2-server-3-ListenV2ConfigureFailure'
           - $ref: '#/components/messages/subpackage_listen/v2.listen.v2-server-4-ListenV2FatalError'
     subscribe:
-      operationId: listen-v-2-subscribe
+      operationId: subpackage_listen/v2.listen.v2-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -252,7 +252,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: speak-v-1-publish
+      operationId: subpackage_speak/v1.speak.v1-publish
       summary: Server messages
       message:
         oneOf:
@@ -262,7 +262,7 @@ channels:
           - $ref: '#/components/messages/subpackage_speak/v1.speak.v1-server-3-SpeakV1Cleared'
           - $ref: '#/components/messages/subpackage_speak/v1.speak.v1-server-4-SpeakV1Warning'
     subscribe:
-      operationId: speak-v-1-subscribe
+      operationId: subpackage_speak/v1.speak.v1-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -304,7 +304,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: speak-v-2-publish
+      operationId: subpackage_speak/v2.speak.v2-publish
       summary: Server messages
       message:
         oneOf:
@@ -320,7 +320,7 @@ channels:
           - $ref: '#/components/messages/subpackage_speak/v2.speak.v2-server-9-SpeakV2Warning'
           - $ref: '#/components/messages/subpackage_speak/v2.speak.v2-server-10-SpeakV2Error'
     subscribe:
-      operationId: speak-v-2-subscribe
+      operationId: subpackage_speak/v2.speak.v2-subscribe
       summary: Client messages
       message:
         oneOf:
@@ -965,32 +965,32 @@ components:
             - LatencyReport
           description: Message type identifier for the latency report
         stt_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: 'Speech-to-text: time from audio received to transcript produced, in seconds'
         ttt_token_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Time to first token of any type (text, tool call, or thinking), in seconds
         ttt_text_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Time to first text token from the LLM, in seconds
         ttt_tool_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Time to first tool-call token from the LLM, in seconds
         ttt_thinking_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Time to first thinking token from the LLM, in seconds
         tts_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: 'Text-to-speech: time from first text token to first audio byte, in seconds'
         total_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: 'End-to-end: time from user utterance end to first audio byte, in seconds'
       required:
         - type
@@ -1045,16 +1045,16 @@ components:
             - AgentStartedSpeaking
           description: Message type identifier for agent started speaking
         total_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Seconds from receiving the user's utterance to producing the agent's reply
         tts_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: The portion of total latency attributable to text-to-speech
         ttt_latency:
-          type: number
-          format: double
+          type: string
+          title: float
           description: The portion of total latency attributable to text-to-text (usually an LLM)
       required:
         - type
@@ -3192,8 +3192,8 @@ components:
           type: string
           description: The individual punctuated, properly-cased word from the transcript
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Confidence that this word was transcribed correctly
         start:
           type: number
@@ -3244,12 +3244,12 @@ components:
           type: integer
           description: The index of the current turn
         audio_window_start:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Start time in seconds of the audio range that was transcribed
         audio_window_end:
-          type: number
-          format: double
+          type: string
+          title: float
           description: End time in seconds of the audio range that was transcribed
         transcript:
           type: string
@@ -3260,8 +3260,8 @@ components:
             $ref: '#/components/schemas/ChannelsListenV2MessagesListenV2TurnInfoWordsItems'
           description: The words in the `transcript`
         end_of_turn_confidence:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Confidence that no more speech is coming in this turn
         languages:
           type: array
@@ -3837,12 +3837,12 @@ components:
         - '2'
       description: >-
         Expressive range of the generated speech, on a calm-to-animated axis. Accepted values: `-2`, `-1`, `0`, `1`,
-        `2`. `0` (the default) is the voice's tuned delivery and the production-validated setting; negative values are
-        calmer and more measured, positive values more animated. Supported on all Flux voices. Fixed for the connection
-        — not settable via `Configure`. Beta: behavior may change in future model versions, and non-default values
-        increase the risk of hallucinations and pronunciation errors; audition before shipping. An invalid value fails
-        the connection with a `400` — `EXPRESSIVITY_OUT_OF_RANGE` for a value outside the range,
-        `EXPRESSIVITY_INCREMENT_INVALID` for a fractional value. See [Expressivity](/docs/tts-expressivity).
+        `2`. `0` (the default) is the voice's tuned delivery and the production-validated setting, with `-2` the calm
+        end of the range and `2` the animated end. Supported on all Flux voices. Fixed for the connection — not settable
+        via `Configure`. Beta: behavior may change in future model versions, and non-default values increase the risk of
+        hallucinations and pronunciation errors; audition before shipping. An invalid value fails the connection with a
+        `400` — `EXPRESSIVITY_OUT_OF_RANGE` for a value outside the range, `EXPRESSIVITY_INCREMENT_INVALID` for a
+        fractional value. See [Expressivity](/docs/tts-expressivity).
       title: SpeakV2Expressivity
     SpeakV2MipOptOut:
       description: Any type

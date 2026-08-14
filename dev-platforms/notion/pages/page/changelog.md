@@ -5,11 +5,29 @@ path: page/changelog
 ---
 
 <Update label="August 13, 2026">
-  ### Relation, person, and status filters in Notion MCP view tools
+  ### More filters in Notion MCP view tools
 
-  Filters on relation, person, and status properties now apply when you configure a view with `notion-create-view` or `notion-update-view`. Previously these calls succeeded but the filter was silently dropped, so the view showed every row.
+  The `notion-create-view` and `notion-update-view` tools now apply relation, person, status, created by, last edited by, unique ID, last visited, verification, and place filters. Previously, some calls succeeded but saved a view without the requested filter.
 
-  Relation values must be a page URL or ID, and person values must be a user ID or `"me"` — names aren't accepted, and a value that can't be resolved now returns a validation error instead of writing a filter that never applies. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+  Use a page URL or ID for relation filters and a user ID or `"me"` for person filters. Invalid values now return an error. See [Supported tools](/guides/mcp/mcp-supported-tools) for accepted values, and read the `notion://docs/view-dsl-spec` resource for the full configuration syntax.
+
+  Verification filters now round-trip through view responses for both matching (`status`) and non-matching (`does_not_equal`) conditions. Data source queries accept the same conditions.
+
+  ### Updating the query tool list in Notion MCP
+
+  New tool-list responses no longer include `notion-query-database-view`. Use `notion-query-data-sources` with `mode: "view"` for saved views. Clients with a cached tool list can still call `notion-query-database-view`; those calls continue to work and return migration guidance.
+
+  The `current_tool_access` map returned by `notion-fetch` with the id `self` no longer has a `query_database_view` entry, since the map describes the tools that a current tool list advertises. See [Supported tools](/guides/mcp/mcp-supported-tools) for the tool list.
+
+  ### Multi-source SQL on Business plans in Notion MCP
+
+  `notion-query-data-sources` SQL queries that span multiple data sources now work on Business plans with Notion AI, which previously required an Enterprise plan. SQL is unlimited on Business and Enterprise plans with Notion AI; other plans keep the metered single-data-source allowance, and saved-view mode stays free on every plan.
+
+  ### JS SDK updates
+
+  `@notionhq/client` [`v5.25.1`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.1) fixes the `isFullDataSource` and `isFullDatabase` type guards, which previously accepted partial responses and narrowed them to the full type. Both now require the `title` field, the same structural check the other full-object guards use. `isFullPageOrDataSource` picks up the fix.
+
+  [`v5.25.2`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.25.2) adds the `does_not_equal` condition to `verification` property filters in data source and database query request types, alongside the existing `status` condition.
 </Update>
 
 <Update label="August 12, 2026">

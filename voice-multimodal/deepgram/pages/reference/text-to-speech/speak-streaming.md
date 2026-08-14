@@ -53,7 +53,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: speak-v-1-publish
+      operationId: subpackage_speak/v1.speak.v1-publish
       summary: Server messages
       message:
         oneOf:
@@ -68,7 +68,7 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_speak/v1.speak.v1-server-4-SpeakV1Warning
     subscribe:
-      operationId: speak-v-1-subscribe
+      operationId: subpackage_speak/v1.speak.v1-subscribe
       summary: Client messages
       message:
         oneOf:

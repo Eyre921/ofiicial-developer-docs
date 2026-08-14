@@ -12,52 +12,69 @@ path: docs/tts-expressivity
 
 **`expressivity` is a beta parameter.**
 
-* **Behavior may change** in future model versions.
-* **The default (`0`) is production-ready.** It's Deepgram's tuned delivery for enterprise voice agents and the only value validated for production.
-* **Changing it can degrade quality** — hallucinations (extra, dropped, or repeated words) and pronunciation errors — with more risk at larger magnitudes.
-* **Audition before shipping.** Test any non-default value in the Playground and check for hallucinations and pronunciation issues.
+* **Behavior and values may be tuned** based on feedback before the parameter is finalized. Re-validate the value you ship after model updates rather than treating it as a contract.
+* **The default (`0`) is production-ready.** It is Deepgram's tuned delivery for enterprise voice agents and the only value validated for production.
+* **Changing it can degrade quality** - hallucinations (extra, dropped, or repeated words) and pronunciation errors become more likely at larger magnitudes.
+* **Audition before shipping.** Test the exact value you plan to ship and check for hallucinations and pronunciation issues. The API covers every voice and every value; see the Usage section below. [talk.deepgram.com](https://talk.deepgram.com) is faster for a first listen: it offers the full `-2` to `2` range, labeled Calm to Animated, on a subset of voices. Expressivity controls in the Playground are coming soon.
 
-The `expressivity` parameter shifts a Flux TTS voice's delivery register along a calm ↔ animated axis.
+The `expressivity` parameter shifts a Flux TTS voice's delivery register along a calm to animated axis. Negative values typically produce calmer, steadier, slightly lower-pitched delivery; positive values typically produce more animated delivery with a wider pitch range.
 
-Every Flux voice is tuned by Deepgram to its most natural delivery out of the box. `expressivity` lets you adjust that delivery for your use case — calmer and more measured for empathetic or de-escalation contexts, or more animated and upbeat for energetic interactions.
+Every Flux voice is tuned by Deepgram to its most natural delivery out of the box, and `0` is that tuned default. Think of `expressivity` as a signed offset from the default rather than a required setting: the voice already sounds good at `0`, and the parameter shifts its register when your use case calls for it.
+
+Expressivity is a register dial, not a quality slider. The calm end is a deliberate production choice for contexts like support and IVR, not a lesser mode; the animated end is a different character, not a better one.
 
 **Availability: Flux TTS only.** `expressivity` is available on Flux TTS (`/v2/speak`), on both streaming and batch. It is not available on Aura-2 (`/v1/speak`).
 
 ## Parameter reference
 
-|                |                                               |
-| -------------- | --------------------------------------------- |
-| **Parameter**  | `expressivity`                                |
-| **Type**       | integer                                       |
-| **Range**      | `-2` to `2`                                   |
-| **Default**    | `0` (the voice's tuned, recommended delivery) |
-| **Applies to** | All Flux TTS voices                           |
-| **Status**     | Beta                                          |
+|                |                                                                         |
+| -------------- | ----------------------------------------------------------------------- |
+| **Parameter**  | `expressivity`                                                          |
+| **Type**       | integer                                                                 |
+| **Range**      | `-2` to `2`                                                             |
+| **Default**    | `0` (the voice's tuned default)                                         |
+| **Set**        | As a query parameter, per connection (streaming) or per request (batch) |
+| **Applies to** | All Flux TTS voices                                                     |
+| **Status**     | Beta                                                                    |
 
-`expressivity` is an integer dial centered on each voice's tuned default at `0`, from `-2` (calmer) to `2` (more animated). Omitting the parameter is equivalent to `0`.
+Values must be whole numbers, and omitting the parameter is equivalent to `0`. The server rejects invalid values rather than clamping or rounding them: out-of-range values return [`EXPRESSIVITY_OUT_OF_RANGE`](/docs/flux-tts/server-messages#connection-rejection-codes), and fractional values such as `1.5` return [`EXPRESSIVITY_INCREMENT_INVALID`](/docs/flux-tts/server-messages#connection-rejection-codes).
 
-* **`0` (default)** — The voice's natural, tuned delivery, and the recommended setting for production.
-* **Negative values (`-1`, `-2`)** — Progressively calmer, more measured delivery: steadier pacing, narrower pitch movement, and a slightly lower overall pitch.
-* **Positive values (`1`, `2`)** — Progressively more animated delivery: wider pitch contours, more pacing variation, and a slightly brighter overall pitch.
+## What each value sounds like
 
-The `-2` to `2` range is intentionally conservative during beta, and values must be whole numbers. Out-of-range values return [`EXPRESSIVITY_OUT_OF_RANGE`](/docs/flux-tts/server-messages#connection-rejection-codes); fractional values such as `1.5` return [`EXPRESSIVITY_INCREMENT_INVALID`](/docs/flux-tts/server-messages#connection-rejection-codes).
+| Value | Delivery                                                                                                                                                                                         |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `-2`  | The calm end of the range: noticeably steadier, with measured pacing, narrow pitch movement, and typically a slightly lower overall pitch. On some voices this setting becomes soft and breathy. |
+| `-1`  | Slightly subdued: a more measured take on the voice's default delivery.                                                                                                                          |
+| `0`   | The voice's tuned default, and the recommended setting for production.                                                                                                                           |
+| `1`   | More animated: wider pitch contours and livelier pacing than the default.                                                                                                                        |
+| `2`   | The animated end of the range: the widest pitch range and typically the brightest overall pitch.                                                                                                 |
 
-## How it works
+Because each voice has its own natural character, the same value can sound different across voices: a `2` may be a subtle change on one voice and a pronounced one on another.
 
-`expressivity` adjusts the voice model's delivery characteristics as a bundle — pitch range, pacing variation, overall pitch, and timbre (the voice's tonal color) all move together. Because timbre shifts along with the rest, the voice's character audibly changes as you move away from `0`, not just its energy level. It is not a pitch-shift or speed control: negative values don't slow the voice down, and positive values don't speed it up. (For speaking rate, see `speed` — on Flux TTS, `0.85` to `1.15` in `0.05` increments.)
+## Matching register to use case
 
-Because each voice has its own natural character, **the same value can sound different across voices**. A `2` may be a subtle change on one voice and pronounced on another. Audition your specific voice at the value you plan to use.
+| Register | Values     | Often suited to                                                                  |
+| -------- | ---------- | -------------------------------------------------------------------------------- |
+| Calm     | `-2`, `-1` | Support and de-escalation, healthcare, IVR and self-service, empathetic contexts |
+| Default  | `0`        | Production voice agents generally; the only value validated for production       |
+| Animated | `1`, `2`   | Consumer applications, entertainment and media, outbound engagement              |
 
-**Evaluating Flux TTS?** Evaluate voices at the default (`0`) or above. Low values intentionally produce flatter, more uniform delivery and aren't representative of the model's expressive range.
+These are starting points, not rules. The right value depends on the voice, the content, and the audience, so audition candidate values with your own prompts before committing to one.
+
+### Choosing a value
+
+The fastest way to choose is to hear a few values side by side before hardcoding one. Generate the same line at `-1`, `0`, and `1` with the requests in the Usage section below. For a first listen, [talk.deepgram.com](https://talk.deepgram.com) offers the full `-2` to `2` range, labeled Calm to Animated, on a subset of voices; to audition your exact script, voice, and encoding, use the API. Expressivity controls in the Playground are coming soon.
+
+Because the parameter is in beta, re-validate your chosen value when Deepgram ships model updates rather than treating it as a fixed contract.
 
 ## Usage
 
-Set `expressivity` as a query parameter on either `/v2/speak` transport.
+Set `expressivity` as a query parameter on either `/v2/speak` transport. On streaming, the value is fixed when you open the connection and applies for its duration; on batch, it applies to that request.
 
 ### Streaming
 
 ```text
-wss://api.deepgram.com/v2/speak?model=flux-haley-en&expressivity=2
+wss://api.deepgram.com/v2/speak?model=flux-haley-en&encoding=linear16&sample_rate=24000&expressivity=-1
 ```
 
 ### Batch
@@ -70,21 +87,19 @@ curl "https://api.deepgram.com/v2/speak?model=flux-haley-en&expressivity=2" \
      --output audio.mp3
 ```
 
-On streaming, the value is fixed when you open the connection and applies for its duration. On batch, it applies to that request.
-
 ## Behavior notes
 
-* **Delivery character shifts with the value.** Moving away from `0` intentionally changes how the voice sounds — including shifts in pitch and timbre (the voice's tonal color). This is the parameter working as designed, not an artifact.
-* **The lowest values can enter an "ASMR" register.** On some voices, the calmest values push delivery past merely measured into a soft, breathy, intimate character — an intentional extension of the calm end of the range. Audition to confirm it suits your use case.
-* **Higher values increase natural variation.** The higher the value, the more delivery varies between generations of the same text — part of what makes speech sound animated and human. If your use case requires highly uniform delivery across repeated prompts, use `0` or a lower value.
-* **Output consistency guarantees apply at the default.** Deepgram's determinism characteristics for Flux TTS are measured at the default (`expressivity` omitted or `0`).
-* **Effect and risk grow with magnitude.** The further from `0`, the stronger the effect — and the higher the chance of hallucinations or pronunciation errors. The range is kept narrow during beta for this reason; audition any non-default value before production.
+* **The register shift is intentional behavior.** Moving away from `0` changes pitch range, pacing variation, overall pitch, and timbre (the voice's tonal color) together, so the voice's character audibly changes toward the ends of the range. This is the parameter working as designed, not a side effect.
+* **It is not a speed or pitch-shift control.** Negative values do not slow the voice down, and positive values do not speed it up. For speaking rate, use `speed` (on Flux TTS, `0.85` to `1.15` in `0.05` increments).
+* **Animated delivery naturally varies more.** At higher values, delivery tends to vary more between generations of the same text; that variation is part of what makes speech sound animated and human. Deepgram's output-consistency characteristics for Flux TTS are measured at the default (`expressivity` omitted or `0`).
+* **Effect and risk grow with magnitude.** The further from `0`, the stronger the shift, and the higher the chance of hallucinations or pronunciation errors. The range is kept narrow during beta for this reason; audition any non-default value before production.
+* **Comparing text-to-speech providers?** Evaluate Flux TTS at the default (`0`) or above. The calm end deliberately narrows delivery for production contexts like support and IVR, so it does not showcase the model's expressive range.
 
 ## FAQ
 
 **Does this change which voice I'm using?**
 
-You're always getting the same underlying voice. That said, `expressivity` does more than adjust energy — pitch and timbre (tonal color) shift too — so the voice's character changes noticeably, especially toward the ends of the range, the way a person sounds different reading a bedtime story versus hosting a game show.
+You are always getting the same underlying voice. That said, `expressivity` does more than adjust energy: pitch and timbre shift too, so the voice's character changes noticeably toward the ends of the range, the way a person sounds different reading a bedtime story versus hosting a game show.
 
 **Can I change it mid-conversation?**
 
@@ -92,8 +107,8 @@ No. `expressivity` is set when you open the connection and applies for the whole
 
 **How does it interact with `speed`?**
 
-They're independent controls: `speed` adjusts speaking rate (on Flux TTS, `0.85` to `1.15` in `0.05` increments), `expressivity` adjusts delivery character. They can be combined; larger values of both together are more likely to sound less natural, so audition combined settings.
+They are independent controls: `speed` adjusts speaking rate, and `expressivity` adjusts delivery register. They can be combined, but larger values of both together are more likely to sound less natural, so audition combined settings.
 
 **Why does the same value sound different on different voices?**
 
-Each voice has its own character and its own sensitivity to the dial. `0` is every voice's tuned default, but a given step away from `0` lands differently from one voice to the next — so the same value can be a subtle shift on one voice and a pronounced one on another. Audition your specific voice.
+Each voice has its own character and its own sensitivity to the dial. `0` is every voice's tuned default, but a given step away from `0` lands differently from one voice to the next, so the same value can be a subtle shift on one voice and a pronounced one on another. Audition your specific voice.

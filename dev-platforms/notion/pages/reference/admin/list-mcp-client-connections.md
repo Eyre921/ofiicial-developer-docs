@@ -11,7 +11,7 @@ The organization bot token must have the following scopes:
 
 * `mcp-client-connection:read`
 
-This endpoint lists OAuth connections that members use to connect MCP clients, such as Claude Code or Codex, to Notion MCP. It does not include MCP requests authenticated with [personal access tokens](/guides/get-started/personal-access-tokens) or workspace-owned internal connections.
+This endpoint lists OAuth connections that members use to connect MCP clients, such as Claude Code or Codex, to Notion MCP. It does not include workspace-owned internal connections.
 
 For workspace settings that control which MCP clients members can connect, see [Admin controls for Notion MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp).
 

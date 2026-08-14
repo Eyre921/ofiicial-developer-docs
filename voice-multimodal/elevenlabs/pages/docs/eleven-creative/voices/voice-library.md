@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-library
 
 # Voice Library
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6279d167562a3c4d9e6b93263ec8dfe4f969f713a0543a7bdf68ae2140c2f3ae/assets/images/product-guides/voices/voices-voice-library.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T220939Z&X-Amz-Expires=604800&X-Amz-Signature=6103a2ed65be623b1c319626415d5110800e64dcdf178aeabfc97bdf6ab1b14a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice Library" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6279d167562a3c4d9e6b93263ec8dfe4f969f713a0543a7bdf68ae2140c2f3ae/assets/images/product-guides/voices/voices-voice-library.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113221Z&X-Amz-Expires=604800&X-Amz-Signature=082e126e2b04c8aa17e48d5a012eb89605a7331798d491fbf8e08c0c10d837c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice Library" />
 
 ## Overview
 
@@ -180,13 +180,13 @@ You can restrict access to specific users by adding emails to the **Allowlist**.
 
 To share publicly, enable **Publish to the Voice Library**. This doesn’t make your voice automatically discoverable.
 
-![Voice sharing overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60fd4b21d2e8bba5e749edb24ec545d5990907ac6da7cbc0967bf08f7c2e0ef9/assets/images/product-guides/voices/voice-sharing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T220939Z&X-Amz-Expires=604800&X-Amz-Signature=fb34f0906a3851a1d573246a9c76829fbfc12ee7474a038ad381c2f4001c97e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice sharing overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60fd4b21d2e8bba5e749edb24ec545d5990907ac6da7cbc0967bf08f7c2e0ef9/assets/images/product-guides/voices/voice-sharing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113221Z&X-Amz-Expires=604800&X-Amz-Signature=dd09ba2781b351bbca12eb5ab1b4e7e5f474d3713159714138243b22fa625c52&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Before proceeding with the sharing process, you'll have a number of options including setting a notice period and enabling Live Moderation. Please see the [Voice Library Addendum](https://elevenlabs.io/vla) to our [Terms of Service](https://elevenlabs.io/terms-of-use) for more information about these options.
 
 You also have the option to select a custom voice preview. Any generations you've made of 70-150 characters will be available to select. If you don't see any options in the selection menu, there are no eligible generations available.
 
-![Voice sharing options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95a98e53782fae49fb01c403fe998b87944b247495f2ef257512652b7588d52d/assets/images/product-guides/voices/voice-sharing-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T220939Z&X-Amz-Expires=604800&X-Amz-Signature=51c8ea728830b1c62ca1681e4f584bad75e44aa72e70da57670b4891240d08b9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice sharing options](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/95a98e53782fae49fb01c403fe998b87944b247495f2ef257512652b7588d52d/assets/images/product-guides/voices/voice-sharing-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113221Z&X-Amz-Expires=604800&X-Amz-Signature=4ffdbe3be1ac7cd8505917d40b79240a8701e2f73396fa43791f3495a43f8adf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Enter a name and description for your voice.
 Make sure the name you give your voice follows our **naming guidelines**:
@@ -280,13 +280,11 @@ We currently do not have an estimate for the review time, as it depends on the q
     <td>
       #### Why can't I use some voices from the Voice Library?
 
-      Some voices in the Voice Library are only available to users with a paid subscription. If you're on the free plan and you try to use one of these voices, you'll see the message: "This voice is not available for free users."
-
-      This is because these voices have a credit multiplier in place. Voices with credit multipliers are not available on the free plan, but they will become available if you upgrade to a paid subscription.
+      Some voices in the Voice Library are only available to users with a paid subscription. This is either because the voice’s owner has chosen to restrict usage, or the voice has a credit multiplier in place. If you’re on the free plan and you try to use one of these voices, you’ll see the message: “This voice is not available for free users.” These voices will become available if you upgrade to a paid subscription.
 
       When you use a voice with a credit multiplier, the credit usage will be adjusted accordingly. For example, if a voice has a 2x multiplier, generating audio will cost twice as many credits as a voice on the standard rate.
 
-      For more details on custom rates and credit multipliers, you can refer to this article: [What are custom rates and credit multipliers?](/docs/help-center/product/voice-customization/voice-library/what-are-custom-rates-and-credit-multipliers)
+      For more details on custom rates and credit multipliers, you can refer to this article: [What are custom rates and credit multipliers?](/docs/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers)
     </td>
   </tr>
 
@@ -298,7 +296,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       Users attempting to share voices generated with ElevenLabs or other AI tools into the library might be prohibited from sharing any voices in the future or suspended from the platform.
 
-      Engaging in fraudulent, predatory or abusive practices (like evading product guardrails including voice verification (e.g., CAPTCHA) is against our “Prohibited Use Policy” and might lead to a permanent ban of the user’s account.
+      Engaging in fraudulent, predatory or abusive practices (like evading product guardrails including voice verification (e.g., CAPTCHA) is against our [Prohibited Use Policy](https://elevenlabs.io/use-policy) and might lead to a permanent ban of the user’s account.
     </td>
   </tr>
 
@@ -306,21 +304,17 @@ We currently do not have an estimate for the review time, as it depends on the q
     <td>
       #### How do I delete a voice I've shared with the Voice Library?
 
-      To remove a voice that you have shared with the Voice Library, you first need to stop sharing the voice.  To do this, find the voice in the list of voices in [My Voices](https://elevenlabs.io/app/voice-lab), click <strong>More actions</strong>(three dots) then select <strong>Share voice</strong> to access the sharing settings.
-
-      <img src="https://help.elevenlabs.io/hc/article_attachments/35971119591313" alt="" />
-
-       
+      To remove a voice that you have shared with the Voice Library, you first need to stop sharing the voice.  To do this, find the voice in the list of voices in [My Voices](https://elevenlabs.io/app/voice-lab), click <strong>More actions</strong> (three dots) then select <strong>Edit in Library</strong> to access the sharing settings.
 
       Click the <strong>Publish to the Voice Library</strong> toggle to stop sharing your voice with the Voice Library.
 
       If you did not agree a notice period when you shared the voice, you can delete the voice after you have disabled sharing. 
 
-      To do this, click <strong>More actions</strong>(three dots) then select <strong>Delete voice</strong>. Deleting a voice cannot be undone and you will be asked to confirm the deletion.
+      To do this, click <strong>More actions</strong> (three dots) then select <strong>Delete voice</strong>. Deleting a voice cannot be undone and you will be asked to confirm the deletion.
 
       If you did agree a notice period, you will need to wait for this to expire before you can remove your voice. During the notice period, your voice can be used by anyone who had already saved it to My Voices, but it will no longer be visible in the Voice Library. 
 
-      Once you have activated the notice period, you will see a clock icon which you can hover over for confirmation.  Please be aware that if you share your voice with the Voice Library again in the future, by enabling the <strong>Discovery in Voice Library</strong> toggle, this will reset your notice period.
+      Once you have activated the notice period, you will see a clock icon which you can hover over for confirmation.  Please be aware that if you share your voice with the Voice Library again in the future this will reset your notice period.
     </td>
   </tr>
 
@@ -334,25 +328,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       For more information, please refer to our [Prohibited Use Policy.](https://elevenlabs.io/use-policy)
 
-      If you have further questions or need clarification, feel free to [contact our support team.](https://help.elevenlabs.io/hc/en-us/requests/new?ticket_form_id=13145996177937)
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      #### How can I find out what voice is used in a video or audio clip?
-
-      You can usually hear our technology used all across the internet on social media, on YouTube, in marketing material, and sometimes you might want to know what voice is being used in this material. Luckily, we offer a tool just for this.
-
-      If you go to the [Voice Library](https://elevenlabs.io/app/voice-library) and look to the right of the search bar, you will see a little button that allows you to upload a file to use as the search method. Click this button and upload the file you want to search.
-
-      <img src="https://help.elevenlabs.io/hc/article_attachments/27791992237457" alt="" />
-
-      The AI will then present you with the most similar voices or the exact matches if there is one.
-
-      It's important to keep in mind when searching that you should only include the audio of the spoken voice and nothing else. If there's any background noise, music, or anything else in the audio clip, you should remove it and only include the actual audio of the voice. If you don't have any clean audio, you can use the [Voice Isolator](https://elevenlabs.io/app/voice-isolator) first to isolate the voice and then upload that to get a more accurate match.
-
-      Also, please keep in mind that this will only search the voices available in the public voice library and not any custom voices from other sources.
+      If you have further questions or need clarification, please contact support by emailing us at [team@elevenlabs.io](mailto:team@elevenlabs.io).
     </td>
   </tr>
 
@@ -420,7 +396,7 @@ We currently do not have an estimate for the review time, as it depends on the q
 
       When a voice actor shares their voice to the Voice Library, they can set a notice period. If no notice period is set, their voice will be removed immediately if they decide to stop sharing it, and anyone who has saved the voice will immediately lose access.
 
-      The minimum notice period is 3 months, and the maximum is 2 years. Voice owners receive increased financial rewards for selecting a longer notice period.
+      The minimum notice period is 30 days, and the maximum is 2 years. Voice owners receive increased financial rewards for selecting a longer notice period.
 
       If a voice actor sets a notice period, users who have previously used or saved the voice will receive both email and in-app notifications when the voice owner decides to stop sharing their voice. The voice will be immediately removed from the Voice Library but will remain available for the duration of the notice period for users who saved or used it previously.
 

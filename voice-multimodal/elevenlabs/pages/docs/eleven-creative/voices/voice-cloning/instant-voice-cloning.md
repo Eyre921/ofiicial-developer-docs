@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-cloning/instant-voice-cloning
 
 # Instant Voice Cloning
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233137Z&X-Amz-Expires=604800&X-Amz-Signature=b95b78a6dd7f1c447bba028ab30a5615dd7e1cbba4e18633616694f2d15d3278&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning product feature" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T085219Z&X-Amz-Expires=604800&X-Amz-Signature=c4eb8d98833e412ee4fa1ea95bf6ab50765a60268904fcae077c7d3b4ef03649&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning product feature" />
 
 ## Creating an Instant Voice Clone
 
@@ -32,7 +32,7 @@ Follow the on-screen instructions to upload or record your audio.
 
 ### Confirm voice details
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233137Z&X-Amz-Expires=604800&X-Amz-Signature=60d858c52576d18d08e455df921b5bb234495d47d4aeeaf0b1dc7e261d47e11c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning IVC modal" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T085219Z&X-Amz-Expires=604800&X-Amz-Signature=730759470becf018d3f022e6cc2f99d4f656a933255231e2a350b77d46d64f27&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning IVC modal" />
 
 Name and label your voice clone, confirm that you have the right and consent to clone the voice, then click **Save voice**.
 
@@ -79,9 +79,13 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
 <tbody>
   <tr>
     <td>
-      #### What is the difference between Instant Voice Cloning (IVC) and Professional Voice Cloning (PVC)?
+      #### What is the difference between Instant Voice Cloning and Professional Voice Cloning?
 
-      [Professional Voice Cloning (PVC)](/docs/voices/voice-lab/professional-voice-cloning), unlike [Instant Voice Cloning (IVC)](/docs/voices/voice-lab/instant-voice-cloning) which lets you quickly clone voices with less than 2 minutes of audio, allows you to train a more realistic model of your voice. This is achieved by training a dedicated model on a large set of voice data to produce a model that’s virtually indistinguishable from your original voice.<br /><br />Since Professional Voice Clones require fine-tuning and training, it will take some time before you can use your voice clone. Giving an estimate is challenging as it depends on the number of people in the queue before you and a few other factors, but usually fine-tuning will take 3-6 hours. <br /><br />You will receive an email notification once your Professional Voice Clone is ready.
+      [Professional Voice Cloning](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning), unlike [Instant Voice Cloning](/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning) which lets you quickly clone voices with less than 2 minutes of audio, allows you to train a more realistic model of your voice. This is achieved by training a dedicated model on a large set of voice data to produce a model that’s virtually indistinguishable from your original voice.
+
+      Since Professional Voice Clones require fine-tuning and training, it will take some time before you can use your voice clone. Giving an estimate is challenging as it depends on the number of people in the queue before you and a few other factors, but usually fine-tuning will take 3-6 hours.
+
+      You will receive an email notification once your Professional Voice Clone is ready.
     </td>
   </tr>
 
@@ -100,18 +104,20 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### What files do you accept for voice cloning?
 
-      Recommended:
+      For Instant Voice Cloning and Professional Voice Cloning, we accept a range of file types. We strongly recommend MP3 at 192kbps or above.
 
-      * MP3 192kbps+
+      **Recommended format**
 
-      Length:
+      * MP3, 192kbps or higher
 
-      * 1-2 minutes of good audio for Instant Voice Cloning
-      * 30min - 180min of good audio for Professional Voice Cloning
+      **Recommended length**
 
-      For both Instant Voice Cloning and Professional Voice Cloning, we accept a plethora of file types, but we strongly recommend using MP3 with a bitrate of 192kbps or above. Using an uncompressed format such as WAV will yield little to no improvement. It is instead recommended to focus on the quality of the actual recording to ensure it is recorded professionally without any background noise, room reverb, multiple speakers, at a consistent volume with a consistent tone, no extremely long gaps of silence, and so on.
+      * Instant Voice Cloning: 1–2 minutes of good audio
+      * Professional Voice Cloning: 30–180 minutes of good audio
 
-      For more information regarding cloning, we highly recommend that you read our documentation for [Instant Voice Cloning (IVC)](/docs/voices/voice-lab/instant-voice-cloning) and [Professional Voice Cloning (PVC)](/docs/voices/voice-lab/professional-voice-cloning).
+      Uncompressed formats such as WAV usually do not improve clone quality, and they can cause problems with the upload process. Focus on recording quality instead: use a clean recording with no background noise, room reverb, or multiple speakers, at a consistent volume and tone, without long gaps of silence.
+
+      For more information, see [Instant Voice Cloning (IVC)](/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning) and [Professional Voice Cloning (PVC)](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning).
     </td>
   </tr>
 
@@ -119,9 +125,9 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### Are there any restrictions on what voices I can upload for voice cloning?
 
-      At Eleven, we’re fully committed both to respecting intellectual property rights and to implementing safeguards against the potential misuse of our technology:
+      At ElevenLabs, we’re fully committed both to respecting intellectual property rights and to implementing safeguards against the potential misuse of our technology:
 
-      * We only partner with clients who adhere to our Terms of Service and Prohibited Use Policy which prohibit malicious use of our technology towards any purpose which can be deemed illegal or harmful;
+      * We only partner with clients who adhere to our [Terms of Service](https://elevenlabs.io/terms-of-use) and [Prohibited Use Policy](https://elevenlabs.io/use-policy), which prohibit malicious use of our technology towards any purpose which can be deemed illegal or harmful;
       * We seek to support voice owners and their licensors in claiming their rights and all known infringements will be reviewed and actioned;
       * All audio generated by our models can be instantly traced back to the user responsible for the generation.
 
@@ -133,7 +139,7 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### Are there any tips to get good-quality cloned voices?
 
-      For a full guide, we highly recommend you read our documentation about [Instant Voice Cloning (IVC)](/docs/voices/voice-lab/instant-voice-cloning) and [Professional Voice Cloning (PVC)](/docs/voices/voice-lab/professional-voice-cloning).
+      For a full guide, we highly recommend you read our documentation about [Instant Voice Cloning](/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning) and [Professional Voice Cloning](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning).
 
       The bottom line is: good consistent input = good consistent output.
 
@@ -158,9 +164,9 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### Can I clone my voice in a language other than English?
 
-      Yes, you can clone your voice speaking any language that is supported by the Flash v2.5 and Turbo v2.5 model. You can find the full list of languages [here](/docs/help-center/other/what-languages-do-you-support).
+      Yes. You can clone your voice in any language supported by Flash v2.5 and Multilingual v2. See the full list of supported languages [here](/docs/help-center/other/what-languages-do-you-support).
 
-      You can even clone a voice speaking a language that the AI is not compatible with, but the results might be very unpredictable, as the AI has never heard that language before. However, it will try its best to clone the voice tonality of the speaker, but it will not be able to speak that language. We would not recommend doing this.
+      You can also clone a voice speaking a language the AI does not support. The clone may capture the speaker’s tone, but it will not be able to speak that language, and results can be unpredictable. We do not recommend this.
     </td>
   </tr>
 
@@ -168,9 +174,11 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### Can I export my voice clones?
 
-      No, you cannot export your voice clones, and they are only usable on [ElevenLabs](https://elevenlabs.io/) and not anywhere else.
+      You cannot download or export your voice clones as standalone files. Voice clones stay in your ElevenLabs account.
 
-      If you want to save the voice clone to be able to clone it again later, you will have to save the samples that you used to create the cloned voice. Please be aware that each clone will be slightly different, even if the same audio is used.
+      You can still use your ElevenLabs voices outside the ElevenLabs website. With your [API key](https://elevenlabs.io/app/settings/api-keys), third-party services can call the ElevenLabs API and generate speech with the voices in your account.
+
+      If you want to recreate a clone later, keep the original audio samples you used to create it. Each clone will sound slightly different, even when you use the same audio.
     </td>
   </tr>
 
@@ -178,23 +186,14 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
     <td>
       #### Why does my voice or accent not sound correct after cloning?
 
-      Currently, we offer two choices for cloning:
+      ElevenLabs offers two cloning options:
 
-      1. <strong>Instant Voice Cloning (IVC):</strong> IVC is less resource-intensive and provides instant
-         results that you can use immediately. This method is swift, requiring only about 1 to 3 minutes
-         of audio input for a high-quality clone, and is often ideal for most general uses but might have
-         trouble with unique voices or accents.
+      * **Instant Voice Cloning:** Fast results from about 1–3 minutes of audio. Works well for most voices, but may struggle with uncommon accents or unique voices.
+      * **Professional Voice Cloning:** Higher fidelity, using 30 minutes to about 3 hours of audio. Fine-tuning usually takes 3–6 hours, and can take longer if many voices are queued.
 
-      2. <strong>Professional Voice Cloning (PVC):</strong> PVC demands significantly more resources and
-         you are required to provide the AI with a substantial amount of data (between a minimum of 30
-         minutes and closer to 3 hours for optimal results). This process involves fine-tuning the model
-         using the provided dataset to create a customized model.  The estimated training time is roughly
-         2-6 hours, but the process may take longer depending on how many other voices are queued for
-         fine-tuning.
+      If Instant Voice Cloning does not capture your voice or accent well, try Professional Voice Cloning.
 
-      If you have a rather unique voice with a less common accent, instant voice cloning might not provide a perfect replication of your voice. Then the only way to achieve something like that might be through professional voice cloning. Instant voice cloning is generally very accurate, but under certain circumstances, such as those mentioned above, you might have to resort to professional voice cloning to obtain the most perfect clone.
-
-      Unfortunately, there is no way to influence the accent or tone of the clone after the clone has already been created; the only way to influence it is to change the actual samples you use for cloning. Just small changes to the samples can make a big difference.
+      You cannot change the accent or tone of a clone after it is created. To improve the result, change the audio samples you use. Small changes to the samples can make a large difference.
     </td>
   </tr>
 
@@ -210,7 +209,7 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
 
       <img src="https://help.elevenlabs.io/hc/article_attachments/28006635136785" alt="" />
 
-      For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voice-customization/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
+      For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 
       When your PVC has completed fine-tuning and is available for use, you will see a pop-up notification, and will also be notified by email.
     </td>

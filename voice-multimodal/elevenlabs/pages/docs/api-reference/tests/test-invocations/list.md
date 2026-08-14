@@ -43,7 +43,7 @@ Successful Response
   - `passed_count` (integer, required) — Number of test runs that passed
   - `failed_count` (integer, required) — Number of test runs that failed
   - `pending_count` (integer, required) — Number of test runs that are pending
-  - `title` (string, required) — Title of the test invocation - either the single test name or count of tests
+  - `title` (string, required) — Title of the test invocation - the folder name for folder runs, otherwise the single test name or count of tests
   - `agent_id` (string, optional, nullable) — The ID of the agent this test invocation belongs to
   - `branch_id` (string, optional, nullable) — The ID of the branch this test invocation was run on
   - `access_info` (object, optional, nullable) — The access information of the test invocation

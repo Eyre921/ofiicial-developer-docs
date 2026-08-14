@@ -55,20 +55,20 @@ A list of agent configurations
     {
       "agent_id": "agent-9f8b7c6d-1234-4e56-8a9b-0c1d2e3f4a5b",
       "config": {
-        "language": "en-US",
-        "model": "general",
-        "punctuation": false,
-        "profanity_filter": true,
         "diarization": {
           "enabled": true,
-          "min_speakers": 2,
-          "max_speakers": 4
-        }
+          "max_speakers": 4,
+          "min_speakers": 2
+        },
+        "language": "en-US",
+        "model": "general",
+        "profanity_filter": true,
+        "punctuation": false
       },
       "metadata": {
         "description": "Customer support transcription agent",
-        "owner": "team-voice-ops",
-        "environment": "production"
+        "environment": "production",
+        "owner": "team-voice-ops"
       },
       "created_at": "2024-01-15T09:30:00Z",
       "updated_at": "2024-01-15T09:30:00Z"

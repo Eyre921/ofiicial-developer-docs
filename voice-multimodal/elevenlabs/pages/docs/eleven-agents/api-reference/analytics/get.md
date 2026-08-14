@@ -27,6 +27,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/analytics/get
 ### Query parameters
 
 - `agent_id` (string, optional) — The id of an agent to restrict the analytics to.
+- `agent_ids` (string, optional) — Restrict analytics to the union of the given agents. Takes precedence over `agent_id` when both are supplied.
 
 ## Response
 
@@ -55,6 +56,9 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.analytics.liveCount.get({
         agentId: "agent_id",
+        agentIds: [
+            "agent_ids",
+        ],
     });
 }
 main();
@@ -68,6 +72,9 @@ client = ElevenLabs()
 
 client.conversational_ai.analytics.live_count.get(
     agent_id="agent_id",
+    agent_ids=[
+        "agent_ids"
+    ],
 )
 
 ```
@@ -83,7 +90,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id"
+	url := "https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -102,7 +109,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id")
+url = URI("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -117,7 +124,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D")
   .asString();
 ```
 
@@ -127,7 +134,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D');
 
 echo $response->getBody();
 ```
@@ -135,7 +142,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -143,7 +150,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/analytics/live-count?agent_id=agent_id&agent_ids=%5B%22agent_ids%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

@@ -16,6 +16,18 @@ The Capital financing embedded component allows connected accounts to view and m
 
 Note: The following is a preview/demo component that behaves differently than live mode usage with real connected accounts. The actual component has more functionality than what might appear in this demo component. For example, for connected accounts without Stripe dashboard access (custom accounts), no user authentication is required in production.
 
+### Interested in the Capital financing component?
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/connect/supported-embedded-components/capital-financing" \
+  -d '{"email": "EMAIL", "preview": "capital_review_preview"}'
+```
+
 ## Before you begin
 
 - Embedded components are available to display to connected accounts in the United States (US), United Kingdom (GB), France (FR), Germany (DE), and Australia (AU).

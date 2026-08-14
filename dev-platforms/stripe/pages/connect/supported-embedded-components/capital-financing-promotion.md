@@ -23,6 +23,18 @@ Note: The following is a preview/demo component that behaves differently than li
 - Before you activate Capital, you must [enable automatic offers](https://docs.stripe.com/capital/embedded-component-integration.md#enable-automatic-offers) and [submit your integration to Stripe for review](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md#submit-for-review).
 - When you [render the component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md#render-the-component), it links out to Stripe content by default. You can replace the link for [Privacy policy](https://stripe.com/privacy) and [How Capital for platforms works](https://docs.stripe.com/capital/how-capital-for-platforms-works.md) with your equivalent documentation.
 
+### Interested in the Capital promotion component?
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion" \
+  -d '{"email": "EMAIL", "preview": "capital_review_preview"}'
+```
+
 ## Install Capital embedded components
 
 Install a beta version of the Stripe SDKs to create account sessions for private preview components:

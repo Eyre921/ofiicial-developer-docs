@@ -1,0 +1,14 @@
+---
+title: "Pub/Sub commands"
+source: https://upstash.com/docs/redis/commands/pub-sub/overview
+path: docs/redis/commands/pub-sub/overview
+---
+
+<CardGroup cols={2}>
+<Card title="PSUBSCRIBE" href="/redis/commands/pub-sub/psubscribe">Subscribe to pattern channels</Card>
+<Card title="PUBLISH" href="/redis/commands/pub-sub/publish">Publish message to channel</Card>
+<Card title="PUBSUB" href="/redis/commands/pub-sub/pubsub">Inspect pub/sub state</Card>
+<Card title="PUNSUBSCRIBE" href="/redis/commands/pub-sub/punsubscribe">Unsubscribe from patterns</Card>
+<Card title="SUBSCRIBE" href="/redis/commands/pub-sub/subscribe">Subscribe to channels</Card>
+<Card title="UNSUBSCRIBE" href="/redis/commands/pub-sub/unsubscribe">Unsubscribe from channels</Card>
+</CardGroup>

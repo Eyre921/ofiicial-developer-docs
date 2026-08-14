@@ -18,12 +18,20 @@ Instant Clusters offer two compute billing options: **reserved** and **on-demand
 * **On-Demand** – Pay only for the time your cluster is running, with no upfront
   commitment.
 
-See our [pricing page](https://www.together.ai/instant-gpu-clusters) for current rates.
+[View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters).
+
+<Note>
+  The regions API and `tg beta clusters list-regions` return region availability,
+  supported instance types, and driver versions; they do not return pricing. See
+  the [GPU Cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
+  current on-demand and reserved rates.
+</Note>
 
 ### Storage Billing
 
-Storage is billed on a **pay-as-you-go** basis, as detailed on our [pricing
-page](https://www.together.ai/instant-gpu-clusters). You can freely increase your storage volume size, with all usage billed at the same rate.
+Storage is billed on a **pay-as-you-go** basis. [View current GPU Cluster
+pricing](https://www.together.ai/pricing#gpu-clusters). You can freely increase
+your storage volume size, with all usage billed at the same rate.
 To decrease the storage volume size, please contact your account team.
 
 ### Viewing Usage and Invoices
@@ -120,7 +128,7 @@ Each invoice includes detailed line items for:
 Reserved capacity offers significant discounts compared to on-demand for all
 tiers.
 
-[View detailed pricing →](https://www.together.ai/instant-gpu-clusters)
+[View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
 ## Common Questions
 

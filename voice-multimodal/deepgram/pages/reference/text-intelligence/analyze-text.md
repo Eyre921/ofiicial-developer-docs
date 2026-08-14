@@ -91,7 +91,7 @@ Successful text analysis
           - `end_word` (double, optional)
           - `topics` (list of object, optional)
             - `topic` (string, optional)
-            - `confidence_score` (double, optional)
+            - `confidence_score` (float, optional)
   - `intents` (object, optional) — Output whenever `intents=true` is used
     - `results` (object, optional)
       - `intents` (object, optional)
@@ -101,7 +101,7 @@ Successful text analysis
           - `end_word` (double, optional)
           - `intents` (list of object, optional)
             - `intent` (string, optional)
-            - `confidence_score` (double, optional)
+            - `confidence_score` (float, optional)
   - `sentiments` (object, optional) — Output whenever `sentiment=true` is used
     - `segments` (list of object, optional)
       - `text` (string, optional)

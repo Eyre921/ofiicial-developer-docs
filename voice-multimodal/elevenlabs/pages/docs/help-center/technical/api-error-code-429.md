@@ -18,7 +18,7 @@ The concurrency limit (concurrent requests running in parallel) depends on the p
 
 > Free: 2<br />Starter: 3<br />Creator: 5<br />Pro: 10<br />Scale: 15<br />Business: 15
 
-ElevenAgents has different concurrency limits. For details, please see [this article.](/docs/help-center/product/conversational-agents/eleven-labs-agents-formerly-conversational-ai/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
+ElevenAgents has different concurrency limits. For details, please see [this article.](/docs/help-center/product/eleven-agents/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
 
 ### system\_busy
 

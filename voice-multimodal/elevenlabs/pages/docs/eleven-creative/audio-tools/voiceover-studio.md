@@ -12,7 +12,7 @@ Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [
 Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
 [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233142Z&X-Amz-Expires=604800&X-Amz-Signature=804fb3afe1aaf95da981ae120ee78c21a94416259142245be8ecec2b9fbe52bd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voiceover studio" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113159Z&X-Amz-Expires=604800&X-Amz-Signature=eb0df507c2d19dc10e4b045e7113ec2066e463bf5b7e0468af363295c4e24dcf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voiceover studio" />
 
 ## Overview
 
@@ -157,29 +157,54 @@ format you want and either view or download your voiceover.
 
   <tr>
     <td>
-      #### What is Voiceover Studio?
+      #### What is Studio?
 
-      Similar to Dubbing Studio, Voiceover Studio gives users an opportunity to create their own interactive content, but with a little more freedom. Voiceover Studio combines the audio timeline with our Sound Effects feature, giving you the ability to write a dialogue between any number of speakers, choose those speakers, and intertwine your own creative sound effects anywhere you like.
+      Studio is our production workflow for creating professional audio and video content. It brings together text, visuals, and sound to help you produce narrations, audiobooks, video voiceovers, and more.
 
-      To begin, you first have the option to upload a video or to create your Voiceover from scratch. After that, it’s as simple as pressing “Create Studio” - you can name your Voiceover before or after it’s created.
+      ### Creating Audio Content
 
-      Once inside, you'll see your audio timeline.  This is a linear representation of your Voiceover project. Each row represents a track, and there are two types of track you can add: Voiceover tracks and SFX tracks.
+      To generate audio, you can upload a full book, document, or script, or even import an entire webpage via URL. Studio supports a wide range of formats, including:
 
-      Once you've added tracks, you can then add clips, which will be represented by speaker cards.
+      * EPUB
+      * PDF
+      * DOCX
+      * TXT
+      * HTML
+      * URL
 
-      For a more in-depth explanation and guide on what Voiceover Studio is and how to use it, we recommend reading our full [overview of Voiceover Studio.](/docs/product-guides/audio-tools/voiceover-studio)
+      Once imported, you can edit and organize text directly in the interface and apply any voice from our Voice Library to bring your content to life. When your project is complete, you can export as either MP3 or WAV.
 
-      Voiceover Studio is available on the Creator plan and above.
+      ### Creating Video and Voiceover Content
+
+      Studio also allows you to import videos and images to create voiceovers. The timeline includes a video track and caption layer, giving you precise control over timing and synchronization. You can also import music and sound effects on separate tracks for richer productions.
+
+      When your project is ready for review, you can share it using our built-in collaboration tools, which include feedback and commenting features.
+
+      ### Advanced Features
+
+      Studio includes powerful organization and editing tools that make it easy to manage complex projects:
+
+      * Assign different voices and settings to sections or characters.
+      * Regenerate individual paragraphs or words to fine-tune delivery.
+      * Lock sections once you’re satisfied with the result.
+      * Access Generation History to restore and download previous versions.
+      * Adjust playback speed between 0.8× and 2.0× for efficient review.
+
+      These controls make Studio ideal for creating everything from table reads and audio dramas to narrated videos and multimedia productions.
+
+      For a full overview and step-by-step guidance, see our [Studio documentation.](/docs/product-guides/products/studio)
     </td>
   </tr>
 
   <tr>
     <td>
-      #### How much does Voiceover Studio cost?
+      #### On what plans can I use Studio?
 
-      Creating a Voiceover project does not deduct any quota.  Once you've created your project, quota will be deducted every time material is generated.  Similar to Speech Synthesis, quota costs for voiceover clips are based on the length of the text prompt.  SFX clips will deduct 100 quota per generation.
+      Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
 
-      If you choose to Dub (translate) your Voiceover project into different languages, this will also cost additional quota depending on how much material needs to be generated.
+      The exception being the <strong>Create a podcast (GenFM)</strong> feature, which requires a paid subscription to access.
+
+      You can find more information about all our subscription plans on our [Pricing page.](https://elevenlabs.io/pricing)
     </td>
   </tr>
 </tbody>

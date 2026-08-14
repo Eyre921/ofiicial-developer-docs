@@ -43,12 +43,11 @@ Do not send any messages until you receive the `Welcome` message.
     }
   },
   "agent": {
-    "listen": { "model": "nova-3" },
+    "listen": { "provider": { "type": "deepgram", "model": "nova-3" } },
     "think": {
-      "provider": { "type": "open_ai" },
-      "model": "gpt-4o-mini"
+      "provider": { "type": "open_ai", "model": "gpt-4o-mini" }
     },
-    "speak": { "model": "aura-2-thalia-en" }
+    "speak": { "provider": { "type": "deepgram", "version": "v2", "model": "flux-kit-en" } }
   }
 }
 ```

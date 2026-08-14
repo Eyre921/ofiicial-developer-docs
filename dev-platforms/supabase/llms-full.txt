@@ -275,6 +275,7 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **[Claude Code](https://supabase.com/docs/guides/ai-tools/plugins):** Work with Claude directly in your codebase, from your terminal, IDE, and more.
 - **[Codex](https://supabase.com/docs/guides/ai-tools/plugins):** A lightweight coding agent that runs in your terminal.
 - **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins):** Your coding agent for building ambitious software.
+- **[Devin Desktop](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
 - **[Factory](https://supabase.com/docs/guides/ai-tools/mcp):** A self-improving system for your SDLC.
 - **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins):** Build, debug & deploy with AI.
 - **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins):** Your AI accelerator for every workflow, from the editor to the enterprise.
@@ -284,7 +285,6 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp):** The open source AI coding agent.
 - **[VS Code](https://supabase.com/docs/guides/ai-tools/plugins):** The open source AI code editor — your home for multi-agent development.
 - **[Warp](https://supabase.com/docs/guides/ai-tools/mcp):** Connect using the Supabase MCP server or plugin.
-- **[Windsurf](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
 
 ## Key concepts
 
@@ -330,7 +330,7 @@ You can load these prompts into various tools. Here are common options and where
 | JetBrains IDEs | `guidelines.md`                                | [Customize guidelines](https://www.jetbrains.com/help/junie/customize-guidelines.html)                                  |
 | Gemini CLI     | `GEMINI.md`                                    | [Gemini CLI codelab](https://codelabs.developers.google.com/gemini-cli-hands-on)                                        |
 | VS Code        | `.instructions.md`                             | Configure `.instructions.md`                                                                                            |
-| Windsurf       | `guidelines.md`                                | Configure `guidelines.md`                                                                                               |
+| Devin Desktop  | `guidelines.md`                                | Configure `guidelines.md`                                                                                               |
 
 
 ---
@@ -889,11 +889,9 @@ Add this configuration to `~/.kiro/settings/mcp.json`:
 }
 ```
 
-**Windsurf**
+**Devin Desktop**
 
-> **Warning:** Ensure you are running Windsurf version `0.1.37` or higher.
-
-Alternatively, add this configuration to `~/.codeium/windsurf/mcp_config.json`:
+Add this configuration to `~/.config/devin/mcp_config.json`:
 
 ```json
 {
@@ -909,8 +907,6 @@ Alternatively, add this configuration to `~/.codeium/windsurf/mcp_config.json`:
   }
 }
 ```
-
-Windsurf does not currently support remote MCP servers over HTTP transport. You need to use the mcp-remote package as a proxy.
 
 **Kimi Code**
 
@@ -954,10 +950,6 @@ Add this configuration to `~/.warp/.mcp.json`:
   }
 }
 ```
-
-Warp supports remote MCP servers natively, so no local proxy is needed. You can also add the server from the UI: open the MCP servers page (**Settings** > **Agents** > **MCP Servers**, or search for MCP in the command palette), click **+ Add**, and paste the same JSON.
-
-After adding the server, Warp opens a browser window to complete the Supabase OAuth flow and stores the credentials securely on your device.
 
 **Authentication**
 
@@ -6952,7 +6944,7 @@ For pgvector versions 0.7.0 and above, it's possible to create indexes on vector
 
 You can check your current pgvector version by running: `SELECT * FROM pg_extension WHERE extname = 'vector';` or by navigating to the [Extensions](https://supabase.com/dashboard/project/_/database/extensions) tab in your Supabase project dashboard.
 
-If you are on an earlier version of pgvector, you should [upgrade your project here](https://supabase.com/dashboard/project/_/settings/infrastructure).
+If you are on an earlier version of pgvector, you should [upgrade your project here](https://supabase.com/dashboard/project/_/settings/general).
 
 ## Resources
 
@@ -7005,7 +6997,7 @@ For pgvector versions 0.7.0 and above, it's possible to create indexes on vector
 
 You can check your current pgvector version by running: `SELECT * FROM pg_extension WHERE extname = 'vector';` or by navigating to the [Extensions](https://supabase.com/dashboard/project/_/database/extensions) tab in your Supabase project dashboard.
 
-If you are on an earlier version of pgvector, you should [upgrade your project here](https://supabase.com/dashboard/project/_/settings/infrastructure).
+If you are on an earlier version of pgvector, you should [upgrade your project here](https://supabase.com/dashboard/project/_/settings/general).
 
 ## Example with high-dimensional vectors
 
@@ -8765,7 +8757,7 @@ order by timestamp desc
 limit 100;
 ```
 
-Note: PostgREST error codes are only captured in the logs for projects running V14+. You can check your PostgREST version and upgrade your project in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure)
+Note: PostgREST error codes are only captured in the logs for projects running V14+. You can check your PostgREST version and upgrade your project in the [General Settings](https://supabase.com/dashboard/project/_/settings/general)
 
 ### Find specific API error
 
@@ -9002,7 +8994,7 @@ X-Powered-By: Nerd Rage
 
 Use JSON functions and operators to build dynamic responses from exceptions. Include the `status_text` key in the `detail` clause when you use a custom HTTP status code such as 419. See [JSON Functions and Operators](https://www.postgresql.org/docs/current/functions-json.html) in the Postgres documentation.
 
-For PostgREST 11 or earlier, use the legacy syntax for raising errors. [Check your PostgREST version](https://supabase.com/dashboard/project/_/settings/infrastructure) in the Dashboard. See [Raise errors with HTTP status codes](https://postgrest.org/en/stable/references/errors.html#raise-errors-with-http-status-codes) in the PostgREST documentation.
+For PostgREST 11 or earlier, use the legacy syntax for raising errors. [Check your PostgREST version](https://supabase.com/dashboard/project/_/settings/general) in the Dashboard. See [Raise errors with HTTP status codes](https://postgrest.org/en/stable/references/errors.html#raise-errors-with-http-status-codes) in the PostgREST documentation.
 
 ## Configure Data API security
 
@@ -22988,7 +22980,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -39415,7 +39407,7 @@ In addition to the pre-configured extensions, you can also install your own SQL 
 
 ## Upgrade extensions
 
-If a new version of an extension becomes available on Supabase, you need to initiate a software upgrade in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure) to access it. Software upgrades can also be initiated by restarting your server in the [General Settings](https://supabase.com/dashboard/project/_/settings/general).
+If a new version of an extension becomes available on Supabase, you need to initiate a software upgrade in the [General Settings](https://supabase.com/dashboard/project/_/settings/general) to access it. Software upgrades can also be initiated by restarting your server in the same [General Settings](https://supabase.com/dashboard/project/_/settings/general) page.
 
 ## Full list of extensions
 
@@ -40080,8 +40072,8 @@ It eliminates the need for servers to continuously poll for database changes and
 
 ```sql
 -- Example: enable the "pg_net" extension.
-create extension pg_net;
--- Note: The extension creates its own schema/namespace named "net" to avoid naming conflicts.
+create extension pg_net with schema "extensions";
+-- Note: The extension creates its own schema/namespace named "net" to avoid naming conflicts. Registering it in the extensions schema avoids exposing it in public and satisfies the Security Advisor check.
 
 -- Example: disable the "pg_net" extension
 drop extension if exists pg_net;
@@ -40340,7 +40332,7 @@ order by "created" desc;
 
 ## Configuration
 
-Note: Supabase supports reconfiguring pg\*net starting from v0.12.0+. For the latest release, initiate a Postgres upgrade in the [Infrastructure Settings](https://supabase.com/dashboard/project/*/settings/infrastructure).
+Note: Supabase supports reconfiguring `pg_net` starting from v0.12.0+. For the latest release, initiate a Postgres upgrade in the [General Settings](https://supabase.com/dashboard/project/_/settings/general).
 
 The extension is configured to reliably execute up to 200 requests per second. The response messages are stored for only 6 hours to prevent needless buildup. The default behavior can be modified by rewriting config variables.
 
@@ -78940,7 +78932,7 @@ Deploy read-only databases across multiple regions, for lower latency and better
 
 ### Log drains
 
-Export Supabase logs to third-party providers and external tooling. [Docs](https://supabase.com/docs/guides/telemetry/log-drains).
+Export Supabase logs to third-party providers and external tooling. [Docs](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains).
 
 ## Studio
 
@@ -82667,7 +82659,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -82888,7 +82880,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -83205,7 +83197,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -84133,7 +84125,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -84374,7 +84366,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -84595,7 +84587,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -86279,7 +86271,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -86595,7 +86587,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -87082,7 +87074,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -87326,7 +87318,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -87988,7 +87980,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -88308,7 +88300,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -88555,7 +88547,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -88767,7 +88759,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -89047,7 +89039,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -89685,7 +89677,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 **Dashboard**
 
 1. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Dashboard.
-2. Click **User Management Starter** under the **Community > Quickstarts** tab.
+2. Click **User Management Starter** under the **Reference > Examples** tab.
 3. Click **Run**.
 
 Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
@@ -101151,7 +101143,7 @@ Self-hosting [Prometheus](https://prometheus.io/docs/prometheus/latest/installat
 
 Caution: Use this guide only if you need full manual control (custom scrape topology, self-hosted Prometheus or non-standard auth).
 
-Otherwise, use the [Grafana Cloud integration](https://supabase.com/docs/guides/telemetry/metrics/grafana-cloud#installation) available in the Supabase Dashboard.
+Otherwise, use the [Grafana Cloud integration](https://supabase.com/docs/guides/monitoring-and-debugging/metrics/grafana-cloud#installation) available in the Supabase Dashboard.
 
 ## Architecture
 
@@ -102517,7 +102509,7 @@ This documentation covers frequently asked questions around subscription plans, 
 ### What are organizations and projects?
 
 The Supabase Platform has "organizations" and "projects". An organization may contain multiple projects. Each project is a dedicated Supabase instance with all of its sub-services including Storage, Auth, Functions and Realtime.
-Each organization only has a single subscription with a single plan (Free, Pro, Team or Enterprise). Project add-ons such as [Compute](https://supabase.com/docs/guides/platform/compute-and-disk), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/telemetry/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone), [Custom Domains](https://supabase.com/docs/guides/platform/custom-domains) and [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) are configured per project and are added to your organization subscription.
+Each organization only has a single subscription with a single plan (Free, Pro, Team or Enterprise). Project add-ons such as [Compute](https://supabase.com/docs/guides/platform/compute-and-disk), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone), [Custom Domains](https://supabase.com/docs/guides/platform/custom-domains) and [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) are configured per project and are added to your organization subscription.
 
 Read more on [About billing on Supabase](https://supabase.com/docs/guides/platform/billing-on-supabase#organization-based-billing).
 
@@ -109259,7 +109251,7 @@ Apply network restrictions for your project's database.
 
 This topic explains how to configure network restrictions for your Supabase project's database. Network restrictions let you control which IP ranges can connect to Postgres and its pooler, reducing your project's exposure to unauthorized access.
 
-Note: If you can't find the Network Restrictions section in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings), update your Postgres version in [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure).
+Note: If you can't find the Network Restrictions section in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings), update your Postgres version in [General Settings](https://supabase.com/dashboard/project/_/settings/general).
 
 Each Supabase project supports configurable restrictions on the IP ranges allowed to connect to Postgres and its pooler. These restrictions are enforced before traffic reaches your database. Connections that aren't restricted by IP still need to authenticate with valid database credentials.
 
@@ -109699,7 +109691,7 @@ Target organization - the organization you want to move the project to
 
 ## Usage-billing and project add-ons
 
-For usage metrics such as disk size, egress or image transformations and project add-ons such as [Compute Add-On](https://supabase.com/docs/guides/platform/compute-and-disk), [Point-In-Time-Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/telemetry/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone) or a [Custom Domain](https://supabase.com/docs/guides/platform/custom-domains), the source organization will still be charged for the usage up until the transfer. The charges will be added to the invoice when the billing cycle resets.
+For usage metrics such as disk size, egress or image transformations and project add-ons such as [Compute Add-On](https://supabase.com/docs/guides/platform/compute-and-disk), [Point-In-Time-Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone) or a [Custom Domain](https://supabase.com/docs/guides/platform/custom-domains), the source organization will still be charged for the usage up until the transfer. The charges will be added to the invoice when the billing cycle resets.
 
 The target organization will be charged at the end of the billing cycle for usage after the project transfer.
 
@@ -112639,7 +112631,9 @@ Your Supabase project supports connecting to the Postgres database using either 
 
 Enabling temporary access only applies to connections to Postgres and Supavisor ("Connection Pooler"); all HTTP APIs offered by Supabase (e.g., PostgREST, Storage, Auth) require authentication tokens specific to the service and are independent of the Supabase platform user(s).
 
-Note: Projects need to be at least on Postgres 17.6.1.081 (or higher) to enable temporary access. You can find the Postgres version of your project on the [infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. If your project is on an older version, you will need to [upgrade](https://supabase.com/docs/guides/platform/upgrading) to use this feature.
+Note: [Enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on incoming connections must be enabled before temporary access can be used.
+
+Note: Projects need to be at least on Postgres 17.6.1.081 (or higher) to enable temporary access. You can find the Postgres version of your project on the [General Settings](https://supabase.com/dashboard/project/_/settings/general) page. If your project is on an older version, you will need to [upgrade](https://supabase.com/docs/guides/platform/upgrading) to use this feature.
 
 ## Manage temporary access via the dashboard
 
@@ -112655,11 +112649,11 @@ export SUPABASE_MANAGEMENT_API_TOKEN="your-access-token"
 export PROJECT_REF="your-project-ref"
 
 # Get current temporary access status
-curl -X GET "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit-access" \
+curl -X GET "https://api.supabase.com/v1/projects/$PROJECT_REF/jit-access" \
   -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN"
 
 # Enable temporary access
-curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit-access" \
+curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/jit-access" \
   -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -112667,7 +112661,7 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit-acce
   }'
 
 # Disable temporary access
-curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit-access" \
+curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/jit-access" \
   -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -112760,7 +112754,7 @@ Note: Free projects will move to the latest minor version when their paused proj
 
 The upgrade process is as follows:
 
-1. Use the "Upgrade project" button on the [Infrastructure](https://supabase.com/dashboard/project/_/settings/infrastructure) section of your dashboard.
+1. Use the "Upgrade project" button on the [General settings](https://supabase.com/dashboard/project/_/settings/general) page of your dashboard.
 2. An estimate of the time to upgrade is shown and anything that needs to be addressed before you are eligible to upgrade is shown as a warning. Ensure you have reviewed the [caveats](#caveats) section of this document before executing the upgrade.
 3. Your project is taken offline and the Dashboard shows the upgrade status.
 4. Behind the scenes, a new instance is created running the latest version of Supabase.
@@ -112781,7 +112775,7 @@ When upgrading, a notification will inform you about what is blocking the upgrad
 3. Logical replication slots must be dropped.
 4. Deprecated/unsupported extensions must be dropped. Extensions can have dependencies, make sure you backup that data to restore it after the upgrade, with the updated extension version.
 
-Newer versions of services can break functionality or change the performance characteristics you rely on. If your project is eligible for an upgrade, you will be able to find your current service versions from within [the Supabase dashboard](https://supabase.com/dashboard/project/_/settings/infrastructure).
+Newer versions of services can break functionality or change the performance characteristics you rely on. If your project is eligible for an upgrade, you will be able to find your current service versions from within [the Supabase dashboard](https://supabase.com/dashboard/project/_/settings/general).
 
 Breaking changes are generally only present in major version upgrades of Postgres and PostgREST. You can find their respective release notes at:
 
@@ -124995,10 +124989,15 @@ Note: On managed Supabase platform, Edge Functions are deployed across multiple 
 The default `hello` function is located at `volumes/functions/hello/index.ts`. You can invoke it immediately after starting your stack:
 
 ```sh
-curl http://<your-domain>/functions/v1/hello
+curl http://<your-domain>/functions/v1/hello \
+   --header 'apiKey: <sb_publishable/sb_secret key>'
 ```
 
-This returns `"Hello from Edge Functions!"`.
+This returns:
+
+```json
+{ "message": "Hello from Edge Functions!" }
+```
 
 ## Create a new function
 
@@ -125012,15 +125011,19 @@ touch volumes/functions/my-function/index.ts
 Add the following code to `index.ts`:
 
 ```typescript
-Deno.serve(async (req: Request) => {
-  const { name } = await req.json()
-  const message = `Hello, ${name}!`
+import { withSupabase } from '@supabase/server'
 
-  return new Response(JSON.stringify({ message }), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-})
+export default {
+  fetch: withSupabase({ auth: 'none' }, async (req) => {
+    const { name } = await req.json()
+    const message = `Hello, ${name}!`
+
+    return Response.json({ message })
+  }),
+}
 ```
+
+The `auth` option controls who can call the function: `'none'` accepts every request, `'user'` requires a valid user JWT, and `'publishable'` / `'secret'` require an API key. See the [Edge Functions auth guide](https://supabase.com/docs/guides/functions/auth) for details.
 
 ### Step 2: Restart the functions service to pick up the new function
 
@@ -125108,24 +125111,25 @@ The functions service is pre-configured with the following environment variables
 | `SUPABASE_SECRET_KEYS`      | `{"default":"sb_secret_...}`      | New secret API key                                |
 | `SUPABASE_JWKS`             | `{"keys":[{...}]}`                | JWKS used to verify JWTs issued by Auth           |
 
-Here's an example function that queries a table using `@supabase/supabase-js`:
+Here's an example function that queries a table using the admin client provided by `@supabase/server`:
 
 ```typescript
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { withSupabase } from '@supabase/server'
 
-Deno.serve(async () => {
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  )
+export default {
+  fetch: withSupabase({ auth: 'secret' }, async (_req, ctx) => {
+    // ctx.supabaseAdmin bypasses RLS. This function requires a secret
+    // API key, so only server-to-server callers can reach it.
+    const { data, error } = await ctx.supabaseAdmin.from('todos').select('*')
 
-  const { data, error } = await supabase.from('todos').select('*')
-
-  return new Response(JSON.stringify({ data, error }), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-})
+    return Response.json({ data, error })
+  }),
+}
 ```
+
+`withSupabase` reads `SUPABASE_URL`, the API keys, and `SUPABASE_JWKS` from the environment variables above. You don't need to wire up `createClient` yourself.
+
+Note: `auth: 'user'` verifies caller JWTs against `SUPABASE_JWKS`. If you're on a legacy setup without it configured, see [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys).
 
 ### Internal vs external URLs
 
@@ -137273,7 +137277,7 @@ const { data, error } = await supabase
   .not('id', 'in', '(5,6,7,8,9,...10,000)')
 ```
 
-To circumvent this issue, you must use [RPCs](https://supabase.com/docs/reference/javascript/explain?queryGroups=example\&example=call-a-postgres-function-with-arguments). They are database functions that you can call from the API. Instead of including a query's structure within the URL or header, they move it into the request's payload.
+To circumvent this issue, you must use [RPCs](https://supabase.com/docs/reference/javascript/rpc?queryGroups=example\&example=call-a-postgres-function-with-arguments). They are database functions that you can call from the API. Instead of including a query's structure within the URL or header, they move it into the request's payload.
 
 Here is a basic example of a [database function](https://supabase.com/docs/guides/database/functions)
 
@@ -137289,7 +137293,7 @@ end;
 $$;
 ```
 
-The [RPC](https://supabase.com/docs/reference/javascript/explain?queryGroups=example\&example=call-a-postgres-function-with-arguments) can then call the function with an array that contains more than 16KB of data
+The [RPC](https://supabase.com/docs/reference/javascript/rpc?queryGroups=example\&example=call-a-postgres-function-with-arguments) can then call the function with an array that contains more than 16KB of data
 
 ```javascript
 const { data, error } = await supabase.rpc('example', { id: ['e2f34fb9-bbf9-4649-9b2f-09ec56e67a42', ...900 more UUIDs] })
@@ -137304,7 +137308,7 @@ This error typically occurs as a protective measure to prevent unauthorized acce
 
 To address this issue, we recommend following these troubleshooting steps:
 
-- Verify Project ID: Ensure the $PROJECT\*REF variable in your commands contains the correct Project ID. You can find your Reference ID under [Project -> Settings -> General](https://supabase.com/dashboard/project/*/settings/general) in your Supabase Dashboard. A Reference ID looks something like `xvljpkujuwroxcuvossw`.
+- Verify Project ID: Ensure the `$PROJECT_REF` variable in your commands contains the correct Project ID. You can find your Reference ID under [Project -> Settings -> General](https://supabase.com/dashboard/project/_/settings/general) in your Supabase Dashboard. A Reference ID looks something like `xvljpkujuwroxcuvossw`.
 - Authorization Check: Confirm that you’ve been properly authorized. You can also generate a new Access Token in your dashboard and use it for login. Generate a new token [here](https://supabase.com/dashboard/account/tokens) and use it to [log in](https://supabase.com/docs/reference/cli/supabase-login).
 - Re-link Project: Try [re-linking](https://supabase.com/docs/reference/cli/supabase-link) your project with the newly generated token.
 - Owner/Admin Permissions: Make sure you have [Owner/Admin](https://supabase.com/docs/guides/platform/access-control) permissions for the project.
@@ -137382,7 +137386,7 @@ const { data, error } = await supabase.auth.signInWithOAuth({
 
 # Grafana not displaying data
 
-This guide is for identifying configuration mistakes in [self-hosted Supabase Grafana installations](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted)
+This guide is for identifying configuration mistakes in [self-hosted Supabase Grafana installations](https://supabase.com/docs/guides/monitoring-and-debugging/metrics/grafana-self-hosted)
 
 ## Step 1: Ping your Grafana endpoint
 
@@ -139256,7 +139260,7 @@ Applying an index can be slow and computationally expensive, so there are a few 
 
 **1. Make sure your pgvector is the latest available version on Supabase.**
 
-Versions 0.6 and later have accelerated HNSW build speeds. You can observe your current version in the [Dashboard's Extensions Page](https://supabase.com/dashboard/project/_/database/extensions). You can perform a software upgrade in the [Infrastructure Settings ](https://supabase.com/dashboard/project/_/settings/infrastructure)if necessary.
+Versions 0.6 and later have accelerated HNSW build speeds. You can observe your current version in the [Dashboard's Extensions Page](https://supabase.com/dashboard/project/_/database/extensions). You can perform a software upgrade in the [General Settings](https://supabase.com/dashboard/project/_/settings/general) if necessary.
 
 **2. Setting up an external connection**
 
@@ -139448,7 +139452,7 @@ grant pg_read_all_stats to postgres;
 
 # Interpreting Supabase Grafana CPU charts
 
-> [Guide](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted) for setting up Supabase Grafana
+> [Guide](https://supabase.com/docs/guides/monitoring-and-debugging/metrics/grafana-self-hosted) for setting up Supabase Grafana
 
 ## CPU
 
@@ -140402,7 +140406,7 @@ If you are trying to make changes, use the cron functions. If the cron functions
 
 ## Cron Jobs are not running
 
-> You should consider initiating a software upgrade in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure) if your Postgres version is below v15.6.1.122. Upgrading will give you access to pg\_cron v1.6.4+, which has many bug fixes and auto-revive capabilities.
+> You should consider initiating a software upgrade in the [General Settings](https://supabase.com/dashboard/project/_/settings/general) if your Postgres version is below v15.6.1.122. Upgrading will give you access to pg\_cron v1.6.4+, which has many bug fixes and auto-revive capabilities.
 
 ### Debugging steps:
 
@@ -140487,7 +140491,7 @@ You can view your concurrent peak connection usage throughout the day at the bot
 
 Unfortunately, excessive resource strain can slow down or disrupt jobs.
 
-Go to the [reports page](https://supabase.com/dashboard/project/_/observability/database) (or [Supabase Grafana](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted) if you have it setup), and check for signs of resource exhaustion. If it's clear your database is under pressure, consider upgrading your compute add-on or following the advice from one of the optimization guides:
+Go to the [reports page](https://supabase.com/dashboard/project/_/observability/database) (or [Supabase Grafana](https://supabase.com/docs/guides/monitoring-and-debugging/metrics/grafana-self-hosted) if you have it setup), and check for signs of resource exhaustion. If it's clear your database is under pressure, consider upgrading your compute add-on or following the advice from one of the optimization guides:
 
 - [Connections](https://github.com/orgs/supabase/discussions/27141)
 - [Disk/IO](https://github.com/orgs/supabase/discussions/27003)
@@ -140500,7 +140504,7 @@ It is important to make sure you are running the latest release of pg\_cron (1.6
 
 #### Check the log explorer for more information
 
-Although pg\*cron records errors in the `cron.job_run_details` table, in rare cases, more information can be found in the general Postgres logs. You can check the [Log Explorer](https://supabase.com/dashboard/project/*/logs/explorer) for failure events with the following query
+Although `pg_cron` records errors in the `cron.job_run_details` table, in rare cases, more information can be found in the general Postgres logs. You can check the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer) for failure events with the following query
 
 ```sql
 select
@@ -140525,7 +140529,7 @@ order by timestamp desc
 limit 100;
 ```
 
-If you're interested in modifying the query, there is an advanced [guide](https://github.com/orgs/supabase/discussions/26224) for navigating the Postgres logs and a general purpose [one](https://supabase.com/docs/guides/telemetry/advanced-log-filtering) for applying filters.
+If you're interested in modifying the query, there is an advanced [guide](https://github.com/orgs/supabase/discussions/26224) for navigating the Postgres logs and a general-purpose [one](https://supabase.com/docs/guides/monitoring-and-debugging/advanced-log-filtering) for applying filters.
 
 
 
@@ -140563,7 +140567,7 @@ You can then search for your custom messages in the [Logs Interface](https://sup
 
 #### Upgrading pg\_cron version
 
-The current version of pg\*cron on Supabase is 1.6.4. It comes with a [few bug fixes](https://github.com/citusdata/pg_cron/releases/tag/v1.6.4). You should consider upgrading to Postgres v15.6.1.122+ in the[ Infrastructure Settings](https://supabase.com/dashboard/project/*/settings/infrastructure) to get the latest extension.
+The current version of `pg_cron` on Supabase is 1.6.4. It comes with a [few bug fixes](https://github.com/citusdata/pg_cron/releases/tag/v1.6.4). You should consider upgrading to Postgres v15.6.1.122+ in the [General Settings](https://supabase.com/dashboard/project/_/settings/general) to get the latest extension.
 
 
 
@@ -140668,14 +140672,14 @@ The bug is triggered when an `or()` filter is included in a mutation request. Po
 ## How to confirm
 
 1. **Reproduce the asymmetry** — run the same filter as a `GET` request. If it succeeds but the `PATCH`/`POST`/`DELETE` fails with the same column reference, the bug is the likely cause.
-2. **Check your PostgREST version** — go to [Project Settings > Infrastructure](https://supabase.com/dashboard/project/_/settings/infrastructure) and note the Postgres version. PostgREST 14.1 and earlier are affected; 14.4+ includes the fix.
+2. **Check your PostgREST version** — go to [Project Settings > General](https://supabase.com/dashboard/project/_/settings/general) and note the Postgres version. PostgREST 14.1 and earlier are affected; 14.4+ includes the fix.
 3. **Check Postgres logs** — if you have logging enabled, you should see `column "example_column" does not exist` errors correlating with the timestamps of the failed mutation requests.
 
 ## Resolution
 
 ### Option 1: Upgrade (permanent fix)
 
-Navigate to [Project Settings > Infrastructure](https://supabase.com/dashboard/project/_/settings/infrastructure) and upgrade to the latest Postgres version. This automatically upgrades PostgREST to 14.5+, where the bug is resolved.
+Navigate to [Project Settings > General](https://supabase.com/dashboard/project/_/settings/general) and upgrade to the latest Postgres version. This automatically upgrades PostgREST to 14.5+, where the bug is resolved.
 
 ### Option 2: Query workaround (immediate)
 
@@ -142764,7 +142768,7 @@ Show RLS and before after for above examples.
 | ---- | ---------------------------------- | ---------------------------------------------------- | ------- | ---- |
 | 1    | auth.uid()=user\_id                | user\_id indexed                                     | 171ms   | \<.1 |
 | 2a   | auth.uid()=user\_id                | (select auth.uid()) = user\_id                       | 179     | 9    |
-| 2b   | is*admin() \_table join*           | (select is*admin()) \_table join*                    | 11,000  | 7    |
+| 2b   | `is_admin()` *table join*          | (select `is_admin()`) *table join*                   | 11,000  | 7    |
 | 2c   | is\_admin() OR auth.uid()=user\_id | (select is\_admin()) OR (select auth.uid()=user\_id) | 11,000  | 10   |
 | 2d   | has\_role()=role                   | (select has\_role())=role                            | 178,000 | 12   |
 | 2e   | team\_id=any(user\_teams())        | team\_id=any(array(select user\_teams()))            | 173000  | 16   |
@@ -144530,7 +144534,7 @@ The Postgres EXPLAIN command shows the execution plan of a SQL query. This plan 
 **Using EXPLAIN with supabase-js Library**
 
 1. Follow the [Performance Debugging Guide](https://supabase.com/docs/guides/database/debugging-performance) to enable the functionality on your project.
-2. Once debugging is enabled, you can use the [EXPLAIN](https://supabase.com/docs/reference/javascript/explain?queryGroups=example\&example=get-execution-plan-with-analyze-and-verbose) function in your application code. Here's how to use it
+2. Once debugging is enabled, you can use the [EXPLAIN](https://supabase.com/docs/reference/javascript/using-modifiers-explain?queryGroups=example\&example=get-execution-plan-with-analyze-and-verbose) function in your application code. Here's how to use it
 
 ```
 const { data, error } = await supabase
@@ -145140,7 +145144,7 @@ With this setup, the staging branch deploys to its own environment and is fully 
 
 # Webhook debugging guide
 
-> NOTE: version 0.10.0 of pg\*net is out. You should consider updating your database in the[ Infrastructure Settings](https://supabase.com/dashboard/project/*/settings/infrastructure) if you are on a prior version. If you do not know your version, you can check the [Extensions Dashboard](https://supabase.com/dashboard/project/_/database/extensions).
+> NOTE: version 0.10.0 of `pg_net` is out. You should consider updating your database in the [General Settings](https://supabase.com/dashboard/project/_/settings/general) if you are on a prior version. If you do not know your version, you can check the [Extensions Dashboard](https://supabase.com/dashboard/project/_/database/extensions).
 
 **Debugging Steps**
 
@@ -145167,7 +145171,7 @@ The `net` tables are special and if triggers on them fail or call a pg\_net func
 
 **3. Check for timeout errors**
 
-> **NOTE**: The timeout issue has been patched in pg\*net v0.11. It is available in Postgres 15.6.1.135 and above. You can upgrade your version of Postgres in the [Infrastructure Settings.](https://supabase.com/dashboard/project/*/settings/infrastructure)
+> **NOTE**: The timeout issue has been patched in `pg_net` v0.11. It is available in Postgres 15.6.1.135 and above. You can upgrade your version of Postgres in the [General Settings](https://supabase.com/dashboard/project/_/settings/general).
 
 Go to your [Table Editor](https://supabase.com/dashboard/project/_/editor/) and navigate to the net schema. It will contain two tables:
 

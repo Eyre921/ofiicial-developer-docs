@@ -8,20 +8,21 @@ path: docs/help-center/account/general/how-can-i-see-information-about-credit-us
 
 # How can I see information about credit usage for my account?
 
-You can access information about credit usage for your account in [Usage Analytics.](https://elevenlabs.io/app/usage) To access this, click <strong>Developers</strong> in the sidebar and select the <strong>Usage</strong> tab.
+You can view credit usage for your account in [usage analytics](https://elevenlabs.io/app/usage). Click **Developers** at the bottom of the sidebar, open the **Analytics** tab, then select **Usage**.
 
-Usage Analytics lets you view all the activity on the platform for your account or Workspace.
+The Usage view shows credit consumption and related performance metrics, including:
 
-If you're part of a multi-seat Workspace, the you will be able to switch between Account and Workspace. Account shows data for your individual account, while Workspace covers all accounts in your Workspace. If you’re not in a multi-seat Workspace, you will not see this option.
+* Credit usage, which you can break down and filter (for example, by voice, product, or API key)
+* Average time to first byte
+* Average time to completed transcript
+* Concurrent requests
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/38545652599825" alt="" />
+When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-You can filter your usage data in a number of different ways.
+![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113359Z&X-Amz-Expires=604800&X-Amz-Signature=c767d9a906872e246aed4b7b38834f99fa5924b22dd24833872412e442220af5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-The Metric menu allows you to view usage by a range of metrics, including Credits, Minutes Used, and Seconds to First Byte.
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
-The Breakdown menu allows you to view your usage by voice, product or API key, for example. 
+You can filter by time period and granularity, and refine the view with group-by and filter options. For example, you can filter to see how many credits were used with a specific voice this month.
 
-Date Range allows you to select the time period to display. Options include the last 15 minutes, day, week, month, billing cycle or custom date range.
-
-If you want to be more specific, you can use filters to show only your usage for specific voices, products, API keys along with a range of other options. For example, you can filter to see how many credits were used with a specific voice this month.
+For a full walkthrough, see [Usage analytics](/docs/overview/administration/usage-analytics).

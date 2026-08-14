@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 121 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 122 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -82,6 +82,7 @@
 - `integrations/coding-agents` — [Coding Agents](pages/integrations/coding-agents.md) · [原文](https://docs.sentry.io/integrations/coding-agents.md)
 - `integrations/compliance` — [Compliance](pages/integrations/compliance.md) · [原文](https://docs.sentry.io/integrations/compliance.md)
 - `integrations/data-forwarding` — [Data Forwarding](pages/integrations/data-forwarding.md) · [原文](https://docs.sentry.io/integrations/data-forwarding.md)
+- `integrations/debugging` — [Debugging](pages/integrations/debugging.md) · [原文](https://docs.sentry.io/integrations/debugging.md)
 - `integrations/deployment` — [Deployment](pages/integrations/deployment.md) · [原文](https://docs.sentry.io/integrations/deployment.md)
 - `integrations/feature-flag` — [Feature Flags](pages/integrations/feature-flag.md) · [原文](https://docs.sentry.io/integrations/feature-flag.md)
 - `integrations/integration-platform` — [Integration Platform](pages/integrations/integration-platform.md) · [原文](https://docs.sentry.io/integrations/integration-platform.md)

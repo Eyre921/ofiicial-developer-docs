@@ -14,7 +14,7 @@ There are <strong>two ways to earn from your books on ElevenReader</strong>
 
 ElevenReader Ultra subscribers receive <strong>20 hours of listening</strong> bundled into their subscription.
 
-* Books included in the Ultra subscription earn <strong>$0.20 per hour of verified listening streamed, with a cap of $2.50 per book.</strong>
+* Books included in the Ultra subscription earn <strong>\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book.</strong>
 * Listening is calculated based on validated playback
 * Earnings accrue as subscribers engage with your content
 

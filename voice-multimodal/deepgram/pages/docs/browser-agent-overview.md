@@ -149,7 +149,7 @@ const config = {
       prompt: "You are a helpful voice assistant.",
     },
     speak: {
-      provider: { type: "deepgram", model: "aura-2-thalia-en" },
+      provider: { type: "deepgram", version: "v2", model: "flux-kit-en" },
     },
   },
 };

@@ -55,14 +55,14 @@ An agent configuration
   "config": {
     "language": "en-US",
     "model": "general",
-    "sensitivity": 0.75,
+    "profanity_filter": false,
     "punctuation": true,
-    "profanity_filter": false
+    "sensitivity": 0.75
   },
   "metadata": {
-    "project": "123456-7890-1234-5678-901234",
+    "description": "Agent configuration for US English transcription with moderate sensitivity",
     "owner": "jane.doe@example.com",
-    "description": "Agent configuration for US English transcription with moderate sensitivity"
+    "project": "123456-7890-1234-5678-901234"
   },
   "created_at": "2024-01-15T09:30:00Z",
   "updated_at": "2024-01-15T09:30:00Z"

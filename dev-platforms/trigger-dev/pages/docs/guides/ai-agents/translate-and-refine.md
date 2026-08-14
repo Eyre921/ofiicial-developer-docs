@@ -27,7 +27,7 @@ This example task translates text into a target language and refines the transla
 ```typescript theme={"theme":"css-variables"}
 import { task } from "@trigger.dev/sdk";
 import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 
 interface TranslationPayload {
   text: string;
@@ -37,9 +37,17 @@ interface TranslationPayload {
   rejectionCount?: number;
 }
 
+interface TranslationResult {
+  finalTranslation: string | undefined;
+  iterations: number;
+  status: "MAX_ITERATIONS_REACHED" | "APPROVED";
+}
+
 export const translateAndRefine = task({
   id: "translate-and-refine",
-  run: async (payload: TranslationPayload) => {
+  // Explicit return type: the task returns its own recursive result, so
+  // annotate it to avoid TypeScript's circular-inference error.
+  run: async (payload: TranslationPayload): Promise<TranslationResult> => {
     const rejectionCount = payload.rejectionCount || 0;
 
     // Bail out if we've hit the maximum attempts
@@ -57,7 +65,7 @@ export const translateAndRefine = task({
       : `Translate this text into ${payload.targetLanguage}, preserving style and meaning: "${payload.text}"`;
 
     const translation = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -77,7 +85,7 @@ export const translateAndRefine = task({
 
     // Evaluate the translation
     const evaluation = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -85,7 +93,7 @@ export const translateAndRefine = task({
                  Your goal is to ensure translations are accurate and natural, but not necessarily perfect.
                  This is iteration ${
                    rejectionCount + 1
-                 } of a maximum 5 iterations.
+                 } of a maximum 10 iterations.
                  
                  RESPONSE FORMAT:
                  - If the translation meets 90%+ quality: Respond with exactly "APPROVED" (nothing else)
@@ -136,8 +144,9 @@ export const translateAndRefine = task({
       };
     }
 
-    // If not approved, recursively call the task with feedback
-    await translateAndRefine
+    // If not approved, recursively refine with feedback and return the
+    // refined result so the final translation propagates back up.
+    return await translateAndRefine
       .triggerAndWait({
         text: payload.text,
         targetLanguage: payload.targetLanguage,

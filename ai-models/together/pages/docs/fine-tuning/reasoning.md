@@ -21,6 +21,8 @@ The following models support reasoning fine-tuning. See [supported models](/docs
 <Accordion title="Supported models">
   | Organization | Model                                              | API ID                                               |
   | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
+  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
   | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
@@ -34,6 +36,7 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
   | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
   | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |

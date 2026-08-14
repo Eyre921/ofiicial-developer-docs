@@ -7,6 +7,8 @@ path: docs/redis/search/aggregations
 Aggregations let you compute analytics over your indexed data — metrics like averages, sums, and statistics,
 as well as bucket-based groupings like terms, ranges, and histograms.
 
+Use the [`SEARCH.AGGREGATE`](/docs/redis/commands/search/search-aggregate) command to run aggregations.
+
 They are useful when you want to answer questions like:
 
 * "What is the average price?"

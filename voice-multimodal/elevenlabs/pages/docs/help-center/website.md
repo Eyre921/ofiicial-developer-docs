@@ -11,7 +11,6 @@ path: docs/help-center/website
 |                                                                                                                                                        |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [Can I access the files I generated in the past?](/docs/help-center/website/can-i-access-the-files-i-generated-in-the-past)                            |
-| [Saturday Sessions](/docs/help-center/website/saturday-sessions)                                                                                       |
 | [Website problems with Safari, iOS (iPhone), macOS (Mac)](/docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac)                 |
 | [When using the website, why am I getting a client-side error?](/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error) |
 | [Why is the website refreshing and logging me out?](/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out)                        |

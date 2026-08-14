@@ -36,7 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/webhooks/update
 - `retry_enabled` (boolean, optional, nullable) — Whether to enable automatic retries for transient failures (5xx, 429, timeout)
 - `request_headers` (map from string to string, optional, nullable) — A list of request headers to include with the webhook delivery (optional)
 - `events` (list of enum, optional, nullable) — The complete set of workspace-level events this webhook should be subscribed to. The webhook is added to the events in the list and removed from any not in the list. Omit to leave the current event subscriptions unchanged.
-  - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`
+  - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`, `flows`
 
 ## Response
 

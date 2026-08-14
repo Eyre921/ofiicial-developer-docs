@@ -40,7 +40,7 @@ A list of purchases for a specific project
   - `order_id` (string, optional)
   - `expiration` (string, optional)
   - `created` (string, optional)
-  - `amount` (double, optional)
+  - `amount` (float, optional)
   - `units` (string, optional)
   - `order_type` (string, optional)
 

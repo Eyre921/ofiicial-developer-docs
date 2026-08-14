@@ -18,4 +18,3 @@ path: docs/help-center/other
 | [Is there a community for ElevenLabs?](/docs/help-center/other/is-there-a-community-for-eleven-labs)                                           |
 | [What is ElevenLabs?](/docs/help-center/other/what-is-eleven-labs)                                                                             |
 | [What languages do you support?](/docs/help-center/other/what-languages-do-you-support)                                                        |
-| [Your ticket has been verified!](/docs/help-center/other/your-ticket-has-been-verified)                                                        |

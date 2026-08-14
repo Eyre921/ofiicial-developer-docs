@@ -157,7 +157,7 @@ These parameters control [Flux end-of-turn detection](/docs/flux/configuration#p
 | `agent.speak.provider.voice`       | Object or String | Voice configuration. For Cartesia: use object with `mode` and `id`. For OpenAI: use a string value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `agent.speak.provider.speed`       | Float or String  | Speaking rate control for Deepgram and Cartesia TTS, defaulting to `1.0`. For Aura (`provider.version` `v1`): any float between `0.7` and `1.5`. For [Flux TTS](/docs/flux-tts/overview) (`provider.version` `v2`): one of `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, `1.15`. For Cartesia: accepts `slowest`, `slow`, `normal`, `fast`, `fastest`, or a numerical value for granular control. See [TTS voice controls](/docs/tts-voice-controls#parameters) and [Cartesia speed documentation](https://docs.cartesia.ai/build-with-cartesia/capability-guides/control-speed-and-emotion#api). |
 | `agent.speak.provider.volume`      | Number           | Optional volume level for Cartesia TTS. Range: `0.5` - `2.0`. See [Cartesia volume, speed, and emotion](https://docs.cartesia.ai/build-with-cartesia/sonic-3/volume-speed-emotion#volume-speed-and-emotion).                                                                                                                                                                                                                                                                                                                                                                                     |
-| `agent.speak.provider.language`    | String           | Optional language setting for Deepgram, Cartesia, and Eleven Labs provider. Maps to Eleven Labs `language_code`. Deepgram Aura-2 models automatically leverage the language within the name.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `agent.speak.provider.language`    | String           | Optional language setting for Cartesia and Eleven Labs providers. Maps to Eleven Labs `language_code`. Deepgram voices carry their language in the model name (e.g. `flux-kit-en`, `aura-2-sirio-es`) and reject a `language` field with `UNPARSABLE_CLIENT_MESSAGE`.                                                                                                                                                                                                                                                                                                                            |
 | `agent.speak.provider.engine`      | String           | Optional engine for Amazon (AWS) Polly provider                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `agent.speak.provider.credentials` | Object           | Optional credentials for Amazon (AWS) Polly provider. When present, must include  `type`,`region`, `access_key_id`, `secret_access_key` and `session_token` if STS is used                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `agent.speak.endpoint`             | Object           | Optional if TTS provider is Deepgram. Required for non-Deepgram TTS providers. When present, must include `url` field and `headers` object                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -183,136 +183,129 @@ These parameters control [Flux end-of-turn detection](/docs/flux/configuration#p
 
 ## Full Example
 
-Below is an in-depth example showing all the available fields for `Settings` with all the optional fields for individual provider specific settings.
+Below is an in-depth example of a complete `Settings` message. Every field shown is valid together, and the message parses as-is against the live API. Options that require provider-specific or account-specific values live on their own pages:
+
+* Third-party and BYO `speak` providers (Cartesia, Eleven Labs, OpenAI, AWS Polly, custom endpoints): [TTS Models](/docs/voice-agent-tts-models)
+* BYO LLM `think.endpoint`: [LLM Models](/docs/voice-agent-llm-models). `context_length` is documented under `agent.think.context_length` above and is only configurable with a custom `think.endpoint`.
+* Server-side functions add an `endpoint` object to the function (the function below is client-side); see `agent.think.functions.endpoint` in the parameter table above and the snippet after the example. For the call flow, see [Build a Function Call](/docs/build-a-function-call).
+
+  ```json JSON
+  {
+    "type": "Settings",
+    "tags": ["order", "customer_service"],
+    "experimental": false,
+    "mip_opt_out": false,
+    "flags": {
+      "history": true
+    },
+    "audio": {
+      "input": {
+        "encoding": "linear16",
+        "sample_rate": 24000
+      },
+      "output": {
+        "encoding": "linear16",
+        "sample_rate": 24000,
+        "container": "none"
+      }
+    },
+    "agent": {
+      "context": {
+        "messages": [
+          {
+            "type": "History",
+            "role": "user",
+            "content": "What's my order status?"
+          },
+          {
+            "type": "History",
+            "function_calls": [
+              {
+                "id": "fc_12345678-90ab-cdef-1234-567890abcdef",
+                "name": "check_order_status",
+                "client_side": true,
+                "arguments": "{\"order_id\": \"ORD-123456\"}",
+                "response": "Order #123456 status: Shipped - Expected delivery date: 2024-03-15"
+              }
+            ]
+          },
+          {
+            "type": "History",
+            "role": "assistant",
+            "content": "Your order #123456 has been shipped and is expected to arrive on March 15th, 2024."
+          }
+        ]
+      },
+      "listen": {
+        "provider": {
+          "type": "deepgram",
+          "model": "flux-general-en",
+          "version": "v2",
+          "keyterms": ["hello", "goodbye"],
+          "eot_threshold": 0.8,
+          "eager_eot_threshold": 0.5,
+          "eot_timeout_ms": 5000
+        }
+      },
+      "think": {
+        "provider": {
+          "type": "open_ai",
+          "model": "gpt-5-mini",
+          "reasoning_mode": "medium"
+        },
+        "prompt": "You are a helpful AI assistant focused on customer service.",
+        "functions": [
+          {
+            "name": "check_order_status",
+            "description": "Check the status of a customer order",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "order_id": {
+                  "type": "string",
+                  "description": "The order ID to check"
+                }
+              },
+              "required": ["order_id"]
+            }
+          }
+        ]
+      },
+      "speak": {
+        "provider": {
+          "type": "deepgram",
+          "version": "v2",
+          "model": "flux-kit-en",
+          "speed": 1.0
+        }
+      },
+      "greeting": "Hello! How can I help you today?"
+    }
+  }
+  ```
+
+The function above runs client-side: your application receives the [Function Call Request](/docs/voice-agent-function-call-request) and returns the result. To have Deepgram call the function server-side instead, add an `endpoint` object to it. The server resolves the URL when it applies `Settings`, so the endpoint must be reachable:
 
 ```json JSON
 {
-  "type": "Settings",
-  "tags": ["order", "customer_service"],
-  "experimental": false,
-  "mip_opt_out": false,
-  "flags": {
-    "history": true
-  },
-  "audio": {
-    "input": {
-      "encoding": "linear16",
-      "sample_rate": 24000
+  "name": "check_order_status",
+  "description": "Check the status of a customer order",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "order_id": {
+        "type": "string",
+        "description": "The order ID to check"
+      }
     },
-    "output": {
-      "encoding": "mp3",
-      "sample_rate": 24000,
-      "bitrate": 48000,
-      "container": "none"
+    "required": ["order_id"]
+  },
+  "endpoint": {
+    "url": "https://api.example.com/orders/status",
+    "method": "post",
+    "headers": {
+      "authorization": "Bearer {{token}}"
     }
-  },
-  "agent": {
-    "context": {
-      "messages": [
-        {
-          "type": "History",
-          "role": "user",
-          "content": "What's my order status?"
-        },
-        {
-          "type": "History",
-          "function_calls": [
-            {
-              "id": "fc_12345678-90ab-cdef-1234-567890abcdef",
-              "name": "check_order_status",
-              "client_side": true,
-              "arguments": "{\"order_id\": \"ORD-123456\"}",
-              "response": "Order #123456 status: Shipped - Expected delivery date: 2024-03-15"
-            }
-          ]
-        },
-        {
-          "type": "History",
-          "role": "assistant",
-          "content": "Your order #123456 has been shipped and is expected to arrive on March 15th, 2024."
-        }
-      ]
-    },
-    "listen": {
-      "provider": {
-        "type": "deepgram",
-        "model": "flux-general-en",
-        "version": "v2",
-        "keyterms": ["hello", "goodbye"],
-        "eot_threshold": 0.8,
-        "eager_eot_threshold": 0.5,
-        "eot_timeout_ms": 5000
-      }
-    },
-    "think": {
-      "provider": {
-        "type": "open_ai",
-        "model": "gpt-4o-mini",
-        "temperature": 0.7,
-        "reasoning_mode": "medium"
-      },
-      "endpoint": {
-        "url": "https://api.example.com/llm",
-        "headers": {
-          "authorization": "Bearer {{token}}"
-        }
-      },
-      "prompt": "You are a helpful AI assistant focused on customer service.",
-      "context_length": 15000,
-      "functions": [
-        {
-          "name": "check_order_status",
-          "description": "Check the status of a customer order",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "order_id": {
-                "type": "string",
-                "description": "The order ID to check"
-              }
-            },
-            "required": ["order_id"]
-          },
-          "endpoint": {
-            "url": "https://api.example.com/orders/status",
-            "method": "post",
-            "headers": {
-              "authorization": "Bearer {{token}}"
-            }
-          }
-        }
-      ]
-    },
-    "speak": {
-      "provider": {
-        "type": "deepgram",
-        "version": "v1",
-        "model": "aura-2-thalia-en",
-        "speed": 1.0,
-        "volume": 1.0,
-        "model_id": "1234567890",
-        "voice": {
-          "mode": "id",
-          "id": "a167e0f3-df7e-4d52-a9c3-f949145efdab"
-        },
-        "language": "en",
-        "engine": "standard",
-        "credentials": {
-          "type": "IAM",
-          "region": "us-east-1",
-          "access_key_id": "{{access_key_id}}",
-          "secret_access_key": "{{secret_access_key}}",
-          "session_token": "{{session_token}}"
-        }
-      },
-      "endpoint": {
-        "url": "https://api.example.com/tts",
-        "headers": {
-          "authorization": "Bearer {{token}}"
-        }
-      }
-    },
-    "greeting": "Hello! How can I help you today?"
   }
 }
 ```

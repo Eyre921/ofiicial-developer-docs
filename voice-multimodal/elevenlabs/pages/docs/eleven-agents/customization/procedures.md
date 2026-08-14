@@ -8,8 +8,6 @@ path: docs/eleven-agents/customization/procedures
 
 # Procedures
 
-Procedures are currently in Alpha. See details in [Release status](#release-status).
-
 ## Overview
 
 A procedure contains instructions for one specific task. Each procedure has a trigger that describes when it applies and content that describes what to do. When a conversation matches the trigger, the agent loads the procedure.
@@ -17,7 +15,7 @@ A procedure contains instructions for one specific task. Each procedure has a tr
 Use procedures when your agent needs to handle many distinct tasks. One example use case is a customer support agent, where each procedure covers one type of request: refunds, identity verification, account recovery, or connection troubleshooting.
 
 ![Procedures tab in the agent
-dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af/assets/images/conversational-ai/procedures/procedures-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233147Z&X-Amz-Expires=604800&X-Amz-Signature=80ffed2fae3513bff966588949c40b4ff74f004bd91ffc0f125eea5e7a56beaf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af/assets/images/conversational-ai/procedures/procedures-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T090248Z&X-Amz-Expires=604800&X-Amz-Signature=7eb03793ac7347b5cbe44da80f7a5ebfa8a453cfb559585db4ce026b822c4c8f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Procedure types
 
@@ -104,7 +102,3 @@ schemas.
 * Procedures belong to one agent. They cannot be shared across agents or stored as workspace-level resources.
 * Duplicating an agent copies its procedures instead of sharing them. The copies receive new procedure IDs, so references in the duplicated agent must use those new IDs.
 * Structured procedures cannot reference knowledge base documents.
-
-## Release status
-
-Procedures are currently in Alpha. Expect the feature set, dashboard controls, and underlying schema to keep evolving before general availability; some changes may be breaking.

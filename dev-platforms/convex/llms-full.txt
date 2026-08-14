@@ -383,14 +383,14 @@
 - [Convex Deployment API](/deployment-api/convex-deployment-api.md): Admin API for interacting with deployments.
 - [Create log stream](/deployment-api/create-log-stream.md): Create a new log stream for the deployment. Errors if a log stream of the
 - [Create usage limit](/deployment-api/create-usage-limit.md): Create a new usage limit config for a deployment.
-- [Data sync](/deployment-api/data-sync.md): Paginated streamable export of some or all of a deployment's data.
+- [Data sync](/deployment-api/data-sync.md): :::info[Requires a Convex Pro plan]
 - [Delete log stream](/deployment-api/delete-log-stream.md): Delete the deployment's log stream with the given id.
 - [Delete usage limit](/deployment-api/delete-usage-limit.md): Delete an existing usage limit config for a deployment.
 - [Get canonical URLs](/deployment-api/get-canonical-urls.md): Get the canonical URLs for a deployment.
 - [Get current usage](/deployment-api/get-current-usage.md): :::info[Beta]
 - [Get deployment info](/deployment-api/get-deployment-info.md): Returns identity information about this deployment.
 - [Get log stream](/deployment-api/get-log-stream.md): Get the config for a specific log stream by id.
-- [List active data syncs](/deployment-api/list-active-syncs.md): Returns the progress of active data sync (/v1/data/sync).
+- [List active data syncs](/deployment-api/list-active-syncs.md): :::info[Requires a Convex Pro plan]
 - [List audit log events](/deployment-api/list-audit-log-events.md): List a deployment's audit log events on or after a timestamp, from least to
 - [List environment variables](/deployment-api/list-environment-variables.md): Get all environment variables in a deployment.
 - [List log streams](/deployment-api/list-log-streams.md): List configs for all existing log streams in a deployment.
@@ -41726,6 +41726,10 @@ POST
 /data/sync
 ```
 
+Requires a Convex Pro plan
+
+On Convex Cloud, this endpoint requires a Convex Pro plan. [Learn more](https://convex.dev/pricing) about our plans or [upgrade](https://dashboard.convex.dev/team/settings/billing).
+
 Paginated streamable export of some or all of a deployment's data.
 
 Call this endpoint repeatedly, passing the opaque `pagination.nextCursor` from each response back in the next request as `cursor`. Omit `cursor` on the first call.
@@ -41871,6 +41875,10 @@ Get the config for a specific log stream by id.
 GET 
 /data/list_active_syncs
 ```
+
+Requires a Convex Pro plan
+
+On Convex Cloud, this endpoint requires a Convex Pro plan. [Learn more](https://convex.dev/pricing) about our plans or [upgrade](https://dashboard.convex.dev/team/settings/billing).
 
 Returns the progress of active data sync (/v1/data/sync).
 
@@ -42510,6 +42518,7 @@ const nextConfig: NextConfig = {
 | [`@convex-dev/explicit-table-ids`](#explicit-table-ids)<br />Require explicit table names in database operations                         | ✅          | 🔧           |
 | [`@convex-dev/no-filter-in-query`](#no-filter-in-query)<br />Warn on `.filter()` in database queries (inefficient)                       | ✅          |              |
 | [`@convex-dev/no-top-of-hour-crons`](#no-top-of-hour-crons)<br />Warn on cron jobs scheduled exactly on the hour                         | ✅          |              |
+| [`@convex-dev/no-schema-import-cycle`](#no-schema-import-cycle)<br />Prevent using the schema in a file that the schema imports          | ✅          |              |
 | [`@convex-dev/import-wrong-runtime`](#import-wrong-runtime)<br />Prevent Convex runtime files from importing from Node runtime files     |             |              |
 | [`@convex-dev/no-collect-in-query`](#no-collect-in-query)<br />Prefer `.take()` / `.paginate()` over `.collect()` in queries             |             |              |
 
@@ -42796,6 +42805,50 @@ crons.hourly(
 
 );
 ```
+
+### no-schema-import-cycle[​](#no-schema-import-cycle "Direct link to no-schema-import-cycle")
+
+Prevent using the schema value in a file that `schema.ts` imports.
+
+`schema.doc()`, `schema.id()` and `schema.tables` read the schema object, so they only work once `schema.ts` has finished evaluating. If `schema.ts` imports the file that uses them, that file runs first and the schema is still `undefined`, so the push fails with `TypeError: Cannot read properties of undefined (reading 'id')`.
+
+```
+// convex/schema.ts
+
+import { userFields } from "./validators"; // <-- runs validators.ts first
+
+
+
+export default defineSchema({
+
+  users: defineTable(userFields),
+
+});
+```
+
+```
+// convex/validators.ts
+
+import schema from "./schema";
+
+
+
+export const userFields = { name: v.string() };
+
+
+
+// ❌ `schema` is undefined here, because schema.ts is still evaluating:
+
+export const userId = schema.id("users");
+
+
+
+// ✅ Use v.id() in files the schema imports:
+
+export const userId = v.id("users");
+```
+
+Files the schema doesn't import — the usual home for queries and mutations — can use `schema.doc()` and `schema.id()` freely. References inside a function body are also fine, since they run after both modules have loaded.
 
 ### import-wrong-runtime[​](#import-wrong-runtime "Direct link to import-wrong-runtime")
 
@@ -50087,6 +50140,7 @@ Schema:
   * `database_io_read_bytes`: number
   * `database_io_write_bytes`: number, this and `database_io_read_bytes` make up the Database I/O used by the function
   * `database_read_documents`: number, the number of documents read by the function
+  * `database_write_documents`: number, the number of documents inserted, updated, or deleted by the function
   * `text_search_query_bytes`: number
   * `text_search_write_query_bytes`: number, these two fields together track text search query usage
   * `vector_search_query_bytes`: number
@@ -50095,6 +50149,8 @@ Schema:
   * `network_egress_bytes`: number, the bytes sent to clients or external services. This contributes to Data egress alongside [`storage_api_bandwidth`](#storage_api_bandwidth-events) events.
   * `audit_log_egress_bytes`: number, the bytes egressed delivering [audit logs](/production/integrations/audit-logging.md) to S3 (if configured for a D1024 deployment).
   * `action_memory_used_mb`: optional number (actions and HTTP actions only), the memory used in MiB. This combined with `execution_time_ms` makes up Action compute.
+  * `function_args_bytes`: optional number, the size of the arguments the function was called with. Absent for HTTP actions.
+  * `function_returns_bytes`: optional number, the size of the value the function returned. Absent for HTTP actions and for failed executions.
 
 Example event for a query:
 
@@ -50131,6 +50187,8 @@ Example event for a query:
 
       "database_read_documents": 3,
 
+      "database_write_documents": 0,
+
       "file_storage_read_bytes": 0,
 
       "text_search_query_bytes": 0,
@@ -50143,7 +50201,11 @@ Example event for a query:
 
       "network_egress_bytes": 0,
 
-      "audit_log_egress_bytes": 0
+      "audit_log_egress_bytes": 0,
+
+      "function_args_bytes": 12,
+
+      "function_returns_bytes": 843
 
     }
 

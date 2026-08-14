@@ -26,8 +26,10 @@ tg beta clusters create
 | `--billing-type [ON_DEMAND\|RESERVED]` | Cluster reservation approach.<br /><br /><ul><li>`ON_DEMAND` begins billing the moment the cluster is created. Billing continues until you delete the cluster.</li><li>`RESERVED` starts billing immediately. The cluster is automatically torn down after the `--duration-days` length elapses.</li></ul> |
 | `--nvidia-driver-version [string]`     | NVIDIA driver version. Valid versions can be found with `tg beta clusters list-regions`.                                                                                                                                                                                                                   |
 | `--cuda-version [string]`              | CUDA version. Valid versions can be found with `tg beta clusters list-regions`.                                                                                                                                                                                                                            |
+| `--os [string]`                        | Operating system for NVIDIA version selection (for example `ubuntu-22.04`). Disambiguates when the same driver and CUDA pair is offered on more than one OS.                                                                                                                                               |
+| `--nvidia-version-id [string]`         | NVIDIA version catalog ID (the `id` field in `tg beta clusters list-regions` output). Selects an exact driver, CUDA, and OS combination directly instead of the individual version flags.                                                                                                                  |
 | `--duration-days [number]`             | Only used with `RESERVED` billing. Specifies how many days the cluster is reserved for.                                                                                                                                                                                                                    |
-| `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `H100_SXM_INF`. Available types vary by region. See `tg beta clusters list-regions`.                                                                                                               |
+| `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `B300_SXM`, `H100_SXM_INF`. Available types vary by region. See `tg beta clusters list-regions`.                                                                                                   |
 | `--cluster-type [KUBERNETES\|SLURM]`   | Cluster workload manager or orchestrator.                                                                                                                                                                                                                                                                  |
 | `--volume [string]`                    | Storage volume ID to attach to the cluster. List existing volumes with `tg beta clusters storage list`.                                                                                                                                                                                                    |
 | `--num-reserved-gpus [integer]`        | Number of prepaid reserved GPUs. When omitted for `RESERVED` billing, defaults to `num_gpus`.                                                                                                                                                                                                              |
@@ -68,6 +70,14 @@ tg beta clusters retrieve [CLUSTER_ID]
 tg beta clusters delete [CLUSTER_ID]
 ```
 
+The command shows the cluster and asks for confirmation before deleting. In `--non-interactive` or `--json` mode, it deletes without prompting.
+
+### Parameters
+
+| Flag      | Description                  |
+| --------- | ---------------------------- |
+| `--force` | Delete without confirmation. |
+
 ## List clusters
 
 ```bash theme={null}
@@ -90,20 +100,16 @@ tg beta clusters list-regions
     {
       "driver_versions": [
         {
-          "cuda_version": "12.9",
-          "nvidia_driver_version": "575"
-        },
-        {
+          "id": "0195d44f-e3d0-7475-8197-2a7a7349ab65",
           "cuda_version": "12.8",
-          "nvidia_driver_version": "570"
+          "nvidia_driver_version": "570",
+          "os": "ubuntu-22.04"
         },
         {
-          "cuda_version": "13.1",
-          "nvidia_driver_version": "590"
-        },
-        {
-          "cuda_version": "13.1",
-          "nvidia_driver_version": "580"
+          "id": "019af67e-4ba5-7039-b8d8-de657e906261",
+          "cuda_version": "12.9",
+          "nvidia_driver_version": "575",
+          "os": "ubuntu-22.04"
         }
       ],
       "name": "us-central-8",
@@ -115,6 +121,8 @@ tg beta clusters list-regions
   ]
 }
 ```
+
+Each driver version's `id` is its NVIDIA version catalog ID. Pass it to `tg beta clusters create --nvidia-version-id` to select that exact driver, CUDA, and OS combination.
 
 ## SSH into a cluster
 
@@ -219,3 +227,11 @@ tg beta clusters storage list
 ```bash theme={null}
 tg beta clusters storage delete [VOLUME_ID]
 ```
+
+The command shows the volume and asks for confirmation before deleting. In `--non-interactive` or `--json` mode, it deletes without prompting.
+
+### Parameters
+
+| Flag      | Description                  |
+| --------- | ---------------------------- |
+| `--force` | Delete without confirmation. |

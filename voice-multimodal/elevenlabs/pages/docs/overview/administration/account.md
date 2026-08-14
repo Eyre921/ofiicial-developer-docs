@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T233118Z&X-Amz-Expires=604800&X-Amz-Signature=b78cf1433f80fa389f09e94bc95eb3d863a6b258b59476159f9b7b350f9abef4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113135Z&X-Amz-Expires=604800&X-Amz-Signature=0eecf0f48005c7ed95bdc241f3bd2a69932be41dbb8c804ec5544edc9a5c662b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 
@@ -77,16 +77,18 @@ to your account in the future.
 
 #### Can users have more than one account?
 
-Users may open multiple paid accounts with two important things to keep in mind:
+You can link multiple workspaces to the same account. There is a maximum of one free workspace per account. There is no limit on the number of paid workspaces you can be a member of.
 
-* Each account has to be associated with a different email address
-* Any discounts we might offer will only apply to one of those accounts
+For more information, see [Workspaces](/docs/overview/administration/workspaces/overview).
 
-<strong>
-  However, we only allow one free account per user and IP.
-</strong>
+If you need separate accounts instead, keep the following in mind:
 
-Please be mindful that if you create multiple paid accounts and then switch to the free plan, those accounts will be flagged.
+* Each account must be associated with a different email address
+* Any discounts we offer apply to only one of those accounts
+
+**However, we only allow one free account per user and IP.**
+
+If you create multiple paid accounts and then switch to the free plan, those accounts may be flagged.
 
 #### Account Management
 
@@ -423,55 +425,69 @@ If you have a Professional Voice Clone (PVC) and downgrade to the Starter or fre
 
 #### How can I access usage analytics for my account?
 
-To access [Usage Analytics](https://elevenlabs.io/app/usage) for your account, click <strong>Developers</strong> in the sidebar and select the <strong>Usage</strong> tab.
+To access [usage analytics](https://elevenlabs.io/app/usage) for your account, click **Developers** at the bottom of the sidebar, then open the **Analytics** tab.
 
-Usage Analytics lets you view all the activity on the platform for your account or Workspace.
+The Analytics tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period and at different levels of granularity. Use the **Request Log** tab to search and inspect individual API requests.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/38545177912849" alt="" />
+![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113135Z&X-Amz-Expires=604800&X-Amz-Signature=c39f47f9f41633a6b68424df6b30ae34d334b6c0aeac80bf04fc971ebf688a22&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-If you're in a multi-seat Workspace, the you will be able to switch between Account and Workspace. Account shows data for your individual account, while Workspace covers all accounts in your Workspace. If you’re not in a multi-seat Workspace, you will not see this option.
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
+
+For a full walkthrough of metrics and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).
 
 #### How can I see information about credit usage for my account?
 
-You can access information about credit usage for your account in [Usage Analytics.](https://elevenlabs.io/app/usage) To access this, click <strong>Developers</strong> in the sidebar and select the <strong>Usage</strong> tab.
+You can view credit usage for your account in [usage analytics](https://elevenlabs.io/app/usage). Click **Developers** at the bottom of the sidebar, open the **Analytics** tab, then select **Usage**.
 
-Usage Analytics lets you view all the activity on the platform for your account or Workspace.
+The Usage view shows credit consumption and related performance metrics, including:
 
-If you're part of a multi-seat Workspace, the you will be able to switch between Account and Workspace. Account shows data for your individual account, while Workspace covers all accounts in your Workspace. If you’re not in a multi-seat Workspace, you will not see this option.
+* Credit usage, which you can break down and filter (for example, by voice, product, or API key)
+* Average time to first byte
+* Average time to completed transcript
+* Concurrent requests
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/38545652599825" alt="" />
+When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-You can filter your usage data in a number of different ways.
+![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113135Z&X-Amz-Expires=604800&X-Amz-Signature=8d439f428db4ac02896dfd2488c153f8a38b54220a75724925be7c15ce559b32&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-The Metric menu allows you to view usage by a range of metrics, including Credits, Minutes Used, and Seconds to First Byte.
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
-The Breakdown menu allows you to view your usage by voice, product or API key, for example. 
+You can filter by time period and granularity, and refine the view with group-by and filter options. For example, you can filter to see how many credits were used with a specific voice this month.
 
-Date Range allows you to select the time period to display. Options include the last 15 minutes, day, week, month, billing cycle or custom date range.
-
-If you want to be more specific, you can use filters to show only your usage for specific voices, products, API keys along with a range of other options. For example, you can filter to see how many credits were used with a specific voice this month.
+For a full walkthrough, see [Usage analytics](/docs/overview/administration/usage-analytics).
 
 #### How can I see information about API requests for my account?
 
-You can access information about API requests for your account in Usage Analytics, under the API Requests section.
+You can view API request data for your account in [usage analytics](https://elevenlabs.io/app/usage). Click **Developers** at the bottom of the sidebar, open the **Analytics** tab, then select **API Requests**.
 
-There are two tabs in Usage Analytics. The Account tab shows data for your individual account, whereas the Workspace tab covers all accounts under your Workspace. If you’re not in a multi-seat Workspace, the data will be the same across the two tabs.
+The API Requests view shows request volume and performance for your account or workspace. Metrics include:
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/32811193768465" alt="" />
+* Total requests, which you can break down and filter
+* Success rate
+* Average latency
+* Top called path
 
-In the API Requests section, you’ll find not only the total number of requests made within a specific timeframe but also the number of concurrent requests during that period.
+![API Requests metrics in
+Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113135Z&X-Amz-Expires=604800&X-Amz-Signature=aac11bfeec5457a081c467174569c60328c11675f0fd44cafda490f99c58b75e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-You can view data by different time periods, for example, hour, day, month and year, and at different levels of granularity.
+You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
+
+If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. If you are not in a multi-seat workspace, you will not see this option.
+
+To search and inspect individual API requests, open the **Request Log** tab.
+
+For a full walkthrough, see [Usage analytics](/docs/overview/administration/usage-analytics).
 
 #### Can I export usage data for my account?
 
-[Usage Analytics](https://elevenlabs.io/app/usage) allows you to view and export data about credit usage for your account.
+Yes. [Usage analytics](https://elevenlabs.io/app/usage) lets you export the data from your current view as a CSV file.
 
-To do this, just click the “Export as CSV” button, and the data from your current view will be exported and downloaded.
+Open **Developers** in the sidebar, go to the **Analytics** tab, set up the view you want, then click **Export**.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/32811340470289" alt="" />
+![Export button on an Analytics
+chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T113135Z&X-Amz-Expires=604800&X-Amz-Signature=80bc39c023c142db0fddc0ac4098e89f877dfddfb48b27436a63b291dc129b2e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-For more information on the Credit Usage section of Usage Analytics, see [How can I see information about credit usage for my account?](/docs/help-center/account/general/how-can-i-see-information-about-credit-usage-for-my-account)
+For more information on Analytics views and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).
 
 #### Billing
 

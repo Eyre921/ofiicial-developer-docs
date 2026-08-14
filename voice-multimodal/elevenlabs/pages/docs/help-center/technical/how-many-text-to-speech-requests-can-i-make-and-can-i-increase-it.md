@@ -27,5 +27,5 @@ If you require a higher number of concurrent requests, please reach out to our E
 
 ElevenAgents and Speech to Text have different concurrency limits:
 
-* [ElevenAgents concurrency limits.](/docs/help-center/product/conversational-agents/eleven-labs-agents-formerly-conversational-ai/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
-* [Speech to Text concurrency limits.](/docs/help-center/product/speech-synthesis/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it)
+* [ElevenAgents concurrency limits.](/docs/help-center/product/eleven-agents/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
+* [Speech to Text concurrency limits.](/docs/help-center/product/core-capabilities/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it)

@@ -26,6 +26,18 @@ Dramatic delivery and performance
 
 Support for natural multi-speaker dialogue
 
+#### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
+
+Our most expressive, realtime speech synthesis model
+
+Low latency (\~280ms)
+
+Dramatic delivery and performance
+
+70+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
 
 Lifelike, consistent quality speech synthesis model
@@ -152,6 +164,26 @@ This model works well in the following scenarios:
 With Eleven v3 comes a new Text to Dialogue API, which allows you to generate natural, lifelike dialogue with high emotional range and contextual understanding across multiple languages. Eleven v3 can also be used with the Text to Speech API to generate natural, lifelike speech with high emotional range and contextual understanding across multiple languages.
 
 Read more about the Text to Dialogue API [here](/docs/overview/capabilities/text-to-dialogue).
+
+### Supported languages
+
+The Eleven v3 model supports 70+ languages, including:
+
+*Afrikaans (afr), Arabic (ara), Armenian (hye), Assamese (asm), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Catalan (cat), Cebuano (ceb), Chichewa (nya), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Galician (glg), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Indonesian (ind), Irish (gle), Italian (ita), Japanese (jpn), Javanese (jav), Kannada (kan), Kazakh (kaz), Kirghiz (kir), Korean (kor), Latvian (lav), Lingala (lin), Lithuanian (lit), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Mandarin Chinese (cmn), Marathi (mar), Nepali (nep), Norwegian (nor), Pashto (pus), Persian (fas), Polish (pol), Portuguese (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Spanish (spa), Swahili (swa), Swedish (swe), Tamil (tam), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Urdu (urd), Vietnamese (vie), Welsh (cym).*
+
+## Eleven v3 Conversational
+
+Eleven v3 Conversational is our most expressive model for realtime speech synthesis. It is a state-of-the-art model that produces natural, life-like speech with high emotional range and contextual understanding across multiple languages.
+
+This model works well in the following scenarios:
+
+* **Support agents**: Power voice agents that resolve customer queries in realtime.
+* **AI assistants**: Generate natural, lifelike dialogue with high emotional range and contextual understanding.
+* **Interactive characters**: Excellent for audio experiences with expressive characters.
+
+With Eleven v3 Conversational comes a new Text to Dialogue WebSocket, which allows you to generate natural, lifelike dialogue with high emotional range and contextual understanding across multiple languages.
+
+Read more about the Text to Dialogue WebSocket [here](/docs/eleven-api/guides/how-to/websockets/realtime-tdd).
 
 ### Supported languages
 
@@ -390,7 +422,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T224612Z&X-Amz-Expires=604800&X-Amz-Signature=99868b7f4f4c048bfd5dab7e0addc8b9dea80186d4ea8a5531b49a6950b9dfe2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T083559Z&X-Amz-Expires=604800&X-Amz-Signature=e40654f6acfa946ac77baa5f667f33cc97192f2e3015f02b11726d55cb4b79fb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
 
 #### Building AI Voice Agents
 

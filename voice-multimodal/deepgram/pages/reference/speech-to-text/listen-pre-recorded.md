@@ -112,20 +112,20 @@ Returns either transcription results, or a request_id when using a callback.
         - `search` (list of object, optional)
           - `query` (string, optional)
           - `hits` (list of object, optional)
-            - `confidence` (double, optional)
-            - `start` (double, optional)
-            - `end` (double, optional)
+            - `confidence` (float, optional)
+            - `start` (float, optional)
+            - `end` (float, optional)
             - `snippet` (string, optional)
         - `alternatives` (list of object, optional)
           - `transcript` (string, optional)
-          - `confidence` (double, optional)
+          - `confidence` (float, optional)
           - `words` (list of object, optional)
             - `word` (string, optional)
-            - `start` (double, optional)
-            - `end` (double, optional)
-            - `confidence` (double, optional)
+            - `start` (float, optional)
+            - `end` (float, optional)
+            - `confidence` (float, optional)
             - `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
-            - `speaker_confidence` (double, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
+            - `speaker_confidence` (float, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
           - `paragraphs` (object, optional)
             - `transcript` (string, optional)
             - `paragraphs` (list of object, optional)
@@ -133,32 +133,32 @@ Returns either transcription results, or a request_id when using a callback.
             - `label` (string, optional)
             - `value` (string, optional)
             - `raw_value` (string, optional)
-            - `confidence` (double, optional)
-            - `start_word` (double, optional)
-            - `end_word` (double, optional)
+            - `confidence` (float, optional)
+            - `start_word` (float, optional)
+            - `end_word` (float, optional)
           - `summaries` (list of object, optional)
             - `summary` (string, optional)
-            - `start_word` (double, optional)
-            - `end_word` (double, optional)
+            - `start_word` (float, optional)
+            - `end_word` (float, optional)
           - `topics` (list of object, optional)
             - `text` (string, optional)
-            - `start_word` (double, optional)
-            - `end_word` (double, optional)
+            - `start_word` (float, optional)
+            - `end_word` (float, optional)
             - `topics` (list of string, optional)
         - `detected_language` (string, optional)
       - `utterances` (list of object, optional)
-        - `start` (double, optional)
-        - `end` (double, optional)
-        - `confidence` (double, optional)
+        - `start` (float, optional)
+        - `end` (float, optional)
+        - `confidence` (float, optional)
         - `channel` (integer, optional)
         - `transcript` (string, optional)
         - `words` (list of object, optional)
           - `word` (string, optional)
-          - `start` (double, optional)
-          - `end` (double, optional)
-          - `confidence` (double, optional)
+          - `start` (float, optional)
+          - `end` (float, optional)
+          - `confidence` (float, optional)
           - `speaker` (integer, optional)
-          - `speaker_confidence` (double, optional)
+          - `speaker_confidence` (float, optional)
           - `punctuated_word` (string, optional)
         - `speaker` (integer, optional)
         - `id` (string, optional)
@@ -201,176 +201,170 @@ Returns either transcription results, or a request_id when using a callback.
 ```json
 {
   "metadata": {
-    "transaction_key": "deprecated",
-    "request_id": "a847f427-4ad5-4d67-9b95-db801e58251c",
-    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33",
+    "channels": 1,
     "created": "2024-05-12T18:57:13.426Z",
     "duration": 25.933313,
-    "channels": 1,
+    "intents_info": {
+      "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
+      "output_tokens": 4
+    },
+    "model_info": {
+      "30089e05-99d1-4376-b32e-c263170674af": {
+        "arch": "nova-2",
+        "name": "2-general-nova",
+        "version": "2024-01-09.29447"
+      }
+    },
     "models": [
       "30089e05-99d1-4376-b32e-c263170674af"
     ],
-    "model_info": {
-      "30089e05-99d1-4376-b32e-c263170674af": {
-        "name": "2-general-nova",
-        "version": "2024-01-09.29447",
-        "arch": "nova-2"
-      }
-    },
-    "summary_info": {
-      "model_uuid": "67875a7f-c9c4-48a0-aa55-5bdb8a91c34a",
-      "input_tokens": 95,
-      "output_tokens": 63
-    },
+    "request_id": "a847f427-4ad5-4d67-9b95-db801e58251c",
     "sentiment_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
       "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
       "output_tokens": 105
     },
-    "topics_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "input_tokens": 105,
-      "output_tokens": 7
-    },
-    "intents_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "input_tokens": 105,
-      "output_tokens": 4
+    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33",
+    "summary_info": {
+      "input_tokens": 95,
+      "model_uuid": "67875a7f-c9c4-48a0-aa55-5bdb8a91c34a",
+      "output_tokens": 63
     },
     "tags": [
       "test"
-    ]
+    ],
+    "topics_info": {
+      "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
+      "output_tokens": 7
+    },
+    "transaction_key": "deprecated"
   },
   "results": {
     "channels": [
       {
-        "search": [
-          {
-            "query": "spacewalk",
-            "hits": [
-              {
-                "confidence": 0.98,
-                "start": 5.2,
-                "end": 5.8,
-                "snippet": "the first all-female spacewalk"
-              }
-            ]
-          }
-        ],
         "alternatives": [
           {
-            "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
             "confidence": 0.95,
-            "words": [
+            "entities": [
               {
-                "word": "This",
-                "start": 0,
-                "end": 0.3,
-                "confidence": 0.98
-              },
-              {
-                "word": "historic",
-                "start": 0.3,
-                "end": 0.7,
-                "confidence": 0.97
-              },
-              {
-                "word": "spacewalk",
-                "start": 5.2,
-                "end": 5.8,
-                "confidence": 0.99
+                "confidence": 0.95,
+                "end_word": 3,
+                "label": "Event",
+                "raw_value": "spacewalk",
+                "start_word": 2,
+                "value": "spacewalk"
               }
             ],
             "paragraphs": {
-              "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
               "paragraphs": [
                 {
+                  "end": 6,
+                  "num_words": 12,
                   "sentences": [
                     {
-                      "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
+                      "end": 6,
                       "start": 0,
-                      "end": 6
+                      "text": "This historic spacewalk marks a significant milestone for women in space exploration."
                     }
                   ],
                   "speaker": 1,
-                  "num_words": 12,
-                  "start": 0,
-                  "end": 6
+                  "start": 0
                 }
-              ]
+              ],
+              "transcript": "This historic spacewalk marks a significant milestone for women in space exploration."
             },
-            "entities": [
-              {
-                "label": "Event",
-                "value": "spacewalk",
-                "raw_value": "spacewalk",
-                "confidence": 0.95,
-                "start_word": 2,
-                "end_word": 3
-              }
-            ],
             "summaries": [
               {
-                "summary": "The transcript highlights the importance of the first all-female spacewalk.",
+                "end_word": 12,
                 "start_word": 0,
-                "end_word": 12
+                "summary": "The transcript highlights the importance of the first all-female spacewalk."
               }
             ],
             "topics": [
               {
-                "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
-                "start_word": 0,
                 "end_word": 12,
+                "start_word": 0,
+                "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
                 "topics": [
                   "Space Exploration"
                 ]
               }
+            ],
+            "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
+            "words": [
+              {
+                "confidence": 0.98,
+                "end": 0.3,
+                "start": 0,
+                "word": "This"
+              },
+              {
+                "confidence": 0.97,
+                "end": 0.7,
+                "start": 0.3,
+                "word": "historic"
+              },
+              {
+                "confidence": 0.99,
+                "end": 5.8,
+                "start": 5.2,
+                "word": "spacewalk"
+              }
             ]
           }
         ],
-        "detected_language": "en"
-      }
-    ],
-    "utterances": [
-      {
-        "start": 0,
-        "end": 6,
-        "confidence": 0.95,
-        "channel": 1,
-        "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
-        "words": [
+        "detected_language": "en",
+        "search": [
           {
-            "word": "This",
-            "start": 0,
-            "end": 0.3,
-            "confidence": 0.98,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "This"
-          },
-          {
-            "word": "historic",
-            "start": 0.3,
-            "end": 0.7,
-            "confidence": 0.97,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "historic"
-          },
-          {
-            "word": "spacewalk",
-            "start": 5.2,
-            "end": 5.8,
-            "confidence": 0.99,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "spacewalk."
+            "hits": [
+              {
+                "confidence": 0.98,
+                "end": 5.8,
+                "snippet": "the first all-female spacewalk",
+                "start": 5.2
+              }
+            ],
+            "query": "spacewalk"
           }
-        ],
-        "speaker": 1,
-        "id": "utt-001"
+        ]
       }
     ],
+    "intents": {
+      "results": {
+        "intents": {
+          "segments": [
+            {
+              "end_word": 414,
+              "intents": [
+                {
+                  "confidence_score": 0.0038975573,
+                  "intent": "Encourage podcasting"
+                }
+              ],
+              "start_word": 354,
+              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app."
+            }
+          ]
+        }
+      }
+    },
+    "sentiments": {
+      "average": {
+        "sentiment": "positive",
+        "sentiment_score": 0.5810185185185185
+      },
+      "segments": [
+        {
+          "end_word": 69,
+          "sentiment": "positive",
+          "sentiment_score": 0.5810546875,
+          "start_word": 0,
+          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it_signf"
+        }
+      ]
+    },
     "summary": {
       "result": "success",
       "short": "Speaker 1 highlights the historic significance of the first all-female spacewalk as a milestone for women in space exploration."
@@ -380,13 +374,13 @@ Returns either transcription results, or a request_id when using a callback.
         "topics": {
           "segments": [
             {
-              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
-              "start_word": 32,
               "end_word": 69,
+              "start_word": 32,
+              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
               "topics": [
                 {
-                  "topic": "Spacewalk",
-                  "confidence_score": 0.91581345
+                  "confidence_score": 0.91581345,
+                  "topic": "Spacewalk"
                 }
               ]
             }
@@ -394,40 +388,46 @@ Returns either transcription results, or a request_id when using a callback.
         }
       }
     },
-    "intents": {
-      "results": {
-        "intents": {
-          "segments": [
-            {
-              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.",
-              "start_word": 354,
-              "end_word": 414,
-              "intents": [
-                {
-                  "intent": "Encourage podcasting",
-                  "confidence_score": 0.0038975573
-                }
-              ]
-            }
-          ]
-        }
+    "utterances": [
+      {
+        "channel": 1,
+        "confidence": 0.95,
+        "end": 6,
+        "id": "utt-001",
+        "speaker": 1,
+        "start": 0,
+        "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
+        "words": [
+          {
+            "confidence": 0.98,
+            "end": 0.3,
+            "punctuated_word": "This",
+            "speaker": 1,
+            "speaker_confidence": 0.99,
+            "start": 0,
+            "word": "This"
+          },
+          {
+            "confidence": 0.97,
+            "end": 0.7,
+            "punctuated_word": "historic",
+            "speaker": 1,
+            "speaker_confidence": 0.99,
+            "start": 0.3,
+            "word": "historic"
+          },
+          {
+            "confidence": 0.99,
+            "end": 5.8,
+            "punctuated_word": "spacewalk.",
+            "speaker": 1,
+            "speaker_confidence": 0.99,
+            "start": 5.2,
+            "word": "spacewalk"
+          }
+        ]
       }
-    },
-    "sentiments": {
-      "segments": [
-        {
-          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it_signf",
-          "start_word": 0,
-          "end_word": 69,
-          "sentiment": "positive",
-          "sentiment_score": 0.5810546875
-        }
-      ],
-      "average": {
-        "sentiment": "positive",
-        "sentiment_score": 0.5810185185185185
-      }
-    }
+    ]
   }
 }
 ```

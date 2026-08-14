@@ -17,6 +17,11 @@ Real world AI agent example tasks using Trigger.dev
     Generate and maintain GitHub wiki documentation with Claude-powered analysis.
   </Card>
 
+  <Card icon="chart-column" title="ClickHouse chat agent" href="/guides/example-projects/clickhouse-chat-agent">
+    Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps
+    using `chat.agent()` and generative UI.
+  </Card>
+
   <Card icon="hand" title="Human-in-the-loop workflow" href="/guides/example-projects/human-in-the-loop-workflow">
     Create audio summaries of newspaper articles using a human-in-the-loop workflow built with
     ReactFlow and Trigger.dev waitpoint tokens.
@@ -41,6 +46,16 @@ Real world AI agent example tasks using Trigger.dev
 
   <Card title="Smart Spreadsheet" icon="table" href="/guides/example-projects/smart-spreadsheet">
     Enrich company data using Exa search and Claude with real-time streaming results.
+  </Card>
+</CardGroup>
+
+## Chat agents
+
+Build a durable, multi-turn chat agent with [`chat.agent()`](/docs/ai-chat/overview). A durable session per conversation, with streaming and resumability handled for you.
+
+<CardGroup>
+  <Card title="Chat agent" icon="message-bot" href="/guides/ai-agents/chat-agent">
+    Create a durable, multi-turn chat agent with `chat.agent()`, then add tools to it.
   </Card>
 </CardGroup>
 

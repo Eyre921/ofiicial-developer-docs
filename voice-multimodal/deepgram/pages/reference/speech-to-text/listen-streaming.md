@@ -113,7 +113,7 @@ channels:
             Authorization:
               type: string
     publish:
-      operationId: listen-v-1-publish
+      operationId: subpackage_listen/v1.listen.v1-publish
       summary: Server messages
       message:
         oneOf:
@@ -126,7 +126,7 @@ channels:
           - $ref: >-
               #/components/messages/subpackage_listen/v1.listen.v1-server-3-ListenV1SpeechStarted
     subscribe:
-      operationId: listen-v-1-subscribe
+      operationId: subpackage_listen/v1.listen.v1-subscribe
       summary: Client messages
       message:
         oneOf:

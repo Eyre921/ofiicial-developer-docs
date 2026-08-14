@@ -30,46 +30,22 @@ In the console, open an endpoint and select the **Logs** tab to browse the feed,
   <img alt="The Logs tab for an endpoint in the Together AI console, an event feed with Time, Type, Source, Level, and Message columns showing the deployment's lifecycle events." />
 </Frame>
 
-To read the feed programmatically, use the SDK or API to list events:
+To read the feed from the terminal, list events with the CLI. Pass the endpoint ID or name:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from together import Together
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123
+```
 
-  client = Together()
-  project_id = client.whoami().project_id
+Optional flags narrow the feed:
 
-  events = client.beta.endpoints.list_events(
-      "ep_abc123",
-      project_id=project_id,
-      limit=50,
-  )
-  print(events)
-  ```
+* `--types` restricts to specific event-type strings, comma-separated (for example `deployment.scaled,condition.set`).
+* `--min-level` sets the minimum severity: `debug`, `info`, `warn`, or `error`.
+* `--since` and `--until` bound a time range.
+* `--subject-id` filters to a single subject, such as a rollout ID.
+* `--deployment-ids` scopes to specific deployments, comma-separated.
+* `--limit` and `--after` paginate (max `10000`, default `50`). When more events remain, the CLI prints the `--after` command for the next page.
 
-  ```typescript TypeScript theme={null}
-  import Together from 'together-ai';
-
-  const client = new Together();
-  const { project_id: projectId } = await client.whoami();
-
-  const events = await client.beta.endpoints.listEvents('ep_abc123', {
-    projectId,
-    limit: 50,
-  });
-  console.log(events);
-  ```
-</CodeGroup>
-
-Optional parameters narrow the feed:
-
-* `types` restricts to specific event-type strings.
-* `min_level` sets the minimum severity.
-* `source_kinds` selects endpoint- or deployment-scoped events.
-* `since` and `until` bound a time range.
-* `subject_id` filters to a single subject.
-* `deployment_ids` scopes to specific deployments.
-* `limit` / `after` paginate (max `500`, default `50`).
+Add `--json` for the raw event objects, including fields the table view omits. See the [endpoints CLI reference](/reference/cli/endpoints-beta#events) for the full flag list.
 
 <Note>
   Endpoint mutation events such as `endpoint.updated` record when a change happened, but they don't include a field-level diff. Keep configuration history in your deployment system if you need to reconstruct exactly what changed.
@@ -77,22 +53,13 @@ Optional parameters narrow the feed:
 
 ### Deployment events
 
-To follow a single deployment instead of the whole endpoint, pass its ID to the `deployment_ids` filter on the same events feed:
+To follow a single deployment instead of the whole endpoint, pass its ID to the `--deployment-ids` filter on the same events feed:
 
-```python Python theme={null}
-from together import Together
-
-client = Together()
-project_id = client.whoami().project_id
-
-events = client.beta.endpoints.list_events(
-    "ep_abc123",
-    project_id=project_id,
-    deployment_ids=["dep_abc123"],
-    limit=50,
-)
-print(events)
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123 --deployment-ids dep_abc123
 ```
+
+Filtering by deployment ID excludes endpoint-scoped events such as `endpoint.updated`, so the output covers only the listed deployments' lifecycles.
 
 ## Prometheus-compatible metrics endpoint
 

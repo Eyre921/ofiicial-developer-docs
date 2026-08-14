@@ -18,7 +18,7 @@ You define an index once by specifying:
 
 ### Creating an Index
 
-An index is identified by its name, which must be a unique key in Redis. Each index works with a single key type (JSON, hash, or string).
+The [`SEARCH.CREATE`](/docs/redis/commands/search/search-create) command creates an index identified by a name, which must be a unique key in Redis. Each index works with a single key type (JSON, hash, or string).
 
 <Tabs>
 
@@ -195,7 +195,8 @@ SEARCH.CREATE comments ON STRING PREFIX 1 comment: SCHEMA user.name TEXT user.em
 
 By default, when an index is created, all existing keys matching the specified type and prefixes are scanned and indexed.
 Use `SKIPINITIALSCAN` to defer indexing, which is useful for large datasets where you want to start fresh or handle
-existing data differently.
+existing data differently. Run [`SEARCH.REINDEX`](/docs/redis/commands/search/search-reindex) later to rebuild the index from
+the current matching keys.
 
 <Tabs>
 
@@ -422,7 +423,7 @@ Use `redis.search.createIndex()` when:
 
 ### Describing an Index
 
-The `SEARCH.DESCRIBE` command returns detailed information about an index, or `null` if the index doesn't exist.
+The [`SEARCH.DESCRIBE`](/docs/redis/commands/search/search-describe) command returns detailed information about an index, or `null` if the index doesn't exist.
 
 <Tabs>
 
@@ -462,7 +463,7 @@ On response, the following information is returned:
 
 ### Listing Indexes
 
-`SEARCH.LISTINDEXES` lists all search indexes in the database, reporting each index's `name` and backing `type` (`HASH` or `JSON`). Optionally filter names with `MATCH` and paginate with `LIMIT` and `OFFSET`.
+[`SEARCH.LISTINDEXES`](/docs/redis/commands/search/search-listindexes) lists all search indexes in the database, reporting each index's `name` and backing `type` (`HASH` or `JSON`). Optionally filter names with `MATCH` and paginate with `LIMIT` and `OFFSET`.
 
 <Tabs>
 
@@ -479,7 +480,7 @@ SEARCH.LISTINDEXES MATCH 'product*' LIMIT 10 OFFSET 0
 
 ### Dropping an Index
 
-The `SEARCH.DROP` command removes an index and stops tracking associated keys.
+The [`SEARCH.DROP`](/docs/redis/commands/search/search-drop) command removes an index and stops tracking associated keys.
 
 Returns `1` if the index was dropped, or `0` if the index was not found.
 
@@ -512,7 +513,7 @@ Note that, dropping an index only removes the search index. The underlying Redis
 ### Waiting for Indexing
 
 For adequate performance, index updates are batched and committed periodically. This means recent writes may not
-immediately appear in search results. Use `SEARCH.WAITINDEXING` when you need to ensure queries reflect recent changes.
+immediately appear in search results. Use [`SEARCH.WAITINDEXING`](/docs/redis/commands/search/search-waitindexing) when you need to ensure queries reflect recent changes.
 
 The `SEARCH.WAITINDEXING` command blocks until all pending index updates are processed and visible to queries.
 For examples of changing, deleting, and expiring indexed documents, see [Document Updates](/docs/redis/search/document-updates).

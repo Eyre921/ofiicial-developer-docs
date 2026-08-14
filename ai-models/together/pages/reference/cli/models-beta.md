@@ -32,11 +32,11 @@ Alias: `tg beta models -c`.
 
 ### Parameters
 
-| Flag                        | Description                                                                                                                                                                |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                               |
-| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`. |
-| `--base-model [string]`     | (**required**) A supported base model ID (`ml_...`) this model derives from. Run `tg beta models public --json` to find it.                                                |
+| Flag                        | Description                                                                                                                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                        |
+| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                          |
+| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or a deploy model name (for example `zai-org/GLM-5.2`). Run `tg beta models public` to find it. |
 
 ## Upload
 
@@ -118,11 +118,11 @@ tg beta models configs ml_abc123
 
 ### Parameters
 
-| Flag               | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `MODEL`            | (**required**) The model ID to list configs for. |
-| `--limit [number]` | Maximum number of configs to return.             |
-| `--after [string]` | Pagination cursor to start from.                 |
+| Flag               | Description                                                                                                    |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `MODEL`            | (**required**) The model to list configs for. Accepts a model ID (`ml_...`), a resource path, or a model name. |
+| `--limit [number]` | Maximum number of configs to return.                                                                           |
+| `--after [string]` | Pagination cursor to start from.                                                                               |
 
 ## List files
 
@@ -173,7 +173,7 @@ tg beta models download ml_abc123 ./local-dir
 
 ## List public models
 
-List the publicly visible models across all projects. Use this to find a base model ID for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
+List the publicly visible models across all projects. Use this to find a base model ID or name for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
 
 ```bash Shell theme={null}
 tg beta models public \

@@ -18,14 +18,14 @@ In this example, we'll create a workflow that generates and translates copy. Thi
 
 **This task:**
 
-* Uses `generateText` from [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) to interact with OpenAI models
-* Uses `experimental_telemetry` to provide LLM logs
+* Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
+* Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Generates marketing copy based on subject and target word count
 * Validates the generated copy meets word count requirements (±10 words)
 * Translates the validated copy to the target language while preserving tone
 
 ```typescript theme={"theme":"css-variables"}
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { task } from "@trigger.dev/sdk";
 import { generateText } from "ai";
 
@@ -41,7 +41,7 @@ export const generateAndTranslateTask = task({
   run: async (payload: TranslatePayload) => {
     // Step 1: Generate marketing copy
     const generatedCopy = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -74,7 +74,7 @@ export const generateAndTranslateTask = task({
 
     // Step 2: Translate to target language
     const translatedCopy = await generateText({
-      model: openai("o1-mini"),
+      model: anthropic("claude-sonnet-4-5"),
       messages: [
         {
           role: "system",
@@ -105,9 +105,9 @@ On the Test page in the dashboard, select the `generate-and-translate-copy` task
 
 ```json theme={"theme":"css-variables"}
 {
-  marketingSubject: "The controversial new Jaguar electric concept car",
-  targetLanguage: "Spanish",
-  targetWordCount: 100,
+  "marketingSubject": "The controversial new Jaguar electric concept car",
+  "targetLanguage": "Spanish",
+  "targetWordCount": 100
 }
 ```
 

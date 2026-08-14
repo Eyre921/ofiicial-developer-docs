@@ -56,6 +56,18 @@ Dramatic delivery and performance
 
 Support for natural multi-speaker dialogue
 
+#### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
+
+Our most expressive, realtime speech synthesis model
+
+Low latency (\~280ms)
+
+Dramatic delivery and performance
+
+70+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
 
 Lifelike, consistent quality speech synthesis model

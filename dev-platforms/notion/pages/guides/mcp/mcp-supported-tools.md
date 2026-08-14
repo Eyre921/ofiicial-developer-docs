@@ -37,7 +37,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. For `query_data_sources`, the status describes single-data-source SQL access; view mode is always available, while queries across multiple data sources still require Enterprise with Notion AI. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
@@ -191,7 +191,7 @@ An MCP client can call several tools in one task. For example, it can search for
     Create a new view on a Notion database. Supports table, board, list, calendar, timeline, gallery, form, chart, map, and dashboard view types. Use the optional configuration DSL for filters, sorts, grouping, and display options.
 
     <Note>
-      Filter values in the configuration DSL are matched against the property's type: relation values must be a page URL or ID, person values must be a user ID or `"me"`, and status values must be an option or group name. Page and people names aren't accepted — resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
+      Use a page URL or ID for relation filters. Use a user ID or `"me"` for person, created-by, and last-edited-by filters. Use an option or group name for status filters, and use `"verified"`, `"expired"`, or `"none"` for verification filters. Page and people names aren't accepted, so resolve them to a URL or ID first. Read the `notion://docs/view-dsl-spec` resource for the full syntax.
     </Note>
 
     **Example prompts:**
@@ -224,29 +224,13 @@ An MCP client can call several tools in one task. For example, it can search for
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      View mode is available on every plan without a tool-specific quota. Single-data-source SQL is unlimited on Business and Enterprise plans with Notion AI; other plans share a per-workspace usage limit and receive an upgrade prompt after the allowance is exhausted. Queries across multiple data sources require an Enterprise plan with Notion AI.
+      View mode is available on every plan without a tool-specific quota. SQL across one or more data sources is unlimited on Business and Enterprise plans with Notion AI. Other plans share a per-workspace usage limit for single-data-source SQL and receive an upgrade prompt after the allowance is exhausted.
     </Note>
 
     **Example prompts:**
 
     * "What's due for me this week across all tasks and meeting note action items? Group by priority."
     * "Show all risks from Engineering and Product databases this month, grouped by owner."
-  </Accordion>
-
-  <Accordion title="Query a database view">
-    `notion-query-database-view`
-
-    Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
-
-    <Warning>
-      This tool is deprecated and will be removed in a future release. Use `notion-query-data-sources` with `mode: "view"` and pass the same `view_url`. Existing calls continue to work and include migration guidance in successful responses.
-    </Warning>
-
-    **Example prompts:**
-
-    * "Query my 'In Progress' tasks view to see what I'm currently working on"
-    * "Get all items from the 'High Priority' view in our feature requests database"
-    * "Export the filtered data from the 'Q1 Goals' view for analysis"
   </Accordion>
 
   <Accordion title="Query meeting notes">

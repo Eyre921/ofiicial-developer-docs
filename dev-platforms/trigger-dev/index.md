@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 311 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 313 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -45,6 +45,7 @@
 - `docs/ai-chat/tools` — [Tools](pages/docs/ai-chat/tools.md) · [原文](https://trigger.dev/docs/ai-chat/tools)
 - `docs/ai-chat/types` — [Types](pages/docs/ai-chat/types.md) · [原文](https://trigger.dev/docs/ai-chat/types)
 - `docs/ai-chat/upgrade-guide` — [Upgrade Guide: prerelease → Sessions-as-run-manager](pages/docs/ai-chat/upgrade-guide.md) · [原文](https://trigger.dev/docs/ai-chat/upgrade-guide)
+- `docs/ai/observability` — [LLM observability](pages/docs/ai/observability.md) · [原文](https://trigger.dev/docs/ai/observability)
 - `docs/ai/prompts` — [Prompts](pages/docs/ai/prompts.md) · [原文](https://trigger.dev/docs/ai/prompts)
 - `docs/apikeys` — [API keys](pages/docs/apikeys.md) · [原文](https://trigger.dev/docs/apikeys)
 - `docs/billing-limits` — [Billing limits and alerts](pages/docs/billing-limits.md) · [原文](https://trigger.dev/docs/billing-limits)
@@ -91,6 +92,7 @@
 - `docs/github-actions` — [CI / GitHub Actions](pages/docs/github-actions.md) · [原文](https://trigger.dev/docs/github-actions)
 - `docs/github-integration` — [GitHub integration](pages/docs/github-integration.md) · [原文](https://trigger.dev/docs/github-integration)
 - `docs/github-repo` — [GitHub repo](pages/docs/github-repo.md) · [原文](https://trigger.dev/docs/github-repo)
+- `docs/guides/ai-agents/chat-agent` — [Build a chat agent](pages/docs/guides/ai-agents/chat-agent.md) · [原文](https://trigger.dev/docs/guides/ai-agents/chat-agent)
 - `docs/guides/ai-agents/claude-code-trigger` — [Claude Agent SDK setup guide](pages/docs/guides/ai-agents/claude-code-trigger.md) · [原文](https://trigger.dev/docs/guides/ai-agents/claude-code-trigger)
 - `docs/guides/ai-agents/generate-translate-copy` — [Generate and translate copy](pages/docs/guides/ai-agents/generate-translate-copy.md) · [原文](https://trigger.dev/docs/guides/ai-agents/generate-translate-copy)
 - `docs/guides/ai-agents/overview` — [AI agents overview](pages/docs/guides/ai-agents/overview.md) · [原文](https://trigger.dev/docs/guides/ai-agents/overview)

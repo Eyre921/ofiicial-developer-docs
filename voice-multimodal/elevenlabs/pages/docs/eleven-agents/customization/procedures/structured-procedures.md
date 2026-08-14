@@ -8,8 +8,6 @@ path: docs/eleven-agents/customization/procedures/structured-procedures
 
 # Structured procedures
 
-Structured procedures are currently in Alpha. See details in [Release status](#release-status).
-
 ## Overview
 
 A structured procedure is a [procedure](/docs/eleven-agents/customization/procedures) that runs a fixed sequence of steps. A [free-form procedure](/docs/eleven-agents/customization/procedures/free-form-procedures) is natural-language guidance the agent interprets and adapts to the situation. A structured procedure is an ordered list of typed steps the agent runs in order every time the procedure applies.
@@ -19,7 +17,7 @@ Use a structured procedure when specific steps must happen the same way on every
 Like every procedure, a structured procedure has a trigger that describes when it applies. When a conversation matches the trigger, the agent runs the procedure's steps in order, then returns to the rest of the conversation.
 
 ![Structured procedure
-editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T222304Z&X-Amz-Expires=604800&X-Amz-Signature=0f64ba3b35fafd41ce5bc3e71665737799f631f617ba2c764970a693e7d0035e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=cfab896e61b6e43cf303a414787f302856d7b2f3c54167b10853467c9ef82334&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## When to use a structured procedure
 
@@ -53,7 +51,7 @@ The procedure body is an ordered list of typed steps. There are multiple step ty
 | **Retry**         | Reattempts a failed tool call. Available only inside tool failure handling.      |
 
 ![Structured procedure step type
-menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T222304Z&X-Amz-Expires=604800&X-Amz-Signature=412af02b2967802aa0722d0cda8c5dcec59c58fe32215be5a019434c9c417b02&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T100017Z&X-Amz-Expires=604800&X-Amz-Signature=b130a13cc13a472854d97d93e121cd29724e2362d3f2b953b556a0d009efc69d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## API step reference
 
@@ -548,7 +546,3 @@ One pattern is specific to mixing types: a free-form procedure can reference a s
 Structured procedures force internal tool calls when entering a sub-procedure and completing a procedure. Major OpenAI, Anthropic, Gemini, and Grok model families support forced tool choice. Other models or custom providers may not guarantee it, which can make sub-procedure transitions or procedure completion less reliable. Verify forced tool-choice support when using another model provider.
 
 See [Procedures](/docs/eleven-agents/customization/procedures#limitations) for limits that apply to all procedures, including the content size cap and how structured procedures differ from free-form ones.
-
-## Release status
-
-Structured procedures are currently in Alpha. Expect the step types, conditions, dashboard controls, and underlying schema to keep evolving before general availability; some changes may be breaking.

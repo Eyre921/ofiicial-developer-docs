@@ -63,7 +63,7 @@ The streaming WebSocket only — the batch REST transport is a single request/re
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Interruption / barge-in | `Interrupt` cancels the active turn; `SpeechInterrupted` reports `text_spoken` / `text_remaining`. See [Interruption Handling](/docs/flux-tts/interrupt-handling).                  |
 | Mid-stream `Configure`  | Adjust `speed` (seven multipliers, `0.85`–`1.15` in `0.05` steps) without reconnecting; applies at the next segment boundary.                                                       |
-| `expressivity` (beta)   | Integer delivery-register dial, `-2` (calmer) to `2` (more animated), default `0`. Available on both transports. See [Expressivity](/docs/tts-expressivity).                        |
+| `expressivity` (beta)   | Integer delivery-register dial, `-2` (calm) to `2` (animated), default `0`. Available on both transports. See [Expressivity](/docs/tts-expressivity).                               |
 | Inline controls         | Inline pause and pronunciation (IPA) controls are coming soon; the `controls_applied` tallies and warning codes are reserved for them.                                              |
 | Markup stripping        | Recognized SSML / competitor tags are stripped with an `INPUT_MARKUP_STRIPPED` warning; synthesis continues. See [Markup handling](/docs/flux-tts/client-messages#markup-handling). |
 

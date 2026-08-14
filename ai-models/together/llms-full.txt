@@ -2400,46 +2400,22 @@ In the console, open an endpoint and select the **Logs** tab to browse the feed,
   <img alt="The Logs tab for an endpoint in the Together AI console, an event feed with Time, Type, Source, Level, and Message columns showing the deployment's lifecycle events." />
 </Frame>
 
-To read the feed programmatically, use the SDK or API to list events:
+To read the feed from the terminal, list events with the CLI. Pass the endpoint ID or name:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from together import Together
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123
+```
 
-  client = Together()
-  project_id = client.whoami().project_id
+Optional flags narrow the feed:
 
-  events = client.beta.endpoints.list_events(
-      "ep_abc123",
-      project_id=project_id,
-      limit=50,
-  )
-  print(events)
-  ```
+* `--types` restricts to specific event-type strings, comma-separated (for example `deployment.scaled,condition.set`).
+* `--min-level` sets the minimum severity: `debug`, `info`, `warn`, or `error`.
+* `--since` and `--until` bound a time range.
+* `--subject-id` filters to a single subject, such as a rollout ID.
+* `--deployment-ids` scopes to specific deployments, comma-separated.
+* `--limit` and `--after` paginate (max `10000`, default `50`). When more events remain, the CLI prints the `--after` command for the next page.
 
-  ```typescript TypeScript theme={null}
-  import Together from 'together-ai';
-
-  const client = new Together();
-  const { project_id: projectId } = await client.whoami();
-
-  const events = await client.beta.endpoints.listEvents('ep_abc123', {
-    projectId,
-    limit: 50,
-  });
-  console.log(events);
-  ```
-</CodeGroup>
-
-Optional parameters narrow the feed:
-
-* `types` restricts to specific event-type strings.
-* `min_level` sets the minimum severity.
-* `source_kinds` selects endpoint- or deployment-scoped events.
-* `since` and `until` bound a time range.
-* `subject_id` filters to a single subject.
-* `deployment_ids` scopes to specific deployments.
-* `limit` / `after` paginate (max `500`, default `50`).
+Add `--json` for the raw event objects, including fields the table view omits. See the [endpoints CLI reference](/reference/cli/endpoints-beta#events) for the full flag list.
 
 <Note>
   Endpoint mutation events such as `endpoint.updated` record when a change happened, but they don't include a field-level diff. Keep configuration history in your deployment system if you need to reconstruct exactly what changed.
@@ -2447,22 +2423,13 @@ Optional parameters narrow the feed:
 
 ### Deployment events
 
-To follow a single deployment instead of the whole endpoint, pass its ID to the `deployment_ids` filter on the same events feed:
+To follow a single deployment instead of the whole endpoint, pass its ID to the `--deployment-ids` filter on the same events feed:
 
-```python Python theme={null}
-from together import Together
-
-client = Together()
-project_id = client.whoami().project_id
-
-events = client.beta.endpoints.list_events(
-    "ep_abc123",
-    project_id=project_id,
-    deployment_ids=["dep_abc123"],
-    limit=50,
-)
-print(events)
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123 --deployment-ids dep_abc123
 ```
+
+Filtering by deployment ID excludes endpoint-scoped events such as `endpoint.updated`, so the output covers only the listed deployments' lifecycles.
 
 ## Prometheus-compatible metrics endpoint
 
@@ -5341,6 +5308,8 @@ The following models support function-calling fine-tuning. See [supported models
 <Accordion title="Supported models">
   | Organization | Model                                              | API ID                                               |
   | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
+  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
   | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
@@ -5357,6 +5326,7 @@ The following models support function-calling fine-tuning. See [supported models
   | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          |
   | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               |
   | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          |
@@ -6651,6 +6621,8 @@ The following models support reasoning fine-tuning. See [supported models](/docs
 <Accordion title="Supported models">
   | Organization | Model                                              | API ID                                               |
   | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | DeepSeek     | DeepSeek V4 Flash 0731                             | `deepseek-ai/DeepSeek-V4-Flash-0731`                 |
+  | DeepSeek     | DeepSeek V4 Flash                                  | `deepseek-ai/DeepSeek-V4-Flash`                      |
   | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
   | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
   | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
@@ -6664,6 +6636,7 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
   | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
   | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
@@ -6942,6 +6915,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5.2                                            | `zai-org/GLM-5.2`                                    | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
 | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
@@ -6978,6 +6952,10 @@ For the list of models that support vision-language fine-tuning on image and tex
 ## LoRA target modules
 
 See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full#default-target-modules) for the default target modules per model. Pass `lora_trainable_modules="all-linear"` to train every linear layer.
+
+## Model limits from the CLI
+
+To get more detailed fine-tuning constraints for a specific model, including learning-rate bounds, batch-size limits, and the LoRA rank and target modules, run [`tg fine-tuning model-limits <model>`](/reference/cli/finetune#model-limits).
 
 
 # Vision fine-tuning
@@ -7579,12 +7557,20 @@ Instant Clusters offer two compute billing options: **reserved** and **on-demand
 * **On-Demand** – Pay only for the time your cluster is running, with no upfront
   commitment.
 
-See our [pricing page](https://www.together.ai/instant-gpu-clusters) for current rates.
+[View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters).
+
+<Note>
+  The regions API and `tg beta clusters list-regions` return region availability,
+  supported instance types, and driver versions; they do not return pricing. See
+  the [GPU Cluster pricing table](https://www.together.ai/pricing#gpu-clusters) for
+  current on-demand and reserved rates.
+</Note>
 
 ### Storage Billing
 
-Storage is billed on a **pay-as-you-go** basis, as detailed on our [pricing
-page](https://www.together.ai/instant-gpu-clusters). You can freely increase your storage volume size, with all usage billed at the same rate.
+Storage is billed on a **pay-as-you-go** basis. [View current GPU Cluster
+pricing](https://www.together.ai/pricing#gpu-clusters). You can freely increase
+your storage volume size, with all usage billed at the same rate.
 To decrease the storage volume size, please contact your account team.
 
 ### Viewing Usage and Invoices
@@ -7681,7 +7667,7 @@ Each invoice includes detailed line items for:
 Reserved capacity offers significant discounts compared to on-demand for all
 tiers.
 
-[View detailed pricing →](https://www.together.ai/instant-gpu-clusters)
+[View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
 ## Common Questions
 
@@ -8565,7 +8551,7 @@ Ready to create your first cluster?
 
 1. [Follow the Quickstart guide](/docs/gpu-clusters-quickstart) for step-by-step instructions
 2. Review the Capacity Options above to choose the right billing mode
-3. Check [Pricing](https://www.together.ai/instant-gpu-clusters) for current rates
+3. [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
 ## Support
 
@@ -8747,7 +8733,7 @@ nvidia-smi
 * [Learn cluster management operations](/docs/gpu-clusters-management)
 * [Understand capacity types and billing](/docs/gpu-clusters-capacity-types)
 * [Explore API and CLI options](/docs/gpu-clusters-api)
-* [Review pricing](https://www.together.ai/instant-gpu-clusters)
+* [View current GPU Cluster pricing](https://www.together.ai/pricing#gpu-clusters)
 
 
 # Health checks
@@ -47127,6 +47113,31 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 13, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.2`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## Endpoint events in the CLI
+
+  `tg beta endpoints events` lists a [dedicated endpoint's](/docs/dedicated-endpoints/overview) audit and lifecycle events from the terminal: replica scaling, traffic shifts, status changes, and pauses across every deployment under the endpoint.
+
+  See [Monitoring endpoint events](/docs/dedicated-endpoints/monitoring#events) and the [`tg beta endpoints events` CLI command](/reference/cli/endpoints-beta#events).
+
+  ## Fine-tuning limits and tokenized datasets in the CLI
+
+  Two new fine-tuning commands are available:
+
+  * `tg ft model-limits <model>` prints a model's fine-tuning constraints, including sequence-length, batch-size, and LoRA rank limits.
+  * `tg ft download-tokenized-dataset <ft_id>` downloads the tokenized dataset a job trained on, so you can audit exactly what the model saw.
+
+  See the [fine-tuning CLI reference](/reference/cli/finetune).
+</Update>
+
 <Update label="August 12, 2026">
   ## New serverless models
 
@@ -49290,8 +49301,10 @@ tg beta clusters create
 | `--billing-type [ON_DEMAND\|RESERVED]` | Cluster reservation approach.<br /><br /><ul><li>`ON_DEMAND` begins billing the moment the cluster is created. Billing continues until you delete the cluster.</li><li>`RESERVED` starts billing immediately. The cluster is automatically torn down after the `--duration-days` length elapses.</li></ul> |
 | `--nvidia-driver-version [string]`     | NVIDIA driver version. Valid versions can be found with `tg beta clusters list-regions`.                                                                                                                                                                                                                   |
 | `--cuda-version [string]`              | CUDA version. Valid versions can be found with `tg beta clusters list-regions`.                                                                                                                                                                                                                            |
+| `--os [string]`                        | Operating system for NVIDIA version selection (for example `ubuntu-22.04`). Disambiguates when the same driver and CUDA pair is offered on more than one OS.                                                                                                                                               |
+| `--nvidia-version-id [string]`         | NVIDIA version catalog ID (the `id` field in `tg beta clusters list-regions` output). Selects an exact driver, CUDA, and OS combination directly instead of the individual version flags.                                                                                                                  |
 | `--duration-days [number]`             | Only used with `RESERVED` billing. Specifies how many days the cluster is reserved for.                                                                                                                                                                                                                    |
-| `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `H100_SXM_INF`. Available types vary by region. See `tg beta clusters list-regions`.                                                                                                               |
+| `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `B300_SXM`, `H100_SXM_INF`. Available types vary by region. See `tg beta clusters list-regions`.                                                                                                   |
 | `--cluster-type [KUBERNETES\|SLURM]`   | Cluster workload manager or orchestrator.                                                                                                                                                                                                                                                                  |
 | `--volume [string]`                    | Storage volume ID to attach to the cluster. List existing volumes with `tg beta clusters storage list`.                                                                                                                                                                                                    |
 | `--num-reserved-gpus [integer]`        | Number of prepaid reserved GPUs. When omitted for `RESERVED` billing, defaults to `num_gpus`.                                                                                                                                                                                                              |
@@ -49332,6 +49345,14 @@ tg beta clusters retrieve [CLUSTER_ID]
 tg beta clusters delete [CLUSTER_ID]
 ```
 
+The command shows the cluster and asks for confirmation before deleting. In `--non-interactive` or `--json` mode, it deletes without prompting.
+
+### Parameters
+
+| Flag      | Description                  |
+| --------- | ---------------------------- |
+| `--force` | Delete without confirmation. |
+
 ## List clusters
 
 ```bash theme={null}
@@ -49354,20 +49375,16 @@ tg beta clusters list-regions
     {
       "driver_versions": [
         {
-          "cuda_version": "12.9",
-          "nvidia_driver_version": "575"
-        },
-        {
+          "id": "0195d44f-e3d0-7475-8197-2a7a7349ab65",
           "cuda_version": "12.8",
-          "nvidia_driver_version": "570"
+          "nvidia_driver_version": "570",
+          "os": "ubuntu-22.04"
         },
         {
-          "cuda_version": "13.1",
-          "nvidia_driver_version": "590"
-        },
-        {
-          "cuda_version": "13.1",
-          "nvidia_driver_version": "580"
+          "id": "019af67e-4ba5-7039-b8d8-de657e906261",
+          "cuda_version": "12.9",
+          "nvidia_driver_version": "575",
+          "os": "ubuntu-22.04"
         }
       ],
       "name": "us-central-8",
@@ -49379,6 +49396,8 @@ tg beta clusters list-regions
   ]
 }
 ```
+
+Each driver version's `id` is its NVIDIA version catalog ID. Pass it to `tg beta clusters create --nvidia-version-id` to select that exact driver, CUDA, and OS combination.
 
 ## SSH into a cluster
 
@@ -49483,6 +49502,14 @@ tg beta clusters storage list
 ```bash theme={null}
 tg beta clusters storage delete [VOLUME_ID]
 ```
+
+The command shows the volume and asks for confirmation before deleting. In `--non-interactive` or `--json` mode, it deletes without prompting.
+
+### Parameters
+
+| Flag      | Description                  |
+| --------- | ---------------------------- |
+| `--force` | Delete without confirmation. |
 
 
 # Endpoints
@@ -49794,10 +49821,10 @@ With `--json`, endpoint responses expose deployment state under `deployments[].s
 
 ## Update
 
-Update a deployment's parameters: rename it, change its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), adjust autoscaling, set its share of endpoint traffic, or change an A/B variant's percent. Pass the deployment ID (`dep_...`). The CLI resolves its parent endpoint automatically. At least one option must be set.
+Update a deployment's parameters: change its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), adjust autoscaling, set its share of endpoint traffic, or change an A/B variant's percent. Pass the deployment ID (`dep_...`). The CLI resolves its parent endpoint automatically. At least one option must be set.
 
 ```bash Shell theme={null}
-# Scale a deployment's replica bounds
+# Set a deployment's replica bounds
 tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
 
 # Scale on a specific metric and target
@@ -49821,7 +49848,6 @@ tg beta endpoints update dep_variant456 --ab-percent 20
 | Flag                                              | Description                                                                                                                                                                                                                                                                                                        |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ID`                                              | (**required**) The deployment ID to update (`dep_...`).                                                                                                                                                                                                                                                            |
-| `--name [string]`                                 | New name for the deployment.                                                                                                                                                                                                                                                                                       |
 | `--min-replicas [number]`                         | Updated minimum replicas. To stop the deployment, pass both `--min-replicas 0` and `--max-replicas 0`. A single zero bound is an error.                                                                                                                                                                            |
 | `--max-replicas [number]`                         | Updated maximum replicas. Must be greater than or equal to `--min-replicas`.                                                                                                                                                                                                                                       |
 | `--scale-up-window [string]`                      | Autoscaling scale-up stabilization window.                                                                                                                                                                                                                                                                         |
@@ -49854,6 +49880,30 @@ Alias: `tg beta endpoints -d`.
 | --------- | ---------------------------------------------------------------------------------------- |
 | `ID`      | (**required**) The resource ID to delete (`ep_...`, `dep_...`, `abx_...`, or `exp_...`). |
 | `--force` | Force-delete an endpoint that still has deployments.                                     |
+
+## Events
+
+List an endpoint's audit and lifecycle events, newest first. The feed merges endpoint-scoped events with the deployment-scoped events of every deployment under the endpoint. See [Monitoring](/docs/dedicated-endpoints/monitoring#events) for how to read the feed.
+
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123
+```
+
+The command prints one page of events with time, type, source, and message columns. When more events remain, it prints the `--after` command that displays the next page. Add `--json` for the raw event objects, including fields the table view omits, such as the event ID, level, and source kind.
+
+### Parameters
+
+| Flag                                           | Description                                                                                                                  |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `ID`                                           | (**required**) The endpoint ID or name whose events to list.                                                                 |
+| `--deployment-ids [string]`                    | Comma-separated deployment IDs whose events should be included. Filtering by deployment excludes endpoint-scoped events.     |
+| `--min-level [debug \| info \| warn \| error]` | Minimum severity to include. Omit to disable severity filtering.                                                             |
+| `--types [string]`                             | Comma-separated event types to include, such as `deployment.scaled` or `condition.set`.                                      |
+| `--subject-id [string]`                        | ID of a subject associated with the event, such as a rollout (`rol_...`), to read one subject's audit trail out of the feed. |
+| `--since [datetime]`                           | Return only events at or after this time.                                                                                    |
+| `--until [datetime]`                           | Return only events strictly before this time.                                                                                |
+| `--limit [number]`                             | Maximum number of events to return. Max 10000, default 50.                                                                   |
+| `--after [string]`                             | Pagination cursor from a previous response.                                                                                  |
 
 ## A/B test
 
@@ -50352,6 +50402,21 @@ Pass `--json` to print the full API response instead of the table.
 | `--train-on-inputs/--no-train-on-inputs` | Whether prompt or user-message tokens contribute to training loss. When omitted, the API default applies.  |
 | `--training-method [sft]`                | Fine-tuning method to preview. Only supervised fine-tuning (`sft`) is currently supported. Default: `sft`. |
 
+## Model limits
+
+To check a model's fine-tuning limits before you configure a job:
+
+```bash theme={null}
+tg fine-tuning model-limits [MODEL]
+
+# Shorthand
+tg ft model-limits -M [MODEL]
+```
+
+The command prints the model's fine-tuning constraints, including learning-rate bounds, epoch and checkpoint maximums, the maximum sequence lengths for SFT and DPO, and the per-method limits for LoRA and full training (batch-size bounds, maximum LoRA rank, and available LoRA target modules). Models that only support LoRA report `Supports Full Training: False`. Pass `--json` for the raw response.
+
+See [Supported models](/docs/fine-tuning/supported-models) for the list of models available for fine-tuning.
+
 ## List checkpoints
 
 To list saved checkpoints of a job:
@@ -50402,6 +50467,23 @@ The command downloads Zstandard-compressed (`.zst`) weights. To extract them, ru
 | `--output-dir/-o [Path]`                              | Output directory.                                                                                                                                                         |
 | `--checkpoint-step/-s [integer]`                      | Download a specific checkpoint's weights. Defaults to the latest checkpoint.                                                                                              |
 | `--checkpoint-type/-c [merged \| adapter \| default]` | Checkpoint type. `merged` and `adapter` apply to LoRA jobs only. `default` resolves to `merged` for LoRA jobs and to the full model for non-LoRA jobs. Default: `merged`. |
+
+## Download tokenized dataset
+
+To download the tokenized dataset a job trained on:
+
+```bash theme={null}
+tg fine-tuning download-tokenized-dataset [FT_ID] \
+  --output-dir ./datasets
+```
+
+The command saves a Zstandard-compressed archive named `[FT_ID]_tokenized_datasets.tar.zst` to the output directory (default: the current working directory). To extract it, run `tar -xf filename`. Use it to audit exactly what the model was trained on, for example to inspect the tokenization and loss masking of a finished job.
+
+### Parameters
+
+| Flag                     | Description                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. Default: the current working directory. |
 
 ## Delete
 
@@ -51373,11 +51455,11 @@ Alias: `tg beta models -c`.
 
 ### Parameters
 
-| Flag                        | Description                                                                                                                                                                |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                               |
-| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`. |
-| `--base-model [string]`     | (**required**) A supported base model ID (`ml_...`) this model derives from. Run `tg beta models public --json` to find it.                                                |
+| Flag                        | Description                                                                                                                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NAME`                      | (**required**) The inference-addressable name for the model.                                                                                                                                        |
+| `--type [model \| adapter]` | Whether the record holds full weights (`model`) or a LoRA adapter (`adapter`). Set once at create time. File operations derive the type from the record. Default: `model`.                          |
+| `--base-model [string]`     | (**required**) The supported base model this model derives from. Accepts a base model ID (`ml_...`) or a deploy model name (for example `zai-org/GLM-5.2`). Run `tg beta models public` to find it. |
 
 ## Upload
 
@@ -51459,11 +51541,11 @@ tg beta models configs ml_abc123
 
 ### Parameters
 
-| Flag               | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `MODEL`            | (**required**) The model ID to list configs for. |
-| `--limit [number]` | Maximum number of configs to return.             |
-| `--after [string]` | Pagination cursor to start from.                 |
+| Flag               | Description                                                                                                    |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `MODEL`            | (**required**) The model to list configs for. Accepts a model ID (`ml_...`), a resource path, or a model name. |
+| `--limit [number]` | Maximum number of configs to return.                                                                           |
+| `--after [string]` | Pagination cursor to start from.                                                                               |
 
 ## List files
 
@@ -51514,7 +51596,7 @@ tg beta models download ml_abc123 ./local-dir
 
 ## List public models
 
-List the publicly visible models across all projects. Use this to find a base model ID for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
+List the publicly visible models across all projects. Use this to find a base model ID or name for [`create`](#create) or a model name for [`tg beta endpoints deploy`](/reference/cli/endpoints-beta#deploy).
 
 ```bash Shell theme={null}
 tg beta models public \

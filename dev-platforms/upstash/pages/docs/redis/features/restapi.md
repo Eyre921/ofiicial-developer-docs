@@ -40,7 +40,7 @@ curl https://us1-merry-cat-32748.upstash.io/set/foo/bar?_token=2553feg6a2d9842h2
 ## API Semantics
 
 Upstash REST API follows the same convention with
-[Redis Protocol](https://redis.io/commands). Give the command name and
+[Redis Protocol](/docs/redis/commands/overview). Give the command name and
 parameters in the same order as Redis protocol by separating them with a `/`.
 
 ```shell
@@ -389,7 +389,7 @@ And transaction response will be:
 
 ## Monitor Command
 
-Upstash REST API provides Redis [`MONITOR`](https://redis.io/docs/latest/commands/monitor/) command using
+Upstash REST API provides Redis [`MONITOR`](/docs/redis/commands/server/monitor) command using
 [Server Send Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) mechanism. API endpoint is `/monitor`.
 
 ```shell
@@ -410,8 +410,8 @@ data: 1721284030.601034 [0 0.0.0.0:0] "KEYS" "*"
 
 ## Subscribe & Publish Commands
 
-Simiar to `MONITOR` command, Upstash REST API provides Redis [`SUBSCRIBE`](https://redis.io/docs/latest/commands/subscribe/) and
-[`PUBLISH`](https://redis.io/docs/latest/commands/publish/) commands. The `SUBSCRIBE` endpoint works using
+Simiar to `MONITOR` command, Upstash REST API provides Redis [`SUBSCRIBE`](/docs/redis/commands/pub-sub/subscribe) and
+[`PUBLISH`](/docs/redis/commands/pub-sub/publish) commands. The `SUBSCRIBE` endpoint works using
 [Server Send Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) mechanism.
 API endpoints are `/subscribe` and `/publish`
 
@@ -481,9 +481,9 @@ You can get/copy the tokens by clicking the copy button next to
 ### REST Token for ACL Users
 
 In addition to the tokens provided by default, you can create REST tokens for
-the users created via [`ACL SETUSER`](https://redis.io/commands/acl-setuser/)
+the users created via [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser)
 command. Upstash provides a custom `ACL` subcommand to generate REST tokens:
-`ACL RESTTOKEN`. It expects two arguments; username and user's password. And
+[`ACL RESTTOKEN`](/docs/redis/commands/server/acl-resttoken). It expects two arguments; username and user's password. And
 returns the REST token for the user as a string response.
 
 ```
@@ -551,20 +551,20 @@ summary about the performance of your APIs.
 
 | Feature                                                       | REST Support? |                               Notes                               |
 | ------------------------------------------------------------- | :-----------: | :---------------------------------------------------------------: |
-| [String](https://redis.io/commands/?group=string)             |      ✅       |                                                                   |
-| [Bitmap](https://redis.io/commands/?group=bitmap)             |      ✅       |                                                                   |
-| [Hash](https://redis.io/commands/?group=hash)                 |      ✅       |                                                                   |
-| [List](https://redis.io/commands/?group=list)                 |      ✅       | Blocking commands (BLPOP - BRPOP - BRPOPLPUSH) are not supported. |
-| [Set](https://redis.io/commands/?group=set)                   |      ✅       |                                                                   |
-| [SortedSet](https://redis.io/commands/?group=sorted_set)      |      ✅       |    Blocking commands (BZPOPMAX - BZPOPMIN) are not supported.     |
-| [Geo](https://redis.io/commands/?group=geo)                   |      ✅       |                                                                   |
-| [HyperLogLog](https://redis.io/commands/?group=hyperloglog)   |      ✅       |                                                                   |
-| [Transactions](https://redis.io/commands/?group=transactions) |      ✅       |             WATCH/UNWATCH/DISCARD are not supported               |
-| [Generic](https://redis.io/commands/?group=generic)           |      ✅       |                                                                   |
-| [Server](https://redis.io/commands/?group=server)             |      ✅       |                                                                   |
-| [Scripting](https://redis.io/commands/?group=scripting)       |      ✅       |                                                                   |
-| [Pub/Sub](https://redis.io/commands/?group=pubsub)            |      ✅       |                                                                   |
-| [Connection](https://redis.io/commands/?group=connection)     |      ⚠️       |                 Only PING and ECHO are supported.                 |
-| [JSON](https://redis.io/commands/?group=json)                 |      ✅       |                                                                   |
-| [Streams](https://redis.io/commands/?group=stream)            |      ✅       |    Supported, except blocking versions of XREAD and XREADGROUP.   |
-| [Cluster](https://redis.io/commands#cluster)                  |      ❌       |                                                                   |
+| [String](/docs/redis/commands/string/overview)             |      ✅       |                                                                   |
+| [Bitmap](/docs/redis/commands/bitmap/overview)             |      ✅       |                                                                   |
+| [Hash](/docs/redis/commands/hash/overview)                 |      ✅       |                                                                   |
+| [List](/docs/redis/commands/list/overview)                 |      ✅       | Blocking commands (BLPOP - BRPOP - BRPOPLPUSH) are not supported. |
+| [Set](/docs/redis/commands/set/overview)                   |      ✅       |                                                                   |
+| [SortedSet](/docs/redis/commands/sorted-set/overview)      |      ✅       |    Blocking commands (BZPOPMAX - BZPOPMIN) are not supported.     |
+| [Geo](/docs/redis/commands/geo/overview)                   |      ✅       |                                                                   |
+| [HyperLogLog](/docs/redis/commands/hyperloglog/overview)   |      ✅       |                                                                   |
+| [Transactions](/docs/redis/commands/transactions/overview) |      ✅       |             WATCH/UNWATCH/DISCARD are not supported               |
+| [Generic](/docs/redis/commands/generic/overview)           |      ✅       |                                                                   |
+| [Server](/docs/redis/commands/server/overview)             |      ✅       |                                                                   |
+| [Scripting](/docs/redis/commands/scripting/overview)       |      ✅       |                                                                   |
+| [Pub/Sub](/docs/redis/commands/pub-sub/overview)            |      ✅       |                                                                   |
+| [Connection](/docs/redis/commands/connection/overview)     |      ⚠️       |                 Only PING and ECHO are supported.                 |
+| [JSON](/docs/redis/commands/json/overview)                 |      ✅       |                                                                   |
+| [Streams](/docs/redis/commands/streams/overview)            |      ✅       |    Supported, except blocking versions of XREAD and XREADGROUP.   |
+| Cluster                                               |      ❌       |                                                                   |

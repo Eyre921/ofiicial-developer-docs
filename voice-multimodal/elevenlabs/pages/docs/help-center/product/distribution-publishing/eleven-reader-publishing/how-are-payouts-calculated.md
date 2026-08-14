@@ -22,4 +22,4 @@ For direct purchases, ElevenReader Publishing pays authors <strong>60% of the re
   Subscription Listening
 </strong>
 
-For books included in the Ultra subscription, authors earn <strong>$0.20 per hour of verified listening streamed, with a cap of $2.50 per book</strong>.
+For books included in the Ultra subscription, authors earn <strong>\$0.20 per hour of verified listening streamed, with a cap of \$2.50 per book</strong>.

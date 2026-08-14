@@ -597,6 +597,7 @@ Install the CLI and start a project:
 - [Introduction to EAS Observe](https://docs.expo.dev/eas/observe/introduction.md): EAS Observe is a performance monitoring service that tracks how your app performs in production across real devices and conditions.
 - [Set up EAS Observe](https://docs.expo.dev/eas/observe/get-started.md)
 - [EAS Observe dashboard](https://docs.expo.dev/eas/observe/dashboard.md)
+- [Querying with EAS CLI](https://docs.expo.dev/eas/observe/eas-cli.md)
 - [EAS Update download performance](https://docs.expo.dev/eas/observe/eas-update.md)
 - [User-defined events](https://docs.expo.dev/eas/observe/events.md)
 - [Configure EAS Observe](https://docs.expo.dev/eas/observe/configuration.md)

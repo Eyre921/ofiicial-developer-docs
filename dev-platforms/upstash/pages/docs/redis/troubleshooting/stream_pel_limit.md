@@ -17,12 +17,12 @@ ReplyError: ERR XReadGroup is cancelled. Pending Entries List limit per consumer
 Pending Entries List of the stream for the consumer is full. For each consumer
 in a consumer group, there is a pending entries list. This list keeps the
 messages that are delivered to a consumer but not yet acknowledged via
-[XACK](https://redis.io/commands/xack/). This list is populated via
-[XREADGROUP](https://redis.io/commands/xreadgroup/).
+[XACK](/docs/redis/commands/streams/xack). This list is populated via
+[XREADGROUP](/docs/redis/commands/streams/xreadgroup).
 
 ### Solution
 
-Acknowledge the consumed messages via [XACK](https://redis.io/commands/xack/)
+Acknowledge the consumed messages via [XACK](/docs/redis/commands/streams/xack)
 from the list of the associated group and consumer.
 
 - [Agent Memory with Redis Search](https://upstash.com/docs/redis/tutorials/agent_memory.md): Build short-term and long-term memory for AI agents on Upstash Redis. Store working memory with TTLs and recall long-term memories with Redis Search full-text queries.

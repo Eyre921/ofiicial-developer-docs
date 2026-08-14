@@ -14,7 +14,7 @@ path: docs/eleven-creative/products/dubbing
 
 Automatic dubbing or video translation is a process for translating and replacing the original audio of a video with a new language, while preserving the unique characteristics of the original speakers' voices.
 
-![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223610Z&X-Amz-Expires=604800&X-Amz-Signature=1d7381a934a920a9db8ad338e0587cfd2b4e9cea34d7943a5a95b8a49f0c608f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T090511Z&X-Amz-Expires=604800&X-Amz-Signature=774e0ea49da9df22c8adecd9bec6142df0631b83a7af900d36497087fe403632&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -34,7 +34,7 @@ your request.
 Once your dub is ready, you'll be able to download it from your list of dubs.
 
 ![Dubbing new project advanced
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T223610Z&X-Amz-Expires=604800&X-Amz-Signature=66b8f4e28da29f78bd03ca952f5084a251983041e4b35db843d16068bd864829&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T090511Z&X-Amz-Expires=604800&X-Amz-Signature=98fe8ba7374e876b786cca0f4b62bfdaa9bc963146a9f3de785fdb5308248c15&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Cloning strength
 
@@ -81,7 +81,7 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### How much does Dubbing cost?
 
-      The cost for dubbing depends on the duration of your dub, and the number of languages you're dubbing into. The total cost will be displayed before you confirm your request.
+      The cost for dubbing depends on the dubbing model you’re using, the duration of your dub, and the number of languages you’re dubbing into. The total cost will be displayed before you confirm your request.
     </td>
   </tr>
 
@@ -158,13 +158,15 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### What happens to my dubs if I downgrade my subscription?
 
-      If you downgrade your tier or cancel your subscription altogether, you will not be able to use the paid features anymore, such as Projects, Dubbing Studio, and Cloned Voices. However, at the time of writing this, we do not delete any of your data, and it will still be there when you feel ready to upgrade again.
+      If you downgrade your tier or cancel your subscription altogether, you will not be able to use the paid features anymore, such as Instant Voice Cloning and Professional Voice Cloning. However, at the time of writing this, we do not delete any of your data, and it will still be there when you feel ready to upgrade again.
     </td>
   </tr>
 
   <tr>
     <td>
       #### What is the difference between a track clone and a clip clone in the Dubbing Studio?
+
+      Dubbing Studio is in maintenance mode and receives critical bug fixes only.
 
       A track clone refers to a voice clone that is derived from the entire track in a dubbing project. This means that the voice clone will be made from a combination of all of the clips on that track. This is the default behavior and is good for creating voice clones that have a bit of the characteristics of all the clips combined and usually give the AI enough data to create a proper clone. However, if the voice changes quite drastically throughout, it might create a voice that is a bit more unstable.
 
@@ -178,11 +180,9 @@ Cloning strength is the configurable setting in Automatic Dubbing on the Alpha m
     <td>
       #### Why can't I download my dubs?
 
-      <strong>
-        Try using a different browser and turning off ad-blockers and pop-up blockers.
-      </strong>
+      If you can't download dubbed audio or video, try a different browser and turn off ad blockers and pop-up blockers.
 
-      Under certain circumstances, some people might experience problems downloading conversions done in Studio (previously Projects) and videos or audio dubbed using the dubbing feature. The common denominator for this seems to be the browser where most people are using a browser called <strong>Brave</strong>, which is causing issues for them. However, we've also heard certain users experience issues with other browsers. In most cases, the issue seems to be resolved when they switch or test a different browser to download the files. We also recommend turning off any ad-blocker or pop-up blocker.
+      This issue is most often reported with the Brave browser, but it can also occur in others. In most cases, switching browsers or disabling blockers resolves the problem.
     </td>
   </tr>
 

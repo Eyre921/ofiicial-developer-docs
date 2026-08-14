@@ -8,13 +8,15 @@ path: docs/help-center/account/general/can-users-have-more-than-one-account
 
 # Can users have more than one account?
 
-Users may open multiple paid accounts with two important things to keep in mind:
+You can link multiple workspaces to the same account. There is a maximum of one free workspace per account. There is no limit on the number of paid workspaces you can be a member of.
 
-* Each account has to be associated with a different email address
-* Any discounts we might offer will only apply to one of those accounts
+For more information, see [Workspaces](/docs/overview/administration/workspaces/overview).
 
-<strong>
-  However, we only allow one free account per user and IP.
-</strong>
+If you need separate accounts instead, keep the following in mind:
 
-Please be mindful that if you create multiple paid accounts and then switch to the free plan, those accounts will be flagged.
+* Each account must be associated with a different email address
+* Any discounts we offer apply to only one of those accounts
+
+**However, we only allow one free account per user and IP.**
+
+If you create multiple paid accounts and then switch to the free plan, those accounts may be flagged.

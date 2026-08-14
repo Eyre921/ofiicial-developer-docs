@@ -330,17 +330,7 @@ You can also start the connection from Notion:
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
-    Yes. Notion MCP accepts a [personal access token (PAT)](/guides/get-started/personal-access-tokens) from MCP clients that can send custom HTTP headers. Connect to `https://mcp.notion.com/mcp` and send the PAT in the authorization header:
-
-    ```http theme={null}
-    Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
-    ```
-
-    The PAT must have the **Notion API** capability. It uses the permissions of the person who created it, so store it in an environment variable or secret manager and don't put it in shared client configuration.
-
-    Not every MCP client supports custom HTTP headers. PAT-authenticated requests also don't appear in [List MCP client connections](/reference/admin/list-mcp-client-connections). Organization owners can manage these credentials with [List personal access tokens](/reference/admin/list-personal-access-tokens) and [Revoke a personal access token](/reference/admin/revoke-personal-access-token).
-
-    Review [security best practices](/guides/mcp/mcp-security-best-practices) before allowing an MCP client to take actions without confirmation.
+    Not yet. Notion MCP currently requires you to complete the OAuth authorization flow. We're working on support for non-interactive authorization for automated workflows.
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
@@ -350,7 +340,7 @@ You can also start the connection from Notion:
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">
-    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth and PAT bearer authentication and requires no infrastructure setup.
+    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and requires no infrastructure setup.
 
     The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It supports bearer token authentication and the original JSON-based v1 APIs, which may be useful for automated workflows, but requires you to manage your own connection and deployment.
 

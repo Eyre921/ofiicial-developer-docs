@@ -95,6 +95,8 @@ const schema = s.object({
 
 We need the schema when creating or querying an index:
 
+For the complete index creation syntax, see [`SEARCH.CREATE`](/docs/redis/commands/search/search-create).
+
 ```ts
 import { Redis, s } from "@upstash/redis"
 

@@ -10,30 +10,30 @@ Added [Upstash Redis Search](/docs/redis/search/introduction) feature, a new ext
 Redis Search is available through the [@upstash/redis](/docs/redis/sdks/ts/overview) and [upstash-redis](/docs/redis/sdks/py/overview) SDKs. If you already use `node-redis` or `ioredis`, you can use the [`@upstash/search-redis`](/docs/redis/search/adapters/node-redis) and [`@upstash/search-ioredis`](/docs/redis/search/adapters/ioredis) wrappers without switching clients.
 
 New Redis Search commands:
-* [`SEARCH.CREATE`](/docs/redis/search/command-reference#searchcreate): Create a search index
-* [`SEARCH.DROP`](/docs/redis/search/command-reference#searchdrop): Remove a search index
-* [`SEARCH.DESCRIBE`](/docs/redis/search/command-reference#searchdescribe): Return metadata about a search index
-* [`SEARCH.WAITINDEXING`](/docs/redis/search/command-reference#searchwaitindexing): Wait until pending index updates are visible to queries
-* [`SEARCH.QUERY`](/docs/redis/search/command-reference#searchquery): Search documents with a JSON filter
-* [`SEARCH.COUNT`](/docs/redis/search/command-reference#searchcount): Count matching documents without returning them
-* [`SEARCH.AGGREGATE`](/docs/redis/search/command-reference#searchaggregate): Compute analytics over matching documents
-* [`SEARCH.ALIASADD`](/docs/redis/search/command-reference#searchaliasadd), [`SEARCH.ALIASDEL`](/docs/redis/search/command-reference#searchaliasdel), and [`SEARCH.LISTALIASES`](/docs/redis/search/command-reference#searchlistaliases): Manage search index aliases
+* [`SEARCH.CREATE`](/docs/redis/commands/search/search-create): Create a search index
+* [`SEARCH.DROP`](/docs/redis/commands/search/search-drop): Remove a search index
+* [`SEARCH.DESCRIBE`](/docs/redis/commands/search/search-describe): Return metadata about a search index
+* [`SEARCH.WAITINDEXING`](/docs/redis/commands/search/search-waitindexing): Wait until pending index updates are visible to queries
+* [`SEARCH.QUERY`](/docs/redis/commands/search/search-query): Search documents with a JSON filter
+* [`SEARCH.COUNT`](/docs/redis/commands/search/search-count): Count matching documents without returning them
+* [`SEARCH.AGGREGATE`](/docs/redis/commands/search/search-aggregate): Compute analytics over matching documents
+* [`SEARCH.ALIASADD`](/docs/redis/commands/search/search-aliasadd), [`SEARCH.ALIASDEL`](/docs/redis/commands/search/search-aliasdel), and [`SEARCH.LISTALIASES`](/docs/redis/commands/search/search-listaliases): Manage search index aliases
 </Update>
 
 <Update label="December 2025">
 Added [Redis Functions](https://redis.io/docs/latest/develop/programmability/functions-intro/) support. New commands are:
-* [`FCALL`](https://redis.io/docs/latest/commands/fcall/): Call a function with read/write capabilities
-* [`FCALL_RO`](https://redis.io/docs/latest/commands/fcall_ro/): Call a function in read-only mode
+* [`FCALL`](/docs/redis/commands/functions/fcall): Call a function with read/write capabilities
+* [`FCALL_RO`](/docs/redis/commands/functions/fcall-ro): Call a function in read-only mode
 * `FUNCTION DELETE`, `FUNCTION FLUSH`, `FUNCTION KILL`, `FUNCTION LIST`, `FUNCTION LOAD` and `FUNCTION STATS`
 
 New Hash commands:
-* [`HGETDEL`](https://redis.io/docs/latest/commands/hgetdel/): Get and delete hash fields atomically
-* [`HGETEX`](https://redis.io/docs/latest/commands/hgetex/): Get hash fields with expiration support
-* [`HSETEX`](https://redis.io/docs/latest/commands/hsetex/): Set hash fields with expiration support
+* [`HGETDEL`](/docs/redis/commands/hash/hgetdel): Get and delete hash fields atomically
+* [`HGETEX`](/docs/redis/commands/hash/hgetex): Get hash fields with expiration support
+* [`HSETEX`](/docs/redis/commands/hash/hsetex): Set hash fields with expiration support
 
 New Stream Commands:
-* [`XDELEX`](https://redis.io/docs/latest/commands/xdelex/): Extended delete for streams
-* [`XACKDEL`](https://redis.io/docs/latest/commands/xackdel/): Acknowledge and delete stream entries
+* [`XDELEX`](/docs/redis/commands/streams/xdelex): Extended delete for streams
+* [`XACKDEL`](/docs/redis/commands/streams/xackdel): Acknowledge and delete stream entries
 
 New Bit operations added:
 * `BITOP DIFF`: A bit is set only if it's set in all source bitmaps
@@ -44,27 +44,27 @@ New Bit operations added:
 
 <Update label="April 2025">
 Added HASH expiration support. New commands are:
-* [`HEXPIRE`](https://redis.io/docs/latest/commands/hexpire/): Set expiration time in seconds
-* [`HPEXPIRE`](https://redis.io/docs/latest/commands/hpexpire/): Set expiration time in milliseconds
-* [`HEXPIREAT`](https://redis.io/docs/latest/commands/hexpireat/): Set expiration time as Unix timestamp in seconds
-* [`HPEXPIREAT`](https://redis.io/docs/latest/commands/hpexpireat/): Set expiration time as Unix timestamp in milliseconds
-* [`HTTL`](https://redis.io/docs/latest/commands/httl/): Get remaining time to live in seconds
-* [`HPTTL`](https://redis.io/docs/latest/commands/hpttl/): Get remaining time to live in milliseconds
-* [`HEXPIRETIME`](https://redis.io/docs/latest/commands/hexpiretime/): Get absolute expiration time as Unix timestamp in seconds
-* [`HPEXPIRETIME`](https://redis.io/docs/latest/commands/hpexpiretime/): Get absolute expiration time as Unix timestamp in milliseconds
-* [`HPERSIST`](https://redis.io/docs/latest/commands/hpersist/): Remove expiration from hash fields
+* [`HEXPIRE`](/docs/redis/commands/hash/hexpire): Set expiration time in seconds
+* [`HPEXPIRE`](/docs/redis/commands/hash/hpexpire): Set expiration time in milliseconds
+* [`HEXPIREAT`](/docs/redis/commands/hash/hexpireat): Set expiration time as Unix timestamp in seconds
+* [`HPEXPIREAT`](/docs/redis/commands/hash/hpexpireat): Set expiration time as Unix timestamp in milliseconds
+* [`HTTL`](/docs/redis/commands/hash/httl): Get remaining time to live in seconds
+* [`HPTTL`](/docs/redis/commands/hash/hpttl): Get remaining time to live in milliseconds
+* [`HEXPIRETIME`](/docs/redis/commands/hash/hexpiretime): Get absolute expiration time as Unix timestamp in seconds
+* [`HPEXPIRETIME`](/docs/redis/commands/hash/hpexpiretime): Get absolute expiration time as Unix timestamp in milliseconds
+* [`HPERSIST`](/docs/redis/commands/hash/hpersist): Remove expiration from hash fields
 </Update>
 
 <Update label="Feb 2025">
-Added [`EVAL_RO`](https://redis.io/docs/latest/commands/eval_ro/) and [`EVALSHA_RO`](https://redis.io/docs/latest/commands/evalsha_ro/)
+Added [`EVAL_RO`](/docs/redis/commands/scripting/eval-ro) and [`EVALSHA_RO`](/docs/redis/commands/scripting/evalsha-ro)
 commands introduced in Redis 7.
 </Update>
 
 <Update label="July 2024">
-* Added REST API support for [`MONITOR`](https://redis.io/docs/latest/commands/monitor/) and [`SUBSCRIBE`](https://redis.io/docs/latest/commands/subscribe/)
+* Added REST API support for [`MONITOR`](/docs/redis/commands/server/monitor) and [`SUBSCRIBE`](/docs/redis/commands/pub-sub/subscribe)
 commands using [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
 See [Monitor](../features/restapi#monitor-command) and [Subscribe](../features/restapi#subscribe-command) docs.
-* Added [`JSON.MSET`](https://redis.io/docs/latest/commands/json.mset/) and [`JSON.MERGE`](https://redis.io/docs/latest/commands/json.merge/) commands.
+* Added [`JSON.MSET`](/docs/redis/commands/json/json-mset) and [`JSON.MERGE`](/docs/redis/commands/json/json-merge) commands.
 * Introduced the `IP Allowlist` feature for enhanced security on newly created databases. By default, all IP addresses will be allowed.
 However, access can be restricted by specifying permitted IP addresses or CIDR ranges.
 </Update>
@@ -76,12 +76,12 @@ See [REST API docs](/docs/redis/features/restapi#resp2-format-responses) for mor
 </Update>
 
 <Update label="April 2024">
-* Implemented [`MONITOR`](https://redis.io/docs/latest/commands/monitor/) command
+* Implemented [`MONITOR`](/docs/redis/commands/server/monitor) command
 * Implemented Redis [keyspace notifications](/docs/redis/howto/keyspacenotifications)
-* Implemented [`WAIT`](https://redis.io/docs/latest/commands/wait/) and [`WAITAOF`](https://redis.io/docs/latest/commands/waitaof/) commands
-* Added `lag` field to [`XINFO GROUPS`](https://redis.io/docs/latest/commands/xinfo-groups/)
-* Added [`CLIENT ID`](https://redis.io/docs/latest/commands/client-id/) subcommand
-* Added password strength check to [`ACL SETUSER`](https://redis.io/docs/latest/commands/acl-setuser/) command
+* Implemented [`WAIT`](/docs/redis/commands/generic/wait) and [`WAITAOF`](/docs/redis/commands/generic/waitaof) commands
+* Added `lag` field to [`XINFO GROUPS`](/docs/redis/commands/streams/xinfo-groups)
+* Added [`CLIENT ID`](/docs/redis/commands/connection/client-id) subcommand
+* Added password strength check to [`ACL SETUSER`](/docs/redis/commands/server/acl-setuser) command
 </Update>
 
 <Update label="February 2024">

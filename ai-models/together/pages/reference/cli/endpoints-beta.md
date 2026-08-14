@@ -82,10 +82,10 @@ With `--json`, endpoint responses expose deployment state under `deployments[].s
 
 ## Update
 
-Update a deployment's parameters: rename it, change its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), adjust autoscaling, set its share of endpoint traffic, or change an A/B variant's percent. Pass the deployment ID (`dep_...`). The CLI resolves its parent endpoint automatically. At least one option must be set.
+Update a deployment's parameters: change its [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), adjust autoscaling, set its share of endpoint traffic, or change an A/B variant's percent. Pass the deployment ID (`dep_...`). The CLI resolves its parent endpoint automatically. At least one option must be set.
 
 ```bash Shell theme={null}
-# Scale a deployment's replica bounds
+# Set a deployment's replica bounds
 tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
 
 # Scale on a specific metric and target
@@ -109,7 +109,6 @@ tg beta endpoints update dep_variant456 --ab-percent 20
 | Flag                                              | Description                                                                                                                                                                                                                                                                                                        |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ID`                                              | (**required**) The deployment ID to update (`dep_...`).                                                                                                                                                                                                                                                            |
-| `--name [string]`                                 | New name for the deployment.                                                                                                                                                                                                                                                                                       |
 | `--min-replicas [number]`                         | Updated minimum replicas. To stop the deployment, pass both `--min-replicas 0` and `--max-replicas 0`. A single zero bound is an error.                                                                                                                                                                            |
 | `--max-replicas [number]`                         | Updated maximum replicas. Must be greater than or equal to `--min-replicas`.                                                                                                                                                                                                                                       |
 | `--scale-up-window [string]`                      | Autoscaling scale-up stabilization window.                                                                                                                                                                                                                                                                         |
@@ -142,6 +141,30 @@ Alias: `tg beta endpoints -d`.
 | --------- | ---------------------------------------------------------------------------------------- |
 | `ID`      | (**required**) The resource ID to delete (`ep_...`, `dep_...`, `abx_...`, or `exp_...`). |
 | `--force` | Force-delete an endpoint that still has deployments.                                     |
+
+## Events
+
+List an endpoint's audit and lifecycle events, newest first. The feed merges endpoint-scoped events with the deployment-scoped events of every deployment under the endpoint. See [Monitoring](/docs/dedicated-endpoints/monitoring#events) for how to read the feed.
+
+```bash Shell theme={null}
+tg beta endpoints events ep_abc123
+```
+
+The command prints one page of events with time, type, source, and message columns. When more events remain, it prints the `--after` command that displays the next page. Add `--json` for the raw event objects, including fields the table view omits, such as the event ID, level, and source kind.
+
+### Parameters
+
+| Flag                                           | Description                                                                                                                  |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `ID`                                           | (**required**) The endpoint ID or name whose events to list.                                                                 |
+| `--deployment-ids [string]`                    | Comma-separated deployment IDs whose events should be included. Filtering by deployment excludes endpoint-scoped events.     |
+| `--min-level [debug \| info \| warn \| error]` | Minimum severity to include. Omit to disable severity filtering.                                                             |
+| `--types [string]`                             | Comma-separated event types to include, such as `deployment.scaled` or `condition.set`.                                      |
+| `--subject-id [string]`                        | ID of a subject associated with the event, such as a rollout (`rol_...`), to read one subject's audit trail out of the feed. |
+| `--since [datetime]`                           | Return only events at or after this time.                                                                                    |
+| `--until [datetime]`                           | Return only events strictly before this time.                                                                                |
+| `--limit [number]`                             | Maximum number of events to return. Max 10000, default 50.                                                                   |
+| `--after [string]`                             | Pagination cursor from a previous response.                                                                                  |
 
 ## A/B test
 

@@ -19,3 +19,7 @@ Questions about cancelling subscriptions, requesting refunds, and refund policie
 #### [Payment & Billing](/docs/help-center/account/payment-billing)
 
 Questions about payment methods, billing information, invoices, and subscription plans
+
+#### [Workspaces](/docs/help-center/account/workspaces)
+
+Collaborate with team members and manage shared resources

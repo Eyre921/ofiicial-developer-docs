@@ -58,7 +58,8 @@ This example uses a very basic `Settings` to establish a connection. To send the
   "speak": {
     "provider": {
       "type": "deepgram",
-      "model": "aura-2-thalia-en"
+      "version": "v2",
+      "model": "flux-kit-en"
     }
   }
 }

@@ -10,7 +10,7 @@ path: docs/help-center/help-center-directory
 
 #### [Account](/docs/help-center/account)
 
-Account, billing, payment, cancellations, and refunds
+Account, billing, payment, workspaces, cancellations, and refunds
 
 #### [Website](/docs/help-center/website)
 

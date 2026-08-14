@@ -8,10 +8,4 @@ path: docs/help-center/account/general/is-there-a-limit-to-how-many-credits-i-ca
 
 # Is there a limit to how many credits I can use at once?
 
-Yes, to prevent abuse there is a limit on the number of credits that can be used at once. This limit is twice the usual monthly quota for your subscription plan:
-
-* Starter: 60,000
-* Creator: 200,000
-* Pro: 1,000,000
-* Scale: 4,000,000
-* Business: 22,000,000
+Yes, to prevent abuse there is a limit on the number of credits that can be used at once. This limit is twice the usual monthly quota for your subscription plan.

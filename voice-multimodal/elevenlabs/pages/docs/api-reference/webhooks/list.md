@@ -47,7 +47,7 @@ Successful Response
     - `usage_type` (enum, required)
       - Allowed values: `ConvAI Agent Settings`, `ConvAI Settings`, `Voice Library Removal Notices`, `Speech to Text`, `Agent QA Evaluations`, `ConvAI Alerting`, `Flows`, `Dubbing`
   - `events` (list of enum, optional, nullable) — The workspace-level events this webhook is currently subscribed to. Only populated when usages are requested.
-    - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`
+    - Allowed values: `voice_library_removal_notice`, `speech_to_text`, `agent_qa`, `flows`
   - `most_recent_failure_error_code` (integer, optional, nullable) — The most recent error code returned from the callback URL.
   - `most_recent_failure_timestamp` (integer, optional, nullable) — The most recent time the webhook failed, failures are any non-200 codes returned by the callback URL.
 
