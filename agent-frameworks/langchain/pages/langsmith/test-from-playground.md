@@ -4,8 +4,6 @@ source: https://docs.langchain.com/langsmith/test-from-playground
 path: langsmith/test-from-playground
 ---
 
-Test prompts and model configurations over datasets in the LangSmith Playground without writing code.
-
 The [Playground](/langsmith/prompt-engineering-concepts#playground) provides an interface for iterating on and testing prompts and model configurations. Test a prompt or model configuration over a series of inputs to see how well it scores across different contexts or scenarios, without writing any code.
 
 In the Playground you can:
@@ -20,7 +18,7 @@ In the Playground you can:
 To test a prompt or model configuration over a dataset and score the results, [run an evaluation from the Playground](/langsmith/run-evaluation-from-playground).
 
 <Callout type="info" icon="feather">
-  Use the [Chat](/langsmith/chat) in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
+Use the [Chat](/langsmith/chat) in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
 </Callout>
 
 ## See also
@@ -31,14 +29,13 @@ To test a prompt or model configuration over a dataset and score the results, [r
 * [Chat: Playground](/langsmith/chat#playground)
 * [Studio: Playground](/langsmith/observability-studio#playground)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-from-playground.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

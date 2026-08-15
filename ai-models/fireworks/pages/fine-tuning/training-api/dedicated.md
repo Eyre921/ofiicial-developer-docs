@@ -128,6 +128,8 @@ Dedicated recipes use two independently billed resources:
 
 Keep stable trainer and deployment IDs so retries reconnect instead of provisioning duplicates. The trainer owns optimization state; the deployment owns serving and sampling.
 
+Serverless and dedicated sampling use the same `DeploymentSampler` request contract. See [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for SDK-specific batching behavior, and use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical session-affinity reference.
+
 <h2>
   Loss functions
 </h2>

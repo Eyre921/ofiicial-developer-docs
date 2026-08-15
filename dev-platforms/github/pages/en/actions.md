@@ -16,11 +16,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
+  Learn the basics of core concepts and essential terminology in GitHub Actions.
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  You can assign a job to run on a virtual machine hosted by GitHub.
+  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
@@ -40,11 +40,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
+  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
-  You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.
+  <p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p>
 
 ## Links
 

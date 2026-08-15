@@ -4,4 +4,4 @@ source: https://docs.langchain.com/langsmith/agent-server-api/store/store-or-upd
 path: langsmith/agent-server-api/store/store-or-update-an-item
 ---
 
-/langsmith/agent-server-openapi.json put /store/items
+

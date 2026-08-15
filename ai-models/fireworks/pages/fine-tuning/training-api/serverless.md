@@ -96,7 +96,23 @@ Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full
 
 **Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights. See [Saving and loading checkpoints](#saving-and-loading-checkpoints) for the full save / resume / promote surface.
 
-**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). For multi-turn rollouts, session-affinity headers pin an episode to one replica so the KV cache is reused across turns (see [RL rollout integration](/fine-tuning/rl-rollout-integration)). The sampler runs in the same session, so there's no deployment to create or hot-load.
+**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). The snapshot selects the weights to serve; it is not a prompt-cache affinity key. The sampler runs in the same session, so there's no deployment to create or hot-load. Serverless and dedicated sampling share the [`DeploymentSampler` request contract](/fine-tuning/training-api/reference/deployment-sampler).
+
+### Sampling with prompt caching
+
+Check [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) for guidance on session affinity and KV-cache behavior. Its **Training SDK** tab shows how to pass a stable trajectory ID through `DeploymentSampler`.
+
+Install SDK version 1.2.9 or later and restart the client process after upgrading:
+
+```bash theme={null}
+pip install --upgrade "fireworks-ai[training]>=1.2.9"
+```
+
+<Warning>
+  SDK versions 1.2.0 through 1.2.8 derived a shared session-affinity value from the sampler checkpoint, overriding per-request session values. Upgrade before using per-request affinity.
+</Warning>
+
+For batched rollout generation, see [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for the two-samples-per-prompt pattern and `n=1` behavior.
 
 ## Quickstart
 

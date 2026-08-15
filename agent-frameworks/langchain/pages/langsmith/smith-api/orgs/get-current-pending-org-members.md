@@ -4,4 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-pending-
 path: langsmith/smith-api/orgs/get-current-pending-org-members
 ---
 
-/langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/members/pending
+

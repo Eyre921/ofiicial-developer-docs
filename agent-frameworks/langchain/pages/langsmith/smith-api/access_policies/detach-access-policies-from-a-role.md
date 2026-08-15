@@ -4,5 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/access_policies/detach-ac
 path: langsmith/smith-api/access_policies/detach-access-policies-from-a-role
 ---
 
-/langsmith/langsmith-platform-openapi.json delete /api/v1/platform/orgs/current/roles/{role_id}/access-policies
-Detaches one or more access policies from a specific role.
+

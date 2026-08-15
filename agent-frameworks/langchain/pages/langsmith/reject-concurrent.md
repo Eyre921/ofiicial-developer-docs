@@ -13,8 +13,8 @@ The guide covers the `reject` option for double texting, which rejects the new r
 First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Javascript">
+    ```js
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -26,10 +26,9 @@ First, we will define a quick helper function for printing out JS and cURL model
       console.log(m.content);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -48,14 +47,14 @@ First, we will define a quick helper function for printing out JS and cURL model
       echo "$content"
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Now, let's import our required packages and instantiate our client, assistant, and thread.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     import httpx
     from langchain_core.messages import convert_to_messages
     from langgraph_sdk import get_client
@@ -65,10 +64,9 @@ Now, let's import our required packages and instantiate our client, assistant, a
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -76,16 +74,15 @@ Now, let's import our required packages and instantiate our client, assistant, a
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Create runs
@@ -93,8 +90,8 @@ Now, let's import our required packages and instantiate our client, assistant, a
 Now we can run a thread and try to run a second one with the "reject" option, which should fail since we have already started a run:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -112,10 +109,9 @@ Now we can run a thread and try to run a second one with the "reject" option, wh
     except httpx.HTTPStatusError as e:
         print("Failed to start concurrent run", e)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const run = await client.runs.create(
       thread["thread_id"],
       assistantId,
@@ -135,10 +131,9 @@ Now we can run a thread and try to run a second one with the "reject" option, wh
       console.error("Failed to start concurrent run", e);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -154,7 +149,7 @@ Now we can run a thread and try to run a second one with the "reject" option, wh
       \"multitask_strategy\": \"reject\"
     }" || { echo "Failed to start concurrent run"; echo "Error: $?" >&2; }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -169,8 +164,8 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 We can verify that the original thread finished executing:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     # wait until the original run completes
     await client.runs.join(thread["thread_id"], run["run_id"])
 
@@ -179,10 +174,9 @@ We can verify that the original thread finished executing:
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     await client.runs.join(thread["thread_id"], run["run_id"]);
 
     const state = await client.threads.getState(thread["thread_id"]);
@@ -191,10 +185,9 @@ We can verify that the original thread finished executing:
       prettyPrint(m);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
     curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -204,7 +197,7 @@ We can verify that the original thread finished executing:
         pretty_print "$type" "$content"
     done
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -242,14 +235,13 @@ Some key points about the typical June weather in San Francisco:
 In summary, you can expect mild, foggy mornings giving way to sunny but cool afternoons in San Francisco this time of year. The marine layer keeps temperatures moderate compared to other parts of California in June.
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/reject-concurrent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

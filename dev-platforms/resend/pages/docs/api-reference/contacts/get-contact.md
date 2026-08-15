@@ -195,8 +195,14 @@ Either `id` or `email` must be provided.
     "created_at": "2026-10-06 23:47:56.678+00",
     "unsubscribed": false,
     "properties": {
-      "company_name": "Acme Corp",
-      "department": "Engineering"
+      "company_name": {
+        "value": "Acme Corp",
+        "type": "string"
+      },
+      "department": {
+        "value": "Engineering",
+        "type": "string"
+      }
     }
   }
   ```

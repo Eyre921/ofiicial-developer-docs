@@ -4,4 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/ttl-settings/upsert-ttl-s
 path: langsmith/smith-api/ttl-settings/upsert-ttl-settings
 ---
 
-/langsmith/langsmith-platform-openapi.json put /api/v1/ttl-settings
+

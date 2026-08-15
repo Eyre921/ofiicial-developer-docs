@@ -4,5 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/oauth/approve-oauth2-auth
 path: langsmith/smith-api/oauth/approve-oauth2-authorization-request
 ---
 
-/langsmith/langsmith-platform-openapi.json post /oauth/authorize/approve
-Issues an authorization code after the authenticated user approves the request. Called by the frontend consent page. Requires authentication.
+

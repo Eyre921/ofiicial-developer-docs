@@ -15,8 +15,8 @@ Enqueue is the default double texting (multi-tasking) strategy when creating run
 First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Javascript">
+    ```js
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -28,10 +28,9 @@ First, we will define a quick helper function for printing out JS and cURL model
       console.log(m.content);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -50,14 +49,14 @@ First, we will define a quick helper function for printing out JS and cURL model
       echo "$content"
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Then, let's import our required packages and instantiate our client, assistant, and thread.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     import asyncio
 
     import httpx
@@ -69,10 +68,9 @@ Then, let's import our required packages and instantiate our client, assistant, 
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
 
@@ -81,16 +79,15 @@ Then, let's import our required packages and instantiate our client, assistant, 
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Create runs
@@ -98,8 +95,8 @@ Then, let's import our required packages and instantiate our client, assistant, 
 Now let's start two runs, with the second interrupting the first one with a multitask strategy of "enqueue":
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     first_run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -112,10 +109,9 @@ Now let's start two runs, with the second interrupting the first one with a mult
         multitask_strategy="enqueue",
     )
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const firstRun = await client.runs.create(
       thread["thread_id"],
       assistantId,
@@ -129,10 +125,9 @@ Now let's start two runs, with the second interrupting the first one with a mult
       multitask_strategy="enqueue",
     )
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -148,7 +143,7 @@ Now let's start two runs, with the second interrupting the first one with a mult
       \"multitask_strategy\": \"enqueue\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## View run results
@@ -156,8 +151,8 @@ Now let's start two runs, with the second interrupting the first one with a mult
 Verify that the thread has data from both runs:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     # wait until the second run completes
     await client.runs.join(thread["thread_id"], second_run["run_id"])
 
@@ -166,10 +161,9 @@ Verify that the thread has data from both runs:
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     await client.runs.join(thread["thread_id"], secondRun["run_id"]);
 
     const state = await client.threads.getState(thread["thread_id"]);
@@ -178,10 +172,9 @@ Verify that the thread has data from both runs:
       prettyPrint(m);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
     curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -191,7 +184,7 @@ Verify that the thread has data from both runs:
         pretty_print "$type" "$content"
     done
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -270,14 +263,13 @@ Friday: Partly cloudy, high of 87°F (31°C)
 New York City is experiencing beautiful sunny weather with seasonably warm temperatures in the mid-to-upper 80s Fahrenheit (around 30°C). Humidity is moderate in the 60% range. Overall, ideal late spring/early summer conditions for being outdoors in the city over the next several days.
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enqueue-concurrent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

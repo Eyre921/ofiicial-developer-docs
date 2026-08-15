@@ -4,4 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-ac
 path: langsmith/smith-api/workspaces/get-current-active-workspace-members
 ---
 
-/langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/members/active
+

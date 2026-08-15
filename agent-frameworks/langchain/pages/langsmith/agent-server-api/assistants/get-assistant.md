@@ -4,5 +4,4 @@ source: https://docs.langchain.com/langsmith/agent-server-api/assistants/get-ass
 path: langsmith/agent-server-api/assistants/get-assistant
 ---
 
-/langsmith/agent-server-openapi.json get /assistants/{assistant_id}
-Get an assistant by ID.
+

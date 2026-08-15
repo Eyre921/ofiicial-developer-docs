@@ -9,7 +9,7 @@ The various services in a LangSmith deployment emit telemetry data in the form o
 This page describes how to configure an [OTel Collector](https://opentelemetry.io/docs/collector/configuration/) to gather telemetry data from LangSmith. Note that all of the concepts discussed below can be translated to other collectors such as [Fluentd](https://www.fluentd.org/) or [FluentBit](https://fluentbit.io/).
 
 <Warning>
-  **This section is only applicable for Kubernetes deployments.**
+**This section is only applicable for Kubernetes deployments.**
 </Warning>
 
 # Receivers
@@ -18,7 +18,7 @@ This page describes how to configure an [OTel Collector](https://opentelemetry.i
 
 This is an example for a ***Sidecar*** collector to read logs from its own pod, excluding logs from non domain-specific containers. A Sidecar configuration is useful here because we require access to every container's filesystem. A DaemonSet can also be used.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 filelog:
   exclude:
     - "**/otc-container/*.log"
@@ -56,14 +56,14 @@ volumeMounts:
 ```
 
 <Info>
-  **This configuration requires 'get', 'list', and 'watch' permissions on pods in the given namespace.**
+**This configuration requires 'get', 'list', and 'watch' permissions on pods in the given namespace.**
 </Info>
 
 ## Metrics
 
 Metrics can be scraped using the Prometheus endpoints. A single instance ***Gateway*** collector can be used to avoid duplication of queries when fetching metrics. The following config scrapes all of the default named LangSmith services:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 prometheus:
   config:
     scrape_configs:
@@ -95,14 +95,14 @@ prometheus:
 ```
 
 <Info>
-  **This configuration requires 'get', 'list', and 'watch' permissions on pods, services and endpoints in the given namespace.**
+**This configuration requires 'get', 'list', and 'watch' permissions on pods, services and endpoints in the given namespace.**
 </Info>
 
 ### Traces
 
 For traces, you need to enable the OTLP receiver. The following configuration can be used to listen to HTTP traces on port 4318, and GRPC on port 4317:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 otlp:
   protocols:
     grpc:
@@ -125,7 +125,7 @@ The following processors are recommended when using the OTel collector:
 
 Exporters just need to point to an external endpoint of your liking. The following configuration allows you to configure a separate endpoint for logs, metrics and traces:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 otlphttp/logs:
   endpoint: <your_logs_endpoint>
 otlphttp/metrics:
@@ -135,12 +135,12 @@ otlphttp/traces:
 ```
 
 <Note>
-  **The OTel Collector also supports exporting directly to a [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) endpoint.**
+**The OTel Collector also supports exporting directly to a [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) endpoint.**
 </Note>
 
 # Example collector configuration: Logs sidecar
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 mode: sidecar
 image: otel/opentelemetry-collector-contrib
 config:
@@ -200,7 +200,7 @@ volumeMounts:
 
 # Example collector configuration: Metrics and traces Gateway
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 mode: deployment
 image: otel/opentelemetry-collector-contrib
 config:
@@ -264,14 +264,13 @@ config:
         exporters: [otlphttp/traces]
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

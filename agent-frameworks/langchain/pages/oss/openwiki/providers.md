@@ -4,31 +4,29 @@ source: https://docs.langchain.com/oss/openwiki/providers
 path: oss/openwiki/providers
 ---
 
-Configure inference providers and credentials for OpenWiki
-
 OpenWiki supports the following providers:.
 
-| Provider            | Credential                              | Notes                                                                                   |
-| ------------------- | --------------------------------------- | --------------------------------------------------------------------------------------- |
-| `openai`            | `OPENAI_API_KEY`                        | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
-| `openai-chatgpt`    | ChatGPT OAuth tokens                    | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance                      |
-| `copilot`           | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT                 |
-| `openrouter`        | `OPENROUTER_API_KEY`                    | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist                                  |
-| `anthropic`         | `ANTHROPIC_API_KEY`                     | Optional `ANTHROPIC_BASE_URL`                                                           |
-| `gemini`            | `GEMINI_API_KEY`                        | Google AI Studio                                                                        |
-| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT`     | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`)                                 |
-| `bedrock`           | AWS credentials + region                | Explicit Bedrock keys or the AWS SDK default chain                                      |
-| `baseten`           | `BASETEN_API_KEY`                       | Optional `BASETEN_BASE_URL`                                                             |
-| `fireworks`         | `FIREWORKS_API_KEY`                     | Optional `FIREWORKS_BASE_URL`                                                           |
-| `nebius`            | `NEBIUS_API_KEY`                        | Nebius Token Factory                                                                    |
-| `nvidia`            | `NVIDIA_API_KEY`                        | Optional `NVIDIA_BASE_URL`                                                              |
-| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY`             | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID                             |
+| Provider | Credential | Notes |
+| --- | --- | --- |
+| `openai` | `OPENAI_API_KEY` | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
+| `openai-chatgpt` | ChatGPT OAuth tokens | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance |
+| `copilot` | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT |
+| `openrouter` | `OPENROUTER_API_KEY` | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist |
+| `anthropic` | `ANTHROPIC_API_KEY` | Optional `ANTHROPIC_BASE_URL` |
+| `gemini` | `GEMINI_API_KEY` | Google AI Studio |
+| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT` | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`) |
+| `bedrock` | AWS credentials + region | Explicit Bedrock keys or the AWS SDK default chain |
+| `baseten` | `BASETEN_API_KEY` | Optional `BASETEN_BASE_URL` |
+| `fireworks` | `FIREWORKS_API_KEY` | Optional `FIREWORKS_BASE_URL` |
+| `nebius` | `NEBIUS_API_KEY` | Nebius Token Factory |
+| `nvidia` | `NVIDIA_API_KEY` | Optional `NVIDIA_BASE_URL` |
+| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID |
 
 Credentials and defaults are stored in `~/.openwiki/.env`. Process environment values take priority over file values.
 
 You can set the active provider and model with:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=openai
 OPENWIKI_MODEL_ID=gpt-5.6-terra
 ```
@@ -37,7 +35,7 @@ OPENWIKI_MODEL_ID=gpt-5.6-terra
 
 Override retries after the first provider request:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER_RETRY_ATTEMPTS=3
 ```
 
@@ -52,7 +50,7 @@ To use GitHub Copilot:
 
 OpenWiki leaves the GitHub CLI token in the GitHub CLI credential store. It does not copy that token into `~/.openwiki/.env`. For CI or headless environments without a GitHub CLI session, set `COPILOT_API_KEY` to a GitHub **OAuth token**. Personal Access Tokens (classic or fine-grained) are rejected by the Copilot API for third-party integrations.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=copilot
 OPENWIKI_MODEL_ID=gpt-5.5
 ```
@@ -61,7 +59,7 @@ OPENWIKI_MODEL_ID=gpt-5.5
 
 The `openai-chatgpt` provider calls OpenAI's Codex backend using your ChatGPT subscription instead of a metered API key:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 ```
 
@@ -71,7 +69,7 @@ The wizard opens the OpenAI auth page in your browser (and prints the URL for he
 
 The `gemini-enterprise` provider uses Google Application Default Credentials. No API key is required:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=gemini-enterprise
 GOOGLE_CLOUD_PROJECT=your-gcp-project
 GOOGLE_CLOUD_LOCATION=global
@@ -81,7 +79,7 @@ The credentials need Vertex AI access (`roles/aiplatform.user`), and the models 
 
 ## AWS Bedrock
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=bedrock
 BEDROCK_AWS_ACCESS_KEY_ID=your-access-key-id
 BEDROCK_AWS_SECRET_ACCESS_KEY=your-secret-access-key
@@ -95,7 +93,7 @@ When explicit Bedrock credentials are not set, OpenWiki uses the AWS SDK default
 
 Use the `openai-compatible` provider for gateways or local servers that expose OpenAI-compatible chat completions:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
@@ -108,7 +106,7 @@ Local examples such as Ollama (`http://localhost:11434/v1`) and LM Studio (`http
 
 When OpenRouter serves a model through multiple upstream providers, restrict routing:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 OPENWIKI_PROVIDER=openrouter
 OPENROUTER_API_KEY=your-key
 OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
@@ -116,18 +114,17 @@ OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 
 ## See also
 
-* [Quickstart](/oss/openwiki/quickstart)
-* [CLI reference](/oss/openwiki/cli-reference)
-* [Customize OpenWiki](/oss/openwiki/customize)
+- [Quickstart](/oss/openwiki/quickstart)
+- [CLI reference](/oss/openwiki/cli-reference)
+- [Customize OpenWiki](/oss/openwiki/customize)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

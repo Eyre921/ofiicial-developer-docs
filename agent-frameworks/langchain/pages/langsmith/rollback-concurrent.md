@@ -13,8 +13,8 @@ The guide covers the `rollback` option for double texting, which interrupts the 
 First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Javascript">
+    ```js
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -26,10 +26,9 @@ First, we will define a quick helper function for printing out JS and cURL model
       console.log(m.content);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -48,14 +47,14 @@ First, we will define a quick helper function for printing out JS and cURL model
       echo "$content"
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Now, let's import our required packages and instantiate our client, assistant, and thread.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     import asyncio
 
     import httpx
@@ -67,10 +66,9 @@ Now, let's import our required packages and instantiate our client, assistant, a
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -78,16 +76,15 @@ Now, let's import our required packages and instantiate our client, assistant, a
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Create runs
@@ -95,8 +92,8 @@ Now, let's import our required packages and instantiate our client, assistant, a
 Now let's run a thread with the multitask parameter set to "rollback":
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     # the first run will be rolled back
     rolled_back_run = await client.runs.create(
         thread["thread_id"],
@@ -112,10 +109,9 @@ Now let's run a thread with the multitask parameter set to "rollback":
     # wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"])
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     // the first run will be interrupted
     let rolledBackRun = await client.runs.create(
       thread["thread_id"],
@@ -135,10 +131,9 @@ Now let's run a thread with the multitask parameter set to "rollback":
     // wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"]);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -155,7 +150,7 @@ Now let's run a thread with the multitask parameter set to "rollback":
     }" && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## View run results
@@ -163,27 +158,25 @@ Now let's run a thread with the multitask parameter set to "rollback":
 We can see that the thread has data only from the second run
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     state = await client.threads.get_state(thread["thread_id"])
 
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const state = await client.threads.getState(thread["thread_id"]);
 
     for (const m of state['values']['messages']) {
       prettyPrint(m);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
     jq -c '.values.messages[]' | while read -r element; do
@@ -192,7 +185,7 @@ We can see that the thread has data only from the second run
         pretty_print "$type" "$content"
     done
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -221,24 +214,23 @@ The weather API results show that the current weather in New York City is sunny 
 Verify that the original, rolled back run was deleted
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     try:
         await client.runs.get(thread["thread_id"], rolled_back_run["run_id"])
     except httpx.HTTPStatusError as _:
         print("Original run was correctly deleted")
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     try {
       await client.runs.get(thread["thread_id"], rolledBackRun["run_id"]);
     } catch (e) {
       console.log("Original run was correctly deleted");
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -247,14 +239,13 @@ Output:
 Original run was correctly deleted
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rollback-concurrent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

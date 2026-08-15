@@ -10,8 +10,8 @@ When you use Fireworks inference to collect RL rollouts, the regular [`/v1/compl
 
 <Note>
   These features are fully compatible with the OpenAI SDKs — they're all
-  attached as either request headers or optional body fields, so no SDK upgrade
-  is required.
+  attached as either request headers or optional body fields, so no OpenAI SDK
+  upgrade is required.
 </Note>
 
 ## Session affinity
@@ -22,7 +22,7 @@ Multi-turn rollouts typically reuse a long prefix between turns (same system pro
 * `x-session-affinity` — fallback sticky routing key when `x-multi-turn-session-id` is absent. In most RL rollout setups, set it to the same trajectory ID.
 
 <Tabs>
-  <Tab title="Python">
+  <Tab title="OpenAI SDK">
     ```python theme={null}
     from openai import OpenAI
 
@@ -46,6 +46,33 @@ Multi-turn rollouts typically reuse a long prefix between turns (same system pro
     ```
   </Tab>
 
+  <Tab title="Training SDK">
+    ```python theme={null}
+    import secrets
+
+    sampling_client = service.create_sampling_client(
+        model_path=snapshot,
+        tokenizer=tokenizer,
+    )
+    sampler = sampling_client.deployment_sampler
+
+    trajectory_id = f"rl-session-{secrets.token_hex(16)}"
+
+    try:
+        for prompt_token_ids in trajectory_prompt_token_ids:
+            completions = await sampler.sample_with_prompt_tokens(
+                prompt_token_ids,
+                n=1,
+                max_tokens=4096,
+                temperature=1.0,
+                logprobs=True,
+                user=trajectory_id,
+            )
+    finally:
+        sampling_client.close()
+    ```
+  </Tab>
+
   <Tab title="curl">
     ```bash theme={null}
     curl https://api.fireworks.ai/inference/v1/chat/completions \
@@ -62,6 +89,8 @@ Multi-turn rollouts typically reuse a long prefix between turns (same system pro
     ```
   </Tab>
 </Tabs>
+
+The Training SDK's Tinker-compatible `sampler.sample(...)` method does not expose arbitrary completions request fields. Use the underlying `DeploymentSampler`, as shown above, to pass the trajectory ID in `user`. For independent trajectories, use distinct IDs and separate `n=1` calls; see [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for a batched example. Serverless sampling requires `fireworks-ai[training]` 1.2.9 or later for per-request affinity.
 
 <Tip>
   `x-session-affinity` on its own is already documented for general [prompt
@@ -97,7 +126,7 @@ For rollout traffic, use one stable session ID per trajectory:
 
 * `x-multi-turn-session-id`: identifies the trajectory and is preferred when Fireworks derives the session-affinity key.
 * `x-session-affinity`: fallback sticky routing key when `x-multi-turn-session-id` is absent. In RL rollouts, set it to the same trajectory ID.
-* `user`: can also be used by general prompt-caching flows, but RL rollout traffic should use the headers above.
+* `user`: request-body affinity key used by the Training SDK's `DeploymentSampler`. Keep it stable per trajectory when the client does not expose the headers above.
 
 The session ID is coupled to prompt-cache sharing in two ways:
 

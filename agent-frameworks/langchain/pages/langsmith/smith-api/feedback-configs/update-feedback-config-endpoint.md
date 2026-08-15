@@ -4,4 +4,4 @@ source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/update-f
 path: langsmith/smith-api/feedback-configs/update-feedback-config-endpoint
 ---
 
-/langsmith/langsmith-platform-openapi.json patch /api/v1/feedback-configs
+
