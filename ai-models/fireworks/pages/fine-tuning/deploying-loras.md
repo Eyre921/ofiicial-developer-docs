@@ -8,6 +8,8 @@ Deploy one or multiple LoRA models fine tuned on Fireworks using live merge or m
 
 After fine-tuning your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA fine-tuned models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 
+To run training evals before production serving, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
+
 <Warning>
   Fine-tuned LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
 </Warning>

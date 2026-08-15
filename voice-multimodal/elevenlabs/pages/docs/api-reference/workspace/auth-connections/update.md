@@ -575,7 +575,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.workspace.authConnections.update("auth_connection_id", );
+    await client.workspace.authConnections.update("auth_connection_id");
 }
 main();
 

@@ -63,7 +63,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.chunk.get("chunk_id", "21m00Tcm4TlvDq8ikWAM", {
+    await client.conversationalAi.knowledgeBase.documents.chunk.get("21m00Tcm4TlvDq8ikWAM", "chunk_id", {
         embeddingModel: "e5_mistral_7b_instruct",
     });
 }
@@ -77,8 +77,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.documents.chunk.get(
-    chunk_id="chunk_id",
     documentation_id="21m00Tcm4TlvDq8ikWAM",
+    chunk_id="chunk_id",
     embedding_model="e5_mistral_7b_instruct",
 )
 

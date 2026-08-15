@@ -83,7 +83,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.project.language.transcript.updateSegment("lang_1001kwkyxp0je6ktn4knsfrasx5s", "proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "0199a3f0-1c2d-7abc-8def-0123456789ab", {
+    await client.dubbing.project.language.transcript.updateSegment("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "lang_1001kwkyxp0je6ktn4knsfrasx5s", "0199a3f0-1c2d-7abc-8def-0123456789ab", {
         translation: "Bienvenido a nuestra última demostración de producto.",
     });
 }
@@ -97,8 +97,8 @@ from elevenlabs import ElevenLabs, DubbingTargetSegmentUpdateRequest
 client = ElevenLabs()
 
 client.dubbing.project.language.transcript.update_segment(
-    language_id="lang_1001kwkyxp0je6ktn4knsfrasx5s",
     project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
+    language_id="lang_1001kwkyxp0je6ktn4knsfrasx5s",
     segment_id="0199a3f0-1c2d-7abc-8def-0123456789ab",
     request=DubbingTargetSegmentUpdateRequest(
         translation="Bienvenido a nuestra última demostración de producto.",

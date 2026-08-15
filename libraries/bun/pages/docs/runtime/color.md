@@ -100,7 +100,7 @@ The `"ansi"` format detects the color depth of stdout from environment variables
 
 The `"ansi-16m"` format outputs 24-bit ANSI colors, which can display 16 million colors but require a modern terminal that supports them.
 
-It converts the input color to RGBA, then outputs that as an ANSI color.
+Bun converts the input color to RGBA, then outputs that as an ANSI color.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 Bun.color("red", "ansi-16m"); // "\x1b[38;2;255;0;0m"

@@ -12,7 +12,7 @@ This guide walks through creating a phone-based voice agent. You will create a l
 
 <img alt="agent architecture diagram" />
 
-## Prerequisites
+## Requirements
 
 Before you start, make sure you have:
 

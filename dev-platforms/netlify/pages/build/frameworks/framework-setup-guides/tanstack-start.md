@@ -162,11 +162,13 @@ You or an agent can access and build with the following features when running a 
 - Serverless functions
 - Edge functions
 - Blobs
+- Netlify Database
 - Cache API
 - Image CDN
 - Redirects & rewrites
 - Headers
 - Environment variables
+- AI Gateway
 
 ### Tip - No need for Netlify CLI for dev
 

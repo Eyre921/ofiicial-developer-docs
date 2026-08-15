@@ -6,6 +6,18 @@ path: docs/pm/npmrc
 
 Bun loads configuration options from [`.npmrc`](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc) files, so you can reuse your existing registry and scope configuration.
 
+Configuration is loaded in this order, with later sources overriding earlier ones:
+
+1. `~/.npmrc` (or `$XDG_CONFIG_HOME/.npmrc`)
+2. `./.npmrc`
+3. `bunfig.toml` (global, then project)
+4. `BUN_CONFIG_REGISTRY` / `NPM_CONFIG_REGISTRY` and `BUN_CONFIG_TOKEN` / `NPM_CONFIG_TOKEN` environment variables
+5. Command-line flags such as `--registry`
+
+Bun matches credentials in `.npmrc` (`//<registry>/:_authToken`, etc.) to registries by host and path, even if you set the registry URL itself in `bunfig.toml`.
+
+Values may reference environment variables. Bun replaces `${NAME}` with the variable's value, or leaves it as-is if the variable is unset. `${NAME?}` becomes an empty string if unset.
+
 <Note>
   We recommend migrating your `.npmrc` file to Bun's [`bunfig.toml`](/docs/runtime/bunfig) format, which supports more
   options, including Bun-specific ones.
@@ -67,7 +79,7 @@ myorg = "http://localhost:4873/"
 //http://localhost:4873/:_auth=${NPM_AUTH}
 ```
 
-The following options are supported:
+Bun supports the following options:
 
 * `_authToken`
 * `username`
@@ -84,7 +96,7 @@ myorg = { url = "http://localhost:4873/", username = "myusername", password = "$
 
 ### `link-workspace-packages`: Control workspace package installation
 
-Controls how workspace packages are installed when available locally:
+Controls how Bun installs workspace packages when they are available locally:
 
 ```ini .npmrc icon="npm" theme={"theme":{"light":"github-light","dark":"dracula"}}
 link-workspace-packages=true
@@ -124,7 +136,7 @@ This is equivalent to using the `--ignore-scripts` flag with `bun install`.
 
 ### `dry-run`: Preview changes without installing
 
-Shows what would be installed without installing anything:
+Shows what Bun would install without installing anything:
 
 ```ini .npmrc icon="npm" theme={"theme":{"light":"github-light","dark":"dracula"}}
 dry-run=true
@@ -178,7 +190,7 @@ cafile=/path/to/ca-bundle.crt
 
 ### `omit` and `include`: Control dependency types
 
-Control which dependency types are installed:
+Control which dependency types Bun installs:
 
 ```ini .npmrc icon="npm" theme={"theme":{"light":"github-light","dark":"dracula"}}
 # omit dev dependencies
@@ -196,7 +208,7 @@ Valid values: `dev`, `peer`, `optional`
 
 ### `install-strategy` and `node-linker`: Installation strategy
 
-Control how packages are laid out in `node_modules`. For compatibility with other package managers, Bun accepts both npm's `install-strategy` and pnpm/yarn's `node-linker`. See [isolated installs](/docs/pm/isolated-installs) for how the hoisted and isolated layouts differ.
+Control how Bun lays out packages in `node_modules`. For compatibility with other package managers, Bun accepts both npm's `install-strategy` and pnpm/yarn's `node-linker`. See [isolated installs](/docs/pm/isolated-installs) for how the hoisted and isolated layouts differ.
 
 **npm's `install-strategy`:**
 
@@ -231,7 +243,7 @@ node-linker=node-modules
 
 ### `public-hoist-pattern` and `hoist-pattern`: Control hoisting
 
-Control which packages are hoisted to the root `node_modules`:
+Control which packages Bun hoists to the root `node_modules`:
 
 ```ini .npmrc icon="npm" theme={"theme":{"light":"github-light","dark":"dracula"}}
 # packages matching this pattern will be hoisted to the root

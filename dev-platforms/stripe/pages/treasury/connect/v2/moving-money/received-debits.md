@@ -87,7 +87,7 @@ The response confirms the mandate is `pending_cancellation`. After the cancellat
 
 ### List mandates
 
-You can retrieve the set of mandates in place for a connected account. Use inline parameters, such as `status=active`, to filter the results.
+You can retrieve the set of mandates in place for a connected account. Use inline parameters, such as `statuses=active`, to filter the results.
 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debit_mandates \
@@ -238,7 +238,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes \
 
 `ReceivedDebit` objects represent real direct debits initiated by a third party against a financial address. Because third parties initiate them, you can’t create them through the API in live mode.
 
-Use the [debit test helper](https://docs.stripe.com/api/v2/money-management/test-helpers/financial-addresses/debit.md?api-version=preview) to simulate a `ReceivedDebit` in a sandbox so you can verify that your integration handles incoming debits correctly. You can trigger a failed debit by making sure the financial account has an insufficient balance for the test payment.
+Use the [debit test helper](https://docs.stripe.com/api/v2/money-management/financial-addresses/debit.md?api-version=preview) to simulate a `ReceivedDebit` in a sandbox so you can verify that your integration handles incoming debits correctly. You can trigger a failed debit by making sure the financial account has an insufficient balance for the test payment.
 
 If you simulate a Bacs GBP debit, the helper also creates a `ReceivedDebitMandate`.
 

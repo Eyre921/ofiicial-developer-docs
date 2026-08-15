@@ -152,7 +152,7 @@ const socket = await Bun.connect({
 
 ## Hot reloading
 
-Both TCP servers and sockets can be hot reloaded with new handlers.
+You can hot reload both TCP servers and sockets with new handlers.
 
 <CodeGroup>
   ```ts server.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -233,5 +233,5 @@ queueMicrotask(() => {
 <Note>
   **Corking**
 
-  Support for corking is planned, but in the meantime backpressure must be managed manually with the `drain` handler.
+  Support for corking is planned. In the meantime, you must manage backpressure manually with the `drain` handler.
 </Note>

@@ -20,7 +20,7 @@ Retrieve the recipients of a broadcast for a given event type.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.3
+    npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
 </Warning>

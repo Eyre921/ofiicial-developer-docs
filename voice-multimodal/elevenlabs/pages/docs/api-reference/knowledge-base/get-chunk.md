@@ -63,7 +63,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.chunk.get("chunk_id", "documentation_id", {});
+    await client.conversationalAi.knowledgeBase.documents.chunk.get("documentation_id", "chunk_id", {});
 }
 main();
 
@@ -75,8 +75,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.documents.chunk.get(
-    chunk_id="chunk_id",
     documentation_id="documentation_id",
+    chunk_id="chunk_id",
 )
 
 ```

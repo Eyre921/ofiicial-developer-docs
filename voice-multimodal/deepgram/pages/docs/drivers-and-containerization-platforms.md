@@ -113,7 +113,7 @@ If you are using Google Cloud Platform and your VM instance has Secure Boot enab
 
 If you are using Azure and your Ubuntu VM instance has [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) enabled, which also enables Secure Boot, see the [Azure documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/n-series-driver-setup#ubuntu) for how to add a Machine Owner Key that will sign a key for the driver installation. Otherwise, during VM creation, you may opt for Standard security instead of Trusted Launch, in order to install the drivers through our standard method as documented on this page.
 
-If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm) , see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
+If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
 
 1. We are going to identify the latest compatible driver for the GPU you are using and retrieve its download URL by going to the [NVIDIA Official Drivers](https://www.nvidia.com/download/index.aspx).
 

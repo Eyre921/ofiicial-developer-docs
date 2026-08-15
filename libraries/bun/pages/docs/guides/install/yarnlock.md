@@ -6,8 +6,8 @@ path: docs/guides/install/yarnlock
 
 <Note>
   Bun v1.1.39 introduced `bun.lock`, a JSONC-formatted lockfile. It is human-readable and git-diffable without
-  configuration, at no cost to performance. In 1.2.0+ it is the default format for new projects. [**Learn
-  more.**](/docs/pm/lockfile#text-based-lockfile)
+  configuration, at no cost to performance. In 1.2.0+ it is the default format for new projects. See [the lockfile
+  docs](/docs/pm/lockfile#text-based-lockfile).
 </Note>
 
 ***

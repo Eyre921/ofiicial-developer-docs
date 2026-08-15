@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/ecosystem/gel
 path: docs/guides/ecosystem/gel
 ---
 
-Gel (formerly EdgeDB) is a graph-relational database built on Postgres. It provides a declarative schema language, migrations system, and object-oriented query language, and also supports raw SQL queries. It solves object-relational mapping at the database layer, so your application code doesn't need an ORM library.
+Gel (formerly EdgeDB) is a graph-relational database built on Postgres. It provides a declarative schema language, migrations system, and object-oriented query language. It also supports raw SQL queries. It solves object-relational mapping at the database layer, so your application code doesn't need an ORM library.
 
 ***
 
@@ -29,8 +29,8 @@ First, [install Gel](https://docs.geldata.com/learn/installation) if you haven't
 Use `bun init` to create a fresh project.
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-mkdir my-edgedb-app
-cd my-edgedb-app
+mkdir my-gel-app
+cd my-gel-app
 bun init -y
 ```
 
@@ -43,26 +43,23 @@ gel project init
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-No `gel.toml` found in `/Users/colinmcd94/Documents/bun/fun/examples/my-gel-app` or above
-Do you want to initialize a new project? [Y/n]
-> Y
-Specify the name of Gel instance to use with this project [default: my_gel_app]:
-> my_gel_app
+No `gel.toml` (or `edgedb.toml`) found in `/Users/colinmcd94/Documents/bun/fun/examples/my-gel-app` or above
+Initializing new project...
 Checking Gel versions...
-Specify the version of Gel to use with this project [default: x.y]:
-> x.y
 ┌─────────────────────┬──────────────────────────────────────────────────────────────────┐
-│ Project directory   │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app         │
-│ Project config      │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app/gel.toml│
-│ Schema dir (empty)  │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app/dbschema│
+│ Project directory   │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app          │
+│ Project config      │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app/gel.toml │
+│ Schema dir (empty)  │ /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app/dbschema │
 │ Installation method │ portable package                                                 │
 │ Version             │ x.y+6d5921b                                                      │
 │ Instance name       │ my_gel_app                                                       │
+│ Branch              │ main                                                             │
 └─────────────────────┴──────────────────────────────────────────────────────────────────┘
 Version x.y+6d5921b is already downloaded
-Initializing Gel instance...
+Initializing Gel instance 'my_gel_app'...
 Applying migrations...
 Everything is up to date. Revision initial
+Writing gel.local.toml for configuration
 Project initialized.
 To connect to my_gel_app, run `gel`
 ```
@@ -73,26 +70,28 @@ To check that the database is running, open a REPL and run a query.
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 gel
-gel> select 1 + 1;
+my_gel_app:main> select 1 + 1;
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-2
+{2}
 ```
 
 Then run `\quit` to exit the REPL.
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-gel> \quit
+my_gel_app:main> \quit
 ```
 
 ***
 
-Next, define a schema. The `gel project init` command already created a `dbschema/default.esdl` file to hold it.
+Next, define a schema. The `gel project init` command already created a `dbschema/default.gel` file to hold it.
 
 ```txt File Tree icon="folder-tree" theme={"theme":{"light":"github-light","dark":"dracula"}}
 dbschema
-├── default.esdl
+├── default.gel
+├── extensions.gel
+├── futures.gel
 └── migrations
 ```
 
@@ -100,7 +99,7 @@ dbschema
 
 Open that file and paste the following contents.
 
-```ts default.esdl icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
+```ts default.gel icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
 module default {
   type Movie {
     required title: str;
@@ -118,7 +117,7 @@ gel migration create
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-Created /Users/colinmcd94/Documents/bun/fun/examples/my-gel-app/dbschema/migrations/00001.edgeql, id: m1uwekrn4ni4qs7ul7hfar4xemm5kkxlpswolcoyqj3xdhweomwjrq
+Created dbschema/migrations/00001-m1uwekr.edgeql, id: m1uwekrn4ni4qs7ul7hfar4xemm5kkxlpswolcoyqj3xdhweomwjrq
 ```
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -126,7 +125,9 @@ gel migrate
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-Applied m1uwekrn4ni4qs7ul7hfar4xemm5kkxlpswolcoyqj3xdhweomwjrq (00001.edgeql)
+Applying m1uwekrn4ni4qs7ul7hfar4xemm5kkxlpswolcoyqj3xdhweomwjrq (00001-m1uwekr.edgeql)
+... parsed
+... applied
 ```
 
 ***
@@ -196,7 +197,7 @@ bunx @gel/generate edgeql-js
 Generating query builder...
 Detected tsconfig.json, generating TypeScript files.
    To override this, use the --target flag.
-   Run `npx @edgedb/generate --help` for full options.
+   Run `npx @gel/generate --help` for full options.
 Introspecting database schema...
 Writing files to ./dbschema/edgeql-js
 Generation complete! 🤘
@@ -243,13 +244,13 @@ bun run index.ts
 [
   {
     title: "The Matrix",
-    releaseYear: 1999
+    releaseYear: 1999,
   }, {
     title: "The Matrix Reloaded",
-    releaseYear: 2003
+    releaseYear: 2003,
   }, {
     title: "The Matrix Revolutions",
-    releaseYear: 2003
+    releaseYear: 2003,
   }
 ]
 ```

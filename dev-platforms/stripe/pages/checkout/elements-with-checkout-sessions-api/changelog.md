@@ -208,7 +208,7 @@ Elements with Checkout Sessions API beta uses two kinds of beta versions:
 
 ### Front-end beta versions
 
-Specify the front-end beta version when [initializing Stripe.js](https://docs.stripe.com/payments/quickstart-checkout-sessions.md).
+Specify the front-end beta version when [initializing Stripe.js](https://docs.stripe.com/payments/quickstart.md).
 
 #### custom_checkout_beta_6
 
@@ -297,7 +297,7 @@ If you’re using any Stripe NPM packages, you must first upgrade `@stripe/strip
 
 ### Back-end versions
 
-Specify the back-end beta version when [setting up your server library](https://docs.stripe.com/payments/quickstart-checkout-sessions.md#init-stripe).
+Specify the back-end beta version when [setting up your server library](https://docs.stripe.com/payments/quickstart.md#init-stripe).
 
 *There are no changes to the back-end beta version.*
 

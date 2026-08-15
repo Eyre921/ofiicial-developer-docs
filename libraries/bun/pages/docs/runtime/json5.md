@@ -253,7 +253,7 @@ bun --hot server.ts
 
 ## Bundler Integration
 
-When you bundle with Bun, imported JSON5 files are parsed at build time and included as JavaScript modules:
+When you bundle with Bun, the bundler parses imported JSON5 files at build time and includes them as JavaScript modules:
 
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun build app.ts --outdir=dist
@@ -267,7 +267,7 @@ Parsing at build time means:
 
 ### Dynamic Imports
 
-JSON5 files can be dynamically imported:
+You can import JSON5 files dynamically:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const { default: config } = await import("./config.json5");

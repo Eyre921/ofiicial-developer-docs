@@ -19,11 +19,15 @@ regulatory or provider requirements. Check individual model descriptions for spe
 availability.
 
 Free plan users can only generate images and are limited to three image requests per day. Video
-generation requires a paid plan.
+generation requires a paid plan. Generating through the API requires a Pro plan or above.
 
 #### [Products](/docs/eleven-creative/playground/image-video)
 
 Complete guide to using Image & Video in ElevenLabs.
+
+#### [Developers](/docs/eleven-api/guides/cookbooks/image-and-video)
+
+Step-by-step guide for using Image & Video with the API.
 
 ## Key capabilities
 

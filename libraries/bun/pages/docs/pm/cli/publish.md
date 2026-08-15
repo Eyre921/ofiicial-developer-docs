@@ -6,7 +6,7 @@ path: docs/pm/cli/publish
 
 Use `bun publish` to publish a package to the npm registry
 
-`bun publish` packs your package into a tarball, strips catalog and workspace protocols from the `package.json` (resolving versions if necessary), and publishes to the registry specified in your configuration files. Both `bunfig.toml` and `.npmrc` files are supported.
+`bun publish` packs your package into a tarball and strips catalog and workspace protocols from the `package.json`, resolving versions if necessary. It then publishes to the registry specified in your configuration files. Both `bunfig.toml` and `.npmrc` files are supported.
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 ## Publishing the package from the current working directory
@@ -42,8 +42,8 @@ bun publish ./package.tgz
 ```
 
 <Note>
-  `bun publish` does not run lifecycle scripts (`prepublishOnly/prepack/prepare/postpack/publish/postpublish`) if a
-  tarball path is provided. Scripts run only when `bun publish` packs the package itself.
+  `bun publish` does not run lifecycle scripts (`prepublishOnly/prepack/prepare/postpack/publish/postpublish`) if you
+  provide a tarball path. Scripts run only when `bun publish` packs the package itself.
 </Note>
 
 ### `--access`
@@ -54,7 +54,7 @@ bun publish ./package.tgz
 bun publish --access public
 ```
 
-`--access` can also be set in the `publishConfig` field of your `package.json`.
+You can also set `--access` in the `publishConfig` field of your `package.json`.
 
 ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
 {
@@ -72,7 +72,7 @@ Set the tag of the package version being published. By default, the tag is `late
 bun publish --tag alpha
 ```
 
-`--tag` can also be set in the `publishConfig` field of your `package.json`.
+You can also set `--tag` in the `publishConfig` field of your `package.json`.
 
 ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
 {
@@ -144,7 +144,7 @@ bun publish dist
   bun publish --access public
   ```
 
-  `--access` can also be set in the `publishConfig` field of your `package.json`.
+  You can also set `--access` in the `publishConfig` field of your `package.json`.
 
   ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
   {
@@ -162,7 +162,7 @@ bun publish dist
   bun publish --tag alpha
   ```
 
-  `--tag` can also be set in the `publishConfig` field of your `package.json`.
+  You can also set `--tag` in the `publishConfig` field of your `package.json`.
 
   ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
   {

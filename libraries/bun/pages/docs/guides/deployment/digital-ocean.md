@@ -80,12 +80,12 @@ This guide deploys a Bun HTTP server to DigitalOcean using a `Dockerfile`.
     ```
 
     <Note>
-      Make sure that the start command corresponds to your application's entry point. This can also be `CMD ["bun", "run", "start"]` if you have a start script in your `package.json`.
+      Make sure that the start command corresponds to your application's entry point. The start command can also be `CMD ["bun", "run", "start"]` if you have a start script in your `package.json`.
 
-      If your app doesn't have dependencies, you can omit the `RUN bun install --production --frozen-lockfile` line.
+      If your app doesn't have dependencies, you can omit the `COPY package.json bun.lock ./` and `RUN bun install --production --frozen-lockfile` lines. Bun doesn't write a `bun.lock` for a project with no dependencies.
     </Note>
 
-    Create a new `.dockerignore` file in the root of your project. It lists the files and directories to *exclude* from the container image, such as `node_modules`, which keeps builds faster and smaller:
+    Create a new `.dockerignore` file in the root of your project. It lists the files and directories to *exclude* from the container image, such as `node_modules`. Excluding them keeps builds faster and smaller:
 
     ```docker .dockerignore icon="Docker" theme={"theme":{"light":"github-light","dark":"dracula"}}
     node_modules
@@ -109,7 +109,8 @@ This guide deploys a Bun HTTP server to DigitalOcean using a `Dockerfile`.
     ```
 
     ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-    Successfully authenticated with registry.digitalocean.com
+    Logging Docker in to registry.digitalocean.com
+    Notice: Login valid for 30 days. Use the --expiry-seconds flag to set a shorter expiration or --never-expire for no expiration.
     ```
 
     <Note>

@@ -101,7 +101,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.chapters.get("chapter_id", "project_id");
+    await client.studio.projects.chapters.get("project_id", "chapter_id");
 }
 main();
 
@@ -113,8 +113,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.studio.projects.chapters.get(
-    chapter_id="chapter_id",
     project_id="project_id",
+    chapter_id="chapter_id",
 )
 
 ```

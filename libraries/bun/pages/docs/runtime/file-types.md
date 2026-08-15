@@ -34,7 +34,7 @@ Parses the code and applies a set of default transforms like dead-code eliminati
 
 **JavaScript + JSX**. Default for `.js` and `.jsx`.
 
-Same as the `js` loader, but JSX syntax is supported. By default, JSX is down-converted to plain JavaScript; the details depend on the `jsx*` compiler options in your `tsconfig.json`. Refer to the TypeScript documentation [on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
+Same as the `js` loader, but JSX syntax is supported. By default, Bun down-converts JSX to plain JavaScript; the details depend on the `jsx*` compiler options in your `tsconfig.json`. Refer to the TypeScript documentation [on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
 ### `ts`
 
@@ -57,7 +57,7 @@ import pkg from "./package.json";
 pkg.name; // => "my-package"
 ```
 
-During bundling, the parsed JSON is inlined into the bundle as a JavaScript object.
+During bundling, Bun inlines the parsed JSON into the bundle as a JavaScript object.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var pkg = {
@@ -67,7 +67,7 @@ var pkg = {
 pkg.name;
 ```
 
-If a `.json` file is passed as an entrypoint to the bundler, it is converted to a `.js` module that `export default`s the parsed object.
+If you pass a `.json` file as an entrypoint to the bundler, Bun converts it to a `.js` module that `export default`s the parsed object.
 
 <CodeGroup>
   ```json Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -98,7 +98,7 @@ import config from "./config.jsonc";
 console.log(config);
 ```
 
-During bundling, the parsed JSONC is inlined into the bundle as a JavaScript object, identical to the `json` loader.
+During bundling, Bun inlines the parsed JSONC into the bundle as a JavaScript object, identical to the `json` loader.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var config = {
@@ -124,7 +124,7 @@ config.logLevel; // => "debug"
 // import myCustomTOML from './my.config' with {type: "toml"};
 ```
 
-During bundling, the parsed TOML is inlined into the bundle as a JavaScript object.
+During bundling, Bun inlines the parsed TOML into the bundle as a JavaScript object.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var config = {
@@ -134,7 +134,7 @@ var config = {
 config.logLevel;
 ```
 
-If a `.toml` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the parsed object.
+If you pass a `.toml` file as an entrypoint, Bun converts it to a `.js` module that `export default`s the parsed object.
 
 <CodeGroup>
   ```toml Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -166,7 +166,7 @@ console.log(config);
 import data from "./data.txt" with { type: "yaml" };
 ```
 
-During bundling, the parsed YAML is inlined into the bundle as a JavaScript object.
+During bundling, Bun inlines the parsed YAML into the bundle as a JavaScript object.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var config = {
@@ -176,7 +176,7 @@ var config = {
 };
 ```
 
-If a `.yaml` or `.yml` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the parsed object.
+If you pass a `.yaml` or `.yml` file as an entrypoint, Bun converts it to a `.js` module that `export default`s the parsed object.
 
 <CodeGroup>
   ```yaml Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -208,7 +208,7 @@ console.log(config);
 import data from "./data.txt" with { type: "json5" };
 ```
 
-During bundling, the parsed JSON5 is inlined into the bundle as a JavaScript object.
+During bundling, Bun inlines the parsed JSON5 into the bundle as a JavaScript object.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var config = {
@@ -218,7 +218,7 @@ var config = {
 };
 ```
 
-If a `.json5` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the parsed object.
+If you pass a `.json5` file as an entrypoint, Bun converts it to a `.js` module that `export default`s the parsed object.
 
 <CodeGroup>
   ```json5 Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -243,7 +243,13 @@ If a `.json5` file is passed as an entrypoint, it is converted to a `.js` module
 
 **XML loader**. Default for `.xml`.
 
-XML files can be directly imported. Bun parses them with its native XML 1.0 parser into the compact object shape of [`Bun.XML.parse`](/docs/runtime/xml): one key for the root element, `"@name"` keys for attributes, arrays for repeated child elements, `"#text"` for text next to attributes or children, and every value a string.
+XML files can be directly imported. Bun parses them with its native XML 1.0 parser into the compact object shape of [`Bun.XML.parse`](/docs/runtime/xml):
+
+* One key for the root element
+* `"@name"` keys for attributes
+* Arrays for repeated child elements
+* `"#text"` for text next to attributes or children
+* Every value is a string
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 import doc from "./config.xml";
@@ -253,7 +259,7 @@ console.log(doc.config["@version"]);
 import feed from "./export.rss" with { type: "xml" };
 ```
 
-During bundling, the parsed XML is inlined into the bundle as a JavaScript object.
+During bundling, Bun inlines the parsed XML into the bundle as a JavaScript object.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var doc = {
@@ -264,7 +270,7 @@ var doc = {
 };
 ```
 
-If a `.xml` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the parsed object.
+If you pass a `.xml` file as an entrypoint, Bun converts it to a `.js` module that `export default`s the parsed object.
 
 <CodeGroup>
   ```xml Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -292,7 +298,7 @@ If a `.xml` file is passed as an entrypoint, it is converted to a `.js` module t
 
 **Text loader**. Default for `.txt`.
 
-Text files can be directly imported. The file is read and returned as a string.
+Text files can be directly imported. Bun reads the file and returns it as a string.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 import contents from "./file.txt";
@@ -303,14 +309,14 @@ console.log(contents); // => "Hello, world!"
 import html from "./index.html" with { type: "text" };
 ```
 
-When referenced during a build, the contents are inlined into the bundle as a string.
+When the file is referenced during a build, Bun inlines the contents into the bundle as a string.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 var contents = `Hello, world!`;
 console.log(contents);
 ```
 
-If a `.txt` file is passed as an entrypoint, it is converted to a `.js` module that `export default`s the file contents.
+If you pass a `.txt` file as an entrypoint, Bun converts it to a `.js` module that `export default`s the file contents.
 
 <CodeGroup>
   ```txt Input theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -333,21 +339,21 @@ import addon from "./addon.node";
 console.log(addon);
 ```
 
-In the bundler, `.node` files are handled using the [`file`](#file) loader.
+In the bundler, Bun handles `.node` files using the [`file`](#file) loader.
 
 ### `sqlite`
 
 **SQLite loader**. `with { "type": "sqlite" }` import attribute
 
-In the runtime and bundler, SQLite databases can be directly imported. The database is loaded with [`bun:sqlite`](/docs/runtime/sqlite).
+In the runtime and bundler, SQLite databases can be directly imported. Bun loads the database with [`bun:sqlite`](/docs/runtime/sqlite).
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 import db from "./my.db" with { type: "sqlite" };
 ```
 
-This is only supported when the `target` is `bun`.
+The `sqlite` loader is only supported when the `target` is `bun`.
 
-By default, the database is external to the bundle: the on-disk database file isn't bundled into the final output, so you can use a database loaded elsewhere.
+By default, the database is external to the bundle: Bun doesn't bundle the on-disk database file into the final output, so you can use a database loaded elsewhere.
 
 You can change this behavior with the `"embed"` attribute:
 
@@ -356,7 +362,7 @@ You can change this behavior with the `"embed"` attribute:
 import db from "./my.db" with { type: "sqlite", embed: "true" };
 ```
 
-When using a [standalone executable](/docs/bundler/executables), the database is embedded into the single-file executable.
+With a [standalone executable](/docs/bundler/executables), Bun embeds the database into the single-file executable.
 
 Otherwise, the database to embed is copied into the `outdir` with a hashed filename.
 
@@ -472,7 +478,7 @@ bun run logo.ts
 /path/to/project/logo.svg
 ```
 
-*In the bundler*, the file is copied into `outdir` as-is, and the import resolves to a relative path pointing to the copied file.
+*In the bundler*, Bun copies the file into `outdir` as-is, and the import resolves to a relative path pointing to the copied file.
 
 ```ts Output theme={"theme":{"light":"github-light","dark":"dracula"}}
 var logo = "./logo.svg";
@@ -487,9 +493,7 @@ If `publicPath` is set, the import uses its value as a prefix to construct an ab
 | `"/assets/"`                 | `/assets/logo.svg`                 |
 | `"https://cdn.example.com/"` | `https://cdn.example.com/logo.svg` |
 
-<Note>
-  The location and file name of the copied file is determined by the value of [`naming.asset`](/docs/bundler#naming).
-</Note>
+<Note>The value of [`naming.asset`](/docs/bundler#naming) determines the location and file name of the copied file.</Note>
 
 <Accordion title="Fixing TypeScript import errors">
   If you're using TypeScript, you may get an error like this:
@@ -508,5 +512,5 @@ If `publicPath` is set, the import uses its value as a prefix to construct an ab
   }
   ```
 
-  This tells TypeScript that any default imports from `.svg` should be treated as a string.
+  This tells TypeScript to treat any default import from `.svg` as a string.
 </Accordion>

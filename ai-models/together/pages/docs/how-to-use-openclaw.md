@@ -10,7 +10,7 @@ OpenClaw is the first Jarvis-like agent that actually gets things done: writing 
 
 ## Get started in 2 minutes
 
-### Prerequisites
+### Requirements
 
 1. An OpenClaw installation ([install guide](https://docs.openclaw.ai/install))
 2. A Together AI API key (grab one at [api.together.ai](https://api.together.ai))

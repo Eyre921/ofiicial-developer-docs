@@ -38,4 +38,4 @@ const arr = new Uint8Array(buffer, 0, 16); // view first 16 bytes
 
 ***
 
-See [Utils](/docs/runtime/utils).
+See [Binary Data](/docs/runtime/binary-data#conversion).

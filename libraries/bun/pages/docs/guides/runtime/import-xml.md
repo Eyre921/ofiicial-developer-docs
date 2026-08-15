@@ -18,7 +18,7 @@ Bun natively supports `.xml` imports.
 
 ***
 
-Import the file like any other source file. The module is the parsed document: one key for the root element, `"@name"` keys for attributes, arrays for repeated elements, and every value a string.
+Import the file like any other source file. The module is the parsed document: one key for the root element, `"@name"` keys for attributes, and arrays for repeated elements. Every value is a string.
 
 ```ts config.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import doc from "./config.xml";

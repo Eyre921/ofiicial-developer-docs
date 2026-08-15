@@ -546,14 +546,14 @@ async function main() {
     await client.conversationalAi.agents.drafts.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
         branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
         conversationConfig: {
-            "key": "value",
+            key: "value",
         },
         platformSettings: {
-            "key": "value",
+            key: "value",
         },
         workflow: {
             edges: {
-                "entry_to_tool_a": {
+                entry_to_tool_a: {
                     source: "entry_node",
                     target: "tool_node_a",
                     forwardCondition: {
@@ -564,7 +564,7 @@ async function main() {
                         },
                     },
                 },
-                "start_to_entry": {
+                start_to_entry: {
                     source: "start_node",
                     target: "entry_node",
                     forwardCondition: {
@@ -575,7 +575,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_a_to_failure": {
+                tool_a_to_failure: {
                     source: "tool_node_a",
                     target: "failure_node",
                     forwardCondition: {
@@ -586,7 +586,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_a_to_tool_b": {
+                tool_a_to_tool_b: {
                     source: "tool_node_a",
                     target: "tool_node_b",
                     forwardCondition: {
@@ -597,7 +597,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_b_to_agent_transfer": {
+                tool_b_to_agent_transfer: {
                     source: "tool_node_b",
                     target: "success_transfer",
                     forwardCondition: {
@@ -608,7 +608,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_b_to_conversation": {
+                tool_b_to_conversation: {
                     source: "tool_node_b",
                     target: "success_conversation",
                     forwardCondition: {
@@ -619,7 +619,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_b_to_end": {
+                tool_b_to_end: {
                     source: "tool_node_b",
                     target: "success_end",
                     forwardCondition: {
@@ -630,7 +630,7 @@ async function main() {
                         },
                     },
                 },
-                "tool_b_to_phone": {
+                tool_b_to_phone: {
                     source: "tool_node_b",
                     target: "success_phone",
                     forwardCondition: {
@@ -643,31 +643,31 @@ async function main() {
                 },
             },
             nodes: {
-                "entry_node": {
+                entry_node: {
                     type: "end",
                 },
-                "failure_node": {
+                failure_node: {
                     type: "end",
                 },
-                "start_node": {
+                start_node: {
                     type: "end",
                 },
-                "success_conversation": {
+                success_conversation: {
                     type: "end",
                 },
-                "success_end": {
+                success_end: {
                     type: "end",
                 },
-                "success_phone": {
+                success_phone: {
                     type: "end",
                 },
-                "success_transfer": {
+                success_transfer: {
                     type: "end",
                 },
-                "tool_node_a": {
+                tool_node_a: {
                     type: "end",
                 },
-                "tool_node_b": {
+                tool_node_b: {
                     type: "end",
                 },
             },

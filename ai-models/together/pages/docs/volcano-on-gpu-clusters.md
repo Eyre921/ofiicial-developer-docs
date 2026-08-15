@@ -16,7 +16,7 @@ Install the Volcano scheduler and run gang-scheduled GPU jobs on a Together Kube
 
 For background on every field used here, see the [Volcano documentation](https://volcano.sh/en/docs/).
 
-## Prerequisites
+## Requirements
 
 * A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
 * `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.

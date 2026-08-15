@@ -17,7 +17,7 @@ This adds the package to `dependencies` in `package.json`. By default, Bun uses 
 ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
 {
   "dependencies": {
-    "zod": "^3.0.0" // [!code ++]
+    "zod": "^4.0.0" // [!code ++]
   }
 }
 ```

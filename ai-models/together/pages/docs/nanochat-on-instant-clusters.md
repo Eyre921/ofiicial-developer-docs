@@ -18,7 +18,7 @@ The entire process takes approximately 4 hours on an 8×H100 cluster and include
 * Supervised fine-tuning for conversational alignment
 * Deploying a FastAPI web server with a chat interface
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 

@@ -129,7 +129,7 @@ Customer gets notification that the payment is complete
 You don’t have to integrate stablecoin payments and other payment methods individually. If you use our front-end products, Stripe automatically determines the most relevant payment methods to display. Go to the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) and enable stablecoin payments. To get started with one of our hosted UIs, follow a quickstart:
 
 - [Checkout](https://docs.stripe.com/checkout/quickstart.md): Our prebuilt, hosted checkout page.
-- [Elements](https://docs.stripe.com/payments/quickstart-checkout-sessions.md): Our drop-in UI components.
+- [Elements](https://docs.stripe.com/payments/quickstart.md): Our drop-in UI components.
 
 ### Other payment products
 

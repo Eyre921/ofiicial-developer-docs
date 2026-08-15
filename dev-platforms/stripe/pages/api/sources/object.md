@@ -99,7 +99,7 @@ Possible enum values:
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
 - `metadata` (map, nullable)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - [`owner`](https://docs.stripe.com/api/sources/object.md?query=owner) (object, nullable)
   Information about the owner of the payment instrument that may be used or required by particular source types.
@@ -120,7 +120,7 @@ Possible enum values:
   The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.
 
 - `type` (enum)
-  The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://docs.stripe.com/docs/sources.md) used.
+  The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://docs.stripe.com/sources.md) used.
 Possible enum values:
   - `ach_credit_transfer`
   - `ach_debit`

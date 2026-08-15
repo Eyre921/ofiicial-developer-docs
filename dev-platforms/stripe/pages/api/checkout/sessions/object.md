@@ -117,7 +117,7 @@ path: api/checkout/sessions/object
   Describes whether Checkout should collect the customer’s billing address. Defaults to `auto`.
 Possible enum values:
   - `auto`
-    Checkout will only collect the billing address when necessary. When using [automatic_tax](https://docs.stripe.com/docs/api/checkout/sessions/object.md#checkout_session_object-automatic_tax-enabled), Checkout will collect the minimum number of fields required for tax calculation.
+    Checkout will only collect the billing address when necessary. When using [automatic_tax](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-automatic_tax-enabled), Checkout will collect the minimum number of fields required for tax calculation.
 
   - `required`
     Checkout will always collect the customer’s billing address.
@@ -132,7 +132,7 @@ Possible enum values:
   A unique string to reference the Checkout Session. This can be a customer ID, a cart ID, or similar, and can be used to reconcile the Session with your internal systems.
 
 - `client_secret` (string, nullable)
-  The client secret of your Checkout Session. Applies to Checkout Sessions with `ui_mode: embedded_page` or `ui_mode: elements`. For `ui_mode: embedded_page`, the client secret is to be used when initializing Stripe.js embedded checkout. For `ui_mode: elements`, use the client secret with [initCheckout](https://docs.stripe.com/docs/js/custom_checkout/init) on your front end.
+  The client secret of your Checkout Session. Applies to Checkout Sessions with `ui_mode: embedded_page` or `ui_mode: elements`. For `ui_mode: embedded_page`, the client secret is to be used when initializing Stripe.js embedded checkout. For `ui_mode: elements`, use the client secret with [initCheckout](https://docs.stripe.com/js/custom_checkout/init) on your front end.
 
 - [`collected_information`](https://docs.stripe.com/api/checkout/sessions/object.md?query=collected_information) (object, nullable)
   Information about the customer collected within the Checkout Session.
@@ -168,10 +168,10 @@ Possible enum values:
   Configure whether a Checkout Session creates a Customer when the Checkout Session completes.
 Possible enum values:
   - `always`
-    The Checkout Session will always create a [Customer](https://docs.stripe.com/docs/api/customers.md) when a Session confirmation is attempted.
+    The Checkout Session will always create a [Customer](https://docs.stripe.com/api/customers.md) when a Session confirmation is attempted.
 
   - `if_required`
-    The Checkout Session will only create a [Customer](https://docs.stripe.com/docs/api/customers.md) if it is required for Session confirmation. Currently, only `subscription` mode Sessions and `payment` mode Sessions with [post-purchase invoices enabled](https://docs.stripe.com/docs/receipts.md?payment-ui=checkout#paid-invoices) require a Customer.
+    The Checkout Session will only create a [Customer](https://docs.stripe.com/api/customers.md) if it is required for Session confirmation. Currently, only `subscription` mode Sessions and `payment` mode Sessions with [post-purchase invoices enabled](https://docs.stripe.com/receipts.md?payment-ui=checkout#paid-invoices) require a Customer.
 
 - [`customer_details`](https://docs.stripe.com/api/checkout/sessions/object.md?query=customer_details) (object, nullable)
   The customer details including the customer’s tax exempt status and the customer’s tax IDs. Customer’s address details are not present on Sessions in `setup` mode.
@@ -252,7 +252,7 @@ Possible enum values:
   Settings for Managed Payments for this Checkout Session and resulting [PaymentIntents](https://docs.stripe.com/api/payment_intents/object.md), [Invoices](https://docs.stripe.com/api/invoices/object.md), and [Subscriptions](https://docs.stripe.com/api/subscriptions/object.md).
 
 - `metadata` (map, nullable)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `mode` (enum)
   The mode of the Checkout Session.
@@ -282,7 +282,7 @@ Possible enum values:
     The Checkout Session originates from a web page.
 
 - `payment_intent` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-  The ID of the PaymentIntent for Checkout Sessions in `payment` mode. You can’t confirm or cancel the PaymentIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/docs/api/checkout/sessions/expire.md) instead.
+  The ID of the PaymentIntent for Checkout Sessions in `payment` mode. You can’t confirm or cancel the PaymentIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/api/checkout/sessions/expire.md) instead.
 
 - `payment_link` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
   The ID of the Payment Link that created this Session.
@@ -332,7 +332,7 @@ Possible enum values:
   The ID of the original expired Checkout Session that triggered the recovery flow.
 
 - `redirect_on_completion` (enum, nullable)
-  This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/docs/payments/checkout/custom-success-page.md?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
+  This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page.md?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
 Possible enum values:
   - `always`
     The Session will always redirect to the `return_url` after successful confirmation.
@@ -350,7 +350,7 @@ Possible enum values:
   Controls saved payment method settings for the session. Only available in `payment` and `subscription` mode.
 
 - `setup_intent` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-  The ID of the SetupIntent for Checkout Sessions in `setup` mode. You can’t confirm or cancel the SetupIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/docs/api/checkout/sessions/expire.md) instead.
+  The ID of the SetupIntent for Checkout Sessions in `setup` mode. You can’t confirm or cancel the SetupIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://docs.stripe.com/api/checkout/sessions/expire.md) instead.
 
 - [`shipping_address_collection`](https://docs.stripe.com/api/checkout/sessions/object.md?query=shipping_address_collection) (object, nullable)
   When set, provides configuration for Checkout to collect a shipping address from a customer.
@@ -392,7 +392,7 @@ Possible enum values:
     Submit button includes a ‘Subscribe’ label
 
 - `subscription` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-  The ID of the [Subscription](https://docs.stripe.com/docs/api/subscriptions.md) for Checkout Sessions in `subscription` mode.
+  The ID of the [Subscription](https://docs.stripe.com/api/subscriptions.md) for Checkout Sessions in `subscription` mode.
 
 - `success_url` (string, nullable)
   The URL the customer will be directed to after the payment or subscription creation is successful.
@@ -416,7 +416,7 @@ Possible enum values:
     The Checkout Session is displayed on a hosted page that customers get redirected to.
 
 - `url` (string, nullable)
-  The URL to the Checkout Session. Applies to Checkout Sessions with `ui_mode: hosted_page`. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://docs.stripe.com/docs/payments/checkout/custom-domains.md), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.` This value is only present when the session is active.
+  The URL to the Checkout Session. Applies to Checkout Sessions with `ui_mode: hosted_page`. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://docs.stripe.com/payments/checkout/custom-domains.md), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.` This value is only present when the session is active.
 
 - [`wallet_options`](https://docs.stripe.com/api/checkout/sessions/object.md?query=wallet_options) (object, nullable)
   Wallet-specific configuration for this Checkout Session.

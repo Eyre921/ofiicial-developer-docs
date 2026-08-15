@@ -10,13 +10,17 @@ path: docs/deploy-flux-tts
 
 # Deploying Flux TTS
 
+Flux TTS is an Early Access feature in self-hosted deployments, released in [self-hosted release 260812](/changelog). Its configuration surface and its voice set may both change before general availability. Contact your Deepgram Account Representative before you size or deploy Flux TTS in a production self-hosted environment.
+
+Flux TTS is generally available in Deepgram's hosted API.
+
 ## Requirements
 
 Please familiarize yourself with these general requirements before attempting to deploy Flux TTS to your self-hosted Deepgram instances.
 
 * Flux TTS runs on the NVIDIA L4, L40S, A100, and H100 GPUs. The NVIDIA T4 and A10 are not supported. See [Model and GPU Compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) for how this compares to Deepgram's other models.
 * Each host running a Flux TTS Engine needs at least 64 GB of system RAM. See [Memory Requirements](#memory-requirements) below.
-* Flux TTS requires Deepgram container images from `release-260812` or later. Flux TTS is not supported on FIPS-compliant images; deploy it on the standard images.
+* Flux TTS requires Deepgram container images from `release-260812` or later. It runs on both the standard and the FIPS-compliant images. On FIPS images, MP3 and FLAC output are a known issue: set `encoding` explicitly on batch `/v2/speak` requests, which return MP3 by default. Streaming output is unaffected. See [MP3 and FLAC Output](/docs/fips-compliant-deployment#mp3-and-flac-output).
 * Flux TTS must be enabled explicitly in your Engine configuration file. It is off by default.
 * Flux TTS requires a dedicated Engine. It cannot share an Engine with Aura models.
 * The Flux TTS model file must be present in your Engine `models` directory. Request it from your Deepgram account representative.

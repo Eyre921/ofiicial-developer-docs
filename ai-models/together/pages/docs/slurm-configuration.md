@@ -8,7 +8,7 @@ Customize Slurm cluster settings to match your workload requirements
 
 Modify Slurm configuration files to optimize scheduling, resource allocation, and job management for your GPU cluster.
 
-## Prerequisites
+## Requirements
 
 * `kubectl` CLI installed and configured
 * Kubeconfig downloaded from your cluster

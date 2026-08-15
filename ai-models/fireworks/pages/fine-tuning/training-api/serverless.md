@@ -181,6 +181,39 @@ The end-to-end serverless RL pattern is the standard GRPO / importance-sampling 
 
 Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) for a compact synchronous loop, or [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) for experimental async scheduling and custom rollout functions. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
+## Evaluating serverless checkpoints
+
+There is no serverless chat endpoint for your adapter. To evaluate it, open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you can score with your own metric.
+
+Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are for on-demand deployment and cannot be passed to `create_sampling_client`.
+
+The following save-and-sample sequence comes from the [quickstart](#step-4-train-checkpoint-and-sample) and the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/blob/main/training/examples/serverless_rl/countdown_rl.py). Set up `prompt`, `tokenizer`, and `params` as shown in that example.
+
+```python theme={null}
+snapshot = training_client.save_weights_for_sampler("eval").result().path
+sampler = service.create_sampling_client(model_path=snapshot, tokenizer=tokenizer)
+try:
+    result = sampler.sample(
+        prompt=prompt,
+        num_samples=1,
+        sampling_params=params,
+    ).result()
+    for seq in result.sequences or []:
+        tokens = list(seq.tokens or [])
+        completion = get_text_content(renderer.parse_response(tokens)[0])
+        # Score `completion` against your held-out label or grader.
+finally:
+    sampler.close()
+```
+
+`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, then close the sampler. The Countdown example scores with `composite_reward`; replace that with your evaluation metric.
+
+For checkpoint and promotion details, see [Saving and loading checkpoints](#saving-and-loading-checkpoints).
+
+<Note>
+  Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](/fine-tuning/evaluating-fine-tuned-models).
+</Note>
+
 ## Saving and loading checkpoints
 
 Serverless training writes **two different kinds of checkpoint**, and they are not interchangeable:

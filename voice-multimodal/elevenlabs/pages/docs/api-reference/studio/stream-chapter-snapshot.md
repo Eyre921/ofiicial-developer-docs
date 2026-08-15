@@ -66,7 +66,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.studio.projects.chapters.snapshots.stream("chapter_id", "chapter_snapshot_id", "project_id", {});
+    await client.studio.projects.chapters.snapshots.stream("project_id", "chapter_id", "chapter_snapshot_id", {});
 }
 main();
 
@@ -78,9 +78,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.studio.projects.chapters.snapshots.stream(
+    project_id="project_id",
     chapter_id="chapter_id",
     chapter_snapshot_id="chapter_snapshot_id",
-    project_id="project_id",
 )
 
 ```

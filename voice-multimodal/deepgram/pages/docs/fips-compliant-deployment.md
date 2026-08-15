@@ -69,7 +69,23 @@ Your Deepgram account team provides download links for the FIPS-encrypted models
 
 **Flux STT is not currently supported on FIPS images.** [Flux STT](/docs/flux-self-hosted) can only be run on standard (non-FIPS) images.
 
+**Flux TTS runs on FIPS images.** [Flux TTS](/docs/deploy-flux-tts) is subject to the [MP3 and FLAC output](#mp3-and-flac-output) issue below: batch `/v2/speak` requests return MP3 unless they set `encoding`, so set it explicitly. Streaming `/v2/speak` output is unaffected.
+
 ## Caveats
+
+### MP3 and FLAC Output
+
+MP3 and FLAC output are not available on FIPS images. This is a known issue. A text-to-speech request that asks for either format returns `HTTP 200` with an empty body rather than an error.
+
+`/v1/speak` and batch `/v2/speak` both return MP3 when the request does not set `encoding`, so set `encoding` explicitly on FIPS images. Streaming `/v2/speak` returns `linear16` and is unaffected.
+
+Format support on FIPS images:
+
+* `linear16` and `opus` are unaffected, and are the recommended formats.
+* `mp3` and `flac` are unavailable.
+* Verify any other format against your own deployment before relying on it.
+
+This limitation applies to audio output only. Speech-to-text requests that submit MP3 or FLAC *input* are unaffected.
 
 ### TLS 1.3 Only
 

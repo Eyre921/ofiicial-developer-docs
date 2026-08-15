@@ -24,9 +24,15 @@ bun create hono myapp
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-✔ Which template do you want to use? › bun
-cloned honojs/starter#main to /path/to/myapp
-✔ Copied project files
+create-hono version 0.19.4
+✔ Using target directory … myapp
+✔ Which template do you want to use? bun
+✔ Do you want to install project dependencies? Yes
+✔ Which package manager do you want to use? bun
+✔ Cloning the template
+✔ Installing project dependencies
+🎉 Copied project files
+Get started with: cd myapp
 ```
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -44,4 +50,4 @@ bun run dev
 
 ***
 
-Refer to Hono's [getting started with Bun](https://hono.dev/getting-started/bun) guide.
+Refer to Hono's [getting started with Bun](https://hono.dev/docs/getting-started/bun) guide.

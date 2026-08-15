@@ -30,7 +30,7 @@ const stream = new ReadableStream({
 });
 ```
 
-The contents of a `ReadableStream` can be read chunk-by-chunk with `for await` syntax.
+You can read the contents of a `ReadableStream` chunk-by-chunk with `for await` syntax.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 for await (const chunk of stream) {
@@ -47,7 +47,7 @@ for await (const chunk of stream) {
 
 Bun implements an optimized version of `ReadableStream` that avoids unnecessary data copying and queue management.
 
-With a traditional `ReadableStream`, chunks of data are *enqueued*. Each chunk is copied into a queue, where it sits until the stream is ready to send more data.
+With a traditional `ReadableStream`, you *enqueue* chunks of data. The stream copies each chunk into a queue, where it sits until the stream is ready to send more data.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const stream = new ReadableStream({
@@ -59,7 +59,7 @@ const stream = new ReadableStream({
 });
 ```
 
-With a direct `ReadableStream`, chunks of data are written directly to the stream. No queueing happens, and there's no need to clone the chunk data into memory. The `controller` API reflects this: you call `.write()` instead of `.enqueue()`.
+With a direct `ReadableStream`, you write chunks of data directly to the stream. No queueing happens, and there's no need to clone the chunk data into memory. The `controller` API reflects this: you call `.write()` instead of `.enqueue()`.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const stream = new ReadableStream({
@@ -75,7 +75,7 @@ When using a direct `ReadableStream`, the destination handles all chunk queueing
 
 ### Handling backpressure
 
-`controller.write()` returns the number of bytes written, or a **pending `Promise<number>`** when the destination's internal buffer is full (for example, a slow HTTP client). The chunk is accepted either way; the promise resolves once the destination has drained, so `await`ing the result is enough:
+`controller.write()` returns the number of bytes written, or a **pending `Promise<number>`** when the destination's internal buffer is full (for example, a slow HTTP client). The chunk is accepted either way. The promise resolves once the destination has drained, so `await`ing the result is enough:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const stream = new ReadableStream({
@@ -89,9 +89,9 @@ const stream = new ReadableStream({
 });
 ```
 
-`await controller.flush(true)` is equivalent and can be used after a write returns a `Promise`.
+`await controller.flush(true)` is equivalent, and you can use it after a write returns a `Promise`.
 
-For default (non-`direct`) `ReadableStream`s and async-generator response bodies, Bun applies this backpressure automatically — the producer is paused while the destination is backed up.
+For default (non-`direct`) `ReadableStream`s and async-generator response bodies, Bun applies this backpressure automatically: it pauses the producer while the destination is backed up.
 
 ***
 
@@ -183,7 +183,7 @@ sink.write(Buffer.from("lo").buffer);
 sink.end();
 ```
 
-Once `.end()` is called, no more data can be written to the `ArrayBufferSink`. However, when buffering a stream you may want to keep writing data and periodically `.flush()` the contents (say, into a `WritableStream`). To support this, pass `stream: true` to the `start` method.
+Once you call `.end()`, you can't write any more data to the `ArrayBufferSink`. However, when buffering a stream you may want to keep writing data and periodically `.flush()` the contents (say, into a `WritableStream`). To support this, pass `stream: true` to the `start` method.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const sink = new Bun.ArrayBufferSink();

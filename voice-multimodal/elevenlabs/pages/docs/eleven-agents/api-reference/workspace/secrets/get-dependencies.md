@@ -70,7 +70,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.secrets.getDependencies("tools", "secret_id", {
+    await client.conversationalAi.secrets.getDependencies("secret_id", "tools", {
         cursor: "cursor",
         pageSize: 1,
     });
@@ -85,8 +85,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.secrets.get_dependencies(
-    resource_type="tools",
     secret_id="secret_id",
+    resource_type="tools",
     cursor="cursor",
     page_size=1,
 )

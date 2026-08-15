@@ -37,8 +37,8 @@ plugin({
         const source = readFileSync(path.substring(0, path.includes("?") ? path.indexOf("?") : path.length), "utf-8");
 
         const result = compile(source, {
-          filetitle: path,
-          generate: "client",
+          filename: path,
+          generate: "dom",
           dev: false,
         });
 
@@ -63,7 +63,7 @@ Add this to `bunfig.toml` so Bun preloads the plugin before your tests run.
 # Tell Bun to load this plugin before your tests run
 preload = ["./svelte-loader.ts"]
 
-# This also works:
+# This also works, at the top level of bunfig.toml instead of under [test]:
 # test.preload = ["./svelte-loader.ts"]
 ```
 
@@ -77,7 +77,7 @@ Add an example `.svelte` file in your project.
   let count = initialCount;
 </script>
 
-<button on:click="{()" ="">(count += 1)}>+1</button>
+<button on:click={() => (count += 1)}>+1</button>
 ```
 
 ***
@@ -94,7 +94,7 @@ test("Counter increments when clicked", async () => {
   const button = getByText("+1");
 
   // Initial state
-  expect(component.$$.ctx[0]).toBe(0); // initialCount is the first prop
+  expect(component.$$.ctx[0]).toBe(0); // ctx[0] is count; ctx[1] is initialCount
 
   // Click the increment button
   await fireEvent.click(button);

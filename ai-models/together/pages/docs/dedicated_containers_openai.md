@@ -13,7 +13,7 @@ Two things make a container OpenAI-compatible:
 * **HTTP server mode:** Run the worker without the `--queue` flag. Requests go straight to your container and return synchronously, instead of through the managed queue.
 * **`predict_path`:** Pass the OpenAI route to `sprocket.run()`. In HTTP server mode the raw JSON request body is passed straight to `predict()`, so `predict()` owns both parsing the OpenAI request and returning the OpenAI response shape.
 
-## Prerequisites
+## Requirements
 
 * **Together API key**: Get one from [together.ai](https://together.ai).
 * **Dedicated containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable it for your organization.

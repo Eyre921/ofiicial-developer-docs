@@ -103,7 +103,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.transcripts.get("dubbing_id", "srt", "language_code");
+    await client.dubbing.transcripts.get("dubbing_id", "language_code", "srt");
 }
 main();
 
@@ -116,8 +116,8 @@ client = ElevenLabs()
 
 client.dubbing.transcripts.get(
     dubbing_id="dubbing_id",
-    format_type="srt",
     language_code="language_code",
+    format_type="srt",
 )
 
 ```

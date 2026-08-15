@@ -46,7 +46,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.serviceAccounts.apiKeys.delete("api_key_id", "service_account_user_id");
+    await client.serviceAccounts.apiKeys.delete("service_account_user_id", "api_key_id");
 }
 main();
 
@@ -58,8 +58,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.service_accounts.api_keys.delete(
-    api_key_id="api_key_id",
     service_account_user_id="service_account_user_id",
+    api_key_id="api_key_id",
 )
 
 ```

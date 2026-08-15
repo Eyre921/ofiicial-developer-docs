@@ -129,7 +129,7 @@ Returns a Checkout Session object.
   Specify whether Checkout should collect the customer’s billing address. Defaults to `auto`.
 Possible enum values:
   - `auto`
-    Checkout will only collect the billing address when necessary. When using [automatic_tax](https://docs.stripe.com/docs/api/checkout/sessions/object.md#checkout_session_object-automatic_tax-enabled), Checkout will collect the minimum number of fields required for tax calculation.
+    Checkout will only collect the billing address when necessary. When using [automatic_tax](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-automatic_tax-enabled), Checkout will collect the minimum number of fields required for tax calculation.
 
   - `required`
     Checkout will always collect the customer’s billing address.
@@ -158,31 +158,31 @@ Possible enum values:
   Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `custom`.
 
 - `customer` (string, optional)
-  ID of an existing Customer, if one exists. In `payment` mode, the customer’s most recently saved card payment method will be used to prefill the email, name, card details, and billing address on the Checkout page. In `subscription` mode, the customer’s [default payment method](https://docs.stripe.com/docs/api/customers/update.md#update_customer-invoice_settings-default_payment_method) will be used if it’s a card, otherwise the most recently saved card will be used. A valid billing address, billing name and billing email are required on the payment method for Checkout to prefill the customer’s card details.
+  ID of an existing Customer, if one exists. In `payment` mode, the customer’s most recently saved card payment method will be used to prefill the email, name, card details, and billing address on the Checkout page. In `subscription` mode, the customer’s [default payment method](https://docs.stripe.com/api/customers/update.md#update_customer-invoice_settings-default_payment_method) will be used if it’s a card, otherwise the most recently saved card will be used. A valid billing address, billing name and billing email are required on the payment method for Checkout to prefill the customer’s card details.
 
-  If the Customer already has a valid [email](https://docs.stripe.com/docs/api/customers/object.md#customer_object-email) set, the email will be prefilled and not editable in Checkout. If the Customer does not have a valid `email`, Checkout will set the email entered during the session on the Customer.
+  If the Customer already has a valid [email](https://docs.stripe.com/api/customers/object.md#customer_object-email) set, the email will be prefilled and not editable in Checkout. If the Customer does not have a valid `email`, Checkout will set the email entered during the session on the Customer.
 
   If blank for Checkout Sessions in `subscription` mode or with `customer_creation` set as `always` in `payment` mode, Checkout will create a new Customer object based on information provided during the payment flow.
 
-  You can set [`payment_intent_data.setup_future_usage`](https://docs.stripe.com/docs/api/checkout/sessions/create.md#create_checkout_session-payment_intent_data-setup_future_usage) to have Checkout automatically attach the payment method to the Customer you pass in for future reuse.
+  You can set [`payment_intent_data.setup_future_usage`](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-payment_intent_data-setup_future_usage) to have Checkout automatically attach the payment method to the Customer you pass in for future reuse.
 
 - `customer_account` (string, optional)
   ID of an existing Account, if one exists. Has the same behavior as `customer`.
 
 - `customer_creation` (enum, optional)
-  Configure whether a Checkout Session creates a [Customer](https://docs.stripe.com/docs/api/customers.md) during Session confirmation.
+  Configure whether a Checkout Session creates a [Customer](https://docs.stripe.com/api/customers.md) during Session confirmation.
 
-  When a Customer is not created, you can still retrieve email, address, and other customer data entered in Checkout with [customer_details](https://docs.stripe.com/docs/api/checkout/sessions/object.md#checkout_session_object-customer_details).
+  When a Customer is not created, you can still retrieve email, address, and other customer data entered in Checkout with [customer_details](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details).
 
-  Sessions that don’t create Customers instead are grouped by [guest customers](https://docs.stripe.com/docs/payments/checkout/guest-customers.md) in the Dashboard. Promotion codes limited to first time customers will return invalid for these Sessions.
+  Sessions that don’t create Customers instead are grouped by [guest customers](https://docs.stripe.com/payments/checkout/guest-customers.md) in the Dashboard. Promotion codes limited to first time customers will return invalid for these Sessions.
 
   Can only be set in `payment` and `setup` mode.
 Possible enum values:
   - `always`
-    The Checkout Session will always create a [Customer](https://docs.stripe.com/docs/api/customers.md) when a Session confirmation is attempted.
+    The Checkout Session will always create a [Customer](https://docs.stripe.com/api/customers.md) when a Session confirmation is attempted.
 
   - `if_required`
-    The Checkout Session will only create a [Customer](https://docs.stripe.com/docs/api/customers.md) if it is required for Session confirmation. Currently, only `subscription` mode Sessions and `payment` mode Sessions with [post-purchase invoices enabled](https://docs.stripe.com/docs/receipts.md?payment-ui=checkout#paid-invoices) require a Customer.
+    The Checkout Session will only create a [Customer](https://docs.stripe.com/api/customers.md) if it is required for Session confirmation. Currently, only `subscription` mode Sessions and `payment` mode Sessions with [post-purchase invoices enabled](https://docs.stripe.com/receipts.md?payment-ui=checkout#paid-invoices) require a Customer.
 
 - `customer_email` (string, optional)
   If provided, this value will be used when the Customer object is created. If not provided, customers will be asked to enter their email address. Use this parameter to prefill customer data if you already have an email on file. To access information about the customer once a session is complete, use the `customer` field.
@@ -210,7 +210,7 @@ Possible enum values:
   Generate a post-purchase Invoice for one-time payments.
 
 - [`line_items`](https://docs.stripe.com/api/checkout/sessions/create.md?query=line_items) (array of objects, required conditionally)
-  A list of items the customer is purchasing. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/docs/api/prices.md). The parameter is required for `payment` and `subscription` mode.
+  A list of items the customer is purchasing. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/api/prices.md). The parameter is required for `payment` and `subscription` mode.
 
   For `payment` mode, there is a maximum of 100 line items, however it is recommended to consolidate line items if there are more than a few dozen.
 
@@ -265,7 +265,7 @@ Possible enum values:
   Settings for Managed Payments for this Checkout Session and resulting [PaymentIntents](https://docs.stripe.com/api/payment_intents/object.md), [Invoices](https://docs.stripe.com/api/invoices/object.md), and [Subscriptions](https://docs.stripe.com/api/subscriptions/object.md).
 
 - `metadata` (map, optional)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
 - `mode` (enum, required)
   The mode of the Checkout Session. Pass `subscription` if the Checkout Session includes at least one recurring item.
@@ -284,10 +284,10 @@ Possible enum values:
 
   You can configure Checkout to collect your customers’ business names, individual names, or both. Each name field can be either required or optional.
 
-  If a [Customer](https://docs.stripe.com/docs/api/customers.md) is created or provided, the names can be saved to the Customer object as well.
+  If a [Customer](https://docs.stripe.com/api/customers.md) is created or provided, the names can be saved to the Customer object as well.
 
 - [`optional_items`](https://docs.stripe.com/api/checkout/sessions/create.md?query=optional_items) (array of objects, optional)
-  A list of optional items the customer can add to their order at checkout. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/docs/api/prices.md).
+  A list of optional items the customer can add to their order at checkout. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/api/prices.md).
 
   There is a maximum of 10 optional items allowed on a Checkout Session, and the existing limits on the number of line items allowed on a Checkout Session apply to the combined number of line items and optional items.
 
@@ -314,7 +314,7 @@ Possible enum values:
 
   Can only be set in `subscription` mode. Defaults to `always`.
 
-  If you’d like information on how to collect a payment method outside of Checkout, read the guide on configuring [subscriptions with a free trial](https://docs.stripe.com/docs/payments/checkout/free-trials.md).
+  If you’d like information on how to collect a payment method outside of Checkout, read the guide on configuring [subscriptions with a free trial](https://docs.stripe.com/payments/checkout/free-trials.md).
 Possible enum values:
   - `always`
     The Checkout Session will always collect a PaymentMethod.
@@ -336,9 +336,9 @@ Possible enum values:
 - `payment_method_types` (array of enums, optional)
   A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
 
-  You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods). See [Dynamic Payment Methods](https://docs.stripe.com/docs/payments/payment-methods/integration-options.md#using-dynamic-payment-methods) for more details.
+  You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods). See [Dynamic Payment Methods](https://docs.stripe.com/payments/payment-methods/integration-options.md#using-dynamic-payment-methods) for more details.
 
-  Read more about the supported payment methods and their requirements in our [payment method details guide](https://docs.stripe.com/docs/payments/checkout/payment-methods.md).
+  Read more about the supported payment methods and their requirements in our [payment method details guide](https://docs.stripe.com/payments/checkout/payment-methods.md).
 
   If multiple payment methods are passed, Checkout will dynamically reorder them to prioritize the most relevant payment methods based on the customer’s location and other characteristics.
 
@@ -350,10 +350,10 @@ Possible enum values:
 - [`phone_number_collection`](https://docs.stripe.com/api/checkout/sessions/create.md?query=phone_number_collection) (object, optional)
   Controls phone number collection settings for the session.
 
-  We recommend that you review your privacy policy and check with your legal contacts before using this feature. Learn more about [collecting phone numbers with Checkout](https://docs.stripe.com/docs/payments/checkout/phone-numbers.md).
+  We recommend that you review your privacy policy and check with your legal contacts before using this feature. Learn more about [collecting phone numbers with Checkout](https://docs.stripe.com/payments/checkout/phone-numbers.md).
 
 - `redirect_on_completion` (enum, optional)
-  This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/docs/payments/checkout/custom-success-page.md?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
+  This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page.md?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
 Possible enum values:
   - `always`
     The Session will always redirect to the `return_url` after successful confirmation.
@@ -401,7 +401,7 @@ Possible enum values:
   A subset of parameters to be passed to subscription creation for Checkout Sessions in `subscription` mode.
 
 - `success_url` (string, required conditionally)
-  The URL to which Stripe should send customers when payment or setup is complete. This parameter is not allowed if ui_mode is `embedded_page` or `elements`. If you’d like to use information from the successful Checkout Session on your page, read the guide on [customizing your success page](https://docs.stripe.com/docs/payments/checkout/custom-success-page.md).
+  The URL to which Stripe should send customers when payment or setup is complete. This parameter is not allowed if ui_mode is `embedded_page` or `elements`. If you’d like to use information from the successful Checkout Session on your page, read the guide on [customizing your success page](https://docs.stripe.com/payments/checkout/custom-success-page.md).
 
 - [`tax_id_collection`](https://docs.stripe.com/api/checkout/sessions/create.md?query=tax_id_collection) (object, optional)
   Controls tax ID collection during checkout.

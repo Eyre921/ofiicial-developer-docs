@@ -15,9 +15,9 @@ Plugins intercept imports and perform custom loading logic, like reading files o
 Plugins register callbacks that run at various points in the lifecycle of a bundle:
 
 * [`onStart()`](#onstart): Run once the bundler has started a bundle
-* [`onResolve()`](#onresolve): Run before a module is resolved
-* [`onLoad()`](#onload): Run before a module is loaded
-* [`onBeforeParse()`](#onbeforeparse): Run zero-copy native addons in the parser thread before a file is parsed
+* [`onResolve()`](#onresolve): Run before the bundler resolves a module
+* [`onLoad()`](#onload): Run before the bundler loads a module
+* [`onBeforeParse()`](#onbeforeparse): Run zero-copy native addons in the parser thread before the bundler parses a file
 
 ### Reference
 
@@ -63,7 +63,7 @@ type Loader =
 
 ## Usage
 
-A plugin is defined as a JavaScript object containing a `name` property and a `setup` function.
+A plugin is a JavaScript object containing a `name` property and a `setup` function.
 
 ```tsx myPlugin.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import type { BunPlugin } from "bun";
@@ -90,7 +90,7 @@ await Bun.build({
 
 ### Namespaces
 
-`onLoad` and `onResolve` accept an optional `namespace` string. Every module has a namespace, which prefixes the import in transpiled code; for instance, a loader with a `filter: /\.yaml$/` and `namespace: "yaml:"` transforms an import from `./myfile.yaml` into `yaml:./myfile.yaml`.
+`onLoad` and `onResolve` accept an optional `namespace` string. Every module has a namespace, which prefixes the import in transpiled code. For instance, a loader with a `filter: /\.yaml$/` and `namespace: "yaml:"` transforms an import from `./myfile.yaml` into `yaml:./myfile.yaml`.
 
 The default namespace is `"file"` and you don't need to specify it: `import myModule from "./my-module.ts"` is the same as `import myModule from "file:./my-module.ts"`.
 
@@ -170,7 +170,7 @@ onResolve(
 
 To bundle your project, Bun walks down the dependency tree of all modules in your project. For each imported module, Bun has to find and read that module. The "finding" part is known as "resolving" a module.
 
-The `onResolve()` lifecycle callback customizes how a module is resolved.
+The `onResolve()` lifecycle callback customizes how Bun resolves a module.
 
 The first argument to `onResolve()` is an object with a `filter` and [`namespace`](#what-is-a-namespace) property. The filter is a regular expression run on the import string. Together they determine which modules your custom resolution logic applies to.
 
@@ -253,7 +253,7 @@ This plugin transforms all imports of the form `import env from "env"` into a Ja
 
 #### `.defer()`
 
-The `onLoad` callback receives a `defer` function, which returns a `Promise` that resolves once all *other* modules have been loaded. Await it when a module's contents depend on other modules.
+The `onLoad` callback receives a `defer` function, which returns a `Promise` that resolves once Bun has loaded all *other* modules. Await it when a module's contents depend on other modules.
 
 ##### Example: tracking and reporting unused exports
 
@@ -297,7 +297,7 @@ plugin({
 });
 ```
 
-The `.defer()` function can only be called once per `onLoad` callback.
+You can call the `.defer()` function only once per `onLoad` callback.
 
 ## Native plugins
 
@@ -307,7 +307,7 @@ Native plugins are written as [NAPI](/docs/runtime/node-api) modules and can run
 
 The following lifecycle hooks are available to native plugins:
 
-* [`onBeforeParse()`](#onbeforeparse): Called on any thread before a file is parsed by Bun's bundler.
+* [`onBeforeParse()`](#onbeforeparse): Called on any thread before Bun's bundler parses a file.
 
 Native plugins are NAPI modules which expose lifecycle hooks as C ABI functions. To create one, export a C ABI function that matches the signature of the lifecycle hook you want to implement.
 
@@ -400,4 +400,4 @@ This lifecycle callback runs immediately before Bun's bundler parses a file.
 
 It receives the file's contents and can return new source code.
 
-The callback can be called from any thread, so the NAPI module implementation must be thread-safe.
+Bun can call the callback from any thread, so the NAPI module implementation must be thread-safe.

@@ -15,7 +15,7 @@ This example demonstrates deploying a multi-GPU video generation model using Ded
 * Automatic file upload with `FileOutput`
 * Submitting jobs via the Queue API and polling for results
 
-## Prerequisites
+## Requirements
 
 * **Together API key**: Get one from [together.ai](https://together.ai)
 * **Dedicated Containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable for your organization

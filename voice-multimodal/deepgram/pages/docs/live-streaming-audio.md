@@ -623,7 +623,7 @@ Deepgram's features help you to customize your transcripts.
 
 ### Explore Use Cases
 
-* Learn about the different ways you can use Deepgram products to help you meet your business objectives. [Explore Deepgram's use cases](/docs/transcribe-recorded-calls-with-twilio).
+* Learn about the different ways you can use Deepgram products to help you meet your business objectives. [Explore Deepgram's use cases](/docs/twilio-and-deepgram-stt).
 
 ### Transcribe Pre-recorded Audio
 

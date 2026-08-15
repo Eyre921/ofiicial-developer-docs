@@ -120,7 +120,7 @@ Please [contact us](https://support.stripe.com/contact) to request another bank 
 You don’t have to integrate Bank Transfers and other payment methods individually. If you use our front-end products, Stripe automatically determines the most relevant payment methods to display. Go to the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) and enable Bank Transfers. To get started with one of our hosted UIs, follow a quickstart:
 
 - [Checkout](https://docs.stripe.com/checkout/quickstart.md): Our prebuilt, hosted checkout page.
-- [Elements](https://docs.stripe.com/payments/quickstart-checkout-sessions.md): Our drop-in UI components.
+- [Elements](https://docs.stripe.com/payments/quickstart.md): Our drop-in UI components.
 
 ### Other payment products
 

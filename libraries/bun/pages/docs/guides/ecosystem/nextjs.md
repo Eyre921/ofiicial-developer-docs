@@ -38,7 +38,7 @@ path: docs/guides/ecosystem/nextjs
       "scripts": {
         "dev": "bun --bun next dev", // [!code ++]
         "build": "bun --bun next build", // [!code ++]
-        "start": "bun --bun next start", // [!code ++]
+        "start": "bun --bun next start" // [!code ++]
       }
     }
     ```
@@ -81,7 +81,7 @@ path: docs/guides/ecosystem/nextjs
 
 <Columns>
   <Card title="Bun + Next.js Basic Starter" href="https://github.com/bun-templates/bun-nextjs-basic">
-    A simple App Router starter with Bun, Next.js, and Tailwind CSS.
+    A basic App Router starter with Bun, Next.js, and Tailwind CSS.
   </Card>
 
   <Card title="Todo App with Next.js + Bun" href="https://github.com/bun-templates/bun-nextjs-todo">

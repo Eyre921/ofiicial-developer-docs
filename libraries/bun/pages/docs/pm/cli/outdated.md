@@ -304,7 +304,7 @@ bun outdated <filter>
 </ParamField>
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (dependency scripts are never run)
+  Skip lifecycle scripts in the project's <code>package.json</code> (Bun never runs dependency scripts)
 </ParamField>
 
 <ParamField type="string">

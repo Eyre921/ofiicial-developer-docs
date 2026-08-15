@@ -264,7 +264,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="google_genai:gemini-3.6-flash",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="google_genai:gemini-3.6-flash",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -299,7 +299,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="openai:gpt-5.5",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="openai:gpt-5.5",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -334,7 +334,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="anthropic:claude-sonnet-4-6",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="anthropic:claude-sonnet-4-6",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -369,7 +369,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="openrouter:z-ai/glm-5.2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="openrouter:z-ai/glm-5.2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -404,7 +404,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -439,7 +439,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="baseten:zai-org/GLM-5.2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="baseten:zai-org/GLM-5.2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -474,7 +474,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
       model="ollama:north-mini-code-1.0",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="ollama:north-mini-code-1.0",
               on_evaluation=log_evaluation,
           ),
       ],

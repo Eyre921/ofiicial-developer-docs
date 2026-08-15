@@ -10,7 +10,7 @@ Accept, settle, and pay out funds in multiple currencies.
 
 If you’re a Connect platform looking to offer multi-currency settlement capabilities to your connected accounts, see our [Connect docs](https://docs.stripe.com/connect/multi-currency-settlement.md).
 
-Stripe automatically converts all incoming funds into your default currency. With multi-currency settlement, you can configure your account to accrue balances and get paid out in up to 18 supported currencies to pay suppliers, process refunds, and avoid FX fees. Where supported, you can use [instant currency conversion](https://docs.stripe.com/instant-currency-conversion.md) to convert between currencies.
+Stripe automatically converts all incoming funds into your default currency. With multi-currency settlement, you can configure your account to accrue balances and get paid out in up to 18 supported currencies to pay suppliers, process refunds, and avoid FX fees. Where supported, you can use [instant currency conversion](https://docs.stripe.com/treasury/convert-funds.md) to convert between currencies.
 
 ## Availability
 
@@ -45,7 +45,7 @@ Stripe charges the applicable fee when funds settle into a non-primary settlemen
 [See table on original page](https://docs.stripe.com/payouts/multi-currency-settlement)
 ## See also
 
-- [Instant currency conversion](https://docs.stripe.com/instant-currency-conversion.md)
+- [Instant currency conversion](https://docs.stripe.com/treasury/convert-funds.md)
 - [Supported currencies](https://docs.stripe.com/currencies.md)
 - [Localize prices](https://docs.stripe.com/payments/currencies/localize-prices.md)
 

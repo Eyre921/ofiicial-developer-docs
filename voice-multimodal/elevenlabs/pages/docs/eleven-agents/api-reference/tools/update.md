@@ -846,8 +846,8 @@ async function main() {
     await client.conversationalAi.tools.update("tool_id", {
         toolConfig: {
             type: "client",
-            description: "description",
             name: "name",
+            description: "description",
             expectsResponse: false,
         },
     });
@@ -865,8 +865,8 @@ client.conversational_ai.tools.update(
     tool_id="tool_id",
     request=ToolRequestModel(
         tool_config=ToolRequestModelToolConfig_Client(
-            description="description",
             name="name",
+            description="description",
             expects_response=False,
         ),
     ),

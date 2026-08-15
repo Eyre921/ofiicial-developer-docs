@@ -232,69 +232,115 @@ if __name__ == "__main__":
     main()
 ```
 
-### Running the Example
+### Running the # CrewAI Documentation
+Source: https://docs.crewai.com/index
 
-```bash theme={null}
-python main.py "Sustainable Energy Solutions"
-```
+Build collaborative AI agents, crews, and flows — production ready from day one.
 
-## Viewing Traces in LangDB
+<div>
+  <img alt="CrewAI" />
 
-After running your CrewAI application, you can view detailed traces in the LangDB dashboard:
+  <div>
+    <h1>Ship multi‑agent systems with confidence</h1>
 
-<Frame>
-  <img alt="LangDB trace dashboard showing CrewAI workflow" />
-</Frame>
+    <p>
+      Design agents, orchestrate crews, and automate flows with guardrails, memory, knowledge, and observability baked in.
+    </p>
+  </div>
 
-### What You'll See
+  <div>
+    <a href="/en/quickstart">
+      Get started
+    </a>
 
-* **Agent Interactions**: Complete flow of agent conversations and task handoffs
-* **Tool Usage**: Which tools were called, their inputs, and outputs
-* **Model Calls**: Detailed LLM interactions with prompts image.pngand responses
-* **Performance Metrics**: Latency, token usage, and cost tracking
-* **Execution Timeline**: Step-by-step view of the entire workflow
+    <button type="button">
+      Copy agent setup prompt
+    </button>
 
-## Troubleshooting
+    <a href="/guides/coding-tools/build-with-ai">
+      Coding-agent guide
+    </a>
 
-### Common Issues
+    <a href="/en/api-reference/introduction">
+      API Reference
+    </a>
+  </div>
+</div>
 
-* **No traces appearing**: Ensure `init()` is called before any CrewAI imports
-* **Authentication errors**: Verify your LangDB API key and project ID
+<div />
 
-## Resources
+## Get started
 
 <CardGroup>
-  <Card title="LangDB Documentation" icon="book" href="https://docs.langdb.ai">
-    Official LangDB documentation and guides
+  <Card title="Introduction" href="/en/introduction" icon="sparkles">
+    Overview of CrewAI concepts, architecture, and what you can build with agents, crews, and flows.
   </Card>
 
-  <Card title="LangDB Guides" icon="graduation-cap" href="https://docs.langdb.ai/guides">
-    Step-by-step tutorials for building AI agents
+  <Card title="Installation" href="/en/installation" icon="wrench">
+    Install via `uv`, configure API keys, and set up the CLI for local development.
   </Card>
 
-  <Card title="GitHub Examples" icon="github" href="https://github.com/langdb/langdb-samples/tree/main/examples/crewai">
-    Complete CrewAI integration examples
-  </Card>
-
-  <Card title="LangDB Dashboard" icon="chart-line" href="https://app.langdb.ai">
-    Access your traces and analytics
-  </Card>
-
-  <Card title="Model Catalog" icon="list" href="https://app.langdb.ai/models">
-    Browse 350+ available language models
-  </Card>
-
-  <Card title="Enterprise Features" icon="building" href="https://docs.langdb.ai/enterprise">
-    Self-hosted options and enterprise capabilities
+  <Card title="Quickstart" href="/en/quickstart" icon="rocket">
+    Spin up your first crew in minutes. Learn the core runtime, project layout, and dev loop.
   </Card>
 </CardGroup>
 
-## Next Steps
+## Build the basics
 
-This guide covered the basics of integrating LangDB AI Gateway with CrewAI. To further enhance your AI workflows, explore:
+<CardGroup>
+  <Card title="Agents" href="/en/concepts/agents" icon="users">
+    Compose agents with tools, memory, knowledge, and structured outputs using Pydantic. Includes templates and best practices.
+  </Card>
 
-* **Virtual Models**: Create custom model configurations with routing strategies
-* **Guardrails & Safety**: Implement content filtering and compliance controls
-* **Production Deployment**: Configure fallbacks, retries, and load balancing
+  <Card title="Flows" href="/en/concepts/flows" icon="arrow-progress">
+    Orchestrate start/listen/router steps, manage state, persist execution, and resume long-running workflows.
+  </Card>
 
-For more advanced features and use cases, visit the [LangDB Documentation](https://docs.langdb.ai) or explore the [Model Catalog](https://app.langdb.ai/models) to discover all available models.
+  <Card title="Tasks & Processes" href="/en/concepts/tasks" icon="check">
+    Define sequential, hierarchical, or hybrid processes with guardrails, callbacks, and human-in-the-loop triggers.
+  </Card>
+</CardGroup>
+
+## Enterprise journey
+
+<CardGroup>
+  <Card title="Deploy automations" href="https://docs-platform.crewai.com/platform/en/features/automations" icon="server">
+    Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
+  </Card>
+
+  <Card title="Triggers & Flows" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="bolt">
+    Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
+  </Card>
+
+  <Card title="Team management" href="https://docs-platform.crewai.com/platform/en/guides/team-management" icon="users-gear">
+    Invite teammates, configure RBAC, and control access to production automations.
+  </Card>
+</CardGroup>
+
+## What’s new
+
+<CardGroup>
+  <Card title="Triggers overview" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="sparkles">
+    Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
+  </Card>
+
+  <Card title="Integration tools" href="/en/tools/integration/overview" icon="plug">
+    Call existing CrewAI automations or Amazon Bedrock Agents directly from your crews using the updated integration toolkit.
+  </Card>
+</CardGroup>
+
+<Callout title="Explore real-world patterns" icon="github">
+  Browse the <a href="/en/examples/cookbooks">examples and cookbooks</a> for end-to-end reference implementations across agents, flows, and enterprise automations.
+</Callout>
+
+## Stay connected
+
+<CardGroup>
+  <Card title="Star us on GitHub" href="https://github.com/crewAIInc/crewAI" icon="star">
+    If CrewAI helps you ship faster, give us a star and share your builds with the community.
+  </Card>
+
+  <Card title="Join the community" href="https://community.crewai.com" icon="comments">
+    Ask questions, showcase workflows, and request features alongside other builders.
+  </Card>
+</CardGroup>

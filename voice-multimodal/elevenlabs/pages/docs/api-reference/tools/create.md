@@ -806,10 +806,10 @@ async function main() {
         toolConfig: {
             type: "system",
             name: "end_call",
+            description: "",
             params: {
                 systemToolType: "end_call",
             },
-            description: "",
         },
     });
 }
@@ -826,8 +826,8 @@ client.conversational_ai.tools.create(
     request=ToolRequestModel(
         tool_config=ToolRequestModelToolConfig_System(
             name="end_call",
-            params=SystemToolConfigInputParams_EndCall(),
             description="",
+            params=SystemToolConfigInputParams_EndCall(),
         ),
     ),
 )

@@ -24,7 +24,7 @@ foo.size; // number of bytes
 foo.type; // MIME type
 ```
 
-The reference conforms to the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) interface, so the contents can be read in various formats.
+The reference conforms to the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) interface, so you can read the contents in various formats.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const foo = Bun.file("foo.txt");
@@ -172,7 +172,7 @@ writer.write("it was the best of times\n");
 writer.write("it was the worst of times\n");
 ```
 
-These chunks are buffered internally. To flush the buffer to disk, use `.flush()`. This returns the number of flushed bytes.
+The `FileSink` buffers these chunks internally. To flush the buffer to disk, use `.flush()`. This returns the number of flushed bytes.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 writer.flush(); // write buffer to disk
@@ -191,7 +191,7 @@ To flush the buffer and close the file:
 writer.end();
 ```
 
-By default, the `bun` process stays alive until this `FileSink` is explicitly closed with `.end()`. To opt out of this behavior, "unref" the instance.
+By default, the `bun` process stays alive until you explicitly close this `FileSink` with `.end()`. To opt out of this behavior, "unref" the instance.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 writer.unref();

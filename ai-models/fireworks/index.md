@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 369 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 370 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -212,6 +212,7 @@
 - `fine-tuning/connect-environments` — [Remote Environment Setup](pages/fine-tuning/connect-environments.md) · [原文](https://docs.fireworks.ai/fine-tuning/connect-environments)
 - `fine-tuning/deploying-loras` — [Deploying Fine Tuned Models](pages/fine-tuning/deploying-loras.md) · [原文](https://docs.fireworks.ai/fine-tuning/deploying-loras)
 - `fine-tuning/dpo-fine-tuning` — [Preference Optimization with DPO or ORPO](pages/fine-tuning/dpo-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning)
+- `fine-tuning/evaluating-fine-tuned-models` — [Evaluating Fine Tuned Models](pages/fine-tuning/evaluating-fine-tuned-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models)
 - `fine-tuning/fine-tuning-models` — [Supervised Fine Tuning - Text](pages/fine-tuning/fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
 - `fine-tuning/finetuning-intro` — [Training Overview](pages/fine-tuning/finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/finetuning-intro)
 - `fine-tuning/managed-finetuning-intro` — [Managed Fine-Tuning Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)

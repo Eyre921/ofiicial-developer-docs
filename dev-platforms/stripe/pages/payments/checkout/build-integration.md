@@ -23,7 +23,7 @@ You can use three payment UIs with the Checkout Sessions API. The following imag
 [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form): Customers enter their payment details in an embedded form on your site without redirection.
 ![Elements](https://b.stripecdn.com/docs-statics-srv/assets/checkout-elements-hover.28148f5be39600e85ef4784ab9e873e7.png)
 
-[Elements](https://docs.stripe.com/payments/quickstart-checkout-sessions.md): Build a fully customized payment page using elements
+[Elements](https://docs.stripe.com/payments/quickstart.md): Build a fully customized payment page using elements
 
 | &nbsp; | [FULL PAGE](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=checkout&ui=stripe-hosted) (Recommended) | [EMBEDDED FORM](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) (Private preview) | [ELEMENTS](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout) |
 | --- | --- | --- | --- |

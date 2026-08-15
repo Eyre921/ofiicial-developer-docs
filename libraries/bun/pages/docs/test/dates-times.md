@@ -30,7 +30,7 @@ test("it is 2020", () => {
 });
 ```
 
-Jest's `useFakeTimers` and `useRealTimers` are also supported, so existing tests that use them keep working:
+`bun:test` also supports Jest's `useFakeTimers` and `useRealTimers`, so existing tests that use them keep working:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 test("just like in jest", () => {

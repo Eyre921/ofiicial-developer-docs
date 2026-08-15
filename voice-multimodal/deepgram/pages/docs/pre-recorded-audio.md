@@ -651,6 +651,6 @@ The `transaction_key` in the `metadata` field can be ignored. The result is alwa
 * [Feature overview](/docs/stt-pre-recorded-feature-overview): Review the full list of features available for pre-recorded speech-to-text.
 * [Language](/docs/language): Transcribe audio in other languages.
 * [Streaming audio](/docs/live-streaming-audio): Transcribe audio in real time.
-* [Use cases](/docs/transcribe-recorded-calls-with-twilio): Explore ways to use Deepgram products.
+* [Use cases](/docs/twilio-and-deepgram-stt): Explore ways to use Deepgram products.
 
 ---

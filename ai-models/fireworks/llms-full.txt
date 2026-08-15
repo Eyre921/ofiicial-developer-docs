@@ -7504,6 +7504,8 @@ Deploy one or multiple LoRA models fine tuned on Fireworks using live merge or m
 
 After fine-tuning your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA fine-tuned models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 
+To run training evals before production serving, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
+
 <Warning>
   Fine-tuned LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
 </Warning>
@@ -8080,6 +8082,111 @@ Explore other fine-tuning methods to improve model output for different use case
 </CardGroup>
 
 
+# Evaluating Fine Tuned Models
+Source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
+
+Run training evals on a fine-tuned adapter before you create a production deployment.
+
+After training, run evals on the adapter before you create a production deployment. The preemptible deployment on this page is for **training evals only**. It is not a production serving setup, and Fireworks does not offer serverless LoRA inference for a customer fine-tune.
+
+<Warning>
+  Do not send production traffic through a preemptible deployment. For production serving after eval, create an on-demand deployment. See [Deploying Fine Tuned Models](/fine-tuning/deploying-loras).
+</Warning>
+
+## Preemptible deployment
+
+If you want to eval a fine-tuned model without holding dedicated on-demand capacity, create a **preemptible deployment**. It borrows idle reserved GPU capacity instead of reserving GPUs exclusively for you.
+
+It can be reclaimed (preempted) at any time. Fireworks does not guarantee how many GPUs are available or how long the deployment stays up, but in practice it typically lasts long enough to finish a training eval.
+
+### How it works
+
+Passing `--preemptible` to `firectl deployment create` opts the deployment into capacity borrowing:
+
+* The deployment runs on reserved nodes that are currently idle.
+* When the capacity owner needs those GPUs back, your deployment can be preempted.
+
+Because it borrows idle capacity, you do not need to hold dedicated on-demand capacity for the duration of the eval.
+
+### Requirements
+
+`--preemptible` takes effect only on **firectl 1.7.26 or newer**. Check with `firectl version`. The flag is not present in older builds. Upgrade if you are below 1.7.26.
+
+### Behavior
+
+* **Training evals only.** A preemptible deployment can be preempted mid-request. Treat disappearance as a normal outcome, not an error.
+* **`--preemptible` is immutable.** It is set at create time and cannot be toggled on or off afterward. To change it, delete the deployment and create a new one.
+* **Clean up when done.** Delete the deployment after your eval so you stop holding the borrowed capacity.
+
+### Create the deployment
+
+```bash theme={null}
+firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
+  --deployment-id <YOUR_DEPLOYMENT_ID> \
+  --display-name <YOUR_DISPLAY_NAME> \
+  --deployment-shape <DEPLOYMENT_SHAPE> \
+  --min-replica-count 1 \
+  --max-replica-count 1 \
+  --preemptible
+```
+
+Replace the placeholders:
+
+* `<FINE_TUNED_MODEL_ID>`: the fine-tuned model to eval, not a base model.
+* `<YOUR_DEPLOYMENT_ID>` / `<YOUR_DISPLAY_NAME>`: a name of your choice for the eval deployment.
+* `<DEPLOYMENT_SHAPE>`: the deployment shape to use for that model.
+
+### Worked example
+
+```bash theme={null}
+firectl deployment create accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID> \
+  -a <ACCOUNT_ID> \
+  --deployment-id <FINE_TUNED_MODEL_ID>-eval \
+  --display-name <FINE_TUNED_MODEL_ID>-eval \
+  --deployment-shape <DEPLOYMENT_SHAPE> \
+  --min-replica-count 1 \
+  --max-replica-count 1 \
+  --preemptible
+```
+
+### Run the eval and tear down
+
+Check that the deployment is ready, then send eval requests to the fine-tuned model:
+
+```bash theme={null}
+firectl deployment get <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
+```
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello!"
+      }
+    ]
+  }'
+```
+
+When the evaluation is finished, delete the deployment to release the borrowed capacity:
+
+```bash theme={null}
+firectl deployment delete <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
+```
+
+## Next steps
+
+<CardGroup>
+  <Card title="Deploying Fine Tuned Models" href="/fine-tuning/deploying-loras" icon="rocket">
+    Live merge or multi-LoRA for production serving
+  </Card>
+</CardGroup>
+
+
 # Supervised Fine Tuning - Text
 Source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 
@@ -8366,7 +8473,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
 ## Deploying a fine-tuned model
 
-After fine-tuning completes, deploy your model to make it available for inference:
+After fine-tuning completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
+
+To deploy for inference:
 
 ```bash theme={null}
 firectl deployment create <FINE_TUNED_MODEL_ID>
@@ -13798,6 +13907,39 @@ The end-to-end serverless RL pattern is the standard GRPO / importance-sampling 
 
 Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) for a compact synchronous loop, or [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) for experimental async scheduling and custom rollout functions. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
+## Evaluating serverless checkpoints
+
+There is no serverless chat endpoint for your adapter. To evaluate it, open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you can score with your own metric.
+
+Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are for on-demand deployment and cannot be passed to `create_sampling_client`.
+
+The following save-and-sample sequence comes from the [quickstart](#step-4-train-checkpoint-and-sample) and the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/blob/main/training/examples/serverless_rl/countdown_rl.py). Set up `prompt`, `tokenizer`, and `params` as shown in that example.
+
+```python theme={null}
+snapshot = training_client.save_weights_for_sampler("eval").result().path
+sampler = service.create_sampling_client(model_path=snapshot, tokenizer=tokenizer)
+try:
+    result = sampler.sample(
+        prompt=prompt,
+        num_samples=1,
+        sampling_params=params,
+    ).result()
+    for seq in result.sequences or []:
+        tokens = list(seq.tokens or [])
+        completion = get_text_content(renderer.parse_response(tokens)[0])
+        # Score `completion` against your held-out label or grader.
+finally:
+    sampler.close()
+```
+
+`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, then close the sampler. The Countdown example scores with `composite_reward`; replace that with your evaluation metric.
+
+For checkpoint and promotion details, see [Saving and loading checkpoints](#saving-and-loading-checkpoints).
+
+<Note>
+  Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](/fine-tuning/evaluating-fine-tuned-models).
+</Note>
+
 ## Saving and loading checkpoints
 
 Serverless training writes **two different kinds of checkpoint**, and they are not interchangeable:
@@ -17680,6 +17822,8 @@ firectl deployment create <MODEL_NAME> --accelerator-count 2
 More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x performance).
 
 ## Preemptible deployments (eval / batch)
+
+For the fine-tuning eval workflow, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models).
 
 Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
 
@@ -22876,7 +23020,6 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                                  | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00      |
 | [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                             | \$2.00 / \$0.30 / \$8.00  | —                             |
 | [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                                      | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
-| [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                                  | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
 | [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)                      | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                      | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                                 | \$2.10 / \$0.21 / \$6.60  | —                             |
@@ -28313,6 +28456,12 @@ Quickstart](/getting-started/quickstart).
 Source: https://docs.fireworks.ai/updates/changelog
 
 
+
+<Update label="2026-08-14">
+  # Serverless deprecation: DeepSeek V4 Flash
+
+  **DeepSeek V4 Flash** is deprecated from serverless. Migrate to **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)**.
+</Update>
 
 <Update label="2026-07-16">
   # SFT learning rate scheduler documentation

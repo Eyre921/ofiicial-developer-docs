@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/binary/buffer-to-readablestream
 path: docs/guides/binary/buffer-to-readablestream
 ---
 
-The naive approach to creating a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) from a [`Buffer`](https://nodejs.org/api/buffer.html) is to use the `ReadableStream` constructor and enqueue the entire array as a single chunk. For a large buffer, this may be undesirable because it doesn't stream the data in smaller chunks.
+The naive approach to creating a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) from a [`Buffer`](https://nodejs.org/api/buffer.html) is to use the `ReadableStream` constructor and enqueue the entire array as a single chunk. For a large buffer, this approach may be undesirable because it doesn't stream the data in smaller chunks.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const buf = Buffer.from("hello world");

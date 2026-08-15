@@ -10,7 +10,7 @@ Snapshot testing saves the output of a value and compares it against future test
 
 ## Basic Snapshots
 
-Snapshot tests are written using the `.toMatchSnapshot()` matcher:
+Write snapshot tests with the `.toMatchSnapshot()` matcher:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { test, expect } from "bun:test";
@@ -55,7 +55,7 @@ Do this when you've intentionally changed the output or added new snapshot tests
 
 ## Inline Snapshots
 
-For smaller values, use `.toMatchInlineSnapshot()`. Inline snapshots are stored directly in your test file:
+For smaller values, use `.toMatchInlineSnapshot()`. Bun stores inline snapshots directly in your test file:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { test, expect } from "bun:test";
@@ -361,7 +361,7 @@ tests/
 
 ### Snapshot Failures
 
-When snapshots fail, you'll see a diff:
+When snapshots fail, Bun shows a diff:
 
 ```diff title="diff" icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
 - Expected

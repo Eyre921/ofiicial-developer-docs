@@ -16,7 +16,7 @@ Use the BYOM flow when:
 * **You're continuing your own previous work.** Upload your last checkpoint to Hugging Face and resume training on Together.
 * **A new model isn't in the catalog yet.** As long as it has a supported architecture under 100B parameters, you can fine-tune it.
 
-## Prerequisites
+## Requirements
 
 Your model must meet these constraints:
 

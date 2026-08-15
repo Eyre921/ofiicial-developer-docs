@@ -14,7 +14,7 @@ This quickstart walks through a full fine-tuning lifecycle. You'll prepare a con
 
 For background on what fine-tuning is and when to use it, see the [overview](/docs/fine-tuning/overview). You can find a runnable notebook for this tutorial [on GitHub](https://github.com/togethercomputer/together-cookbook/blob/main/Finetuning/Finetuning_Guide.ipynb).
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 
@@ -519,6 +519,10 @@ Resume training from an existing job by passing `from_checkpoint`:
 </CodeGroup>
 
 `from_checkpoint` accepts the output model name, the job ID, or a specific step in the form `ft-...:{STEP_NUM}`. List available checkpoints with `tg fine-tuning list-checkpoints <JOB_ID>`.
+
+<Note>
+  Whether training continues the previous job's LoRA adapter or merges it into the base model depends on the [training types and LoRA settings of both jobs](/docs/fine-tuning/lora-vs-full#continue-training-from-a-checkpoint).
+</Note>
 
 ## Next steps
 

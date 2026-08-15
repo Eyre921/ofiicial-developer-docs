@@ -54,7 +54,7 @@ Occurs whenever a payment method is detached from a customer.
 - `payment_method.updated`
 Occurs whenever a payment method is updated via the [PaymentMethod update API](https://docs.stripe.com/api/payment_methods/update.md).
 
-PaymentMethod objects represent your customer’s payment instruments. You can use them with [PaymentIntents](https://docs.stripe.com/docs/payments/payment-intents.md) to collect payments or save them to Customer objects to store instrument details for future payments.
+PaymentMethod objects represent your customer’s payment instruments. You can use them with [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) to collect payments or save them to Customer objects to store instrument details for future payments.
 
-Related guides: [Payment Methods](https://docs.stripe.com/docs/payments/payment-methods.md) and [More Payment Scenarios](https://docs.stripe.com/docs/payments/more-payment-scenarios.md).
+Related guides: [Payment Methods](https://docs.stripe.com/payments/payment-methods.md) and [More Payment Scenarios](https://docs.stripe.com/payments/more-payment-scenarios.md).
 

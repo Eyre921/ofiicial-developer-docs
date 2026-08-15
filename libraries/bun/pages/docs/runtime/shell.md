@@ -23,9 +23,9 @@ await $`cat < ${response} | wc -c`; // 1256
 
 ## Features
 
-* **Cross-platform**: works on Windows, Linux & macOS. Instead of installing `rimraf` or `cross-env`, you can use Bun Shell. Common shell commands like `ls`, `cd`, and `rm` are implemented natively.
+* **Cross-platform**: works on Windows, Linux & macOS. Instead of installing `rimraf` or `cross-env`, you can use Bun Shell. It implements common shell commands like `ls`, `cd`, and `rm` natively.
 * **Familiar**: Bun Shell is a bash-like shell that supports redirection, pipes, and environment variables.
-* **Globs**: Glob patterns are supported natively, including `**`, `*`, and `{expansion}`.
+* **Globs**: Bun Shell supports glob patterns natively, including `**`, `*`, and `{expansion}`.
 * **Template literals**: Template literals execute shell commands and interpolate variables and expressions.
 * **Safety**: Bun Shell escapes all strings by default, preventing shell injection attacks.
 * **JavaScript interop**: Use `Response`, `ArrayBuffer`, `Blob`, `Bun.file(path)` and other JavaScript objects as stdin, stdout, and stderr.
@@ -36,7 +36,7 @@ await $`cat < ${response} | wc -c`; // 1256
 
 ## Getting started
 
-The simplest shell command is `echo`. To run it, use the `$` template literal tag:
+Start with `echo`. To run it, use the `$` template literal tag:
 
 ```js theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { $ } from "bun";
@@ -260,7 +260,7 @@ import { $ } from "bun";
 await $`echo Hash of current commit: $(git rev-parse HEAD)`;
 ```
 
-The output is inserted as text, so you can use it to declare a shell variable:
+Bun Shell inserts the output as text, so you can use it to declare a shell variable:
 
 ```js theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { $ } from "bun";
@@ -273,7 +273,7 @@ await $`
 ```
 
 <Note>
-  Because Bun internally uses the special [`raw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#raw_strings) property on the input template literal, using the backtick syntax for command substitution won't work:
+  Because Bun internally uses the special [`raw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#raw_strings) property on the input template literal, using the backtick syntax for command substitution doesn't work:
 
   ```ts icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
   import { $ } from "bun";
@@ -318,7 +318,7 @@ const foo = "bar123";
 await $`FOO=${foo + "456"} bun -e 'console.log(process.env.FOO)'`; // bar123456\n
 ```
 
-Input is escaped by default, preventing shell injection attacks:
+Bun Shell escapes input by default, preventing shell injection attacks:
 
 ```js theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { $ } from "bun";
@@ -567,7 +567,7 @@ Bun Shell is a small programming language implemented in Rust, with a handwritte
 By design, Bun Shell *does not invoke a system shell* like `/bin/sh`. It's a
 re-implementation of bash that runs in the same Bun process.
 
-When parsing command arguments, it treats all *interpolated variables* as single, literal strings.
+When parsing command arguments, Bun Shell treats all *interpolated variables* as single, literal strings.
 
 This protects against **command injection**:
 
@@ -580,12 +580,12 @@ const userInput = "my-file.txt; rm -rf /";
 await $`ls ${userInput}`;
 ```
 
-Here, `userInput` is treated as a single string, so `ls` tries to read the
+Here, Bun Shell treats `userInput` as a single string, so `ls` tries to read the
 contents of a single directory named `my-file.txt; rm -rf /`.
 
 ### Security considerations
 
-While command injection is prevented by default, you are still
+While Bun Shell prevents command injection by default, you are still
 responsible for security in certain scenarios.
 
 Similar to the `Bun.spawn` or `node:child_process.exec()` APIs, you can intentionally

@@ -842,8 +842,8 @@ async function main() {
     await client.conversationalAi.tools.create({
         toolConfig: {
             type: "client",
-            description: "description",
             name: "name",
+            description: "description",
             expectsResponse: false,
         },
     });
@@ -860,8 +860,8 @@ client = ElevenLabs()
 client.conversational_ai.tools.create(
     request=ToolRequestModel(
         tool_config=ToolRequestModelToolConfig_Client(
-            description="description",
             name="name",
+            description="description",
             expects_response=False,
         ),
     ),

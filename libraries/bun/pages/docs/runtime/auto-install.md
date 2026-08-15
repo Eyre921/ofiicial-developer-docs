@@ -8,7 +8,7 @@ Bun's automatic package installation feature for standalone script execution
 
 If Bun finds no `node_modules` directory in the working directory or higher, it abandons Node.js-style module resolution in favor of the **Bun module resolution algorithm**.
 
-Under Bun-style module resolution, Bun auto-installs every imported package on the fly into a [global module cache](/docs/pm/global-cache) during execution (the same cache used by [`bun install`](/docs/pm/cli/install)).
+Under Bun-style module resolution, Bun auto-installs every imported package on the fly into a [global module cache](/docs/pm/global-cache) during execution. [`bun install`](/docs/pm/cli/install) uses the same cache.
 
 ```ts index.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { foo } from "foo"; // install `latest` version
@@ -42,7 +42,7 @@ Once Bun determines a version or version range, it:
 
 ## Installation
 
-Bun installs and caches packages into `<cache>/<pkg>@<version>`, so multiple versions of the same package can be cached at once. It also creates a symlink under `<cache>/<pkg>/<version>` to speed up looking up all cached versions of a package.
+Bun installs and caches packages into `<cache>/<pkg>@<version>`, so Bun can cache multiple versions of the same package at once. It also creates a symlink under `<cache>/<pkg>/<version>` to speed up looking up all cached versions of a package.
 
 ***
 

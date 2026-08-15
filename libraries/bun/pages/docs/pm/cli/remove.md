@@ -8,8 +8,23 @@ Remove dependencies from your project
 
 ## Basic Usage
 
+<Note>**Alias** — `bun rm`, `bun uninstall`, `bun r`</Note>
+
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun remove ts-node
+```
+
+Bun removes the package from every dependency group in `package.json` that lists it and updates `bun.lock`. Once nothing else depends on the package, Bun deletes it from `node_modules`.
+
+## `--filter`
+
+<Note>**Alias** — `-F`</Note>
+
+In a monorepo, remove the package from the matching workspace(s) instead of the current directory's package, using the same patterns as [`bun add --filter`](/docs/pm/cli/add#--filter). Use `--filter '*'` to remove it from every workspace package. Workspaces that don't list the package are left untouched.
+
+```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun remove zod --filter api
+bun remove zod --filter '*'
 ```
 
 ***
@@ -44,6 +59,10 @@ bun remove <package>
 
 <ParamField type="boolean">
   Add to <code>trustedDependencies</code> in the project's <code>package.json</code> and install the package(s)
+</ParamField>
+
+<ParamField type="string">
+  Remove the package(s) from the matching workspaces instead of the current package. Alias: <code>-F</code>
 </ParamField>
 
 ### Lockfile Behavior

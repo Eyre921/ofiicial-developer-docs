@@ -10,11 +10,25 @@ Determine which integration option to use when you set up Stripe Capital.
 
 > Capital for platforms is available in [public preview](https://docs.stripe.com/release-phases.md).
 
-Use Stripe Capital to set up a Capital program, and provide access to financing offers to your eligible connected accounts. Use the quickstart below to launch your program with a no-code integration. After launch, you can customize your integration with embedded components or Stripe APIs.
+Use Stripe Capital to offer financing to eligible connected accounts. First, choose the integration that fits your platform. Then use the quickstart to launch with Stripe co-branded emails, or follow the relevant integration guide to customize your messaging.
+
+## Choose your integration
+
+Use this table to determine which integration best fits your platform’s markets, technical capabilities, and desired level of control.
+
+| Criteria | [No-code](https://docs.stripe.com/capital/no-code-integration.md) | [Embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) | [API](https://docs.stripe.com/capital/api-integration.md) |
+| --- | --- | --- | --- |
+| **Supported markets** | US, AU | US, AU, GB, FR, DE | US, AU, GB, FR, DE |
+| **Access requirements** | Available to platforms with Capital access in the US and AU | Available to all platforms with Capital access | Available to all platforms with Capital access |
+| **Implementation effort** | Minutes to hours | Hours to days | Days to weeks |
+| **Customization level** | Low: Use Stripe’s co-branded emails and hosted pages | Medium: Embed Capital components in your platform’s UI and optionally send custom emails | High: Control email content and notification timing. The application flow stays Stripe-hosted for compliance |
+| **Recommended for** | Platforms that want to launch with minimal development effort and are comfortable with Stripe co-branding | Platforms that want to embed Capital in their own UI so connected accounts don’t leave the platform to apply or manage financing | Platforms that need control over messaging and want to build Capital into their own product |
+
+For a detailed capability comparison, see [Compare integrations](https://docs.stripe.com/capital/getting-started.md#compare-integrations).
 
 ## Quickstart
 
-Use the Dashboard to launch a Capital program to offer financing to your connected accounts. Launching your program means you enable sending automatic financing offers to all eligible connected accounts. The quickstart guides you to choose options that allow you to launch your program as fast as possible (usually within minutes to a few days).
+Use the Dashboard to launch a Capital program to offer financing to your connected accounts. Launching your program means you enable sending automatic financing offers to all eligible connected accounts. The quickstart helps you choose options for you to launch your program as fast as possible, usually within minutes to a few days.
 
 1. In the [Capital](https://dashboard.stripe.com/connect/capital/discovery) page in the Stripe Dashboard, click **Get Started**.
 
@@ -25,17 +39,19 @@ Use the Dashboard to launch a Capital program to offer financing to your connect
 
 3. You can market your Capital program to your connected accounts in several ways. Select either:
 
-   - **Stripe co-branded marketing only** (Recommended): Opt into Stripe sending co-branded emails with financing offers to your connected accounts. You can always add custom marketing assets (such as announcement landing pages, ads, and social media posts) that comply with our [guidelines](https://docs.stripe.com/capital/marketing.md#promoting-capital) after you launch. This option is only available to platforms in the US and AU.
-   - **Stripe co-branded and custom marketing**: Stripe automatically sends co-branded [emails](https://docs.stripe.com/capital/how-capital-for-platforms-works.md#emails) to your connected accounts (excluding marketing emails outside of the US and AU), and you provide additional custom marketing (such as additional emails, landing page, social media posts, advertisements) of your Capital program. Any custom marketing you upload must pass compliance review, which can take up to 5–7 business days.
-     > To build a Capital program with the minimal amount of Stripe co-branding as possible, see [Set up an API integration](https://docs.stripe.com/capital/api-integration.md). This requires you to use APIs, and therefore isn’t a quickstart option. For compliance reasons, eligible connected accounts still must apply for your Capital program in a Stripe-hosted Capital page if you choose this option.
+   - **Stripe co-branded marketing only** (Recommended): Opt into Stripe sending co-branded emails with financing offers to your connected accounts. You can always add custom marketing assets, such as announcement landing pages, ads, and social media posts, that comply with our [guidelines](https://docs.stripe.com/capital/marketing.md#promoting-capital) after you launch. This option is only available to platforms in the US and AU.
 
-4. Confirm that onboarding to Capital can affect the data shown in any existing financial reports you might already provide to connected accounts in your platform’s UI. Review your options for providing paydown information in the [Reconcile and provide reports](https://docs.stripe.com/capital/getting-started.md#after-quickstart-launch).
+   - **Stripe co-branded and custom marketing**: Stripe automatically sends co-branded [emails](https://docs.stripe.com/capital/how-capital-for-platforms-works.md#emails) to your connected accounts, excluding marketing emails outside of the US and AU, and you provide additional custom marketing for your Capital program, such as additional emails, landing pages, social media posts, and advertisements. Any custom marketing you upload must pass compliance review, which can take up to 5–7 business days.
 
-5. Sign the partnership contract, and send automatic financing offers to eligible connected accounts.
+     > To build a Capital program with as little Stripe co-branding as possible, see [Set up an API integration](https://docs.stripe.com/capital/api-integration.md). This requires you to use APIs, and therefore isn’t a quickstart option. For compliance reasons, eligible connected accounts must still apply for your Capital program in a Stripe-hosted Capital page if you choose this option.
+
+4. Confirm that onboarding to Capital can affect the data shown in any existing financial reports you might already provide to connected accounts in your platform’s UI. Review your options for providing paydown information in [Reconcile and provide reports](https://docs.stripe.com/capital/getting-started.md#after-quickstart-launch).
+
+5. Sign the partnership contract and send automatic financing offers to eligible connected accounts.
 
 ## After quickstart launch
 
-As you wait for connected accounts to accept their Capital financing offers or at any point after you enable automatic offers, you can customize your Capital program.
+As you wait for connected accounts to accept their Capital financing offers, or at any point after you enable automatic offers, you can customize your Capital program.
 
 1. Reconcile and provide financial reports for connected accounts.
 
@@ -52,42 +68,38 @@ As you wait for connected accounts to accept their Capital financing offers or a
 
 3. (Optional) Customize marketing assets.
 
-   In addition to co-branded offer emails, you might want to send your own marketing emails, publish a blog post, or have an updated landing page so your connected accounts can learn more about your Capital Program.
+   In addition to co-branded offer emails, you might want to send your own marketing emails, publish a blog post, or create a landing page so your connected accounts can learn more about your Capital program.
 
-   For compliance reasons, Stripe reviews all custom marketing assets to make sure they’re in compliance with our [guidelines](https://docs.stripe.com/capital/marketing.md). This also includes any copy used alongside any of the embedded components, including: headers, footers, landing page title, and URLs. Review and approval might take up to 5-7 business days. To learn more, see:
+   Stripe reviews all custom marketing assets to confirm they comply with the [Capital marketing guidelines](https://docs.stripe.com/capital/marketing.md). This includes any copy used alongside embedded components, such as headers, footers, landing page titles, and URLs. Review and approval might take up to 5-7 business days. To learn more, see:
 
    - [Marketing for Capital](https://docs.stripe.com/capital/marketing.md)
    - [Servicing Stripe Capital](https://docs.stripe.com/capital/servicing.md)
 
 4. (Optional) Increase eligibility.
 
-   Stripe might be able to improve the eligibility of your connected accounts if you share additional payment data from current connected accounts that also process payments off Stripe. Providing non-Stripe payment data allows us to review the full scope of each connected account’s business for financing eligibility. To learn more, see [Import non-Stripe data into Capital underwriting](https://docs.stripe.com/capital/import-non-stripe-data.md).
-
-## Onboarding integration types
-
-|  |
-| [No-code](https://docs.stripe.com/capital/no-code-integration.md) | Launch a program without code using the Dashboard. You also have the option to use minimal code to customize your integration with embedded components or the API after launch. |
-| [Embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) | Build a Capital program with minimal coding. This option might require additional compliance reviews from Stripe, with approval taking up to 5-7 business days. This integration also allows you to customize your program by adding embedded components directly in your platform’s UI. |
-| [API](https://docs.stripe.com/capital/api-integration.md) | Build a Capital program with the most control over your Capital program. However, if you send custom emails, these emails still redirect connected accounts to complete their financing application in a Stripe-hosted UI for compliance reasons. This option requires additional compliance reviews from Stripe, with approval taking up to 5-7 business days. |
+   Stripe might be able to improve the eligibility of your connected accounts if you share additional payment data from connected accounts that also process payments outside of Stripe. Providing non-Stripe payment data allows us to review the full scope of each connected account’s business for financing eligibility. To learn more, see [Import non-Stripe data into Capital underwriting](https://docs.stripe.com/capital/import-non-stripe-data.md).
 
 ## Compare integrations
 
-The following table describes the differences of the onboarding integration types for Capital for platforms. We recommend you launch your program with the [Quickstart](https://docs.stripe.com/capital/getting-started.md#quickstart), and then customize it with embedded components or the API.
+Use this comparison to learn how each integration handles communications, information for connected accounts, and reporting.
 
-| Program | No-code | Embedded components (Recommended) | API |
+| Capability | No-code | Embedded components | API |
 | --- | --- | --- | --- |
-| **Country availability** | Available in the US | Available in the US, AU, GB, FR, DE | Available in the US, AU, GB, FR, DE |
-| **Estimated integration time** | Minutes (with no additional marketing) | Hours to days | Weeks |
+| **Marketing** | Use Stripe to send co-branded emails | Use existing marketing templates or publish your own marketing assets | Use existing marketing templates or publish your own marketing assets |
 | **Capital offer emails** | Stripe sends co-branded offer emails | (Optional) Stripe sends co-branded offer emails (US/AU only) or (Recommended) the platform sends offer emails (GB, FR, DE) | (Recommended) Platform sends offer emails |
-| **In-product notifications** | (Optional) Use embeddable components to notify connected accounts in your website (such as a [promo tile](https://docs.stripe.com/capital/promotional-tile.md)) | Use the [promo tile](https://docs.stripe.com/capital/promotional-tile.md) or [financing promotion](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md) embedded component to promote new financing offers | (Optional) Platform can build custom notifications or banners |
+| **In-product notifications** | (Optional) Use embedded components to notify connected accounts in your website, such as a [promo tile](https://docs.stripe.com/capital/promotional-tile.md) | Use the [promo tile](https://docs.stripe.com/capital/promotional-tile.md) or [financing promotion](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md) embedded component to promote new financing offers | (Optional) Platform can build custom notifications or banners |
 | **Capital application** | Stripe-hosted co-branded application flow | Use the Capital [financing promotion](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md) or [financing application](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-application.md) component to embed the application flow into your website | Stripe-hosted UI application flow or embedded components |
-| **Marketing** | Use Stripe to send co-branded emails. | Use existing marketing templates or publish your own marketing assets | Use existing marketing templates or publish your own marketing assets |
 | **Metrics and insights** | View metrics in the Stripe Dashboard | View metrics in the Stripe Dashboard | View some metrics in the Stripe Dashboard |
-| **Compliance** | Stripe conducts a compliance review of custom marketing assets and periodic program audits |
-| **Underwriting and pricing** | Stripe manages the entire underwriting process and sets pricing |
-| **Servicing** | Stripe manages servicing of customer financing |
 
-To update metrics about offer emails, [call the API](https://docs.stripe.com/capital/api-integration.md#mark-the-offer-as-delivered).
+If your platform sends Capital offer emails, [call the API](https://docs.stripe.com/capital/api-integration.md#mark-the-offer-as-delivered) to mark each offer as delivered and update offer email metrics.
+
+### Shared program responsibilities
+
+These responsibilities apply to every integration:
+
+- Stripe conducts a compliance review of custom marketing assets and periodic program audits.
+- Stripe manages the underwriting process and sets pricing.
+- Stripe manages servicing of customer financing.
 
 ## See also
 

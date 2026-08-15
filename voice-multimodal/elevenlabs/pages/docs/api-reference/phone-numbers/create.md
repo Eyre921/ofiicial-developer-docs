@@ -131,13 +131,13 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.phoneNumbers.create({
         provider: "exotel",
+        phoneNumber: "+919999999999",
+        label: "Exotel Outbound",
         accountSid: "your-account-sid",
         apiKey: "your-api-key",
-        apiSubdomain: "api.in.exotel.com",
         apiToken: "********",
+        apiSubdomain: "api.in.exotel.com",
         appId: "12345",
-        label: "Exotel Outbound",
-        phoneNumber: "+919999999999",
     });
 }
 main();
@@ -152,13 +152,13 @@ client = ElevenLabs()
 
 client.conversational_ai.phone_numbers.create(
     request=PhoneNumbersCreateRequestBody_Exotel(
+        phone_number="+919999999999",
+        label="Exotel Outbound",
         account_sid="your-account-sid",
         api_key="your-api-key",
-        api_subdomain="api.in.exotel.com",
         api_token="********",
+        api_subdomain="api.in.exotel.com",
         app_id="12345",
-        label="Exotel Outbound",
-        phone_number="+919999999999",
     ),
 )
 

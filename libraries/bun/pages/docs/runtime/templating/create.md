@@ -53,7 +53,7 @@ When you run `bun create <component>`, Bun:
 
 [TailwindCSS](https://tailwindcss.com/) is a utility-first CSS framework for styling web applications.
 
-When you run `bun create <component>`, Bun scans your JSX/TSX file for TailwindCSS class names (and any files it imports). If it detects TailwindCSS class names, it adds the following dependencies to your `package.json`:
+When you run `bun create <component>`, Bun scans your JSX/TSX file (and any files it imports) for TailwindCSS class names. If Bun detects TailwindCSS class names, it adds the following dependencies to your `package.json`:
 
 ```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
 {
@@ -71,7 +71,7 @@ Bun also configures `bunfig.toml` to use its TailwindCSS plugin with `Bun.serve(
 plugins = ["bun-plugin-tailwind"]
 ```
 
-And writes a `${component}.css` file with `@import "tailwindcss";` at the top:
+Bun also writes a `${component}.css` file with `@import "tailwindcss";` at the top:
 
 ```css MyComponent.css icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
 @import "tailwindcss";
@@ -219,7 +219,7 @@ After cloning a template, `bun create` removes the `"bun-create"` section from `
 | Name                                      | Description                                                                                                                             |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `GITHUB_API_DOMAIN`                       | The GitHub domain Bun downloads from. Set this if you use GitHub Enterprise or a proxy                                                  |
-| `GITHUB_TOKEN` (or `GITHUB_ACCESS_TOKEN`) | Lets `bun create` access private repositories and avoid rate limits. `GITHUB_TOKEN` is chosen over `GITHUB_ACCESS_TOKEN` if both exist. |
+| `GITHUB_TOKEN` (or `GITHUB_ACCESS_TOKEN`) | Lets `bun create` access private repositories and avoid rate limits. Bun picks `GITHUB_TOKEN` over `GITHUB_ACCESS_TOKEN` if both exist. |
 
 <Accordion title={<span>How <code>bun create</code> works</span>}>
   When you run `bun create ${template} ${destination}`, here’s what happens:
@@ -229,13 +229,13 @@ After cloning a template, `bun create` removes the `"bun-create"` section from `
   1. GET `registry.npmjs.org/@bun-examples/${template}/latest` and parse it
   2. GET `registry.npmjs.org/@bun-examples/${template}/-/${template}-${latestVersion}.tgz`
   3. Decompress & extract `${template}-${latestVersion}.tgz` into `${destination}`
-     * If files would be overwritten, warn and exit unless `--force` is passed
+     * If files would be overwritten, warn and exit unless you pass `--force`
 
   IF GitHub repo
 
   1. Download the tarball from GitHub’s API
   2. Decompress & extract into `${destination}`
-     * If files would be overwritten, warn and exit unless `--force` is passed
+     * If files would be overwritten, warn and exit unless you pass `--force`
 
   ELSE IF local template
 
@@ -249,12 +249,12 @@ After cloning a template, `bun create` removes the `"bun-create"` section from `
 
   5. Run any tasks defined in `"bun-create": { "preinstall" }`
 
-  6. Run `bun install` unless `--no-install` is passed OR no dependencies are in package.json
+  6. Run `bun install` unless you pass `--no-install` OR no dependencies are in package.json
 
   7. Run any tasks defined in `"bun-create": { "postinstall" }`
 
   8. Run `git init; git add -A .; git commit -am "Initial Commit";`
      * Rename `gitignore` to `.gitignore`. npm strips `.gitignore` files from published packages.
-     * If there are dependencies, this runs in a separate thread concurrently while node\_modules are being installed
-     * Using libgit2 if available was tested and performed 3x slower in microbenchmarks
+     * If there are dependencies, this step runs in a separate thread concurrently while Bun installs node\_modules
+     * We tested using libgit2 if available, and it performed 3x slower in microbenchmarks
 </Accordion>

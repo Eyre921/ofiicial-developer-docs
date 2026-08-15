@@ -8,7 +8,7 @@ Serve your fine-tuned model on a dedicated endpoint or download it for local inf
 
 Once a fine-tuning job completes, your model is available for inference in two ways: hosted on a dedicated endpoint at Together AI, or downloaded as a standalone checkpoint.
 
-## Prerequisites
+## Requirements
 
 * A completed fine-tuning job. See the [quickstart](/docs/fine-tuning/quickstart) for the full lifecycle.
 * The job's **Model Object ID** (`model_object_id`, an `ml_...` value) — the model-registry ID of the trained weights and the identifier you deploy. It's available once the job status is `completed`, from the `tg fine-tuning retrieve` output.

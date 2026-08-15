@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/binary/typedarray-to-readablestream
 path: docs/guides/binary/typedarray-to-readablestream
 ---
 
-The naive approach to creating a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) from a [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) is to use the [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) constructor and enqueue the entire array as a single chunk. For a large array, this may be undesirable because it doesn't stream the data in smaller chunks.
+The naive approach to creating a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) from a [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) is to use the [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) constructor and enqueue the entire array as a single chunk. For a large array, this approach may be undesirable because it doesn't stream the data in smaller chunks.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const arr = new Uint8Array(64);

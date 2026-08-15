@@ -45,7 +45,7 @@ Run these executables with `bunx`:
 bunx my-cli
 ```
 
-As with `npx`, `bunx` checks for a locally installed package first, then falls back to auto-installing it from `npm`. Installed packages are stored in Bun's [global cache](/docs/pm/global-cache) for future use.
+As with `npx`, `bunx` checks for a locally installed package first, then falls back to auto-installing it from `npm`. `bunx` stores installed packages in Bun's [global cache](/docs/pm/global-cache) for future use.
 
 ## Arguments and flags
 
@@ -65,7 +65,7 @@ By default, Bun respects shebangs. If an executable is marked with `#!/usr/bin/e
 bunx --bun my-cli
 ```
 
-The `--bun` flag must occur *before* the executable name. Flags that appear *after* the name are passed through to the executable.
+The `--bun` flag must occur *before* the executable name. `bunx` passes flags that appear *after* the name through to the executable.
 
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bunx --bun my-cli # good

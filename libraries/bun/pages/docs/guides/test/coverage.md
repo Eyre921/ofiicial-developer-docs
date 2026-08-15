@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/test/coverage
 path: docs/guides/test/coverage
 ---
 
-Bun's test runner has built-in *code coverage reporting*. Use it to see how much of your codebase is covered by tests, and where the gaps are.
+Bun's test runner has built-in *code coverage reporting*. Use it to see how much of your codebase your tests cover, and where the gaps are.
 
 ***
 
@@ -25,7 +25,7 @@ test.test.ts:
 -------------|---------|---------|-------------------
 File         | % Funcs | % Lines | Uncovered Line #s
 -------------|---------|---------|-------------------
-All files    |   66.67 |   77.78 |
+All files    |   50.00 |   66.67 |
  math.ts     |   50.00 |   66.67 |
  random.ts   |   50.00 |   66.67 |
 -------------|---------|---------|-------------------

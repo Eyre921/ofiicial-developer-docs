@@ -54,7 +54,7 @@ process.on("message", message => {
 
 ***
 
-By default, messages are serialized with the JSC `serialize` API, which supports everything [`structuredClone` supports](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), including strings, typed arrays, and objects. This does not support transferring ownership of objects.
+By default, Bun serializes messages with the JSC `serialize` API. This API supports everything [`structuredClone` supports](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), including strings, typed arrays, and objects. The API does not support transferring ownership of objects.
 
 ```ts child.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 // send a string

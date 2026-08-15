@@ -267,6 +267,8 @@ More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x p
 
 ## Preemptible deployments (eval / batch)
 
+For the fine-tuning eval workflow, see [Evaluating Fine Tuned Models](/fine-tuning/evaluating-fine-tuned-models).
+
 Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
 
 Because the capacity is borrowed, it can be **reclaimed (preempted) at any time** and is not guaranteed. In practice a preemptible deployment usually stays up long enough to run an eval end to end, but you must treat disappearance as a normal outcome, not an error.

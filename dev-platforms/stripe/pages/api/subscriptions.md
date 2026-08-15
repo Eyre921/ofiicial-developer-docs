@@ -68,5 +68,5 @@ Occurs whenever a subscription changes (e.g., switching from one plan to another
 
 Subscriptions allow you to charge a customer on a recurring basis.
 
-Related guide: [Creating subscriptions](https://docs.stripe.com/docs/billing/subscriptions/creating.md)
+Related guide: [Creating subscriptions](https://docs.stripe.com/billing/subscriptions/creating.md)
 

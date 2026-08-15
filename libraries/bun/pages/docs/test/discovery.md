@@ -62,7 +62,7 @@ To filter tests by name rather than file path, use the `-t`/`--test-name-pattern
 bun test --test-name-pattern addition
 ```
 
-The pattern is matched against the test name prefixed with the labels of all its parent `describe` blocks, separated by spaces. For example, a test defined as:
+`bun test` matches the pattern against the test name prefixed with the labels of all its parent `describe` blocks, separated by spaces. For example, a test defined as:
 
 ```ts title="math.test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 describe("Math", () => {
@@ -74,7 +74,7 @@ describe("Math", () => {
 });
 ```
 
-This test is matched against the string "Math operations should add correctly".
+For this test, `bun test` matches the pattern against the string "Math operations should add correctly".
 
 ### Changing the Root Directory
 

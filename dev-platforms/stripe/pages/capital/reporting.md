@@ -29,10 +29,10 @@ These are the following charts in the **Overview** tab:
 
 | Chart | Description |
 | --- | --- |
-| Origination volume | A monthly chart with the amount of financing at origination. |
-| Platform earnings | Monthly total revenue shared paid out to the platform based on the amount of funds disbursed at origination. |
-| 30-day conversion rate | A daily chart with 30-day conversion. |
-| Average accepted financing offer | The average principal amount for connected accounts within the given time period. |
+| Origination volume | A monthly chart showing the total sum value of disbursed financing. |
+| Platform earnings | Total monthly revenue share paid out to the platform, based on the monthly volume of originations. |
+| 30-day conversion rate | A daily chart with a 30 day rolling conversion. Conversion is calculated as the percentage of accepted offers over the total number of offers. |
+| Average accepted financing offer | The average principal amount accepted by connected accounts within the given time period. |
 
 ### Eligibility
 
@@ -41,26 +41,25 @@ Use the following charts to learn about eligibility:
 | Chart | Description |
 | --- | --- |
 | Estimated financing offer amount | This is the estimated financing offer amount for all your connected accounts. |
-| Estimated eligible connected accounts | This is the stimated total number of connected accounts eligible for Capital. |
+| Estimated eligible connected accounts | The total number of connected accounts who would have received an offer in the past 30 days. |
 | Review accounts | Download a list of all the connected account IDs that are currently eligible for a capital financing offer, as well as a list of all the email addresses on file for your connected accounts to verify the recipients of Capital financing offers. Review your email recipients regularly to make sure the recipient of monthly offer emails is a decision maker who can agree to Capital financing for each connected account. When there is no owner specified for a connected account, Stripe sends Capital offer emails to the connected account support alias, which might not be a recipient who can make decisions. |
 
 ## Financing offers tab
 
 In the **Financing offers** tab, you can view topline metrics for:
 
-- Pending offers
-- Active offers
-- In-progress financings
-- Fully paid financings.
-
-Pending offers refer to connected accounts that qualify for potential offers, but the offers haven’t yet been created. An offer might not be created if the connected account is deny-listed, unsubscribed from offers, or if they don’t have a valid email address.
+- Undelivered offers
+- Delivered offers
+- Accepted offers
+- Paid out financings
+- Fully paid financings
 
 | Column | Description |
 | --- | --- |
 | Connected account ID | The ID of the connected account. |
 | Account name | The name of the connected account. |
 | Financing type | The financing product offered to the connected account. Can be one of *flex loan*, *fixed term*, or *cash advance*. |
-| Product type | Indicates whether the offer is a standalone financing offer (standard), or if the offer is a refill. Refills are additional financing offers sent to customers who have made substantial repayment progress towards their in-progress loans, usually around 75%. If approved, refill offers pay down the remaining balance on the in-progress loan. |
+| Product type | Indicates whether the offer is a standalone financing offer (standard), or if the offer is a refill. [Refills](https://docs.stripe.com/capital/refills.md) are additional financing offers sent to customers with substantial repayment progress towards their in-progress loans, usually around 75%. |
 | Status | The status of the offer. See [Financing status](https://docs.stripe.com/capital/reporting.md#financing-status) for details. |
 | First time offer | Indicates whether this is the first eligible financing offer for a connected account, or if they’ve previously been eligible for and received an offer. Offer terms can vary with time, and can change financing type. |
 | Created | The date the offer was created. |
@@ -123,7 +122,7 @@ Platform earnings are calculated per financing and paid out on a monthly cadence
 
 Previously, platform earnings from Capital were categorized as Stripe fees. To improve reconciliation and distinguish fee types, we have updated the labeling for all platform earnings with a new type of `revenue_share`.
 
-Platform earnings before February 25, 2026 remain unchanged. They continue to use the old labels:
+Platform earnings before February 25, 2026 remain unchanged. They continue to use the previous labels:
 
 - `type = stripe_fee`
 - `reporting_category = fee`

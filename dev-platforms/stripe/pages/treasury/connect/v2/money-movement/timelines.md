@@ -27,7 +27,7 @@ The best indication that your transaction has been submitted to the network is t
 | United States | Standard | `bank_accounts.local` | Typically 2-3 business days |
 | United States | Wire | `bank_accounts.wire` | Typically 1 business day |
 | United States | Instant | `cards` | Immediate |
-| Outside of the United States ([available countries](https://docs.stripe.com/global-payouts/recipient-creation-options.md#requirements-for-supported-recipient-countries)) | Standard | Varies by country | Typically 1-7 days (varies by country) |
+| Outside of the United States ([available countries](https://docs.stripe.com/global-payouts/recipient-creation.md#requirements-for-supported-recipient-countries)) | Standard | Varies by country | Typically 1-7 days (varies by country) |
 
 ### Transaction timing terms
 

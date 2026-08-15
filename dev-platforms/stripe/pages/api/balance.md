@@ -21,5 +21,5 @@ This is an object representing your Stripe balance. You can retrieve it to see t
 
 The top-level `available` and `pending` comprise your “payments balance.”
 
-Related guide: [Balances and settlement time](https://docs.stripe.com/docs/payments/balances.md), [Understanding Connect account balances](https://docs.stripe.com/docs/connect/account-balances.md)
+Related guide: [Balances and settlement time](https://docs.stripe.com/payments/balances.md), [Understanding Connect account balances](https://docs.stripe.com/connect/account-balances.md)
 

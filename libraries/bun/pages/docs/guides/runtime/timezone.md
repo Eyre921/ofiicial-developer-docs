@@ -9,7 +9,7 @@ Bun supports programmatically setting a default time zone for the lifetime of th
 <Note>
   When running a file with `bun`, the time zone defaults to your system's configured local time zone.
 
-  When running tests with `bun test`, the time zone is set to `UTC` to make tests more deterministic.
+  When running tests with `bun test`, Bun sets the time zone to `UTC` to make tests more deterministic.
 </Note>
 
 ```ts process.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}

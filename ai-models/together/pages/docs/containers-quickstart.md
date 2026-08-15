@@ -8,7 +8,7 @@ Deploy your first container in 20 minutes.
 
 This guide walks you through deploying a sample inference worker to Together's managed GPU infrastructure.
 
-## Prerequisites
+## Requirements
 
 * **Together API Key** – Required for all operations. Get one from [together.ai](https://together.ai).
 * **Dedicated Containers access** – Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable Dedicated Containers for your organization.

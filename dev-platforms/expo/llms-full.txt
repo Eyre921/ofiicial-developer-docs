@@ -292,7 +292,6 @@ Install the CLI and start a project:
 - [Using Sentry](https://docs.expo.dev/guides/using-sentry.md)
 - [Using BugSnag](https://docs.expo.dev/guides/using-bugsnag.md)
 - [Using LogRocket](https://docs.expo.dev/guides/using-logrocket.md)
-- [Using Vexo](https://docs.expo.dev/guides/using-vexo.md)
 
 ### Authentication
 - [Using authentication SDKs and libraries](https://docs.expo.dev/guides/using-authentication.md)

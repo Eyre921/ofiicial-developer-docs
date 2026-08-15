@@ -78525,19 +78525,24 @@ Resources for getting started with Supabase.
 
 ### Framework quickstarts
 
-- **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.
-- **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Next.js app.
-- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Nuxt app.
-- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Learn how to create a Supabase project, add some sample data to your database, secure it with auth, and query the data from a Hono app.
-- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Learn how to create a Supabase project, add some sample data to your database using Prisma migration and seeds, and query the data from a RedwoodJS app.
-- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Flutter app.
-- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.
-- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Learn how to create a Supabase project, add some sample data to your database, and query the data from an Android Kotlin app.
-- **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a SvelteKit app.
-- **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a SolidJS app.
-- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Vue app.
-- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a TanStack Start app.
-- **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Refine app.
+- **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Build single-page apps from reusable components, and query Supabase Postgres from the browser.
+- **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Full-stack React with server rendering, wired to Supabase Postgres and cookie-based auth.
+- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Full-stack Vue with server rendering, reading Postgres through a Supabase composable.
+- **[Astro](https://supabase.com/docs/guides/getting-started/quickstarts/astrojs):** Content-driven sites that render on the server and pull Supabase Postgres data per request.
+- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Lightweight web APIs with Supabase Auth anonymous sign-in and RLS-protected reads.
+- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Full-stack React and GraphQL, with Prisma migrations against your Supabase Postgres database.
+- **[Expo React Native](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native):** Ship iOS and Android from one React Native codebase, backed by Supabase Postgres.
+- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Ship iOS and Android from one Dart codebase, backed by Supabase Postgres.
+- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Native iOS apps in Swift, reading Postgres through the Supabase Swift SDK.
+- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Native Android apps in Kotlin and Jetpack Compose, using the Supabase Kotlin SDK.
+- **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit):** Full-stack Svelte that loads Supabase Postgres data in server load functions.
+- **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs):** Fine-grained reactive UIs that load Supabase Postgres data with Solid resources.
+- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Build single-page apps with the Vue composition API, backed by Supabase Postgres.
+- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Type-safe full-stack React that queries Supabase Postgres in server functions.
+- **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine):** Scaffold CRUD dashboards and admin panels straight from your Supabase Postgres tables.
+- **[Python](https://supabase.com/docs/guides/getting-started/quickstarts/flask):** Serve Flask web apps that query Postgres with the Supabase Python client.
+- **[Laravel](https://supabase.com/docs/guides/getting-started/quickstarts/laravel):** Full-stack PHP with Eloquent ORM connected directly to your Supabase Postgres database.
+- **[Ruby on Rails](https://supabase.com/docs/guides/getting-started/quickstarts/ruby-on-rails):** Convention-driven Ruby apps with Active Record connected directly to your Supabase Postgres database.
 
 
 
@@ -79407,17 +79412,27 @@ npm create astro@latest my-app
 cd my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install Supabase client library and Node adapter
 
@@ -79490,7 +79505,7 @@ This queries all rows from the `instruments` table you created earlier and rende
 import { createServerClient } from "../lib/supabase";
 
 const supabase = createServerClient();
-const { data: instruments } = await supabase.from("instruments").select();
+const { data: instruments, error } = await supabase.from("instruments").select();
 ---
 
 <html>
@@ -79498,11 +79513,15 @@ const { data: instruments } = await supabase.from("instruments").select();
     <title>Instruments</title>
   </head>
   <body>
-    <ul>
-      {instruments?.map((instrument) => (
-        <li>{instrument.name}</li>
-      ))}
-    </ul>
+    {error ? (
+      <p>Error loading instruments: {error.message}</p>
+    ) : (
+      <ul>
+        {instruments?.map((instrument) => (
+          <li>{instrument.name}</li>
+        ))}
+      </ul>
+    )}
   </body>
 </html>
 ```
@@ -79515,9 +79534,18 @@ Run the development server, go to [http://localhost:4321/instruments](http://loc
 npm run dev
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -79586,17 +79614,27 @@ Create a minimal Expo app using the `create-expo-app` command with the blank Typ
 npx create-expo-app my-app --template blank-typescript
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -79644,8 +79682,8 @@ import { createClient } from '@supabase/supabase-js'
 
 import 'expo-sqlite/localStorage/install'
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
-const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
+const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
 
 export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
   auth: {
@@ -79669,16 +79707,36 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 import { supabase } from './lib/supabase'
 
+type Instrument = {
+  id: number
+  name: string
+}
+
 export default function App() {
-  const [instruments, setInstruments] = useState([])
+  const [instruments, setInstruments] = useState<Instrument[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     getInstruments()
   }, [])
 
   async function getInstruments() {
-    const { data } = await supabase.from('instruments').select()
-    setInstruments(data)
+    const { data, error } = await supabase.from('instruments').select()
+
+    if (error) {
+      setError(error.message)
+      return
+    }
+
+    setInstruments(data ?? [])
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error loading instruments: {error}</Text>
+      </View>
+    )
   }
 
   return (
@@ -79714,6 +79772,16 @@ Run the development server and scan the QR code with the Expo Go app on your pho
 ```bash
 npx expo start
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -79787,17 +79855,27 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install Flask and the Supabase client library
 
@@ -79830,7 +79908,7 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 7. Query data from the app
+## 7. Create the Supabase client
 
 Install the `python-dotenv` package to load environment variables:
 
@@ -79838,12 +79916,13 @@ Install the `python-dotenv` package to load environment variables:
 pip install python-dotenv
 ```
 
-Create an `app.py` file and add a route that fetches data from your `instruments` table using the Supabase client.
+Create an `app.py` file and initialize the Flask app and the Supabase client from your environment variables.
 
 ```python name=app.py
 import os
 from flask import Flask
 from supabase import create_client, Client
+from postgrest import APIError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -79854,10 +79933,20 @@ supabase: Client = create_client(
     os.environ.get("SUPABASE_URL"),
     os.environ.get("SUPABASE_PUBLISHABLE_KEY")
 )
+```
 
+## 8. Query data from the app
+
+Add a route to `app.py` that fetches data from your `instruments` table.
+
+```python name=app.py
 @app.route('/')
 def index():
-    response = supabase.table('instruments').select("*").execute()
+    try:
+        response = supabase.table('instruments').select("*").execute()
+    except APIError as error:
+        return f'<p>Error loading instruments: {error.message}</p>'
+
     instruments = response.data
 
     html = '<h1>Instruments</h1><ul>'
@@ -79871,13 +79960,25 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the Flask development server, and go to [http://localhost:5000](http://localhost:5000) in your browser, you should see the list of instruments.
 
 ```bash
 python app.py
 ```
+
+Note: On macOS, port 5000 is used by the AirPlay Receiver service. If the page doesn't load, turn AirPlay Receiver off in **System Settings > General > AirDrop & Handoff**, or run the app on another port with `app.run(debug=True, port=5001)`.
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -79949,17 +80050,27 @@ Create a Flutter app using the `flutter create` command.
 flutter create my_app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -80001,6 +80112,8 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
+Note: This guide substitutes your project URL and key directly into the code above, rather than reading them from a `.env` file. Mobile apps don't get environment variables injected at runtime the way a bundler-based web app does. You'd need a build-time mechanism specific to your toolchain, such as `--dart-define-from-file` for Flutter, an `.xcconfig` file for iOS, or a `Gradle` `BuildConfig` field for Android. That's a good next step once you're past this quickstart, so your keys aren't committed to source control.
+
 ## 7. Query data from the app
 
 Use a `FutureBuilder` to fetch the data when the home page loads and display the query result in a `ListView`.
@@ -80038,6 +80151,9 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error loading instruments: ${snapshot.error}'));
+          }
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -80073,7 +80189,15 @@ flutter run
 
 Many sign in methods require deep links to redirect the user back to your app after authentication. Read more about setting deep links up for all platforms (including web) in the [Flutter Mobile Guide](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter#setup-deep-links).
 
-## Going to production
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ### Android
 
@@ -80159,11 +80283,17 @@ Bootstrap the Hono example app from the Supabase Samples using the CLI.
 npx supabase@latest bootstrap hono
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -80171,7 +80301,11 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 5. Install the Supabase client library
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+
+## 5. Install dependencies
 
 The `package.json` file in the project includes the necessary dependencies, including `@supabase/supabase-js` and `@supabase/ssr` to help with server-side auth.
 
@@ -80179,15 +80313,15 @@ The `package.json` file in the project includes the necessary dependencies, incl
 npm install
 ```
 
-## 6. Set up the required environment variables
+## 6. Declare Supabase environment variables
 
-Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks).
-
-Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
+Copy the `.env.example` file to `.env`.
 
 ```bash
 cp .env.example .env
 ```
+
+Update the values with your Supabase project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks).
 
 Open Connect panel
 
@@ -80201,15 +80335,56 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 7. Start the app
+## 7. Set up anonymous sign-ins
 
-Start the app, go to [http://localhost:5173](http://localhost:5173).
+This app signs users in anonymously, so [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
 
-Learn how [server side auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=hono) works with Hono.
+Anonymous sign-ins use the `authenticated` role, but the database setup in step 2 grants read access to the `anon` role only. Without the privilege and a matching policy for `authenticated`, the instruments query returns no rows. Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) to grant the privilege and add the policy:
+
+```sql SQL_EDITOR
+grant select on public.instruments to authenticated;
+
+create policy "authenticated can read instruments"
+on public.instruments
+for select to authenticated
+using (true);
+```
+
+## 8. Query data from the app
+
+The bootstrapped app already includes the route that reads your `instruments` table, in `src/index.tsx`. The middleware in `src/middleware/auth.middleware.ts` creates a request-scoped Supabase client, so `getSupabase(c)` returns a client that already carries the signed-in user's auth token. Your RLS policies apply to the query.
+
+```tsx name=src/index.tsx
+app.get('/instruments', async (c) => {
+  const supabase = getSupabase(c)
+  const { data, error } = await supabase.from('instruments').select('*')
+
+  if (error) {
+    console.error(error)
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+```
+
+## 9. Start the app
+
+Start the app, go to [http://localhost:5173](http://localhost:5173), sign in anonymously, then open the instruments list.
 
 ```bash
 npm run dev
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -80277,17 +80452,27 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 
 Select the **Xcode > New Project > iOS > App** menu item.
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -80299,7 +80484,7 @@ Make sure to add `Supabase` product package as a dependency to your application 
 
 ## 6. Initialize the Supabase client
 
-Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&connectTab=mobiles):
+Create a new `Supabase.swift` file and initialize a Supabase client using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&connectTab=mobiles):
 
 Open Connect panel
 
@@ -80321,6 +80506,8 @@ To interact with data in database tables, you use the client libraries that wrap
 
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
+Note: This guide substitutes your project URL and key directly into the code above, rather than reading them from a `.env` file. Mobile apps don't get environment variables injected at runtime the way a bundler-based web app does. You'd need a build-time mechanism specific to your toolchain, such as `--dart-define-from-file` for Flutter, an `.xcconfig` file for iOS, or a `Gradle` `BuildConfig` field for Android. That's a good next step once you're past this quickstart, so your keys aren't committed to source control.
 
 ## 7. Create a data model for instruments
 
@@ -80347,13 +80534,17 @@ import SwiftUI
 struct ContentView: View {
 
   @State var instruments: [Instrument] = []
+  @State var errorMessage: String?
+  @State var isLoading = true
 
   var body: some View {
     List(instruments) { instrument in
       Text(instrument.name)
     }
     .overlay {
-      if instruments.isEmpty {
+      if let errorMessage {
+        Text("Error loading instruments: \(errorMessage)")
+      } else if isLoading {
         ProgressView()
       }
     }
@@ -80361,8 +80552,10 @@ struct ContentView: View {
       do {
         instruments = try await supabase.from("instruments").select().execute().value
       } catch {
-        dump(error)
+        errorMessage = error.localizedDescription
       }
+
+      isLoading = false
     }
   }
 }
@@ -80375,6 +80568,16 @@ Run the app on a simulator or a physical device by hitting `Cmd + R` on Xcode.
 ## 10. Setting up deep links (optional)
 
 If you want to implement authentication features like magic links or OAuth, you need to set up deep links to redirect users back to your app. For instructions on configuring custom URL schemes for your iOS app, see the [deep linking guide](https://supabase.com/docs/guides/auth/native-mobile-deep-linking?platform=swift).
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -80443,11 +80646,17 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 
 Select the **Android Studio > New > New Android Project** menu item.
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -80455,13 +80664,29 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+
 ## 5. Install dependencies
 
 Open `build.gradle.kts` (app) file and add the serialization plugin, Ktor client, and Supabase client.
 
-Replace the version placeholders `$kotlin_version` with the Kotlin version of the project, and `$supabase_version` and `$ktor_version` with the respective latest versions.
+Replace the version placeholders `$kotlin_version` with the Kotlin version of the project, and `$supabase_version` and `$ktor_version` with the respective latest versions. For example, Kotlin `2.2.21`, supabase-kt BOM `3.5.0`, and Ktor `3.0.3`.
 
-Note: You can find the latest supabase-kt version [on GitHub](https://github.com/supabase-community/supabase-kt/releases) and Ktor [in the Ktor documentation](https://ktor.io/docs/welcome.html).
+Note: If your project uses Kotlin 2.0 or newer with Jetpack Compose, declare the Compose compiler plugin in your root `build.gradle.kts`:
+
+```kotlin
+id("org.jetbrains.kotlin.plugin.compose") version "$kotlin_version" apply false
+```
+
+Then apply it in the app module, without the version and without `apply false`:
+
+```kotlin
+id("org.jetbrains.kotlin.plugin.compose")
+```
+
+Note: You can find the latest supabase-kt version [on GitHub](https://github.com/supabase-community/supabase-kt/releases) and Ktor [in the Ktor documentation](https://ktor.io/docs/welcome.html). Match your Kotlin version to the supabase-kt release requirements.
 
 ```kotlin
 plugins {
@@ -80498,11 +80723,12 @@ Replace the `supabaseUrl` and `supabaseKey` with your own, which you can get fro
 Open Connect panel
 
 ```kotlin
+import io.github.jan.supabase.postgrest.from
 import ...
 
 val supabase = createSupabaseClient(
-    supabaseUrl = "https://xyzcompany.supabase.co",
-    supabaseKey = "your_publishable_key"
+    supabaseUrl = "YOUR_SUPABASE_URL",
+    supabaseKey = "YOUR_SUPABASE_PUBLISHABLE_KEY"
   ) {
     install(Postgrest)
 }
@@ -80519,6 +80745,8 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
+Note: This guide substitutes your project URL and key directly into the code above, rather than reading them from a `.env` file. Mobile apps don't get environment variables injected at runtime the way a bundler-based web app does. You'd need a build-time mechanism specific to your toolchain, such as `--dart-define-from-file` for Flutter, an `.xcconfig` file for iOS, or a `Gradle` `BuildConfig` field for Android. That's a good next step once you're past this quickstart, so your keys aren't committed to source control.
+
 ## 8. Create a data model for instruments
 
 Create a serializable data class to represent the data from the database.
@@ -80526,6 +80754,8 @@ Create a serializable data class to represent the data from the database.
 Add the following below the `createSupabaseClient` function in the `MainActivity.kt` file.
 
 ```kotlin
+import kotlinx.serialization.Serializable
+
 @Serializable
 data class Instrument(
     val id: Int,
@@ -80541,19 +80771,19 @@ Replace the default `MainActivity` class with the following code.
 
 Note: This example application makes a network request from the UI code. In production, you should use a `ViewModel` to separate the UI and data fetching logic.
 
+Note: This snippet omits the app-specific theme wrapper that Android Studio generates (named after your project, e.g. `<YourAppName>Theme`), so it compiles regardless of what you named your project. Wrap the `Surface` in your generated theme composable from `ui/theme/Theme.kt` if you want your project's Material theme applied.
+
 ```kotlin
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SupabaseTutorialTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    InstrumentsList()
-                }
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                InstrumentsList()
             }
         }
     }
@@ -80562,11 +80792,23 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InstrumentsList() {
     var instruments by remember { mutableStateOf<List<Instrument>>(listOf()) }
+    var error by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            instruments = supabase.from("instruments")
-                              .select().decodeList<Instrument>()
+            try {
+                instruments = supabase.from("instruments")
+                                  .select().decodeList<Instrument>()
+            } catch (e: Exception) {
+                error = e.message
+            }
         }
+    }
+    if (error != null) {
+        Text(
+            "Error loading instruments: $error",
+            modifier = Modifier.padding(8.dp),
+        )
+        return
     }
     LazyColumn {
         items(
@@ -80585,6 +80827,16 @@ fun InstrumentsList() {
 ## 10. Start the app
 
 Run the app on an emulator or a physical device by clicking the `Run app` button in Android Studio.
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -80610,60 +80862,31 @@ Create a new Supabase project from [the Dashboard of any organization](https://s
 
 Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create-a-project) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#account-management) to create a new Supabase project.
 
-## 2. Set up your database
+Save your database password securely. You need it for the connection string.
 
-When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
+Note: This guide uses Laravel's own database tables (via Breeze and Eloquent), not the shared `instruments` sample table used by other quickstarts.
 
-Do these steps within your project's dashboard by copying and running the snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
-
-Note: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
-
-Note: You can use [the Management API](https://supabase.com/docs/reference/api/v1-run-a-query) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#database) to execute SQL queries.
-
-```sql SQL_EDITOR
--- Create the table
-create table instruments (
-  id bigint primary key generated always as identity,
-  name text not null
-);
-
--- Insert sample data into the table
-insert into instruments (name)
-values
-  ('violin'),
-  ('viola'),
-  ('cello');
-
--- Grant the privileges the role needs, which is read access
-grant select on public.instruments to anon;
-
--- Enable row level security for the table
-alter table instruments enable row level security;
-
--- Create a policy to allow the anon role to read from the instruments table
-create policy "public can read instruments"
-on public.instruments
-for select to anon
-using (true);
-```
-
-Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
-
-## 3. Create a Laravel project
+## 2. Create a Laravel project
 
 Make sure your PHP and Composer versions are up to date, then use `composer create-project` to scaffold a new Laravel project.
 
-See the [Laravel docs](https://laravel.com/docs/10.x/installation#creating-a-laravel-project) for more details.
+See the [Laravel docs](https://laravel.com/docs/12.x/installation#creating-a-laravel-project) for more details.
 
 ```bash
 composer create-project laravel/laravel example-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 3. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -80671,37 +80894,49 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 5. Install the authentication template
+### Supabase MCP server
 
-Install [Laravel Breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze), a basic implementation of all of Laravel's [authentication features](https://laravel.com/docs/10.x/authentication).
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+
+## 4. Install the authentication template
+
+Install [Laravel Breeze](https://github.com/laravel/breeze), a basic implementation of all of Laravel's [authentication features](https://laravel.com/docs/12.x/authentication). It ships the migrations that the next step runs against your Supabase database.
 
 ```bash
 composer require laravel/breeze --dev
-php artisan breeze:install
+php artisan breeze:install blade
 ```
 
-## 6. Set up the Postgres connection details
+Pass a stack name such as `blade`, `react`, or `vue` when prompted. The example above uses Blade templates.
 
-Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
+## 5. Set up the Postgres connection details
 
-Look for the Session Pooler connection string and copy the string. You will need to replace the Password with your saved database password. You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
+1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, you can use the direct connection string instead of Supavisor in Session mode.
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+
+2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
+
+3. Set `sslmode=require` either on the connection string itself or as an explicit config option if your framework sets it separately. Most drivers default to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
+
+The connection strings below show the format only. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally.
 
 ```bash name=.env
 DB_CONNECTION=pgsql
-DB_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres
+DB_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres
 ```
 
-## 7. Change the default schema
+Laravel sets `sslmode` as an explicit `config/database.php` option rather than a URL parameter. The next step covers this.
+
+## 6. Change the default schema
 
 By default Laravel uses the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
-You can change the schema of your Laravel application by modifying the `search_path` variable `app/config/database.php`.
+You can change the schema of your Laravel application by modifying the `search_path` variable in `config/database.php`.
 
 The schema you specify in `search_path` has to exist on Supabase. You can create a new schema from the [Table Editor](https://supabase.com/dashboard/project/_/editor).
 
-```php name=app/config/database.php
+```php name=config/database.php
 'pgsql' => [
     'driver' => 'pgsql',
     'url' => env('DB_URL'),
@@ -80720,23 +80955,33 @@ The schema you specify in `search_path` has to exist on Supabase. You can create
 
 Laravel ships with `sslmode` set to `prefer`, which sends your data in plaintext if the encrypted attempt fails. Set it to `require` so the connection fails instead. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
 
-## 8. Run the database migrations
+## 7. Run the database migrations
 
 Laravel ships with database migration files that set up the required tables for Laravel Authentication and User Management.
 
-Note: Laravel does not use Supabase Auth but rather implements its own authentication system!
+Note: Laravel implements its own authentication system rather than using Supabase Auth. Your users are stored in Laravel's `users` table, not in Supabase Auth.
 
 ```bash
 php artisan migrate
 ```
 
-## 9. Start the app
+## 8. Start the app
 
 Run the development server. Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) in a browser to see your application. You can also navigate to [http://127.0.0.1:8000/register](http://127.0.0.1:8000/register) and [http://127.0.0.1:8000/login](http://127.0.0.1:8000/login) to register and log in users.
 
 ```bash
 php artisan serve
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -80805,20 +81050,30 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 Use the `create-next-app` command and the `with-supabase` template, to create a Next.js app pre-configured with [Cookie-based Auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs\&queryGroups=environment\&environment=server), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/).
 
 ```bash
-npx create-next-app -e with-supabase
+npx create-next-app@latest my-app -e with-supabase
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Declare Supabase environment variables
 
@@ -80841,7 +81096,37 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 6. Query Supabase data from Next.js
+## 6. Allow public access to the instruments page
+
+The `with-supabase` template redirects unauthenticated visitors to the login page for most routes. The `instruments` table is publicly readable, so update `lib/supabase/proxy.ts` to skip that redirect for `/instruments`.
+
+Find this `if` statement:
+
+```ts name=lib/supabase/proxy.ts
+  if (
+    request.nextUrl.pathname !== "/" &&
+    !user &&
+    !request.nextUrl.pathname.startsWith("/login") &&
+    !request.nextUrl.pathname.startsWith("/auth")
+  ) {
+```
+
+Add a condition for `/instruments`:
+
+```ts name=lib/supabase/proxy.ts
+  if (
+    request.nextUrl.pathname !== "/" &&
+    !user &&
+    !request.nextUrl.pathname.startsWith("/login") &&
+    !request.nextUrl.pathname.startsWith("/auth") &&
+    request.nextUrl.pathname !== "/instruments" &&
+    !request.nextUrl.pathname.startsWith("/instruments/")
+  ) {
+```
+
+## 7. Query Supabase data from Next.js
+
+The `with-supabase` template already installs `@supabase/supabase-js` and `@supabase/ssr` and creates the clients for you, in `lib/supabase/client.ts` for the browser and `lib/supabase/server.ts` for Server Components. The code below imports the server client from there.
 
 Create a new file at `app/instruments/page.tsx` and populate with the following.
 
@@ -80853,7 +81138,11 @@ import { Suspense } from "react";
 
 async function InstrumentsData() {
   const supabase = await createClient();
-  const { data: instruments } = await supabase.from("instruments").select();
+  const { data: instruments, error } = await supabase.from("instruments").select();
+
+  if (error) {
+    return <p>Error loading instruments: {error.message}</p>;
+  }
 
   return <pre>{JSON.stringify(instruments, null, 2)}</pre>;
 }
@@ -80867,7 +81156,7 @@ export default function Instruments() {
 }
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Run the development server, go to [http://localhost:3000/instruments](http://localhost:3000/instruments) in a browser and you should see the list of instruments.
 
@@ -80875,12 +81164,22 @@ Run the development server, go to [http://localhost:3000/instruments](http://loc
 npm run dev
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 
 
 ---
@@ -80946,17 +81245,33 @@ Create a Nuxt app using the `npx nuxi` command.
 npx nuxi@latest init my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+Note: The CLI prompts for a template, a package manager, and whether to initialize a git repository. Choose a minimal template, or pass flags to skip the prompts (required in non-interactive shells):
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+```bash
+npx nuxi@latest init my-app --template minimal --no-gitInit --packageManager npm
+```
+
+## 4. Set up AI tooling (optional)
+
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -81000,20 +81315,37 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 7. Query data from the app
+## 7. Create the Supabase client
 
-In `app.vue`, create a Supabase client using your config values and replace the existing content with the following code.
+Create a composable at `app/composables/useSupabase.ts` that builds the client from your config values. `useRuntimeConfig()` is only available inside a Nuxt context, such as a composable or a component's `setup`, so the client is created there rather than at the top level of a module. Nuxt auto-imports anything in `app/composables/`, so you don't need to import `useSupabase` where you use it.
 
-```vue name=app.vue
-<script setup>
+```ts name=app/composables/useSupabase.ts
 import { createClient } from '@supabase/supabase-js'
 
-const config = useRuntimeConfig()
-const supabase = createClient(config.public.supabaseUrl, config.public.supabasePublishableKey)
+export function useSupabase() {
+  const config = useRuntimeConfig()
+  return createClient(config.public.supabaseUrl, config.public.supabasePublishableKey)
+}
+```
+
+## 8. Query data from the app
+
+In `app/app.vue`, replace the existing content with the following code.
+
+```vue name=app/app.vue
+<script setup>
+const supabase = useSupabase()
 const instruments = ref([])
+const error = ref(null)
 
 async function getInstruments() {
-  const { data } = await supabase.from('instruments').select()
+  const { data, error: fetchError } = await supabase.from('instruments').select()
+
+  if (fetchError) {
+    error.value = fetchError
+    return
+  }
+
   instruments.value = data
 }
 
@@ -81023,13 +81355,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul>
+  <p v-if="error">Error loading instruments: {{ error.message }}</p>
+  <ul v-else>
     <li v-for="instrument in instruments" :key="instrument.id">{{ instrument.name }}</li>
   </ul>
 </template>
 ```
 
-## 8. Start the app
+Note: This example fetches data in `onMounted`, so the instrument list appears after the page loads in the browser.
+
+## 9. Start the app
 
 Start the app, navigate to [http://localhost:3000](http://localhost:3000) in the browser, and you should see the list of instruments.
 
@@ -81039,12 +81374,22 @@ npm run dev
 
 Note: The community-maintained [@nuxtjs/supabase](https://supabase.nuxtjs.org/) module provides an alternate DX for working with Supabase in Nuxt.
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 
 
 ---
@@ -81110,17 +81455,27 @@ Create a React app using a [Vite](https://vitejs.dev/guide/) template.
 npm create vite@latest my-app -- --template react
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -81153,18 +81508,27 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 7. Query data from the app
+## 7. Create the Supabase client
 
-Replace the contents of `App.jsx` with a `getInstruments` function that fetches the data and displays the query result on the page using a Supabase client.
+Create a `src/lib` directory in your React app, create a file called `supabaseClient.js`, and add the following code to initialize the Supabase client:
+
+```js name=src/lib/supabaseClient.js
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+
+export const supabase = createClient(supabaseUrl, supabasePublishableKey)
+```
+
+## 8. Query data from the app
+
+Replace the contents of `App.jsx` with a `getInstruments` function that fetches the data and displays the query result on the page.
 
 ```js name=src/App.jsx
-import { createClient } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-)
+import { supabase } from './lib/supabaseClient'
 
 function App() {
   const [instruments, setInstruments] = useState([])
@@ -81187,7 +81551,7 @@ function App() {
   return (
     <ul>
       {instruments.map((instrument) => (
-        <li key={instrument.name}>{instrument.name}</li>
+        <li key={instrument.id}>{instrument.name}</li>
       ))}
     </ul>
   )
@@ -81196,7 +81560,7 @@ function App() {
 export default App
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the development server, go to [http://localhost:5173](http://localhost:5173) in a browser, and you should see the list of instruments.
 
@@ -81204,12 +81568,22 @@ Run the development server, go to [http://localhost:5173](http://localhost:5173)
 npm run dev
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 
 
 ---
@@ -81230,6 +81604,8 @@ Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create
 
 Save your database password securely. You need it for the connection string.
 
+Note: This quickstart uses Prisma migrations against your Postgres database. Use a **dedicated Supabase project** (or an empty database) so Prisma does not try to reconcile tables created by other apps or quickstarts.
+
 ## 2. Gather database connection strings
 
 Open the project [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct). This quickstart connects using the [**Transaction pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=transaction) and [**Session pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session) mode. Transaction mode is used for application queries and Session mode is used for running migrations with Prisma.
@@ -81238,7 +81614,7 @@ To do this, set the connection mode to `Transaction` in the [Database Settings p
 
 To get the Session mode connection pooler string, change the port of the connection string from the dashboard to 5432.
 
-You will need the Transaction mode connection string and the Session mode connection string to set up environment variables in Step 6.
+You will need the Transaction mode connection string and the Session mode connection string to set up environment variables in Step 5.
 
 Note: You can copy and paste these connection strings from the Supabase Dashboard when needed in later steps.
 
@@ -81248,17 +81624,25 @@ Create a RedwoodJS app with TypeScript.
 
 Note: The [`yarn` package manager](https://yarnpkg.com) is required to create a RedwoodJS app. You will use it to run RedwoodJS commands later.
 
-While TypeScript is recommended, If you want a JavaScript app, omit the `--ts` flag.
+While TypeScript is recommended, if you want a JavaScript app, omit the `--ts` flag.
+
+RedwoodJS 8.x officially supports Node `20.x`. On Node 22 or later, `create-redwood-app` may prompt you to override the version check. Select **Override error and continue install**, or switch to Node 20 with a version manager such as [`nvm`](https://github.com/nvm-sh/nvm).
 
 ```bash
-yarn create redwood-app my-app --ts
+yarn create redwood-app my-app --ts --git-init false
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -81266,11 +81650,11 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 5. Install MCP server (optional)
+### Supabase MCP server
 
-The Supabase MCP server connects AI assistants to Supabase, allowing you to interact with your projects on your behalf. Find out more on how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
-## 6. Configure environment variables
+## 5. Configure environment variables
 
 In your `.env` file, add the following environment variables for your database connection:
 
@@ -81279,18 +81663,18 @@ In your `.env` file, add the following environment variables for your database c
 - The `DIRECT_URL` should use the Session mode connection string you copied in Step 2.
 
 ```bash name=.env
-# Transaction mode connection string — used by Prisma Client for app queries
-DATABASE_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+# Transaction mode connection string for Prisma Client app queries
+DATABASE_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres?pgbouncer=true&connection_limit=1"
 
-# Session mode connection string — used by Prisma Migrate
-DIRECT_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres"
+# Session mode connection string for Prisma Migrate
+DIRECT_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres"
 ```
 
-## 7. Update your Prisma schema
+## 6. Update your Prisma schema
 
 By default, RedwoodJS ships with a SQLite database, but we want to use Postgres.
 
-Update your Prisma schema file `api/db/schema.prisma` to use your Supabase Postgres database connection environment variables you set up in Step 6.
+Update your Prisma schema file `api/db/schema.prisma` to use your Supabase Postgres database connection environment variables you set up in Step 5.
 
 ```prisma name=api/db/schema.prisma
 datasource db {
@@ -81300,9 +81684,11 @@ datasource db {
 }
 ```
 
-## 8. Create the instrument model and apply a schema migration
+## 7. Create the instrument model and apply a schema migration
 
 Create the Instrument model in `api/db/schema.prisma` and then run `yarn rw prisma migrate dev` from your terminal to apply the migration.
+
+Note: `yarn rw prisma migrate dev` requires an interactive terminal. It prompts for a migration name and cannot run in fully non-interactive CI shells.
 
 ```prisma name=api/db/schema.prisma
 model Instrument {
@@ -81311,7 +81697,7 @@ model Instrument {
 }
 ```
 
-## 9. Update seed script
+## 8. Update seed script
 
 Seed the database with a few instruments.
 
@@ -81340,7 +81726,7 @@ export default async () => {
 }
 ```
 
-## 10. Seed your database
+## 9. Seed your database
 
 Run the seed database command to populate the `Instrument` table with the instruments you created.
 
@@ -81350,7 +81736,7 @@ Note: The reset database command `yarn rw prisma db reset` recreates the tables 
 yarn rw prisma db seed
 ```
 
-## 11. Scaffold the instrument UI
+## 10. Scaffold the instrument UI
 
 Use RedwoodJS generators to scaffold a CRUD UI for the `Instrument` model.
 
@@ -81358,15 +81744,25 @@ Use RedwoodJS generators to scaffold a CRUD UI for the `Instrument` model.
 yarn rw g scaffold instrument
 ```
 
-## 12. Start the app
+## 11. Start the app
 
 Start the app via `yarn rw dev`. A browser will open to the RedwoodJS Splash page.
 
-## 13. View instruments UI
+## 12. View instruments UI
 
 Click on `/instruments` to visit [http://localhost:8910/instruments](http://localhost:8910/instruments) where should see the list of instruments.
 
 You may now edit, delete, and add new instruments using the scaffolded UI.
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -81440,17 +81836,35 @@ The `refine-supabase` preset adds `@refinedev/supabase` supplementary package th
 npm create refine-app@latest -- --preset refine-supabase my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+Note: The CLI may prompt for an email address. The `refine-supabase` preset also ships with demo Supabase credentials. Replace them in step 5 with your own project.
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+To skip the email prompt in a non-interactive shell, pipe a blank line:
+
+```bash
+printf '\n' | npm create refine-app@latest -- --preset refine-supabase my-app
+```
+
+## 4. Set up AI tooling (optional)
+
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Update `supabaseClient` with environment variables
 
@@ -81463,23 +81877,14 @@ VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-Update `src/utility/supabaseClient.ts` to read the URL and publishable key from these environment variables. The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
+The `refine-supabase` preset hardcodes Refine's own demo Supabase project in `src/providers/constants.ts`, and initializes the client from it in `src/providers/supabase-client.ts`. Replace the hardcoded values so the client reads your project credentials from the environment variables above instead:
 
-```ts name=src/utility/supabaseClient.ts
-import { createClient } from '@refinedev/supabase'
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-
-export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  db: {
-    schema: 'public',
-  },
-  auth: {
-    persistSession: true,
-  },
-})
+```ts name=src/providers/constants.ts
+export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+export const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 ```
+
+The `supabaseClient` is used by the auth and data providers to connect your Refine app to Supabase.
 
 ### Get API details
 
@@ -81497,7 +81902,11 @@ Use the following code to automatically add resources and generate code for the 
 
 This defines pages for `list`, `create`, `show` and `edit` actions inside the `src/pages/instruments/` directory with a `<HeadlessInferencer />` component.
 
-The `<HeadlessInferencer />` component depends on `@refinedev/react-table` and `@refinedev/react-hook-form` packages. To avoid errors, you should install them as dependencies with `npm install @refinedev/react-table @refinedev/react-hook-form`.
+The `<HeadlessInferencer />` component depends on `@refinedev/react-table`, `@refinedev/react-hook-form`, and `react-live` packages. To avoid errors, install them as dependencies:
+
+```bash
+npm install @refinedev/react-table @refinedev/react-hook-form react-live
+```
 
 Note: The `<HeadlessInferencer />` is a Refine Inferencer component that automatically generates necessary code for the `list`, `create`, `show` and `edit` pages.
 
@@ -81521,26 +81930,27 @@ import routerProvider, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from '@refinedev/react-router'
-import { dataProvider, liveProvider } from '@refinedev/supabase'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { liveProvider } from '@refinedev/supabase'
+import { BrowserRouter, Route, Routes } from 'react-router'
 
 import './App.css'
 
-import authProvider from './authProvider'
+import authProvider from './providers/auth'
+import { dataProvider } from './providers/data'
+import { supabaseClient } from './providers/supabase-client'
 import {
   InstrumentsCreate,
   InstrumentsEdit,
   InstrumentsList,
   InstrumentsShow,
 } from './pages/instruments'
-import { supabaseClient } from './utility'
 
 function App() {
   return (
     <BrowserRouter>
       <RefineKbarProvider>
         <Refine
-          dataProvider={dataProvider(supabaseClient)}
+          dataProvider={dataProvider}
           liveProvider={liveProvider(supabaseClient)}
           authProvider={authProvider}
           routerProvider={routerProvider}
@@ -81579,15 +81989,53 @@ function App() {
 export default App
 ```
 
-## 8. Start the app
+## 8. Allow writes to the instruments table
 
-Run the development server, go to [http://localhost:5173/instruments](http://localhost:5173/instruments) in a browser, and you should see the instruments pages along the `/instruments` routes. You can edit and add new instruments using the Inferencer-generated UI.
+The scaffolded pages create and edit instruments, but the database setup in step 2 grants read access only. Without write privileges and matching policies, the create and edit pages fail with `permission denied for table instruments`.
+
+Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) to grant the privileges and add the policies:
+
+```sql SQL_EDITOR
+grant insert, update, delete on public.instruments to anon;
+
+create policy "public can insert instruments"
+on public.instruments
+for insert to anon
+with check (true);
+
+create policy "public can update instruments"
+on public.instruments
+for update to anon
+using (true)
+with check (true);
+
+create policy "public can delete instruments"
+on public.instruments
+for delete to anon
+using (true);
+```
+
+Caution: These policies let anyone with your publishable key modify the `instruments` table. They exist so you can try the scaffolded UI against sample data. Scope writes to authenticated users before you put real data in this table.
+
+## 9. Start the app
+
+Run the development server, then open `/instruments` in your browser (Vite defaults to [http://localhost:5173](http://localhost:5173)). You should see the instruments pages along the `/instruments` routes. You can edit and add new instruments using the Inferencer-generated UI.
 
 ```bash
 npm run dev
 ```
 
 The Inferencer auto-generated code gives you a good starting point on which to keep building your `list`, `create`, `show` and `edit` pages. You can get these by clicking the `Show the auto-generated code` buttons in their respective pages.
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -81614,6 +82062,8 @@ Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create
 
 Save your database password securely. You need it for the connection string.
 
+Note: This guide uses Rails' own Active Record models and migrations, not the shared `instruments` sample table used by other quickstarts.
+
 ## 2. Create a Rails project
 
 With your Ruby and Rails versions up to date, run `rails new` on your terminal to scaffold a new project.
@@ -81627,11 +82077,17 @@ rails new blog -d=postgresql
 cd blog
 ```
 
-## 3. Install Supabase's Agent Skills (optional)
+## 3. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -81639,25 +82095,29 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 4. Install MCP server (optional)
+### Supabase MCP server
 
-The Supabase MCP server connects AI assistants to Supabase, allowing you to interact with your projects on your behalf. Find out more on how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
-## 5. Set up the Postgres connection details
+## 4. Set up the Postgres connection details
 
-Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
+1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-Look for the Session Pooler connection string and copy the string. You will need to replace the Password with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
-Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, you can use the direct connection string instead of Supavisor in Session mode.
+2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
-Set the connection string as an environment variable. Rails reads `DATABASE_URL` from the environment and connects with it, so you don't need to edit `config/database.yml`. The export applies to the current shell session, so run it in the same shell as the Rails commands in the following steps. `sslmode=require` stops the driver from falling back to sending your data in plaintext.
+3. Set `sslmode=require` either on the connection string itself or as an explicit config option if your framework sets it separately. Most drivers default to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
+
+The connection strings below show the format only. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally.
+
+Set the connection string as an environment variable. Rails reads `DATABASE_URL` from the environment and connects with it, so you don't need to edit `config/database.yml`. The export applies to the current shell session, so run it in the same shell as the Rails commands in the following steps.
 
 ```bash
-export DATABASE_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres?sslmode=require
+export DATABASE_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres?sslmode=require
 ```
 
-## 6. Create and run a database migration
+## 5. Create and run a database migration
 
 Rails includes Active Record as the ORM as well as database migration tooling which generates the SQL migration files for you.
 
@@ -81668,7 +82128,7 @@ bin/rails generate model Article title:string body:text
 bin/rails db:migrate
 ```
 
-## 7. Use the model to interact with the database
+## 6. Use the model to interact with the database
 
 You can use the included Rails console to interact with the database. For example, you can create new entries or list all entries in a Model's table.
 
@@ -81683,13 +82143,23 @@ article.save # Saves the entry to the database
 Article.all
 ```
 
-## 8. Start the app
+## 7. Start the app
 
 Run the development server. Go to [http://127.0.0.1:3000](http://127.0.0.1:3000) in a browser to see your application running.
 
 ```bash
 bin/rails server
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -81758,20 +82228,36 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 Create a SolidJS app using the `degit` command.
 
 ```bash
-npx degit solidjs/templates/js my-app
+npx degit solidjs/templates/vanilla/basic my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+The template ships with a `pnpm-lock.yaml`. Remove it so `npm install` in the next steps doesn't create a second, conflicting lockfile:
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+```bash
+rm my-app/pnpm-lock.yaml
+```
+
+## 4. Set up AI tooling (optional)
+
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -81804,23 +82290,35 @@ To interact with data in database tables, you use the client libraries that wrap
 
 Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
-## 7. Query data from the app
+## 7. Create the Supabase client
 
-In `App.jsx`, create a Supabase client to fetch the instruments data.
+Create a `src/lib` directory in your SolidJS app, create a file called `supabaseClient.ts`, and add the following code to initialize the Supabase client:
 
-Add a `getInstruments` function to fetch the data and display the query result to the page.
-
-```jsx name=src/App.jsx
+```ts name=src/lib/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
-import { createResource, For } from 'solid-js'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+
+export const supabase = createClient(supabaseUrl, supabasePublishableKey)
+```
+
+## 8. Query data from the app
+
+In `src/App.tsx`, add a `getInstruments` function to fetch the data and display the query result to the page.
+
+```tsx name=src/App.tsx
+import { createResource, For, Show } from 'solid-js'
+
+import { supabase } from './lib/supabaseClient'
 
 async function getInstruments() {
-  const { data } = await supabase.from('instruments').select()
+  const { data, error } = await supabase.from('instruments').select()
+
+  if (error) {
+    throw error
+  }
+
   return data
 }
 
@@ -81828,22 +82326,37 @@ function App() {
   const [instruments] = createResource(getInstruments)
 
   return (
-    <ul>
-      <For each={instruments()}>{(instrument) => <li>{instrument.name}</li>}</For>
-    </ul>
+    <Show
+      when={!instruments.error}
+      fallback={<p>Error loading instruments: {instruments.error?.message}</p>}
+    >
+      <ul>
+        <For each={instruments()}>{(instrument) => <li>{instrument.name}</li>}</For>
+      </ul>
+    </Show>
   )
 }
 
 export default App
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Start the app and go to [http://localhost:3000](http://localhost:3000) in a browser and you should see the list of instruments.
 
 ```bash
 npm run dev
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -81877,6 +82390,8 @@ Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create
 
 Save your database password securely. You need it for the connection string.
 
+Note: This guide uses Spring Boot's own JPA entities and generated schema, not the shared `instruments` sample table used by other quickstarts.
+
 ## 2. Create a Spring Boot project
 
 Use [Spring Initializr](https://start.spring.io) to scaffold a new project with the Web, Spring Data JPA, and Postgres Driver dependencies. Run the following from the directory where you keep your projects.
@@ -81893,11 +82408,17 @@ curl https://start.spring.io/starter.zip \
 unzip instruments.zip -d instruments && cd instruments
 ```
 
-## 3. Install Supabase's Agent Skills (optional)
+## 3. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
@@ -81905,23 +82426,29 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
+
 ## 4. Set up the Postgres connection details
 
-Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
+1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-Caution: The Transaction pooler (port `6543`) doesn't work as your app's main data source, because Spring Data JPA uses Hibernate, which relies on server-side prepared statements. Use the Session pooler, or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
-Under the **Session pooler** (port `5432`), select the **JDBC** tab and copy the connection string. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space.
+2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
-Note: You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
+3. Set `sslmode=require` either on the connection string itself or as an explicit config option if your framework sets it separately. Most drivers default to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
+
+The connection strings below show the format only. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally.
+
+Select the **JDBC** tab to copy the connection string in the right format for Spring Boot.
 
 The connection string contains your database password, and `application.properties` is committed with your project. Set the string as an environment variable instead, and set it the same way on whatever platform you deploy to.
 
 ```bash
-export SUPABASE_DB_URL='jdbc:postgresql://aws-[REGION].pooler.supabase.com:5432/postgres?user=postgres.[PROJECT-REF]&password=[YOUR-PASSWORD]&sslmode=require'
+export SUPABASE_DB_URL='jdbc:postgresql://[POOLER-HOST]:5432/postgres?user=postgres.[PROJECT-REF]&password=[YOUR-PASSWORD]&sslmode=require'
 ```
-
-The string you copied doesn't set `sslmode`, so add it. The driver defaults to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
 
 Then reference the variable, along with the driver, in `src/main/resources/application.properties`.
 
@@ -81937,7 +82464,13 @@ If the app fails to start with `Unable to determine Dialect without JDBC metadat
 
 By default Hibernate creates tables in the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
-Create the schema from the [Table Editor](https://supabase.com/dashboard/project/_/editor) as your app will need it before start. Then point **Hibernate** at it in `application.properties`.
+Create the `app` schema before you start the app. Hibernate creates tables in that schema on startup, but it does not create the schema itself. Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql SQL_EDITOR
+create schema if not exists app;
+```
+
+Then point Hibernate at the schema in `application.properties`.
 
 ```text name=src/main/resources/application.properties
 spring.jpa.properties.hibernate.default_schema=app
@@ -82064,12 +82597,22 @@ Run the Spring Boot app, and go to [http://localhost:8080/instruments](http://lo
 ./mvnw spring-boot:run
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
-- Replace `ddl-auto` with [database migrations](https://supabase.com/docs/guides/deployment/database-migrations) before going to production
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Replace `ddl-auto` with [database migrations](https://supabase.com/docs/guides/deployment/database-migrations) before going to production
 
 
 ---
@@ -82129,23 +82672,33 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 
 ## 3. Create a SvelteKit app
 
-Create a SvelteKit app using the `npm create` command.
+Create a SvelteKit app using the `sv` CLI.
 
 ```bash
 npx sv create my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -82206,9 +82759,16 @@ Create `+page.server.js` file in the `src/routes` directory with the following c
 import { supabase } from '$lib/supabaseClient'
 
 export async function load() {
-  const { data } = await supabase.from('instruments').select()
+  const { data, error } = await supabase.from('instruments').select()
+
+  if (error) {
+    console.error('Error loading instruments:', error.message)
+    return { instruments: [], error: error.message }
+  }
+
   return {
     instruments: data ?? [],
+    error: null,
   }
 }
 ```
@@ -82224,15 +82784,16 @@ type Instrument = {
 }
 
 export const load: PageServerLoad = async () => {
-  const { data, error } = await supabase.from('instruments').select<'instruments', Instrument>()
+  const { data, error } = await supabase.from('instruments').select<'*', Instrument>()
 
   if (error) {
     console.error('Error loading instruments:', error.message)
-    return { instruments: [] }
+    return { instruments: [], error: error.message }
   }
 
   return {
     instruments: data ?? [],
+    error: null,
   }
 }
 ```
@@ -82244,11 +82805,15 @@ Replace the existing content in your `+page.svelte` file in the `src/routes` dir
   let { data } = $props();
 </script>
 
-<ul>
-  {#each data.instruments as instrument}
-    <li>{instrument.name}</li>
-  {/each}
-</ul>
+{#if data.error}
+  <p>Error loading instruments: {data.error}</p>
+{:else}
+  <ul>
+    {#each data.instruments as instrument}
+      <li>{instrument.name}</li>
+    {/each}
+  </ul>
+{/if}
 ```
 
 ## 9. Start the app
@@ -82258,6 +82823,16 @@ Start the app and go to [http://localhost:5173](http://localhost:5173) in a brow
 ```bash
 npm run dev
 ```
+
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
 
 ## Next steps
 
@@ -82329,17 +82904,27 @@ Create a TanStack Start app using the official CLI.
 npx @tanstack/cli@latest create my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client libraries
 
@@ -82374,8 +82959,10 @@ Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/
 
 TanStack Start needs two Supabase clients: a browser client for components that run in the browser, and a server client for loaders and server functions. Create a `src/lib/supabase` folder with a file for each client.
 
+Both clients read the same two variables, through the API available in each environment. The browser client uses `import.meta.env`, which Vite replaces at build time. The server client uses `process.env`, which the server runtime populates from your `.env.local` file.
+
 ```ts name=src/lib/supabase/client.ts
-/// <reference types="vite/types/importMeta.d.ts" />
+/// <reference types="vite/client" />
 import { createBrowserClient } from '@supabase/ssr'
 
 export function createClient() {
@@ -82416,29 +83003,49 @@ export function createClient() {
 
 ## 8. Query Supabase data from TanStack Start
 
-Replace the contents of `src/routes/index.tsx` with the following to add a loader that queries the `instruments` table through the server client. The loader runs on the server, so the data is part of the initial server-rendered response.
+Create a server function that queries the `instruments` table through the server client. TanStack Start's import protection blocks direct server imports in route files, so wrap the Supabase call in `createServerFn`.
+
+```ts name=src/lib/supabase/fetch-instruments-server-fn.ts
+import { createServerFn } from '@tanstack/react-start'
+
+import { createClient } from '@/lib/supabase/server'
+
+export const fetchInstruments = createServerFn({ method: 'GET' }).handler(async () => {
+  const supabase = createClient()
+  const { data: instruments, error } = await supabase.from('instruments').select()
+
+  if (error) {
+    console.error(error)
+    return { instruments: [], error: error.message }
+  }
+
+  return { instruments, error: null }
+})
+```
+
+Replace the contents of `src/routes/index.tsx` with the following to call the server function from a route loader. The loader runs on the server, so the data is part of the initial server-rendered response.
 
 ```tsx name=src/routes/index.tsx
 import { createFileRoute } from '@tanstack/react-router'
 
-import { createClient } from '@/lib/supabase/server'
+import { fetchInstruments } from '@/lib/supabase/fetch-instruments-server-fn'
 
 export const Route = createFileRoute('/')({
-  loader: async () => {
-    const supabase = createClient()
-    const { data: instruments } = await supabase.from('instruments').select()
-    return { instruments }
-  },
+  loader: async () => fetchInstruments(),
   component: Home,
 })
 
 function Home() {
-  const { instruments } = Route.useLoaderData()
+  const { instruments, error } = Route.useLoaderData()
+
+  if (error) {
+    return <p>Error loading instruments: {error}</p>
+  }
 
   return (
     <ul>
       {instruments?.map((instrument) => (
-        <li key={instrument.name}>{instrument.name}</li>
+        <li key={instrument.id}>{instrument.name}</li>
       ))}
     </ul>
   )
@@ -82453,13 +83060,22 @@ Run the development server, go to [http://localhost:3000](http://localhost:3000)
 npm run dev
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Learn how to [protect routes and check sessions](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=tanstack) with the server client
-- Set up a complete [login and sign-up flow](https://supabase.com/library/docs/tanstack/password-based-auth) from Supabase Library
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
+- Learn how to [protect routes and check sessions](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=tanstack) with the server client, or drop in a complete [login and sign-up flow](https://supabase.com/library/docs/tanstack/password-based-auth) from Supabase Library
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 
 
 ---
@@ -82525,17 +83141,27 @@ Create a Vue app using the `npm init` command.
 npm init vue@latest my-app
 ```
 
-## 4. Install Supabase's Agent Skills (optional)
+## 4. Set up AI tooling (optional)
 
-Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+Supabase provides two ways to give AI tools context about your project: Agent Skills, which give your AI coding agent procedural knowledge, and the MCP server, which connects AI assistants to your Supabase project directly.
+
+### Agent Skills
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
 Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+#### Installing Agent Skills
 
 To install, run the following command in the root of your project:
 
 ```bash
 npx skills add supabase/agent-skills
 ```
+
+### Supabase MCP server
+
+The Supabase MCP server connects AI assistants to Supabase, so they can inspect your schema and act on your projects on your behalf. Find out how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## 5. Install the Supabase client library
 
@@ -82570,9 +83196,11 @@ Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/
 
 ## 7. Create the Supabase client
 
-Create a `/src/lib` directory in your Vue app, create a file called `supabaseClient.js` and add the following code to initialize the Supabase client:
+Create a `/src/lib` directory in your Vue app, create a file called `supabaseClient.ts` and add the following code to initialize the Supabase client:
 
-```js name=src/lib/supabaseClient.js
+Note: `npm init vue@latest` scaffolds a TypeScript project by default. If you chose a JavaScript-only project, use a `.js` extension instead and drop the type import.
+
+```ts name=src/lib/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
@@ -82586,15 +83214,27 @@ export const supabase = createClient(supabaseUrl, supabasePublishableKey)
 Replace the existing content in your `App.vue` file with the following code.
 
 ```vue name=src/App.vue
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
 import { supabase } from './lib/supabaseClient'
 
-const instruments = ref([])
+type Instrument = {
+  id: number
+  name: string
+}
+
+const instruments = ref<Instrument[]>([])
+const error = ref<string | null>(null)
 
 async function getInstruments() {
-  const { data } = await supabase.from('instruments').select()
+  const { data, error: fetchError } = await supabase.from('instruments').select()
+
+  if (fetchError) {
+    error.value = fetchError.message
+    return
+  }
+
   instruments.value = data
 }
 
@@ -82604,7 +83244,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul>
+  <p v-if="error">Error loading instruments: {{ error }}</p>
+  <ul v-else>
     <li v-for="instrument in instruments" :key="instrument.id">{{ instrument.name }}</li>
   </ul>
 </template>
@@ -82618,12 +83259,22 @@ Start the app and go to [http://localhost:5173](http://localhost:5173) in a brow
 npm run dev
 ```
 
+## Production requirements
+
+The quickstart procedure in this guide optimizes for getting you to a working app, not for production.
+
+Before you deploy:
+
+- If your app reads or writes through the Data API, review your [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) policies. Any policy you added here is scoped to this quickstart's sample data, not to real user data.
+- Set your Supabase credentials as environment variables on whatever platform you deploy to, rather than committing them to source control.
+- Configure a [custom domain](https://supabase.com/docs/guides/platform/custom-domains) for your Supabase project once you're ready to go live.
+
 ## Next steps
 
-- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 
 
 ---
@@ -110281,6 +110932,10 @@ Most organizations use a single SSO provider for all users. However, Supabase su
 
 If you need to configure multiple SSO providers, refer to the [Multiple SSO Providers](https://supabase.com/docs/guides/platform/sso/multiple-providers) guide for detailed configuration steps, and contact your Supabase support representative if you need additional guidance.
 
+## Enterprise-managed authentication for MCP
+
+Once SSO is configured, you can let your identity provider automatically authorize MCP clients for your organization, without individual members having to approve each one. See [Enterprise-Managed Authentication for MCP](https://supabase.com/docs/guides/platform/sso/enterprise-mcp-authentication) for details.
+
 
 ---
 
@@ -110737,6 +111392,82 @@ Note: If you need help choosing the right configuration for your organization, c
 - **Configure your provider:** Follow our [provider-specific guides](https://supabase.com/docs/guides/platform/sso#supported-providers)
 - **Test your setup:** Review [SSO Testing and Best Practices](https://supabase.com/docs/guides/platform/sso/testing-best-practices)
 - **Enable auto-join:** Configure [auto-join settings](https://supabase.com/docs/guides/platform/sso#key-configuration-options)
+
+
+---
+
+# Enterprise-Managed Authentication for MCP
+
+Let your identity provider automatically authorize your organization's use of the Supabase MCP Server, without per-user OAuth prompts.
+
+Note: This feature is only available on the [Team and Enterprise Plans](https://supabase.com/pricing), and requires [SSO](https://supabase.com/docs/guides/platform/sso) to already be configured for your organization.
+
+Note: This page covers using the [Supabase MCP Server](https://supabase.com/docs/guides/ai-tools/mcp) and connecting AI tools like Cursor or Claude to your Supabase organization and projects. If you're building your own MCP server backed by Supabase Auth, see [Model Context Protocol (MCP) Authentication](https://supabase.com/docs/guides/auth/oauth-server/mcp-authentication) instead.
+
+Normally, each member of your organization has to individually sign in and approve their AI tool's connection to the [Supabase MCP Server](https://supabase.com/docs/guides/ai-tools/mcp). Enterprise-managed authentication removes that per-user step. Once your identity provider (IdP) and MCP client both trust each other for single sign-on, members get access to the Supabase MCP Server automatically, without a separate approval prompt.
+
+This is Supabase's implementation of the MCP [Enterprise-Managed Authorization](https://github.com/modelcontextprotocol/ext-auth/blob/main/specification/stable/enterprise-managed-authorization.mdx) extension, which relies on an **ID-JAG** (Identity Assertion JWT Authorization Grant) issued by your IdP.
+
+## Prerequisites
+
+Before members can use enterprise-managed authentication:
+
+1. **SSO must be configured** for your organization. See [Enable SSO for your organization](https://supabase.com/docs/guides/platform/sso) if you haven't set this up yet.
+2. **Your identity provider must support issuing ID-JAGs** for MCP's Enterprise-Managed Authorization extension. Check with your IdP whether this is available and how to enable it.
+3. **The MCP client must be authorized for your organization.** An organization owner does this from [Authorized Apps](https://supabase.com/dashboard/org/_/apps) in your organization settings, the same place you manage other third-party integrations.
+
+## Who's involved
+
+| Party                                   | Role                                                                                                                                         |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Identity provider (IdP)** (e.g. Okta) | Signs your members in via SSO, and issues the MCP client an ID-JAG scoped for Supabase when asked                                            |
+| **MCP client**                          | The AI tool your members use. It signs the member in to the IdP, requests the ID-JAG, then presents it to Supabase                           |
+| **Supabase**                            | Runs the MCP Server your client ultimately calls, and the OAuth server that validates the ID-JAG and issues the access token used to call it |
+
+## How it works
+
+1. **Member signs in to the MCP client via your IdP**, using the same SSO login your members already use, over OpenID Connect or SAML. The IdP returns an identity token to the MCP client.
+2. **MCP client exchanges that identity token for an ID-JAG, at the IdP.** This is a separate request the client makes to the IdP (an [RFC 8693](https://datatracker.ietf.org/doc/html/rfc8693) token exchange), asking for a token scoped specifically to Supabase. The IdP checks its own policy before issuing one.
+3. **IdP returns the ID-JAG to the MCP client.**
+4. **MCP client presents the ID-JAG to Supabase's OAuth server**, using it as a [JWT authorization grant](https://datatracker.ietf.org/doc/html/rfc7523), with no interactive consent screen.
+5. **Supabase validates the ID-JAG**, checking it against your IdP's public keys, confirming the member belongs to your organization with a matching SSO identity, and confirming an organization owner has authorized this MCP client. If everything checks out, Supabase issues a short-lived access token.
+6. **MCP client calls the Supabase MCP Server** using that access token, same as any other authenticated request.
+
+The access token from step 5 can't be refreshed. The MCP client repeats steps 2 through 5 whenever it needs a new one, and its access is always limited to what your organization's existing permissions already allow.
+
+## Why use enterprise-managed authentication
+
+Without it, every member has to manually connect and authorize the MCP client against Supabase, and do it again whenever access expires. At the scale of an organization, this creates:
+
+- **Onboarding friction**: new members have to discover and go through the approval flow themselves.
+- **No central control**: admins can't see or revoke the MCP client's access at the organization level; it's spread across individual user approvals.
+- **Inconsistent access**: a member's access through the MCP client isn't guaranteed to stay in sync with the role your IdP already assigns them.
+
+With enterprise-managed authentication, an organization owner authorizes the MCP client once for the whole organization. From then on, access follows your existing SSO login, with no separate approval and no manual reconnection when a token expires.
+
+## Configuring your ID-JAG issuer
+
+Once SSO is set up, an organization owner can add the ID-JAG issuer URL from your identity provider:
+
+1. Go to the [**SSO**](https://supabase.com/dashboard/org/_/sso) page of your organization settings.
+2. Open **Advanced settings**.
+3. Enter your identity provider's **IDJAG Issuer** URL.
+
+Note: Unlike your SAML metadata, the issuer URL isn't something Supabase can derive automatically: SAML assertions don't carry an equivalent value. Your IdP's documentation for ID-JAG or OIDC will list this as the `iss` claim on the tokens it issues, usually the same base URL used for OIDC discovery.
+
+Once saved, Supabase uses this URL to fetch your IdP's public keys and verify ID-JAGs presented by your MCP client on behalf of your members.
+
+## Security considerations
+
+- **Access is always scoped to user.** An ID-JAG can never grant access beyond what the authenticated member already has permission to see.
+- **The MCP client must be explicitly authorized.** Adding an ID-JAG issuer alone doesn't grant it access; an organization owner still has to authorize it from [Authorized Apps](https://supabase.com/dashboard/org/_/apps).
+- **Access tokens are short-lived and non-renewable.** There's no refresh token.
+- **Revoke access at the source.** To cut off the MCP client for your whole organization, remove its authorization from [Authorized Apps](https://supabase.com/dashboard/org/_/apps). To cut off a single member, remove them in Supabase dashboard.
+
+## Next steps
+
+- [Enable SSO for your organization](https://supabase.com/docs/guides/platform/sso)
+- [Enterprise-Managed Authorization for MCP (blog post)](https://blog.modelcontextprotocol.io/posts/enterprise-managed-auth/)
 
 
 ---
@@ -167890,6 +168621,51 @@ if (error) {
 const { data } = await ctx.supabase.rpc('get_my_items')
 ```
 
+## resourceMetadataResponse
+
+RFC 9728 OAuth Protected Resource Metadata response.
+Advertises the authorization server, resource URI, and bearer methods supported.
+Auto-constructs URLs from `X-Forwarded-*` headers.
+
+## unauthorizedResponse
+
+`401` response with a `WWW-Authenticate: Bearer resource_metadata="..."` header (RFC 9728).
+Auto-constructs the metadata URL from `X-Forwarded-*` headers.
+Pass `resourceMetadataUrl` to override for custom setups.
+
+## withOAuthProtectedResource
+
+Wraps a request handler with OAuth 2.1 Protected Resource behavior (RFC 9728)
+for Supabase Edge Functions.
+
+- Serves OAuth Protected Resource Metadata at `GET /{fn}/oauth-protected-resource`
+  (with permissive CORS, including the `OPTIONS` preflight, so browser-based clients can read it)
+- Enriches a `401` from the inner handler with `WWW-Authenticate: Bearer resource_metadata="..."`,
+  unless the handler already set a `WWW-Authenticate` header (its value wins)
+- Returns `404` for any other path (Edge Functions are single-endpoint - the inner handler owns `/{fn}` only)
+
+The returned handler's optional second parameter is the host's platform
+argument (a Workers `env`, a Deno `ServeHandlerInfo`) and is forwarded to
+the inner handler unchanged — required for `withSupabase` to capture it.
+
+### Examples
+
+#### Example 1
+
+```ts
+import { withOAuthProtectedResource, withSupabase } from '@supabase/server'
+
+Deno.serve(
+  withOAuthProtectedResource(
+    withSupabase({ auth: 'user' }, async (_req, { supabase }) => {
+      const { data, error } = await supabase.from('items').select('*')
+      if (error) throw error
+      return Response.json(data)
+    }),
+  ),
+)
+```
+
 ## withSupabase
 
 Wraps a request handler with Supabase auth, client creation, and CORS handling.
@@ -168326,6 +169102,10 @@ Standard JWT claims as defined by RFC 7519, extended with Supabase-specific fiel
 
 This is the raw JWT payload — use UserClaims for a normalized, camelCase view.
 
+## ResourceMetadataOptions
+
+Options for resourceMetadataResponse.
+
 ## SupabaseContext
 
 The Supabase context created for each authenticated request.
@@ -168340,6 +169120,10 @@ Resolved Supabase environment configuration.
 Holds the project URL, API keys, and JWKS needed by every other primitive.
 Typically resolved automatically from environment variables by core.resolveEnv,
 but can be passed explicitly via the `env` option.
+
+## UnauthorizedResponseOptions
+
+Options for unauthorizedResponse.
 
 ## UserClaims
 

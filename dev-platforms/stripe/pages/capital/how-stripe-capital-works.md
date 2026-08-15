@@ -609,7 +609,7 @@ We base our underwriting model on the payment volume that you process on Stripe.
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/ca/legal/privacy-center/legal#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/ca/privacy-center/legal#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
 
 ## Review your offer
 

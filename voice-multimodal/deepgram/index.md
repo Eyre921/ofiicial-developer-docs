@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -236,8 +236,6 @@
 - `docs/text-topic-detection` — [Topic Detection](pages/docs/text-topic-detection.md) · [原文](https://developers.deepgram.com/docs/text-topic-detection.md)
 - `docs/the-deepgram-model-improvement-partnership-program` — [Model Improvement Partnership Program](pages/docs/the-deepgram-model-improvement-partnership-program.md) · [原文](https://developers.deepgram.com/docs/the-deepgram-model-improvement-partnership-program.md)
 - `docs/topic-detection` — [Topic Detection](pages/docs/topic-detection.md) · [原文](https://developers.deepgram.com/docs/topic-detection.md)
-- `docs/transcribe-meetings-in-realtime` — [Transcribe Meetings in Realtime](pages/docs/transcribe-meetings-in-realtime.md) · [原文](https://developers.deepgram.com/docs/transcribe-meetings-in-realtime.md)
-- `docs/transcribe-recorded-calls-with-twilio` — [Transcribe Recorded Calls With Twilio](pages/docs/transcribe-recorded-calls-with-twilio.md) · [原文](https://developers.deepgram.com/docs/transcribe-recorded-calls-with-twilio.md)
 - `docs/tts-bit-rate` — [Bit Rate](pages/docs/tts-bit-rate.md) · [原文](https://developers.deepgram.com/docs/tts-bit-rate.md)
 - `docs/tts-callback` — [TTS Callback](pages/docs/tts-callback.md) · [原文](https://developers.deepgram.com/docs/tts-callback.md)
 - `docs/tts-container` — [Container](pages/docs/tts-container.md) · [原文](https://developers.deepgram.com/docs/tts-container.md)

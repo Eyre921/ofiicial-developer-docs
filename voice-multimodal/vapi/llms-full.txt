@@ -172,35 +172,58 @@
 - [Frequently Asked Questions](https://docs.vapi.ai/faq.md): Frequently asked questions about Vapi.
 - [Manage pay-as-you-go billing and credits](https://docs.vapi.ai/billing/manage-billing-and-credits.md): Manage pay-as-you-go billing in the Vapi Dashboard: add a payment method, buy credits, configure auto reload, and download PDF statements and invoices.
 - [Core Models](https://docs.vapi.ai/quickstart.md): Learn about the three core components to Vapi's voice AI pipeline.
+- [Integrations](https://docs.vapi.ai/providers/integrations.md): Integrations let you connect your own provider accounts to Vapi. Learn what an integration is, when you need one, and how to add provider credentials in the dashboard.
 - [Voices (Text-to-speech)](https://docs.vapi.ai/providers/voice/overview.md): Find, preview, and use text-to-speech voices from any Vapi-supported provider, and look up a voiceId in the Vapi dashboard.
-- [Vapi Voices](https://docs.vapi.ai/providers/voice/vapi-voices.md): Our curated selection of high-quality voices
+- [Vapi Voices](https://docs.vapi.ai/providers/voice/vapi-voices.md): Browse Vapi's curated voices, preview voice samples, review language support, and configure a Vapi voice on an assistant.
 - [Legacy voice migration guide](https://docs.vapi.ai/providers/voice/vapi-voices/legacy-migration.md): Legacy Vapi Voices were retired on March 1, 2026. Here's what changed and how to update if needed.
-- [ElevenLabs](https://docs.vapi.ai/providers/voice/elevenlabs.md): How Vapi Integrates Text-to-Speech Platforms?
-- [PlayHT](https://docs.vapi.ai/providers/voice/playht.md)
-- [Azure](https://docs.vapi.ai/providers/voice/azure.md)
-- [OpenAI](https://docs.vapi.ai/providers/voice/openai.md)
-- [Cartesia](https://docs.vapi.ai/providers/voice/cartesia.md)
-- [LMNT](https://docs.vapi.ai/providers/voice/imnt.md)
-- [Minimax](https://docs.vapi.ai/providers/voice/minimax.md): Configure Minimax TTS voices and word-level subtitle timing
-- [RimeAI](https://docs.vapi.ai/providers/voice/rimeai.md)
-- [Deepgram](https://docs.vapi.ai/providers/voice/deepgram.md)
-- [Inworld](https://docs.vapi.ai/providers/voice/inworld.md)
-- [OpenAI](https://docs.vapi.ai/providers/model/openai.md): What is OpenAI?
-- [Azure OpenAI](https://docs.vapi.ai/providers/model/azure-openai.md): Use custom Azure OpenAI instances with your own rate limits and configurations
-- [Anthropic Bedrock](https://docs.vapi.ai/providers/model/anthropic-bedrock.md): Use Anthropic Claude models via AWS Bedrock with your own AWS resources
-- [Gemini by Google](https://docs.vapi.ai/providers/model/gemini.md): What is Gemini?
-- [Groq](https://docs.vapi.ai/providers/model/groq.md): What is Groq?
-- [DeepInfra](https://docs.vapi.ai/providers/model/deepinfra.md): DeepInfra is a provider for Vapi.
-- [Perplexity](https://docs.vapi.ai/providers/model/perplexity.md): What is Perplexity.ai?
-- [TogetherAI](https://docs.vapi.ai/providers/model/togetherai.md): TogetherAI is a provider for Vapi.
-- [OpenRouter](https://docs.vapi.ai/providers/model/openrouter.md): What is OpenRouter?
-- [Deepgram](https://docs.vapi.ai/providers/transcriber/deepgram.md): What is Deepgram?
-- [Google](https://docs.vapi.ai/providers/transcriber/google.md)
-- [Gladia](https://docs.vapi.ai/providers/transcriber/gladia.md)
-- [Speechmatics](https://docs.vapi.ai/providers/transcriber/speechmatics.md)
+- [Azure](https://docs.vapi.ai/providers/voice/azure.md): Configure Azure Speech as your Vapi assistant's text-to-speech provider and select an Azure voice.
+- [Cartesia](https://docs.vapi.ai/providers/voice/cartesia.md): Configure Cartesia as your Vapi assistant's text-to-speech provider, including supported languages and voice options.
+- [Deepgram](https://docs.vapi.ai/providers/voice/deepgram.md): Configure Deepgram as your Vapi assistant's text-to-speech provider and select a Deepgram Aura voice.
+- [ElevenLabs](https://docs.vapi.ai/providers/voice/elevenlabs.md): Configure ElevenLabs as your Vapi assistant's text-to-speech provider and select an ElevenLabs voice.
+- [Hume](https://docs.vapi.ai/providers/voice/hume.md): Connect Hume to Vapi to use its expressive Octave text-to-speech voices for your voice agent. Covers the models and how to select a voice in the API.
+- [Inworld](https://docs.vapi.ai/providers/voice/inworld.md): Configure an Inworld voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
+- [LMNT](https://docs.vapi.ai/providers/voice/imnt.md): Configure an LMNT voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
+- [Microsoft](https://docs.vapi.ai/providers/voice/microsoft.md): Connect Microsoft to Vapi to use its MAI-Voice-2 text-to-speech voices for your voice agent. Covers how to select a Microsoft voice in the API.
+- [MiniMax](https://docs.vapi.ai/providers/voice/minimax.md): Configure MiniMax as your Vapi assistant's text-to-speech provider, including voice models, voice IDs, and subtitle timing.
+- [Neuphonic](https://docs.vapi.ai/providers/voice/neuphonic.md): Connect Neuphonic to Vapi to use its text-to-speech voices for your voice agent. Covers how to select a Neuphonic voice in the API.
+- [OpenAI](https://docs.vapi.ai/providers/voice/openai.md): Configure OpenAI as your Vapi assistant's text-to-speech provider, including TTS models and voice selection.
+- [PlayHT](https://docs.vapi.ai/providers/voice/playht.md): Configure a PlayHT voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
+- [Rime AI](https://docs.vapi.ai/providers/voice/rimeai.md): Configure a Rime AI model and voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
+- [Sesame](https://docs.vapi.ai/providers/voice/sesame.md): Connect Sesame to Vapi to use its conversational text-to-speech voices for your voice agent. Covers the model, the available voices, and how to select one in the API.
+- [Smallest AI](https://docs.vapi.ai/providers/voice/smallest-ai.md): Connect Smallest AI to Vapi to use its low-latency text-to-speech voices for your voice agent. Covers the model and how to select a voice in the API.
+- [WellSaid](https://docs.vapi.ai/providers/voice/wellsaid.md): Connect WellSaid Labs to Vapi to use its studio-quality text-to-speech voices for your voice agent. Covers the models and how to select a voice in the API.
+- [xAI](https://docs.vapi.ai/providers/voice/xai.md): Configure xAI as your Vapi assistant's text-to-speech provider, including supported voices, languages, and voice options.
+- [Model providers](https://docs.vapi.ai/providers/model/overview.md): Reference of every large language model provider Vapi supports, including provider IDs, HIPAA, GDPR, and PCI coverage, and where to configure each one.
+- [Anthropic](https://docs.vapi.ai/providers/model/anthropic.md): Connect Anthropic to Vapi to use Claude models as your voice agent's language model. Covers the supported Claude models and how to use them in the API.
+- [Anthropic Bedrock](https://docs.vapi.ai/providers/model/anthropic-bedrock.md): Connect AWS Bedrock credentials to Vapi and use Anthropic Claude models with your AWS account, regions, rate limits, and data controls.
+- [Anyscale](https://docs.vapi.ai/providers/model/anyscale.md): Connect Anyscale to Vapi to use an OpenAI-compatible endpoint as your voice agent's language model. Covers how to specify the model in the API.
+- [Azure OpenAI](https://docs.vapi.ai/providers/model/azure-openai.md): Connect an Azure OpenAI resource to Vapi. Configure credentials, deployment names, supported models, regions, and endpoints.
+- [Cerebras](https://docs.vapi.ai/providers/model/cerebras.md): Connect Cerebras credentials to Vapi for use with supported integrations.
+- [DeepInfra](https://docs.vapi.ai/providers/model/deepinfra.md): Connect DeepInfra to Vapi and configure a model served by your DeepInfra account as your assistant's language model.
+- [DeepSeek](https://docs.vapi.ai/providers/model/deepseek.md): Connect DeepSeek credentials to Vapi for use with supported integrations.
+- [Google](https://docs.vapi.ai/providers/model/gemini.md): Configure Google Gemini as your Vapi assistant's language model and choose from the models Vapi supports.
+- [Groq](https://docs.vapi.ai/providers/model/groq.md): Connect Groq to Vapi, choose a supported model, and configure it as your assistant's language model.
+- [Inflection AI](https://docs.vapi.ai/providers/model/inflection-ai.md): Connect Inflection AI credentials to Vapi for use with supported integrations.
+- [MiniMax](https://docs.vapi.ai/providers/model/minimax.md): Configure MiniMax as your Vapi assistant's language model and choose from the models Vapi supports.
+- [Mistral](https://docs.vapi.ai/providers/model/mistral.md): Connect Mistral to Vapi to use Mistral Large and Mistral Small as your voice agent's language model. Configure it in the dashboard.
+- [OpenAI](https://docs.vapi.ai/providers/model/openai.md): Configure OpenAI as your Vapi assistant's language model and choose from the GPT models Vapi supports.
+- [OpenRouter](https://docs.vapi.ai/providers/model/openrouter.md): Connect OpenRouter to Vapi and use a text-generation model ID from OpenRouter's current model catalog.
+- [Perplexity](https://docs.vapi.ai/providers/model/perplexity.md): Connect Perplexity to Vapi and configure a model served by your Perplexity account as your assistant's language model.
+- [Together AI](https://docs.vapi.ai/providers/model/togetherai.md): Connect Together AI to Vapi and configure a model served by your Together AI account as your assistant's language model.
+- [xAI](https://docs.vapi.ai/providers/model/xai.md): Configure xAI as your Vapi assistant's language model and choose from the Grok models Vapi supports.
+- [Transcribers (Speech-to-text)](https://docs.vapi.ai/providers/transcriber/overview.md): Reference of every speech-to-text provider Vapi supports, including provider IDs, HIPAA and GDPR (EU) coverage, and where to configure each one.
+- [AssemblyAI](https://docs.vapi.ai/providers/transcriber/assembly-ai.md): Configure AssemblyAI Universal-Streaming as your Vapi assistant's transcriber through the dashboard or API.
+- [Azure](https://docs.vapi.ai/providers/transcriber/azure.md): Configure Azure Speech as your Vapi assistant's transcriber and select from the languages Vapi supports.
+- [Cartesia](https://docs.vapi.ai/providers/transcriber/cartesia.md): Configure Cartesia as your Vapi assistant's transcriber, including supported languages and transcription options.
+- [Deepgram](https://docs.vapi.ai/providers/transcriber/deepgram.md): Configure Deepgram as your Vapi assistant's transcriber, including supported models and languages.
+- [ElevenLabs](https://docs.vapi.ai/providers/transcriber/elevenlabs.md): Configure ElevenLabs as your Vapi assistant's transcriber, including Scribe models and supported languages.
+- [Gladia](https://docs.vapi.ai/providers/transcriber/gladia.md): Configure a Gladia transcription model, language, and provider settings for a Vapi assistant.
+- [Google](https://docs.vapi.ai/providers/transcriber/google.md): Configure Google as your Vapi assistant's transcriber, including Gemini transcription models and supported languages.
+- [OpenAI](https://docs.vapi.ai/providers/transcriber/openai.md): Configure OpenAI as your Vapi assistant's transcriber, including transcription models and supported languages.
 - [Soniox](https://docs.vapi.ai/providers/transcriber/soniox.md): Connect Soniox to a Vapi assistant and configure the stt-rt-v5 real-time speech-to-text model for low-latency, multilingual transcription and endpointing.
-- [Talkscriber](https://docs.vapi.ai/providers/transcriber/talkscriber.md): What is Talkscriber?
-- [AssemblyAI](https://docs.vapi.ai/providers/transcriber/assembly-ai.md)
+- [Speechmatics](https://docs.vapi.ai/providers/transcriber/speechmatics.md): Configure Speechmatics as your Vapi assistant's transcriber and review setup guidance and supported options.
+- [Talkscriber](https://docs.vapi.ai/providers/transcriber/talkscriber.md): Use Talkscriber with Vapi for real-time Whisper transcription. See configuration fields, defaults, supported languages, and an API example.
+- [xAI](https://docs.vapi.ai/providers/transcriber/xai.md): Configure xAI as your Vapi assistant's transcriber, including supported models, languages, and transcription options.
 - [AWS S3](https://docs.vapi.ai/providers/cloud/s3.md): Store recordings of chat conversations in AWS S3
 - [GCP Cloud Storage](https://docs.vapi.ai/providers/cloud/gcp.md): Store recordings of chat conversations in GCP Cloud Storage
 - [Cloudflare R2](https://docs.vapi.ai/providers/cloud/cloudflare.md): Store recordings of chat conversations in Cloudflare R2

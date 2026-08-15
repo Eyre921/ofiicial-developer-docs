@@ -24,7 +24,7 @@ You don’t have to integrate buy now, pay later payment methods individually. [
 
 - [Creating a Stripe-hosted page](https://docs.stripe.com/checkout/quickstart.md)
 - [Embedding a payment page on your site](https://docs.stripe.com/checkout/embedded/quickstart.md)
-- [Building a checkout page with Elements](https://docs.stripe.com/payments/quickstart-checkout-sessions.md)
+- [Building a checkout page with Elements](https://docs.stripe.com/payments/quickstart.md)
 - [Using the Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md)
 
 You can manually list buy now, pay later payment methods if you build your own payments form. Read the docs for the specific payment method to understand how to add it to your integration.

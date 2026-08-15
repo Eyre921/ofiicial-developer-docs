@@ -71482,6 +71482,7 @@ try {
 | [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-motion-control` | Motion control                         |
 | [Replicate](/providers/ai-sdk-providers/replicate#video-models)         | `minimax/video-01`          | Text-to-video                          |
 | [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V |
 
 Above are a small subset of the video models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -82539,12 +82540,64 @@ const { video } = await generateVideo({
 });
 ```
 
+`inputReferences` accepts image references only. A reference with a non-image
+media type (for example a video or audio clip) is ignored with a warning, and a
+reference with no media type is treated as an image. If no image reference
+remains, reference-to-video is not selected and no reference images are sent.
+
+#### Reference Audio
+
+Reference-to-video can also give the subject a voice. `referenceVoiceIds` takes
+up to 3 xAI **preset** voice ids — you cannot upload your own audio clips.
+Reference the voices from the prompt with `<AUDIO_0>`, `<AUDIO_1>`, and
+`<AUDIO_2>`, in the order the voices are passed.
+
+```ts
+import { xai, type XaiVideoModelOptions } from '@ai-sdk/xai';
+import { experimental_generateVideo as generateVideo } from 'ai';
+
+const { video } = await generateVideo({
+  model: xai.video('grok-imagine-video-1.5'),
+  prompt:
+    'The person from <IMAGE_1> stands in the room from <IMAGE_2> and speaks ' +
+    'to the camera with the voice from <AUDIO_0>.',
+  aspectRatio: '9:16',
+  duration: 10,
+  providerOptions: {
+    xai: {
+      mode: 'reference-to-video',
+      referenceImageUrls: [
+        'https://example.com/person.png',
+        'https://example.com/room.png',
+      ],
+      referenceVoiceIds: ['eve'],
+      resolution: '720p',
+      pollTimeoutMs: 600000,
+    } satisfies XaiVideoModelOptions,
+  },
+});
+```
+
+Valid voice ids come from the xAI
+[text-to-speech voice roster](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices).
+Ids are case-insensitive, and an unknown id returns a `400` response listing the
+available voices. `referenceVoiceIds` is ignored with a warning when the
+resolved operation is not reference-to-video.
+
+<Note>
+  xAI documents reference audio as available in the United States only, for
+  trusted partners. Requests from accounts without access are rejected by the
+  xAI API.
+</Note>
+
 <Note>
   Reference-to-video supports `duration`, `aspectRatio`, and `resolution`. Use
   `mode` to select the operation — each mode is mutually exclusive. When both
   are provided, `frameImages` takes precedence over `inputReferences`, and
   `inputReferences` takes precedence over the legacy `referenceImageUrls`
-  provider option. Reference-to-video requires the `grok-imagine-video` model.
+  provider option. Reference-to-video is supported by the `grok-imagine-video`
+  and `grok-imagine-video-1.5` models; native 1080p requires
+  `grok-imagine-video-1.5`.
 </Note>
 
 ### Video Provider Options
@@ -82560,11 +82613,14 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
 
   Maximum wait time in milliseconds for video generation. Defaults to 600000 (10 minutes).
 
-- **resolution** _'480p' | '720p'_
+- **resolution** _'480p' | '720p' | '1080p'_
 
   Video resolution. When using the SDK's standard `resolution` parameter,
-  `1280x720` maps to `720p` and `854x480` maps to `480p`.
-  Use this provider option to pass the native format directly.
+  `1920x1080` maps to `1080p`, `1280x720` maps to `720p`, and `854x480` maps
+  to `480p`. Use this provider option to pass the native format directly.
+  `1080p` requires the `grok-imagine-video-1.5` model and is available for
+  text-to-video and image-to-video; reference-to-video is capped at `720p`
+  (a `1080p` request is downgraded with a warning).
 
 - **user** _string_
 
@@ -82596,6 +82652,17 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
   `<IMAGE_1>`, `<IMAGE_2>`, etc. in the prompt to reference specific
   images. Used with `mode: 'reference-to-video'`.
 
+- **referenceVoiceIds** _string[]_
+
+  Up to 3 xAI preset voice ids that give the subject a voice in
+  reference-to-video (R2V) generation. Preset voices only — audio clips
+  cannot be uploaded. Ids are case-insensitive and come from the
+  [text-to-speech voice roster](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices);
+  an unknown id returns a `400` listing the available voices. Use `<AUDIO_0>`,
+  `<AUDIO_1>`, and `<AUDIO_2>` tags in the prompt to reference the voices.
+  Ignored with a warning outside reference-to-video. Reference audio is
+  documented as US-only and limited to trusted partners.
+
 <Note>
   Video generation is an asynchronous process that can take several minutes.
   Consider setting `pollTimeoutMs` to at least 10 minutes (600000ms) for
@@ -82606,7 +82673,9 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
 ### Aspect Ratio and Resolution
 
 For **text-to-video**, you can specify both `aspectRatio` and `resolution`.
-The default aspect ratio is `16:9` and the default resolution is `480p`.
+The default aspect ratio is `16:9` and the default resolution is `480p`. The
+`grok-imagine-video-1.5` model additionally supports native `1080p` for
+text-to-video and image-to-video.
 
 For **image-to-video**, the output defaults to the input image's aspect ratio.
 If you specify `aspectRatio`, it will override this and stretch the image to the
@@ -82622,13 +82691,18 @@ from the source video. `duration` is supported and controls only the
 extension length.
 
 For **reference-to-video (R2V)**, you can specify `duration`, `aspectRatio`,
-and `resolution` just like text-to-video.
+and `resolution`. Unlike text-to-video, R2V is capped at `720p` — a `1080p`
+request is downgraded to `720p` with a warning.
 
 ### Video Model Capabilities
 
-| Model                | Duration | Aspect Ratios                                     | Resolution     | Image-to-Video      | Editing             | Extension           | R2V                 |
-| -------------------- | -------- | ------------------------------------------------- | -------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `grok-imagine-video` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                    | Duration | Aspect Ratios                                     | Resolution                | Image-to-Video      | Editing             | Extension           | R2V                 |
+| ------------------------ | -------- | ------------------------------------------------- | ------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-imagine-video`     | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p`            | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `grok-imagine-video-1.5` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p`, `1080p`\* | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+
+\* Native `1080p` applies to text-to-video and image-to-video. Reference-to-video
+is capped at `720p` — a `1080p` request is downgraded with a warning.
 
 <Note>
   You can also pass any available provider model ID as a string if needed.
@@ -129197,6 +129271,7 @@ configuration into the harness contract.
 The AI SDK includes the following harness adapters:
 
 - [Claude Code](/providers/ai-sdk-harnesses/claude-code) (`@ai-sdk/harness-claude-code`)
+- [Cline](/providers/ai-sdk-harnesses/cline) (`@ai-sdk/harness-cline`)
 - [Codex](/providers/ai-sdk-harnesses/codex) (`@ai-sdk/harness-codex`)
 - [Deep Agents](/providers/ai-sdk-harnesses/deepagents) (`@ai-sdk/harness-deepagents`)
 - [Grok Build](/providers/ai-sdk-harnesses/grok-build) (`@ai-sdk/harness-grok-build`)
@@ -129214,6 +129289,7 @@ The AI SDK includes the following harness adapters:
 | Adapter                                                | Runtime location | Custom tools | Custom skills | Built-in tool approval | Built-in tool filtering      |
 | ------------------------------------------------------ | ---------------- | ------------ | ------------- | ---------------------- | ---------------------------- |
 | [Claude Code](/providers/ai-sdk-harnesses/claude-code) | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check />                    |
+| [Cline](/providers/ai-sdk-harnesses/cline)             | Host process     | <Check />    | <Check />     | <Check />              | <Check />                    |
 | [Codex](/providers/ai-sdk-harnesses/codex)             | Sandbox bridge   | <Check />    | <Check />     | <Cross />              | <Cross />                    |
 | [Deep Agents](/providers/ai-sdk-harnesses/deepagents)  | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check /> via auto-rejection |
 | [Grok Build](/providers/ai-sdk-harnesses/grok-build)   | Sandbox via ACP  | <Check />    | <Check />     | <Check />              | <Cross />                    |
@@ -138436,7 +138512,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const { text } = await generateText({
-  model: 'xai/grok-4.5',
+  model: 'xai/grok-4.6',
   prompt: 'What is the weather like in San Francisco?',
   tools: {
     getWeather: tool({
@@ -139264,10 +139340,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.20-non-reasoning`.
+first argument is the model id, e.g. `grok-4.6`.
 
 ```ts
-const model = xai('grok-4.20-non-reasoning');
+const model = xai('grok-4.6');
 ```
 
 <Note>
@@ -139286,7 +139362,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.20-non-reasoning'),
+  model: xai('grok-4.6'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -139404,7 +139480,7 @@ calling pattern.
 The xAI Responses API is the default when using `xai(modelId)` (since AI SDK 7). You can also use `xai.responses(modelId)` explicitly. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.20-non-reasoning');
+const model = xai.responses('grok-4.6');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -139426,7 +139502,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-3'),
+  model: xai.responses('grok-4.6'),
   messages: [
     {
       role: 'user',
@@ -139451,7 +139527,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.3'),
+  model: xai('grok-4.6'),
   messages: [
     {
       role: 'user',
@@ -139488,7 +139564,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What are the latest developments in AI?',
   tools: {
     web_search: xai.tools.webSearch({
@@ -139526,7 +139602,7 @@ The X search tool enables searching X (Twitter) for posts, with filtering by han
 
 ```ts
 const { text, sources } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What are people saying about AI on X this week?',
   tools: {
     x_search: xai.tools.xSearch({
@@ -139572,7 +139648,7 @@ The code execution tool enables the model to write and execute Python code for c
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt:
     'Calculate the compound interest for $10,000 at 5% annually for 10 years',
   tools: {
@@ -139587,7 +139663,7 @@ The view image tool enables the model to view and analyze images:
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Describe what you see in the image',
   tools: {
     view_image: xai.tools.viewImage(),
@@ -139601,7 +139677,7 @@ The view X video tool enables the model to view and analyze videos from X (Twitt
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Summarize the content of this X video',
   tools: {
     view_x_video: xai.tools.viewXVideo(),
@@ -139618,7 +139694,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-4.6'),
   prompt:
     'Generate an image of a corgi surfing a big wave, in the style of a Japanese woodblock print',
   tools: {
@@ -139656,7 +139732,7 @@ The MCP server tool enables the model to connect to remote [Model Context Protoc
 
 ```ts
 const { text } = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Use the weather tool to check conditions in San Francisco',
   tools: {
     weather_server: xai.tools.mcpServer({
@@ -139704,7 +139780,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: xai.responses('grok-4.20-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'What documents do you have access to?',
   tools: {
     file_search: xai.tools.fileSearch({
@@ -139751,7 +139827,7 @@ import { xai } from '@ai-sdk/xai';
 import { streamText } from 'ai';
 
 const { stream } = streamText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.6'),
   prompt: 'Research AI safety developments and calculate risk metrics',
   tools: {
     web_search: xai.tools.webSearch(),
@@ -139785,7 +139861,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-4.6'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -146776,8 +146852,9 @@ Use the top-level [`reasoning`](/docs/ai-sdk-core/reasoning) setting to control
 reasoning effort. The provider maps supported values to the Open Responses
 `reasoning.effort` field.
 
-The provider also supports `reasoningSummary` through `providerOptions`. The
-provider option key must match the `name` passed to `createOpenResponses`:
+The provider also supports `reasoningEffort` and `reasoningSummary` through
+`providerOptions`. The provider option key must match the `name` passed to
+`createOpenResponses`:
 
 ```ts
 import {
@@ -146796,6 +146873,7 @@ const { text, reasoningText } = await generateText({
   reasoning: 'high',
   providerOptions: {
     lmstudio: {
+      reasoningEffort: 'max',
       reasoningSummary: 'detailed',
     } satisfies OpenResponsesLanguageModelOptions,
   },
@@ -146806,8 +146884,16 @@ console.log(reasoningText);
 console.log(text);
 ```
 
-`reasoningSummary` accepts `'auto'`, `'concise'`, or `'detailed'`. Reasoning
-support and accepted values depend on the endpoint and model.
+`reasoningEffort` accepts any string and is passed through unchanged to the
+endpoint's `reasoning.effort` field. Use it for endpoint-native values that are
+not part of the top-level `reasoning` setting, such as `'max'`. When both are
+set, `providerOptions` `reasoningEffort` takes precedence over the top-level
+`reasoning` value.
+
+`reasoningSummary` accepts `'auto'`, `'concise'`, or `'detailed'` and can be
+combined with either reasoning effort setting. Reasoning support and accepted
+effort values depend on the endpoint and model; unsupported values may be
+rejected or ignored by the endpoint.
 
 ## File Inputs
 
@@ -163469,6 +163555,11 @@ environment:
 - `direct`: use Anthropic credentials.
 - `ai-gateway`: use AI Gateway credentials.
 
+When the sandbox supports additive request transformations, the bridge receives
+placeholders and the adapter injects credentials into matching outbound
+requests. Sandboxes without that capability retain direct credential
+forwarding.
+
 Supported environment variables:
 
 - `VERCEL_OIDC_TOKEN`
@@ -163603,12 +163694,18 @@ const harness = createCodex({
   model: 'gpt-5.5',
   reasoningEffort: 'high',
   webSearch: true,
+  codexConfig: {
+    model_verbosity: 'low',
+  },
 });
 ```
 
 Settings:
 
 - `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `codexConfig`: additional native Codex configuration. Values pass through as
+  provided, so use the snake_case keys from Codex's `config.toml` reference.
+  The adapter's managed values take precedence over conflicting entries.
 - `mcpServers`: MCP server definitions keyed by server name.
 - `model`: OpenAI model id. If omitted, the adapter uses its pinned default.
 - `reasoningEffort`: `low`, `medium`, or `high`.
@@ -163629,6 +163726,11 @@ environment:
   to direct OpenAI credentials.
 - `direct`: use OpenAI credentials.
 - `ai-gateway`: use AI Gateway credentials.
+
+When the sandbox supports additive request transformations, the bridge receives
+placeholders and the adapter injects credentials into matching outbound
+requests. Sandboxes without that capability retain direct credential
+forwarding.
 
 Supported environment variables:
 
@@ -163980,6 +164082,11 @@ environment:
 - `openai`: use OpenAI credentials.
 - `ai-gateway`: use AI Gateway credentials.
 
+When the sandbox supports additive request transformations, the bridge receives
+placeholders and the adapter injects credentials into matching outbound
+requests. Sandboxes without that capability retain direct credential
+forwarding.
+
 Supported environment variables:
 
 - `AI_GATEWAY_API_KEY`
@@ -164159,6 +164266,11 @@ environment:
 - `anthropic`: use Anthropic credentials.
 - `ai-gateway`: use AI Gateway credentials.
 
+When the sandbox supports additive request transformations, the bridge receives
+placeholders and the adapter injects credentials into matching outbound
+requests. Sandboxes without that capability retain direct credential
+forwarding.
+
 Supported environment variables:
 
 - `AI_GATEWAY_API_KEY`
@@ -164294,7 +164406,13 @@ try {
 - `source`: where the ACP package comes from, as a simple or locked NPM source.
 - `executable`: the package bin name to launch.
 - `args`: optional arguments passed to the executable.
-- `forwardEnv`: host environment variable names to forward into the sandbox.
+- `forwardEnv`: non-credential host environment variable names to forward into
+  the sandbox.
+- `credentialEnv`: host credential environment variable names. Configure this
+  together with `credentialBrokering`.
+- `credentialBrokering`: function that receives the effective runtime
+  environment and returns additive outbound request transformations containing
+  the real credential values.
 - `env`: persistent environment values written at bootstrap.
 - `builtinTools`: optional native tool definitions for static typing and exact
   name matching.
@@ -164382,11 +164500,14 @@ With the default `auth: 'auto'`, the adapter uses AI Gateway when
 `AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` is available and otherwise uses
 direct authentication.
 
-For direct authentication, configure `forwardEnv` with the host
-environment variable names that the underlying ACP implementation reads. These
-variables are allowlisted and forwarded unchanged to the ACP process. Their
-names depend on the ACP implementation. Credential values are resolved at
-runtime and are not stored in the profile.
+For direct authentication, configure `credentialEnv` with the host environment
+variable names that the underlying ACP implementation reads, and use
+`credentialBrokering` to map their values to outbound request headers. When the
+network sandbox supports additive request transformations, the ACP process sees
+only same-name placeholders and the real values are injected after requests
+leave the sandbox. Sandboxes without that capability retain the legacy behavior
+of forwarding the real values. Use `forwardEnv` only for non-credential runtime
+configuration.
 
 ### Gateway environment
 
@@ -164398,7 +164519,9 @@ attribution. Profile values such as `gateway-api-key`, `gateway-base-url`,
 Gateway authentication has been selected. The three client-app placeholders
 resolve to the combined `name/version` identifier, its name, and its version,
 respectively. Structured launch environment values are serialized as JSON after
-their placeholders are resolved.
+their placeholders are resolved. The resolved Gateway environment overrides
+same-name direct values in the environment passed to `credentialBrokering`, so
+one callback works for both authentication modes.
 
 ## Sandbox
 
@@ -164454,6 +164577,7 @@ This profile uses the runtime's supported launch environment:
 
 ```ts
 import { createACP, type ACPPermissionModeMapping } from '@ai-sdk/harness-acp';
+import { createCredentialRequestTransformation } from '@ai-sdk/harness/utils';
 
 export const claudeCodeACPHarness = createACP({
   harnessId: 'acp-claude-code',
@@ -164466,7 +164590,26 @@ export const claudeCodeACPHarness = createACP({
     packageVersion: '0.61.0',
   },
   executable: 'claude-agent-acp',
-  forwardEnv: ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'],
+  credentialEnv: ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'],
+  credentialBrokering: ({ env }) => {
+    const apiKey = env.ANTHROPIC_API_KEY;
+    const authToken = env.ANTHROPIC_AUTH_TOKEN;
+    if (!apiKey && !authToken) return [];
+
+    const headers: Record<string, string> = {};
+    if (apiKey) {
+      headers['x-api-key'] = apiKey;
+    }
+    if (authToken) {
+      headers.Authorization = `Bearer ${authToken}`;
+    }
+    return [
+      createCredentialRequestTransformation({
+        baseUrl: env.ANTHROPIC_BASE_URL ?? 'https://api.anthropic.com',
+        headers,
+      }),
+    ];
+  },
   env: {
     IS_SANDBOX: '1',
   },
@@ -164505,6 +164648,8 @@ environment. Its OpenAI-compatible endpoint must end in `/v1`:
 
 ```ts
 import { createACP, type ACPPermissionModeMapping } from '@ai-sdk/harness-acp';
+import { createCredentialRequestTransformation } from '@ai-sdk/harness/utils';
+import { secureJsonParse } from '@ai-sdk/provider-utils';
 
 export const codexACPHarness = createACP({
   harnessId: 'acp-codex',
@@ -164517,7 +164662,28 @@ export const codexACPHarness = createACP({
     packageVersion: '1.1.4',
   },
   executable: 'codex-acp',
-  forwardEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
+  forwardEnv: ['CODEX_CONFIG'],
+  credentialEnv: ['CODEX_API_KEY', 'OPENAI_API_KEY'],
+  credentialBrokering: ({ env }) => {
+    const credential = env.CODEX_API_KEY ?? env.OPENAI_API_KEY;
+    if (!credential) return [];
+    const config =
+      env.CODEX_CONFIG == null
+        ? undefined
+        : (secureJsonParse(env.CODEX_CONFIG) as {
+            model_provider?: string;
+            model_providers?: Record<string, { base_url?: string }>;
+          });
+    const baseUrl =
+      config?.model_providers?.[config.model_provider ?? '']?.base_url ??
+      'https://api.openai.com/v1';
+    return [
+      createCredentialRequestTransformation({
+        baseUrl,
+        headers: { Authorization: `Bearer ${credential}` },
+      }),
+    ];
+  },
   instructionMapping: {
     type: 'launch-env-json',
     variable: 'CODEX_CONFIG',
@@ -164583,6 +164749,7 @@ advertise ACP session modes for its permission behavior, so this profile omits
 
 ```ts
 import { createACP } from '@ai-sdk/harness-acp';
+import { createCredentialRequestTransformation } from '@ai-sdk/harness/utils';
 
 export const grokBuildACPHarness = createACP({
   harnessId: 'acp-grok-build',
@@ -164596,7 +164763,16 @@ export const grokBuildACPHarness = createACP({
   },
   executable: 'grok',
   args: ['agent', 'stdio'],
-  forwardEnv: ['XAI_API_KEY'],
+  credentialEnv: ['XAI_API_KEY'],
+  credentialBrokering: ({ env }) => {
+    if (!env.XAI_API_KEY) return [];
+    return [
+      createCredentialRequestTransformation({
+        baseUrl: env.GROK_XAI_API_BASE_URL ?? 'https://api.x.ai/v1',
+        headers: { Authorization: `Bearer ${env.XAI_API_KEY}` },
+      }),
+    ];
+  },
   instructionMapping: {
     type: 'session-meta',
     path: ['rules'],
@@ -164753,8 +164929,10 @@ details cannot be overridden through `createGrokBuild()`.
 
 ## Authentication
 
-By default, authentication is resolved from the host environment and forwarded
-to the Grok Build process in the sandbox.
+By default, authentication is resolved from the host environment. When the
+sandbox supports additive request transformations, Grok Build receives a
+placeholder and the adapter injects the credential into matching outbound
+requests. Other sandboxes retain direct credential forwarding.
 
 Supported environment variables:
 
@@ -164763,8 +164941,8 @@ Supported environment variables:
 - `AI_GATEWAY_BASE_URL`
 - `XAI_API_KEY`
 
-With direct authentication, the adapter forwards `XAI_API_KEY`. With AI
-Gateway, it supplies the Gateway credential as `XAI_API_KEY`, maps the Gateway
+With direct authentication, the adapter uses `XAI_API_KEY`. With AI Gateway,
+it supplies the Gateway credential as `XAI_API_KEY`, maps the Gateway
 base URL ending in `/v1` to `GROK_XAI_API_BASE_URL` and
 `GROK_MODELS_BASE_URL`, and sets `GROK_CLIENT_NAME` and
 `GROK_CLIENT_VERSION` for client attribution.
@@ -164832,6 +165010,193 @@ safe built-in operations internally without sending a permission request.
 - [Agent Client Protocol](/providers/ai-sdk-harnesses/acp)
 
 ---
+title: Cline
+description: Learn how to use the Cline harness adapter.
+---
+
+# Cline Harness
+
+The Cline harness adapter connects `HarnessAgent` to the
+[Cline SDK](https://docs.cline.bot/sdk/overview) agent runtime
+(`@cline/agents`). The runtime runs as an in-process Node library on the host
+— no bridge — while its built-in tools execute against the session sandbox,
+so the workspace the model reasons about lives entirely inside the sandbox.
+
+<Note>
+  Harness packages are **experimental**. Expect breaking changes between
+  releases as this early API gets further refined.
+</Note>
+
+## Setup
+
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-cline @ai-sdk/sandbox-vercel" />
+
+The Cline runtime has no bootstrap step: nothing is installed inside the
+sandbox when a session starts.
+
+## Import
+
+```ts
+import { cline, createCline } from '@ai-sdk/harness-cline';
+```
+
+`cline` is equivalent to `createCline()` with its default configuration.
+
+## Basic Usage
+
+```ts
+import { HarnessAgent } from '@ai-sdk/harness/agent';
+import { cline } from '@ai-sdk/harness-cline';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+
+const agent = new HarnessAgent({
+  harness: cline,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+  }),
+});
+
+const session = await agent.createSession();
+
+let exitCode = 0;
+try {
+  const result = await agent.stream({
+    session,
+    prompt: 'Check the test failures and fix the production code.',
+  });
+
+  for await (const part of result.stream) {
+    if (part.type === 'text-delta') {
+      process.stdout.write(part.text);
+    }
+  }
+} catch (err) {
+  exitCode = 1;
+  console.error(err);
+} finally {
+  await session.destroy();
+  process.exit(exitCode);
+}
+```
+
+To use this agent, ensure environment variables include `VERCEL_OIDC_TOKEN`
+for Vercel Sandbox. The same token authenticates model calls through AI
+Gateway when the default `auto` authentication mode is used.
+
+## Adapter Settings
+
+Use `createCline()` to configure the runtime:
+
+```ts
+const harness = createCline({
+  auth: 'direct',
+  modelId: 'anthropic/claude-opus-5',
+});
+```
+
+Settings:
+
+- `auth`: authentication mode: `auto`, `direct`, or `ai-gateway`.
+- `mcpServers`: MCP server definitions keyed by server name.
+- `providerId`: Cline LLM provider id (e.g. `anthropic`, `openai`, `gemini`).
+  When omitted, direct authentication uses the Cline backend. Explicit custom
+  providers apply only to direct authentication.
+- `modelId`: model id for the configured provider. When omitted, the Cline SDK
+  selects the provider's default model.
+- `apiKey`: provider API key. When omitted, the Cline gateway falls back to
+  the configured provider's environment variable.
+- `baseUrl`: custom provider endpoint.
+- `headers`: extra headers sent to the provider.
+- `reasoningEffort`: reasoning effort for reasoning-capable models. Supports
+  `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. `none`
+  disables reasoning; every other value enables reasoning at that effort.
+  When omitted, the Cline SDK selects the reasoning behavior.
+- `maxIterations`: safety cap on agent-loop iterations per turn.
+
+To provide additional operating guidance, use the `instructions` setting on
+`HarnessAgent`. The adapter appends it to Cline's system prompt.
+
+## Authentication
+
+The `auth` setting selects which credentials Cline reads from the host
+environment:
+
+- `auto` (default): use AI Gateway credentials when available, otherwise use
+  direct Cline credentials.
+- `direct`: use `CLINE_API_KEY` and the optional `CLINE_API_BASE_URL`.
+- `ai-gateway`: use `AI_GATEWAY_API_KEY` or `VERCEL_OIDC_TOKEN` and the
+  optional `AI_GATEWAY_BASE_URL`.
+
+```ts
+const harness = createCline({ auth: 'ai-gateway' });
+```
+
+`CLINE_API_BASE_URL` is Cline's backend root URL; the SDK's `/api/v1` provider
+path is appended to it. For AI Gateway, the adapter instead overrides Cline's
+in-process provider configuration with the Gateway credential and its `/v1`
+endpoint. Direct Cline credentials are never used as a fallback in explicit
+Gateway mode.
+
+## Sandbox
+
+The Cline runtime runs on the host and does not need sandbox ports, so any
+network sandbox works — including port-less configurations:
+
+```ts
+const sandbox = createVercelSandbox({
+  runtime: 'node24',
+});
+```
+
+All built-in tools operate on the sandbox filesystem through the sandbox
+session's file and exec surface.
+
+## Built-in Tools
+
+The adapter exposes these built-ins through `agent.tools`:
+
+- `read`
+- `write`
+- `edit`
+- `bash`
+- `grep`
+- `glob`
+- `ls`
+
+All built-ins are sandbox-backed: `bash` runs in the session working
+directory, and relative file paths resolve against it.
+
+Cline supports built-in tool approval requests when `permissionMode` is
+`allow-reads` or `allow-edits`, native built-in tool filtering via
+`activeTools`/`inactiveTools`, and host-executed AI SDK tool approvals.
+
+## Skills
+
+Harness-provided skills are written into the sandbox HOME
+(`~/.agents/skills/<name>/SKILL.md`) and advertised to the model through a
+system prompt section; the model loads a skill's full content with the `read`
+tool when the task calls for it.
+
+## Session Lifecycle
+
+Conversation state lives in the host-process runtime. On `detach`/`stop` the
+adapter persists the conversation history into the sandbox workspace
+(`.cline-harness/history.json` in the session working directory), so a future
+process can resume the session after the sandbox provider reattaches. Because
+the runtime is host-resident, suspended turns are rerun-continued from the
+persisted history rather than losslessly attached (same trade-off as the
+[Pi adapter](/providers/ai-sdk-harnesses/pi)).
+
+Manual compaction (`doCompact`) is not supported by the standalone Cline
+runtime and throws `HarnessCapabilityUnsupportedError`.
+
+## Related
+
+- [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent)
+- [Harness tools](/docs/ai-sdk-harnesses/tools)
+- [Harness adapters](/docs/ai-sdk-harnesses/harness-adapters)
+
+---
 title: AI SDK Harnesses
 description: Learn how to use AI SDK harness adapters.
 ---
@@ -164848,6 +165213,11 @@ and response primitives.
       title: 'Claude Code',
       description: 'Use Claude Code through the AI SDK harness abstraction.',
       href: '/providers/ai-sdk-harnesses/claude-code',
+    },
+    {
+      title: 'Cline',
+      description: 'Use the Cline SDK through the AI SDK harness abstraction.',
+      href: '/providers/ai-sdk-harnesses/cline',
     },
     {
       title: 'Codex',

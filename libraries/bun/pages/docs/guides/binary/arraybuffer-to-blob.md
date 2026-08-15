@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/binary/arraybuffer-to-blob
 path: docs/guides/binary/arraybuffer-to-blob
 ---
 
-A [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) can be constructed from an array of "chunks", where each chunk is a string, binary data structure, or another `Blob`.
+You can construct a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) from an array of "chunks", where each chunk is a string, binary data structure, or another `Blob`.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const buf = new ArrayBuffer(64);

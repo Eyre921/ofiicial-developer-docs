@@ -24,6 +24,8 @@ Deepgram’s Numerals feature converts numbers from written format to numerical 
 
 Supported languages include:
 
+* Bulgarian: `bg`
+* Chinese (Cantonese, Traditional): `zh-HK`
 * Danish: `da`, `da-DK`
 * Dutch: `nl`
 * English: `en`, `en-US`, `en-AU`, `en-GB`, `en-NZ`, `en-IN`
@@ -31,6 +33,8 @@ Supported languages include:
 * German: `de`
 * German (Switzerland): `de-CH`
 * Italian: `it`
+* Korean: `ko`, `ko-KR`
+* Malay: `ms`
 * Norwegian: `no`
 * Polish: `pl`
 * Portuguese: `pt`, `pt-BR`, `pt-PT`

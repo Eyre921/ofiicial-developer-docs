@@ -22,7 +22,7 @@ Each request follows four steps. The client sends a bearer token and a message t
 
 The service uses two separate secrets. `CHAT_API_KEY` authenticates the caller, and `TOGETHER_API_KEY` authenticates the server-to-server request to Together AI.
 
-## Prerequisites
+## Requirements
 
 Before you start, make sure you have:
 

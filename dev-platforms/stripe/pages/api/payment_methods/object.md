@@ -176,7 +176,7 @@ Possible enum values:
   If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
 
 - `metadata` (map, nullable)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `mobilepay` (object, nullable)
   If this is a `mobilepay` PaymentMethod, this hash contains details about the MobilePay payment method.
@@ -221,7 +221,7 @@ Possible enum values:
   If this is a `promptpay` PaymentMethod, this hash contains details about the PromptPay payment method.
 
 - [`radar_options`](https://docs.stripe.com/api/payment_methods/object.md?query=radar_options) (object, nullable)
-  Options to configure Radar. See [Radar Session](https://docs.stripe.com/docs/radar/radar-session.md) for more information.
+  Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session.md) for more information.
 
 - `revolut_pay` (object, nullable)
   If this is a `revolut_pay` PaymentMethod, this hash contains details about the Revolut Pay payment method.
@@ -254,178 +254,178 @@ Possible enum values:
   The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
 Possible enum values:
   - `acss_debit`
-    [Pre-authorized debit payments](https://docs.stripe.com/docs/payments/acss-debit.md) are used to debit Canadian bank accounts through the Automated Clearing Settlement System (ACSS).
+    [Pre-authorized debit payments](https://docs.stripe.com/payments/acss-debit.md) are used to debit Canadian bank accounts through the Automated Clearing Settlement System (ACSS).
 
   - `affirm`
-    [Affirm](https://docs.stripe.com/docs/payments/affirm.md) is a buy now, pay later payment method in the US.
+    [Affirm](https://docs.stripe.com/payments/affirm.md) is a buy now, pay later payment method in the US.
 
   - `afterpay_clearpay`
-    [Afterpay / Clearpay](https://docs.stripe.com/docs/payments/afterpay-clearpay.md) is a buy now, pay later payment method used in Australia, Canada, France, New Zealand, Spain, the UK, and the US.
+    [Afterpay / Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md) is a buy now, pay later payment method used in Australia, Canada, France, New Zealand, Spain, the UK, and the US.
 
   - `alipay`
-    [Alipay](https://docs.stripe.com/docs/payments/alipay.md) is a digital wallet payment method used in China.
+    [Alipay](https://docs.stripe.com/payments/alipay.md) is a digital wallet payment method used in China.
 
   - `alma`
-    [Alma](https://docs.stripe.com/docs/payments/alma.md) is a Buy Now, Pay Later payment method that lets customers pay in 2, 3, or 4 installments.
+    [Alma](https://docs.stripe.com/payments/alma.md) is a Buy Now, Pay Later payment method that lets customers pay in 2, 3, or 4 installments.
 
   - `amazon_pay`
-    [Amazon Pay](https://docs.stripe.com/docs/payments/amazon-pay.md) is a Wallet payment method that lets hundreds of millions of Amazon customers pay their way, every day.
+    [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) is a Wallet payment method that lets hundreds of millions of Amazon customers pay their way, every day.
 
   - `au_becs_debit`
-    [BECS Direct Debit](https://docs.stripe.com/docs/payments/au-becs-debit.md) is used to debit Australian bank accounts through the Bulk Electronic Clearing System (BECS).
+    [BECS Direct Debit](https://docs.stripe.com/payments/au-becs-debit.md) is used to debit Australian bank accounts through the Bulk Electronic Clearing System (BECS).
 
   - `bacs_debit`
-    [Bacs Direct Debit](https://docs.stripe.com/docs/payments/payment-methods/bacs-debit.md) is used to debit UK bank accounts.
+    [Bacs Direct Debit](https://docs.stripe.com/payments/payment-methods/bacs-debit.md) is used to debit UK bank accounts.
 
   - `bancontact`
-    [Bancontact](https://docs.stripe.com/docs/payments/bancontact.md) is a bank redirect payment method used in Belgium.
+    [Bancontact](https://docs.stripe.com/payments/bancontact.md) is a bank redirect payment method used in Belgium.
 
   - `billie`
-    [Billie](https://docs.stripe.com/docs/payments/billie.md) is a payment method.
+    [Billie](https://docs.stripe.com/payments/billie.md) is a payment method.
 
   - `bizum`
-    [Bizum](https://docs.stripe.com/docs/payments/bizum.md) is a payment method.
+    [Bizum](https://docs.stripe.com/payments/bizum.md) is a payment method.
 
   - `blik`
-    [BLIK](https://docs.stripe.com/docs/payments/blik.md) is a single-use payment method common in Poland.
+    [BLIK](https://docs.stripe.com/payments/blik.md) is a single-use payment method common in Poland.
 
   - `boleto`
-    [Boleto](https://docs.stripe.com/docs/payments/boleto.md) is a voucher-based payment method used in Brazil.
+    [Boleto](https://docs.stripe.com/payments/boleto.md) is a voucher-based payment method used in Brazil.
 
   - `card`
-    [Card payments](https://docs.stripe.com/docs/payments/payment-methods/overview.md#cards) are supported through many networks, card brands, and select Link funding sources (Link is also known as Onelink in the UK).
+    [Card payments](https://docs.stripe.com/payments/payment-methods/overview.md#cards) are supported through many networks, card brands, and select Link funding sources (Link is also known as Onelink in the UK).
 
   - `card_present`
-    [Stripe Terminal](https://docs.stripe.com/docs/terminal/payments/collect-card-payment.md) is used to collect in-person card payments.
+    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) is used to collect in-person card payments.
 
   - `cashapp`
-    [Cash App Pay](https://docs.stripe.com/docs/payments/cash-app-pay.md) enables customers to frictionlessly authenticate payments in the Cash App using their stored balance or linked card.
+    [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) enables customers to frictionlessly authenticate payments in the Cash App using their stored balance or linked card.
 
   - `crypto`
-    [Stablecoin payments](https://docs.stripe.com/docs/payments/stablecoin-payments.md) enable customers to pay in stablecoins like USDC from 100s of wallets including Phantom and Metamask.
+    [Stablecoin payments](https://docs.stripe.com/payments/stablecoin-payments.md) enable customers to pay in stablecoins like USDC from 100s of wallets including Phantom and Metamask.
 
   - `custom`
     Custom payment methods are user-defined payment methods that Stripe doesn’t process. You can’t use them in PaymentIntents or SetupIntents.
 
   - `customer_balance`
-    Uses a customer’s [cash balance](https://docs.stripe.com/docs/payments/customer-balance.md) for the payment.
+    Uses a customer’s [cash balance](https://docs.stripe.com/payments/customer-balance.md) for the payment.
 
   - `eps`
-    [EPS](https://docs.stripe.com/docs/payments/eps.md) is an Austria-based bank redirect payment method.
+    [EPS](https://docs.stripe.com/payments/eps.md) is an Austria-based bank redirect payment method.
 
   - `fpx`
-    [FPX](https://docs.stripe.com/docs/payments/fpx.md) is a Malaysia-based bank redirect payment method.
+    [FPX](https://docs.stripe.com/payments/fpx.md) is a Malaysia-based bank redirect payment method.
 
   - `giropay`
-    [giropay](https://docs.stripe.com/docs/payments/giropay.md) is a German bank redirect payment method.
+    [giropay](https://docs.stripe.com/payments/giropay.md) is a German bank redirect payment method.
 
   - `grabpay`
-    [GrabPay](https://docs.stripe.com/docs/payments/grabpay.md) is a digital wallet payment method used in Southeast Asia.
+    [GrabPay](https://docs.stripe.com/payments/grabpay.md) is a digital wallet payment method used in Southeast Asia.
 
   - `ideal`
-    [iDEAL](https://docs.stripe.com/docs/payments/ideal.md) is a Netherlands-based bank redirect payment method.
+    [iDEAL](https://docs.stripe.com/payments/ideal.md) is a Netherlands-based bank redirect payment method.
 
   - `interac_present`
-    [Stripe Terminal](https://docs.stripe.com/docs/terminal/payments/collect-card-payment.md) accepts [Interac](https://docs.stripe.com/docs/terminal/payments/regional.md?integration-country=CA#interac-payments) debit cards for in-person payments in Canada.
+    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) accepts [Interac](https://docs.stripe.com/terminal/payments/regional.md?integration-country=CA#interac-payments) debit cards for in-person payments in Canada.
 
   - `kakao_pay`
-    [Kakao Pay](https://docs.stripe.com/docs/payments/kakao-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
+    [Kakao Pay](https://docs.stripe.com/payments/kakao-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
 
   - `klarna`
-    [Klarna](https://docs.stripe.com/docs/payments/klarna.md) is a global buy now, pay later payment method.
+    [Klarna](https://docs.stripe.com/payments/klarna.md) is a global buy now, pay later payment method.
 
   - `konbini`
-    [Konbini](https://docs.stripe.com/docs/payments/konbini.md) is a cash-based voucher payment method used in Japan.
+    [Konbini](https://docs.stripe.com/payments/konbini.md) is a cash-based voucher payment method used in Japan.
 
   - `kr_card`
-    [Korean cards](https://docs.stripe.com/docs/payments/kr-card/accept-a-payment.md) enables customers to accept local credit and debit cards in South Korea.
+    [Korean cards](https://docs.stripe.com/payments/kr-card/accept-a-payment.md) enables customers to accept local credit and debit cards in South Korea.
 
   - `link`
-    [Link (also known as Onelink in the UK)](https://docs.stripe.com/docs/payments/link.md) allows customers to pay with their saved payment details.
+    [Link (also known as Onelink in the UK)](https://docs.stripe.com/payments/link.md) allows customers to pay with their saved payment details.
 
   - `mb_way`
     MB WAY is a payment method.
 
   - `mobilepay`
-    [MobilePay](https://docs.stripe.com/docs/payments/mobilepay.md) is a Nordic card-passthrough wallet payment method where customers authorize the payment in the MobilePay application.
+    [MobilePay](https://docs.stripe.com/payments/mobilepay.md) is a Nordic card-passthrough wallet payment method where customers authorize the payment in the MobilePay application.
 
   - `multibanco`
-    [Multibanco](https://docs.stripe.com/docs/payments/multibanco.md) is a voucher payment method
+    [Multibanco](https://docs.stripe.com/payments/multibanco.md) is a voucher payment method
 
   - `naver_pay`
-    [Naver Pay](https://docs.stripe.com/docs/payments/naver-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
+    [Naver Pay](https://docs.stripe.com/payments/naver-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
 
   - `nz_bank_account`
-    [New Zealand BECS Direct Debit](https://docs.stripe.com/docs/payments/nz-bank-account.md) is used to debit New Zealand bank accounts through the Bulk Electronic Clearing System (BECS).
+    [New Zealand BECS Direct Debit](https://docs.stripe.com/payments/nz-bank-account.md) is used to debit New Zealand bank accounts through the Bulk Electronic Clearing System (BECS).
 
   - `oxxo`
-    [OXXO](https://docs.stripe.com/docs/payments/oxxo.md) is a cash-based voucher payment method used in Mexico.
+    [OXXO](https://docs.stripe.com/payments/oxxo.md) is a cash-based voucher payment method used in Mexico.
 
   - `p24`
-    [Przelewy24](https://docs.stripe.com/docs/payments/p24.md) is a bank redirect payment method used in Poland.
+    [Przelewy24](https://docs.stripe.com/payments/p24.md) is a bank redirect payment method used in Poland.
 
   - `pay_by_bank`
-    [Pay By Bank](https://docs.stripe.com/docs/payments/pay-by-bank.md) is an open banking payment method in the UK.
+    [Pay By Bank](https://docs.stripe.com/payments/pay-by-bank.md) is an open banking payment method in the UK.
 
   - `payco`
-    [PAYCO](https://docs.stripe.com/docs/payments/payco/accept-a-payment.md) is a digital wallet payment method used in South Korea.
+    [PAYCO](https://docs.stripe.com/payments/payco/accept-a-payment.md) is a digital wallet payment method used in South Korea.
 
   - `paynow`
-    [PayNow](https://docs.stripe.com/docs/payments/paynow.md) is a QR code payment method used in Singapore.
+    [PayNow](https://docs.stripe.com/payments/paynow.md) is a QR code payment method used in Singapore.
 
   - `paypal`
-    [PayPal](https://docs.stripe.com/docs/payments/paypal.md) is an online wallet and redirect payment method commonly used in Europe.
+    [PayPal](https://docs.stripe.com/payments/paypal.md) is an online wallet and redirect payment method commonly used in Europe.
 
   - `paypay`
-    [PayPay](https://docs.stripe.com/docs/payments/paypay.md) is a payment method.
+    [PayPay](https://docs.stripe.com/payments/paypay.md) is a payment method.
 
   - `payto`
-    [PayTo](https://docs.stripe.com/docs/payments/payto.md) is a real time payment method
+    [PayTo](https://docs.stripe.com/payments/payto.md) is a real time payment method
 
   - `pix`
-    [Pix](https://docs.stripe.com/docs/payments/pix.md) is an instant bank transfer payment method in Brazil.
+    [Pix](https://docs.stripe.com/payments/pix.md) is an instant bank transfer payment method in Brazil.
 
   - `promptpay`
-    [PromptPay](https://docs.stripe.com/docs/payments/promptpay.md) is an instant funds transfer service popular in Thailand.
+    [PromptPay](https://docs.stripe.com/payments/promptpay.md) is an instant funds transfer service popular in Thailand.
 
   - `revolut_pay`
-    [Revolut Pay](https://docs.stripe.com/docs/payments/revolut-pay.md) is a digital wallet payment method used in the United Kingdom.
+    [Revolut Pay](https://docs.stripe.com/payments/revolut-pay.md) is a digital wallet payment method used in the United Kingdom.
 
   - `samsung_pay`
-    [Samsung Pay](https://docs.stripe.com/docs/payments/samsung-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
+    [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
 
   - `satispay`
-    [Satispay](https://docs.stripe.com/docs/payments/satispay.md) is a payment method.
+    [Satispay](https://docs.stripe.com/payments/satispay.md) is a payment method.
 
   - `scalapay`
     Scalapay is a payment method.
 
   - `sepa_debit`
-    [SEPA Direct Debit](https://docs.stripe.com/docs/payments/sepa-debit.md) is used to debit bank accounts within the Single Euro Payments Area (SEPA) region.
+    [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) is used to debit bank accounts within the Single Euro Payments Area (SEPA) region.
 
   - `sofort`
-    [Sofort](https://docs.stripe.com/docs/payments/sofort.md) is a bank redirect payment method used in Europe.
+    [Sofort](https://docs.stripe.com/payments/sofort.md) is a bank redirect payment method used in Europe.
 
   - `sunbit`
-    [Sunbit](https://docs.stripe.com/docs/payments/sunbit.md) is a payment method.
+    [Sunbit](https://docs.stripe.com/payments/sunbit.md) is a payment method.
 
   - `swish`
-    [Swish](https://docs.stripe.com/docs/payments/swish.md) is a Swedish wallet payment method where customers authorize the payment in the Swish application.
+    [Swish](https://docs.stripe.com/payments/swish.md) is a Swedish wallet payment method where customers authorize the payment in the Swish application.
 
   - `twint`
-    [TWINT](https://docs.stripe.com/docs/payments/twint.md) is a single-use payment method used in Switzerland.
+    [TWINT](https://docs.stripe.com/payments/twint.md) is a single-use payment method used in Switzerland.
 
   - `upi`
-    [UPI](https://docs.stripe.com/docs/payments/upi.md) is an instant real-time payment system in India.
+    [UPI](https://docs.stripe.com/payments/upi.md) is an instant real-time payment system in India.
 
   - `us_bank_account`
-    [ACH Direct Debit](https://docs.stripe.com/docs/payments/ach-direct-debit.md) is used to debit US bank accounts through the Automated Clearing House (ACH) payments system.
+    [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md) is used to debit US bank accounts through the Automated Clearing House (ACH) payments system.
 
   - `wechat_pay`
-    [WeChat Pay](https://docs.stripe.com/docs/payments/wechat-pay.md) is a digital wallet payment method based in China.
+    [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md) is a digital wallet payment method based in China.
 
   - `zip`
-    [Zip](https://docs.stripe.com/docs/payments/zip.md) is a Buy now, pay later Payment Method
+    [Zip](https://docs.stripe.com/payments/zip.md) is a Buy now, pay later Payment Method
 
 - [`upi`](https://docs.stripe.com/api/payment_methods/object.md?query=upi) (object, nullable)
   If this is a `upi` PaymentMethod, this hash contains details about the UPI payment method.

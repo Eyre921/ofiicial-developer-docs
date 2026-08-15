@@ -12,7 +12,7 @@ path: docs/guides/util/escape-html
 * `<` becomes `"&lt;"`
 * `>` becomes `"&gt;"`
 
-This function is optimized for large input. Non-string values are converted to a string before escaping.
+This function is optimized for large input. It converts non-string values to a string before escaping them.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 Bun.escapeHTML("<script>alert('Hello World!')</script>");

@@ -18,7 +18,7 @@ This adds the package to `devDependencies` in `package.json`.
 ```json theme={"theme":{"light":"github-light","dark":"dracula"}}
 {
   "devDependencies": {
-    "zod": "^3.0.0" // [!code ++]
+    "zod": "^4.0.0" // [!code ++]
   }
 }
 ```

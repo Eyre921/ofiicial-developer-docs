@@ -9,7 +9,7 @@ n8n is a fair-code licensed workflow automation tool that combines AI capabiliti
 
 # Choose how to use n8n
 
-Choose between our Cloud service, or self-hosting options. Learn more about licenses and n8n payment plans.
+Choose between our n8n Cloud service, or self-hosting options. Learn more about licenses and n8n payment plans.
 
 n8n offers two primary deployment options: **n8n Cloud** (fully-managed) and **Self-hosted** (deploy on your own infrastructure). Choosing involves two decisions:
 
@@ -18,7 +18,7 @@ n8n offers two primary deployment options: **n8n Cloud** (fully-managed) and **S
 
 This page helps with both.
 
-<figure><picture><source srcset="/files/d4qnqcLm6Fc3igPAFJR7" media="(prefers-color-scheme: dark)"><img src="/files/zsZQ0zzJyptPmDV5uR3j" alt="Decision flowchart: n8n Cloud offers the Starter, Pro, and Enterprise plans; self-hosted offers the Community, registered Community, Business, and Enterprise editions"></picture><figcaption><p>Choosing your n8n deployment option, plan, and edition</p></figcaption></figure>
+<figure><picture><source srcset="/files/d4qnqcLm6Fc3igPAFJR7" media="(prefers-color-scheme: dark)"><img src="/files/zsZQ0zzJyptPmDV5uR3j" alt="Decision flowchart: n8n Cloud offers the Starter, Pro, and Enterprise plans; self-hosted offers the Community, Registered Community, Business, and Enterprise editions"></picture><figcaption><p>Choosing your n8n deployment option, plan, and edition</p></figcaption></figure>
 
 {% hint style="info" %}
 **Want to try n8n quickly?**
@@ -32,17 +32,17 @@ This page helps with both.
 
 Use this guide to choose a deployment option:
 
-| Your situation                                               | Recommended option                  | Reason                                            |
-| ------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------- |
-| Want to start quickly                                        | **n8n Cloud**                       | No installation needed                            |
-| Don't have technical expertise                               | **n8n Cloud**                       | Fully managed, no setup or maintenance required   |
-| Need production-ready deployment                             | **Both options work**               | Both Cloud and self-hosted support production use |
-| Don't want to manage infrastructure                          | **n8n Cloud**                       | n8n handles hosting, updates, and scaling         |
-| Need full control over deployment                            | **Self-hosted**                     | You control the environment and configuration     |
-| Have customized use cases                                    | **Self-hosted**                     | Full control over deployment and configuration    |
-| Need enterprise features (SSO, environments, projects, etc.) | **Both options work**               | Enterprise plans (paid) are available with both   |
-| Have infrastructure and technical resources                  | **Self-hosted**                     | You can manage your own deployment                |
-| Want to run n8n for free                                     | **Self-hosted (Community edition)** | Free with almost the complete feature set         |
+| Your situation                                               | Recommended option                  | Reason                                                |
+| ------------------------------------------------------------ | ----------------------------------- | ----------------------------------------------------- |
+| Want to start quickly                                        | **n8n Cloud**                       | No installation needed                                |
+| Don't have technical expertise                               | **n8n Cloud**                       | Fully managed, no setup or maintenance required       |
+| Need production-ready deployment                             | **Both options work**               | Both n8n Cloud and self-hosted support production use |
+| Don't want to manage infrastructure                          | **n8n Cloud**                       | n8n handles hosting, updates, and scaling             |
+| Need full control over deployment                            | **Self-hosted**                     | You control the environment and configuration         |
+| Have customized use cases                                    | **Self-hosted**                     | Full control over deployment and configuration        |
+| Need enterprise features (SSO, environments, projects, etc.) | **Both options work**               | Enterprise plans (paid) are available with both       |
+| Have infrastructure and technical resources                  | **Self-hosted**                     | You can manage your own deployment                    |
+| Want to run n8n for free                                     | **Self-hosted (Community edition)** | Free with almost the complete feature set             |
 
 For specific feature availability across different plans, see the [pricing page](https://n8n.io/pricing/).
 
@@ -84,7 +84,7 @@ Every plan runs on the same underlying product with different features, usage li
 
 | Plan           | Designed for                                                                      |
 | -------------- | --------------------------------------------------------------------------------- |
-| **Free trial** | Trying Cloud with Pro features for 14 days                                        |
+| **Free trial** | Trying n8n Cloud with Pro features for 14 days                                    |
 | **Starter**    | Individuals and small projects getting started                                    |
 | **Pro**        | Power users and small teams that need higher limits, admin accounts, and insights |
 | **Enterprise** | Organizations that need advanced security, scaling, and dedicated support         |
@@ -729,16 +729,16 @@ Outbound traffic may appear to originate from any of:
 
 # Manage your data
 
-How to manage your data on Cloud.
+How to manage your data on n8n Cloud.
 
-There are two concerns when managing data on Cloud:
+There are two concerns when managing data on n8n Cloud:
 
 * Memory usage: complex workflows processing large amounts of data can exceed n8n's memory limits. If this happens, the instance can crash and become inaccessible.
 * Data storage: depending on your execution settings and volume, your n8n database can grow in size and run out of storage.
 
 To avoid these issues, n8n recommends that you build your workflows with memory efficiency in mind, and don't save unnecessary data
 
-## Memory limits on each Cloud plan <a href="#memory-limits-on-each-cloud-plan" id="memory-limits-on-each-cloud-plan"></a>
+## Memory limits on each n8n Cloud plan <a href="#memory-limits-on-each-cloud-plan" id="memory-limits-on-each-cloud-plan"></a>
 
 Current plans:
 
@@ -772,7 +772,7 @@ Note that n8n itself consumes memory to run. On average, the software alone uses
 
 Interactions with the UI also consume memory. Playing around with the workflow UI while it performs heavy executions could also push the memory capacity over the limit.
 
-## How to manage execution data on Cloud <a href="#how-to-manage-execution-data-on-cloud" id="how-to-manage-execution-data-on-cloud"></a>
+## How to manage execution data on n8n Cloud <a href="#how-to-manage-execution-data-on-cloud" id="how-to-manage-execution-data-on-cloud"></a>
 
 Execution data includes node data, parameters, variables, execution context, and binary data references. It's text-based.
 
@@ -794,11 +794,11 @@ In your workflow settings:
 2. Select **Settings**. n8n opens the **Workflow settings** modal.
 3. Change **Save successful production executions** to **Do not save**.
 
-## Cloud data pruning and out of memory incident prevention <a href="#cloud-data-pruning-and-out-of-memory-incident-prevention" id="cloud-data-pruning-and-out-of-memory-incident-prevention"></a>
+## n8n Cloud data pruning and out of memory incident prevention <a href="#cloud-data-pruning-and-out-of-memory-incident-prevention" id="cloud-data-pruning-and-out-of-memory-incident-prevention"></a>
 
 ### Automatic data pruning <a href="#automatic-data-pruning" id="automatic-data-pruning"></a>
 
-n8n automatically prunes execution logs after a certain time or once you reach the max storage limit, whichever comes first. The pruning always happens from oldest to newest and the limits depend on your Could plan:
+n8n automatically prunes execution logs after a certain time or once you reach the max storage limit, whichever comes first. The pruning always happens from oldest to newest and the limits depend on your n8n Cloud plan:
 
 * Start and Starter plans: max 2500 executions saved and 7 days execution log retention;
 * Pro plans: max 25000 executions saved and 30 days execution log retention;
@@ -854,7 +854,7 @@ You can view the number of active executions and your plan's concurrency limit a
 Some other details about concurrency to keep in mind:
 
 * Concurrency control applies only to production executions: those started from a webhook or trigger node. It doesn't apply to any other kinds, such as manual executions, sub-workflow executions, or error executions.
-* [Test evaluations](#user-content-fn-1)[^1] don't count towards production concurrency limits. They use a separate per-plan limit for how many test cases can run in parallel within a single test run: Community and Pro 1 (sequential), Business 3, Enterprise 5. You can adjust the value for a given run from the **Run Test** popover. Refer to [Metric-based evaluations](/build/integrate-ai/test-and-improve-ai-workflows/use-metrics-to-measure-quality#run-test-cases-in-parallel) for details.
+* [Test evaluations](#user-content-fn-1)[^1] don't count towards production concurrency limits. They use a separate per-plan limit for how many test cases can run in parallel within a single test run: self-hosted Community and n8n Cloud Pro run 1 (sequential), self-hosted Business runs 3, and Enterprise (both n8n Cloud and self-hosted) runs 5. You can adjust the value for a given run from the **Run Test** popover. Refer to [Metric-based evaluations](/build/integrate-ai/test-and-improve-ai-workflows/use-metrics-to-measure-quality#run-test-cases-in-parallel) for details.
 * You can't retry queued executions. Cancelling or deleting a queued execution also removes it from the queue.
 * On instance startup, n8n resumes queued executions up to the concurrency limit and re-enqueues the rest.
 
@@ -863,7 +863,7 @@ Some other details about concurrency to keep in mind:
 {% hint style="info" %}
 **Feature availability**
 
-Queue mode is available for Cloud Enterprise plans. To enable it, [contact n8n](https://n8n-community.typeform.com/to/y9X2YuGa).
+Queue mode is available for n8n Cloud Enterprise plans. To enable it, [contact n8n](https://n8n-community.typeform.com/to/y9X2YuGa).
 {% endhint %}
 
 Concurrency in queue mode is a separate mechanism from concurrency in regular mode. In queue mode, the concurrency settings determine how many jobs each worker can run in parallel. In regular mode, concurrency limits apply to the entire instance.
@@ -1623,7 +1623,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1654,10 +1654,10 @@ This command creates a volume to store persistent data, downloads the required n
 * Enables [task runners](/deploy/host-n8n/configure-n8n/set-up-task-runners), the recommended way of executing tasks in n8n.
 * Mounts the `n8n_data` volume to the `/home/node/.n8n` directory to persist your data across container restarts.
 
-{% hint style="info" %}
-**`N8N_RUNNERS_ENABLED` is deprecated from version 2.0**
+{% hint style="warning" %}
+**Feature availability**
 
-From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners.
+`N8N_RUNNERS_ENABLED` is deprecated from n8n 2.0. You no longer need to set it. It's still supported in n8n 1.x, where you must set it to `true` to enable task runners.
 {% endhint %}
 
 Once running, you can access n8n by opening: <http://localhost:5678>
@@ -1858,7 +1858,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2222,7 +2222,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2312,7 +2312,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2668,7 +2668,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2861,7 +2861,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3055,7 +3055,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3324,7 +3324,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -4584,7 +4584,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.5 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.2
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -4985,7 +4985,7 @@ Set up and configure databases with environment variables for your self-hosted n
 You can add `_FILE` to individual variables to provide their configuration in a separate file. Refer to [Keeping sensitive data in separate files](/deploy/host-n8n/configure-n8n/basic-configuration#keeping-sensitive-data-in-separate-files) for more details.
 {% endhint %}
 
-By default, n8n uses SQLite. n8n also supports PostgreSQL. n8n [deprecated support for MySQL and MariaDB](/changelog/v10-migration-guide#mysql-and-mariadb) in v1.0.
+By default, n8n uses SQLite. n8n also supports PostgreSQL. n8n [deprecated support for MySQL and MariaDB](/changelog/v10-migration-guide#mysql-and-mariadb) from n8n 1.0.
 
 This page outlines environment variables to configure your chosen database for your self-hosted n8n instance.
 
@@ -5175,29 +5175,29 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 This page lists environment variables to configure workflow execution settings.
 
-| Variable                                            | Type                                                 | Default                   | Description                                                                                                                                                                                                                                                                                                                                                                            |
-| --------------------------------------------------- | ---------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EXECUTIONS_MODE`                                   | Enum string: `regular`, `queue`                      | `regular`                 | <p>Whether executions should run directly or using queue.<br><br>Refer to <a href="/pages/SDMOrI1swhKfy41uhhwL">Queue mode</a> for more details.</p>                                                                                                                                                                                                                                   |
-| `EXECUTIONS_TIMEOUT`                                | Number                                               | `-1`                      | Sets a default timeout (in seconds) to all workflows after which n8n stops their execution. Users can override this for individual workflows up to the duration set in `EXECUTIONS_TIMEOUT_MAX`. Set `EXECUTIONS_TIMEOUT` to `-1` to disable.                                                                                                                                          |
-| `EXECUTIONS_TIMEOUT_MAX`                            | Number                                               | `3600`                    | The maximum execution time (in seconds) that users can set for an individual workflow.                                                                                                                                                                                                                                                                                                 |
-| `N8N_AI_TIMEOUT_MAX`                                | Number                                               | `3600000`                 | Sets the HTTP request timeout in milliseconds for AI and LLM nodes (such as OpenAI, Anthropic, Mistral, and Ollama). This controls how long n8n waits for responses from AI services before timing out. Useful for slower local AI services or complex prompts that require longer processing time.                                                                                    |
-| `EXECUTIONS_DATA_SAVE_ON_ERROR`                     | Enum string: `all`, `none`                           | `all`                     | Whether n8n saves execution data on error.                                                                                                                                                                                                                                                                                                                                             |
-| `EXECUTIONS_DATA_SAVE_ON_SUCCESS`                   | Enum string: `all`, `none`                           | `all`                     | Whether n8n saves execution data on success.                                                                                                                                                                                                                                                                                                                                           |
-| `EXECUTIONS_DATA_SAVE_ON_PROGRESS`                  | Boolean                                              | `false`                   | Whether to save progress for each node executed (true) or not (false).                                                                                                                                                                                                                                                                                                                 |
-| `EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS`            | Boolean                                              | `true`                    | Whether to save data of executions when started manually.                                                                                                                                                                                                                                                                                                                              |
-| `N8N_EXECUTION_DATA_STORAGE_MODE`                   | Enum string: `database`, `filesystem`, `s3`, `azure` | `database`                | Where n8n stores execution data. The `s3` and `azure` modes require an Enterprise license. Refer to [External data storage](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/external-data-storage) for the related storage variables.                                                                                                                     |
-| `N8N_STORAGE_PATH`                                  | String                                               | `N8N_USER_FOLDER/storage` | Base path for filesystem storage. When `N8N_EXECUTION_DATA_STORAGE_MODE` is `filesystem`, n8n stores execution data here. n8n also uses this path for filesystem binary data.                                                                                                                                                                                                          |
-| `EXECUTIONS_DATA_PRUNE`                             | Boolean                                              | `true`                    | Whether to delete data of past executions on a rolling basis.                                                                                                                                                                                                                                                                                                                          |
-| `EXECUTIONS_DATA_MAX_AGE`                           | Number                                               | `336`                     | The execution age (in hours) before it's deleted.                                                                                                                                                                                                                                                                                                                                      |
-| `EXECUTIONS_DATA_PRUNE_MAX_COUNT`                   | Number                                               | `10000`                   | Maximum number of executions to keep in the database. 0 = no limit                                                                                                                                                                                                                                                                                                                     |
-| `EXECUTIONS_DATA_HARD_DELETE_BUFFER`                | Number                                               | `1`                       | How old (hours) the finished execution data has to be to get hard-deleted. By default, this buffer excludes recent executions as the user may need them while building a workflow.                                                                                                                                                                                                     |
-| `EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL`        | Number                                               | `15`                      | How often (minutes) execution data should be hard-deleted.                                                                                                                                                                                                                                                                                                                             |
-| `EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL`        | Number                                               | `60`                      | How often (minutes) execution data should be soft-deleted.                                                                                                                                                                                                                                                                                                                             |
-| `EXECUTIONS_DATA_MAX_DISPLAY_SIZE`                  | Number                                               | `104857600`               | Maximum size (in bytes) of execution data that n8n loads when displaying an execution (editor, execution detail, and public API). For larger executions, n8n omits the data (shown as "too large to display") to avoid running low-resource instances out of memory. Doesn't affect retrying or resuming executions, which always load the full data. Set to `0` to disable the limit. |
-| `N8N_CONCURRENCY_PRODUCTION_LIMIT`                  | Number                                               | `-1`                      | Max production executions allowed to run concurrently, in both regular and scaling modes. `-1` to disable in regular mode.                                                                                                                                                                                                                                                             |
-| `N8N_CONCURRENCY_EVALUATION_LIMIT`                  | Number                                               | License-tier default      | Max test cases that can run in parallel within a single [evaluation](/build/integrate-ai/test-and-improve-ai-workflows/use-metrics-to-measure-quality#run-test-cases-in-parallel) test run. When unset, the limit follows the license tier (Community/Pro: 1, Business: 3, Enterprise: 5). Setting this overrides the tier default.                                                    |
-| `N8N_WORKFLOW_AUTODEACTIVATION_ENABLED`             | Boolean                                              | `false`                   | Whether workflows are automatically unpublished after repeated crashed executions.                                                                                                                                                                                                                                                                                                     |
-| `N8N_WORKFLOW_AUTODEACTIVATION_MAX_LAST_EXECUTIONS` | Number                                               | `3`                       | Number of crashed executions before unpublishing a workflow.                                                                                                                                                                                                                                                                                                                           |
+| Variable                                            | Type                                                 | Default                   | Description                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------------------------- | ---------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EXECUTIONS_MODE`                                   | Enum string: `regular`, `queue`                      | `regular`                 | <p>Whether executions should run directly or using queue.<br><br>Refer to <a href="/pages/SDMOrI1swhKfy41uhhwL">Queue mode</a> for more details.</p>                                                                                                                                                                                                                                                          |
+| `EXECUTIONS_TIMEOUT`                                | Number                                               | `-1`                      | Sets a default timeout (in seconds) to all workflows after which n8n stops their execution. Users can override this for individual workflows up to the duration set in `EXECUTIONS_TIMEOUT_MAX`. Set `EXECUTIONS_TIMEOUT` to `-1` to disable.                                                                                                                                                                 |
+| `EXECUTIONS_TIMEOUT_MAX`                            | Number                                               | `3600`                    | The maximum execution time (in seconds) that users can set for an individual workflow.                                                                                                                                                                                                                                                                                                                        |
+| `N8N_AI_TIMEOUT_MAX`                                | Number                                               | `3600000`                 | Sets the HTTP request timeout in milliseconds for AI and LLM nodes (such as OpenAI, Anthropic, Mistral, and Ollama). This controls how long n8n waits for responses from AI services before timing out. Useful for slower local AI services or complex prompts that require longer processing time.                                                                                                           |
+| `EXECUTIONS_DATA_SAVE_ON_ERROR`                     | Enum string: `all`, `none`                           | `all`                     | Whether n8n saves execution data on error.                                                                                                                                                                                                                                                                                                                                                                    |
+| `EXECUTIONS_DATA_SAVE_ON_SUCCESS`                   | Enum string: `all`, `none`                           | `all`                     | Whether n8n saves execution data on success.                                                                                                                                                                                                                                                                                                                                                                  |
+| `EXECUTIONS_DATA_SAVE_ON_PROGRESS`                  | Boolean                                              | `false`                   | Whether to save progress for each node executed (true) or not (false).                                                                                                                                                                                                                                                                                                                                        |
+| `EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS`            | Boolean                                              | `true`                    | Whether to save data of executions when started manually.                                                                                                                                                                                                                                                                                                                                                     |
+| `N8N_EXECUTION_DATA_STORAGE_MODE`                   | Enum string: `database`, `filesystem`, `s3`, `azure` | `database`                | Where n8n stores execution data. The `s3` and `azure` modes require an Enterprise license. Refer to [External data storage](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/external-data-storage) for the related storage variables.                                                                                                                                            |
+| `N8N_STORAGE_PATH`                                  | String                                               | `N8N_USER_FOLDER/storage` | Base path for filesystem storage. When `N8N_EXECUTION_DATA_STORAGE_MODE` is `filesystem`, n8n stores execution data here. n8n also uses this path for filesystem binary data.                                                                                                                                                                                                                                 |
+| `EXECUTIONS_DATA_PRUNE`                             | Boolean                                              | `true`                    | Whether to delete data of past executions on a rolling basis.                                                                                                                                                                                                                                                                                                                                                 |
+| `EXECUTIONS_DATA_MAX_AGE`                           | Number                                               | `336`                     | The execution age (in hours) before it's deleted.                                                                                                                                                                                                                                                                                                                                                             |
+| `EXECUTIONS_DATA_PRUNE_MAX_COUNT`                   | Number                                               | `10000`                   | Maximum number of executions to keep in the database. 0 = no limit                                                                                                                                                                                                                                                                                                                                            |
+| `EXECUTIONS_DATA_HARD_DELETE_BUFFER`                | Number                                               | `1`                       | How old (hours) the finished execution data has to be to get hard-deleted. By default, this buffer excludes recent executions as the user may need them while building a workflow.                                                                                                                                                                                                                            |
+| `EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL`        | Number                                               | `15`                      | How often (minutes) execution data should be hard-deleted.                                                                                                                                                                                                                                                                                                                                                    |
+| `EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL`        | Number                                               | `60`                      | How often (minutes) execution data should be soft-deleted.                                                                                                                                                                                                                                                                                                                                                    |
+| `EXECUTIONS_DATA_MAX_DISPLAY_SIZE`                  | Number                                               | `104857600`               | Maximum size (in bytes) of execution data that n8n loads when displaying an execution (editor, execution detail, and public API). For larger executions, n8n omits the data (shown as "too large to display") to avoid running low-resource instances out of memory. Doesn't affect retrying or resuming executions, which always load the full data. Set to `0` to disable the limit.                        |
+| `N8N_CONCURRENCY_PRODUCTION_LIMIT`                  | Number                                               | `-1`                      | Max production executions allowed to run concurrently, in both regular and scaling modes. `-1` to disable in regular mode.                                                                                                                                                                                                                                                                                    |
+| `N8N_CONCURRENCY_EVALUATION_LIMIT`                  | Number                                               | License-tier default      | Max test cases that can run in parallel within a single [evaluation](/build/integrate-ai/test-and-improve-ai-workflows/use-metrics-to-measure-quality#run-test-cases-in-parallel) test run. When unset, the limit follows the license tier: self-hosted Community: 1, n8n Cloud Pro: 1, self-hosted Business: 3, n8n Cloud Enterprise and self-hosted Enterprise: 5. Setting this overrides the tier default. |
+| `N8N_WORKFLOW_AUTODEACTIVATION_ENABLED`             | Boolean                                              | `false`                   | Whether workflows are automatically unpublished after repeated crashed executions.                                                                                                                                                                                                                                                                                                                            |
+| `N8N_WORKFLOW_AUTODEACTIVATION_MAX_LAST_EXECUTIONS` | Number                                               | `3`                       | Number of crashed executions before unpublishing a workflow.                                                                                                                                                                                                                                                                                                                                                  |
 
 
 # Expression engine
@@ -5252,9 +5252,13 @@ Refer to [External storage](/deploy/host-n8n/configure-n8n/scaling/use-external-
 ## Azure Blob Storage <a href="#azure-blob-storage" id="azure-blob-storage"></a>
 
 {% hint style="info" %}
-**Enterprise-tier feature**
+**Feature availability**
 
-You need an [Enterprise license key](/deploy/host-n8n/configure-n8n/manage-your-license) to store execution data or binary data in Azure Blob Storage.
+Storing execution data or binary data in Azure Blob Storage is available on:
+
+* **Self-hosted:** Enterprise
+
+It isn't available on n8n Cloud. Add an [Enterprise license key](/deploy/host-n8n/configure-n8n/manage-your-license) to unlock this feature.
 {% endhint %}
 
 To store execution data in Azure Blob Storage, set `N8N_EXECUTION_DATA_STORAGE_MODE` to `azure`. To store binary data in Azure Blob Storage, set `N8N_DEFAULT_BINARY_DATA_MODE` to `azure` (refer to [External storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage#storing-n8ns-binary-data-in-azure-blob-storage)). A single container can hold both. Configure the variables below; `N8N_EXTERNAL_STORAGE_AZURE_CONTAINER_NAME` is always required.
@@ -5475,7 +5479,9 @@ This page lists the environment variables configuration options for managing nod
 ## Manage installed community packages <a href="#manage-installed-community-packages" id="manage-installed-community-packages"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.21.0**
+**Feature availability**
+
+Managing installed community packages from environment variables is available from n8n 2.21.0.
 {% endhint %}
 
 Pre-provision installed [community packages](/integrations/community-nodes/installation-and-management) from environment variables. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for the `*_MANAGED_BY_ENV` pattern.
@@ -5715,7 +5721,11 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 {% hint style="info" %}
 **Feature availability**
 
-Single sign-on is available on Business and Enterprise plans.
+Single sign-on is available on:
+
+* **Self-hosted:** Business, Enterprise
+
+n8n Cloud Enterprise also supports single sign-on, but not through the environment variables on this page.
 {% endhint %}
 
 Refer to [Set up SSO](/deploy/host-n8n/configure-n8n/security/configure-sso) for in-app setup steps and identity provider guides. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
@@ -5856,7 +5866,7 @@ Unlike the main n8n image, you CANNOT use file-based configuration for secrets i
 
 | Variable                               | Type                                | Default         | Description                                                                                                                                                                                                   |
 | -------------------------------------- | ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_RUNNERS_ENABLED` (**deprecated**) | Boolean                             | `false`         | Are task runners enabled. **Deprecated** from v2.0.                                                                                                                                                           |
+| `N8N_RUNNERS_ENABLED` (**deprecated**) | Boolean                             | `false`         | Are task runners enabled. **Deprecated** from n8n 2.0.                                                                                                                                                        |
 | `N8N_RUNNERS_MODE`                     | Enum string: `internal`, `external` | `internal`      | How to launch and run the task runner. `internal` means n8n will launch a task runner as child process. `external` means an external orchestrator will launch the task runner.                                |
 | `N8N_RUNNERS_AUTH_TOKEN`               | String                              | Random string   | Shared secret used by a task runner to authenticate to n8n. Required when using `external` mode.                                                                                                              |
 | `N8N_RUNNERS_BROKER_PORT`              | Number                              | `5679`          | Port the task broker listens on for task runner connections.                                                                                                                                                  |
@@ -6071,9 +6081,9 @@ Customize the n8n container to work with self signed certificates when connectin
 You can add your own certificate authority (CA) or self-signed certificate to n8n. This means you are able to trust a certain SSL certificate instead of trusting all invalid certificates, which is a potential security risk.
 
 {% hint style="info" %}
-**Added in version 1.42.0**
+**Feature availability**
 
-This feature is available in version 1.42.0 and above.
+You can use your own certificate authority or self-signed certificate starting from n8n 1.42.0.
 {% endhint %}
 
 To use this feature you need to place your certificates in a folder and mount the folder to `/opt/custom-certificates` in the container. The external path that you map to `/opt/custom-certificates` must be writable by the container.
@@ -7378,7 +7388,7 @@ By default, self-hosted installations use **SQLite**. You can optionally configu
 
 n8n Cloud installations use different databases depending on your plan tier:
 
-* **SQLite**: Trial, Starter, and Pro plans, as well as legacy Enterprise plans
+* **SQLite**: Starter, Pro, and legacy Enterprise plans
 * **PostgreSQL**: Enterprise Scaling plans only
 
 ## Shared settings <a href="#shared-settings" id="shared-settings"></a>
@@ -7844,9 +7854,9 @@ n8n unpublish:workflow --all
 ### update:workflow (deprecated) <a href="#updateworkflow-deprecated" id="updateworkflow-deprecated"></a>
 
 {% hint style="warning" %}
-**Deprecated in n8n 2.0**
+**Feature availability**
 
-The `update:workflow` command is deprecated and will be removed. Use [`publish:workflow`](#publish-a-workflow) and [`unpublish:workflow`](#unpublish-a-workflow) instead. See the [n8n 2.0 breaking changes](/changelog/v20-breaking-changes) for details.
+The `update:workflow` command is deprecated from n8n 2.0 and will be removed. Use [`publish:workflow`](#publish-a-workflow) and [`unpublish:workflow`](#unpublish-a-workflow) instead. See the [n8n 2.0 breaking changes](/changelog/v20-breaking-changes) for details.
 {% endhint %}
 
 Set the active status of a workflow by its ID to false:
@@ -8217,14 +8227,13 @@ For LDAP setup information, refer to [LDAP](/administer/manage-users-and-access/
 
 For SAML setup information, refer to [SAML](/administer/manage-users-and-access/verify-user-identity/use-saml).
 
-{% hint style="info" %}
-**Unsupported user management methods**
+{% hint style="warning" %}
+**Feature availability**
 
-In version 1.0, n8n:
+Support for basic auth and JWT authentication was removed from n8n 1.0.
 
-* Removed support for **basic auth** and **JWT**
-* Removed the `N8N_USER_MANAGEMENT_DISABLED` environment variable. No supported way to disable the login screen exists in recent versions of n8n, including for local or development use. If you need to simplify login for local development, consider using a password manager, setting a simple local password, or scripting the standard login flow.
-  {% endhint %}
+The `N8N_USER_MANAGEMENT_DISABLED` environment variable was also removed from n8n 1.0. No supported way to disable the login screen exists in recent versions of n8n, including for local or development use. If you need to simplify login for local development, consider using a password manager, setting a simple local password, or scripting the standard login flow.
+{% endhint %}
 
 ## Setup <a href="#setup" id="setup"></a>
 
@@ -8239,9 +8248,9 @@ There are three stages to set up user management in n8n:
 n8n recommends setting up an SMTP server, for user invites and password resets.
 
 {% hint style="info" %}
-**Optional from 0.210.1**
+**Feature availability**
 
-From version 0.210.1 onward, this step is optional. You can choose to manually copy and send invite links instead of setting up SMTP. Note that if you skip this step, users can't reset passwords.
+Setting up SMTP is optional from n8n 0.210.1. You can choose to manually copy and send invite links instead of setting up SMTP. Note that if you skip this step, users can't reset passwords.
 {% endhint %}
 
 Get the following information from your SMTP provider:
@@ -8295,7 +8304,9 @@ When you set up user management for the first time, you create an owner account.
 #### Pre-provision the instance owner from environment variables <a href="#pre-provision-the-instance-owner-from-environment-variables" id="pre-provision-the-instance-owner-from-environment-variables"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.17.0**
+**Feature availability**
+
+Pre-provisioning the instance owner from environment variables is available from n8n 2.17.0.
 {% endhint %}
 
 You can pre-provision the instance owner from environment variables instead of going through the in-app setup. Set `N8N_INSTANCE_OWNER_MANAGED_BY_ENV` to `true` and provide the owner details. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
@@ -8422,7 +8433,9 @@ The other environment variables for an area have no effect unless `<AREA>_MANAGE
 ## Instance owner <a href="#instance-owner" id="instance-owner"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.17.0**
+**Feature availability**
+
+Instance owner management through environment variables is available from n8n 2.17.0.
 {% endhint %}
 
 Pre-provision the [instance owner](/deploy/host-n8n/configure-n8n/user-management) from environment variables instead of going through the in-app setup. To change the owner email after setup, see [Change the instance owner email for self-hosted n8n](/deploy/host-n8n/configure-n8n/change-instance-owner-email).
@@ -8450,13 +8463,15 @@ This variable expects a pre-hashed bcrypt value. Setting a plaintext password br
 ## SSO <a href="#sso" id="sso"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.18.0**
-{% endhint %}
-
-{% hint style="info" %}
 **Feature availability**
 
-Single sign-on is available on Business and Enterprise plans.
+Single sign-on is available on:
+
+* **Self-hosted:** Business, Enterprise
+
+n8n Cloud Enterprise also supports single sign-on, but not through the environment variables on this page.
+
+Managing SSO from environment variables is available from n8n 2.18.0.
 {% endhint %}
 
 Configure [single sign-on](/deploy/host-n8n/configure-n8n/security/configure-sso) from environment variables.
@@ -8496,7 +8511,9 @@ Set either `N8N_SSO_SAML_METADATA` (inline XML) or `N8N_SSO_SAML_METADATA_URL` (
 ## Security policy <a href="#security-policy" id="security-policy"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.18.0**
+**Feature availability**
+
+Managing the security policy from environment variables is available from n8n 2.18.0.
 {% endhint %}
 
 Manage the instance security policy from environment variables, including MFA enforcement and personal space restrictions.
@@ -8511,7 +8528,9 @@ Manage the instance security policy from environment variables, including MFA en
 ## Log streaming <a href="#log-streaming" id="log-streaming"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.19.0**
+**Feature availability**
+
+Managing log streaming from environment variables is available from n8n 2.19.0.
 {% endhint %}
 
 Manage [log streaming](/administer/observe-and-log/stream-logs-to-external-systems) destinations from environment variables. See [Configure using environment variables](/administer/observe-and-log/stream-logs-to-external-systems#configure-using-environment-variables) for the per-destination JSON shape.
@@ -8524,7 +8543,9 @@ Manage [log streaming](/administer/observe-and-log/stream-logs-to-external-syste
 ## MCP <a href="#mcp" id="mcp"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.20.0**
+**Feature availability**
+
+Managing instance-level MCP access from environment variables is available from n8n 2.20.0.
 {% endhint %}
 
 Manage [instance-level MCP access](/connect/connect-to-n8n-mcp-server) from environment variables.
@@ -8537,7 +8558,9 @@ Manage [instance-level MCP access](/connect/connect-to-n8n-mcp-server) from envi
 ## Community packages <a href="#community-packages" id="community-packages"></a>
 
 {% hint style="info" %}
-**Available from n8n 2.21.0**
+**Feature availability**
+
+Managing installed community packages from environment variables is available from n8n 2.21.0.
 {% endhint %}
 
 Manage the set of installed [community packages](/integrations/community-nodes/installation-and-management) from environment variables. n8n reconciles the installed packages against the list on every startup. Managed packages can't be uninstalled or updated through the UI.
@@ -8686,15 +8709,15 @@ There are three layers of configuration: the n8n container, the runners containe
 
 These are the main environment variables that you can set on the n8n container running in external mode:
 
-{% hint style="info" %}
-**`N8N_RUNNERS_ENABLED` is deprecated from version 2.0**
+{% hint style="warning" %}
+**Feature availability**
 
-From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners. Leaving task runners disabled on 1.x runs Code node scripts inside the main n8n process with no isolation at all. Don't do this on any instance that holds sensitive credentials or data.
+`N8N_RUNNERS_ENABLED` is deprecated from n8n 2.0. You no longer need to set it. It's still supported in n8n 1.x, where you must set it to `true` to enable task runners. Leaving task runners disabled on 1.x runs Code node scripts inside the main n8n process with no isolation at all. Don't do this on any instance that holds sensitive credentials or data.
 {% endhint %}
 
 | Environment variables                                  | Description                                                                                                                                                                   |
 | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_RUNNERS_ENABLED=true`                             | Enables task runners. Deprecated from n8n 2.0 onwards. Still supported in n8n 1.x.                                                                                            |
+| `N8N_RUNNERS_ENABLED=true`                             | Enables task runners. Deprecated from n8n 2.0. Still supported in n8n 1.x.                                                                                                    |
 | `N8N_RUNNERS_MODE=external`                            | Use task runners in external mode.                                                                                                                                            |
 | `N8N_RUNNERS_AUTH_TOKEN=<random secure shared secret>` | A shared secret task runners use to connect to the broker.                                                                                                                    |
 | `N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0`            | By default, the task broker only listens to localhost. When using multiple containers (for example, with Docker Compose), it needs to be able to accept external connections. |
@@ -8732,7 +8755,7 @@ path/to/n8n-task-runners.json:/etc/n8n-task-runners.json
 
 ### 1. Extend the `n8nio/runners` image <a href="#id-1-extend-the-n8niorunners-image" id="id-1-extend-the-n8niorunners-image"></a>
 
-You can extend the `n8nio/runners` image to add extra dependencies to the runners. You'll need `n8nio/runners:1.121.0` or later to do this.
+You can extend the `n8nio/runners` image to add extra dependencies to the runners. You'll need at least `n8nio/runners:1.121.0` to do this.
 
 ```dockerfile
 FROM n8nio/runners:1.121.0
@@ -9281,7 +9304,12 @@ Manage instance-wide security policies including MFA enforcement and personal sp
 {% hint style="info" %}
 **Feature availability**
 
-Security settings are available on Business and Enterprise plans. Some settings require specific license features. Settings that aren't available on your plan display an **Upgrade** badge.
+Security settings are available on:
+
+* **n8n Cloud:** Enterprise
+* **Self-hosted:** Business, Enterprise
+
+Some settings require specific license features. Settings that aren't available on your plan display an **Upgrade** badge.
 {% endhint %}
 
 Security settings let you manage instance-wide security policies. You can enforce two-factor authentication for all users and control what users can do in their personal spaces.
@@ -9353,9 +9381,12 @@ You can enforce [execution data redaction](/deploy/host-n8n/configure-n8n/securi
 {% hint style="info" %}
 **Feature availability**
 
-Data redaction enforcement is available on Enterprise Self-hosted and Enterprise Cloud plans.
+Data redaction enforcement is available on:
 
-**Available from:** n8n 2.26.0
+* **n8n Cloud:** Enterprise
+* **Self-hosted:** Enterprise
+
+Available from n8n 2.26.0.
 {% endhint %}
 
 To enforce data redaction:
@@ -9377,7 +9408,7 @@ Redaction enforcement requires an Enterprise license with the data redaction fea
 
 ## Configure security policy with environment variables <a href="#configure-security-policy-with-environment-variables" id="configure-security-policy-with-environment-variables"></a>
 
-You can also manage security policy settings from environment variables instead of through the UI. Available from n8n 2.18.0. Set `N8N_SECURITY_POLICY_MANAGED_BY_ENV` to `true` and provide the variables below. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
+You can also manage security policy settings from environment variables instead of through the UI. This option is available from n8n 2.18.0. Set `N8N_SECURITY_POLICY_MANAGED_BY_ENV` to `true` and provide the variables below. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
 
 When `N8N_SECURITY_POLICY_MANAGED_BY_ENV` is `true`, the **Enforce two-factor authentication** and **Personal Space** toggles on this page become read-only.
 
@@ -9417,9 +9448,13 @@ Set up SAML or OIDC Single Sign-On for your self-hosted n8n instance.
 {% hint style="info" %}
 **Feature availability**
 
-* Available on Business and Enterprise plans.
-* You need to be an instance owner or admin to enable and configure SAML or OIDC.
-  {% endhint %}
+Single sign-on is available on:
+
+* **n8n Cloud:** Enterprise
+* **Self-hosted:** Business, Enterprise
+
+You need to be an instance owner or admin to enable and configure SAML or OIDC.
+{% endhint %}
 
 n8n supports the SAML and OIDC authentication protocols for single sign-on (SSO). See [OIDC vs SAML](https://www.onelogin.com/learn/oidc-vs-saml) for more general information on the two protocols, the differences between them, and their respective benefits.
 
@@ -9428,7 +9463,13 @@ n8n supports the SAML and OIDC authentication protocols for single sign-on (SSO)
 
 ## Configure SSO with environment variables <a href="#configure-sso-with-environment-variables" id="configure-sso-with-environment-variables"></a>
 
-You can also configure SSO from environment variables instead of through the UI. Available from n8n 2.18.0. See [SSO environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/sso) for the full list of variables, and [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
+{% hint style="info" %}
+**Feature availability**
+
+Configuring SSO with environment variables is available from n8n 2.18.0.
+{% endhint %}
+
+You can also configure SSO from environment variables instead of through the UI. See [SSO environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/sso) for the full list of variables, and [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
 
 
 # Run security audits
@@ -9672,7 +9713,9 @@ For more details on configuring SMTP, see [Set up SMTP](/deploy/host-n8n/configu
 Protect your self-hosted n8n instance from Server-Side Request Forgery (SSRF) attacks.
 
 {% hint style="info" %}
-**Available since 2.12.0**
+**Feature availability**
+
+SSRF protection is available from n8n 2.12.0.
 {% endhint %}
 
 Server-Side Request Forgery (SSRF) attacks abuse workflow nodes to make requests to internal network resources, cloud metadata endpoints, or localhost services that shouldn't be accessible.
@@ -9737,9 +9780,14 @@ Enable and rotate the data encryption key that protects credentials and other se
 {% hint style="info" %}
 **Feature availability**
 
-* Available on self-hosted n8n instances only.
-* You need to be the instance owner to enable the feature and rotate keys.
-  {% endhint %}
+Encryption key rotation is available on:
+
+* **Self-hosted:** All editions
+
+It isn't available on n8n Cloud.
+
+You need to be the instance owner to enable the feature and rotate keys.
+{% endhint %}
 
 Encryption key rotation lets you periodically replace the key that encrypts your n8n data, like credentials, OAuth tokens, and other sensitive content, without changing your instance's master encryption key.
 
@@ -9825,7 +9873,7 @@ Enable JWE-encrypted OAuth 2.0 tokens on your n8n instance so your identity prov
 {% hint style="info" %}
 **Feature availability**
 
-* Available from n8n 2.21.0.
+* JWE token decryption is available from n8n 2.21.0.
 * Available on any n8n instance with the `N8N_ENV_FEAT_OAUTH2_JWE` environment variable set to `true`. Self-hosted instances can set it directly. On Cloud, contact n8n support to request it.
 * Requires an identity provider (IdP) that can encrypt tokens as JWE.
   {% endhint %}

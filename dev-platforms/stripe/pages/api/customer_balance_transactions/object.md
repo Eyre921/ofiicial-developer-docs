@@ -68,10 +68,10 @@ path: api/customer_balance_transactions/object
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
 - `metadata` (map, nullable)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `type` (enum)
-  Transaction type: `adjustment`, `applied_to_invoice`, `credit_note`, `initial`, `invoice_overpaid`, `invoice_too_large`, `invoice_too_small`, `unspent_receiver_credit`, `unapplied_from_invoice`, `checkout_session_subscription_payment`, or `checkout_session_subscription_payment_canceled`. See the [Customer Balance page](https://docs.stripe.com/docs/billing/customer/balance.md#types) to learn more about transaction types.
+  Transaction type: `adjustment`, `applied_to_invoice`, `credit_note`, `initial`, `invoice_overpaid`, `invoice_too_large`, `invoice_too_small`, `unspent_receiver_credit`, `unapplied_from_invoice`, `checkout_session_subscription_payment`, or `checkout_session_subscription_payment_canceled`. See the [Customer Balance page](https://docs.stripe.com/billing/customer/balance.md#types) to learn more about transaction types.
 Possible enum values:
   - `adjustment`
     An explicitly created adjustment transaction to debit or credit the credit balance.

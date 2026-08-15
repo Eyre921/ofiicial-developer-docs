@@ -31,7 +31,7 @@ Verify the installation:
 qwen --version
 ```
 
-**Prerequisites**: Ensure you have Node.js version 20 or higher installed.
+**Requirements:** Ensure you have Node.js version 20 or higher installed.
 
 ## 2. Configure Together AI
 

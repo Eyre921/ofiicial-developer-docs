@@ -2884,7 +2884,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.update("test_id", );
+    await client.conversationalAi.tests.update("test_id");
 }
 main();
 

@@ -27,7 +27,7 @@ bun --print process.env
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-{
+ProcessEnv {
   BAZ: "stuff",
   FOOBAR: "aaaaaa",
   <lots more lines>

@@ -123,7 +123,7 @@ glob.match("baz.ts"); // => true
 glob.match("bat.ts"); // => false
 ```
 
-You can use character ranges (for example `[0-9]`, `[a-z]`) and the negation operators `^` or `!` to match anything *except* the characters in the brackets (for example `[^ab]`, `[!a-z]`).
+You can use character ranges (for example `[0-9]`, `[a-z]`). The negation operators `^` or `!` match anything *except* the characters in the brackets (for example `[^ab]`, `[!a-z]`).
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const glob = new Glob("ba[a-z][0-9][^4-9].ts");
@@ -144,7 +144,7 @@ glob.match("c.ts"); // => true
 glob.match("d.ts"); // => false
 ```
 
-These patterns can be nested up to 10 levels deep and contain any of the earlier wildcards.
+You can nest these patterns up to 10 levels deep, and they can contain any of the earlier wildcards.
 
 ### `!` - Negates the result at the start of a pattern
 

@@ -16,7 +16,7 @@ Install Kueue and gate GPU jobs on quota so a shared cluster admits work as capa
 
 For the concepts behind each object below, see the [Kueue documentation](https://kueue.sigs.k8s.io/docs/concepts/).
 
-## Prerequisites
+## Requirements
 
 * A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
 * `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.

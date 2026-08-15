@@ -38,7 +38,7 @@ You can use a single integration for all bank debits that works across Stripe pr
 | [Pre-authorized debit in Canada](https://docs.stripe.com/payments/acss-debit.md) | ✓ Supported | ✓ Supported 2 | - Unsupported | ✓ Supported 3,4 | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported |
 | [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 
-1 You can’t use the Payment Element to create SetupIntents for Bacs Direct Debit. Use Checkout in [setup mode](https://docs.stripe.com/payments/save-and-reuse.md?platform=checkout) instead.2 Not supported when using Checkout in subscription mode.3 Not supported when [collecting payment details before creating a PaymentIntent](https://docs.stripe.com/payments/accept-a-payment-deferred.md).4 Not supported when using [Elements with the Checkout Sessions API](https://docs.stripe.com/payments/quickstart-checkout-sessions.md).
+1 You can’t use the Payment Element to create SetupIntents for Bacs Direct Debit. Use Checkout in [setup mode](https://docs.stripe.com/payments/save-and-reuse.md?platform=checkout) instead.2 Not supported when using Checkout in subscription mode.3 Not supported when [collecting payment details before creating a PaymentIntent](https://docs.stripe.com/payments/accept-a-payment-deferred.md).4 Not supported when using [Elements with the Checkout Sessions API](https://docs.stripe.com/payments/quickstart.md).
 
 [Contact us](https://support.stripe.com/contact) to request a new bank debit method.
 

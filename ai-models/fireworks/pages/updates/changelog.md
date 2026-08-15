@@ -4,6 +4,12 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-08-14">
+  # Serverless deprecation: DeepSeek V4 Flash
+
+  **DeepSeek V4 Flash** is deprecated from serverless. Migrate to **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)**.
+</Update>
+
 <Update label="2026-07-16">
   # SFT learning rate scheduler documentation
 

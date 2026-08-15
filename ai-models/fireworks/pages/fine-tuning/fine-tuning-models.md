@@ -285,7 +285,9 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
 ## Deploying a fine-tuned model
 
-After fine-tuning completes, deploy your model to make it available for inference:
+After fine-tuning completes, [evaluate the model](/fine-tuning/evaluating-fine-tuned-models) before you hold dedicated capacity for production serving.
+
+To deploy for inference:
 
 ```bash theme={null}
 firectl deployment create <FINE_TUNED_MODEL_ID>

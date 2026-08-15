@@ -14,14 +14,14 @@ bun build --compile --define BUILD_VERSION='"1.2.3"' --define BUILD_TIME='"2024-
 
 ## Why use build-time constants?
 
-Build-time constants are embedded directly into your compiled code, making them:
+Bun embeds build-time constants directly into your compiled code, making them:
 
 * **Zero runtime overhead** - No environment variable lookups or file reads
 * **Immutable** - Values are baked into the binary at compile time
 * **Optimizable** - Dead code elimination can remove unused branches
 * **Secure** - No external dependencies or configuration files to manage
 
-This is similar to `gcc -D` or `#define` in C/C++, but for JavaScript/TypeScript.
+Build-time constants are similar to `gcc -D` or `#define` in C/C++, but for JavaScript/TypeScript.
 
 ***
 
@@ -92,7 +92,7 @@ Embed version and build metadata directly into your executable:
 
 Use build-time constants to enable/disable features:
 
-```ts src/version.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+```ts src/app.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 // Replaced at build time
 declare const ENABLE_ANALYTICS: boolean;
 declare const ENABLE_DEBUG: boolean;
@@ -113,7 +113,7 @@ if (ENABLE_DEBUG) {
 # Production build - analytics enabled, debug disabled
 bun build --compile --define ENABLE_ANALYTICS=true --define ENABLE_DEBUG=false src/app.ts --outfile app-prod
 
-# Development build - both enabled
+# Development build - analytics disabled, debug enabled
 bun build --compile --define ENABLE_ANALYTICS=false --define ENABLE_DEBUG=true src/app.ts --outfile app-dev
 ```
 
@@ -121,7 +121,7 @@ bun build --compile --define ENABLE_ANALYTICS=false --define ENABLE_DEBUG=true s
 
 Replace configuration objects at build time:
 
-```ts src/version.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+```ts src/app.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 declare const CONFIG: {
   apiUrl: string;
   timeout: number;
@@ -224,7 +224,7 @@ Values must be valid JSON. Bun parses each value and inlines it as a JavaScript 
 
 ### Property keys
 
-Keys can be property access patterns, not just simple identifiers:
+Keys can be property access patterns as well as plain identifiers:
 
 ```sh theme={"theme":{"light":"github-light","dark":"dracula"}}
 # ✅ Replace process.env.NODE_ENV with "production"

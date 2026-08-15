@@ -77,7 +77,7 @@ If you create [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.
 | [Invoicing](https://docs.stripe.com/tax/invoicing.md?dashboard-or-api=api) | Automatically calculate tax on your invoices by adding as little as one line of code |
 | [Subscriptions](https://docs.stripe.com/tax/subscriptions.md) | Calculate the tax to collect on your recurring payments when using Stripe Billing. |
 | [Checkout](https://docs.stripe.com/tax/checkout.md) | Automatically calculate taxes on all purchases and subscriptions accumulated during a Checkout session. To get started, use our quickstart for Checkout Sessions that are [Stripe-hosted](https://docs.stripe.com/checkout/quickstart.md) or [embedded](https://docs.stripe.com/checkout/embedded/quickstart.md). |
-| [Custom flows](https://docs.stripe.com/tax/payment-intent/custom.md) | Use Tax with [PaymentIntents](https://docs.stripe.com/api/payment_intents.md), or collect tax on payments collected outside of Stripe. To get started, use our quickstart for [custom payment flows](https://docs.stripe.com/payments/quickstart.md). |
+| [Custom flows](https://docs.stripe.com/tax/payment-intent/custom.md) | Use Tax with [PaymentIntents](https://docs.stripe.com/api/payment_intents.md), or collect tax on payments collected outside of Stripe. To get started, use our quickstart for [custom payment flows with the Payment Intents API](https://docs.stripe.com/payments/quickstart-payment-intents.md). |
 
 ### Update existing recurring items
 

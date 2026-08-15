@@ -70,7 +70,7 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
   You'll need this exact value when creating RBAC bindings.
 </Note>
 
-## Prerequisites
+## Requirements
 
 Before you can set up OIDC authentication, make sure you have:
 

@@ -348,7 +348,7 @@ The username claim is the field in the OIDC token that Kubernetes uses as the id
   You'll need this exact value when creating RBAC bindings.
 </Note>
 
-## Prerequisites
+## Requirements
 
 Before you can set up OIDC authentication, make sure you have:
 
@@ -738,7 +738,7 @@ Deploy your first container in 20 minutes.
 
 This guide walks you through deploying a sample inference worker to Together's managed GPU infrastructure.
 
-## Prerequisites
+## Requirements
 
 * **Together API Key** – Required for all operations. Get one from [together.ai](https://together.ai).
 * **Dedicated Containers access** – Contact your account representative or [support@together.ai](mailto:support@together.ai) to enable Dedicated Containers for your organization.
@@ -4740,7 +4740,7 @@ Use the BYOM flow when:
 * **You're continuing your own previous work.** Upload your last checkpoint to Hugging Face and resume training on Together.
 * **A new model isn't in the catalog yet.** As long as it has a supported architecture under 100B parameters, you can fine-tune it.
 
-## Prerequisites
+## Requirements
 
 Your model must meet these constraints:
 
@@ -5706,6 +5706,32 @@ limits = client.fine_tuning.model_limits(model_name="<MODEL_ID>")
 print(limits.supports_full_training)
 ```
 
+## Continue training from a checkpoint
+
+Instead of starting from a base model, you can have a new job start from a previously completed job by passing `from_checkpoint`. The [quickstart](/docs/fine-tuning/quickstart#continue-from-a-checkpoint) covers the accepted formats. When the previous job is a LoRA job, the new job handles its adapter in one of two ways:
+
+* **Continue it:** The new job picks up the same adapter and keeps training it. The result is still a single adapter on the original base model.
+* **Merge it:** Together folds the adapter into the base model, producing a standalone set of weights, and the new job trains on those instead. The original adapter is no longer a separate, swappable artifact.
+
+The outcome depends on the training type of both jobs:
+
+| Previous job | New job                       | What happens                                                                                       |
+| ------------ | ----------------------------- | -------------------------------------------------------------------------------------------------- |
+| Full         | Full                          | Training continues on the full weights. No adapter is involved.                                    |
+| Full         | LoRA                          | A new adapter trains on top of the previous job's full weights.                                    |
+| LoRA         | Full                          | The adapter is merged into the base model, then full fine-tuning trains the merged weights.        |
+| LoRA         | LoRA, same LoRA settings      | Training continues on the same adapter.                                                            |
+| LoRA         | LoRA, different LoRA settings | The adapter is merged into the base model, then a new adapter with the new settings trains on top. |
+
+The [LoRA settings](#lora-settings) (`lora_r`, `lora_alpha`, `lora_dropout`, and `lora_trainable_modules`) define the adapter's shape, so an adapter can only continue training when all four match the previous job. To guarantee a continuation, omit the training type and the LoRA settings on the new job, so it inherits all of them from the previous job. Any value you set that differs from the previous job triggers a merge instead.
+
+The new job produces a checkpoint based on its own training type. A full fine-tune outputs full model weights (`--checkpoint-type default`). A LoRA job outputs an adapter plus merged weights (`--checkpoint-type adapter` or `merged` on [`tg fine-tuning download`](/reference/cli/finetune#download-model-weights)). The merged weights contain everything trained so far, including any parent adapter that was merged along the way. See [Choose a checkpoint type](/docs/fine-tuning/deployment#choose-a-checkpoint-type) for the SDK equivalents and what each artifact contains.
+
+In two cases the adapter can't be merged, so the platform rejects the new job at creation unless the LoRA settings match the previous job exactly:
+
+* **The previous job started from a Hugging Face model:** The rejection error names the settings that differ.
+* **The base model supports LoRA training only:** These models never produce full weights, so there is nothing to merge the adapter into.
+
 ## Serve your model
 
 How you deploy depends on the method:
@@ -6074,7 +6100,7 @@ This quickstart walks through a full fine-tuning lifecycle. You'll prepare a con
 
 For background on what fine-tuning is and when to use it, see the [overview](/docs/fine-tuning/overview). You can find a runnable notebook for this tutorial [on GitHub](https://github.com/togethercomputer/together-cookbook/blob/main/Finetuning/Finetuning_Guide.ipynb).
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 
@@ -6579,6 +6605,10 @@ Resume training from an existing job by passing `from_checkpoint`:
 </CodeGroup>
 
 `from_checkpoint` accepts the output model name, the job ID, or a specific step in the form `ft-...:{STEP_NUM}`. List available checkpoints with `tg fine-tuning list-checkpoints <JOB_ID>`.
+
+<Note>
+  Whether training continues the previous job's LoRA adapter or merges it into the base model depends on the [training types and LoRA settings of both jobs](/docs/fine-tuning/lora-vs-full#continue-training-from-a-checkpoint).
+</Note>
 
 ## Next steps
 
@@ -7975,7 +8005,7 @@ kubectl -n kubernetes-dashboard get secret \
 
 ## Direct SSH access
 
-### Prerequisites
+### Requirements
 
 Requirements depend on the SSH access method you use:
 
@@ -9341,7 +9371,7 @@ Prepare a JSONL file, upload it, start a batch job, poll until it finishes, and 
 
 This tutorial walks through a complete batch inference job from start to finish. By the end you'll have uploaded a JSONL file of chat completion requests, run them as a single job at up to 50% off serverless rates, and reconciled the responses with your original inputs.
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 
@@ -19525,7 +19555,7 @@ Install Kueue and gate GPU jobs on quota so a shared cluster admits work as capa
 
 For the concepts behind each object below, see the [Kueue documentation](https://kueue.sigs.k8s.io/docs/concepts/).
 
-## Prerequisites
+## Requirements
 
 * A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
 * `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.
@@ -19750,7 +19780,7 @@ The entire process takes approximately 4 hours on an 8×H100 cluster and include
 * Supervised fine-tuning for conversational alignment
 * Deploying a FastAPI web server with a chat interface
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 
@@ -21889,7 +21919,7 @@ Customize Slurm cluster settings to match your workload requirements
 
 Modify Slurm configuration files to optimize scheduling, resource allocation, and job management for your GPU cluster.
 
-## Prerequisites
+## Requirements
 
 * `kubectl` CLI installed and configured
 * Kubeconfig downloaded from your cluster
@@ -22816,7 +22846,7 @@ Install the Volcano scheduler and run gang-scheduled GPU jobs on a Together Kube
 
 For background on every field used here, see the [Volcano documentation](https://volcano.sh/en/docs/).
 
-## Prerequisites
+## Requirements
 
 * A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
 * `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.
@@ -26078,7 +26108,7 @@ Giving LLMs the ability to execute code is very powerful – it has many advanta
 
 In this example, we'll show you how to build an AI data analyst that can read in data and make charts. We'll be using [E2B](https://e2b.dev/docs) for the code interpreter and Together AI for the LLM piece.
 
-## 1. Prerequisites
+## 1. Requirements
 
 Create a `main.ipynb` file and save your Together & E2B API keys in there.
 
@@ -26381,7 +26411,7 @@ This example demonstrates deploying a text-to-image model using Dedicated Contai
 * Submitting jobs via the Queue API and polling for results
 * Configuring autoscaling for production workloads
 
-## Prerequisites
+## Requirements
 
 * **Together API key**: Get one from [together.ai](https://together.ai)
 * **Dedicated Containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable for your organization
@@ -26812,7 +26842,7 @@ Two things make a container OpenAI-compatible:
 * **HTTP server mode:** Run the worker without the `--queue` flag. Requests go straight to your container and return synchronously, instead of through the managed queue.
 * **`predict_path`:** Pass the OpenAI route to `sprocket.run()`. In HTTP server mode the raw JSON request body is passed straight to `predict()`, so `predict()` owns both parsing the OpenAI request and returning the OpenAI response shape.
 
-## Prerequisites
+## Requirements
 
 * **Together API key**: Get one from [together.ai](https://together.ai).
 * **Dedicated containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable it for your organization.
@@ -27088,7 +27118,7 @@ This example demonstrates deploying a multi-GPU video generation model using Ded
 * Automatic file upload with `FileOutput`
 * Submitting jobs via the Queue API and polling for results
 
-## Prerequisites
+## Requirements
 
 * **Together API key**: Get one from [together.ai](https://together.ai)
 * **Dedicated Containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable for your organization
@@ -28136,7 +28166,7 @@ Serve your fine-tuned model on a dedicated endpoint or download it for local inf
 
 Once a fine-tuning job completes, your model is available for inference in two ways: hosted on a dedicated endpoint at Together AI, or downloaded as a standalone checkpoint.
 
-## Prerequisites
+## Requirements
 
 * A completed fine-tuning job. See the [quickstart](/docs/fine-tuning/quickstart) for the full lifecycle.
 * The job's **Model Object ID** (`model_object_id`, an `ml_...` value) — the model-registry ID of the trained weights and the identifier you deploy. It's available once the job status is `completed`, from the `tg fine-tuning retrieve` output.
@@ -30935,7 +30965,7 @@ This guide walks through creating a phone-based voice agent. You will create a l
 
 <img alt="agent architecture diagram" />
 
-## Prerequisites
+## Requirements
 
 Before you start, make sure you have:
 
@@ -33996,7 +34026,7 @@ OpenClaw is the first Jarvis-like agent that actually gets things done: writing 
 
 ## Get started in 2 minutes
 
-### Prerequisites
+### Requirements
 
 1. An OpenClaw installation ([install guide](https://docs.openclaw.ai/install))
 2. A Together AI API key (grab one at [api.together.ai](https://api.together.ai))
@@ -34220,7 +34250,7 @@ Verify the installation:
 qwen --version
 ```
 
-**Prerequisites**: Ensure you have Node.js version 20 or higher installed.
+**Requirements:** Ensure you have Node.js version 20 or higher installed.
 
 ## 2. Configure Together AI
 
@@ -34345,7 +34375,7 @@ Use TogetherLink to run Claude Code, Codex CLI, ChatGPT Desktop, Pi Code, and Op
 
 TogetherLink is an open-source tool that lets you run your existing local coding tools against models hosted by Together AI. Instead of configuring each tool's provider settings by hand, you launch it through TogetherLink and it wires everything up for you.
 
-## Prerequisites
+## Requirements
 
 * A [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys).
 * The coding tool you want to use, already installed on your machine. TogetherLink does not install the underlying tool for you.
@@ -41151,7 +41181,7 @@ Each request follows four steps. The client sends a bearer token and a message t
 
 The service uses two separate secrets. `CHAT_API_KEY` authenticates the caller, and `TOGETHER_API_KEY` authenticates the server-to-server request to Together AI.
 
-## Prerequisites
+## Requirements
 
 Before you start, make sure you have:
 

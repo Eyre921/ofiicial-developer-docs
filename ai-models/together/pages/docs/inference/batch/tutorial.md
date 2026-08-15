@@ -8,7 +8,7 @@ Prepare a JSONL file, upload it, start a batch job, poll until it finishes, and 
 
 This tutorial walks through a complete batch inference job from start to finish. By the end you'll have uploaded a JSONL file of chat completion requests, run them as a single job at up to 50% off serverless rates, and reconciled the responses with your original inputs.
 
-## Prerequisites
+## Requirements
 
 Before you begin, make sure you have:
 

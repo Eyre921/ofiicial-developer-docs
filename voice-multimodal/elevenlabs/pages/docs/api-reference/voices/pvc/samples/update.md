@@ -69,7 +69,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.pvc.samples.update("sample_id", "voice_id", {});
+    await client.voices.pvc.samples.update("voice_id", "sample_id", {});
 }
 main();
 
@@ -81,8 +81,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.pvc.samples.update(
-    sample_id="sample_id",
     voice_id="voice_id",
+    sample_id="sample_id",
 )
 
 ```

@@ -1,6 +1,6 @@
 # libraries/bun 文档索引
 
-> 共 318 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 319 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -69,7 +69,6 @@
 - `docs/guides/ecosystem/sentry` — [Add Sentry to a Bun app](pages/docs/guides/ecosystem/sentry.md) · [原文](https://bun.com/docs/guides/ecosystem/sentry)
 - `docs/guides/ecosystem/solidstart` — [Build an app with SolidStart and Bun](pages/docs/guides/ecosystem/solidstart.md) · [原文](https://bun.com/docs/guides/ecosystem/solidstart)
 - `docs/guides/ecosystem/ssr-react` — [Server-side render (SSR) a React component](pages/docs/guides/ecosystem/ssr-react.md) · [原文](https://bun.com/docs/guides/ecosystem/ssr-react)
-- `docs/guides/ecosystem/stric` — [Build an HTTP server using StricJS and Bun](pages/docs/guides/ecosystem/stric.md) · [原文](https://bun.com/docs/guides/ecosystem/stric)
 - `docs/guides/ecosystem/sveltekit` — [Build an app with SvelteKit and Bun](pages/docs/guides/ecosystem/sveltekit.md) · [原文](https://bun.com/docs/guides/ecosystem/sveltekit)
 - `docs/guides/ecosystem/systemd` — [Run Bun as a daemon with systemd](pages/docs/guides/ecosystem/systemd.md) · [原文](https://bun.com/docs/guides/ecosystem/systemd)
 - `docs/guides/ecosystem/tanstack-start` — [Use TanStack Start with Bun](pages/docs/guides/ecosystem/tanstack-start.md) · [原文](https://bun.com/docs/guides/ecosystem/tanstack-start)
@@ -217,12 +216,14 @@
 - `docs/pm/catalogs` — [Catalogs](pages/docs/pm/catalogs.md) · [原文](https://bun.com/docs/pm/catalogs)
 - `docs/pm/cli/add` — [bun add](pages/docs/pm/cli/add.md) · [原文](https://bun.com/docs/pm/cli/add)
 - `docs/pm/cli/audit` — [bun audit](pages/docs/pm/cli/audit.md) · [原文](https://bun.com/docs/pm/cli/audit)
+- `docs/pm/cli/dedupe` — [bun dedupe](pages/docs/pm/cli/dedupe.md) · [原文](https://bun.com/docs/pm/cli/dedupe)
 - `docs/pm/cli/info` — [bun info](pages/docs/pm/cli/info.md) · [原文](https://bun.com/docs/pm/cli/info)
 - `docs/pm/cli/install` — [bun install](pages/docs/pm/cli/install.md) · [原文](https://bun.com/docs/pm/cli/install)
 - `docs/pm/cli/link` — [bun link](pages/docs/pm/cli/link.md) · [原文](https://bun.com/docs/pm/cli/link)
 - `docs/pm/cli/outdated` — [bun outdated](pages/docs/pm/cli/outdated.md) · [原文](https://bun.com/docs/pm/cli/outdated)
 - `docs/pm/cli/patch` — [bun patch](pages/docs/pm/cli/patch.md) · [原文](https://bun.com/docs/pm/cli/patch)
 - `docs/pm/cli/pm` — [bun pm](pages/docs/pm/cli/pm.md) · [原文](https://bun.com/docs/pm/cli/pm)
+- `docs/pm/cli/prune` — [bun prune](pages/docs/pm/cli/prune.md) · [原文](https://bun.com/docs/pm/cli/prune)
 - `docs/pm/cli/publish` — [bun publish](pages/docs/pm/cli/publish.md) · [原文](https://bun.com/docs/pm/cli/publish)
 - `docs/pm/cli/remove` — [bun remove](pages/docs/pm/cli/remove.md) · [原文](https://bun.com/docs/pm/cli/remove)
 - `docs/pm/cli/update` — [bun update](pages/docs/pm/cli/update.md) · [原文](https://bun.com/docs/pm/cli/update)

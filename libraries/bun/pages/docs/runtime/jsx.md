@@ -28,7 +28,7 @@ Bun respects the following compiler options.
 
 ### [`jsx`](https://www.typescriptlang.org/tsconfig#jsx)
 
-How JSX constructs are transformed into vanilla JavaScript internally. The following table lists the possible values of `jsx`, along with how each transpiles this JSX component:
+How Bun transforms JSX constructs into vanilla JavaScript internally. The following table lists the possible values of `jsx`, along with how each transpiles this JSX component:
 
 ```tsx theme={"theme":{"light":"github-light","dark":"dracula"}}
 <Box width={5}>Hello</Box>
@@ -65,7 +65,7 @@ The function name used to represent [JSX fragments](https://react.dev/reference/
 
 <Note>Only applicable when `jsx` is `react-jsx` or `react-jsxdev`.</Note>
 
-The module the component factory function (such as `createElement`, `jsx`, or `jsxDEV`) is imported from. Default value is `"react"`. You'll typically need this when using a component library like Preact.
+The module the component factory function (such as `createElement`, `jsx`, or `jsxDEV`) is imported from. Default value is `"react"`. You typically need this when using a component library like Preact.
 
 | Compiler options                                                                                                       | Transpiled output                                                                                                                                                                                                                               |
 | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -85,7 +85,7 @@ You can set any of these values per file with a *pragma*, a comment that sets a 
 
 ## Logging
 
-Bun implements special logging for JSX to make debugging easier. Given the following file:
+Bun implements special logging for JSX to help with debugging. Given the following file:
 
 ```tsx index.tsx icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { Stack, UserCard } from "./components";

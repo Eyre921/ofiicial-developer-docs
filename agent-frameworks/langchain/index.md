@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1585 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1591 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -358,7 +358,7 @@
 - `langsmith/javascript/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-schedules)
 - `langsmith/javascript/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-skills)
 - `langsmith/javascript/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools)
-- `langsmith/javascript/managed-deep-agents-tutorial` — [Add memory and a schedule to your research assistant](pages/langsmith/javascript/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial)
+- `langsmith/javascript/managed-deep-agents-tutorial` — [Add a custom search tool, memory, and a schedule](pages/langsmith/javascript/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial)
 - `langsmith/jit-invite-sso` — [Manage user access in SSO organizations](pages/langsmith/jit-invite-sso.md) · [原文](https://docs.langchain.com/langsmith/jit-invite-sso)
 - `langsmith/kubernetes` — [Self-host LangSmith on Kubernetes](pages/langsmith/kubernetes.md) · [原文](https://docs.langchain.com/langsmith/kubernetes)
 - `langsmith/langchain-runnable` — [How to evaluate a runnable](pages/langsmith/langchain-runnable.md) · [原文](https://docs.langchain.com/langsmith/langchain-runnable)
@@ -462,7 +462,7 @@
 - `langsmith/python/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-schedules)
 - `langsmith/python/managed-deep-agents-skills` — [Add skills to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-skills.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-skills)
 - `langsmith/python/managed-deep-agents-tools` — [Add custom tools to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-tools.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tools)
-- `langsmith/python/managed-deep-agents-tutorial` — [Add memory and a schedule to your research assistant](pages/langsmith/python/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial)
+- `langsmith/python/managed-deep-agents-tutorial` — [Add a custom search tool, memory, and a schedule](pages/langsmith/python/managed-deep-agents-tutorial.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial)
 - `langsmith/query-threads` — [Query threads using the SDK](pages/langsmith/query-threads.md) · [原文](https://docs.langchain.com/langsmith/query-threads)
 - `langsmith/quick-start-studio` — [Get started with Studio](pages/langsmith/quick-start-studio.md) · [原文](https://docs.langchain.com/langsmith/quick-start-studio)
 - `langsmith/rbac` — [Role-based access control](pages/langsmith/rbac.md) · [原文](https://docs.langchain.com/langsmith/rbac)
@@ -1102,6 +1102,12 @@
 - `langsmith/smith-js-ts-sdk` — [LangSmith JS/TS SDK](pages/langsmith/smith-js-ts-sdk.md) · [原文](https://docs.langchain.com/langsmith/smith-js-ts-sdk)
 - `langsmith/smith-python-sdk` — [LangSmith Python SDK](pages/langsmith/smith-python-sdk.md) · [原文](https://docs.langchain.com/langsmith/smith-python-sdk)
 - `langsmith/smithdb-sdk-migration` — [Migrate to SmithDB-backed SDK methods](pages/langsmith/smithdb-sdk-migration.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration)
+- `langsmith/smithdb-sdk-migration-experiments` — [Migrate dataset experiment runs to SmithDB](pages/langsmith/smithdb-sdk-migration-experiments.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments)
+- `langsmith/smithdb-sdk-migration-feedback` — [Migrate feedback and sharing methods to SmithDB](pages/langsmith/smithdb-sdk-migration-feedback.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback)
+- `langsmith/smithdb-sdk-migration-query-runs` — [Migrate run queries to SmithDB](pages/langsmith/smithdb-sdk-migration-query-runs.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs)
+- `langsmith/smithdb-sdk-migration-runs` — [Migrate run retrieval to SmithDB](pages/langsmith/smithdb-sdk-migration-runs.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs)
+- `langsmith/smithdb-sdk-migration-threads` — [Migrate thread methods to SmithDB](pages/langsmith/smithdb-sdk-migration-threads.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads)
+- `langsmith/smithdb-sdk-migration-traces` — [Migrate trace methods to SmithDB](pages/langsmith/smithdb-sdk-migration-traces.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces)
 - `langsmith/stateless-runs` — [Stateless runs](pages/langsmith/stateless-runs.md) · [原文](https://docs.langchain.com/langsmith/stateless-runs)
 - `langsmith/status` — [LangSmith status](pages/langsmith/status.md) · [原文](https://docs.langchain.com/langsmith/status)
 - `langsmith/store-auth` — [Isolate store data per user](pages/langsmith/store-auth.md) · [原文](https://docs.langchain.com/langsmith/store-auth)

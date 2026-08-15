@@ -44,7 +44,7 @@ router.match("/");
 }
 ```
 
-Query parameters are parsed and returned in the `query` property.
+The router parses query parameters and returns them in the `query` property.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 router.match("/settings?foo=bar");
@@ -80,7 +80,7 @@ router.match("/blog/my-cool-post");
 }
 ```
 
-The `.match()` method also accepts `Request` and `Response` objects; their `url` property is used to resolve the route.
+The `.match()` method also accepts `Request` and `Response` objects; the router uses their `url` property to resolve the route.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 router.match(new Request("https://example.com/blog/my-cool-post"));

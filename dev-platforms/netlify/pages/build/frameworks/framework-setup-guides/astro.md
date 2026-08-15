@@ -69,12 +69,13 @@ The functionality emulated locally includes:
 - Serverless functions
 - Edge functions
 - Blobs
+- Netlify Database
 - Cache API
 - Image CDN
 - Redirects & rewrites
 - Headers
 - Environment variables
-- [AI Gateway](/build/ai-gateway/overview)
+- AI Gateway
 
 ### Middleware and Edge Functions
 

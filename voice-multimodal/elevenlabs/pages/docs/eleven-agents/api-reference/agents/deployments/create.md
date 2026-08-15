@@ -89,8 +89,8 @@ async function main() {
                 {
                     branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
                     deploymentStrategy: {
-                        trafficPercentage: 0.5,
                         type: "percentage",
+                        trafficPercentage: 0.5,
                     },
                 },
             ],
@@ -113,8 +113,8 @@ client.conversational_ai.agents.deployments.create(
             AgentDeploymentRequestItem(
                 branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
                 deployment_strategy=AgentDeploymentPercentageStrategy(
-                    traffic_percentage=0.5,
                     type="percentage",
+                    traffic_percentage=0.5,
                 ),
             )
         ],

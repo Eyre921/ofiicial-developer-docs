@@ -8,7 +8,7 @@ Use TogetherLink to run Claude Code, Codex CLI, ChatGPT Desktop, Pi Code, and Op
 
 TogetherLink is an open-source tool that lets you run your existing local coding tools against models hosted by Together AI. Instead of configuring each tool's provider settings by hand, you launch it through TogetherLink and it wires everything up for you.
 
-## Prerequisites
+## Requirements
 
 * A [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys).
 * The coding tool you want to use, already installed on your machine. TogetherLink does not install the underlying tool for you.

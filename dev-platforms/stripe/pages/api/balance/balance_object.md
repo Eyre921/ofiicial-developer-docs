@@ -63,5 +63,5 @@ path: api/balance/balance_object
   Funds that aren’t available in the balance yet. You can find the pending balance for each currency and each payment type in the `source_types` property.
 
 - [`refund_and_dispute_prefunding`](https://docs.stripe.com/api/balance/balance_object.md?query=refund_and_dispute_prefunding) (object, nullable)
-  Funds to cover future refunds, disputes, or a negative balance. See the [Add funds to your Stripe balance](https://docs.stripe.com/docs/get-started/account/add-funds.md) guide for more information.
+  Funds to cover future refunds, disputes, or a negative balance. See the [Add funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md) guide for more information.
 

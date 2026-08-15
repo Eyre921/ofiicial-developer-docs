@@ -20,7 +20,7 @@ Retrieve the links clicked in a broadcast.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.3
+    npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
 </Warning>
@@ -89,6 +89,17 @@ paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.broadcasts.clickedLinks(
+    '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+    { limit: 20 },
+  );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/clicked-links?limit=20' \
        -H 'Authorization: Bearer re_xxxxxxxxx'

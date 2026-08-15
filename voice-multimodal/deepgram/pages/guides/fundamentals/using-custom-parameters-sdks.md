@@ -12,7 +12,7 @@ path: guides/fundamentals/using-custom-parameters-sdks
 
 # JS SDK
 
-The Deepgram JS SDK has defined[ typed parameters](https://github.com/deepgram/deepgram-js-sdk/tree/main/src/lib/types), but also allows for arbitrary key/value pairs. You can provide custom parameters when using the JS SDK to make an API Request even if the parameter isn't defined as a type.
+The Deepgram JS SDK has defined [typed parameters](https://github.com/deepgram/deepgram-js-sdk/tree/main/src/api/types), but also allows for arbitrary key/value pairs. You can provide custom parameters when using the JS SDK to make an API Request even if the parameter isn't defined as a type.
 
 This is useful if you want to use a feature of the Deepgram API that isn't officially supported in the JS SDK.
 

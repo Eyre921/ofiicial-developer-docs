@@ -545,35 +545,35 @@ async function main() {
         branchId: "branch_id",
         workflow: {
             edges: {
-                "entry_to_tool_a": {
+                entry_to_tool_a: {
                     source: "entry_node",
                     target: "tool_node_a",
                 },
-                "start_to_entry": {
+                start_to_entry: {
                     source: "start_node",
                     target: "entry_node",
                 },
-                "tool_a_to_failure": {
+                tool_a_to_failure: {
                     source: "tool_node_a",
                     target: "failure_node",
                 },
-                "tool_a_to_tool_b": {
+                tool_a_to_tool_b: {
                     source: "tool_node_a",
                     target: "tool_node_b",
                 },
-                "tool_b_to_agent_transfer": {
+                tool_b_to_agent_transfer: {
                     source: "tool_node_b",
                     target: "success_transfer",
                 },
-                "tool_b_to_conversation": {
+                tool_b_to_conversation: {
                     source: "tool_node_b",
                     target: "success_conversation",
                 },
-                "tool_b_to_end": {
+                tool_b_to_end: {
                     source: "tool_node_b",
                     target: "success_end",
                 },
-                "tool_b_to_phone": {
+                tool_b_to_phone: {
                     source: "tool_node_b",
                     target: "success_phone",
                 },

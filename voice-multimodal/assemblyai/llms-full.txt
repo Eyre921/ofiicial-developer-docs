@@ -244,6 +244,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Speech Threshold](#speech-threshold-docs-guardrails-set-minimum-speech-threshold-mdx)
 - [Quickstart](#quickstart-docs-llm-gateway-quickstart-mdx)
 - [Models](#models-docs-llm-gateway-available-models-mdx)
+- [Providers](#providers-docs-llm-gateway-providers-mdx)
 - [Model Fallbacks](#model-fallbacks-docs-llm-gateway-fallback-mdx)
 - [Prompt Caching](#prompt-caching-docs-llm-gateway-prompt-caching-mdx)
 - [Tool Calling](#tool-calling-docs-llm-gateway-tool-calling-mdx)
@@ -1040,7 +1041,7 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
 
 Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list.
 
-**English** — `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `paul`, `vera` (🇬🇧 British).
+**English** — `alba`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `anna`, `charles`, `paul`, `vera` (🇬🇧 British).
 
 **Language-specific** (each speaks the named language plus English): `giovanni` (🇮🇹 Italian), `lola` (🇪🇸 Spanish), `juergen` (🇩🇪 German), `rafael` (🇵🇹 Portuguese), `estelle` (🇫🇷 French).
 
@@ -13687,6 +13688,22 @@ For OpenAI open-weight models (gpt-oss-120b, gpt-oss-20b), we use these models t
 **Google Gemini models**
 
 Google Gemini models have ZDR (zero data retention). See Google's policy [here](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/vertex-ai-zero-data-retention) for more information on how Google defines ZDR.
+
+#### Opt-in providers
+
+The following providers are opt-in only. To use them with Speech Understanding or the LLM Gateway, opt in from the [Data Controls](/data-controls) page in your dashboard. The providers listed above are enabled by default when you use Speech Understanding or the LLM Gateway with those models by name.
+
+**Together AI**
+
+Together AI has ZDR (zero data retention) enabled. See Together AI's [privacy policy](https://www.together.ai/privacy) for more information.
+
+**Fireworks AI**
+
+Fireworks AI has [ZDR by default](https://docs.fireworks.ai/guides/security_compliance/data_handling#zero-data-retention). See Fireworks AI's [data handling documentation](https://docs.fireworks.ai/guides/security_compliance/data_handling#zero-data-retention) for more information.
+
+**DigitalOcean**
+
+See DigitalOcean's [inference data privacy documentation](https://docs.digitalocean.com/products/inference/details/data-privacy/) for more information.
 
 AssemblyAI has opted out of model training with all LLM Gateway providers. Please note this is separate from whether AssemblyAI may train our models with your data, and the model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
 
@@ -53833,7 +53850,7 @@ The Voice Agent API officially supports the following output languages, each bac
 
 | Language   | Flag | Recommended voices                                                                                    |
 | ---------- | ---- | ----------------------------------------------------------------------------------------------------- |
-| English    | 🇺🇸 🇬🇧 | `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸), `paul`, `vera` (🇬🇧) |
+| English    | 🇺🇸 🇬🇧 | `alba`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸), `anna`, `charles`, `paul`, `vera` (🇬🇧) |
 | Italian    | 🇮🇹 | `giovanni`                                                                                            |
 | Spanish    | 🇪🇸 | `lola`                                                                                                |
 | German     | 🇩🇪 | `juergen`                                                                                             |
@@ -55984,7 +56001,7 @@ Configuring inline over the WebSocket instead of on a stored agent? Set it on `s
 }
 ```
 
-The voice is **immutable once the session is established**, so it can't be changed mid-conversation — pick it before the agent connects.
+The voice is **immutable once the session is established**, so it can't be changed mid-conversation. Pick it before the agent connects.
 
 ## Language support
 
@@ -55992,14 +56009,14 @@ The agent recognizes far more input languages than it speaks. For the authoritat
 
 In short:
 
-- **Input (recognized):** 18 languages, with native code-switching.
-- **Output (spoken):** 6 officially supported languages — 🇺🇸🇬🇧 English, 🇮🇹 Italian, 🇪🇸 Spanish, 🇩🇪 German, 🇵🇹 Portuguese, and 🇫🇷 French — each backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
+- **Input (recognized):** 18 languages, with native code-switching. Because the agent recognizes more languages than it speaks, this enables translation use cases where a caller speaks one language and the agent responds in another.
+- **Output (spoken):** 6 officially supported languages: 🇺🇸🇬🇧 English, 🇮🇹 Italian, 🇪🇸 Spanish, 🇩🇪 German, 🇵🇹 Portuguese, and 🇫🇷 French. Each is backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
 
 ## Choose a voice by accent
 
 Each voice has a primary accent:
 
-- For **English** — the right pick for an English agent — choose from [English voices](#english-voices). Most have a 🇺🇸 American accent; `paul` and `vera` have a 🇬🇧 British accent.
+- For **English** (the right pick for an English agent), choose from [English voices](#english-voices). Most have a 🇺🇸 American accent; `anna`, `charles`, `paul`, and `vera` have a 🇬🇧 British accent.
 - For a **native accent** in Italian, Spanish, German, Portuguese, or French, choose the matching [language-specific voice](#language-specific-voices).
 
 ## English voices
@@ -56009,14 +56026,14 @@ These voices have an English accent and are the recommended pick for English age
 | Voice      | Accent  |
 | ---------- | ------- |
 | `alba`     | 🇺🇸      |
-| `anna`     | 🇺🇸      |
-| `charles`  | 🇺🇸      |
 | `eve`      | 🇺🇸      |
 | `george`   | 🇺🇸      |
 | `jane`     | 🇺🇸      |
 | `jean`     | 🇺🇸      |
 | `mary`     | 🇺🇸      |
 | `michael`  | 🇺🇸      |
+| `anna`     | 🇬🇧      |
+| `charles`  | 🇬🇧      |
 | `paul`     | 🇬🇧      |
 | `vera`     | 🇬🇧      |
 
@@ -65817,6 +65834,39 @@ Description: Available models on LLM Gateway
 
 ---
 
+<a id="providers-docs-llm-gateway-providers-mdx"></a>
+
+# Providers
+
+URL: https://www.assemblyai.com/docs/llm-gateway/providers
+Source: docs/llm-gateway/providers.mdx
+Navigation: LLM Gateway > Getting started
+Description: Model providers available through LLM Gateway, including data retention policies and regional availability
+
+## Overview
+
+LLM Gateway routes requests to models hosted by several third-party providers. This page summarizes each provider's data retention posture, whether they require opt-in, and where to find their public terms.
+
+For a full list of models and IDs, see [Models](/llm-gateway/available-models). For which models are available in which regions, see [Cloud endpoints & data residency](/llm-gateway/cloud-endpoints-and-data-residency#model-availability-by-region). For AssemblyAI's overall data retention policies, see [Data retention and model training](/data-retention-and-model-training#llm-gateway-production-environment).
+
+## Provider summary
+
+| Provider     | Retention                                                                                       | Availability  | Terms                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------ |
+| AssemblyAI   | [ZDR](/data-retention-and-model-training)                                                       | On by default | [Terms](https://www.assemblyai.com/legal/terms-of-service)             |
+| AWS Bedrock  | [ZDR](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)                | On by default | [Terms](https://aws.amazon.com/service-terms/)                         |
+| Google       | [ZDR](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/vertex-ai-zero-data-retention) | On by default | [Terms](https://cloud.google.com/terms)                                |
+| OpenAI       | [ZDR](https://developers.openai.com/api/docs/guides/your-data#zero-data-retention)              | On by default | [Terms](https://openai.com/policies/business-terms/)                   |
+| Together AI  | [ZDR](https://www.together.ai/privacy)                                                          | Opt-in        | [Terms](https://www.together.ai/terms-of-service)                      |
+| Fireworks AI | [ZDR](https://docs.fireworks.ai/guides/security_compliance/data_handling#zero-data-retention)   | Opt-in        | [Terms](https://fireworks.ai/terms-of-service)                         |
+| DigitalOcean | [See provider](https://docs.digitalocean.com/products/inference/details/data-privacy/)          | Opt-in        | [Terms](https://www.digitalocean.com/legal/terms-of-service-agreement) |
+
+Providers marked **Opt-in** are disabled by default. To use them, you need to manually turn on their toggles on the [Data Controls](https://www.assemblyai.com/dashboard/settings/data-controls) page in your dashboard.
+
+  No LLM Gateway providers train on your data. AssemblyAI has opted out of model training with all LLM Gateway providers. This is separate from whether AssemblyAI trains our own models with your data. See [Data retention and model training](/data-retention-and-model-training) for details.
+
+---
+
 <a id="model-fallbacks-docs-llm-gateway-fallback-mdx"></a>
 
 # Model Fallbacks
@@ -67150,19 +67200,22 @@ The EU endpoint (`llm-gateway.eu.assemblyai.com`) guarantees your data never lea
 
   Effective July 1, 2026, in-region LLM Gateway requests will increase by 10% as a direct pass-through of provider price increases, with no AssemblyAI upcharge. Opt into [global routing](#global-routing) to keep current pricing.
 
-## EU model availability
+## Model availability by region
 
-The EU endpoint currently supports Anthropic Claude and Google Gemini models. OpenAI models are only available through the US endpoint.
+The EU endpoint currently supports Anthropic Claude and Google Gemini models. All other models are available through the US endpoint or [global routing](#global-routing) only.
 
-| Provider            | US | EU |
-| ------------------- | -- | -- |
-| Anthropic Claude    | Yes | Yes |
-| Google Gemini       | Yes | Yes |
-| OpenAI GPT          | Yes | No  |
-| Alibaba Cloud Qwen  | Yes | No  |
-| Moonshot AI Kimi    | Yes | No  |
+| Provider                     | US  | EU  | Global      |
+| ---------------------------- | --- | --- | ----------- |
+| Anthropic Claude             | Yes | Yes | Yes         |
+| Google Gemini                | Yes | Yes | Yes         |
+| OpenAI GPT                   | Yes | No  | No          |
+| Together AI (opt-in)         | No  | No  | Yes         |
+| Fireworks AI (opt-in)        | Yes | No  | No          |
+| DigitalOcean (opt-in)        | No  | No  | Yes         |
 
-For a full list of available models, see the [LLM Gateway Overview](/llm-gateway/quickstart).
+Providers marked **opt-in** are disabled by default. To use them, manually turn on their toggles on the [Data Controls](https://www.assemblyai.com/dashboard/settings/data-controls) page in your dashboard.
+
+For a full list of available models, see the [LLM Gateway Models](/llm-gateway/available-models). For each provider's data retention posture and terms, see [Providers](/llm-gateway/providers).
 
 ## Which endpoint should I use?
 
@@ -81096,7 +81149,7 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
 
 Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list.
 
-**English** — `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `paul`, `vera` (🇬🇧 British).
+**English** — `alba`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `anna`, `charles`, `paul`, `vera` (🇬🇧 British).
 
 **Language-specific** (each speaks the named language plus English): `giovanni` (🇮🇹 Italian), `lola` (🇪🇸 Spanish), `juergen` (🇩🇪 German), `rafael` (🇵🇹 Portuguese), `estelle` (🇫🇷 French).
 

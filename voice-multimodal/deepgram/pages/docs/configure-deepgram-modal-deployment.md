@@ -77,7 +77,7 @@ modal run -m modal_deepgram.deepgram_resources \
 
 ## Example
 
-The [quickstart](http://deepgram.com/docs/deploy-deepgram-on-modal) shows you how to deploy a STT service. If you wanted to deploy Aura-2 TTS instead, you would follow these steps:
+The [quickstart](/docs/deploy-deepgram-on-modal) shows you how to deploy a STT service. If you wanted to deploy Aura-2 TTS instead, you would follow these steps:
 
 1. Save your Aura-2 model links to `./tts-model-links.txt`.
 

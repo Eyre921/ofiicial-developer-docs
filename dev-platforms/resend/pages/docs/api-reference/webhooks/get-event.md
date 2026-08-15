@@ -20,7 +20,7 @@ Retrieve the details of a single event delivered to a webhook.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.4
+    npm install resend@6.19.0-preview-headless-dashboard.7
     ```
   </CodeGroup>
 </Warning>

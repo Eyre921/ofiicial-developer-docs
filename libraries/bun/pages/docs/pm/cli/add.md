@@ -20,6 +20,8 @@ bun add zod@^3.0.0
 bun add zod@latest
 ```
 
+Bun writes the package to `dependencies` unless you pass `--dev`, `--optional`, or `--peer`. If `package.json` already lists it in another group, Bun updates that entry in place.
+
 ## `--dev`
 
 <Note>**Alias** — `--development`, `-d`, `-D`</Note>
@@ -46,6 +48,8 @@ To add a package as a peer dependency (`"peerDependencies"`):
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun add --peer @types/bun
 ```
+
+Bun installs peer dependencies by default, so no additional `devDependencies` entry is needed.
 
 ## `--exact`
 
@@ -77,6 +81,62 @@ To view a complete list of options for this command:
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun add --help
 ```
+
+## `--catalog`
+
+In a workspace, `--catalog` writes the version to the root `package.json` [catalog](/docs/pm/catalogs) and adds `"catalog:"` to the current package. `--catalog=<name>` uses a named catalog (`workspaces.catalogs.<name>`) and writes `"catalog:<name>"`.
+
+```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun add react --catalog
+bun add vitest --catalog=testing
+```
+
+```json package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
+// root package.json
+{
+  "workspaces": {
+    "packages": ["packages/*"],
+    "catalog": {
+      "react": "^18.2.0" // [!code ++]
+    }
+  }
+}
+```
+
+```json packages/app/package.json icon="file-json" theme={"theme":{"light":"github-light","dark":"dracula"}}
+{
+  "dependencies": {
+    "react": "catalog:" // [!code ++]
+  }
+}
+```
+
+* If the catalog already has an entry, Bun reuses it and writes only `"catalog:"` to the current package. Pass an explicit version (`bun add react@19 --catalog`) to replace the entry — this affects every package that references it.
+* If you omit the version and the current `package.json` already has a range (`"react": "^18.2.0"`), Bun catalogs that range.
+* A package that already references `"catalog:<name>"` keeps using that catalog.
+* Attach the name with `=`: `--catalog=testing`, not `--catalog testing`.
+* Bun catalogs tarball and git specifiers under the package's real name. It rejects relative paths and workspace packages.
+
+Even without the flag, `bun add react` (no version) writes `"catalog:"` if the default catalog already lists `react`. Pass a version to write a concrete range instead.
+
+## `--filter`
+
+<Note>**Alias** — `-F`</Note>
+
+In a monorepo, add the package to the matching workspace(s) instead of the current directory's package. See [filtering](/docs/pm/filter) for the pattern syntax. Repeat the flag to combine patterns; `!pattern` excludes.
+
+```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun add zod --filter api
+bun add -d typescript --filter './packages/*'
+bun add ./vendor/logger --filter '*'
+bun remove zod --filter '*' --filter '!api'
+```
+
+* `*` matches every workspace package but not the root. To include the root, name it: `--filter '*' --filter '<root-name>'`.
+* If no workspace matches, Bun writes nothing and the command fails.
+* Bun resolves local paths from the current directory and rewrites them relative to each selected package.
+* Bun updates `bun.lock` for the whole repo but links only the selected workspaces into `node_modules`, as with `bun install --filter`.
+* Cannot be combined with `--global`.
 
 ## `--global`
 
@@ -210,6 +270,15 @@ bun add <package> <@version>
 
 <ParamField type="boolean">
   Only add dependencies to <code>package.json</code> if they are not already present
+</ParamField>
+
+<ParamField type="string">
+  Add the resolved version to the root <code>package.json</code> catalog and depend on it as <code>catalog:</code>;
+  <code>--catalog=NAME</code> targets <code>catalogs.NAME</code>
+</ParamField>
+
+<ParamField type="string">
+  Add the package(s) to the matching workspaces instead of the current package. Alias: <code>-F</code>
 </ParamField>
 
 ### Project Files & Lockfiles

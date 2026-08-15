@@ -335,8 +335,8 @@ async function main() {
         mode: {
             type: "conversation",
             conversation: {
-                guestVoiceId: "bYTqZQo3Jz7LQtmGTgwi",
                 hostVoiceId: "6lCwbsX1yVjD49QmpkTR",
+                guestVoiceId: "bYTqZQo3Jz7LQtmGTgwi",
             },
         },
         source: {
@@ -359,8 +359,8 @@ client.studio.create_podcast(
     model_id="eleven_multilingual_v2",
     mode=BodyCreatePodcastV1StudioPodcastsPostMode_Conversation(
         conversation=PodcastConversationModeData(
-            guest_voice_id="bYTqZQo3Jz7LQtmGTgwi",
             host_voice_id="6lCwbsX1yVjD49QmpkTR",
+            guest_voice_id="bYTqZQo3Jz7LQtmGTgwi",
         ),
     ),
     source=PodcastUrlSource(

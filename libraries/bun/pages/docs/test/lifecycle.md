@@ -40,7 +40,7 @@ test("example test", () => {
 
 ## Per-Scope Setup and Teardown
 
-Perform per-scope setup and teardown logic with `beforeAll` and `afterAll`. The scope is determined by where the hook is defined.
+Perform per-scope setup and teardown logic with `beforeAll` and `afterAll`. Where you define the hook determines its scope.
 
 ### Scoped to a Describe Block
 
@@ -96,7 +96,7 @@ describe("test group", () => {
 
 ### `onTestFinished`
 
-Use `onTestFinished` to run a callback after a single test completes. It runs after all `afterEach` hooks.
+Use `onTestFinished` to run a callback after a single test completes. The callback runs after all `afterEach` hooks.
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { test, onTestFinished } from "bun:test";
@@ -242,7 +242,7 @@ test("async test", async () => {
 
 ## Nested Hooks
 
-Hooks can be nested. They run in the following order:
+You can nest hooks. They run in the following order:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { describe, beforeAll, beforeEach, afterEach, afterAll, test } from "bun:test";
@@ -286,7 +286,7 @@ describe("outer describe", () => {
 
 ## Error Handling
 
-If a `beforeAll` hook throws, every test in its scope is skipped:
+If a `beforeAll` hook throws, the test runner skips every test in the hook's scope:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { beforeAll, test } from "bun:test";

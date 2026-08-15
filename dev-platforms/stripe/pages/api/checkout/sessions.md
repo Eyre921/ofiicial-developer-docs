@@ -46,11 +46,11 @@ Occurs when a Checkout Session has been successfully completed.
 - `checkout.session.expired`
 Occurs when a Checkout Session is expired.
 
-A Checkout Session represents your customer’s session as they pay for one-time purchases or subscriptions through [Checkout](https://docs.stripe.com/docs/payments/checkout.md) or [Payment Links](https://docs.stripe.com/docs/payments/payment-links.md). We recommend creating a new Session each time your customer attempts to pay.
+A Checkout Session represents your customer’s session as they pay for one-time purchases or subscriptions through [Checkout](https://docs.stripe.com/payments/checkout.md) or [Payment Links](https://docs.stripe.com/payments/payment-links.md). We recommend creating a new Session each time your customer attempts to pay.
 
-Once payment is successful, the Checkout Session will contain a reference to the [Customer](https://docs.stripe.com/docs/api/customers.md), and either the successful [PaymentIntent](https://docs.stripe.com/docs/api/payment_intents.md) or an active [Subscription](https://docs.stripe.com/docs/api/subscriptions.md).
+Once payment is successful, the Checkout Session will contain a reference to the [Customer](https://docs.stripe.com/api/customers.md), and either the successful [PaymentIntent](https://docs.stripe.com/api/payment_intents.md) or an active [Subscription](https://docs.stripe.com/api/subscriptions.md).
 
 You can create a Checkout Session on your server and redirect to its URL to begin Checkout.
 
-Related guide: [Checkout quickstart](https://docs.stripe.com/docs/checkout/quickstart.md)
+Related guide: [Checkout quickstart](https://docs.stripe.com/checkout/quickstart.md)
 

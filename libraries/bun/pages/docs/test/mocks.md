@@ -168,7 +168,7 @@ test("async mock functions", async () => {
 
 ## Spies with spyOn()
 
-Use `spyOn()` to track calls to a function without replacing it with a mock. Spies can be passed to `.toHaveBeenCalled()` and `.toHaveBeenCalledTimes()`.
+Use `spyOn()` to track calls to a function without replacing it with a mock. You can pass spies to `.toHaveBeenCalled()` and `.toHaveBeenCalledTimes()`.
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { test, expect, spyOn } from "bun:test";
@@ -325,7 +325,7 @@ preload = ["./my-preload"]
 
 #### When to Use Preload
 
-Mocking a module that's already been imported updates the module cache, so anything that imports it gets the mocked version. The original module has already been evaluated, though, so its side effects have already happened.
+Mocking a module that's already been imported updates the module cache, so anything that imports it gets the mocked version. Bun has already evaluated the original module, though, so its side effects have already happened.
 
 To prevent the original module from being evaluated at all, use `--preload` to load your mocks before your tests run.
 
@@ -413,7 +413,7 @@ test("clearing all mocks", () => {
 
 ### Reset All Mocks
 
-`jest.resetAllMocks()` (and its `vi.resetAllMocks()` alias) calls `mockFn.mockReset()` on every mock: on top of what `clearAllMocks()` does, it drops the implementations set by `mockImplementation()`, `mockReturnValue()` and friends. It does not restore the original implementation of a spy:
+`jest.resetAllMocks()` (and its `vi.resetAllMocks()` alias) calls `mockFn.mockReset()` on every mock. On top of what `clearAllMocks()` does, it drops the implementations set by `mockImplementation()`, `mockReturnValue()` and friends. It does not restore the original implementation of a spy:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { expect, jest, test } from "bun:test";
@@ -507,7 +507,7 @@ Module mocks interact with both ESM and CommonJS module caches.
 
 ### Lazy Evaluation
 
-The mock factory callback is only evaluated when the module is imported or required.
+Bun evaluates the mock factory callback only when the module is imported or required.
 
 ### Path Resolution
 

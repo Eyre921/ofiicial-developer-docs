@@ -157,7 +157,7 @@ path: api/invoices/object
   Whether an attempt has been made to pay the invoice. An invoice is not attempted until 1 hour after the `invoice.created` webhook, for example, so you might not want to display that invoice as unpaid to your users.
 
 - `auto_advance` (boolean)
-  Controls whether Stripe performs [automatic collection](https://docs.stripe.com/docs/invoicing/integration/automatic-advancement-collection.md) of the invoice. If `false`, the invoice’s state doesn’t automatically advance without an explicit action.
+  Controls whether Stripe performs [automatic collection](https://docs.stripe.com/invoicing/integration/automatic-advancement-collection.md) of the invoice. If `false`, the invoice’s state doesn’t automatically advance without an explicit action.
 
 - [`automatic_tax`](https://docs.stripe.com/api/invoices/object.md?query=automatic_tax) (object)
   Settings and latest results for automatic tax lookup for this invoice.
@@ -266,7 +266,7 @@ Possible enum values:
   Footer displayed on the invoice.
 
 - [`from_invoice`](https://docs.stripe.com/api/invoices/object.md?query=from_invoice) (object, nullable)
-  Details of the invoice that was cloned. See the [revision documentation](https://docs.stripe.com/docs/invoicing/invoice-revisions.md) for more details.
+  Details of the invoice that was cloned. See the [revision documentation](https://docs.stripe.com/invoicing/invoice-revisions.md) for more details.
 
 - `hosted_invoice_url` (string, nullable)
   The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
@@ -290,7 +290,7 @@ Possible enum values:
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
 - `metadata` (map, nullable)
-  Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `next_payment_attempt` (timestamp, nullable)
   The time at which payment will next be attempted. This value will be `null` for invoices where `collection_method=send_invoice`.
@@ -299,7 +299,7 @@ Possible enum values:
   A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer’s unique invoice_prefix if it is specified.
 
 - `on_behalf_of` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-  The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://docs.stripe.com/docs/billing/invoices/connect.md) documentation for details.
+  The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://docs.stripe.com/billing/invoices/connect.md) documentation for details.
 
 - [`parent`](https://docs.stripe.com/api/invoices/object.md?query=parent) (object, nullable)
   The parent that generated this invoice
@@ -341,7 +341,7 @@ Possible enum values:
   Extra information about an invoice for the customer’s credit card statement.
 
 - `status` (enum, nullable)
-  The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://docs.stripe.com/docs/billing/invoices/workflow.md#workflow-overview)
+  The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://docs.stripe.com/billing/invoices/workflow.md#workflow-overview)
 
 - [`status_transitions`](https://docs.stripe.com/api/invoices/object.md?query=status_transitions) (object)
   The timestamps at which the invoice status was updated.
@@ -374,5 +374,5 @@ Possible enum values:
   The aggregate tax information of all line items.
 
 - `webhooks_delivered_at` (timestamp, nullable)
-  Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://docs.stripe.com/docs/billing/webhooks.md#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
+  Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://docs.stripe.com/billing/webhooks.md#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
 

@@ -18,7 +18,7 @@ const transpiler = new Bun.Transpiler({
 
 ## `.transformSync()`
 
-Transpile code synchronously with the `.transformSync()` method. Modules are not resolved and the code is not executed. The result is a string of vanilla JavaScript code.
+Transpile code synchronously with the `.transformSync()` method. The transpiler does not resolve modules or execute the code. The result is a string of vanilla JavaScript code.
 
 <CodeGroup>
   ```ts transpile.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b"  theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -79,7 +79,7 @@ await transpiler.transform("<div>hi!</div>", "tsx");
 <Accordion title="Nitty gritty">
   The `.transform()` method runs the transpiler in Bun's worker threadpool, so running it 100 times spreads the work across `Math.floor($cpu_count * 0.8)` threads without blocking the main JavaScript thread.
 
-  If your code uses a macro, it may spawn a new copy of Bun's JavaScript runtime environment in that new thread.
+  If your code uses a macro, the transpiler may spawn a new copy of Bun's JavaScript runtime environment in that new thread.
 </Accordion>
 
 ## `.scan()`

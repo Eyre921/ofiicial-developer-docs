@@ -20,29 +20,9 @@ Stripe Capital for platforms is available to *Connect* (Connect is Stripe's solu
 
 Eligibility requirements, financing processes, and offer structures are largely consistent across markets. Find country-specific details and offer types in the tabs below.
 
-## Eligible connected accounts
+## Overview
 
-Stripe, alongside our financial partners, reviews each connected account’s eligibility based on their payment activity on Stripe. This automatic review runs daily and requires no action from your platform. While we aim to offer financing to as many accounts as possible, not all connected accounts are eligible.
-
-### Minimum eligibility requirements
-
-To qualify, a connected account must:
-
-- Be a for-profit business
-- Be located or incorporated in one of the capital supported countries and be able to provide an address in that country
-- Have processed payments on Stripe with the platform for at least 3 months
-- Have a processing volume of at least 5,000 in local currency per year, and an average of 1,000 in local currency over the last 3 months
-- Be in good standing with Stripe Capital
-- The person applying and guaranteeing the offer must be a representative, controller, or director with at least 25% ownership and must be at least 18 years old
-
-Meeting the minimum eligibility requirements doesn’t guarantee that a connected account qualifies for a Stripe Capital offer.
-
-In addition to the minimum requirements, Stripe, along with our partners, evaluates many other characteristics of the connected account’s business to determine eligibility. Key considerations include:
-
-- **A steady processing record**: A consistent, steady processing record with limited periods of low or zero volume shows stability in the business and increases their likelihood of qualifying for an offer.
-- **A growth trajectory**: The amount of payment they process through Stripe influences the size of a connected account’s funding offer. Businesses with positive growth trajectories are more likely to be eligible for an offer.
-- **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
-- **A low dispute rate**: Businesses with low rates of unresolved *chargebacks* (The action taken by a cardholder's bank to debit a business's account in response to a dispute from the cardholder. The debited funds are held until the dispute is resolved) are more likely to qualify for funding.
+[Stripe Capital for platforms](https://stripe.com/capital/platforms) lets you offer financing to your eligible connected accounts through your existing Connect integration. Stripe and its financial partners manage eligibility, underwriting, pricing, funding, servicing, and collections.
 
 ## Financing process
 
@@ -80,59 +60,6 @@ Stripe automatically re-evaluates connected accounts for new offers as they pay 
 ## Additional financing 
 
 Refills are additional financing offers extended to connected accounts that have made substantial payment progress on an in-progress financing balance. Refill behavior varies by country. Find country-specific details and offer types in the tabs below.
-
-## Capital integration options 
-
-Available integration options vary by market. See [Compare integrations](https://docs.stripe.com/capital/getting-started.md#compare-integrations) to confirm which options are available in the countries of your connected accounts. There are three ways to set up your Capital program:
-
-- [No-code integration](https://docs.stripe.com/capital/no-code-integration.md)
-- [Embedded components integration](https://docs.stripe.com/capital/embedded-component-integration.md)
-- [API integration](https://docs.stripe.com/capital/api-integration.md)
-
-### Provide financing offers
-
-To show financing offers to eligible connected accounts, use an embedded component or email. In some countries, Stripe can send co-branded marketing emails with financing offers to your connected accounts on your behalf. In others, local regulations (see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md) to learn more about market-specific regulations) require you to listen to webhooks for eligible offers and send your own notifications.
-
-If you use an API integration, you’re responsible for updating offers as delivered and accepted. To learn more, see [Set up an API integration](https://docs.stripe.com/capital/api-integration.md).
-
-Regardless of your integration type, connected accounts must view and accept their financing offer in a Stripe-hosted Capital page or an embedded component.
-![anatomy offer](https://b.stripecdn.com/docs-statics-srv/assets/offer-anatomy.25435a5c27bd4804965991bf4ba77e00.png)
-
-Eligible connected accounts see this Stripe-hosted Capital page or interact with this page within the embedded component to accept a financing offer, regardless of your integration type.
-
-To learn how to launch a Capital program, see [Set up Capital](https://docs.stripe.com/capital/getting-started.md).
-
-## Capital emails 
-
-Stripe can send the following types of emails to your connected accounts throughout the financing process:
-
-- **Marketing**: Co-branded emails notifying eligible connected accounts of financing offers. Available in select markets only. Includes new offers (sent when a connected account first becomes eligible), refreshed offers (sent when a prior offer expires after 30 days and the account re-qualifies), and refill offers (sent when a connected account is approximately 80% through paying their current financing and is eligible for new funding before completing their paydown). See [Capital refills](https://docs.stripe.com/capital/refills.md).
-
-- **Application status**: Updates across the full application lifecycle, including confirmation that an application has been submitted and is under review, approval notifications with disbursement details, rejection notifications, and requests to resolve identity or business verification (KYC or KYB) issues if we can’t verify the information provided during the application.
-
-- **Transactional**: Ongoing weekly updates throughout the payment period, including milestone progress notifications at 25%, 50%, and 75% of payment completion, reminders about outstanding minimum balance payments, and notifications about upcoming bank account debits.
-
-## Financing in the Express Dashboard 
-
-For connected accounts with access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md), we offer a Stripe-branded experience under the Financing tab. Your connected accounts can view their offers, apply, and manage repayments from the Express Dashboard.
-
-[View the demo](https://express.stripe.dev/financing)
-
-## In-progress financing 
-
-After a connected account accepts an offer and receives their payout, you can provide them with visibility into their financing balance, transaction history, and payment progress.
-
-- **Email**: Connected accounts receive co-branded email notifications on offer acceptance, payout disbursement, and weekly or periodic payment progress. Each email links to a Stripe-hosted Capital page where they can view transactions and payment progress. These are transactional emails, enabled by default in all markets.
-
-- **Embedded component**: Embed the [Capital financing component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md) in your platform’s UI to provide transaction reports directly to connected accounts. This component doesn’t include standard payment processing information such as charges, refunds, or disputes.
-
-- **API**: Use the [Financing Transactions API](https://docs.stripe.com/capital/reporting-and-reconciliation.md) to monitor Capital transactions alongside detailed payments data—including charges, refunds, and disputes—and build your own custom reporting interfaces.
-
-For full implementation details, see [Reporting and reconciliation](https://docs.stripe.com/capital/reporting-and-reconciliation.md).
-
-## Capital servicing 
-
-Stripe and our financial partners handle support and servicing for your connected accounts for all Capital-related inquiries. Direct your connected accounts to [email our dedicated support team](mailto:capital+support@stripe.com) as their first point of contact. To help connected accounts facing business challenges, the Stripe team might put your connected accounts directly in touch with our financial partners who might offer extended payment plans to help them meet their financing obligations with smaller payments.
 
 ## Country specific details
 
@@ -304,6 +231,83 @@ The following table compares these financing options:
 When a British connected account accepts a refill, the original financing remains active and the refill payout doesn’t automatically pay it. YouLend applies the new withholding rate to the original financing. After the original financing clears, withholding shifts to the new financing.
 
 *All financing applications are subject to review prior to approval. In the UK, Stripe Capital loans and cash advances are provided by YouLend.*
+
+## Eligible connected accounts
+
+Stripe and its financial partners review each connected account’s eligibility based on their payment activity on Stripe. This automatic review runs daily and requires no action from your platform. Not all connected accounts are eligible.
+
+### Minimum eligibility requirements
+
+To qualify, a connected account must:
+
+- Be a for-profit business
+- Be located or incorporated in one of the [supported countries](https://docs.stripe.com/capital/how-capital-for-platforms-works.md#country-specific-details) and provide an address in that country
+- Have processed payments on Stripe with the platform for at least 3 months
+- Have an annual processing volume of at least 5,000 in local currency, and an average of 1,000 in local currency over the last 3 months
+- Be in good standing with Stripe Capital
+- Have an applicant who is a representative, controller, or director, at least 18 years old, with at least 25% ownership
+
+Meeting the minimum eligibility requirements doesn’t guarantee that a connected account qualifies for a Stripe Capital offer.
+
+In addition to the minimum requirements, Stripe, along with our partners, evaluates many other characteristics of the connected account’s business to determine eligibility. Key considerations include:
+
+- **A steady processing record**: A consistent processing record with limited periods of low or zero volume shows business stability and increases the account’s likelihood of qualifying for an offer.
+- **A growth trajectory**: The amount of payments a connected account processes through Stripe influences the size of its funding offer. Businesses with positive growth trajectories are more likely to be eligible for an offer.
+- **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
+- **A low dispute rate**: Businesses with low rates of unresolved *chargebacks* (The action taken by a cardholder's bank to debit a business's account in response to a dispute from the cardholder. The debited funds are held until the dispute is resolved) are more likely to qualify for funding.
+
+## Capital integration options 
+
+Available integration options vary by market. See [Compare integrations](https://docs.stripe.com/capital/getting-started.md#compare-integrations) to confirm which options are available in the countries of your connected accounts. There are three ways to set up your Capital program:
+
+- [No-code integration](https://docs.stripe.com/capital/no-code-integration.md)
+- [Embedded components integration](https://docs.stripe.com/capital/embedded-component-integration.md)
+- [API integration](https://docs.stripe.com/capital/api-integration.md)
+
+### Provide financing offers
+
+To show financing offers to eligible connected accounts, use an embedded component or email. In some countries, Stripe can send co-branded marketing emails with financing offers to your connected accounts on your behalf. In others, local regulations (see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md) to learn more about market-specific regulations) require you to listen to webhooks for eligible offers and send your own notifications.
+
+If you use an API integration, you’re responsible for updating offers as delivered and accepted. To learn more, see [Set up an API integration](https://docs.stripe.com/capital/api-integration.md).
+
+Regardless of your integration type, connected accounts must view and accept their financing offer in a Stripe-hosted Capital page or an embedded component.
+![anatomy offer](https://b.stripecdn.com/docs-statics-srv/assets/offer-anatomy.25435a5c27bd4804965991bf4ba77e00.png)
+
+Eligible connected accounts see this Stripe-hosted Capital page or interact with this page within the embedded component to accept a financing offer, regardless of your integration type.
+
+To learn how to launch a Capital program, see [Set up Capital](https://docs.stripe.com/capital/getting-started.md).
+
+## Capital emails 
+
+Stripe can send the following types of emails to your connected accounts throughout the financing process:
+
+- **Marketing**: Co-branded emails notifying eligible connected accounts of financing offers. Available in select markets only. Includes new offers (sent when a connected account first becomes eligible), refreshed offers (sent when a prior offer expires after 30 days and the account re-qualifies), and refill offers (sent when a connected account is approximately 80% through paying their current financing and is eligible for new funding before completing their paydown). See [Capital refills](https://docs.stripe.com/capital/refills.md).
+
+- **Application status**: Updates across the full application lifecycle, including confirmation that an application has been submitted and is under review, approval notifications with disbursement details, rejection notifications, and requests to resolve identity or business verification (KYC or KYB) issues if we can’t verify the information provided during the application.
+
+- **Transactional**: Ongoing weekly updates throughout the payment period, including milestone progress notifications at 25%, 50%, and 75% of payment completion, reminders about outstanding minimum balance payments, and notifications about upcoming bank account debits.
+
+## Financing in the Express Dashboard 
+
+For connected accounts with access to the [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md), we offer a Stripe-branded experience under the Financing tab. Your connected accounts can view their offers, apply, and manage repayments from the Express Dashboard.
+
+[View the demo](https://express.stripe.dev/financing)
+
+## In-progress financing 
+
+After a connected account accepts an offer and receives their payout, you can provide them with visibility into their financing balance, transaction history, and payment progress.
+
+- **Email**: Connected accounts receive co-branded email notifications on offer acceptance, payout disbursement, and weekly or periodic payment progress. Each email links to a Stripe-hosted Capital page where they can view transactions and payment progress. These are transactional emails, enabled by default in all markets.
+
+- **Embedded component**: Embed the [Capital financing component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md) in your platform’s UI to provide transaction reports directly to connected accounts. This component doesn’t include standard payment processing information such as charges, refunds, or disputes.
+
+- **API**: Use the [Financing Transactions API](https://docs.stripe.com/capital/reporting-and-reconciliation.md) to monitor Capital transactions alongside detailed payments data—including charges, refunds, and disputes—and build your own custom reporting interfaces.
+
+For full implementation details, see [Reporting and reconciliation](https://docs.stripe.com/capital/reporting-and-reconciliation.md).
+
+## Capital servicing 
+
+Stripe and our financial partners handle support and servicing for your connected accounts for all Capital-related inquiries. Direct your connected accounts to [email our dedicated support team](mailto:capital+support@stripe.com) as their first point of contact. To help connected accounts facing business challenges, the Stripe team might put your connected accounts directly in touch with our financial partners who might offer extended payment plans to help them meet their financing obligations with smaller payments.
 
 ## See also
 

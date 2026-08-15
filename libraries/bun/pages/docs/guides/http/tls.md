@@ -18,7 +18,7 @@ const server = Bun.serve({
 
 ***
 
-By default, Bun trusts the Mozilla-curated list of well-known root CAs. To override this list, pass an array of certificates as `ca`.
+By default, Bun trusts the Mozilla-curated list of well-known root CAs. To override this list, pass an array of certificates as `ca`. On a server, Bun uses this list to verify *client* certificates, so also set `requestCert: true`.
 
 ```ts server.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 const server = Bun.serve({
@@ -27,6 +27,7 @@ const server = Bun.serve({
     cert: Bun.file("cert.pem"),
     key: Bun.file("key.pem"),
     ca: [Bun.file("ca1.pem"), Bun.file("ca2.pem")],
+    requestCert: true,
   },
 });
 ```

@@ -75,7 +75,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.dubbing.project.language.transcript.get("lang_1001kwkyxp0je6ktn4knsfrasx5s", "proj_1601kwkyxp0hfzvtmyxwqxx6mcy3");
+    await client.dubbing.project.language.transcript.get("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "lang_1001kwkyxp0je6ktn4knsfrasx5s");
 }
 main();
 
@@ -87,8 +87,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.dubbing.project.language.transcript.get(
-    language_id="lang_1001kwkyxp0je6ktn4knsfrasx5s",
     project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
+    language_id="lang_1001kwkyxp0je6ktn4knsfrasx5s",
 )
 
 ```

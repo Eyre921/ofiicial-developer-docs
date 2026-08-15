@@ -50,7 +50,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.voices.samples.audio.get("sample_id", "voice_id");
+    await client.voices.samples.audio.get("voice_id", "sample_id");
 }
 main();
 
@@ -62,8 +62,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.voices.samples.audio.get(
-    sample_id="sample_id",
     voice_id="voice_id",
+    sample_id="sample_id",
 )
 
 ```

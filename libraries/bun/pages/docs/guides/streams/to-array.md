@@ -8,7 +8,7 @@ path: docs/guides/streams/to-array
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const stream = new ReadableStream();
-const str = await Bun.readableStreamToArray(stream);
+const chunks = await Bun.readableStreamToArray(stream);
 ```
 
 ***

@@ -107,11 +107,11 @@ For a complete list of Deepgram Aura TTS models see [TTS Voice Selection](/docs/
 
 Deepgram also provides managed support for Cartesia TTS. For a complete list of Cartesia TTS models, visit [Cartesia's TTS Docs](https://docs.cartesia.ai/build-with-cartesia/tts-models/latest). Cartesia is included in the [Standard pricing tier](https://deepgram.com/pricing).
 
-| Parameter                    | Type             | Description                                                                                                                                                                                                                                                      |
-| ---------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agent.speak.provider.type`  | String           | Must be `cartesia`                                                                                                                                                                                                                                               |
-| `agent.speak.provider.model` | String           | The TTS model to use                                                                                                                                                                                                                                             |
-| `agent.speak.provider.speed` | String or Number | Speaking rate control. Accepts `slowest`, `slow`, `normal`, `fast`, `fastest`, or a numerical value for more granular control. See [Cartesia speed documentation](https://docs.cartesia.ai/build-with-cartesia/capability-guides/control-speed-and-emotion#api). |
+| Parameter                    | Type             | Description                                                                                                                                                                                                                                             |
+| ---------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agent.speak.provider.type`  | String           | Must be `cartesia`                                                                                                                                                                                                                                      |
+| `agent.speak.provider.model` | String           | The TTS model to use                                                                                                                                                                                                                                    |
+| `agent.speak.provider.speed` | String or Number | Speaking rate control. Accepts `slowest`, `slow`, `normal`, `fast`, `fastest`, or a numerical value for more granular control. See [Cartesia speed documentation](https://docs.cartesia.ai/build-with-cartesia/capability-guides/volume-speed-emotion). |
 
 ### Example
 
@@ -139,7 +139,7 @@ To use a third party TTS voice, specify the TTS provider and required parameters
 
 ### OpenAI
 
-For OpenAI you can refer to [this article](https://platform.openai.com/docs/guides/text-to-speech/voices) on how to find your voice ID.
+For OpenAI you can refer to [OpenAI's text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options) on how to find your voice ID.
 
 | Parameter                      | Type   | Description                               |
 | ------------------------------ | ------ | ----------------------------------------- |

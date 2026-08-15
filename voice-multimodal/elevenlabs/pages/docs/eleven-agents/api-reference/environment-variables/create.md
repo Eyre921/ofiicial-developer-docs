@@ -98,7 +98,7 @@ async function main() {
         type: "string",
         label: "API_ENDPOINT_URL",
         values: {
-            "key": "https://api.production.example.com",
+            key: "https://api.production.example.com",
         },
     });
 }

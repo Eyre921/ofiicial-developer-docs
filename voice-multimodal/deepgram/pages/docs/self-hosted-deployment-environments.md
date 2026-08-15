@@ -40,7 +40,7 @@ The Flux models support fewer GPUs than Nova and Aura do:
 * **Flux STT** requires a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, or H100. GPUs like the NVIDIA T4 are incompatible.
 * **Flux TTS** runs on the NVIDIA L4, L40S, A100, and H100. The NVIDIA T4 and A10 are not supported. Contact [Support](https://deepgram.com/contact-us/) before provisioning any other GPU for Flux TTS.
 
-Flux TTS also requires more system RAM than the other models. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
+A Flux TTS Engine also allocates up to 60 GB of system RAM while it loads its model, so every host running one needs at least 64 GB. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
 
 ## Amazon SageMaker
 
@@ -99,11 +99,13 @@ For each machine running an STT Engine container, we recommend a machine with th
 
 ##### Text-to-Speech (TTS) Engine
 
-These specifications describe Aura and Aura-2. Flux TTS requires a single GPU rather than two, supports fewer GPU models, and needs more system RAM. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
+These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. Flux TTS is an Early Access feature in self-hosted deployments. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
 
-For each machine running a TTS Engine container, we recommend a machine with the following minimum specifications:
+Aura and Aura-2 require exactly two dedicated GPUs per TTS Engine container. This is a requirement on device count, not on total GPU memory or compute: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. Additional GPUs on a machine let you run additional Engine instances.
 
-* **2 NVIDIA GPUs** (dual GPU requirement for TTS services)
+For each machine running a TTS Engine container, we recommend the following specifications:
+
+* **2 NVIDIA GPUs** per Engine (required, not a minimum)
 
   * Minimum compute capability: `7.0+`
 

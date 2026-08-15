@@ -209,6 +209,32 @@ limits = client.fine_tuning.model_limits(model_name="<MODEL_ID>")
 print(limits.supports_full_training)
 ```
 
+## Continue training from a checkpoint
+
+Instead of starting from a base model, you can have a new job start from a previously completed job by passing `from_checkpoint`. The [quickstart](/docs/fine-tuning/quickstart#continue-from-a-checkpoint) covers the accepted formats. When the previous job is a LoRA job, the new job handles its adapter in one of two ways:
+
+* **Continue it:** The new job picks up the same adapter and keeps training it. The result is still a single adapter on the original base model.
+* **Merge it:** Together folds the adapter into the base model, producing a standalone set of weights, and the new job trains on those instead. The original adapter is no longer a separate, swappable artifact.
+
+The outcome depends on the training type of both jobs:
+
+| Previous job | New job                       | What happens                                                                                       |
+| ------------ | ----------------------------- | -------------------------------------------------------------------------------------------------- |
+| Full         | Full                          | Training continues on the full weights. No adapter is involved.                                    |
+| Full         | LoRA                          | A new adapter trains on top of the previous job's full weights.                                    |
+| LoRA         | Full                          | The adapter is merged into the base model, then full fine-tuning trains the merged weights.        |
+| LoRA         | LoRA, same LoRA settings      | Training continues on the same adapter.                                                            |
+| LoRA         | LoRA, different LoRA settings | The adapter is merged into the base model, then a new adapter with the new settings trains on top. |
+
+The [LoRA settings](#lora-settings) (`lora_r`, `lora_alpha`, `lora_dropout`, and `lora_trainable_modules`) define the adapter's shape, so an adapter can only continue training when all four match the previous job. To guarantee a continuation, omit the training type and the LoRA settings on the new job, so it inherits all of them from the previous job. Any value you set that differs from the previous job triggers a merge instead.
+
+The new job produces a checkpoint based on its own training type. A full fine-tune outputs full model weights (`--checkpoint-type default`). A LoRA job outputs an adapter plus merged weights (`--checkpoint-type adapter` or `merged` on [`tg fine-tuning download`](/reference/cli/finetune#download-model-weights)). The merged weights contain everything trained so far, including any parent adapter that was merged along the way. See [Choose a checkpoint type](/docs/fine-tuning/deployment#choose-a-checkpoint-type) for the SDK equivalents and what each artifact contains.
+
+In two cases the adapter can't be merged, so the platform rejects the new job at creation unless the LoRA settings match the previous job exactly:
+
+* **The previous job started from a Hugging Face model:** The rejection error names the settings that differ.
+* **The base model supports LoRA training only:** These models never produce full weights, so there is nothing to merge the adapter into.
+
 ## Serve your model
 
 How you deploy depends on the method:

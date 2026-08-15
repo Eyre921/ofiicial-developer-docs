@@ -98,8 +98,8 @@ async function main() {
         rules: [
             {
                 type: "alias",
-                alias: "color",
                 stringToReplace: "colour",
+                alias: "color",
             },
             {
                 type: "phoneme",
@@ -122,8 +122,8 @@ client.pronunciation_dictionaries.rules.set(
     pronunciation_dictionary_id="pronunciation_dictionary_id",
     rules=[
         BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Alias(
-            alias="color",
             string_to_replace="colour",
+            alias="color",
         ),
         BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItem_Phoneme(
             string_to_replace="route",

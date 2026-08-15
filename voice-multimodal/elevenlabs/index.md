@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1262 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1269 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -290,6 +290,7 @@
 - `docs/api-reference/tools/delete` — [Delete tool](pages/docs/api-reference/tools/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/delete.md)
 - `docs/api-reference/tools/get` — [Get tool](pages/docs/api-reference/tools/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get.md)
 - `docs/api-reference/tools/get-dependent-agents` — [Get dependent agents](pages/docs/api-reference/tools/get-dependent-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-dependent-agents.md)
+- `docs/api-reference/tools/get-executions` — [Get tool executions](pages/docs/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-executions.md)
 - `docs/api-reference/tools/list` — [List tools](pages/docs/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/list.md)
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)
 - `docs/api-reference/twilio/outbound-call` — [Outbound call via twilio](pages/docs/api-reference/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/outbound-call.md)
@@ -468,6 +469,7 @@
 - `docs/eleven-agents/api-reference/knowledge-base/update-file` — [Update document file](pages/docs/eleven-agents/api-reference/knowledge-base/update-file.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update-file.md)
 - `docs/eleven-agents/api-reference/llm/calculate` — [Calculate expected LLM usage](pages/docs/eleven-agents/api-reference/llm/calculate.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/calculate.md)
 - `docs/eleven-agents/api-reference/llm/list` — [List LLMs](pages/docs/eleven-agents/api-reference/llm/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/list.md)
+- `docs/eleven-agents/api-reference/mcp/approval-policies/create` — [Create MCP server tool approval](pages/docs/eleven-agents/api-reference/mcp/approval-policies/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/create.md)
 - `docs/eleven-agents/api-reference/mcp/approval-policies/delete` — [Delete MCP server tool approval](pages/docs/eleven-agents/api-reference/mcp/approval-policies/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/delete.md)
 - `docs/eleven-agents/api-reference/mcp/approval-policies/update` — [Update MCP server approval policy](pages/docs/eleven-agents/api-reference/mcp/approval-policies/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/update.md)
 - `docs/eleven-agents/api-reference/mcp/create` — [Create MCP server](pages/docs/eleven-agents/api-reference/mcp/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/create.md)
@@ -685,6 +687,7 @@
 - `docs/eleven-api/concepts/voice-cloning` — [Voice cloning: how it works](pages/docs/eleven-api/concepts/voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/voice-cloning.md)
 - `docs/eleven-api/guides/cookbooks/dubbing` — [Dubbing quickstart](pages/docs/eleven-api/guides/cookbooks/dubbing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/dubbing.md)
 - `docs/eleven-api/guides/cookbooks/forced-alignment` — [Forced Alignment quickstart](pages/docs/eleven-api/guides/cookbooks/forced-alignment.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/forced-alignment.md)
+- `docs/eleven-api/guides/cookbooks/image-and-video` — [Image & Video quickstart](pages/docs/eleven-api/guides/cookbooks/image-and-video.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/image-and-video.md)
 - `docs/eleven-api/guides/cookbooks/music` — [Music quickstart](pages/docs/eleven-api/guides/cookbooks/music.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/music.md)
 - `docs/eleven-api/guides/cookbooks/sound-effects` — [Sound Effects quickstart](pages/docs/eleven-api/guides/cookbooks/sound-effects.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/sound-effects.md)
 - `docs/eleven-api/guides/cookbooks/speech-engine` — [Speech Engine quickstart](pages/docs/eleven-api/guides/cookbooks/speech-engine.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-engine.md)
@@ -698,6 +701,8 @@
 - `docs/eleven-api/guides/how-to/dubbing/manage-projects` — [Manage dubbing projects](pages/docs/eleven-api/guides/how-to/dubbing/manage-projects.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/manage-projects.md)
 - `docs/eleven-api/guides/how-to/dubbing/multiple-languages` — [Dub into multiple languages](pages/docs/eleven-api/guides/how-to/dubbing/multiple-languages.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/multiple-languages.md)
 - `docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate` — [Refine and regenerate a dub](pages/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate.md)
+- `docs/eleven-api/guides/how-to/image-and-video/references` — [References and assets](pages/docs/eleven-api/guides/how-to/image-and-video/references.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/image-and-video/references.md)
+- `docs/eleven-api/guides/how-to/image-and-video/webhooks` — [Image & Video webhooks](pages/docs/eleven-api/guides/how-to/image-and-video/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/image-and-video/webhooks.md)
 - `docs/eleven-api/guides/how-to/music/composition-plans` — [Composition plans](pages/docs/eleven-api/guides/how-to/music/composition-plans.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/music/composition-plans.md)
 - `docs/eleven-api/guides/how-to/music/inpainting` — [Music inpainting](pages/docs/eleven-api/guides/how-to/music/inpainting.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/music/inpainting.md)
 - `docs/eleven-api/guides/how-to/music/streaming` — [Music streaming](pages/docs/eleven-api/guides/how-to/music/streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/music/streaming.md)
@@ -748,6 +753,7 @@
 - `docs/eleven-creative/audio-tools/audio-native/webflow` — [Audio Native with Webflow](pages/docs/eleven-creative/audio-tools/audio-native/webflow.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/webflow.md)
 - `docs/eleven-creative/audio-tools/audio-native/wix` — [Audio Native with Wix](pages/docs/eleven-creative/audio-tools/audio-native/wix.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/wix.md)
 - `docs/eleven-creative/audio-tools/audio-native/word-press` — [Audio Native with WordPress](pages/docs/eleven-creative/audio-tools/audio-native/word-press.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/word-press.md)
+- `docs/eleven-creative/audio-tools/voice-isolator` — [Voice isolator](pages/docs/eleven-creative/audio-tools/voice-isolator.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/voice-isolator.md)
 - `docs/eleven-creative/audio-tools/voiceover-studio` — [Voiceover studio](pages/docs/eleven-creative/audio-tools/voiceover-studio.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/voiceover-studio.md)
 - `docs/eleven-creative/overview` — [ElevenCreative](pages/docs/eleven-creative/overview.md) · [原文](https://elevenlabs.io/docs/eleven-creative/overview.md)
 - `docs/eleven-creative/playground/image-video` — [Image & Video](pages/docs/eleven-creative/playground/image-video.md) · [原文](https://elevenlabs.io/docs/eleven-creative/playground/image-video.md)
@@ -968,6 +974,7 @@
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-labs-protect-my-content` — [How does ElevenLabs protect my content?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-labs-protect-my-content.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-labs-protect-my-content.md)
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-reader-promote-published-content` — [How does ElevenReader promote published content?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-reader-promote-published-content.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-does-eleven-reader-promote-published-content.md)
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-eleven-reader-publishing-different-from-other-self-publishing-platforms` — [How is ElevenReader Publishing different from other self-publishing platforms?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-eleven-reader-publishing-different-from-other-self-publishing-platforms.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-eleven-reader-publishing-different-from-other-self-publishing-platforms.md)
+- `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-my-content-distributed` — [How is my content distributed?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-my-content-distributed.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-is-my-content-distributed.md)
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-long-do-payouts-take-to-reach-my-bank-account` — [How long do payouts take to reach my bank account?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-long-do-payouts-take-to-reach-my-bank-account.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-long-do-payouts-take-to-reach-my-bank-account.md)
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-often-are-payouts-made` — [How often are payouts made?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-often-are-payouts-made.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-often-are-payouts-made.md)
 - `docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-will-i-know-when-my-book-is-published` — [How will I know when my book is published?](pages/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-will-i-know-when-my-book-is-published.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/eleven-reader-publishing/how-will-i-know-when-my-book-is-published.md)

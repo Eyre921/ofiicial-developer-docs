@@ -25,7 +25,7 @@ This guide deploys a Bun HTTP server to AWS Lambda using a `Dockerfile`.
 
     ```docker Dockerfile icon="docker" theme={"theme":{"light":"github-light","dark":"dracula"}}
     # Use the official AWS Lambda adapter image to handle the Lambda runtime
-    FROM public.ecr.aws/awsguru/aws-lambda-adapter:0.9.0 AS aws-lambda-adapter
+    FROM public.ecr.aws/awsguru/aws-lambda-adapter:1.0.1 AS aws-lambda-adapter
 
     # Use the official Bun image to run the application
     FROM oven/bun:debian AS bun_latest
@@ -53,12 +53,12 @@ This guide deploys a Bun HTTP server to AWS Lambda using a `Dockerfile`.
     ```
 
     <Note>
-      Make sure that the start command corresponds to your application's entry point. This can also be `CMD ["bun", "run", "start"]` if you have a start script in your `package.json`.
+      Make sure that the start command corresponds to your application's entry point. The start command can also be `CMD ["bun", "run", "start"]` if you have a start script in your `package.json`.
 
-      If your app doesn't have dependencies, you can omit the `RUN bun install --production --frozen-lockfile` line.
+      If your app doesn't have dependencies, you can omit the `COPY package.json bun.lock ./` and `RUN bun install --production --frozen-lockfile` lines. Bun doesn't write a `bun.lock` for a project with no dependencies.
     </Note>
 
-    Create a new `.dockerignore` file in the root of your project. It lists the files and directories to *exclude* from the container image, such as `node_modules`, which keeps builds faster and smaller:
+    Create a new `.dockerignore` file in the root of your project. It lists the files and directories to *exclude* from the container image, such as `node_modules`. Excluding them keeps builds faster and smaller:
 
     ```docker .dockerignore icon="Docker" theme={"theme":{"light":"github-light","dark":"dracula"}}
     node_modules
@@ -89,7 +89,7 @@ This guide deploys a Bun HTTP server to AWS Lambda using a `Dockerfile`.
     The following command:
 
     * Creates an ECR repository named `bun-lambda-demo` in the `us-east-1` region
-    * Exports the repository URI as an environment variable. This is optional, but makes the next steps easier.
+    * Exports the repository URI as an environment variable. The export is optional, but it makes the next steps easier.
 
     ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
     export ECR_URI=$(aws ecr create-repository --repository-name bun-lambda-demo --region us-east-1 --query 'repository.repositoryUri' --output text)

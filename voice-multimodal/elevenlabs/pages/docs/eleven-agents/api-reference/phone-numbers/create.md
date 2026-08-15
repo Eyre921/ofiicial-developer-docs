@@ -125,8 +125,8 @@ async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.phoneNumbers.create({
         provider: "twilio",
-        label: "label",
         phoneNumber: "phone_number",
+        label: "label",
         sid: "sid",
         token: "token",
     });
@@ -143,8 +143,8 @@ client = ElevenLabs()
 
 client.conversational_ai.phone_numbers.create(
     request=PhoneNumbersCreateRequestBody_Twilio(
-        label="label",
         phone_number="phone_number",
+        label="label",
         sid="sid",
         token="token",
     ),

@@ -264,7 +264,7 @@ kubectl -n kubernetes-dashboard get secret \
 
 ## Direct SSH access
 
-### Prerequisites
+### Requirements
 
 Requirements depend on the SSH access method you use:
 

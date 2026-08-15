@@ -400,7 +400,7 @@
 - `payments/payment-methods/integration-options` — [Payment method integration options](pages/payments/payment-methods/integration-options.md) · [原文](https://docs.stripe.com/payments/payment-methods/integration-options.md)
 - `payments/payment-methods/payment-method-support` — [more than 20 payment methods](pages/payments/payment-methods/payment-method-support.md) · [原文](https://docs.stripe.com/payments/payment-methods/payment-method-support.md)
 - `payments/place-a-hold-on-a-payment-method` — [Place a hold on a payment method](pages/payments/place-a-hold-on-a-payment-method.md) · [原文](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md)
-- `payments/quickstart` — [Build an advanced integration](pages/payments/quickstart.md) · [原文](https://docs.stripe.com/payments/quickstart.md)
+- `payments/quickstart` — [Build a custom checkout page](pages/payments/quickstart.md) · [原文](https://docs.stripe.com/payments/quickstart.md)
 - `payments/quickstart-checkout-sessions` — [quickstart](pages/payments/quickstart-checkout-sessions.md) · [原文](https://docs.stripe.com/payments/quickstart-checkout-sessions.md)
 - `payments/real-time` — [Real-time payments](pages/payments/real-time.md) · [原文](https://docs.stripe.com/payments/real-time.md)
 - `payments/save-and-reuse` — [Save a customer's payment method without making a payment](pages/payments/save-and-reuse.md) · [原文](https://docs.stripe.com/payments/save-and-reuse.md)

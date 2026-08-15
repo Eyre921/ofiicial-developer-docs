@@ -86,5 +86,5 @@ A PaymentIntent guides you through the process of collecting a payment from your
 
 A PaymentIntent transitions through [multiple statuses](https://docs.stripe.com/payments/paymentintents/lifecycle.md) throughout its lifetime as it interfaces with Stripe.js to perform authentication flows and ultimately creates at most one successful charge.
 
-Related guide: [Payment Intents API](https://docs.stripe.com/docs/payments/payment-intents.md)
+Related guide: [Payment Intents API](https://docs.stripe.com/payments/payment-intents.md)
 

@@ -15,7 +15,7 @@ Giving LLMs the ability to execute code is very powerful – it has many advanta
 
 In this example, we'll show you how to build an AI data analyst that can read in data and make charts. We'll be using [E2B](https://e2b.dev/docs) for the code interpreter and Together AI for the LLM piece.
 
-## 1. Prerequisites
+## 1. Requirements
 
 Create a `main.ipynb` file and save your Together & E2B API keys in there.
 

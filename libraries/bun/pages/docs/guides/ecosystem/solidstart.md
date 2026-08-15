@@ -4,7 +4,7 @@ source: https://bun.com/docs/guides/ecosystem/solidstart
 path: docs/guides/ecosystem/solidstart
 ---
 
-Initialize a SolidStart app with `create-solid`. Pass the `--solidstart` flag to create a SolidStart project and `--ts` for TypeScript support. When prompted for a template, select `basic` for a minimal starter app.
+Initialize a SolidStart app with `create-solid`. Pass the `--solidstart` flag to create a SolidStart project and `--ts` for TypeScript support. When prompted for a SolidStart version, select `2 (Stable)`. When prompted for a template, select `basic` for a minimal starter app.
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun create solid my-app --solidstart --ts
@@ -12,10 +12,10 @@ bun create solid my-app --solidstart --ts
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
 ┌
- Create-Solid v0.6.11
+ Create-Solid v0.9.0
 │
-◇  Project Name
-│  my-app
+◇  Which version of SolidStart?
+│  2 (Stable)
 │
 ◇  Which template would you like to use?
 │  basic
@@ -47,15 +47,15 @@ bun dev
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-$ vinxi dev
-vinxi v0.5.8
-vinxi starting dev server
+$ vite dev
 
-  ➜ Local:    http://localhost:3000/
-  ➜ Network:  use --host to expose
+  VITE v8.1.4  ready in 818 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
 ```
 
-Open [localhost:3000](http://localhost:3000). Changes you make to `src/routes/index.tsx` are hot-reloaded automatically.
+Open [localhost:3000](http://localhost:3000). The development server automatically hot-reloads changes you make to `src/routes/index.tsx`.
 
 ***
 
