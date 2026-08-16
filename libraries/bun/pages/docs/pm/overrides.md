@@ -35,7 +35,7 @@ When you run `bun install`, Bun installs the latest version of each package.
 
 ```txt tree layout of node_modules icon="list-tree" theme={"theme":{"light":"github-light","dark":"dracula"}}
 node_modules
-├── foo@1.2.3
+├── foo@2.3.4
 └── bar@4.5.6
 ```
 

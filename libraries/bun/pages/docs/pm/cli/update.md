@@ -308,7 +308,7 @@ bun up
 ### Script Execution
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (Bun never runs dependency scripts)
+  Skip lifecycle scripts for all packages, including the project's <code>package.json</code> and trusted dependencies
 </ParamField>
 
 <ParamField type="number">
@@ -326,8 +326,8 @@ bun up
 </ParamField>
 
 <ParamField type="string">
-  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default),
-  <code>hardlink</code>, <code>symlink</code>, <code>copyfile</code>
+  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default on
+  macOS), <code>hardlink</code> (default on Linux and Windows), <code>symlink</code>, <code>copyfile</code>
 </ParamField>
 
 ### General & Environment
@@ -337,7 +337,7 @@ bun up
 </ParamField>
 
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="string">

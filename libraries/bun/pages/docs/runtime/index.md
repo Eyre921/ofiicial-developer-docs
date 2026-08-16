@@ -90,7 +90,6 @@ rm -rf dist && echo 'Done.'
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-Cleaning...
 Done.
 ```
 
@@ -111,15 +110,13 @@ bun run
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-quickstart scripts:
+...
+package.json scripts (2 found):
+  $ bun run clean
+    rm -rf dist && echo 'Done.'
 
- bun run clean
-   rm -rf dist && echo 'Done.'
-
- bun run dev
-   bun server.ts
-
-2 scripts
+  $ bun run dev
+    bun server.ts
 ```
 
 Bun respects lifecycle hooks. For instance, `bun run clean` runs `preclean` and `postclean`, if defined. If the `pre<script>` fails, Bun does not run the script itself.
@@ -300,11 +297,11 @@ bun run <file or script>
 </ParamField>
 
 <ParamField type="boolean">
-  Suppress all reporting of the custom deprecation
+  Silence all deprecation warnings
 </ParamField>
 
 <ParamField type="boolean">
-  Determine whether deprecation warnings result in errors
+  Throw deprecation warnings as errors
 </ParamField>
 
 <ParamField type="string">
@@ -400,7 +397,7 @@ bun run <file or script>
 </ParamField>
 
 <ParamField type="string">
-  Main fields to lookup in <code>package.json</code>. Defaults to --target dependent
+  Main fields to lookup in <code>package.json</code>
 </ParamField>
 
 <ParamField type="boolean">
@@ -412,7 +409,7 @@ bun run <file or script>
 </ParamField>
 
 <ParamField type="string">
-  Defaults to: <code>.tsx,.ts,.jsx,.js,.json</code>
+  Defaults to: <code>.tsx,.ts,.jsx,.cts,.cjs,.js,.mjs,.mts,.json,.node</code>
 </ParamField>
 
 ### Transpilation & Language Features

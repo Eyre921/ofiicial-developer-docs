@@ -51,7 +51,7 @@ Regenerate snapshots with:
 bun test --update-snapshots
 ```
 
-Do this when you've intentionally changed the output or added new snapshot tests.
+Do this when you've intentionally changed the output. In CI environments, Bun does not write new snapshots unless you pass this flag.
 
 ## Inline Snapshots
 
@@ -364,13 +364,13 @@ tests/
 When snapshots fail, Bun shows a diff:
 
 ```diff title="diff" icon="file-code" theme={"theme":{"light":"github-light","dark":"dracula"}}
-- Expected
-+ Received
-
-  Object {
+  {
 -   "name": "John",
 +   "name": "Jane",
   }
+
+- Expected  - 1
++ Received  + 1
 ```
 
 Common causes:

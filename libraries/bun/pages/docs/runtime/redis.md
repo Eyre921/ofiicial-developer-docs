@@ -194,7 +194,7 @@ Create a publisher in `publisher.ts`:
 ```typescript publisher.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { RedisClient } from "bun";
 
-const writer = new RedisClient("redis://localhost:6739");
+const writer = new RedisClient("redis://localhost:6379");
 await writer.connect();
 
 writer.publish("general", "Hello everyone!");
@@ -207,7 +207,7 @@ In another file, create the subscriber in `subscriber.ts`:
 ```typescript subscriber.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { RedisClient } from "bun";
 
-const listener = new RedisClient("redis://localhost:6739");
+const listener = new RedisClient("redis://localhost:6379");
 await listener.connect();
 
 await listener.subscribe("general", (message, channel) => {
@@ -229,8 +229,9 @@ bun run publisher.ts
 
 <Note>
   Subscribing takes over the `RedisClient` connection: a client with
-  subscriptions can only call `RedisClient.prototype.subscribe()`. To send other
-  commands to Redis, create a separate connection with `.duplicate()`:
+  subscriptions can only call the subscription methods (`subscribe()`,
+  `psubscribe()`, `unsubscribe()`, `punsubscribe()`), `pubsub()`, and `ping()`. To
+  send other commands to Redis, create a separate connection with `.duplicate()`:
 
   ```ts redis.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
   import { RedisClient } from "bun";

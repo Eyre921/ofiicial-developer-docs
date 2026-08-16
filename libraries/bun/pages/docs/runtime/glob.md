@@ -164,7 +164,7 @@ glob.match("index.ts"); // => false
 
 ## Node.js `fs.glob()` compatibility
 
-Bun also implements Node.js's `fs.glob()` functions with additional features:
+Bun also implements Node.js's `fs.glob()` functions:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { glob, globSync, promises } from "node:fs";

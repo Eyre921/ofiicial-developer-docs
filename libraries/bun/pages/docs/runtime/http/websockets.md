@@ -11,7 +11,7 @@ Server-side WebSockets in Bun
 <Info>
   **⚡️ 7x more throughput**
 
-  Bun's WebSockets are fast. For a [simple chatroom](https://github.com/oven-sh/bun/tree/main/bench/websocket-server/README.md) on Linux x64, Bun can handle 7x more requests per second than Node.js + [`"ws"`](https://github.com/websockets/ws).
+  Bun's WebSockets are fast. For a [simple chatroom](https://github.com/oven-sh/bun/tree/main/bench/websocket-server/README.md) on Linux x64, Bun can handle 7x more messages per second than Node.js + [`"ws"`](https://github.com/websockets/ws).
 
   | **Messages sent per second** | **Runtime**                    | **Clients** |
   | ---------------------------- | ------------------------------ | ----------- |
@@ -229,7 +229,7 @@ const server = Bun.serve({
 console.log(`Listening on ${server.hostname}:${server.port}`);
 ```
 
-Calling `.publish(data)` sends the message to all subscribers of a topic *except* the socket that called `.publish()`. To send a message to all subscribers of a topic, use the `.publish()` method on the `Server` instance.
+Calling `.publish(topic, data)` sends the message to all subscribers of a topic *except* the socket that called `.publish()`. To send a message to all subscribers of a topic, use the `.publish()` method on the `Server` instance.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const server = Bun.serve({

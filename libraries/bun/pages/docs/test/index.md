@@ -521,7 +521,7 @@ bun test <patterns>
 </ParamField>
 
 <ParamField type="string">
-  Output file path for the reporter format (required with --reporter)
+  Output file path for the reporter format (required with --reporter=junit)
 </ParamField>
 
 <ParamField type="boolean">

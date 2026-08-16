@@ -51,7 +51,7 @@ install.registry = "http://localhost:4873/"
 @myorg:registry=http://localhost:4873/
 ```
 
-The equivalent `bunfig.toml` option is to add a key in [`install.scopes`](/docs/runtime/bunfig#install-registry):
+The equivalent `bunfig.toml` option is to add a key in [`install.scopes`](/docs/runtime/bunfig#install-scopes):
 
 ```toml bunfig.toml icon="settings" theme={"theme":{"light":"github-light","dark":"dracula"}}
 [install.scopes]
@@ -87,10 +87,11 @@ Bun supports the following options:
 * `_auth` (base64 encoded username:password, for example `btoa(username + ":" + password)`)
 * `email`
 
-The equivalent `bunfig.toml` option is to add a key in [`install.scopes`](/docs/runtime/bunfig#install-registry):
+The equivalent `bunfig.toml` option is to add a key in [`install.scopes`](/docs/runtime/bunfig#install-scopes):
 
 ```toml bunfig.toml icon="settings" theme={"theme":{"light":"github-light","dark":"dracula"}}
 [install.scopes]
+# unlike _password in .npmrc, password is not base64 encoded; Bun encodes it for you
 myorg = { url = "http://localhost:4873/", username = "myusername", password = "$NPM_PASSWORD" }
 ```
 

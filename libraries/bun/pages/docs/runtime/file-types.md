@@ -8,7 +8,7 @@ File types and loaders supported by Bun's bundler and runtime
 
 The Bun bundler implements a set of default loaders. As a rule of thumb, the bundler and the runtime support the same set of file types.
 
-`.js` `.cjs` `.mjs` `.mts` `.cts` `.ts` `.tsx` `.jsx` `.css` `.json` `.jsonc` `.json5` `.toml` `.yaml` `.yml` `.xml` `.txt` `.wasm` `.node` `.html` `.sh`
+`.js` `.cjs` `.mjs` `.mts` `.cts` `.ts` `.tsx` `.jsx` `.css` `.json` `.jsonc` `.json5` `.toml` `.yaml` `.yml` `.xml` `.txt` `.text` `.md` `.markdown` `.wasm` `.node` `.html` `.sh`
 
 Bun uses the file extension to pick the built-in *loader* that parses the file. Every loader has a name, such as `js`, `tsx`, or `json`. These names are used when building [plugins](/docs/bundler/plugins) that extend Bun with custom loaders.
 
@@ -296,7 +296,7 @@ If you pass a `.xml` file as an entrypoint, Bun converts it to a `.js` module th
 
 ### `text`
 
-**Text loader**. Default for `.txt`.
+**Text loader**. Default for `.txt` and `.text`.
 
 Text files can be directly imported. Bun reads the file and returns it as a string.
 
@@ -442,7 +442,7 @@ The list of selectors is:
 
 **CSS loader**. Default for `.css`.
 
-CSS files can be directly imported. This is primarily useful for [full-stack applications](/docs/bundler/html-static) where CSS is bundled alongside HTML.
+CSS files can be directly imported. This is primarily useful for [full-stack applications](/docs/bundler/fullstack) where CSS is bundled alongside HTML.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 import "./styles.css";

@@ -136,7 +136,7 @@ console.log(pretty);
 // }
 ```
 
-The `space` argument can be a number (number of spaces) or a string (used as the indent character):
+The `space` argument can be a number (number of spaces) or a string (used as the indent string for each level):
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 // Tab indentation

@@ -339,7 +339,7 @@ Internally, this calls [`sqlite3_reset`](https://www.sqlite.org/capi3ref.html#sq
 Use `.run()` to run a query and get back an object with execution metadata. This is useful for schema-modifying queries (such as `CREATE TABLE`) or bulk write operations.
 
 ```ts db.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" highlight={2} theme={"theme":{"light":"github-light","dark":"dracula"}}
-const query = db.query(`create table foo;`);
+const query = db.query(`create table foo (bar text);`);
 query.run();
 ```
 
@@ -417,11 +417,8 @@ query.values(2);
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-[
-  [ "Iron Man", 2008 ],
-  [ "The Avengers", 2012 ],
-  [ "Ant-Man: Quantumania", 2023 ],
-]
+[ [ "Hello world" ] ]
+[ [ 2 ] ]
 ```
 
 Internally, this calls [`sqlite3_reset`](https://www.sqlite.org/capi3ref.html#sqlite3_reset) and repeatedly calls [`sqlite3_step`](https://www.sqlite.org/capi3ref.html#sqlite3_step) until it returns `SQLITE_DONE`.
@@ -492,7 +489,7 @@ const results = query.all("hello", "goodbye");
 
 ## Integers
 
-SQLite supports signed 64-bit integers, but JavaScript only supports signed 52-bit integers or arbitrary-precision integers with `bigint`.
+SQLite supports signed 64-bit integers, but JavaScript only supports signed 53-bit integers or arbitrary-precision integers with `bigint`.
 
 `bigint` input is supported everywhere, but by default `bun:sqlite` returns integers as `number` types. If you need to handle integers larger than 2^53, set the `safeIntegers` option to `true` when creating a `Database` instance. The option also validates that `bigint` values passed to `bun:sqlite` do not exceed 64 bits.
 
@@ -537,7 +534,7 @@ BigInt value '81129638414606663681390495662081' is out of range
 
 ### `safeIntegers: false` (default)
 
-When `safeIntegers` is `false`, `bun:sqlite` returns integers as `number` types and truncates any bits beyond 53:
+When `safeIntegers` is `false`, `bun:sqlite` returns integers as `number` types and rounds integers beyond 53 bits to the nearest representable `number`:
 
 ```ts db.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" highlight={3} theme={"theme":{"light":"github-light","dark":"dracula"}}
 import { Database } from "bun:sqlite";

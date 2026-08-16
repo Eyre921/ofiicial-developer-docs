@@ -112,7 +112,7 @@ bun --revision
         </Step>
 
         <Step title="Add the Bun directory to PATH">
-          Add this line to your configuration file:
+          Add these lines to your configuration file:
 
           ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
           export BUN_INSTALL="$HOME/.bun"

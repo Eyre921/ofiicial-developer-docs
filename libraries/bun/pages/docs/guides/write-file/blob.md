@@ -8,7 +8,8 @@ Use [`Bun.write()`](/docs/runtime/file-io#writing-files-bun-write) to write a `B
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const path = "/path/to/file.txt";
-await Bun.write(path, "Lorem ipsum");
+const data = new Blob(["Lorem ipsum"]);
+await Bun.write(path, data);
 ```
 
 ***

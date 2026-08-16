@@ -16,7 +16,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  Learn the basics of core concepts and essential terminology in GitHub Actions.
+  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 

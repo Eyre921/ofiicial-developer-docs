@@ -262,7 +262,7 @@ Then, build the client-side code:
 bun build ./client-side.ts
 ```
 
-`bun build` writes the following to `client-side.js`:
+`bun build` prints the following to stdout:
 
 ```js theme={"theme":{"light":"github-light","dark":"dracula"}}
 // client-side.ts

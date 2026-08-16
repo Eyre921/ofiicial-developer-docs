@@ -105,7 +105,7 @@ Bun.markdown.html("## Hello World", { headings: { ids: true } });
 
 ## `Bun.markdown.render()`
 
-Parse Markdown and render it using custom JavaScript callbacks. The callbacks give you full control over the output format. You can generate HTML with custom classes, React elements, ANSI terminal output, or any other string format.
+Parse Markdown and render it using custom JavaScript callbacks. The callbacks give you full control over the output format. You can generate HTML with custom classes, ANSI terminal output, or any other string format.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const result = Bun.markdown.render("# Hello **world**", {

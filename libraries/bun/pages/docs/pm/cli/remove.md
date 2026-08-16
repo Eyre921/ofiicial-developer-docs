@@ -110,7 +110,7 @@ bun remove <package>
 ### Execution Control & Validation
 
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="boolean">
@@ -152,7 +152,7 @@ bun remove <package>
 ### Script Execution
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (dependency scripts are never run)
+  Skip lifecycle scripts for all packages, including the project's <code>package.json</code> and trusted dependencies
 </ParamField>
 
 <ParamField type="number">
@@ -172,8 +172,8 @@ bun remove <package>
 ### Advanced & Performance
 
 <ParamField type="string">
-  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default),
-  <code>hardlink</code>, <code>symlink</code>, <code>copyfile</code>
+  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default on
+  macOS), <code>hardlink</code> (default on Linux and Windows), <code>symlink</code>, <code>copyfile</code>
 </ParamField>
 
 <ParamField type="number">

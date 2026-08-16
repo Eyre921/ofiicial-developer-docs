@@ -118,7 +118,9 @@ A packet you send may not fit into the operating system's packet buffer. You can
 has happened when:
 
 * `send` returns `false`
-* `sendMany` returns a number smaller than the number of packets you specified. In this case, Bun calls the `drain` socket handler once the socket becomes writable again:
+* `sendMany` returns a number smaller than the number of packets you specified
+
+In either case, Bun calls the `drain` socket handler once the socket becomes writable again:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const socket = await Bun.udpSocket({

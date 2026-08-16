@@ -211,7 +211,7 @@ beforeEach(() => {
 
 afterEach(() => {
   // Clear all mocks after each test
-  mock.restore();
+  mock.clearAllMocks();
 });
 ```
 
@@ -220,7 +220,7 @@ afterEach(() => {
 All lifecycle hooks support async functions:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { beforeAll, afterAll, test } from "bun:test";
+import { beforeAll, afterAll, test, expect } from "bun:test";
 
 beforeAll(async () => {
   // Async setup

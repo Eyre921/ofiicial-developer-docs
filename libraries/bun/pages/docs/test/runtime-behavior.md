@@ -95,7 +95,7 @@ test("test without timeout", async () => {
 This helps catch errors in asynchronous code that might otherwise go unnoticed:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test } from "bun:test";
+import { test, expect } from "bun:test";
 
 test("test 1", () => {
   // This test passes
@@ -121,7 +121,7 @@ test("test 2", () => {
 The test runner also catches unhandled promise rejections:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test } from "bun:test";
+import { test, expect } from "bun:test";
 
 test("passing test", () => {
   expect(1).toBe(1);
@@ -318,7 +318,7 @@ bun test src/integration/
 Since tests run in the same process, ensure proper cleanup:
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { afterEach } from "bun:test";
+import { afterEach, jest } from "bun:test";
 
 afterEach(() => {
   // Clean up global state

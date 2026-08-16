@@ -296,7 +296,7 @@ In the following example, `err.stack` points to the code calling `fn()`, even th
 ```ts index.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 const fn = () => {
   function myInner() {
-    throw err;
+    throw new Error("here!");
   }
 
   try {
@@ -316,18 +316,12 @@ fn();
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
 Error: here!
-    at myInner (file.js:4:15)
-    at fn (file.js:8:5)
-    at module code (file.js:17:1)
-    at moduleEvaluation (native)
-    at moduleEvaluation (native)
-    at <anonymous> (native)
+    at myInner (/path/to/index.ts:3:15)
+    at fn (/path/to/index.ts:7:5)
+    at /path/to/index.ts:18
 
 -- captureStackTrace --
 
 Error: here!
-    at module code (file.js:17:1)
-    at moduleEvaluation (native)
-    at moduleEvaluation (native)
-    at <anonymous> (native)
+    at /path/to/index.ts:18
 ```

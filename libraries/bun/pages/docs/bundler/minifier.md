@@ -122,19 +122,17 @@ false
 Simplifies boolean expressions using logical rules.
 
 ```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-!!x
-x === true
-x && true
-x || false
+if (!!x) y;
+if (x && true) y;
+if (x || false) y;
 !true
 !false
 ```
 
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-x
-x
-x
-x
+if(x)y;
+if(x)y;
+if(x)y;
 !1
 !0
 ```
@@ -549,12 +547,12 @@ Simplifies unary operations.
 Removes unnecessary double negations.
 
 ```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-!!x
+if (!!x) y;
 !!!x
 ```
 
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-x
+if(x)y;
 !x
 ```
 
@@ -721,7 +719,7 @@ let x = 10;
 ```
 
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-function add(a,b){return a+b;}let x=10;
+function add(a,b){return a+b}let x=10;
 ```
 
 ### Semicolon optimization
@@ -1198,7 +1196,7 @@ await Bun.build({
 
 Using all three minification modes together:
 
-```ts input.ts (158 bytes) theme={"theme":{"light":"github-light","dark":"dracula"}}
+```ts input.ts (176 bytes) theme={"theme":{"light":"github-light","dark":"dracula"}}
 const myVariable = 42;
 
 const myFunction = () => {
@@ -1211,8 +1209,8 @@ const output = myFunction();
 ```
 
 ```js output.js theme={"theme":{"light":"github-light","dark":"dracula"}}
-// Output with --minify (49 bytes, 69% reduction)
-const a=42,b=()=>{const c=!0,d=void 0;return c?a:d},e=b();
+// Output with --minify (20 bytes, 89% reduction)
+var t=()=>42,e=t();
 ```
 
 ## When to Use Minification

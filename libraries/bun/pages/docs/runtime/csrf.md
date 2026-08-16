@@ -6,7 +6,7 @@ path: docs/runtime/csrf
 
 Generate and verify CSRF tokens with Bun's built-in API
 
-`Bun.CSRF` generates and verifies [CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) tokens. Bun signs tokens with HMAC. Each token includes an expiration timestamp.
+`Bun.CSRF` generates and verifies [CSRF (Cross-Site Request Forgery)](https://owasp.org/www-community/attacks/csrf) tokens. Bun signs tokens with HMAC. Each token includes an issue timestamp and an expiry duration.
 
 ```ts title="csrf.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 // Generate a token bound to the requester's session
@@ -28,7 +28,7 @@ console.log(isValid); // true
 
 ## `Bun.CSRF.generate()`
 
-Generate a CSRF token. The token contains a cryptographic nonce, a timestamp, and an HMAC signature, encoded as a string.
+Generate a CSRF token. The token contains a cryptographic nonce, an issue timestamp, the `expiresIn` duration, and an HMAC signature, encoded as a string.
 
 ```ts title="generate.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 const token = Bun.CSRF.generate("my-secret-key");

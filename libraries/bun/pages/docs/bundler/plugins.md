@@ -8,7 +8,7 @@ Universal plugin API for extending Bun's runtime and bundler
 
 Bun's universal plugin API extends both the runtime and the bundler.
 
-Plugins intercept imports and perform custom loading logic, such as reading files or transpiling code. They can add support for additional file types, like `.scss` or `.yaml`. In the bundler, plugins can implement framework-level features like CSS extraction, macros, and client-server code co-location.
+Plugins intercept imports and perform custom loading logic, such as reading files or transpiling code. They can add support for additional file types, like `.scss`. In the bundler, plugins can implement framework-level features like CSS extraction, macros, and client-server code co-location.
 
 ## Lifecycle hooks
 
@@ -26,7 +26,7 @@ A rough overview of the types (see Bun's `bun.d.ts` for the full type definition
 
 ```ts title="bun.d.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 type PluginBuilder = {
-  onStart(callback: () => void): void;
+  onStart(callback: () => void | Promise<void>): void;
   onResolve: (
     args: { filter: RegExp; namespace?: string },
     callback: (args: { path: string; importer: string }) => {
@@ -106,7 +106,7 @@ Other common namespaces are:
 ### onStart
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
-onStart(callback: () => void): Promise<void> | void;
+onStart(callback: () => void | Promise<void>): void;
 ```
 
 Registers a callback that runs when the bundler starts a new bundle.
@@ -232,7 +232,7 @@ The callback can return a new `contents` string for the module as well as a new 
 For example:
 
 ```ts title="index.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { plugin } from "bun";
+import type { BunPlugin } from "bun";
 
 const envPlugin: BunPlugin = {
   name: "env plugin",
@@ -244,7 +244,7 @@ const envPlugin: BunPlugin = {
       };
     });
   },
-});
+};
 
 Bun.build({
   entrypoints: ["./app.ts"],
@@ -306,109 +306,6 @@ One of the arguments passed to the `onLoad` callback is a `defer` function. It r
 
 <Warning>You can call the `.defer()` function only once per `onLoad` callback.</Warning>
 
-## Native plugins
-
-Bun's bundler is written in native code and uses multiple threads to load and parse modules in parallel. JavaScript plugins run on a single thread, because JavaScript itself is single-threaded.
-
-Native plugins are NAPI modules that expose lifecycle hooks as C ABI functions. They can run on multiple threads, so they run much faster than JavaScript plugins. They also skip work such as the UTF-8 -> UTF-16 conversion needed to pass strings to JavaScript.
-
-These lifecycle hooks are available to native plugins:
-
-* `onBeforeParse()`: Called on any thread before Bun's bundler parses a file.
-
-To create a native plugin, export a C ABI function that matches the signature of the native lifecycle hook you want to implement.
-
-### Creating a native plugin in Rust
-
-```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-bun add -g @napi-rs/cli
-napi new
-```
-
-Then install this crate:
-
-```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-cargo add bun-native-plugin
-```
-
-Inside `lib.rs`, use the `bun_native_plugin::bun` proc macro to define the function that implements your native plugin.
-
-Here's an example implementing the `onBeforeParse` hook:
-
-```rust title="lib.rs" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/rust.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=c48e2f9ffc38d0c1d77ef723c617aca8" theme={"theme":{"light":"github-light","dark":"dracula"}}
-use bun_native_plugin::{define_bun_plugin, OnBeforeParse, bun, Result, anyhow, BunLoader};
-use napi_derive::napi;
-
-/// Define the plugin and its name
-define_bun_plugin!("replace-foo-with-bar");
-
-/// Here we'll implement `onBeforeParse` with code that replaces all occurrences of
-/// `foo` with `bar`.
-///
-/// We use the #[bun] macro to generate some of the boilerplate code.
-///
-/// The argument of the function (`handle: &mut OnBeforeParse`) tells
-/// the macro that this function implements the `onBeforeParse` hook.
-#[bun]
-pub fn replace_foo_with_bar(handle: &mut OnBeforeParse) -> Result<()> {
-  // Fetch the input source code.
-  let input_source_code = handle.input_source_code()?;
-
-  // Get the Loader for the file
-  let loader = handle.output_loader();
-
-  let output_source_code = input_source_code.replace("foo", "bar");
-
-  handle.set_output_source_code(output_source_code, BunLoader::BUN_LOADER_JSX);
-
-  Ok(())
-}
-```
-
-To use it in `Bun.build()`:
-
-```ts title="index.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import myNativeAddon from "./my-native-addon";
-
-Bun.build({
-  entrypoints: ["./app.tsx"],
-  plugins: [
-    {
-      name: "my-plugin",
-
-      setup(build) {
-        build.onBeforeParse(
-          {
-            namespace: "file",
-            filter: /\.tsx$/,
-          },
-          {
-            napiModule: myNativeAddon,
-            symbol: "replace_foo_with_bar",
-            // external: myNativeAddon.getSharedState()
-          },
-        );
-      },
-    },
-  ],
-});
-```
-
-### onBeforeParse
-
-```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
-onBeforeParse(
-  args: { filter: RegExp; namespace?: string },
-  callback: { napiModule: NapiModule; symbol: string; external?: unknown },
-): void;
-```
-
-The `onBeforeParse()` callback runs immediately before Bun's bundler parses a file.
-
-It receives the file's contents and can optionally return new source code.
-
-<Info>Bun can call this callback from any thread, so the NAPI module implementation must be thread-safe.</Info>
-
 ### onEnd
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -458,3 +355,106 @@ const result = await Bun.build({
   ],
 });
 ```
+
+## Native plugins
+
+Bun's bundler is written in native code and uses multiple threads to load and parse modules in parallel. JavaScript plugins run on a single thread, because JavaScript itself is single-threaded.
+
+Native plugins are NAPI modules that expose lifecycle hooks as C ABI functions. They can run on multiple threads, so they run much faster than JavaScript plugins. They also skip work such as the UTF-8 -> UTF-16 conversion needed to pass strings to JavaScript.
+
+These lifecycle hooks are available to native plugins:
+
+* `onBeforeParse()`: Called on any thread before Bun's bundler parses a file.
+
+To create a native plugin, export a C ABI function that matches the signature of the native lifecycle hook you want to implement.
+
+### Creating a native plugin in Rust
+
+```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun add -g @napi-rs/cli
+napi new
+```
+
+Then install this crate:
+
+```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+cargo add bun-native-plugin
+```
+
+Inside `lib.rs`, use the `bun_native_plugin::bun` proc macro to define the function that implements your native plugin.
+
+Here's an example implementing the `onBeforeParse` hook:
+
+```rust title="lib.rs" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/rust.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=c48e2f9ffc38d0c1d77ef723c617aca8" theme={"theme":{"light":"github-light","dark":"dracula"}}
+use bun_native_plugin::{define_bun_plugin, OnBeforeParse, bun, Result, anyhow};
+use napi_derive::napi;
+
+/// Define the plugin and its name
+define_bun_plugin!("replace-foo-with-bar");
+
+/// Here we'll implement `onBeforeParse` with code that replaces all occurrences of
+/// `foo` with `bar`.
+///
+/// We use the #[bun] macro to generate some of the boilerplate code.
+///
+/// The argument of the function (`handle: &mut OnBeforeParse`) tells
+/// the macro that this function implements the `onBeforeParse` hook.
+#[bun]
+pub fn replace_foo_with_bar(handle: &mut OnBeforeParse) -> Result<()> {
+  // Fetch the input source code.
+  let input_source_code = handle.input_source_code()?;
+
+  // Get the Loader for the file
+  let loader = handle.output_loader();
+
+  let output_source_code = input_source_code.replace("foo", "bar");
+
+  handle.set_output_source_code(output_source_code, loader);
+
+  Ok(())
+}
+```
+
+To use it in `Bun.build()`:
+
+```ts title="index.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+import myNativeAddon from "./my-native-addon";
+
+Bun.build({
+  entrypoints: ["./app.tsx"],
+  plugins: [
+    {
+      name: "my-plugin",
+
+      setup(build) {
+        build.onBeforeParse(
+          {
+            namespace: "file",
+            filter: /\.tsx$/,
+          },
+          {
+            napiModule: myNativeAddon,
+            symbol: "replace_foo_with_bar",
+            // external: myNativeAddon.getSharedState()
+          },
+        );
+      },
+    },
+  ],
+});
+```
+
+### onBeforeParse
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+onBeforeParse(
+  args: { filter: RegExp; namespace?: string },
+  callback: { napiModule: NapiModule; symbol: string; external?: unknown },
+): void;
+```
+
+The `onBeforeParse()` callback runs immediately before Bun's bundler parses a file.
+
+It receives the file's contents and can optionally return new source code.
+
+<Info>Bun can call this callback from any thread, so the NAPI module implementation must be thread-safe.</Info>

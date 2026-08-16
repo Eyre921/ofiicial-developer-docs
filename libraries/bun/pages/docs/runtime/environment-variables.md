@@ -15,6 +15,7 @@ Bun reads the following files automatically (listed in order of increasing prece
 * `.env`
 * `.env.production`, `.env.development`, `.env.test` (depending on the value of `NODE_ENV`)
 * `.env.local`
+* `.env.production.local`, `.env.development.local`, `.env.test.local` (depending on the value of `NODE_ENV`)
 
 ```ini .env icon="settings" theme={"theme":{"light":"github-light","dark":"dracula"}}
 FOO=hello

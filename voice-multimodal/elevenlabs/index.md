@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1268 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1269 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -220,6 +220,7 @@
 - `docs/api-reference/speech-engine/delete` — [Delete Speech Engine](pages/docs/api-reference/speech-engine/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/delete.md)
 - `docs/api-reference/speech-engine/get` — [Get Speech Engine](pages/docs/api-reference/speech-engine/get.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/get.md)
 - `docs/api-reference/speech-engine/list` — [List Speech Engines](pages/docs/api-reference/speech-engine/list.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/list.md)
+- `docs/api-reference/speech-engine/speech-engine-upstream` — [WebSocket](pages/docs/api-reference/speech-engine/speech-engine-upstream.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/speech-engine-upstream.md)
 - `docs/api-reference/speech-engine/update` — [Update Speech Engine](pages/docs/api-reference/speech-engine/update.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/update.md)
 - `docs/api-reference/speech-to-speech/convert` — [Voice changer](pages/docs/api-reference/speech-to-speech/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-to-speech/convert.md)
 - `docs/api-reference/speech-to-speech/stream` — [Voice changer stream](pages/docs/api-reference/speech-to-speech/stream.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-to-speech/stream.md)

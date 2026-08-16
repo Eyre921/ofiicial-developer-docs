@@ -24,7 +24,7 @@ test/package-json-lint.test.ts:
  4 pass
  0 fail
  4 expect() calls
-Ran 4 tests in 1.44ms
+Ran 4 tests across 1 file. [1.44ms]
 ```
 
 When a terminal doesn't support colors, the output avoids non-ASCII characters:
@@ -39,7 +39,7 @@ test/package-json-lint.test.ts:
  4 pass
  0 fail
  4 expect() calls
-Ran 4 tests across 1 files. [0.66ms]
+Ran 4 tests across 1 file. [0.66ms]
 ```
 
 ### Dots Reporter

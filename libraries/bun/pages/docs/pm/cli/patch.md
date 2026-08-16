@@ -42,7 +42,7 @@ bun patch node_modules/react
 
 #### Step 2. Test your changes locally
 
-`bun patch <pkg>` makes it safe to edit `<pkg>` in `node_modules/` directly, while preserving the integrity of Bun's [Global Cache](/docs/pm/global-cache). It works by re-creating an unlinked clone of the package in `node_modules/` and diffing it against the original package in the Global Cache.
+`bun patch <pkg>` makes it safe to edit `<pkg>` in `node_modules/` directly, while preserving the integrity of Bun's [Global Cache](/docs/pm/global-cache). It works by re-creating an unlinked clone of the package in `node_modules/`. `bun patch --commit <pkg>` then diffs that clone against the original package in the Global Cache.
 
 #### Step 3. Commit your changes
 
@@ -89,7 +89,7 @@ bun patch <package>@<version>
 </ParamField>
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (dependency scripts are never run)
+  Skip lifecycle scripts for all packages, including the project's <code>package.json</code> and trusted dependencies
 </ParamField>
 
 <ParamField type="boolean">
@@ -133,16 +133,20 @@ bun patch <package>@<version>
 ### Installation Control
 
 <ParamField type="string">
-  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default),
-  <code>hardlink</code>, <code>symlink</code>, <code>copyfile</code>
+  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default on
+  macOS), <code>hardlink</code> (default on Linux and Windows), <code>symlink</code>, <code>copyfile</code>
 </ParamField>
 
 <ParamField type="string">
   Linker strategy (one of <code>isolated</code> or <code>hoisted</code>)
 </ParamField>
 
+<ParamField type="number">
+  Only install packages published at least N seconds ago (security feature)
+</ParamField>
+
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="boolean">
@@ -195,7 +199,7 @@ bun patch <package>@<version>
 </ParamField>
 
 <ParamField type="boolean">
-  Only show tarball name when packing
+  Disable the progress bar
 </ParamField>
 
 <ParamField type="boolean">

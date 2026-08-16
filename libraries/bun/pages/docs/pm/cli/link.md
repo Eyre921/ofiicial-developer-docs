@@ -132,11 +132,11 @@ bun link <packages>
 </ParamField>
 
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (dependency scripts are never run)
+  Skip lifecycle scripts for all packages, including the project's <code>package.json</code> and trusted dependencies
 </ParamField>
 
 ### Network & Registry
@@ -181,7 +181,7 @@ bun link <packages>
 </ParamField>
 
 <ParamField type="boolean">
-  Only show tarball name when packing
+  Disable the progress bar
 </ParamField>
 
 <ParamField type="boolean">

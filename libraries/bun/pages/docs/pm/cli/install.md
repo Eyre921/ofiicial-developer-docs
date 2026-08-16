@@ -34,7 +34,7 @@ bun install
 `bun install`:
 
 * **Installs** all `dependencies`, `devDependencies`, and `optionalDependencies`. Bun installs `peerDependencies` by default.
-* **Runs** your project's `{pre|post}install` and `{pre|post}prepare` scripts at the appropriate time. For security reasons Bun *does not execute* lifecycle scripts of installed dependencies.
+* **Runs** your project's `{pre|post}install` and `{pre|post}prepare` scripts at the appropriate time. For security reasons Bun *does not execute* lifecycle scripts of installed dependencies unless they are [trusted](/docs/pm/lifecycle).
 * **Writes** a `bun.lock` lockfile to the project root.
 
 ***
@@ -358,7 +358,7 @@ Environment variables take priority over `bunfig.toml`.
 | `BUN_CONFIG_SKIP_LOAD_LOCKFILE`    | Don’t load a lockfile                                                                   |
 | `BUN_CONFIG_SKIP_INSTALL_PACKAGES` | Don’t install any packages                                                              |
 
-Bun uses the fastest installation method available on the target platform: `clonefile` on macOS and `hardlink` on Linux. You can change the installation method with the `--backend` flag. When unavailable or on error, `clonefile` and `hardlink` fall back to a platform-specific implementation of copying files.
+Bun uses the fastest installation method available on the target platform: `clonefile` on macOS and `hardlink` on Linux and Windows. You can change the installation method with the `--backend` flag. When unavailable or on error, `clonefile` and `hardlink` fall back to a platform-specific implementation of copying files.
 
 Bun stores installed packages from npm in `~/.bun/install/cache/${name}@${version}`. If the semver version has a `build` or a `pre` tag, Bun replaces it with a hash of that value. This reduces the chances of errors from long file paths, but complicates figuring out where a package was installed on disk.
 
@@ -458,7 +458,7 @@ rm -rf ~/.bun/install/cache
 
 For performance, `bun install` uses different system calls to install dependencies depending on the platform. You can force a specific backend with the `--backend` flag.
 
-**`hardlink`** is the default backend on Linux. Benchmarking showed it to be the fastest on Linux.
+**`hardlink`** is the default backend on Linux and Windows. Benchmarking showed it to be the fastest on Linux.
 
 ```bash theme={"theme":{"light":"github-light","dark":"dracula"}}
 rm -rf node_modules
@@ -486,7 +486,7 @@ rm -rf node_modules
 bun install --backend copyfile
 ```
 
-**`symlink`** is typically only used for `file:` dependencies (and eventually `link:`) internally. To prevent infinite loops, it skips symlinking the `node_modules` folder.
+**`symlink`** is typically only used for `file:` dependencies internally. To prevent infinite loops, it skips symlinking the `node_modules` folder.
 
 If you install with `--backend=symlink`, Node.js won't resolve node\_modules of dependencies unless each dependency has its own node\_modules folder or you pass `--preserve-symlinks` to `node` or `bun`. See [Node.js documentation on `--preserve-symlinks`](https://nodejs.org/api/cli.html#--preserve-symlinks).
 
@@ -691,7 +691,7 @@ bun install <name>@<version>
 ### Installation Process Control
 
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="boolean">
@@ -765,7 +765,7 @@ bun install <name>@<version>
 ### Lifecycle Script Management
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's package.json (Bun never runs dependency scripts)
+  Skip lifecycle scripts for all packages, including the project's package.json and trusted dependencies
 </ParamField>
 
 ### Help Information

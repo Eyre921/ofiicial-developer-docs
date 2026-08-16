@@ -10,7 +10,7 @@ The Bun bundler has a set of built-in loaders.
 
 > As a rule of thumb: **the bundler and the runtime both support the same set of file types by default.**
 
-`.js` `.cjs` `.mjs` `.mts` `.cts` `.ts` `.tsx` `.jsx` `.css` `.json` `.jsonc` `.toml` `.yaml` `.yml` `.txt` `.wasm` `.node` `.html` `.sh`
+`.js` `.cjs` `.mjs` `.mts` `.cts` `.ts` `.tsx` `.jsx` `.css` `.json` `.jsonc` `.json5` `.toml` `.yaml` `.yml` `.xml` `.txt` `.text` `.md` `.markdown` `.wasm` `.node` `.html` `.sh`
 
 Bun uses the file extension to choose which built-in loader parses the file. Every loader has a name, such as `js`, `tsx`, or `json`. Plugins that extend Bun with custom loaders refer to these names.
 
@@ -272,7 +272,7 @@ If you pass a `.xml` file as an entrypoint, Bun converts it to a `.js` module th
 
 ### `text`
 
-**Text loader.** Default for `.txt`.
+**Text loader.** Default for `.txt` and `.text`.
 
 Text files can be directly imported. Bun reads the file and returns it as a string.
 

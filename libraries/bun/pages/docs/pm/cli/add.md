@@ -314,7 +314,7 @@ bun add <package> <@version>
 ### Installation Control
 
 <ParamField type="boolean">
-  Don't install anything
+  Perform a dry run without making changes
 </ParamField>
 
 <ParamField type="boolean">
@@ -326,7 +326,7 @@ bun add <package> <@version>
 </ParamField>
 
 <ParamField type="boolean">
-  Skip lifecycle scripts in the project's <code>package.json</code> (dependency scripts are never run)
+  Skip lifecycle scripts for all packages, including the project's <code>package.json</code> and trusted dependencies
 </ParamField>
 
 <ParamField type="boolean">
@@ -356,8 +356,8 @@ bun add <package> <@version>
 ### Performance & Resource
 
 <ParamField type="string">
-  Platform-specific optimizations for installing dependencies. One of <code>clonefile</code>, <code>hardlink</code>,
-  <code>symlink</code>, or <code>copyfile</code>
+  Platform-specific optimizations for installing dependencies. Possible values: <code>clonefile</code> (default on
+  macOS), <code>hardlink</code> (default on Linux and Windows), <code>symlink</code>, <code>copyfile</code>
 </ParamField>
 
 <ParamField type="number">

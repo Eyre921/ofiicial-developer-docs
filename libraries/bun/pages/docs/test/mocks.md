@@ -192,7 +192,7 @@ test("spyon", () => {
 ### Advanced Spy Usage
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test, expect, spyOn, afterEach } from "bun:test";
+import { test, expect, spyOn, afterEach, jest } from "bun:test";
 
 class UserService {
   async getUser(id: string) {
@@ -577,7 +577,7 @@ test("conditional API usage", async () => {
 ### Mock Cleanup Patterns
 
 ```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { afterEach, beforeEach } from "bun:test";
+import { afterEach, beforeEach, mock } from "bun:test";
 
 beforeEach(() => {
   // Set up common mocks
@@ -589,7 +589,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  // Clean up all mocks
+  // Restore spies and clear call history; neither call resets the mock.module() override
   mock.restore();
   mock.clearAllMocks();
 });

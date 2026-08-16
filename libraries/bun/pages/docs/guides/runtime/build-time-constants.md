@@ -200,7 +200,7 @@ console.log(`Built with version ${version.trim()}`);
 
 ### Value format
 
-Values must be valid JSON. Bun parses each value and inlines it as a JavaScript expression:
+Values can be JSON, identifiers, or property paths such as `globalThis` or `console.log`. Bun parses each value and inlines it as a JavaScript expression:
 
 ```sh theme={"theme":{"light":"github-light","dark":"dracula"}}
 # ✅ Strings must be JSON-quoted

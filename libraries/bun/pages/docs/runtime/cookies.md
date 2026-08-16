@@ -91,7 +91,7 @@ if (cookies.has("session")) {
 }
 ```
 
-#### `set(name: string, value: string): void`
+#### `set(name: string, value: string, options?: CookieInit): void`
 
 #### `set(options: CookieInit): void`
 
@@ -119,6 +119,8 @@ cookies.set(cookie);
 #### `delete(name: string): void`
 
 #### `delete(options: CookieStoreDeleteOptions): void`
+
+#### `delete(name: string, options: Omit<CookieStoreDeleteOptions, "name">): void`
 
 Removes a cookie from the map. When applied to a Response, the deletion adds a cookie with an empty string value and an expiry date in the past. The browser only deletes the cookie if the domain and path match the ones it was created with.
 
@@ -320,9 +322,9 @@ const cookie = new Bun.Cookie("session", "abc123", {
 });
 
 console.log(cookie.serialize());
-// => "session=abc123; Domain=example.com; Path=/admin; Expires=Sun, 19 Mar 2025 15:03:26 GMT; Secure; HttpOnly; SameSite=Strict"
+// => "session=abc123; Domain=example.com; Path=/admin; Expires=Wed, 19 Mar 2025 15:03:26 GMT; Secure; HttpOnly; SameSite=Strict"
 console.log(cookie.toString());
-// => "session=abc123; Domain=example.com; Path=/admin; Expires=Sun, 19 Mar 2025 15:03:26 GMT; Secure; HttpOnly; SameSite=Strict"
+// => "session=abc123; Domain=example.com; Path=/admin; Expires=Wed, 19 Mar 2025 15:03:26 GMT; Secure; HttpOnly; SameSite=Strict"
 ```
 
 #### `toJSON(): CookieInit`
@@ -416,7 +418,7 @@ class Cookie {
 
   readonly name: string;
   value: string;
-  domain?: string;
+  domain: string | null;
   path: string;
   expires?: Date;
   secure: boolean;

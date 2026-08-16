@@ -181,6 +181,10 @@ bun publish dist
   ```
 </ParamField>
 
+<ParamField type="boolean">
+  `bun publish` exits with code 0 instead of 1 when the version being published already exists in the registry.
+</ParamField>
+
 <ParamField type="string">
   Specify the level of gzip compression to use when packing the package. Only applies to `bun publish` without a tarball
   path argument. Values range from `0` to `9` (default is `9`).
@@ -216,7 +220,7 @@ bun publish dist
 #### Custom Registry
 
 <ParamField type="string">
-  Specify registry URL, overriding .npmrc and bunfig.toml
+  Specify registry URL, overriding .npmrc, bunfig.toml and environment variables
 </ParamField>
 
 ```bash theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -243,7 +247,7 @@ bun publish --registry https://my-private-registry.com
   ```
 </CodeGroup>
 
-### Publishing Options
+### General Options
 
 #### Dependency Management
 
@@ -291,7 +295,8 @@ bun publish --registry https://my-private-registry.com
 #### Performance
 
 <ParamField type="string">
-  Platform optimizations: `clonefile` (default), `hardlink`, `symlink`, or `copyfile`
+  Platform optimizations: `clonefile` (default on macOS), `hardlink` (default on Linux and Windows), `symlink`, or
+  `copyfile`
 </ParamField>
 
 <ParamField type="number">

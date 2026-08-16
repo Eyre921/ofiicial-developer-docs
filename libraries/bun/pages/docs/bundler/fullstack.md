@@ -9,7 +9,7 @@ Build fullstack applications with Bun's integrated dev server that bundles front
 To get started, import HTML files and pass them to the `routes` option in `Bun.serve()`.
 
 ```ts title="app.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { serve } from "bun";
+import { serve, sql } from "bun";
 import dashboard from "./dashboard.html";
 import homepage from "./index.html";
 
@@ -562,7 +562,7 @@ Bun uses `HTMLRewriter` to scan for `<script>` and `<link>` tags in HTML files a
   </Step>
 
   <Step title="5. Serving">
-    * Exposes all the output files from the bundler as static routes, using the same mechanism internally as when you pass a Response object to `static` in `Bun.serve()`.
+    * Exposes all the output files from the bundler as static routes, using the same mechanism internally as when you pass a Response object to `routes` in `Bun.serve()`.
     * This pipeline works similarly to how `Bun.build` processes HTML files.
   </Step>
 </Steps>

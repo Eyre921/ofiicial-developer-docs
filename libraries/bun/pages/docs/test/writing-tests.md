@@ -6,7 +6,7 @@ path: docs/test/writing-tests
 
 Write tests with Bun's Jest-compatible API, including async tests, timeouts, and test modifiers
 
-Define tests with a Jest-like API imported from the built-in `bun:test` module. Long term, Bun aims for complete Jest compatibility; for now, it supports a limited set of `expect` matchers.
+Define tests with a Jest-like API imported from the built-in `bun:test` module. Long term, Bun aims for complete Jest compatibility.
 
 ## Basic Usage
 
@@ -69,7 +69,7 @@ test("2 * 2", done => {
 Optionally specify a per-test timeout in milliseconds by passing a number as the third argument to `test`.
 
 ```ts title="math.test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test } from "bun:test";
+import { expect, test } from "bun:test";
 
 test("wat", async () => {
   const data = await slowOperation();
@@ -88,7 +88,7 @@ The default timeout for each test is 5000ms (5 seconds) unless you override it w
 Use the `retry` option to automatically retry a flaky test when it fails. The test passes if it succeeds within the specified number of attempts.
 
 ```ts title="example.test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test } from "bun:test";
+import { expect, test } from "bun:test";
 
 test(
   "flaky network request",
@@ -105,7 +105,7 @@ test(
 Use the `repeats` option to run a test multiple times regardless of pass/fail status; the test fails if any iteration fails. Use it to detect flaky tests or for stress testing. `repeats: N` runs the test N+1 times total (1 initial run + N repeats).
 
 ```ts title="example.test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
-import { test } from "bun:test";
+import { expect, test } from "bun:test";
 
 test(
   "ensure test is stable",
@@ -156,13 +156,12 @@ bun test --todo
 ```
 
 ```
-my.test.ts:
-✗ unimplemented feature
-  ^ this test is marked as todo but passes. Remove `.todo` or check that test is correct.
+math.test.ts:
+✗ fix this
+  ^ this test is marked as todo but passes. Remove `.todo` if tested behavior now works
 
  0 pass
  1 fail
- 1 expect() calls
 ```
 
 With this flag, failing todo tests do not cause an error, but Bun marks todo tests that pass as failing so you can remove the todo mark or fix the test.

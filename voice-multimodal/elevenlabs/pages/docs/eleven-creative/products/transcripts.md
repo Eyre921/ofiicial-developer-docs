@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/transcripts
 
 # Transcripts
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/48ca56e96f6cbfe0614bce01f133a8df6f3a62e0b9c26d02c8bffc415d1caf62/assets/images/product-guides/transcripts/v2-editor-landing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=f23753e689486253cc321aa9cf712aefe35202ba4ddc7d684a6b50e4c681852d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transcript Editor Product Feature" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/48ca56e96f6cbfe0614bce01f133a8df6f3a62e0b9c26d02c8bffc415d1caf62/assets/images/product-guides/transcripts/v2-editor-landing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=3efe4fd8f7e935641015fd664b5003669157a65675731232b5cbec947834a6f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transcript Editor Product Feature" />
 
 ## Transcript Editor
 
@@ -16,13 +16,13 @@ path: docs/eleven-creative/products/transcripts
 
 In the ElevenLabs dashboard, navigate to the Speech to Text page and click any transcript to open the Transcript Editor.
 
-![Open transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292/assets/images/product-guides/speech-to-text/click-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=3ceee75acb01de59ed5e0e90a6466c63805adc734c8a0f115b9ae13bc840443a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Open transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292/assets/images/product-guides/speech-to-text/click-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=6fcdc9d46f38e868ed7ebc245a540e35f8a46123f24ff502578c4a22cf3a3d9f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Edit basic details
 
 You can rename your transcript in the panel on the right side of the screen.
 
-![Edit details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/db9d9ad8c65bc54a6e99b7b9ce6797308cde744f35ebdfdaa9a8a3a29f10678d/assets/images/product-guides/transcripts/v2-editor-details.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=2e9dc51abc8d5bb35c3764a738ec90d8a8cf0f44e1453df1fd06d921dea17dc3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit details](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/db9d9ad8c65bc54a6e99b7b9ce6797308cde744f35ebdfdaa9a8a3a29f10678d/assets/images/product-guides/transcripts/v2-editor-details.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=535a6307f509f1dd7dbd1eda0f0a309cfe0028233dfe0018ed3043ecdf7ae490&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Edit text
 
@@ -30,13 +30,13 @@ Our transcript editor is WYSIWYG. Click anywhere in the transcript and start typ
 
 <b>Tip:</b> Use command+z to undo changes easily.
 
-![Edit text](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4f877779e3c5ced07f4281d9fd4d144603b5de9dc1dee1af0cace2994b85317b/assets/images/product-guides/transcripts/v2-editor-edit-text.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=3336c4aefa79f993820f9d0a80c020f3562a9a43ef3ef41b1aee6c62213da9c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edit text](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4f877779e3c5ced07f4281d9fd4d144603b5de9dc1dee1af0cace2994b85317b/assets/images/product-guides/transcripts/v2-editor-edit-text.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=b337f83af00ce61209634d8ce42a103927c3fe5f95a23193e133897851ec3f67&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust segment start and end times
 
 Drag the handles on the timeline to adjust the start and end timestamps for a segment. You can also type in exact timestamps in the panel on the right side of the screen.
 
-![Adjust times](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/54b3c8b45eb021a279810f7d125bc22336f7f13bdd93e527a28e9e1eccfde592/assets/images/product-guides/transcripts/v2-editor-adjust-times.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=2e76c7ec1215fd2bbb14c65157d25f7efd113e27ee03b2f63326b41b22eb6766&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Adjust times](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/54b3c8b45eb021a279810f7d125bc22336f7f13bdd93e527a28e9e1eccfde592/assets/images/product-guides/transcripts/v2-editor-adjust-times.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=69e00c181b59e1c48ba72794316425e53f8605dfb87332e0bcea96a646e96428&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Split and merge segments
 
@@ -47,7 +47,7 @@ To merge two segments, click the 'merge segments' button. Note that two conditio
 1. Both segments must belong to the same speaker
 2. The segments must be adjacent to each other
 
-![Split and merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94b930ed17c519a70bc057701d39ed79e3cdc41fb2d39af581fd401e1e951ec4/assets/images/product-guides/transcripts/v2-editor-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=417eaa1b1d94dead90761e6250a4951efda965026fc6975f20aa17f2932296e5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Split and merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94b930ed17c519a70bc057701d39ed79e3cdc41fb2d39af581fd401e1e951ec4/assets/images/product-guides/transcripts/v2-editor-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=75783769a19914678419eefc5662f176202cb6d88c26ffc87c2e5285140c1c20&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add or remove segments
 
@@ -55,13 +55,13 @@ To add a segment, click on the 'Add Segment' icon and select a location on the t
 
 To delete a segment, select the segment and click ‘Delete’ in the panel on the right side of the screen or press the Delete key
 
-![Add/remove segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9db6cef9f4b4baf8f2c60e6e6280afdd11ad80aacb394dcb8906a5fbd13169a7/assets/images/product-guides/transcripts/v2-editor-add-delete.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=11258eb72cbb007e4bc40363c888518c1502635db3e9ae0cadd32db59e2e7ee0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add/remove segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9db6cef9f4b4baf8f2c60e6e6280afdd11ad80aacb394dcb8906a5fbd13169a7/assets/images/product-guides/transcripts/v2-editor-add-delete.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=af70b940a2d50f73aaa368e11954b1a23c8137da40311beeef998997832d5988&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Re-align words inside a segment
 
 Click ‘align words’ after making changes to a segment to recompute word-level timestamps.
 
-![Re-align words](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3fb2c36a6a641bf5faa34da0af6e57ad70ba290283f09af6fabd9905c1a81dc/assets/images/product-guides/transcripts/v2-editor-realign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=2e08be3e86ebc2d44bb42f2da353fc132542248fb846b911d91ef49fb948e00f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Re-align words](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3fb2c36a6a641bf5faa34da0af6e57ad70ba290283f09af6fabd9905c1a81dc/assets/images/product-guides/transcripts/v2-editor-realign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=282d0ae4c00a7e3cc282237c8be1f1a5f6a73254b3d9df91f146af45a56edb11&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Re-assign segments to different speakers
 
@@ -70,7 +70,7 @@ There are 2 ways to assign segments to different speakers:
 1. **Individually**: click the orb next to the speaker name for a segment, and select a new speaker from the dropdown list.
 2. **Bulk:** to reassign all segments from one speaker to another, click on the three dots (⋮) and select 'Move Segments To'. Then select the new speaker.
 
-![Re-assign segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2f679d0d5ff2a586dbef04b98273d2cdb1bfcd44a169fb3283ff283fd5b7573c/assets/images/product-guides/transcripts/v2-editor-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=853702a0ddafd96584d1afb428df009233a7e5ee591779de3fb745c6eb1da1ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Re-assign segments](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2f679d0d5ff2a586dbef04b98273d2cdb1bfcd44a169fb3283ff283fd5b7573c/assets/images/product-guides/transcripts/v2-editor-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=c4c2fb08fe5449e28a85235c3f438986d3805331ff82aed7ab6cf8946375781a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add or delete speakers
 
@@ -78,19 +78,19 @@ To add a speaker, click the '+' icon above the speaker tracks. To delete a speak
 
 **Important note**: if you delete a speaker, all of their associated segments will also be deleted.
 
-![Add/delete speakers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ccea0822dedac1b6ac693087956f8a10fb4c3bb153795ea5e1366bece125f3e8/assets/images/product-guides/transcripts/v2-editor-add-delete-speakers.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=2563077538a291d5004a7457e3f1831d1561d92fd1e250a75538d0a21aa07050&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add/delete speakers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ccea0822dedac1b6ac693087956f8a10fb4c3bb153795ea5e1366bece125f3e8/assets/images/product-guides/transcripts/v2-editor-add-delete-speakers.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=3380c86c1194157bb5ebb1518167476ad972c2a3c597cecbf9ca5865ed79ad4e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Reorder speaker tracks and change colors
 
 Click and drag to reorder speaker tracks on the timeline. You can also change the color of a speaker track (which also applies to all its segments) by clicking the orb next to the speaker name.
 
-![Reorder and color](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bfc008392fed7ca796594d5aebb266a63b0c4f4e192e04fba8d084acc404ef0/assets/images/product-guides/transcripts/v2-editor-color-reorder.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=817a576491f11feab4711167b338e3b266208d6f966aee5c75b4ef0872fa4058&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Reorder and color](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bfc008392fed7ca796594d5aebb266a63b0c4f4e192e04fba8d084acc404ef0/assets/images/product-guides/transcripts/v2-editor-color-reorder.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=f437e715f6f08b32175ac37c215752764a6e7a0ff89e8c422e30d6aaa5b715c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust playback speed
 
 You can adjust the playback speed of the source media by clicking the indicator next to the play button.
 
-![Playback speed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65/assets/images/product-guides/transcripts/v2-editor-speed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=7225047483e6a94b5c059fbaab3232b4c8b153bcc1a667fc067dab3768f82418&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Playback speed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65/assets/images/product-guides/transcripts/v2-editor-speed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=483adad4b360d3da0725cf3a9d758b23281677980c13f4e9d96bd990a670d8be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export transcript
 
@@ -102,7 +102,7 @@ Click the export button in the top right of the screen and select one of the tra
 * SRT
 * VTT
 
-![Exports](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c/assets/images/product-guides/transcripts/v2-editor-exports.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T232136Z&X-Amz-Expires=604800&X-Amz-Signature=04e2d0ab83d32757d3fcfe0f3e652cfa7a325c1e7300e21362e3ad57ae62e556&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Exports](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c/assets/images/product-guides/transcripts/v2-editor-exports.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260816%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260816T113200Z&X-Amz-Expires=604800&X-Amz-Signature=2cb6caf96e0e9516eb70128c2c3a8f167bf4242bd550f0c424f07c1377efa2fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## FAQ
 

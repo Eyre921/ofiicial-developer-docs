@@ -115,7 +115,7 @@ Bun enqueues messages until the worker is ready, so you don't need to wait for t
 
 ## Messages with `postMessage`
 
-To send messages, use [`worker.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage) and [`self.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage). Bun serializes messages with the [HTML Structured Clone Algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
+To send messages, use [`worker.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage) and [`self.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope/postMessage). Bun serializes messages with the [HTML Structured Clone Algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 
 ### Performance optimizations
 
@@ -253,7 +253,7 @@ worker.unref();
 worker.ref();
 ```
 
-Alternatively, you can also pass an `options` object to `Worker`:
+Alternatively, you can also pass `ref: false` in the `options` object to `Worker`, which is equivalent to calling `worker.unref()`:
 
 ```ts index.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 const worker = new Worker(new URL("worker.ts", import.meta.url).href, {

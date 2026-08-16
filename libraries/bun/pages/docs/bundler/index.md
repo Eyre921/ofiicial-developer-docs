@@ -109,7 +109,7 @@ The contents of `out/index.js` look something like this:
 // Component.tsx
 function Component(props) {
   return $jsxDEV(
-    "p",
+    "h1",
     {
       children: props.message,
     },
@@ -426,7 +426,7 @@ To build a CommonJS module, set `format` to `"cjs"`. When you choose `"cjs"`, th
 
 #### format: "iife" - IIFE
 
-TODO: document IIFE once we support globalNames.
+To build an IIFE bundle, set `format` to `"iife"`. Bun wraps the bundle in an immediately invoked function expression and does not support exposing its exports under a global name.
 
 ### `jsx`
 
@@ -535,9 +535,9 @@ Running this build results in the following files:
 
 ```text title="file system" icon="folder-tree" theme={"theme":{"light":"github-light","dark":"dracula"}}
 .
-├── entry-a.tsx
-├── entry-b.tsx
-├── shared.tsx
+├── entry-a.ts
+├── entry-b.ts
+├── shared.ts
 └── out
     ├── entry-a.js
     ├── entry-b.js
@@ -671,7 +671,7 @@ Specifies the type of sourcemap to generate.
 
   <Tab title="CLI">
     ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-    bun build ./index.tsx --outdir ./out --sourcemap linked
+    bun build ./index.tsx --outdir ./out --sourcemap=linked
     ```
   </Tab>
 </Tabs>
@@ -843,7 +843,7 @@ Controls whether package dependencies are included in the bundle. Possible value
 
 ### naming
 
-Customizes the generated file names. Defaults to `./[dir]/[name].[ext]`.
+Customizes the generated file names. Defaults to `[dir]/[name].[ext]`.
 
 <Tabs>
   <Tab title="JavaScript">
@@ -1106,7 +1106,7 @@ var logo = "https://cdn.example.com/logo-a7305bdef.svg";
 
 ### define
 
-A map of global identifiers to be replaced at build time. Keys of this object are identifier names, and values are JSON strings that are inlined.
+A map of global identifiers to be replaced at build time. Keys of this object are identifier names, and values are JSON strings, identifiers, or property paths that are inlined.
 
 <Tabs>
   <Tab title="JavaScript">
@@ -1358,7 +1358,7 @@ Generate metadata about the build in a structured format. The metafile describes
 
   <Tab title="CLI">
     ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-    bun build ./src/index.ts --outdir ./dist --metafile ./dist/meta.json
+    bun build ./src/index.ts --outdir ./dist --metafile=./dist/meta.json
     ```
   </Tab>
 </Tabs>
@@ -1368,13 +1368,13 @@ Generate metadata about the build in a structured format. The metafile describes
 Use `--metafile-md` to generate a markdown metafile, which is LLM-friendly and readable in the terminal:
 
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-bun build ./src/index.ts --outdir ./dist --metafile-md ./dist/meta.md
+bun build ./src/index.ts --outdir ./dist --metafile-md=./dist/meta.md
 ```
 
 You can use both `--metafile` and `--metafile-md` together:
 
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-bun build ./src/index.ts --outdir ./dist --metafile ./dist/meta.json --metafile-md ./dist/meta.md
+bun build ./src/index.ts --outdir ./dist --metafile=./dist/meta.json --metafile-md=./dist/meta.md
 ```
 
 #### `metafile` option formats
@@ -1882,6 +1882,14 @@ bun build <entry points>
 </ParamField>
 
 <ParamField type="string">
+  Write a JSON file with metadata about the build
+</ParamField>
+
+<ParamField type="string">
+  Write a markdown file with a visualization of the module graph (LLM-friendly)
+</ParamField>
+
+<ParamField type="string">
   Generate source maps. One of <code>linked</code>, <code>inline</code>, <code>external</code>, or <code>none</code>
 </ParamField>
 
@@ -1928,6 +1936,15 @@ bun build <entry points>
 
 <ParamField type="string">
   Exclude modules from the bundle (supports wildcards). Alias: <code>-e</code>
+</ParamField>
+
+<ParamField type="string">
+  Allow unresolved dynamic import()/require() specifiers matching these glob patterns. Pass <code>''</code> to allow
+  opaque specifiers
+</ParamField>
+
+<ParamField type="boolean">
+  Fail the build on any dynamic import()/require() specifier that cannot be resolved at build time
 </ParamField>
 
 <ParamField type="string">
@@ -1995,6 +2012,46 @@ bun build <entry points>
 
 <ParamField type="string">
   Prepend arguments to the standalone executable’s <code>execArgv</code>
+</ParamField>
+
+<ParamField type="boolean">
+  Enable autoloading of <code>.env</code> files in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Disable autoloading of <code>.env</code> files in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Enable autoloading of <code>bunfig.toml</code> in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Disable autoloading of <code>bunfig.toml</code> in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Enable autoloading of <code>tsconfig.json</code> at runtime in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Disable autoloading of <code>tsconfig.json</code> at runtime in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Enable autoloading of <code>package.json</code> at runtime in the standalone executable
+</ParamField>
+
+<ParamField type="boolean">
+  Disable autoloading of <code>package.json</code> at runtime in the standalone executable
+</ParamField>
+
+<ParamField type="string">
+  Path to a Bun executable to use for cross-compilation instead of downloading
+</ParamField>
+
+<ParamField type="string">
+  Embed a file or directory into the compiled executable, preserving its relative path (requires <code>--compile</code>)
 </ParamField>
 
 ### Windows Executable Details
