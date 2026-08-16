@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 122 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 121 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -161,5 +161,4 @@
 
 ## security-legal-pii
 
-- `security-legal-pii/scrubbing` — [Data Scrubbing](pages/security-legal-pii/scrubbing.md) · [原文](https://docs.sentry.io/security-legal-pii/scrubbing.md)
 - `security-legal-pii/security` — [Security & Legal](pages/security-legal-pii/security.md) · [原文](https://docs.sentry.io/security-legal-pii/security.md)
