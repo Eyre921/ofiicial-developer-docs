@@ -2216,7 +2216,7 @@ A few Voice Agent-specific behaviors to be aware of:
 * **Idle time is billable.** Just like Streaming STT, silence and idle periods on an open Voice Agent connection are billed. Close sessions as soon as you're done with them.
 * **Any LLM Gateway calls made by the agent are billed separately** at the LLM Gateway token rates for the model in use — see [LLM Gateway billing](#llm-gateway-billing) below.
 
-For the full session lifecycle and best practices, see the [Voice Agent API overview](/voice-agents/voice-agent-api) and [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#ending-the-session-cleanly).
+For the full session lifecycle and best practices, see the [Voice Agent API overview](/voice-agents/voice-agent-api) and [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#5-ending-the-session-cleanly).
 
 ## LLM Gateway billing
 
@@ -53156,407 +53156,128 @@ Source: docs/voice-agents/voice-agent-api.mdx
 Navigation: Voice Agent API > Getting started
 Description: Real-time voice agents that talk and listen. Configure an agent once, then deploy it to a browser, your own app, or the phone.
 
-## Overview
+Talk to a voice agent in your browser in four commands, then put it on a phone number.
 
-By the end of this guide you'll have a voice agent you can talk to right in your browser. You create it with one command, then drop it into a small web page. Browsers handle echo cancellation, so you don't need headphones, and there's nothing to install.
+  
+    Python 3.9+, standard library only.
+  
+  
+    Node 18+, no dependencies.
+  
 
-Prefer to try it first? Talk to an agent without writing any code in the [Voice Agent playground](https://www.assemblyai.com/dashboard/playground/voice-agent).
+## Step 1: Clone
 
-  **Voice agents are billed per session. Always end with `session.end`.**
-
-  Billing runs for as long as the WebSocket stays open. If the client just calls `ws.close()`, the server keeps the session alive for a 30-second `session.resume` grace window, and that window is billable. See [Step 5: End the session cleanly](#step-5-end-the-session-cleanly) below.
-
-  New accounts get \$50 in free credits. See [Billing and pricing](/billing-and-pricing).
-
-## Before you begin
-
-You'll need:
-
-- **An API key.** Grab one from [your dashboard](https://www.assemblyai.com/dashboard/home). The `curl` below reads it from an environment variable:
-
-  ```bash
-  export ASSEMBLYAI_API_KEY=<your-key>
-  ```
-
-- **A modern browser** (Chrome or Edge recommended). That's the whole client: echo cancellation for free, nothing else to install.
-
-## Build your agent
-
-Create an agent, then talk to it in a tiny web page. Four steps, no dependencies.
-
-**Prefer to build with an AI coding tool?** Claude Code, Cursor, Windsurf, and prompt-based builders like Lovable and v0 can write this for you against AssemblyAI's live docs. See [Build with AI coding tools](/voice-agents/voice-agent-api/build-with-ai-tools).
-
-### Step 1: Create an agent
-
-```bash cURL
-curl -X POST https://agents.assemblyai.com/v1/agents \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Quickstart Assistant",
-    "system_prompt": "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
-    "greeting": "Hey there, what can I help with?",
-    "voice": { "voice_id": "alba" }
-  }'
+```bash Python
+git clone https://github.com/AssemblyAI/voice-agent-starter-python
+cd voice-agent-starter-python
+cp .env.example .env
 ```
 
-```python Python
-# pip install requests
-import os
-import requests
-
-resp = requests.post(
-    "https://agents.assemblyai.com/v1/agents",
-    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
-    json={
-        "name": "Quickstart Assistant",
-        "system_prompt": "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
-        "greeting": "Hey there, what can I help with?",
-        "voice": {"voice_id": "alba"},
-    },
-)
-resp.raise_for_status()
-print(resp.json())
+```bash JavaScript
+git clone https://github.com/AssemblyAI/voice-agent-starter-js
+cd voice-agent-starter-js
+cp .env.example .env
 ```
 
-```javascript Node.js
-// Node 18+ has fetch built in
-const res = await fetch("https://agents.assemblyai.com/v1/agents", {
-  method: "POST",
-  headers: {
-    Authorization: process.env.ASSEMBLYAI_API_KEY,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "Quickstart Assistant",
-    system_prompt: "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
-    greeting: "Hey there, what can I help with?",
-    voice: { voice_id: "alba" },
-  }),
-});
-const data = await res.json();
-console.log(data);
+## Step 2: Add your key
+
+Paste your [API key](https://www.assemblyai.com/dashboard/api-keys) into `.env`:
+
+```bash .env
+ASSEMBLYAI_API_KEY=<your-key>
 ```
 
-Copy the `id` from the response. This is your **agent ID**:
+## Step 3: Publish the starter agent
 
-```json
-{ "id": "7ad24396-b822-4dca-871a-be9cc4781cf9", "name": "Quickstart Assistant", "...": "..." }
+```bash Python
+python publish.py
 ```
 
-### Step 2: Save the web page
-
-Save this as `voice-agent.html`. It's the whole client: it captures the mic, streams it to your agent, plays the reply, and barges in when you start talking:
-
-```html expandable
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Voice Agent</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #0b1020; color: #e8ecf5;
-           min-height: 100vh; margin: 0; display: grid; place-items: center; }
-    .card { width: 320px; background: #151b30; padding: 28px; border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0,0,0,.45); }
-    h1 { font-size: 18px; margin: 0 0 18px; }
-    input { width: 100%; box-sizing: border-box; padding: 10px 12px; margin-bottom: 10px;
-            border-radius: 8px; border: 1px solid #2a3350; background: #0e1426; color: #e8ecf5; }
-    button { width: 100%; padding: 12px; border: 0; border-radius: 8px; font-size: 15px;
-             font-weight: 600; cursor: pointer; background: #4f7cff; color: #fff; }
-    button.live { background: #e0455e; }
-    .status { margin-top: 14px; text-align: center; font-size: 14px; color: #9fb0d0; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>🎙️ Voice Agent</h1>
-    <input id="key" type="password" placeholder="AssemblyAI API key" />
-    <input id="agent" placeholder="Agent ID" />
-    <button id="btn">Connect</button>
-    <div class="status" id="status">Enter your key and agent ID</div>
-  </div>
-  <script>
-    const RATE = 24000, $ = (id) => document.getElementById(id);
-    let ws, ctx, stream, playhead = 0; const sources = new Set();
-    const setStatus = (t) => ($("status").textContent = t);
-
-    async function start() {
-      const key = $("key").value.trim(), agent = $("agent").value.trim();
-      if (!key || !agent) return setStatus("Enter your key and agent ID");
-      setStatus("connecting…"); $("btn").textContent = "Stop"; $("btn").classList.add("live");
-
-      ctx = new AudioContext({ sampleRate: RATE });
-      stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: false },
-      });
-      const cap = `class P extends AudioWorkletProcessor{process(i){const c=i[0][0];
-        if(c){const b=new Int16Array(c.length);for(let n=0;n<c.length;n++)
-        b[n]=Math.max(-1,Math.min(1,c[n]))*32767;this.port.postMessage(b.buffer,[b.buffer]);}
-        return true;}}registerProcessor("cap",P);`;
-      await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([cap], { type: "text/javascript" })));
-      const node = new AudioWorkletNode(ctx, "cap");
-      ctx.createMediaStreamSource(stream).connect(node);
-
-      const url = new URL("wss://agents.assemblyai.com/v1/ws");
-      url.searchParams.set("token", key);
-      ws = new WebSocket(url);
-      let ready = false;
-
-      ws.onopen = () => ws.send(JSON.stringify({ type: "session.update", session: { agent_id: agent } }));
-      node.port.onmessage = (e) => {
-        if (!ready || ws.readyState !== 1) return;
-        const b = new Uint8Array(e.data); let s = "";
-        for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
-        ws.send(JSON.stringify({ type: "input.audio", audio: btoa(s) }));
-      };
-      ws.onmessage = ({ data }) => {
-        const m = JSON.parse(data);
-        if (m.type === "session.ready") { ready = true; playhead = ctx.currentTime; setStatus("● listening, start talking"); }
-        else if (m.type === "input.speech.started") flush();        // barge-in
-        else if (m.type === "reply.audio") play(m.data);
-        else if (m.type === "transcript.agent") setStatus("🗣 " + m.text);
-        else if (m.type === "error" || m.type === "session.error") setStatus("error: " + (m.message || ""));
-      };
-    }
-
-    function play(b64) {
-      const raw = atob(b64), pcm = new Int16Array(raw.length / 2);
-      for (let i = 0; i < pcm.length; i++) pcm[i] = raw.charCodeAt(2*i) | (raw.charCodeAt(2*i+1) << 8);
-      const buf = ctx.createBuffer(1, pcm.length, RATE), ch = buf.getChannelData(0);
-      for (let i = 0; i < pcm.length; i++) ch[i] = pcm[i] / 32768;
-      const src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination);
-      const at = Math.max(ctx.currentTime, playhead); src.start(at); playhead = at + buf.duration;
-      sources.add(src); src.onended = () => sources.delete(src);
-    }
-    function flush() { for (const s of sources) { try { s.stop(); } catch (e) {} } sources.clear(); playhead = ctx.currentTime; }
-    function stop() {
-      ws && ws.close(); stream && stream.getTracks().forEach((t) => t.stop()); ctx && ctx.close();
-      $("btn").textContent = "Connect"; $("btn").classList.remove("live"); setStatus("disconnected");
-    }
-    $("btn").onclick = () => (ws && ws.readyState <= 1 ? stop() : start());
-  </script>
-</body>
-</html>
+```bash JavaScript
+npm run publish
 ```
 
-For simplicity this passes your API key straight to the browser. Never do that in production. [Mint a temporary token](/voice-agents/voice-agent-api/browser-integration) on your server instead.
+Publishes the starter agent to your account and saves its ID for the next step.
 
-### Step 3: Open it and talk
+## Step 4: Talk to it
 
-Browsers need a secure context for the microphone, so serve the file locally:
-
-```bash
-npx serve .
+```bash Python
+python deployment/browser/server.py
 ```
 
-Open `http://localhost:3000/voice-agent.html`, paste your API key and the agent ID from step 1, and click **Connect**, then start talking. The agent greets you, listens, and replies.
-
-### Step 4: Add a tool (optional)
-
-Give the agent the ability to *do* something. Here it books a meeting with the real [Cal.com bookings API](https://cal.com/docs/api-reference/v2/bookings/create-a-booking). Update the agent with an **HTTP tool**: you provide the endpoint and a JSON-Schema parameter spec, and AssemblyAI calls it for you whenever the model decides to. Nothing changes in your web page.
-
-Replace `<YOUR_CAL_API_KEY>` with a [Cal.com API key](https://app.cal.com/settings/developer/api-keys) and `123` with your [event type ID](https://cal.com/docs/api-reference/v2/event-types/get-all-event-types):
-
-```bash cURL expandable
-curl -X PUT https://agents.assemblyai.com/v1/agents/7ad24396-b822-4dca-871a-be9cc4781cf9 \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "system_prompt": "You are a friendly scheduling assistant. When the caller wants to meet, collect their name, email, time zone, and a start time, then call create_booking with eventTypeId 123 and confirm the booking out loud.",
-    "tools": [
-      {
-        "name": "create_booking",
-        "description": "Book a meeting on Cal.com. Call this once you have the caller name, email, time zone, and a start time.",
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "start":       { "type": "string", "format": "date-time", "description": "Meeting start, ISO 8601 in UTC.", "examples": ["2026-06-15T15:00:00Z"] },
-            "eventTypeId": { "type": "integer", "description": "The Cal.com event type to book. Always use 123.", "examples": [123] },
-            "attendee": {
-              "type": "object",
-              "description": "The caller's details.",
-              "properties": {
-                "name":     { "type": "string", "description": "The caller full name." },
-                "email":    { "type": "string", "format": "email", "description": "The caller email address." },
-                "timeZone": { "type": "string", "description": "IANA time zone, e.g. America/New_York." }
-              },
-              "required": ["name", "email", "timeZone"]
-            }
-          },
-          "required": ["start", "eventTypeId", "attendee"]
-        },
-        "execution_mode": "interactive",
-        "timeout_seconds": 30,
-        "http": {
-          "url": "https://api.cal.com/v2/bookings",
-          "http_method": "POST",
-          "headers": [
-            { "name": "Authorization", "value": "Bearer <YOUR_CAL_API_KEY>" },
-            { "name": "cal-api-version", "value": "2026-02-25" }
-          ]
-        }
-      }
-    ]
-  }'
+```bash JavaScript
+npm start
 ```
 
-```python Python expandable
-# pip install requests
-import os
-import requests
+Open `http://localhost:3000` in Chrome or Edge and start talking.
 
-resp = requests.put(
-    "https://agents.assemblyai.com/v1/agents/7ad24396-b822-4dca-871a-be9cc4781cf9",
-    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
-    json={
-        "system_prompt": "You are a friendly scheduling assistant. When the caller wants to meet, collect their name, email, time zone, and a start time, then call create_booking with eventTypeId 123 and confirm the booking out loud.",
-        "tools": [
-            {
-                "name": "create_booking",
-                "description": "Book a meeting on Cal.com. Call this once you have the caller name, email, time zone, and a start time.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "start": {"type": "string", "format": "date-time", "description": "Meeting start, ISO 8601 in UTC.", "examples": ["2026-06-15T15:00:00Z"]},
-                        "eventTypeId": {"type": "integer", "description": "The Cal.com event type to book. Always use 123.", "examples": [123]},
-                        "attendee": {
-                            "type": "object",
-                            "description": "The caller's details.",
-                            "properties": {
-                                "name": {"type": "string", "description": "The caller full name."},
-                                "email": {"type": "string", "format": "email", "description": "The caller email address."},
-                                "timeZone": {"type": "string", "description": "IANA time zone, e.g. America/New_York."},
-                            },
-                            "required": ["name", "email", "timeZone"],
-                        },
-                    },
-                    "required": ["start", "eventTypeId", "attendee"],
-                },
-                "execution_mode": "interactive",
-                "timeout_seconds": 30,
-                "http": {
-                    "url": "https://api.cal.com/v2/bookings",
-                    "http_method": "POST",
-                    "headers": [
-                        {"name": "Authorization", "value": "Bearer <YOUR_CAL_API_KEY>"},
-                        {"name": "cal-api-version", "value": "2026-02-25"},
-                    ],
-                },
-            }
-        ],
-    },
-)
-resp.raise_for_status()
-print(resp.json())
+## Put it on a phone number
+
+Twilio passes calls to AssemblyAI over SIP, so there's no media server or webhook to run. Buy a Twilio number, then add your credentials and a trunk domain you invent:
+
+```bash .env
+TWILIO_ACCOUNT_SID=AC...                          # console.twilio.com, top of the page
+TWILIO_AUTH_TOKEN=your_token_here                 # same place, hidden until you click it
+TWILIO_PHONE_NUMBER=+1...                         # a number already in your account, E.164
+TWILIO_TRUNK_DOMAIN=acme-agent.pstn.twilio.com    # a name you invent, unique across Twilio
 ```
 
-```javascript Node.js expandable
-// Node 18+ has fetch built in
-const res = await fetch(
-  "https://agents.assemblyai.com/v1/agents/7ad24396-b822-4dca-871a-be9cc4781cf9",
-  {
-    method: "PUT",
-    headers: {
-      Authorization: process.env.ASSEMBLYAI_API_KEY,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      system_prompt: "You are a friendly scheduling assistant. When the caller wants to meet, collect their name, email, time zone, and a start time, then call create_booking with eventTypeId 123 and confirm the booking out loud.",
-      tools: [
-        {
-          name: "create_booking",
-          description: "Book a meeting on Cal.com. Call this once you have the caller name, email, time zone, and a start time.",
-          parameters: {
-            type: "object",
-            properties: {
-              start: { type: "string", format: "date-time", description: "Meeting start, ISO 8601 in UTC.", examples: ["2026-06-15T15:00:00Z"] },
-              eventTypeId: { type: "integer", description: "The Cal.com event type to book. Always use 123.", examples: [123] },
-              attendee: {
-                type: "object",
-                description: "The caller's details.",
-                properties: {
-                  name: { type: "string", description: "The caller full name." },
-                  email: { type: "string", format: "email", description: "The caller email address." },
-                  timeZone: { type: "string", description: "IANA time zone, e.g. America/New_York." },
-                },
-                required: ["name", "email", "timeZone"],
-              },
-            },
-            required: ["start", "eventTypeId", "attendee"],
-          },
-          execution_mode: "interactive",
-          timeout_seconds: 30,
-          http: {
-            url: "https://api.cal.com/v2/bookings",
-            http_method: "POST",
-            headers: [
-              { name: "Authorization", value: "Bearer <YOUR_CAL_API_KEY>" },
-              { name: "cal-api-version", value: "2026-02-25" },
-            ],
-          },
-        },
-      ],
-    }),
-  },
-);
-const data = await res.json();
-console.log(data);
+```bash Python
+python deployment/telephony/connect.py
 ```
 
-Reload the page, connect again, and ask to book a meeting. The agent collects the details and POSTs them to Cal.com; your page never handles the request. The model's arguments become the JSON body, and the header values are encrypted at rest (reads return only the header name, never the value). See [Add tools](/voice-agents/voice-agent-api/tools/overview) for the full tool model.
-
-### Step 5: End the session cleanly
-
-The **Stop** button in step 2 calls `ws.close()` directly. That leaves the session in a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window on the server, and that window is billable. Send [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) first, wait for [`session.ended`](/voice-agents/voice-agent-api/events-reference#session-ended), then close.
-
-Update `stop()` in `voice-agent.html`:
-
-```js
-function stop() {
-  if (ws && ws.readyState === 1) {
-    ws.send(JSON.stringify({ type: "session.end" }));
-    // Server emits session.ended and closes the socket. Handle it in ws.onmessage.
-  } else {
-    cleanup();
-  }
-}
-
-function cleanup() {
-  ws && ws.close();
-  stream && stream.getTracks().forEach((t) => t.stop());
-  ctx && ctx.close();
-  $("btn").textContent = "Connect"; $("btn").classList.remove("live"); setStatus("disconnected");
-}
+```bash JavaScript
+npm run phone
 ```
 
-Then handle `session.ended` inside your existing `ws.onmessage`:
+That creates the SIP trunk on your domain, routes it to AssemblyAI, attaches your number to it, and binds your agent. Every step checks for existing state first, so it's safe to re-run.
 
-```js
-ws.onmessage = ({ data }) => {
-  const m = JSON.parse(data);
-  // ...existing handlers...
-  if (m.type === "session.ended") cleanup();
-};
-```
-
-Also cover tab close and navigation. `pagehide` fires on both and is more reliable than `beforeunload` on mobile Safari:
-
-```js
-window.addEventListener("pagehide", () => {
-  if (ws && ws.readyState === 1) {
-    ws.send(JSON.stringify({ type: "session.end" }));
-  }
-});
-```
-
-  Send `session.end` synchronously inside the `pagehide` handler. Anything async (like `await fetch`) will not finish before the socket is torn down.
-
-Server and native clients follow the same pattern: send `session.end` on your shutdown signal (`SIGINT`, `SIGTERM`, or your own hangup handler), wait briefly for `session.ended`, then close the socket. There's a complete example in the [Deploy your agent](/voice-agents/voice-agent-api/deploy#connect-from-a-server-or-native-app) quickstart. See [Unexpected billing after the call ended](/voice-agents/voice-agent-api/troubleshooting#unexpected-billing-after-the-call-ended) if your sessions look about 30 seconds longer than the call itself.
+Call the number.
 
 ## Next steps
 
-You just did all three phases at once. Here's where to go deeper on each:
+Every file in `agents/` is the request body for [`POST /v1/agents`](/voice-agents/voice-agent-api/api-spec/create-agent), sent unchanged. The starter agent is four fields:
+
+```json agents/minimal.jsonc
+{
+  "name": "Minimal agent",
+  "system_prompt": "You are a friendly assistant on a voice call. Keep every reply to one or two short sentences. Answer what was asked, lead with the answer, and skip the preamble. If you don't know something, say so. No exclamation marks.",
+  "voice": { "voice_id": "anna" },
+  "greeting": "Hey, what can I do for you?"
+}
+```
+
+Copy the closest file to start your own (`cp agents/http-tools.jsonc agents/my-agent.jsonc`). Every field is commented. Publish again and both the browser tab and the phone number pick up the change on the next call.
+
+Nine agents ship with each starter. Set `AGENT=` to pick one:
+
+| `AGENT=` | Demonstrates | Requires |
+| --- | --- | --- |
+| `minimal` | The three required fields, and the defaults applied to the rest | |
+| `keyterms` | Biasing transcription toward names and jargon | |
+| `turn-taking` | Silence thresholds and interruption handling | |
+| `byo-llm` | Claude through the AssemblyAI gateway, or your own endpoint | |
+| `http-tools` | Tools that AssemblyAI calls on the agent's behalf | |
+| `exa-search` | Web search during a call | `EXA_API_KEY` |
+| `airtable-crm` | Reading a caller record and writing one back | `AIRTABLE_*` |
+| `cal-booking` | Checking availability, then booking a slot | `CAL_*` |
+| `dtmf` | PCI compliance: card entry on the keypad, never in the transcript, the logs, or the model | `DTMF_WEBHOOK_URL` |
+
+```bash Python
+AGENT=cal-booking python publish.py
+python deployment/browser/server.py
+```
+
+```bash JavaScript
+AGENT=cal-booking npm run publish
+npm start
+```
+
+Values written as `${VAR}` in an agent file are substituted at publish time from `.env`, or from `agents/<name>.env` for credentials only one agent uses. Both are gitignored, so the JSON is safe to commit.
+
+Deploy the [Python](https://render.com/deploy?repo=https://github.com/AssemblyAI/voice-agent-starter-python) or [JavaScript](https://render.com/deploy?repo=https://github.com/AssemblyAI/voice-agent-starter-js) starter to Render. It prompts for `ASSEMBLYAI_API_KEY` and nothing else.
+
+Anyone with the URL can start sessions billed to that key.
 
   
     Create a reusable agent with one REST call, then update, list, and delete it.
@@ -53573,8 +53294,13 @@ Or jump straight to a topic:
 - [Add tools](/voice-agents/voice-agent-api/tools/overview): server-side HTTP tools and client-side function tools
 - [Connect your own LLM](/voice-agents/voice-agent-api/connect-your-own-llm): point the agent at an OpenAI-compatible model
 - [Manage agents (REST)](/voice-agents/voice-agent-api/manage-agents): every endpoint, field, and validation rule
+- [Browser integration](/voice-agents/voice-agent-api/browser-integration): mint tokens and build your own client
+- [Connect to Twilio](/voice-agents/voice-agent-api/connect-to-twilio): bridge audio through your own server
 - [Events reference](/voice-agents/voice-agent-api/events-reference): every WebSocket event with full payloads
+- [Build with AI coding tools](/voice-agents/voice-agent-api/build-with-ai-tools): point Claude Code, Cursor, or v0 at these docs
 - [Troubleshooting](/voice-agents/voice-agent-api/troubleshooting): symptom-to-fix table and support logging
+
+No code at all? Talk to an agent in the [Voice Agent playground](https://www.assemblyai.com/dashboard/playground/voice-agent).
 
 ---
 
@@ -53738,11 +53464,13 @@ Full guide: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/prompti
 
 ## Getting a browser app running
 
-1. Fork the official quickstart by fetching https://www.assemblyai.com/docs/voice-agents/voice-agent-api#build-your-agent and saving the `<!DOCTYPE html>...</html>` block as `voice-agent.html`.
-2. `npx serve .` and open `http://localhost:3000/voice-agent.html` (localhost counts as a secure context, so the mic works).
-3. Edit in place; reload the tab.
+1. Clone the voice agent starter, in [Python](https://github.com/AssemblyAI/voice-agent-starter-python) or [JavaScript](https://github.com/AssemblyAI/voice-agent-starter-js). Both ship an `AGENTS.md` your coding tool reads for repo conventions, and neither has dependencies to install.
+2. Put `ASSEMBLYAI_API_KEY` in `.env`, publish an agent (`python publish.py` or `npm run publish`), and start the browser server (`python deployment/browser/server.py` or `npm start`).
+3. Open `http://localhost:3000` (localhost counts as a secure context, so the mic works). Edit the agent's JSON file in `agents/`, publish again, and start another call.
 
-### Minimum-viable playback + flush (if you're not forking the quickstart)
+Want a single self-contained HTML file instead, with no clone? [Browser integration](/voice-agents/voice-agent-api/browser-integration) has one, plus the server-side token endpoint it needs.
+
+### Minimum-viable playback + flush (if you're not starting from the starter)
 
 ```js
 const RATE = 24000;
@@ -56785,7 +56513,7 @@ wss://agents.assemblyai.com/v1/ws
   // Wait for session.ended, then close the socket.
   ```
 
-  Send `session.end` on every intentional disconnect: "End call" button, page unload (`beforeunload` / `pagehide`), user hangup, and Ctrl+C in server clients. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly).
+  Send `session.end` on every intentional disconnect: "End call" button, page unload (`beforeunload` / `pagehide`), user hangup, and Ctrl+C in server clients. See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#5-ending-the-session-cleanly).
 
 Step 2 is the whole binding — send the `agent_id` and nothing else:
 
@@ -57344,7 +57072,42 @@ For playback, `createBuffer(1, length, 24000)` works on all current browsers —
 
   Do not just close the WebSocket. Send [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) first, then close. A bare `ws.close()` (or the browser tearing the socket down on navigation) leaves the session in the 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window, and that window is billable.
 
-In the browser, wire `session.end` to both your explicit end-call control and the `pagehide` event so tab close and navigation are covered. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly) on the Voice Agent API overview for the full pattern and code sample.
+Wire `session.end` to your explicit end-call control, wait for [`session.ended`](/voice-agents/voice-agent-api/events-reference#session-ended), and clean up there:
+
+```js
+function endCall() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: "session.end" }));
+    // Server emits session.ended, then closes the socket. Clean up on that event.
+  } else {
+    cleanup();
+  }
+}
+
+function cleanup() {
+  ws?.close();
+  stream?.getTracks().forEach((t) => t.stop());
+  audioCtx?.close();
+  log("Call ended");
+}
+
+// Inside your existing message handler:
+//   else if (msg.type === "session.ended") cleanup();
+```
+
+Cover tab close and navigation too. `pagehide` fires on both and is more reliable than `beforeunload` on mobile Safari:
+
+```js
+window.addEventListener("pagehide", () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: "session.end" }));
+  }
+});
+```
+
+  Send `session.end` synchronously inside the `pagehide` handler. Anything async (like `await fetch`) will not finish before the socket is torn down.
+
+Server and native clients follow the same pattern on their shutdown signal (`SIGINT`, `SIGTERM`, or your own hangup handler). There's a complete example in [Deploy your agent](/voice-agents/voice-agent-api/deploy#connect-from-a-server-or-native-app). See [Unexpected billing after the call ended](/voice-agents/voice-agent-api/troubleshooting#unexpected-billing-after-the-call-ended) if your sessions look about 30 seconds longer than the call itself.
 
 ---
 
@@ -59156,7 +58919,7 @@ ws.send(JSON.stringify({ type: "session.end" }));
 // Server emits session.ended and closes the WebSocket.
 ```
 
-See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly).
+See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#5-ending-the-session-cleanly).
 
 ---
 
@@ -59396,7 +59159,7 @@ To end a session cleanly, send `session.end`. The server flushes any in-flight e
 }
 ```
 
-  **Always send `session.end` before closing the WebSocket.** A bare `ws.close()` leaves the session in a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window that is billable. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly) for browser and server-client patterns.
+  **Always send `session.end` before closing the WebSocket.** A bare `ws.close()` leaves the session in a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window that is billable. See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#5-ending-the-session-cleanly) for browser and server-client patterns.
 
 ## Errors
 
@@ -65773,7 +65536,7 @@ Description: Available models on LLM Gateway
 | **Gemini 2.5 Flash** | `gemini-2.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048576` |  |
 | **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048576` |  |
 | **Gemini 2.5 Pro** | `gemini-2.5-pro` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `200000` |  |
-| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` | 2027-05-07 |
 | **Gemini 3.5 Flash** | `gemini-3.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
 | **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
 | **Gemini 3.6 Flash** | `gemini-3.6-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
@@ -65824,7 +65587,7 @@ Description: Available models on LLM Gateway
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
 | **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0 | $0 |  |  |  |  |
 
   For information on data retention and model training policies for each
   provider, see [Data Retention and Model Training](/data-retention-and-model-training#llm-gateway-production-environment).

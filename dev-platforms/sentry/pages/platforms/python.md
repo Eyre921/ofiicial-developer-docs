@@ -154,7 +154,7 @@ with sentry_sdk.start_transaction(op="task", name="Transaction Name"):
 
 To verify that Sentry catches your logs (which are enabled by default), add some log statements to your application:
 
-```py
+```python
 import sentry_sdk
 
 sentry_sdk.logger.info("This is an info log message")

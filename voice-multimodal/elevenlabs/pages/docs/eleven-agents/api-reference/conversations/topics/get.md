@@ -30,8 +30,14 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 ### Query parameters
 
+- `page_size` (integer, optional) — Number of top-level topic groups to return.
+- `sort_by` (enum, optional) — Topic table column to sort by.
+  - Allowed values: `conversations`, `sentiment`, `success_rate`
+- `sort_direction` (enum, optional) — Direction to sort topics.
+  - Allowed values: `asc`, `desc`
 - `from_unix_secs` (integer, optional) — Start of the window to view topics for. When set with to_unix_secs, per-day topics in the range are aggregated together.
 - `to_unix_secs` (integer, optional) — End of the window to view topics for.
+- `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
 
@@ -70,14 +76,10 @@ Successful Response
       - `unknown_count` (integer, optional, default: 0)
 - `window_start_unix_secs` (integer, required)
 - `window_end_unix_secs` (integer, required)
+- `has_more` (boolean, optional, default: false)
+- `next_cursor` (string, optional)
 
 ## Examples
-
-**Request**
-
-```json
-{}
-```
 
 **Response**
 
@@ -85,17 +87,19 @@ Successful Response
 {
   "topics": [
     {
-      "topic_id": "b7f3a9d2-4c8e-4f1a-9d3e-2a5f7b6c9e12",
-      "label": "Customer Support Issues",
-      "description": "Conversations related to troubleshooting and support requests.",
-      "conversation_count": 124,
-      "parent_topic_id": null,
-      "x_2d": 0.45,
-      "y_2d": -0.32
+      "topic_id": "topic_id",
+      "label": "label",
+      "description": "description",
+      "conversation_count": 1,
+      "parent_topic_id": "parent_topic_id",
+      "x_2d": 1.1,
+      "y_2d": 1.1
     }
   ],
-  "window_start_unix_secs": 1685606400,
-  "window_end_unix_secs": 1685692799
+  "window_start_unix_secs": 1,
+  "window_end_unix_secs": 1,
+  "has_more": true,
+  "next_cursor": "next_cursor"
 }
 ```
 
@@ -107,7 +111,11 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.conversations.topics.get("agent_id", {
+        cursor: "cursor",
         fromUnixSecs: 1,
+        pageSize: 1,
+        sortBy: "conversations",
+        sortDirection: "asc",
         toUnixSecs: 1,
     });
 }
@@ -122,7 +130,11 @@ client = ElevenLabs()
 
 client.conversational_ai.conversations.topics.get(
     agent_id="agent_id",
+    cursor="cursor",
     from_unix_secs=1,
+    page_size=1,
+    sort_by="conversations",
+    sort_direction="asc",
     to_unix_secs=1,
 )
 
@@ -133,20 +145,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -163,14 +170,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -180,9 +185,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
   .asString();
 ```
 
@@ -192,12 +195,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1');
 
 echo $response->getBody();
 ```
@@ -205,27 +203,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?from_unix_secs=1&to_unix_secs=1")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

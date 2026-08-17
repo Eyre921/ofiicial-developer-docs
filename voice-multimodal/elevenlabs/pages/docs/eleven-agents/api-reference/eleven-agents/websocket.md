@@ -637,6 +637,15 @@ components:
       required:
         - client_tool_call
       title: ClientToolCall
+    AgentToolResponseAgentToolResponseStatus:
+      type: string
+      enum:
+        - success
+        - error
+        - blocked
+        - skipped
+      description: Tool call status derived from execution flags.
+      title: AgentToolResponseAgentToolResponseStatus
     AgentToolResponseAgentToolResponse:
       type: object
       properties:
@@ -655,6 +664,9 @@ components:
           type: integer
         is_called:
           type: boolean
+        status:
+          $ref: '#/components/schemas/AgentToolResponseAgentToolResponseStatus'
+          description: Tool call status derived from execution flags.
       required:
         - tool_name
         - tool_call_id
@@ -662,6 +674,7 @@ components:
         - is_error
         - event_id
         - is_called
+        - status
       title: AgentToolResponseAgentToolResponse
     AgentToolResponse:
       type: object
@@ -675,6 +688,15 @@ components:
       required:
         - agent_tool_response
       title: AgentToolResponse
+    AgentToolResponseFullPayloadAgentToolResponseFullPayloadStatus:
+      type: string
+      enum:
+        - success
+        - error
+        - blocked
+        - skipped
+      description: Tool call status derived from execution flags.
+      title: AgentToolResponseFullPayloadAgentToolResponseFullPayloadStatus
     AgentToolResponseFullPayloadAgentToolResponseFullPayload:
       type: object
       properties:
@@ -698,6 +720,10 @@ components:
         truncated:
           type: boolean
           default: false
+        status:
+          $ref: >-
+            #/components/schemas/AgentToolResponseFullPayloadAgentToolResponseFullPayloadStatus
+          description: Tool call status derived from execution flags.
       required:
         - tool_name
         - tool_call_id
@@ -706,6 +732,7 @@ components:
         - event_id
         - is_called
         - full_tool_result
+        - status
       title: AgentToolResponseFullPayloadAgentToolResponseFullPayload
     AgentToolResponseFullPayload:
       type: object
@@ -1209,6 +1236,7 @@ components:
         - gemini-3.5-flash
         - gemini-3.5-flash-lite
         - gemini-3.6-flash
+        - gemini-3.7-flash
         - claude-sonnet-4-5
         - claude-opus-4-7
         - claude-opus-4-8

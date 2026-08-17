@@ -236,7 +236,7 @@ Reference: https://elevenlabs.io/docs/api-reference/flows/video/create
         - `mime_type` (enum, required) — The MIME type of the encoded image.
           - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`
     - `resolution` (enum, optional, default: 720p) — The resolution of the output video.
-      - Allowed values: `480p`, `720p`
+      - Allowed values: `480p`, `720p`, `1080p`
     - `start_frame` (object, optional, nullable) — The image to use as the video's first frame.
       - `type`: `asset` (StaticAssetReference)
         - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.

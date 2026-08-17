@@ -30,8 +30,14 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/topics/get
 
 ### Query parameters
 
+- `page_size` (integer, optional, nullable) — Number of top-level topic groups to return.
+- `sort_by` (enum, optional) — Topic table column to sort by.
+  - Allowed values: `conversations`, `sentiment`, `success_rate`
+- `sort_direction` (enum, optional) — Direction to sort topics.
+  - Allowed values: `asc`, `desc`
 - `from_unix_secs` (integer, optional, nullable) — Start of the window to view topics for. When set with to_unix_secs, per-day topics in the range are aggregated together.
 - `to_unix_secs` (integer, optional, nullable) — End of the window to view topics for.
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
 
@@ -70,6 +76,8 @@ Successful Response
       - `unknown_count` (integer, optional, default: 0)
 - `window_start_unix_secs` (integer, required)
 - `window_end_unix_secs` (integer, required)
+- `has_more` (boolean, optional, default: false)
+- `next_cursor` (string, optional, nullable)
 
 ## Examples
 
@@ -117,7 +125,9 @@ Successful Response
     }
   ],
   "window_start_unix_secs": 1,
-  "window_end_unix_secs": 1
+  "window_end_unix_secs": 1,
+  "has_more": false,
+  "next_cursor": "string"
 }
 ```
 

@@ -181,9 +181,11 @@ The redeploy creates a new agent run session that applies the same code changes 
 
 ### Note
 
-You can only redeploy an agent run that has completed successfully and made file changes. You cannot redeploy while another agent run is actively in progress from the same starting Agent Runners task. An Agent Runners starting task can have several agent runs.
+You can only redeploy an agent run that has completed successfully and made file changes. You cannot redeploy while another agent run is actively in progress from the same starting Agent Runners task. An Agent Runners starting task can have several agent runs. To move forward sooner, you can [stop the run that's in progress](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#stop-an-agent-run).
 
 ### Limitations
+
+Your team can have only a limited number of agent runs active at the same time, based on your plan. Learn more about the limit and how to free up a slot in [Stop an agent run](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#stop-an-agent-run).
 
 If your project is set up with continuous deployment through a connection to a Git provider, then Agent Runners will only work with your project if it is using GitHub as a Git provider. You cannot use Agent Runners with projects connected to Git repositories hosted on GitLab, Bitbucket, or Azure DevOps.
 

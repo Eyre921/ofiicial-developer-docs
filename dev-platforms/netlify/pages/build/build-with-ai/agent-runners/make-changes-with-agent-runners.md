@@ -78,6 +78,8 @@ To check the status of your agent run, go to the **Agent Runs** tab in your Netl
 
 You can expand an individual agent run to view its credit usage. Note that credit usage for a run may take a brief moment to appear after the run begins. Learn more in [how pricing works](/build/build-with-ai/agent-runners/overview/#how-pricing-works).
 
+If you change your mind about a run that's still going, you can stop it and take a different approach. For details, see [Stop an agent run](#stop-an-agent-run).
+
 ### 3. Preview Agent Runners updates 
 
 To preview your agent run's proposed updates, check out the **Files changed** tab, which shows you the changes that the agent made. 
@@ -93,4 +95,92 @@ If your project is connected to a GitHub repository, then you can optionally ope
 To ship your agent run updates, you have two options: 
    - **For projects using Git & GitHub:** Open a pull request or update an existing pull request with your updates from your agent run. When you merge your pull request into your production branch, Netlify publishes your changes to your production site for you.
    - **For projects without Git:** If you have publishing permission, you'll find a **Publish** button on your Netlify project's Agent Runs dashboard. Select **Publish** to make your agent run updates go live in the latest production version of your project.
+
+## Stop an agent run
+
+You can stop an agent run that's still in progress. 
+
+Stop a run when any of the following applies: 
+- you change your mind about the prompt you sent
+- you want to take a different approach
+- your team has hit the limit for how many agent runs can be active at once and you want to start a new agent run or continue a different one
+
+To stop an agent run:
+
+1. From your Netlify project dashboard, go to your project's 
+### NavigationPath Component:
+
+Agent runs
+ page.
+2. Choose the active agent run you want to stop. Agent runs labeled **In progress** or **New** are still active.
+3. In the prompt box, choose **Stop** to immediately stop the agent run. 
+  ![Prompt box for an agent run in progress with the Stop button](/images/stop-button-for-agent-run.png)
+
+While a run is in progress, **Stop** replaces the **Run task** button in the prompt box on the run detail page.
+
+### What happens when you stop a run
+
+A stopped run moves to the **Cancelled** state and shows a **Cancelled** badge in the runs list and in the run detail header.
+
+The run, its logs, its sessions, and any file changes the agent already made all remain available to you. A cancelled run can't be published or used to open or update a pull request, since the **Publish to production**, **Create pull request**, and **Update pull request** or **Update existing branch** actions are offered for runs that finished as **Done** or **Failed**.
+
+You can continue with another follow-up prompt in the same agent run. That starts a new session on the run, and the publish and pull request actions are available again once the new session completes.
+
+### Stop an agent run with the Netlify CLI
+
+You can also stop a run with the [Netlify CLI](https://cli.netlify.com/commands/agents/#agentsstop). To find the ID of a run that's still active:
+
+```bash
+netlify agents:list --status running
+```
+
+Then stop that run by ID:
+
+```bash
+netlify agents:stop <run-id>
+```
+
+The run moves to the `cancelled` state, the same as stopping it from the dashboard.
+
+### Why you may not be able to start a new run
+
+Netlify limits how many agent runs your team can have active at the same time, across all of your team's projects.
+
+The limit depends on your plan:
+
+| Plan | Concurrent agent runs |
+| --- | --- |
+| Free | 1 |
+| Personal | 3 |
+| Pro | 10 |
+| Enterprise | 50 |
+
+When you try to start a run beyond your limit, Netlify shows an error on the prompt box:
+
+> Concurrent agent limit (1) reached. To start a new task, wait for one to finish or stop one.
+
+The number in parentheses is your plan's limit. You get this same error whether you start a run on an existing project or in the flow to [create a new project with an AI agent](/start/quickstarts/create-new-project-with-ai-agent/).
+
+To free up a slot, you can do one of the following:
+
+1. Wait for the active run to finish.
+2. Open the active run and choose **Stop**.
+
+#### Find active agent runs
+
+A run started by any team member on any project counts toward the same team limit for active agent runs, so check both of the following:
+   - the **Agent runs** tab for the project you're working on
+   - your team's **Agent runs** page, which lists runs across all of your team's projects
+
+Runs labeled **In progress** or **New** are active and hold a slot. Runs labeled **Done**, **Failed**, **Cancelled**, or **Archived** don't. With the CLI, `netlify agents:list --status running` lists the active runs for a project.
+
+### Runs cancelled because your team ran out of credits
+
+If your team runs out of credits, active agent runs are cancelled. A cancelled run will show a **Cancelled (out of credits)** status.
+
+Once your team has more credits, you can continue your cancelled agent run. You'll find a **Continue** option on the cancelled agent run that will resume your agent run's task.
+
+When you stop an agent run yourself, you won't find a **Continue** option. Instead, send a new prompt in the same agent run to pick the work back up, as described in [What happens when you stop a run](#what-happens-when-you-stop-a-run).
+
+When your team has no credits available you will not be able to start a new run. To learn how agent runs consume credits, see [pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
 

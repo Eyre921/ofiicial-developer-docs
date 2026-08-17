@@ -617,6 +617,7 @@ The table below shows a list of events logged on the Activity page.
 | flags-settings | Active | Settings for the Flags tab were created, updated, or deleted. |
 | git_account_integration_link_added | Active | A GitHub account was linked to an additional Vercel account as an integration. |
 | instant-rollback-created | Active | An instant rollback was created. |
+| integration-configuration-credential-rotated | Active | An installed integration rotated the access token it uses to call the Vercel API. |
 | integration-configuration-owner-changed | Active | An integration configuration owner was changed. |
 | integration-configuration-scope-change-confirmed | Active | The permissions upgrade request from an installed integration was confirmed. |
 | integration-configuration-transfer-in-success | Active | An integration was transferred into the current team or account. |
@@ -101537,7 +101538,7 @@ You can use a Global Config in [Middleware](/docs/routing-middleware) and [Verce
 
 > **💡 Note:** Vercel's Global Config read optimizations are **only available on the Edge and
 > Node.js runtimes**. Optimizations can be enabled for other runtimes, [such as
-> Ruby, Go, and Python](/docs/functions/runtimes) upon request. See [our Edge
+> Ruby, Go, and Python](/docs/functions/runtimes) upon request. See [our Global
 > Config limits docs](/docs/global-config/global-config-limits) to learn more.
 
 ## Use cases
@@ -159924,6 +159925,37 @@ One of the provided values in the request query is invalid.
 
 ---
 
+#### Rotate Installation Credential
+
+`POST /v1/installations/{integrationConfigurationId}/credentials/rotate`
+
+**Description:** Issues a replacement access token for an installation, so a partner can rotate a credential it believes is compromised without the customer having to reinstall. Authenticated by the credential being replaced plus the integration's client secret: a leaked access token on its own cannot rotate itself, which would otherwise let an attacker take over the installation and lock the partner out. The previous credential intentionally stays valid so in-flight requests keep working. Retiring it is a separate, explicit operation — a partner is never left mid-rotation without a working credential.
+
+**Parameters:**
+
+- `integrationConfigurationId` (path) (required)
+
+**Request Body:**
+
+Content-Type: `application/json`
+
+- `client_secret` (required): string
+- `client_id`: string
+
+**Responses:**
+
+- **200**: Success
+  - Content-Type: `application/json`
+- **400**: One of the provided values in the request body is invalid.
+One of the provided values in the request query is invalid.
+- **401**: The request is not authorized.
+- **403**: You do not have permission to access this resource.
+- **404**: Success
+- **409**: Success
+- **410**: Success
+
+---
+
 #### Create Event
 
 `POST /v1/installations/{integrationConfigurationId}/events`
@@ -160743,6 +160775,7 @@ Vercel combines the best developer experience with an obsessive focus on end-use
 | **PATCH** | [`/v1/installations/{integrationConfigurationId}`](/docs/integrations/create-integration/marketplace-api/reference/vercel/update-installation) | Update Installation |
 | **GET** | [`/v1/installations/{integrationConfigurationId}/account`](/docs/integrations/create-integration/marketplace-api/reference/vercel/get-account-info) | Get Account Information |
 | **GET** | [`/v1/installations/{integrationConfigurationId}/member/{memberId}`](/docs/integrations/create-integration/marketplace-api/reference/vercel/get-member) | Get Member Information |
+| **POST** | [`/v1/installations/{integrationConfigurationId}/credentials/rotate`](/docs/integrations/create-integration/marketplace-api/reference/vercel/rotate-installation-credential) | Rotate Installation Credential |
 | **POST** | [`/v1/installations/{integrationConfigurationId}/events`](/docs/integrations/create-integration/marketplace-api/reference/vercel/create-event) | Create Event |
 | **GET** | [`/v1/installations/{integrationConfigurationId}/resources`](/docs/integrations/create-integration/marketplace-api/reference/vercel/get-integration-resources) | Get Integration Resources |
 | **GET** | [`/v1/installations/{integrationConfigurationId}/resources/{resourceId}`](/docs/integrations/create-integration/marketplace-api/reference/vercel/get-integration-resource) | Get Integration Resource |
@@ -165319,6 +165352,93 @@ The request is not authorized.
 You do not have permission to access this resource.
 
 ### 404
+
+Success
+
+### 410
+
+Success
+
+
+---
+
+## Related
+
+- [Marketplace API Reference](/docs/integrations/create-integration/marketplace-api/reference)
+- [Native Integration Concepts](/docs/integrations/create-integration/native-integration)
+
+
+--------------------------------------------------------------------------------
+title: "Rotate Installation Credential"
+description: "Issues a replacement access token for an installation, so a partner can rotate a credential it believes is compromised without the customer having to reinstall. Authenticated by the credential being replaced plus the integration's client secret: a leaked access token on its own cannot rotate itself, which would otherwise let an attacker take over the installation and lock the partner out. The previous credential intentionally stays valid so in-flight requests keep working. Retiring it is a separate, explicit operation — a partner is never left mid-rotation without a working credential."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/vercel/rotate-installation-credential"
+--------------------------------------------------------------------------------
+
+# Rotate Installation Credential
+
+```http
+POST /v1/installations/{integrationConfigurationId}/credentials/rotate
+```
+
+Issues a replacement access token for an installation, so a partner can rotate a credential it believes is compromised without the customer having to reinstall. Authenticated by the credential being replaced plus the integration's client secret: a leaked access token on its own cannot rotate itself, which would otherwise let an attacker take over the installation and lock the partner out. The previous credential intentionally stays valid so in-flight requests keep working. Retiring it is a separate, explicit operation — a partner is never left mid-rotation without a working credential.
+
+## Authentication
+
+**bearerToken**: Default authentication mechanism
+
+## Path Parameters
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `integrationConfigurationId` | string | ✓ |  |
+
+## Request Body
+
+**Content-Type**: `application/json`
+
+```json
+{
+  "client_secret": "string" // required,
+  "client_id": "string"
+}
+```
+
+## Responses
+
+### 200
+
+Success
+
+**Content-Type**: `application/json`
+
+```json
+{
+  "scope": "string" // required,
+  "expires_in": "number" // required,
+  "access_token": "string" // required,
+  "token_type": "string" // required
+}
+```
+
+### 400
+
+One of the provided values in the request body is invalid.
+One of the provided values in the request query is invalid.
+
+### 401
+
+The request is not authorized.
+
+### 403
+
+You do not have permission to access this resource.
+
+### 404
+
+Success
+
+### 409
 
 Success
 
