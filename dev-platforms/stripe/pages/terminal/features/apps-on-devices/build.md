@@ -56,12 +56,12 @@ Add the following dependencies to your project’s Gradle build script. Apps on 
 
 ```kotlin
 dependencies {
-   implementation("com.stripe:stripeterminal-core:5.7.0")
-   implementation("com.stripe:stripeterminal-appsondevices:5.7.0")
+   implementation("com.stripe:stripeterminal-core:5.8.0")
+   implementation("com.stripe:stripeterminal-appsondevices:5.8.0")
 }
 ```
 
-Make sure that you aren’t using any other Stripe Terminal SDK dependencies. For example, if you previously integrated the Terminal Android SDK, don’t use the top-level `com.stripe:stripeterminal` dependency (for example, `com.stripe:stripeterminal:5.7.0`).
+Make sure that you aren’t using any other Stripe Terminal SDK dependencies. For example, if you previously integrated the Terminal Android SDK, don’t use the top-level `com.stripe:stripeterminal` dependency (for example, `com.stripe:stripeterminal:5.8.0`).
 
 See an example of [including dependencies in your app’s build script](https://github.com/stripe-samples/terminal-apps-on-devices/blob/718c2de38c7b8003fcf58c536c266bb990ad43a7/app/build.gradle.kts#L66).
 

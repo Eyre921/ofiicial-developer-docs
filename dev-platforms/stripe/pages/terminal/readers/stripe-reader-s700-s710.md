@@ -21,7 +21,7 @@ If you use the Stripe Reader S700/S710 with a point-of-sale system on a separate
 
 ## Battery and charging status 
 
-When the Stripe Reader S700/S710 is on, you can check the battery level in the charging LED indicator. Learn more about [Stripe Reader S700/S710 battery life](https://docs.stripe.com/terminal/payments/setup-reader.md#device-specs-and-accessories).
+When the Stripe Reader S700/S710 is on, you can check the battery level in the charging LED indicator. Learn more about [Stripe Reader S700/S710 battery life](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md#device-specifications).
 
 | LEDs | Meaning |
 | --- | --- |
@@ -371,6 +371,30 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 - Added a fix for JCB L3 Test Case 212-01 and 213-01.
 - Added a fix for Discover Test Case DGN DPAS L3 CL 030.
 - Made additional bug fixes and improvements. |
+
+## Device specifications 
+
+The following table provides the specifications for the Stripe Reader S700/S710. The battery life is only an estimate. The actual battery life varies depending on product settings and deployed features.
+
+| Spec | Details |
+| --- | --- |
+| Approximate dimensions | 161.9 x 81.6 x 21.4 mm / 6.375 x 3.187 x 0.875 in |
+| Approximate weight | 318g |
+| Display | 5.5" IPS LCD display with Gorilla glass, 1920 x 1080, 580 nit |
+| Battery capacity | Rechargeable Li-polymer, 3.7V, 4,950mAh |
+| Battery life | 2.5 hours time to charge, 140 hours (standby), 15 hours (active use) |
+| Memory | 4GB RAM |
+| Storage | 64GB |
+| Processor | Octa Core A53 |
+| Charging connection | USB-C port, Accessory dock |
+| Communication interface | WiFi, Ethernet (with optional hub) |
+| Cellular | S710 only (4G/LTE) |
+| Operating system | Android 10 |
+| Camera | Front and rear present but not supported |
+| Audio jack | Supported |
+| Microphone | Front and rear present but not supported |
+| Security | End-to-end encryption, P2PE ready, Mail order telephone order (MO/TO) P2PE. [PCI listing](https://listings.pcisecuritystandards.org/popups/pts_device.php?appnum=4-30512) |
+| Accessories | Stripe case, Dock, Hub, Third-party stand |
 
 ## See also
 

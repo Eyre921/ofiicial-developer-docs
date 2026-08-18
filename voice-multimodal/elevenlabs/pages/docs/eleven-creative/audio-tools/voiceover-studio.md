@@ -12,7 +12,7 @@ Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [
 Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
 [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T113204Z&X-Amz-Expires=604800&X-Amz-Signature=c836fd6f58ef8ea72e00dd0a3c12cb87453fbdc20fc8529603b84bd98f5196bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voiceover studio" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a/assets/images/product-guides/voiceover-studio/voiceover-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113213Z&X-Amz-Expires=604800&X-Amz-Signature=4f4dbee145c68a4698da70614ef0814e8899e47972869045d427a66c8ab58e24&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voiceover studio" />
 
 ## Overview
 

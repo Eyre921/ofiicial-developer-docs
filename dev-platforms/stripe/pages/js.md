@@ -15612,6 +15612,10 @@ Refer to the [PaymentMethod API](https://docs.stripe.com/api/payment_methods/cre
         The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method's app or site.
 If you'd prefer to redirect to a mobile application, you can alternatively supply an application URI scheme.
 This parameter is only used for cards and other redirect-based payment methods.
+      - `metadata`
+        Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to the ConfirmationToken. This can be useful for storing additional information about the object in a structured format.
+
+Note that the metadata is saved on the Confirmation Token object but isn't returned in the [frontend response](https://docs.stripe.com/metadata.md#requests). You can retrieve the metadata on the server with a [retrieve confirmation token request](https://docs.stripe.com/api/confirmation_tokens/retrieve.md).
 
 ### Example
 

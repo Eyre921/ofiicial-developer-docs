@@ -36,7 +36,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  Write a script using the Octokit.js SDK to interact with the REST API.
+  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
@@ -44,7 +44,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  Learn how to navigate through paginated responses from the REST API.
+  <p>Learn how to navigate through paginated responses from the REST API.</p>
 
 ## Links
 

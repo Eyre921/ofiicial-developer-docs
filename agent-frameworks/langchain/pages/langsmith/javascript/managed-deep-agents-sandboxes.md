@@ -5,7 +5,7 @@ path: langsmith/javascript/managed-deep-agents-sandboxes
 ---
 
 Agents often want to write or execute code when doing their job.
-A sandbox gives a Managed Deep Agent an isolated filesystem and shell for working with files, running code, and executing commands.
+A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.

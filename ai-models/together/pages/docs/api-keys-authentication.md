@@ -8,10 +8,6 @@ Create, manage, and authenticate with project-scoped API keys.
 
 Together AI uses API keys to authenticate requests. Keys are scoped to [projects](/docs/projects), meaning a key only has access to the resources within its project.
 
-<Note>
-  Multi-project key scoping is in early access. Not all resources and APIs fully support project-scoped keys yet. See [Early access limitations](/docs/projects#early-access-limitations) for details.
-</Note>
-
 ## Create an API key
 
 Create independent API keys for separate use cases, systems, or workloads. For example, one for production, one for development, one for CI/CD, and one for inference.
@@ -90,7 +86,7 @@ API keys are scoped to projects:
 This means you can safely share a project API key with a CI/CD pipeline or external collaborator without giving them access to resources in other projects.
 
 <Note>
-  Project key scoping is in early access. Not all resources and APIs fully support this feature yet. Keys created before multi-project support was enabled are scoped to your organization's default project.
+  Keys created before multi-project support was enabled are scoped to your organization's default project.
 </Note>
 
 ## Playground

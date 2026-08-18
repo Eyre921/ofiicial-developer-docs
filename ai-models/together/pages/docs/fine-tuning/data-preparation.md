@@ -20,10 +20,12 @@ Each line of a JSONL file is one training example, formatted to match your task.
 | [Instruction](#instruction-data)       | Prompt and completion pairs.                                                              | `prompt`, `completion`                              |
 | [Preference](#preference-data)         | Paired preferred and dispreferred outputs for [DPO](/docs/fine-tuning/preference-tuning). | `input`, `preferred_output`, `non_preferred_output` |
 | [Generic text](#generic-text-data)     | Free-form text completion.                                                                | `text`                                              |
+| [Tool-calling](#tool-calling-data)     | Training a model to invoke tools.                                                         | `messages`, `tools`                                 |
+| [Reasoning](#reasoning-data)           | Chain-of-thought data for reasoning models.                                               | `messages` with `reasoning`                         |
 
 If the same file has two possible formats (for example both `text` and `messages`), the server rejects it. Trim unused fields before upload to speed up data transfer.
 
-## Conversational data
+### Conversational data
 
 Conversations are represented using a `messages` array. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The conversation must start with `system` or `user` and alternate `user` and `assistant` afterwards.
 
@@ -48,7 +50,7 @@ Example datasets:
 * [allenai/WildChat](https://huggingface.co/datasets/allenai/WildChat).
 * [davanstrien/cosmochat](https://huggingface.co/datasets/davanstrien/cosmochat).
 
-## Instruction data
+### Instruction data
 
 Each line carries a `prompt` and a `completion` field.
 
@@ -64,7 +66,7 @@ Example datasets:
 * [meta-math/MetaMathQA](https://huggingface.co/datasets/meta-math/MetaMathQA).
 * [glaiveai/glaive-code-assistant](https://huggingface.co/datasets/glaiveai/glaive-code-assistant).
 
-## Generic text data
+### Generic text data
 
 Each line carries a single `text` field. Use this for plain text completions.
 
@@ -78,7 +80,7 @@ Example datasets:
 * [unified\_joke\_explanations.jsonl](https://huggingface.co/datasets/laion/OIG/resolve/main/unified_joke_explanations.jsonl).
 * [togethercomputer/RedPajama-Data-1T-Sample](https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T-Sample).
 
-## Preference data
+### Preference data
 
 Used for [preference fine-tuning](/docs/fine-tuning/preference-tuning) with DPO. Each line carries:
 
@@ -105,7 +107,7 @@ Used for [preference fine-tuning](/docs/fine-tuning/preference-tuning) with DPO.
 
 Each output must contain exactly one assistant message.
 
-## Tool-calling data
+### Tool-calling data
 
 For training a model to invoke tools, the line carries a `tools` array listing the available tools. Assistant messages can include `tool_calls` instead of `content`, and `tool`-role messages carry call results. See [function-calling fine-tuning](/docs/fine-tuning/function-calling) for the end-to-end workflow.
 
@@ -163,7 +165,7 @@ For preference fine-tuning, the `tools` field nests inside `input`:
 }
 ```
 
-## Reasoning data
+### Reasoning data
 
 For fine-tuning reasoning models, assistant messages support a `reasoning` or `reasoning_content` field that carries the chain of thought. See [reasoning fine-tuning](/docs/fine-tuning/reasoning) for the full workflow.
 

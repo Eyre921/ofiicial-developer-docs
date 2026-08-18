@@ -4,6 +4,28 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 17, 2026">
+  ## Project visibility
+
+  Projects now support three visibility levels. **Open** projects let any organization member discover and join them. **Closed** projects are discoverable, but joining requires an admin to grant access. **Private** projects are visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
+
+  See [Project visibility](/docs/projects#project-visibility).
+
+  ## Multi-project resource scoping
+
+  Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are now fully scoped to projects. The early-access limitations on project isolation no longer apply.
+
+  See [Projects](/docs/projects).
+</Update>
+
+<Update label="August 15, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `deepseek-ai/DeepSeek-V4-Pro-0813`: 1,048,576 context length, NVFP4 quantization. Pricing: \$1.32 input / \$3.96 output / \$0.13 cached input (per 1M tokens).
+</Update>
+
 <Update label="August 13, 2026">
   ## New models available for fine-tuning
 
@@ -12,6 +34,12 @@ path: docs/changelog
   * `zai-org/GLM-5.2`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `deepseek-ai/DeepSeek-V4-Flash-0731`.
 
   ## Endpoint events in the CLI
 
@@ -35,6 +63,12 @@ path: docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `Qwen/Qwen3.8-2.4T-A95B`: FP4 quantization. Pricing: \$2.50 input / \$6.25 output / \$0.50 cached input (per 1M tokens).
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-FP8`.
 </Update>
 
 <Update label="August 11, 2026">
@@ -43,6 +77,7 @@ path: docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `meta-models/Muse-Glimmer-30B`: 131,072 context length, FP8 quantization. Pricing: \$0.35 input / \$1.50 output / \$0.04 cached input (per 1M tokens).
+  * `ByteDance/Seedance-2.5`: Pricing: \$0.115/sec at 480p.
 
   ## New models available for fine-tuning
 

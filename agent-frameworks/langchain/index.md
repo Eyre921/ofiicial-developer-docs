@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1143 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1142 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -720,8 +720,6 @@
 - `langsmith/smith-api/issues/list-issues-beta` — [List issues (Beta)](pages/langsmith/smith-api/issues/list-issues-beta.md) · [原文](https://docs.langchain.com/langsmith/smith-api/issues/list-issues-beta)
 - `langsmith/smith-api/issues/list-viewed-issues-for-a-session-beta` — [List viewed issues for a session (Beta)](pages/langsmith/smith-api/issues/list-viewed-issues-for-a-session-beta.md) · [原文](https://docs.langchain.com/langsmith/smith-api/issues/list-viewed-issues-for-a-session-beta)
 - `langsmith/smith-api/issues/mark-issue-viewed-beta` — [Mark issue viewed (Beta)](pages/langsmith/smith-api/issues/mark-issue-viewed-beta.md) · [原文](https://docs.langchain.com/langsmith/smith-api/issues/mark-issue-viewed-beta)
-- `langsmith/smith-api/issues/record-a-fix-verification-verdict` — [Record a fix-verification verdict](pages/langsmith/smith-api/issues/record-a-fix-verification-verdict.md) · [原文](https://docs.langchain.com/langsmith/smith-api/issues/record-a-fix-verification-verdict)
-- `langsmith/smith-api/issues/start-preview-deploy-verification-for-a-fix` — [Start preview-deploy verification for a fix](pages/langsmith/smith-api/issues/start-preview-deploy-verification-for-a-fix.md) · [原文](https://docs.langchain.com/langsmith/smith-api/issues/start-preview-deploy-verification-for-a-fix)
 - `langsmith/smith-api/likes/like-repo` — [Like repo](pages/langsmith/smith-api/likes/like-repo.md) · [原文](https://docs.langchain.com/langsmith/smith-api/likes/like-repo)
 - `langsmith/smith-api/mcp/get-tools` — [Get tools](pages/langsmith/smith-api/mcp/get-tools.md) · [原文](https://docs.langchain.com/langsmith/smith-api/mcp/get-tools)
 - `langsmith/smith-api/mcp/invalidate-tools-cache` — [Invalidate tools cache](pages/langsmith/smith-api/mcp/invalidate-tools-cache.md) · [原文](https://docs.langchain.com/langsmith/smith-api/mcp/invalidate-tools-cache)
@@ -1109,6 +1107,7 @@
 - `langsmith/troubleshooting` — [Troubleshooting](pages/langsmith/troubleshooting.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting)
 - `langsmith/troubleshooting-studio` — [Studio troubleshooting](pages/langsmith/troubleshooting-studio.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-studio)
 - `langsmith/troubleshooting-variable-caching` — [Troubleshoot variable caching](pages/langsmith/troubleshooting-variable-caching.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-variable-caching)
+- `langsmith/tuned-evaluators` — [Set up LangChain Tuned Evaluators](pages/langsmith/tuned-evaluators.md) · [原文](https://docs.langchain.com/langsmith/tuned-evaluators)
 - `langsmith/upload-existing-experiments` — [How to upload experiments run outside of LangSmith with the REST API](pages/langsmith/upload-existing-experiments.md) · [原文](https://docs.langchain.com/langsmith/upload-existing-experiments)
 - `langsmith/upload-files-with-traces` — [Upload files with traces](pages/langsmith/upload-files-with-traces.md) · [原文](https://docs.langchain.com/langsmith/upload-files-with-traces)
 - `langsmith/usage-and-billing` — [Usage and billing](pages/langsmith/usage-and-billing.md) · [原文](https://docs.langchain.com/langsmith/usage-and-billing)

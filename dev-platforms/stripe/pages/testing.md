@@ -1430,7 +1430,7 @@ The following table summarizes the PaymentIntent state each method enters immedi
 
 > Don’t store real user data in *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) Link accounts. Treat them as if they’re publicly available, because these test accounts are associated with your publishable key.
 
-Currently, Link only works with credit cards, debit cards, and qualified US bank account purchases. Link requires [domain registration](https://docs.stripe.com/payments/payment-methods/pmd-registration.md).
+Currently, Link only works with credit cards, debit cards, and qualified US bank account purchases.
 
 You can create sandbox accounts for Link using any valid email address. The following table shows the fixed one-time passcode values that Stripe accepts for authenticating sandbox accounts:
 

@@ -71,7 +71,15 @@ To transform a source image hosted on another domain, you must first configure a
   remote_images = ["https://my-images.com/.*", "https://animals.more-images.com/[bcr]at/.*"]
 ```
 
-The `remote_images` property accepts an array of regex. If your images are in specific subdomains or directories, you can use regex to allow just those subdomains or directories. Note that you need to double-escape regex in `netlify.toml` files. For example, the string `https://` can convert to a regex as `https:\/\/` but you should specify it in `netlify.toml` as `https:\\/\\/`. One way to double-escape regex is to use JavaScript's [`.toString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/toString) RegExp method. 
+The `remote_images` property accepts an array of regex. If your images are in specific subdomains or directories, you can use regex to allow just those subdomains or directories. In the regex, escape literal dots (`\.`); forward slashes don't need escaping. Note that double-quoted strings in `netlify.toml` treat backslashes as escape characters, so either double the backslash or use single-quoted literal strings, which need no extra escaping:
+
+```toml
+[images]
+  # single-quoted literal strings: write the regex as-is
+  remote_images = ['https://my-images\.com/.*']
+  # double-quoted strings: escape the backslash itself
+  # remote_images = ["https://my-images\\.com/.*"]
+```
 
 After configuring allowed domains for remote images, you can request transformations of assets hosted on the allowed domains. Here's an example transformation request using a remote path to an image on another domain.
 

@@ -981,6 +981,18 @@ The [Workers common flags](#common-flags) (`--json`, `--plain`, `--worker-id`) a
 | `ntn workers sync state get <key>`         | Print the current cursor and stats for a sync. No flags beyond common.                                                                                                                                                                                                                                                                           |
 | `ntn workers sync state reset <key>`       | Clear a sync's cursor and stats so it restarts from scratch on the next run. No flags beyond common.                                                                                                                                                                                                                                             |
 
+## Workers — databases
+
+Manage a worker's declared databases and their bindings to existing Notion databases. See [Attach an existing database](/workers/guides/syncs#attach-an-existing-database) for usage and safety guidance — attaching can overwrite or delete rows in the target database, and `attach`/`detach` both prompt for confirmation before making any change.
+
+The [Workers common flags](#common-flags) (`--json`, `--plain`, `--worker-id`) apply to every `databases` subcommand.
+
+| Command                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                      |
+| :------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ntn workers databases attach <database-key> <database>` | Bind an attached database declaration to an existing Notion database. `<database>` is a database link/URL or a data source ID. Adds every declared column, locks declared columns read-only, and takes over rows matching the primary key. In the default replace sync mode, rows the sync doesn't produce are deleted on the next run. Flags: `--yes` (skip the confirmation prompt; requires a TTY otherwise). |
+| `ntn workers databases detach [database-key]`            | Release a bound database from sync control. Data and columns are left in place. Exactly one of the positional `database-key` or `--data-source` is required. Flags: `--data-source <id>` (target by data source ID/link instead of declaration key), `--yes` (skip the confirmation prompt; requires a TTY otherwise).                                                                                           |
+| `ntn workers databases list [worker-id]`                 | List every database declared in the worker's manifest, its lifecycle type (`managed`/`attached`), and whether it's bound to a Notion database yet. Alias: `ls`. No flags beyond common.                                                                                                                                                                                                                          |
+
 ## Workers — env
 
 Manage encrypted environment variables for a worker. Values are write-only; they are never returned by `list`. See the [Secrets guide](/workers/guides/secrets) for usage patterns and local development workflows.
@@ -31699,7 +31711,8 @@ const worker = new Worker();
 export default worker;
 
 const issues = worker.database("issues", {
-  // only "managed" type is supported for now
+  // "managed": Notion creates and owns the database (shown here).
+  // "attached": bind to a database you already have — see below.
   type: "managed",
   // the initial title of the database
   initialTitle: "Issues",
@@ -31724,7 +31737,7 @@ worker.sync("issuesSync", {
 `primaryKeyProperty` tells Notion which property uniquely identifies each row. This is typically the entity's ID in the external API (e.g., a Salesforce Contact ID or GitHub issue ID). When your sync emits a record with the same `key`, Notion updates the existing row instead of creating a duplicate.
 
 <Tip>
-  Syncs currently create and manage their own databases. Support for syncing to existing databases is coming soon.
+  `type: "managed"` is shown here — Notion creates and owns the database. To sync into a database you already have instead, declare `type: "attached"` and bind it with the CLI. See [Attach an existing database](#attach-an-existing-database) below.
 </Tip>
 
 ### Schema and properties
@@ -32017,6 +32030,68 @@ worker.sync("tasksSync", {
 ```
 
 In the example above, `Schema.relation("projects")` references the database name `projects` from `worker.database("projects", ...)`, and the `twoWay: true` option adds a "Tasks" rollup column to the Projects database automatically.
+
+## Attach an existing database
+
+Databases declared with `worker.database()` must choose a `type` of either `managed` or `attached`. `managed` databases have a lifecycle managed by the worker. They are created when you first deploy your worker. `attached` databases allow you to bring previously created databases under worker control.
+
+Use `attached` when a database already exists and you want a sync to take it over in place instead of creating a duplicate.
+
+<Warning>
+  Attaching a database hands your worker control of the real database, including its rows. The sync may overwrite or delete existing rows, resulting in data loss.
+</Warning>
+
+To define an attached database, use `worker.database()` with `type: "attached"`:
+
+```typescript theme={null}
+const contacts = worker.database("contacts", {
+  type: "attached",
+  initialTitle: "Contacts",
+  primaryKeyProperty: "Contact ID",
+  schema: {
+    properties: {
+      Name: Schema.title(),
+      "Contact ID": Schema.richText(),
+    },
+  },
+});
+```
+
+When you deploy the worker, it will not create a `contacts` database. Instead, you must bind an existing database to the worker using `ntn workers databases attach`:
+
+```bash theme={null}
+ntn workers databases attach contacts https://www.notion.so/myworkspace/Contacts-1a2b3c4d5e6f
+```
+
+When you attach a database, the worker takes control of the columns defined in `properties`. All other columns of the database are ignored. The worker will also leave existing rows in place; however, a running sync may overwrite existing rows.
+
+<Tip>
+  Before attaching anything, run `ntn workers sync trigger contactsSync --preview` to see exactly what your sync would write. Previewing works against an unattached declaration, so you can validate your data-fetching code before pointing it at a database with real data in it.
+</Tip>
+
+A sync targeting an attached database **will not run** until the database declaration has a successful attachment.
+
+### Detach a database
+
+`ntn workers databases detach` releases a bound database from sync control without touching its data:
+
+```bash theme={null}
+ntn workers databases detach contacts
+```
+
+You can also target a database directly by data source, instead of by declaration key:
+
+```bash theme={null}
+ntn workers databases detach --data-source <data-source-id>
+```
+
+Detach clears the ownership marker and removes the read-only lock from every property the sync had locked. **The database and its rows are left exactly as they are**. Detaching is safe to run at any time and does not delete or overwrite anything.
+
+A worker can only detach a database it currently owns. You cannot detach databases synced from a different worker or from a native Notion database sync.
+
+<Warning>
+  Removing an attached database's declaration from your worker's code and redeploying, or deleting the worker entirely, does **not** release the database it was bound to. The database is left locked and in an orphaned state.
+</Warning>
 
 ## Authenticate with external APIs
 

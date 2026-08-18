@@ -1623,7 +1623,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1858,7 +1858,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2222,7 +2222,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2312,7 +2312,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2668,7 +2668,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2861,7 +2861,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3055,7 +3055,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3324,7 +3324,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -4584,7 +4584,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.34.6 Current `beta`: 2.35.2
+Current `stable`: 2.34.6 Current `beta`: 2.35.3
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -5587,10 +5587,10 @@ Environment variables to configure the durable scheduler for your self-hosted n8
 
 These environment variables configure the durable scheduler, which runs time-based workflows from a database-backed queue instead of from each instance's memory. For what the durable scheduler changes, how to turn it on, and how it works, see [Durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler).
 
-{% hint style="warning" %}
-**Preview feature**
+{% hint style="info" %}
+**Preview status**
 
-The durable scheduler is a preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
+The durable scheduler is a Preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
 {% endhint %}
 
 ## Enable the scheduler <a href="#enable-vars" id="enable-vars"></a>
@@ -8831,10 +8831,10 @@ How the durable scheduler runs time-based workflows from a database-backed queue
 
 The durable scheduler runs time-based workflows, such as those that start with a Schedule Trigger node, from a database-backed queue instead of from each instance's memory. This page explains what the durable scheduler changes, how to turn it on, and how it works. For the environment variables that configure it, see [Scheduler environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler).
 
-{% hint style="warning" %}
-**Preview feature**
+{% hint style="info" %}
+**Preview status**
 
-The durable scheduler is a preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
+The durable scheduler is a Preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
 {% endhint %}
 
 {% hint style="info" %}
@@ -8924,18 +8924,22 @@ Under the durable scheduler, most Schedule Trigger schedules fire the same way t
 Set up the AI Assistant on self-hosted n8n using environment variables.
 
 {% hint style="info" %}
-AI Assistant is a preview feature.
+**Feature availability**
+
+The AI Assistant is available on **n8n Cloud** and **self-hosted**.
+
+It isn't ready for n8n Cloud Enterprise or self-hosted Enterprise yet. If you're an Enterprise customer, contact your Customer Success Manager about preview access.
 {% endhint %}
 
-{% hint style="warning" %}
-AI Assistant isn't yet available for self-hosted Enterprise. Support for self-hosted Enterprise is coming soon.
+{% hint style="info" %}
+**Preview status**
 
-If you're an Enterprise customer and want to try AI Assistant before then, contact your Customer Success Manager (CSM) about preview access.
+The AI Assistant is in Preview. It can make mistakes, and behavior may change while the feature is in development. Always review generated workflows before using them in production.
 {% endhint %}
 
 ## What AI Assistant needs
 
-Every setup needs three things:
+Every self-hosted AI Assistant setup needs three things:
 
 * **A model provider:** An API key for Anthropic, OpenAI, or OpenRouter.
 * **A sandbox:** An isolated environment where AI Assistant runs code. This is required.
@@ -9203,7 +9207,15 @@ WEBHOOK_URL=https://your-public-url
 | `WEBHOOK_URL`                    | Public, secure URL for your instance. Required to connect agents to channels such as Slack, Telegram, and Linear. |
 
 {% hint style="info" %}
-The knowledge base is a preview feature on self-hosted and needs the Daytona sandbox. Without it, the rest of the agent still works.
+**Feature availability**
+
+The knowledge base needs the Daytona sandbox on self-hosted. Without it, the rest of the agent still works.
+{% endhint %}
+
+{% hint style="info" %}
+**Preview status**
+
+On self-hosted, the knowledge base is in Preview.
 {% endhint %}
 
 For a full deployment example, see [Installation options](/deploy/host-n8n/install-options). After you enable the module, see [Build and manage agents](/build/build-and-manage-agents).

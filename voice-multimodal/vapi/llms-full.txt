@@ -56,6 +56,8 @@
 - [Custom tools troubleshooting](https://docs.vapi.ai/tools/custom-tools-troubleshooting.md): Resolve common issues with custom tool integrations
 - [Google Calendar Integration](https://docs.vapi.ai/tools/google-calendar.md): Connect your assistant to Google Calendar for seamless appointment scheduling and availability checking.
 - [Google Sheets Integration](https://docs.vapi.ai/tools/google-sheets.md): Connect your assistant to Google Sheets for seamless data entry.
+- [Slack Integration](https://docs.vapi.ai/tools/slack.md): Connect your assistant to Slack for seamless message sending.
+- [GoHighLevel Integration](https://docs.vapi.ai/tools/go-high-level.md): Connect your assistant to GoHighLevel for seamless appointment scheduling, contact creation, and availability checking.
 - [Introduction to Knowledge Bases](https://docs.vapi.ai/knowledge-base.md): Learn how to create and integrate custom knowledge bases into your AI assistants.
 - [Using the Query Tool for Knowledge Bases](https://docs.vapi.ai/knowledge-base/using-query-tool.md): Learn how to configure and use the query tool to enhance your AI assistants with custom knowledge bases.
 - [Custom Knowledge Base](https://docs.vapi.ai/knowledge-base/custom-knowledge-base.md): Create and implement your own knowledge base server for full control over document retrieval

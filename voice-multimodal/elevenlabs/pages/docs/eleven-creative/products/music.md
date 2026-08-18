@@ -312,7 +312,7 @@ start creating.
       **"+ Add Section"** button to build out your song piece by piece, extending it to your desired
       length.
 
-      The minimum duration of a song is 3 seconds and the maximum is 5 minutes.
+      The minimum duration of a song is 3 seconds and the maximum is 10 minutes.
     </td>
   </tr>
 

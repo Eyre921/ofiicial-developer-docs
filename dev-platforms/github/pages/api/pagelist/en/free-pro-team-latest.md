@@ -1912,11 +1912,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-via-the-api
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-from-cli
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-with-mcp
-/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-jira
-/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-slack
-/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-teams
-/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-linear
-/en/copilot/how-tos/use-copilot-agents/cloud-agent/integrate-cloud-agent-with-azure-boards
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-from-raycast
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/troubleshoot-cloud-agent
 /en/copilot/how-tos/use-copilot-agents/request-a-code-review
@@ -1924,6 +1919,12 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/use-copilot-agents/copilot-memory
 /en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-for-yourself
 /en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-as-administrator
+/en/copilot/how-tos/copilot-integrations
+/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-slack
+/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-teams
+/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-jira
+/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-linear
+/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-azure-boards
 /en/copilot/how-tos/use-ai-models
 /en/copilot/how-tos/use-ai-models/change-the-chat-model
 /en/copilot/how-tos/use-ai-models/change-the-completion-model

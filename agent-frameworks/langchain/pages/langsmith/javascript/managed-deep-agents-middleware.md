@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-midd
 path: langsmith/javascript/managed-deep-agents-middleware
 ---
 
-Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
+Managed Deep Agents support the Deep Agents `middleware` configuration surface.
 
 
 

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 314 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -159,6 +159,7 @@
 - `docs/cookbook/administration/analytics-cost-control` — [Control Costs with the Analytics API](pages/docs/cookbook/administration/analytics-cost-control.md) · [原文](https://openrouter.ai/docs/cookbook/administration/analytics-cost-control.md)
 - `docs/cookbook/administration/api-key-rotation` — [API Key Rotation](pages/docs/cookbook/administration/api-key-rotation.md) · [原文](https://openrouter.ai/docs/cookbook/administration/api-key-rotation.md)
 - `docs/cookbook/administration/crypto-api` — [Crypto API](pages/docs/cookbook/administration/crypto-api.md) · [原文](https://openrouter.ai/docs/cookbook/administration/crypto-api.md)
+- `docs/cookbook/administration/data-api` — [Data API](pages/docs/cookbook/administration/data-api.md) · [原文](https://openrouter.ai/docs/cookbook/administration/data-api.md)
 - `docs/cookbook/administration/organization-management` — [Organization Management](pages/docs/cookbook/administration/organization-management.md) · [原文](https://openrouter.ai/docs/cookbook/administration/organization-management.md)
 - `docs/cookbook/administration/tax-id` — [Adding a Tax ID to Your Invoices](pages/docs/cookbook/administration/tax-id.md) · [原文](https://openrouter.ai/docs/cookbook/administration/tax-id.md)
 - `docs/cookbook/administration/usage-accounting` — [Usage Accounting](pages/docs/cookbook/administration/usage-accounting.md) · [原文](https://openrouter.ai/docs/cookbook/administration/usage-accounting.md)
@@ -305,6 +306,7 @@
 - `docs/guides/routing/model-fallbacks` — [Model Fallbacks](pages/docs/guides/routing/model-fallbacks.md) · [原文](https://openrouter.ai/docs/guides/routing/model-fallbacks.md)
 - `docs/guides/routing/model-variants/exacto` — [Exacto Variant](pages/docs/guides/routing/model-variants/exacto.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/exacto.md)
 - `docs/guides/routing/model-variants/extended` — [Extended Variant](pages/docs/guides/routing/model-variants/extended.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/extended.md)
+- `docs/guides/routing/model-variants/floor` — [Floor Variant](pages/docs/guides/routing/model-variants/floor.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/floor.md)
 - `docs/guides/routing/model-variants/free` — [Free Variant](pages/docs/guides/routing/model-variants/free.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/free.md)
 - `docs/guides/routing/model-variants/nitro` — [Nitro Variant](pages/docs/guides/routing/model-variants/nitro.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/nitro.md)
 - `docs/guides/routing/model-variants/online` — [Online Variant](pages/docs/guides/routing/model-variants/online.md) · [原文](https://openrouter.ai/docs/guides/routing/model-variants/online.md)

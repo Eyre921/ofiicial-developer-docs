@@ -422,7 +422,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T103555Z&X-Amz-Expires=604800&X-Amz-Signature=7a1dca6d9048533277c428ccaa6be353581b1b18c4b410dd7563aa42ead2f016&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T095041Z&X-Amz-Expires=604800&X-Amz-Signature=880b29897b6e06e554e7e3f9ead5885c9580c6d7fa9f7b6c03f9426f3512bd12&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
 
 #### Building AI Voice Agents
 

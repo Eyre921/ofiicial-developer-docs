@@ -87,7 +87,7 @@ The **Explore** tab displays a gallery of community creations for discovering in
 
 ## Generate
 
-![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc3b04f7acaf679807cbe014e4e084c3cb6126a7301b8a52bec3333f9674dfa4/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T090427Z&X-Amz-Expires=604800&X-Amz-Signature=317ce86979af5663322d4ec6cb9f9188bfc5f22c956ee6230a2d040ff9be02d6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc3b04f7acaf679807cbe014e4e084c3cb6126a7301b8a52bec3333f9674dfa4/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T090343Z&X-Amz-Expires=604800&X-Amz-Signature=96bad20958541caa2b1fdf3a09833e7badc023114f850f5e5480aca7f706b07c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The prompt box is anchored at the bottom of the page and provides all controls for creating visual content.
 
@@ -99,7 +99,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 
 ### Choose models and settings
 
-![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ec9328b33378ba96df99818d263ae81ece738df8740c8cba257dcfbb8f75f07/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T090427Z&X-Amz-Expires=604800&X-Amz-Signature=4ef1aa931f99811871f7ab7a25f2c5d6369d1596c8a6a6087cb5baae15e210b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ec9328b33378ba96df99818d263ae81ece738df8740c8cba257dcfbb8f75f07/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T090343Z&X-Amz-Expires=604800&X-Amz-Signature=e042114e4ada8d2bbdee2003d280603feb59e8ffd85024e17a55743e5fa68ad5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Select model:** Open the model menu to browse available options like OpenAI Sora 2 Pro, Google Veo 3.1, Kling 2.5, or Flux 1 Kontext Pro. Each model has unique strengths and capabilities listed for easy comparison. See the [Models](#models) section for detailed information.
 
@@ -115,7 +115,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 ### Add references
 
 ![Video references
-interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cb430f8e80b038841bc42eec541ac42046d4198802d6e9a5c1596e54bae032f1/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T090427Z&X-Amz-Expires=604800&X-Amz-Signature=2547f566eb91a69490730ab961a60438dd0cc319facca8b9762f10f83e056af6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cb430f8e80b038841bc42eec541ac42046d4198802d6e9a5c1596e54bae032f1/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T090343Z&X-Amz-Expires=604800&X-Amz-Signature=793bed2d1b676fd2e5ad9b8695fe41e6475f33db2d6f2d4aed8cb074aaa3497b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For greater control over output, add visual references to guide generation. Availability depends on the selected model. We support a wide range of image file formats including JPG, PNG, WEBP, and more.
 
@@ -134,7 +134,7 @@ Before generating, a cost indicator shows the total cost for the number of asset
 
 ## History
 
-![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c52ecc7d6d19fda705b1058c4b9b60c177b388d60d4e3e22492b2fe1bc35b16a/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T090427Z&X-Amz-Expires=604800&X-Amz-Signature=e76a1337642903bccc5fd995f9fec7f3fb61c909b70a2221e3a98b097f10d190&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c52ecc7d6d19fda705b1058c4b9b60c177b388d60d4e3e22492b2fe1bc35b16a/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T090343Z&X-Amz-Expires=604800&X-Amz-Signature=70d6167abce87bc881a9c56ea20ef2c1ce5bbce32e15298419f084fba68237cc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The **History** tab provides a chronological log of everything you've generated and serves as a workspace for refining previous work.
 
@@ -165,7 +165,7 @@ Once you have a generation you're satisfied with, use built-in enhancement tools
 
 ### Exporting your assets
 
-![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e8a0b60eaa18b8f1f274d5813af93fbe592e7f8dd326d45f5121cc05ebbfa90c/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T090427Z&X-Amz-Expires=604800&X-Amz-Signature=07121815b9ff11c82c099bf3b021641d3291e5fd936b57a3ead5beba22a44003&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e8a0b60eaa18b8f1f274d5813af93fbe592e7f8dd326d45f5121cc05ebbfa90c/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T090343Z&X-Amz-Expires=604800&X-Amz-Signature=161a7ea8808410d380d7361c6e68f1928b08793360aec178f89799b51aa1ec9b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Export finished assets by downloading them locally or sending them directly to ElevenCreative Studio.
 

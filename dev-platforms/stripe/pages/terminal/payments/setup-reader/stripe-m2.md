@@ -55,6 +55,26 @@ You can also design your own accessories for the Stripe Reader M2. To download t
 
 [Download Stripe design files](https://d37ugbyn3rpeym.cloudfront.net/terminal/stripe_reader_M2_mechanical_design_files_and_guidelines.zip)
 
+## Device specifications 
+
+The following table provides the specifications for the Stripe Reader M2. The battery life is only an estimate. The actual battery life varies depending on product settings and deployed features.
+
+| Spec | Details |
+| --- | --- |
+| Approximate dimensions | 73.5 x 67 x 19.5 mm / 2.89 x 2.63 x 0.76 in |
+| Approximate weight | 85g / 2.99oz |
+| Display | None |
+| Battery capacity | Rechargeable Li-polymer, 3.7V, 520mAh |
+| Battery life | 2 hours time to charge, 42 hours (standby), 28 hours (active use) |
+| Memory | 128kb RAM |
+| Storage | 1MB |
+| Processor | Cortex M4 Secure MCU |
+| Charging connection | USB-C port |
+| Communication interface | Bluetooth, USB (Android SDK only) |
+| Operating system | Proprietary |
+| Security | End-to-end encryption, P2PE ready. [PCI listing](https://listings.pcisecuritystandards.org/popups/pts_device.php?appnum=4-30457) |
+| Accessories | Dock, Mount |
+
 ## See also
 
 - [Set up your integration](https://docs.stripe.com/terminal/payments/setup-integration.md)

@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/templates
 
 # Templates
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6641490d2a827898ae4f13bce061b74199e026d879c8b2f1857fcf3d719ffb1c/assets/images/product-guides/workflows/templates-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T100014Z&X-Amz-Expires=604800&X-Amz-Signature=7a67dfaa6309288b869caeacb4bc36edab9e86dda31ec503f0c095060dd2e1d2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Templates overview" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6641490d2a827898ae4f13bce061b74199e026d879c8b2f1857fcf3d719ffb1c/assets/images/product-guides/workflows/templates-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100952Z&X-Amz-Expires=604800&X-Amz-Signature=cfc2d0315d958f99b507cb71022acdcfc077dbf0a303e96eddf563194b6f8fec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Templates overview" />
 
 ## Overview
 
@@ -48,7 +48,7 @@ Image & Video) so you can continue iterating outside of Templates.
 
 ## How Templates work
 
-![Templates detail](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5837081ea8a6c1f0b627d67e6948e4bdb54a9a55da2e0a07fad2cb7215dd341/assets/images/product-guides/workflows/templates-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T100014Z&X-Amz-Expires=604800&X-Amz-Signature=7fcd804a5bc3d3adbced357c1a3509b4f4513f1bf77dc3428f6e3ca2790e5033&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Templates detail](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5837081ea8a6c1f0b627d67e6948e4bdb54a9a55da2e0a07fad2cb7215dd341/assets/images/product-guides/workflows/templates-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100952Z&X-Amz-Expires=604800&X-Amz-Signature=37ab0afbf4c84e96d223a1465c5efb9416572d8184443fc737bdc02eec9ef262&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Templates are curated pipelines built on the same multi-model infrastructure as ElevenCreative Flows. Each template defines its inputs (images, video, text, audio) and outputs (generated assets), so you know exactly what to provide and what you get back.
 

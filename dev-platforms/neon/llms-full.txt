@@ -251,7 +251,7 @@ A credential must include the `ai_gateway:invoke` scope.
 
 **Console**
 
-In the Neon Console, select your branch and click **Credentials** under **APP BACKEND** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
+In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
 
 After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes both gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
 
@@ -286,7 +286,7 @@ This populates `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` for the cu
 neon config status
 ```
 
-For production deployments, use the [API-based workflow](https://neon.com/docs/ai-gateway/authentication#creating-a-credential) to create named credentials. `expires_at` is accepted but not currently enforced during the beta -- revoke credentials explicitly instead of relying on expiry.
+For production deployments, use the [API-based workflow](https://neon.com/docs/ai-gateway/authentication#creating-a-credential) to create named credentials. `expires_at` is accepted but not currently enforced during the beta. Revoke credentials explicitly instead of relying on expiry.
 
 ## Using your credential
 
@@ -828,7 +828,7 @@ You need a project in the AWS us-east-2 region. Foundation model access requires
 
 ## Create a credential
 
-In the Neon Console, select your branch, click **Credentials** under **APP BACKEND**, then click **Create credential** and check **ai_gateway:invoke**. Copy the credential before closing — it's shown only once.
+In the Neon Console, select your branch, click **Credentials** under **Branch**, then click **Create credential** and check **ai_gateway:invoke**. Copy the credential before closing, it's shown only once.
 
 Or use the API:
 
@@ -1259,15 +1259,47 @@ curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
     {
       "id": "gpt-5-mini",
       "canonical_slug": "gpt-5-mini",
+      "name": "GPT-5 Mini",
+      "object": "model",
+      "owned_by": "openai",
+      "created": 0,
+      "enabled": true,
+      "context_length": null,
+      "architecture": {
+        "modality": "text->text",
+        "input_modalities": ["text"],
+        "output_modalities": ["text"],
+        "tokenizer": "GPT",
+        "instruct_type": null
+      },
+      "top_provider": {
+        "is_moderated": false,
+        "context_length": null,
+        "max_completion_tokens": null
+      },
       "pricing": null,
-      "per_request_limits": null,
-      "context_length": null
+      "per_request_limits": null
     }
   ]
 }
 ```
 
-`canonical_slug`, `pricing`, `per_request_limits`, and `context_length` are reserved OpenRouter-compatible fields. `pricing`, `per_request_limits`, and `context_length` are currently always `null`; use the tables earlier on this page for context window and model details in the meantime.
+The response returns one object per model. Key fields:
+
+- `enabled` is whether your account can call the model. If `false`, a request returns a `403` (see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#403-model-requires-a-verified-account)). Gated models are sometimes left out of the list entirely, so use `enabled: true` as your check. To request access to more models, see [Foundation model access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
+- `id`, `name`, and `owned_by` identify the model. Use `id` (or its `databricks-` prefixed form) in the `model` field of a request.
+- `canonical_slug`, `architecture`, and `top_provider` are OpenRouter-compatible descriptive fields.
+- `created` is always `0`, and `pricing`, `per_request_limits`, and `context_length` are currently always `null`. Use the tables earlier on this page for context windows and model details.
+
+### Check what your account can call
+
+To list only the models your account can call, filter on `enabled`:
+
+```bash
+curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
+  | jq -r '.data[] | select(.enabled) | .id'
+```
 
 ## Provider terms
 
@@ -9303,6 +9335,20 @@ The request body does not contain a valid `model` field.
 
 **Fix:** Include `"model": "<model-id>"` in the request body.
 
+### `403 model requires a verified account`
+
+The model exists in the catalog, but your account can't call it yet. This is a per-model access gate, separate from the credential-scope and branch-lineage `403`s above. It's the same condition the `enabled` field reports in `GET /v1/models`: a model with `"enabled": false` returns this error when called. The response body looks like this:
+
+```json
+{
+  "error": {
+    "message": "model requires a verified account"
+  }
+}
+```
+
+**Fix:** Check which models your account can call by listing `GET /v1/models` and filtering on `enabled` (see [Check what your account can call](https://neon.com/docs/ai-gateway/models#check-what-your-account-can-call)). To get access to more models, [request early access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
+
 ---
 
 ## Gemini-specific errors
@@ -9460,6 +9506,16 @@ If you're using OpenAI Codex, install the **Neon** plugin from the [Codex plugin
 
 See [Codex plugin for Neon](https://neon.com/docs/ai/ai-codex-plugin) for details.
 
+### Kimi Code plugin
+
+If you're using Kimi Code, install the Neon plugin for skills and MCP integration. In the Kimi CLI chat, run:
+
+```bash
+/plugins install https://github.com/neondatabase/agent-skills
+```
+
+Plugin changes apply to new sessions, so run `/new` afterward.
+
 ### neon init
 
 The `neon init` command sets up your project to use Neon with your AI coding assistant. It authenticates via OAuth, creates an API key, configures the MCP server, installs the Neon extension for Cursor and VS Code where applicable, and installs agent skills at the project level:
@@ -9483,17 +9539,17 @@ Start here for platform overview and Postgres development.
 | Skill                                                                        | Description                                                                                                                 |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | [`neon`](https://skills.sh/neondatabase/agent-skills/neon)                   | Platform overview for apps and agents: Postgres, Auth, Data API, Functions, Storage, and AI Gateway, and how to get started |
-| [`neon-postgres`](https://skills.sh/neondatabase/agent-skills/neon-postgres) | Comprehensive index of Neon Serverless Postgres documentation and best practices                                            |
+| [`neon-postgres`](https://skills.sh/neondatabase/agent-skills/neon-postgres) | Full index of Neon Serverless Postgres documentation and best practices                                                     |
 
 ### Database workflows
 
 Provision, branch, and optimize Postgres projects.
 
-| Skill                                                                                                          | Description                                                                                                                       |
-| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [`claimable-postgres`](https://skills.sh/neondatabase/agent-skills/claimable-postgres)                         | Instant temporary Postgres via [Claimable Postgres](https://neon.com/docs/reference/claimable-postgres) — no login or credit card |
-| [`neon-postgres-branches`](https://skills.sh/neondatabase/agent-skills/neon-postgres-branches)                 | Choose and create the right branch type for migrations, schema-only branches, and reset-from-parent workflows                     |
-| [`neon-postgres-egress-optimizer`](https://skills.sh/neondatabase/agent-skills/neon-postgres-egress-optimizer) | Diagnose and fix excessive Postgres egress and query overfetching                                                                 |
+| Skill                                                                                                          | Description                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [`claimable-postgres`](https://skills.sh/neondatabase/agent-skills/claimable-postgres)                         | Instant temporary Postgres via [Claimable Postgres](https://neon.com/docs/reference/claimable-postgres), no login or credit card required |
+| [`neon-postgres-branches`](https://skills.sh/neondatabase/agent-skills/neon-postgres-branches)                 | Choose and create the right branch type for migrations, schema-only branches, and reset-from-parent workflows                             |
+| [`neon-postgres-egress-optimizer`](https://skills.sh/neondatabase/agent-skills/neon-postgres-egress-optimizer) | Diagnose and fix excessive Postgres egress and query overfetching                                                                         |
 
 ### Neon Platform
 
@@ -11197,7 +11253,7 @@ Be sure to test different index tuning parameter settings to find the right bala
 
 Learn how to connect MCP clients such as Cursor, Claude Code, VS Code, ChatGPT, and other tools to your Lakebase Postgres database on Neon.
 
-This guide covers connecting MCP clients to the Neon MCP Server for natural language interaction with your Lakebase Postgres databases.
+Connect MCP clients to the Neon MCP Server to interact with your Lakebase Postgres databases in natural language.
 
 **Important: Security**
 
@@ -11564,6 +11620,23 @@ For more details, including workflow examples and troubleshooting, see [Get star
 2. Go to [jules.google.com](https://jules.google.com) > **Settings** > **MCP** (or use [this direct link](https://jules.google.com/settings/mcp)).
 3. Click **Connect** on the Neon server and paste your API key when prompted.
 4. Run a task invoking the Neon MCP server to verify the connection.
+
+## Kimi Code
+
+Kimi Code doesn't use `add-mcp`. Instead, install Neon's [agent skills](https://github.com/neondatabase/agent-skills) repository as a plugin. Kimi reads its own manifest (`kimi.plugin.json`), which declares the Neon MCP Server, so this one command wires up the MCP connection along with the skills:
+
+```bash
+/plugins install https://github.com/neondatabase/agent-skills
+```
+
+Plugin changes apply to new sessions, so run `/new` afterward. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for more on what's included.
+
+## Gamut
+
+1. In your [Gamut](https://www.gamut.so/mcp/developer-tools/neon) agent, go to **Connections** and click **Add Connection**.
+2. Search for **Neon** and click **+** to add it.
+3. When the OAuth window opens, sign in to Neon and authorize the connection.
+4. Ask your agent to query or manage your Neon database to verify the connection.
 
 ## Other MCP clients
 
@@ -17088,7 +17161,7 @@ Managed Better Auth provides a Supabase-compatible API, and Neon Data API provid
 
 - A Neon project ([create one here](https://console.neon.tech))
 - Data API enabled (Managed Better Auth is enabled by default when you enable Data API):
-  - Go to **Data API** in the Neon Console and enable it
+  - Go to **Postgres database** > **Data API** in the Neon Console and enable it
   - In **Data API → Configuration**, verify it's configured with **Managed Better Auth**
   - Copy your Neon connection host and database name from **Connect** in the Console. The SDK derives both the Auth and Data API URLs from this single base URL. See [Initialize the client](https://neon.com/docs/reference/javascript-sdk#initializing) for the derivation rules, or use the separate Auth and Data API base URLs instead if you'd rather configure them explicitly
 
@@ -19984,24 +20057,24 @@ Usage: `neon init [options]`
 
 ### inspect (alias: `inspection`)
 
-Inspect a database's health and configuration.
+Inspect a branch's Postgres health and configuration.
 
-| Subcommand                             | Description                                                                                                                     |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `neon inspect db bloat`                | Estimated table/index bloat (statistical estimate, no extension needed)                                                         |
-| `neon inspect db calls`                | Most frequently called queries (needs pg\_stat\_statements)                                                                     |
-| `neon inspect db index-sizes`          | Size of each index, largest first (pg\_relation\_size)                                                                          |
-| `neon inspect db lfc-hit-rate`         | Local File Cache hit rate (needs neon extension)                                                                                |
-| `neon inspect db locks`                | Locks held with the acquiring query and its age (pg\_locks + pg\_stat\_activity)                                                |
-| `neon inspect db long-running-queries` | Queries running longer than 5 minutes (pg\_stat\_activity)                                                                      |
-| `neon inspect db outliers`             | Queries taking the most cumulative execution time (needs pg\_stat\_statements)                                                  |
-| `neon inspect db replication-slots`    | Replication slots: kind, status, client, restart/confirmed-flush LSNs, and lag (pg\_replication\_slots + pg\_stat\_replication) |
-| `neon inspect db seq-scans`            | Number of sequential scans recorded against each table (pg\_stat\_user\_tables)                                                 |
-| `neon inspect db subscriptions`        | Per-table logical replication progress on this subscriber (pg\_subscription\_rel)                                               |
-| `neon inspect db table-sizes`          | Size of each table (including TOAST), largest first (pg\_table\_size)                                                           |
-| `neon inspect db unused-indexes`       | Non-unique indexes with few scans — candidates for removal (pg\_stat\_user\_indexes)                                            |
-| `neon inspect db vacuum-stats`         | Autovacuum status per table: last (auto)vacuum, dead tuples, threshold                                                          |
-| `neon inspect db working-set`          | Estimated working set vs LFC size (needs neon extension)                                                                        |
+| Subcommand                             | Description                                                                                                                                    |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `neon inspect db bloat`                | Estimated table/index bloat (statistical estimate, no extension needed)                                                                        |
+| `neon inspect db calls`                | Most frequently called queries (needs pg\_stat\_statements)                                                                                    |
+| `neon inspect db index-sizes`          | Size of each index, largest first (pg\_relation\_size)                                                                                         |
+| `neon inspect db lfc-hit-rate`         | Local File Cache hit rate (compute-wide, needs neon extension)                                                                                 |
+| `neon inspect db locks`                | Locks held with the acquiring query and its age (pg\_locks + pg\_stat\_activity)                                                               |
+| `neon inspect db long-running-queries` | Queries running longer than 5 minutes (pg\_stat\_activity)                                                                                     |
+| `neon inspect db outliers`             | Queries taking the most cumulative execution time (needs pg\_stat\_statements)                                                                 |
+| `neon inspect db replication-slots`    | Replication slots (compute-wide): kind, status, client, restart/confirmed-flush LSNs, and lag (pg\_replication\_slots + pg\_stat\_replication) |
+| `neon inspect db seq-scans`            | Number of sequential scans recorded against each table (pg\_stat\_user\_tables)                                                                |
+| `neon inspect db subscriptions`        | Per-table logical replication progress on this subscriber (pg\_subscription\_rel)                                                              |
+| `neon inspect db table-sizes`          | Size of each table (including TOAST), largest first (pg\_table\_size)                                                                          |
+| `neon inspect db unused-indexes`       | Non-unique indexes with few scans — candidates for removal (pg\_stat\_user\_indexes)                                                           |
+| `neon inspect db vacuum-stats`         | Autovacuum status per table: last (auto)vacuum, dead tuples, threshold                                                                         |
+| `neon inspect db working-set`          | Estimated working set vs LFC size (compute-wide, needs neon extension)                                                                         |
 
 ### ip-allow
 
@@ -20538,7 +20611,11 @@ The Neon CLI resolves authentication in this order:
 
 ## Options
 
-Takes only the [global options](https://neon.com/docs/cli#global-options).
+| Option      | Description                                                                                                            | Type    | Default | Required |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--keyring` | Store the credential in the OS keyring. Per profile; later auth without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
+
+Pass `--keyring` to store the credential in your operating system's keyring instead of the `credentials.json` file. The choice is saved per profile, so once set, `neon auth` keeps using the keyring for that profile even without the flag. Along with this option, `auth` accepts the [global options](https://neon.com/docs/cli#global-options).
 
 --- [Document source](https://neon.com/docs/cli/bootstrap.md) ---
 
@@ -22638,13 +22715,13 @@ Run a single diagnostic query against a branch's Postgres. Pick the query with a
 neon inspect db <sub-command> [options]
 ```
 
-| Option            | Description                                                                                                 | Type   | Default | Required |
-| ----------------- | ----------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--branch`        | Branch ID or name                                                                                           | string | —       |    No    |
-| `--database-name` | Database name                                                                                               | string | —       |    No    |
-| `--db-url`        | Inspect any Postgres via a connection string, bypassing the Neon API (project/branch resolution is skipped) | string | —       |    No    |
-| `--project-id`    | Project ID                                                                                                  | string | —       |    No    |
-| `--role-name`     | Role name                                                                                                   | string | —       |    No    |
+| Option            | Description                                                                                                                                                                                                                                                | Type   | Default | Required |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`        | Branch ID or name                                                                                                                                                                                                                                          | string | —       |    No    |
+| `--database-name` | Database to inspect. Omit to cover every database the API lists for the branch. Ranking and row limits stay per database. One failing database fails the whole run. Compute-wide checks run once against the first listed database. Ignored with --db-url. | string | —       |    No    |
+| `--db-url`        | Inspect any Postgres via a connection string, bypassing the Neon API (project/branch resolution is skipped)                                                                                                                                                | string | —       |    No    |
+| `--project-id`    | Project ID                                                                                                                                                                                                                                                 | string | —       |    No    |
+| `--role-name`     | Role name                                                                                                                                                                                                                                                  | string | —       |    No    |
 
 By default the command resolves the project, branch, database, and role from your [context](https://neon.com/docs/cli/set-context) and connects through the Neon API. Pass `--db-url` to inspect any Postgres directly from a connection string, which bypasses API resolution and lets you point `inspect` at a database outside Neon.
 
@@ -24261,13 +24338,13 @@ Creates a profile. It holds either a browser sign-in or an API key, never both.
 neon profile create <name> [options]
 ```
 
-| Option         | Description                                                                       | Type    | Default | Required |
-| -------------- | --------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--api-key`    | API key to store, or "-" to read it from stdin                                    | string  | —       |    No    |
-| `--force`      | Replace an existing profile, revoking the credential it holds now                 | boolean | `false` |    No    |
-| `--mint`       | Sign in once in the browser, then store a freshly minted API key and nothing else | boolean | `false` |    No    |
-| `--org-id`     | With --mint, mint a key for this organization instead of your account             | string  | —       |    No    |
-| `--project-id` | With --mint, mint a key that can access only this project                         | string  | —       |    No    |
+| Option         | Description                                                                                                              | Type    | Default | Required |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
+| `--api-key`    | API key to store, or "-" to read it from stdin                                                                           | string  | —       |    No    |
+| `--keyring`    | Store the credential in the OS keyring. Per profile; later create without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
+| `--mint`       | Sign in once in the browser, then store a freshly minted API key and nothing else                                        | boolean | `false` |    No    |
+| `--org-id`     | With --mint, mint a key for this organization instead of your account                                                    | string  | —       |    No    |
+| `--project-id` | With --mint, mint a key that can access only this project                                                                | string  | —       |    No    |
 
 Most of the time you create a profile one of two ways: a browser sign-in, or a freshly minted key.
 
@@ -24299,6 +24376,8 @@ neon profile create work --api-key "$KEY"
 
 `create` ignores `NEON_API_KEY`, so exporting that variable doesn't supply the key here. Pass it explicitly with `--api-key`.
 
+By default the credential is saved to a `credentials.json` file. Pass `--keyring` to store it in your operating system's keyring instead. The choice is saved per profile and shown in the `Storage` column of `neon profile list`.
+
 ## neon profile list
 
 Lists each profile, the account it holds, and where its credentials live. `Active` marks the profile this invocation would use.
@@ -24313,18 +24392,24 @@ neon profile list
 
 ```text filename="Output"
 Profiles
-┌────────┬─────────┬──────────────────────────────────────┬─────────┬─────────┬──────┬──────────────────────────────────────┐
-│ Active │ Name    │ Account                              │ Auth    │ Scope   │ File │ Credentials                          │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼─────────┼──────┼──────────────────────────────────────┤
-│ *      │ DEFAULT │ 3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53 │ oauth   │ -       │ ok   │ ~/.config/neon/credentials.json      │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼─────────┼──────┼──────────────────────────────────────┤
-│        │ work    │ alex@domain.com                      │ oauth   │ -       │ ok   │ ~/.config/neon/credentials.work.json │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼─────────┼──────┼──────────────────────────────────────┤
-│        │ ci      │ alex@domain.com                      │ api key │ account │ ok   │ ~/.config/neon/credentials.ci.json   │
-└────────┴─────────┴──────────────────────────────────────┴─────────┴─────────┴──────┴──────────────────────────────────────┘
+┌────────┬─────────┬──────────────────────────────────────┬─────────┬────────────────────────────────┬──────┬─────────┬──────────────────────────┐
+│ Active │ Name    │ Account                              │ Auth    │ Scope                          │ File │ Storage │ Credentials              │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│ *      │ DEFAULT │ 3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53 │ oauth   │ -                              │ ok   │ file    │ credentials.json         │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│        │ work    │ alex@example.com                     │ oauth   │ -                              │ ok   │ file    │ credentials.work.json    │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│        │ ci      │ alex@example.com                     │ api key │ account                        │ ok   │ file    │ credentials.ci.json      │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│        │ org     │ org-example-12345678                 │ api key │ org org-example-12345678       │ ok   │ file    │ credentials.org.json     │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│        │ project │ org-example-12345678                 │ api key │ project cool-darkness-12345678 │ ok   │ file    │ credentials.project.json │
+├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
+│        │ laptop  │ alex@example.com                     │ oauth   │ -                              │ ok   │ keyring │ keyring                  │
+└────────┴─────────┴──────────────────────────────────────┴─────────┴────────────────────────────────┴──────┴─────────┴──────────────────────────┘
 ```
 
-`Account` is the recorded email label, or the user ID when there's no label, as with a `DEFAULT` profile from a plain `neon auth`. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` is `ok` when the credentials file is present and readable, and `missing` when it isn't.
+`Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon auth`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` reports whether the credential could be read: `ok` when it's present and readable, otherwise `missing`, `invalid`, or `unreadable`. `Storage` shows where the credential lives, `file` or `keyring`, and `Credentials` gives the file's name, or `keyring` when it's kept in the OS keyring.
 
 ## neon profile rotate-key
 
@@ -24341,7 +24426,7 @@ neon profile rotate-key ci
 This works for account-scoped keys, where the profile's own credential can mint the replacement. An organization- or project-scoped key can't rotate itself, since only a personal credential can mint those keys. Re-mint it with a browser sign-in instead, matching the original scope:
 
 ```bash
-neon profile create ci --mint --org-id org-example-12345678 --force
+neon profile create ci --mint --org-id org-example-12345678
 ```
 
 The `rotate-key` error names the exact command to run for the profile's scope.
@@ -27182,6 +27267,7 @@ To test if an icon works:
 - [Hono](https://neon.com/docs/community/component-icon-guide#): Web framework (icon: hono)
 - [Java](https://neon.com/docs/community/component-icon-guide#): Programming language (icon: java)
 - [JavaScript](https://neon.com/docs/community/component-icon-guide#): Programming language (icon: javascript)
+- [Kotlin](https://neon.com/docs/community/component-icon-guide#): Programming language (icon: kotlin)
 - [Laravel](https://neon.com/docs/community/component-icon-guide#): PHP framework (icon: laravel)
 - [Nest.js](https://neon.com/docs/community/component-icon-guide#): Node.js framework (icon: nest-js)
 - [Next.js](https://neon.com/docs/community/component-icon-guide#): React framework (icon: next-js)
@@ -30211,6 +30297,7 @@ Use a standard TCP-based Postgres driver with a [pooled connection](https://neon
 | Go                  | [Go](https://neon.com/docs/guides/go)                       |
 | Rust                | [Rust](https://neon.com/docs/guides/rust)                   |
 | Java                | [Java](https://neon.com/docs/guides/java)                   |
+| Kotlin              | [Kotlin](https://neon.com/docs/guides/kotlin)               |
 
 For the full list, see [Language quickstarts](https://neon.com/docs/get-started/languages).
 
@@ -33479,7 +33566,7 @@ Before you begin, ensure you have:
 ### Create a Neon project with Auth and Data API
 
 1. Go to the [Neon Console](https://console.neon.tech) to create a new Neon project
-2. In the Neon Console, navigate to your project and go to the **Data API** page in the left sidebar
+2. In the Neon Console, navigate to your project and go to **Postgres database** > **Data API**
 3. Select **Managed Better Auth** as your authentication option (the default), then click **Enable**
 
 This enables both the Data API and Managed Better Auth in one step. For detailed instructions, see [Getting started with Data API](https://neon.com/docs/data-api/get-started).
@@ -34022,7 +34109,7 @@ You can also enable the Data API using the [Neon API](https://neon.com/docs/data
 
 ### 1. Navigate to the Data API page
 
-In the Neon Console, select your project and go to the **Data API** page in the sidebar.
+In the Neon Console, select your project and select **Postgres database** > **Data API**.
 
 ![Data API page with enable button](https://neon.com/docs/data-api/data_api_sidebar.png)
 
@@ -34200,7 +34287,7 @@ The Data API caches your database schema for performance. When you modify your s
 
 **Option 1: Neon Console**
 
-Go to the **Data API** page in the Neon Console and click **Refresh schema cache**.
+Go to **Postgres database** > **Data API** in the Neon Console and click **Refresh schema cache**.
 
 ![Data API refresh schema cache button](https://neon.com/docs/data-api/data_api_schema_refresh.png)
 
@@ -34503,7 +34590,7 @@ You can configure which authentication provider validates JWT tokens for your Da
 
 **Console**
 
-Navigate to the **Data API** page in your project sidebar and select the **Settings** tab. The **Authentication** section shows the current provider.
+Navigate to **Postgres database** > **Data API** and select the **Settings** tab. The **Authentication** section shows the current provider.
 
 ![Data API settings](https://neon.com/docs/data-api/data_api_advanced_settings.png)
 
@@ -34972,7 +35059,7 @@ If authenticated users can see all rows in a table regardless of ownership, Row-
 
 ### Check RLS status
 
-In the Neon Console, go to the **Data API** page. If a table has RLS disabled, you'll see a warning:
+In the Neon Console, go to **Postgres database** > **Data API**. If a table has RLS disabled, you'll see a warning:
 
 > "table_name has RLS disabled. All authenticated users can view all rows in this table(s)."
 
@@ -35031,7 +35118,7 @@ The OpenAPI schema feature is disabled in your Data API configuration.
 
 ### Fix
 
-1. Go to the **Data API** page in the Neon Console
+1. Go to **Postgres database** > **Data API** in the Neon Console
 2. Open the **Settings** tab
 3. Enable the **OpenAPI schema** toggle
 4. Try your request again
@@ -35061,7 +35148,7 @@ The Data API caches your database schema for performance. When you create or mod
 
 ### Fix
 
-1. Go to the **Data API** page in the Neon Console
+1. Go to **Postgres database** > **Data API** in the Neon Console
 2. Click the **Refresh schema cache** button
 3. Retry your request
 
@@ -58837,7 +58924,7 @@ You declare all of it in one `neon.ts` file, and it branches together: fork a br
 
 ## Check your access
 
-To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)**, and check the left navigation for **Storage**, **Credentials**, **AI Gateway**, and **Functions**. For what AI Gateway costs once billing begins, see [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing).
+To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)**, and check the left navigation for **Object storage**, **Credentials**, **AI Gateway**, and **Functions**. For what AI Gateway costs once billing begins, see [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing).
 
 Not seeing the services? The most common reason is region: the project isn't in `us-east-2`. Create a new project in **US East (Ohio)**, or switch to an existing one there. If AI Gateway is the only thing missing, check your plan, it requires Launch or Scale. If a service is still missing after that, post in [#neon-platform-beta](https://discord.com/channels/1176467419317940276/1525919714541437058) on Discord.
 
@@ -59880,7 +59967,7 @@ Then seed three sample posts in the [Neon Console SQL Editor](https://console.ne
 npx drizzle-kit push
 ```
 
-Open your project in the Neon Console, go to **SQL Editor**, and run:
+Open your project in the Neon Console, go to **Postgres database** > **SQL Editor**, and run:
 
 ```sql
 INSERT INTO posts (author, content, is_published) VALUES
@@ -60304,7 +60391,7 @@ You now have a Next.js app where:
 
 --- [Document source](https://neon.com/docs/get-started/languages.md) ---
 
-> Summary: Language connection guides for Neon provide step-by-step instructions for connecting to a Lakebase Postgres database from .NET (C#), Elixir, Go, Java, JavaScript, Python, and Rust. Use this page to find the correct driver, connection string format, and configuration for your language before connecting to Neon for the first time.
+> Summary: Language connection guides for Neon provide step-by-step instructions for connecting to a Lakebase Postgres database from .NET (C#), Elixir, Go, Java, Kotlin, JavaScript, Python, and Rust. Use this page to find the correct driver, connection string format, and configuration for your language before connecting to Neon for the first time.
 
 # Neon language guides
 
@@ -60314,6 +60401,7 @@ Find detailed instructions for connecting to Neon from various languages
 - [Elixir](https://neon.com/docs/guides/elixir): Connect an Elixir application to Neon
 - [Go](https://neon.com/docs/guides/go): Connect a Go application to Neon
 - [Java](https://neon.com/docs/guides/java): Connect a Java application to Neon
+- [Kotlin](https://neon.com/docs/guides/kotlin): Connect a Kotlin application to Neon
 - [JavaScript](https://neon.com/docs/guides/javascript): Connect a JavaScript application to Neon
 - [Python](https://neon.com/docs/guides/python): Connect a Python application to Neon
 - [Rust](https://neon.com/docs/guides/rust): Connect a Rust application to Neon
@@ -60663,7 +60751,7 @@ To use the SQL Editor:
 
 1. Navigate to the [Neon Console](https://console.neon.tech/).
 2. Select your project.
-3. Select **SQL Editor**.
+3. Select **Postgres database** > **SQL Editor**.
 4. Select a branch and database.
 5. Enter a query into the editor and click **Run** to view the results.
 
@@ -60925,7 +61013,7 @@ Your organization is now set up. You can start inviting teammates immediately. S
 
 Let's get familiar with the **SQL Editor**, where you can run queries against your databases directly from the Neon Console, as well as access more advanced features like [Time Travel](https://neon.com/docs/guides/time-travel-assist) and [Explain and Analyze](https://neon.com/docs/get-started/query-with-neon-sql-editor#explain-and-analyze).
 
-From the Neon Console, use the sidebar navigation to open the **SQL Editor** page. Notice that your default branch `production` is already selected, along with the database created during onboarding, `neondb`.
+From the Neon Console, use the sidebar navigation to open **Postgres database** > **SQL Editor**. Notice that your default branch `production` is already selected, along with the database created during onboarding, `neondb`.
 
 ![Neon SQL Editor](https://neon.com/docs/get-started/sql_editor.png)
 
@@ -60999,7 +61087,7 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
 1. **Create a development branch**
 
-   From the Neon Console, navigate to the **Branches** page and click **Create branch**. Name it `development`, select `production` as the parent branch, and click **Create new branch**. This creates an isolated copy of your production data that you can safely modify.
+   From the Neon Console, navigate to the **Branches** page (under **Project**) and click **Create branch**. Name it `development`, select `production` as the parent branch, and click **Create new branch**. This creates an isolated copy of your production data that you can safely modify.
 
 2. **Install CLI with Brew or NPM**
 
@@ -61656,6 +61744,14 @@ Keep your API keys secure. You'll use them for all API operations in this guide.
 This integration uses a **project-per-tenant model**, where each tenant (user, app, or agent) gets its own dedicated Neon [project](https://neon.com/docs/manage/overview) (containing branches, databases, roles, and computes). This provides complete data and resource isolation, makes consumption limits and billing straightforward, and aligns with how the Neon API is designed. For more on this database-per-tenant approach, see [Data Isolation at Scale](https://neon.com/use-cases/database-per-tenant).
 
 **Tip:** For details about **Agent plan** structure, pricing, and benefits, refer to the [Neon Agent Plan](https://neon.com/docs/introduction/agent-plan) docs.
+
+**Tip: Code samples and agent skill**
+
+The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides runnable TypeScript samples for the patterns in this guide. Install the companion agent skill with:
+
+```bash
+npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms -y
+```
 
 ## Provisioning projects
 
@@ -62876,15 +62972,17 @@ For more information on the tools used in this guide, refer to the following doc
 
 --- [Document source](https://neon.com/docs/guides/auth-authjs.md) ---
 
-> Summary: Auth.js (NextAuth.js v5) with the Lakebase Postgres adapter stores users, sessions, and magic-link verification tokens directly in a Lakebase database, enabling passwordless email authentication in Next.js without a separate auth service. Use this guide when you want self-hosted auth with full database control, as an alternative to the managed Managed Better Auth option. The setup uses @auth/pg-adapter, @neondatabase/serverless, and Resend as the email provider for magic link delivery.
+> Summary: Auth.js (NextAuth.js v5) with the Lakebase Postgres adapter stores users, sessions, and magic-link verification tokens directly in a Lakebase database, enabling passwordless email authentication in Next.js without a separate auth service. Use this guide when you want self-managed auth with full database control, as an alternative to the Managed Better Auth option. The setup uses @auth/neon-adapter, @neondatabase/serverless, and Resend as the email provider for magic link delivery.
 
 # Authenticate Lakebase Postgres application users with Auth.js
 
 Learn how to add passwordless authentication to your Lakebase Postgres database application using Auth.js and Resend
 
-**Tip: Authentication on Neon**
+**Important: Start here: pick your auth setup**
 
-This guide uses the [Neon Adapter](https://authjs.dev/getting-started/adapters/neon) for Auth.js to store users and sessions in your database. If you prefer a managed option with no separate auth infrastructure, see [Managed Better Auth](https://neon.com/docs/auth/overview). Auth state branches with your database for preview and CI environments.
+Want authentication tables in your Postgres database with no separate auth service to run? Use [Managed Better Auth](https://neon.com/docs/auth/overview). It stores users and sessions directly in your database under the `neon_auth` schema, and every database branch gets its own isolated auth environment for preview and CI.
+
+Choose this guide instead when you want to own and control the auth tables yourself: self-managed Auth.js with the [Neon adapter](https://authjs.dev/getting-started/adapters/neon) (`@auth/neon-adapter`), which stores users and sessions in tables you define and manage.
 
 [Auth.js](https://authjs.dev/) (formerly NextAuth.js) is a popular authentication solution that supports a wide range of authentication methods, including social logins (for example, Google, Facebook), traditional email/password, and passwordless options like magic links. For simple authentication flows, such as social logins, Auth.js can operate using only in-memory session storage (in a browser cookie). However, if you want to implement custom login flows, or persist the signed-in users' information in your database, you need to specify a database backend.
 
@@ -62919,7 +63017,7 @@ Now, navigate to the project directory and install the required dependencies:
 ```bash
 cd guide-neon-next-authjs
 npm install next-auth@beta
-npm install @auth/pg-adapter @neondatabase/serverless
+npm install @auth/neon-adapter @neondatabase/serverless
 ```
 
 For authentication, we'll use the `Auth.js` library (aliased as v5 of the `next-auth` package), which provides a simple way to add authentication to Next.js applications. It comes with built-in support for Resend as an authentication provider. We use the `@neondatabase/serverless` package as the Postgres client for the `Auth.js` database adapter.
@@ -62981,7 +63079,7 @@ Create a new file `auth.ts` in the root directory of the project and add the fol
 
 import NextAuth from 'next-auth';
 import Resend from 'next-auth/providers/resend';
-import PostgresAdapter from '@auth/pg-adapter';
+import NeonAdapter from '@auth/neon-adapter';
 import { Pool } from '@neondatabase/serverless';
 
 // *DO NOT* create a `Pool` here, outside the request handler.
@@ -62989,13 +63087,13 @@ import { Pool } from '@neondatabase/serverless';
 export const { handlers, auth, signIn, signOut } = NextAuth(() => {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   return {
-    adapter: PostgresAdapter(pool),
+    adapter: NeonAdapter(pool),
     providers: [Resend({ from: 'Test <onboarding@resend.dev>' })],
   };
 });
 ```
 
-This file sets up Auth.js with the Lakebase Postgres adapter and configures the Email provider for magic link authentication.
+This file sets up Auth.js with the Lakebase Postgres adapter (`@auth/neon-adapter`) and configures the Email provider for magic link authentication.
 
 Additionally, `Auth.js` also requires setting up an `AUTH_SECRET` environment variable, which is used to encrypt cookies and magic tokens. You can use the `Auth.js` CLI to generate one:
 
@@ -64239,11 +64337,11 @@ You can edit an individual compute to alter the compute configuration, which inc
 
 To edit a compute:
 
-1. In the Neon Console, select **Branches**.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
 
-2. Select a branch.
+2. Under **Postgres database**, select **Computes**.
 
-3. On the **Computes** tab, identify the compute you want to configure and click **Edit**.
+3. Identify the compute you want to configure and click **Edit**.
    ![Edit compute menu](https://neon.com/docs/guides/autoscaling_edit.png)
 
 4. On the **Edit compute** drawer, select **Autoscale** and use the slider to specify a minimum and maximum compute size.
@@ -64342,7 +64440,7 @@ If you do not have one already, create a Neon project:
 
 ## Create a table in Neon
 
-To create a table, navigate to the **SQL Editor** in the [Neon Console](https://console.neon.tech/):
+To create a table, navigate to **Postgres database** > **SQL Editor** in the [Neon Console](https://console.neon.tech/):
 
 In the SQL Editor, run the following queries to create a `users` table and insert some data:
 
@@ -67906,7 +68004,7 @@ Branch expiration is supported with [Managed Better Auth](https://neon.com/docs/
 
 **Console**
 
-1. Navigate to the **Branches** page in the Console
+1. Navigate to the **Branches** page (under **Project**) in the Console
 2. Click **New branch**
 3. Enter branch name and select parent branch
 4. By default, **Automatically delete branch after** is checked with 1 day selected. You can choose 1 hour, 1 day, or 7 days, or uncheck to disable.
@@ -67969,7 +68067,7 @@ curl --request POST \
 
 **Console**
 
-1. Navigate to the **Branches** page in the Console
+1. Navigate to the **Branches** page (under **Project**) in the Console
 2. Choose the **Update expiration** option for your branch
 
 ![Update branch expiration](https://neon.com/docs/guides/branch-update-set-expiration.png)
@@ -68036,7 +68134,7 @@ Check expiration status of your branches:
 
 **Console**
 
-1. Navigate to the **Branches** page in the Console
+1. Navigate to the **Branches** page (under **Project**) in the Console
 2. Click on the desired branch to open the **Branch Overview**
 3. See information similar to the following if branch expiration is set:
 
@@ -69098,7 +69196,7 @@ You can create schema-only branches in the Neon Console or using the Neon API, i
 To create a schema-only branch from the Neon Console:
 
 1. Select your project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Click **New branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/guides/create_schema_only_branch.png)
 4. Select a **Parent branch**. The schema from this branch will be copied to your new schema-only branch. By default, your project's default branch is selected, but you can choose any existing branch in your project.
@@ -69276,7 +69374,7 @@ VALUES
 ## Create a test branch
 
 1. In the Neon Console, select your project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Click **Create branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
 4. Enter a name for the branch. This guide uses the name `my_test_branch`.
@@ -69313,7 +69411,7 @@ curl --request POST \
 
 ## Test your query
 
-Navigate to the **SQL Editor**, select the test branch, and run your query. For example, perhaps you are deleting blog posts from your database for a certain author published before a certain date, and you want to make sure the query only removes the intended records.
+Navigate to **Postgres database** > **SQL Editor**, select the test branch, and run your query. For example, perhaps you are deleting blog posts from your database for a certain author published before a certain date, and you want to make sure the query only removes the intended records.
 
 ```sql
 DELETE FROM Post
@@ -69333,7 +69431,7 @@ Before the `DELETE` query, there were 5 records. If the query ran correctly, thi
 When you finish testing your query, you can delete the test branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Select the test branch from the table.
 4. From the **Actions** menu on the branch overview page, select **Delete**.
 
@@ -69492,7 +69590,7 @@ To follow along with this guide, you require:
 
 2. Click the **New Project** button to create a new project.
 
-3. From your project dashboard, navigate to the **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -69787,7 +69885,7 @@ To follow along with this guide, you will need:
 
 2. Click the **New Project** button to create a new project.
 
-3. From your project dashboard, navigate to the **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -70576,7 +70674,7 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 
 1. Click the **New Project** button to create a new project.
 
-2. From the Neon **Dashboard**, navigate to the **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+2. From the Neon **Dashboard**, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -70606,8 +70704,8 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 To use Hyperdrive with Neon, you'll need to create a dedicated database role for Hyperdrive to use:
 
 1. In the Neon Console, navigate to your project.
-2. Select **Branches** from the sidebar, then select the branch you want to use.
-3. Navigate to the **Roles & Databases** section.
+2. In the sidebar, select your branch from the **BRANCH** selector.
+3. Under **Postgres database**, select **Roles**.
 4. Click **New Role** and enter `hyperdrive-user` as the name (or your preferred name).
 5. **Copy the password** that is generated. You'll use this password in the connection string in the next step.
 
@@ -73593,6 +73691,18 @@ DATABASES = {
 
 You can find all of the connection details listed above by clicking the **Connect** button on your **Project Dashboard** to open the **Connect to your database** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
+Add a `.env` file to your project's root directory with the individual connection parameters (not a single `DATABASE_URL`, since Django's `DATABASES` setting expects separate fields):
+
+```shell
+PGHOST="<endpoint_hostname>.neon.tech"
+PGDATABASE="<dbname>"
+PGUSER="<user>"
+PGPASSWORD="<password>"
+PGPORT=5432
+```
+
+> Replace `<endpoint_hostname>`, `<dbname>`, `<user>`, and `<password>` with your actual database credentials.
+
 For additional information about Django project settings, see [Django Settings: Databases](https://docs.djangoproject.com/en/4.0/ref/settings#databases), in the Django documentation.
 
 ## Test the connection
@@ -74883,7 +74993,11 @@ The connection string includes the user name, password, hostname, and database n
 Create a `.env` file in your project's root directory and add the connection string to it. Your `.env` file should look like this:
 
 ```text
-DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
+# Pooled connection for your application
+DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require"
+
+# Unpooled connection for Drizzle Kit
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
 ```
 
 **Note:** Neon supports both direct and pooled connection strings, which you can find by clicking the **Connect** button on your **Project Dashboard**. A pooled connection string (the hostname includes `-pooler`) routes through a PgBouncer connection pool, which is ideal for your application at runtime. However, using a pooled connection string for migrations can lead to errors. Use a direct (non-pooled) connection when running Drizzle Kit migrations. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling) and [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations).
@@ -74936,8 +75050,8 @@ Drizzle Kit uses a configuration file to manage schema and migrations. Create a 
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not set in the .env file');
+if (!process.env.DATABASE_URL_UNPOOLED) {
+  throw new Error('DATABASE_URL_UNPOOLED is not set in the .env file');
 }
 
 export default defineConfig({
@@ -74945,7 +75059,7 @@ export default defineConfig({
   out: './drizzle', // Your migrations folder
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL_UNPOOLED,
   },
 });
 ```
@@ -74960,8 +75074,8 @@ config({ path: '.env.local' });
 
 import { defineConfig } from 'drizzle-kit';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not set in .env.local');
+if (!process.env.DATABASE_URL_UNPOOLED) {
+  throw new Error('DATABASE_URL_UNPOOLED is not set in .env.local');
 }
 
 // ...rest of config unchanged
@@ -75197,7 +75311,7 @@ To create the database:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Databases**.
+3. Select **Postgres database** > **Databases**.
 4. Select the branch where you want to create the database.
 5. Click **New Database**.
 6. Enter a database name (`friends`), and select a database owner.
@@ -75352,7 +75466,7 @@ You can use the **Tables** feature in the Neon Console to view the table that wa
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Tables** from the sidebar.
+3. Select **Postgres database** > **Tables** from the sidebar.
 4. Select the Branch, Database (`friends`), and the schema (`public`). You should see the `people` table along with a `schema_migration` table that was created by the migration.
 
 ## Application code
@@ -76919,6 +77033,11 @@ Run `node index.js` to view the result on [localhost:4242](https://neon.com/docs
 { version: 'PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit' }
 ```
 
+## Connection issues
+
+- If you see an `endpoint ID is not specified` error, the TLS client your Postgres driver depends on doesn't support Server Name Indication (SNI), which Neon uses to route connections. For `pg` (node-postgres), this means an outdated `libpq`-compatible TLS stack; upgrading `pg` usually resolves it.
+- If you encounter an `SSL SYSCALL error: EOF detected` (or a similar connection-reset error), this typically happens when an application tries to reuse a connection after the Neon compute has been suspended due to inactivity. This mainly affects long-running servers that keep a connection pool open, like the `pg` example above — closing and recreating idle connections, or reconnecting on error, resolves it.
+
 <details>
 
 <summary>**Notes for AI-assisted setup**</summary>
@@ -77018,7 +77137,7 @@ Perform these steps twice, once for your _development_ branch and once for your 
 **Console**
 
 1. In the Neon Console, select your project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Click **New Branch** to open the branch creation dialog.
 4. Enter a name for the branch. For example, name the branch for the environment (_development_ or _staging_).
 5. Select a parent branch. This should be the branch where you created the `person` table.
@@ -77158,7 +77277,7 @@ Successfully applied 1 migration to schema "public", now at version v2 (executio
 A Flyway report has been generated here: /home/alex/flyway-x.y.z/report.html
 ```
 
-After you run the migration commands, your database should be consistent across all three environments. You can verify that the data was added to each database by viewing the branch and table on the **Tables** page in the Neon Console. Select **Tables** from the sidebar and select your database.
+After you run the migration commands, your database should be consistent across all three environments. You can verify that the data was added to each database by viewing the branch and table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
 
 ## Conclusion
 
@@ -77283,7 +77402,7 @@ Migrating schema "PUBLIC" to version 1 - Create person table
 Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.033s)
 ```
 
-To verify that the `person` table was created, you can view it on the **Tables** page in the Neon Console. Select **Tables** from the sidebar and select your database.
+To verify that the `person` table was created, you can view it on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
 
 ## Add a second migration
 
@@ -77312,7 +77431,7 @@ Successfully applied 1 migration to schema "public", now at version v2 (executio
 A Flyway report has been generated here: /home/alex/flyway-x.y.z/sql/report.html
 ```
 
-You can verify that the data was added by viewing the table on the **Tables** page in the Neon Console. Select **Tables** from the sidebar and select your database.
+You can verify that the data was added by viewing the table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
 
 ## View your schema migration history
 
@@ -77331,7 +77450,7 @@ Schema version: 2
 A Flyway report has been generated here: /home/alex/flyway-x.y.z/sql/report.html
 ```
 
-You can also view the table on the **Tables** page in the Neon Console. Select **Tables** from the sidebar and select your database.
+You can also view the table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
 
 ## Next steps
 
@@ -77872,6 +77991,11 @@ Run with:
 ```bash
 go run transaction_example.go
 ```
+
+## Connection issues
+
+- If you see an `endpoint ID is not specified` error, the TLS client your Postgres driver depends on doesn't support Server Name Indication (SNI), which Neon uses to route connections. This is uncommon with `pgx/v5`, which uses Go's standard `crypto/tls` package and supports SNI by default, but can occur with an older driver or an outdated TLS implementation.
+- If you encounter an `SSL SYSCALL error: EOF detected` (or a similar connection-reset error), this typically happens when an application tries to reuse a connection after the Neon compute has been suspended due to inactivity. The examples in this guide open a fresh connection with `pgx.Connect` each time they run, so this mainly affects long-running servers that keep a connection or pool open across requests. For production use, consider [pgxpool](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool) with health checks, or reconnecting on error.
 
 <details>
 
@@ -78683,7 +78807,7 @@ The example project in this guide simulates a marketplace of products, where the
 ## Create the schema in Neon
 
 1. Navigate to the Neon Console and select your project.
-2. Open the Neon **SQL Editor** and run the following `CREATE TABLE` statement:
+2. In the Neon Console, open **Postgres database** > **SQL Editor** and run the following `CREATE TABLE` statement:
 
    ```sql
    CREATE TABLE product_visits(id SERIAL PRIMARY KEY, product_id TEXT NOT NULL);
@@ -78963,7 +79087,7 @@ To follow along with this guide, you will need:
 
 2. Click **New Project** to create a new project.
 
-3. In your project dashboard, go to the **SQL Editor** and run the following SQL command to create a new table:
+3. In your project dashboard, go to **Postgres database** > **SQL Editor** and run the following SQL command to create a new table:
 
    ```sql
    CREATE TABLE music_albums (
@@ -81107,6 +81231,549 @@ await client.raw(text, values);
 await client.raw(replaceQueryParams(text, values));
 ```
 
+--- [Document source](https://neon.com/docs/guides/kotlin.md) ---
+
+> Summary: Connect a Kotlin application to Neon Postgres using the PostgreSQL JDBC driver with Gradle. Covers complete CRUD examples including PreparedStatement inserts, batch operations, and transaction control with autoCommit, commit, and rollback. Also covers dotenv-kotlin for credential management. Focuses on raw JDBC without an ORM, unlike Micronaut or Hibernate guides.
+
+# Connect a Kotlin application to Neon Postgres
+
+Learn how to run SQL queries in Neon from Kotlin using the PostgreSQL JDBC driver
+
+Pre-built prompt for connecting Kotlin applications to Neon [View prompt](https://neon.com/prompts/kotlin-prompt.md)
+
+This guide describes how to create a Neon project and connect to it from a Kotlin application using **Java Database Connectivity (JDBC)**, the standard API for interacting with relational databases on the JVM.
+
+You will learn how to set up a project, connect to your database, and perform basic create, read, update, and delete (CRUD) operations.
+
+## Prerequisites
+
+- A Neon account. If you do not have one, see [Sign up](https://console.neon.tech/signup).
+- [Java Development Kit (JDK) 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or later.
+- [Gradle](https://gradle.org/install/) to manage the project and dependencies.
+
+## Create a Neon project
+
+If you do not have one already, create a Neon project.
+
+1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the [Neon Console](https://console.neon.tech).
+2. Click **New Project**.
+3. Specify your project settings and click **Create Project**.
+
+Your project is created with a ready-to-use database named `neondb`. In the following steps, you will connect to this database from your Kotlin application.
+
+## Create a Kotlin project
+
+Create a project using the Gradle `init` command. This sets up a standard Kotlin application structure.
+
+1. Run the following command in your terminal to generate a new Kotlin application project.
+
+   ```bash
+   gradle init \
+       --type kotlin-application \
+       --dsl kotlin \
+       --project-name neon-kotlin-jdbc \
+       --package com.neon.quickstart
+   ```
+
+2. Change into the newly created project directory.
+
+   ```bash
+   cd neon-kotlin-jdbc
+   ```
+
+   > Open this directory in your preferred code editor (for example, VS Code, IntelliJ IDEA).
+
+3. Add the `postgresql` driver and `dotenv-kotlin` libraries. With a Gradle version catalog (created by `gradle init`), declare the libraries in `gradle/libs.versions.toml`, then reference them from `app/build.gradle.kts`.
+
+   Add the versions and library entries to `gradle/libs.versions.toml`:
+
+   ```toml title="gradle/libs.versions.toml"
+   [versions]
+   postgresql = "42.7.7"
+   dotenv = "6.5.1"
+
+   [libraries]
+   postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+   dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" }
+   ```
+
+   Then add the dependencies in `app/build.gradle.kts` inside the `dependencies` block:
+
+   ```kotlin title="app/build.gradle.kts"
+   dependencies {
+       implementation(libs.postgresql)
+       implementation(libs.dotenv)
+   }
+   ```
+
+   Save both files.
+
+4. Compile the project to download the dependencies.
+
+   ```bash
+   ./gradlew build
+   ```
+
+   On Windows, use `gradlew.bat build`.
+
+   This command compiles your Kotlin code and downloads the required dependencies.
+
+## Store your Neon connection string
+
+Create a file named `.env` in the `app` directory. This file will securely store your database connection string. Place it next to the application module so `dotenv-kotlin` can load it when you run the app with Gradle.
+
+1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+2. Click **Connect** on your **Project Dashboard** to open the **Connect to your database** modal.
+3. Select **Java** as your programming language. Kotlin uses the same JDBC connection string format.
+   ![Connection modal](https://neon.com/docs/connect/java_connection_details.png)
+4. Copy the connection string, which includes your password.
+5. Create a file named `.env` in the `app` directory and add the connection string to it as shown below:
+
+   ```text title="app/.env"
+   DATABASE_URL="jdbc:postgresql://[neon_hostname]/[dbname]?user=[user]&password=[password]&sslmode=require&channelBinding=require"
+   ```
+
+   > Replace `[user]`, `[password]`, `[neon_hostname]`, and `[dbname]` with your actual database credentials.
+
+## Examples
+
+This section provides code examples for performing CRUD operations. Place the example files inside `app/src/main/kotlin/com/neon/quickstart/`.
+
+You can also clone the complete example project from GitHub: [neon-kotlin-jdbc](https://github.com/aaravmahajanofficial/neon-kotlin-jdbc).
+
+Each example is a package-level function. Select which one to run by uncommenting it in `App.kt`:
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/App.kt"
+package com.neon.quickstart
+
+fun main() {
+    // Uncomment the example you want to run.
+
+    createTable()
+    // readData()
+    // updateData()
+    // deleteData()
+    // transactionExample()
+}
+```
+
+Then run the selected example with:
+
+```bash
+./gradlew run
+```
+
+On Windows, use `gradlew.bat run`.
+
+### Create a table and insert data
+
+Create a file named `CreateTable.kt`. This function connects to your database, creates a table, and inserts data.
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/CreateTable.kt"
+package com.neon.quickstart
+
+import io.github.cdimascio.dotenv.dotenv
+import java.sql.DriverManager
+
+fun createTable() {
+    val dotEnv = dotenv()
+    val connString = dotEnv["DATABASE_URL"]
+
+    try {
+        DriverManager.getConnection(connString).use { conn ->
+            println("Connection established")
+
+            conn.createStatement().use { stmt ->
+                // Drop the table if it already exists
+                stmt.execute("DROP TABLE IF EXISTS books;")
+                println("Finished dropping table (if it existed).")
+
+                // Create a new table
+                stmt.execute(
+                    """
+                    CREATE TABLE books (
+                        id SERIAL PRIMARY KEY,
+                        title VARCHAR(255) NOT NULL,
+                        author VARCHAR(255),
+                        publication_year INT,
+                        in_stock BOOLEAN DEFAULT TRUE
+                    );
+                    """.trimIndent()
+                )
+                println("Finished creating table.")
+
+                // Insert a single book record
+                val insertOneSql = """
+                    INSERT INTO books (title, author, publication_year, in_stock)
+                    VALUES (?, ?, ?, ?);
+                """.trimIndent()
+
+                conn.prepareStatement(insertOneSql).use { pstmt ->
+                    pstmt.setString(1, "The Catcher in the Rye")
+                    pstmt.setString(2, "J.D. Salinger")
+                    pstmt.setInt(3, 1951)
+                    pstmt.setBoolean(4, true)
+                    pstmt.executeUpdate()
+
+                    println("Inserted a single book.")
+                }
+
+                // Insert multiple books
+                val insertManySql = """
+                    INSERT INTO books (title, author, publication_year, in_stock)
+                    VALUES (?, ?, ?, ?);
+                """.trimIndent()
+
+                conn.prepareStatement(insertManySql).use { pstmt ->
+                    val booksToInsert = listOf(
+                        listOf("The Hobbit", "J.R.R. Tolkien", 1937, true),
+                        listOf("1984", "George Orwell", 1949, true),
+                        listOf("Dune", "Frank Herbert", 1965, false)
+                    )
+
+                    for (book in booksToInsert) {
+                        pstmt.setString(1, book[0] as String)
+                        pstmt.setString(2, book[1] as String)
+                        pstmt.setInt(3, book[2] as Int)
+                        pstmt.setBoolean(4, book[3] as Boolean)
+                        pstmt.addBatch()
+                    }
+
+                    pstmt.executeBatch()
+                    println("Inserted 3 rows of data.")
+                }
+            }
+        }
+    } catch (e: Exception) {
+        println("Connection failed.")
+        e.printStackTrace()
+    }
+}
+```
+
+The above code does the following:
+
+- Connects to the Neon database using the connection string from the `.env` file.
+- Drops the `books` table if it already exists.
+- Creates a new `books` table with columns for `id`, `title`, `author`, `publication_year`, and `in_stock`.
+- Inserts a single book record.
+- Inserts multiple book records in a batch operation.
+
+In `App.kt`, ensure only `createTable()` is uncommented, then run:
+
+```bash
+./gradlew run
+```
+
+When the code runs successfully, it produces the following output:
+
+```text title="Output"
+Connection established
+Finished dropping table (if it existed).
+Finished creating table.
+Inserted a single book.
+Inserted 3 rows of data.
+```
+
+### Read data
+
+Create a file named `ReadData.kt`. This function fetches all rows from the `books` table and prints them.
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/ReadData.kt"
+package com.neon.quickstart
+
+import io.github.cdimascio.dotenv.dotenv
+import java.sql.DriverManager
+
+fun readData() {
+    val dotenv = dotenv()
+    val connString = dotenv["DATABASE_URL"]
+
+    try {
+        DriverManager.getConnection(connString).use { conn ->
+            conn.createStatement().use { stmt ->
+                println("Connection established")
+
+                val sql = "SELECT * FROM books ORDER BY publication_year;"
+
+                stmt.executeQuery(sql).use { rs ->
+                    println("\n--- Book Library ---")
+
+                    while (rs.next()) {
+                        println(
+                            "ID: ${rs.getInt("id")}, " +
+                                    "Title: ${rs.getString("title")}, " +
+                                    "Author: ${rs.getString("author")}, " +
+                                    "Year: ${rs.getInt("publication_year")}, " +
+                                    "In Stock: ${rs.getBoolean("in_stock")}"
+                        )
+                    }
+
+                    println("--------------------\n")
+                }
+            }
+        }
+    } catch (e: Exception) {
+        println("Connection failed.")
+        e.printStackTrace()
+    }
+}
+```
+
+The above code does the following:
+
+- Connects to the Neon database using the connection string from the `.env` file.
+- Executes a SQL query to select all rows from the `books` table, ordered by `publication_year`.
+- Iterates through the result set and prints each book's details.
+
+In `App.kt`, uncomment `readData()` (and comment out the other calls), then run:
+
+```bash
+./gradlew run
+```
+
+When the read logic runs, it produces the following output:
+
+```text title="Output"
+Connection established
+
+--- Book Library ---
+ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
+ID: 3, Title: 1984, Author: George Orwell, Year: 1949, In Stock: true
+ID: 1, Title: The Catcher in the Rye, Author: J.D. Salinger, Year: 1951, In Stock: true
+ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: false
+--------------------
+```
+
+### Update data
+
+Create a file named `UpdateData.kt` to update the stock status of 'Dune' to `true`.
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/UpdateData.kt"
+package com.neon.quickstart
+
+import io.github.cdimascio.dotenv.dotenv
+import java.sql.DriverManager
+
+fun updateData() {
+    val dotenv = dotenv()
+    val connString = dotenv["DATABASE_URL"]
+    val sql = "UPDATE books SET in_stock = ? WHERE title = ?;"
+
+    try {
+        DriverManager.getConnection(connString).use { conn ->
+            conn.prepareStatement(sql).use { pstmt ->
+                println("Connection established")
+
+                pstmt.setBoolean(1, true)
+                pstmt.setString(2, "Dune")
+
+                val rowsAffected = pstmt.executeUpdate()
+
+                if (rowsAffected > 0) {
+                    println("Updated stock status for 'Dune'.")
+                }
+            }
+        }
+    } catch (e: Exception) {
+        println("Connection failed.")
+        e.printStackTrace()
+    }
+}
+```
+
+The above code does the following:
+
+- Connects to the Neon database.
+- Prepares an SQL `UPDATE` statement to set the `in_stock` status of the book 'Dune' to `true`.
+- Executes the update and prints a confirmation message if successful.
+
+In `App.kt`, uncomment `updateData()`, then run:
+
+```bash
+./gradlew run
+```
+
+After running the update, verify the change by switching `App.kt` to call `readData()` and running again.
+
+```bash
+./gradlew run
+```
+
+The updated output will be:
+
+```text title="Output"
+--- Book Library ---
+ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
+ID: 3, Title: 1984, Author: George Orwell, Year: 1949, In Stock: true
+ID: 1, Title: The Catcher in the Rye, Author: J.D. Salinger, Year: 1951, In Stock: true
+ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
+--------------------
+```
+
+> You can see that the stock status for 'Dune' has been updated to `true`.
+
+### Delete data
+
+Create a file named `DeleteData.kt` to delete the book '1984' from the table.
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/DeleteData.kt"
+package com.neon.quickstart
+
+import io.github.cdimascio.dotenv.dotenv
+import java.sql.DriverManager
+
+fun deleteData() {
+    val dotenv = dotenv()
+    val connString = dotenv["DATABASE_URL"]
+    val sql = "DELETE FROM books WHERE title = ?;"
+
+    try {
+        DriverManager.getConnection(connString).use { conn ->
+            conn.prepareStatement(sql).use { pstmt ->
+                println("Connection established")
+
+                pstmt.setString(1, "1984")
+
+                val rowsAffected = pstmt.executeUpdate()
+
+                if (rowsAffected > 0) {
+                    println("Deleted the book '1984' from the table.")
+                }
+            }
+        }
+    } catch (e: Exception) {
+        println("Connection failed.")
+        e.printStackTrace()
+    }
+}
+```
+
+The above code does the following:
+
+- Connects to the Neon database.
+- Prepares an SQL `DELETE` statement to remove the book '1984'.
+- Executes the delete and prints a confirmation message if successful.
+
+In `App.kt`, uncomment `deleteData()`, then run:
+
+```bash
+./gradlew run
+```
+
+After running the delete, verify the change by switching `App.kt` to call `readData()` and running again.
+
+```bash
+./gradlew run
+```
+
+The final output will be:
+
+```text title="Output"
+--- Book Library ---
+ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
+ID: 1, Title: The Catcher in the Rye, Author: J.D. Salinger, Year: 1951, In Stock: true
+ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
+--------------------
+```
+
+> You can see that the book '1984' has been successfully deleted from the `books` table.
+
+### Using transactions
+
+The examples above execute each operation independently. For production code where multiple operations must succeed or fail together, wrap them in a transaction. Set `autoCommit = false` to start a transaction, call `commit()` on success, and `rollback()` in the catch block on failure.
+
+```kotlin title="app/src/main/kotlin/com/neon/quickstart/TransactionExample.kt"
+package com.neon.quickstart
+
+import io.github.cdimascio.dotenv.dotenv
+import java.sql.DriverManager
+import java.sql.SQLException
+
+fun transactionExample() {
+    val dotenv = dotenv()
+    val connString = dotenv["DATABASE_URL"]
+
+    DriverManager.getConnection(connString).use { conn ->
+        try {
+            conn.autoCommit = false // Begin Transaction
+
+            // Insert
+            conn.prepareStatement(
+                "INSERT INTO books (title, author, publication_year) VALUES (?, ?, ?)"
+            ).use { pstmt ->
+                pstmt.setString(1, "Brave New World")
+                pstmt.setString(2, "Aldous Huxley")
+                pstmt.setInt(3, 1932)
+                pstmt.executeUpdate()
+
+                println("Inserted book.")
+            }
+
+            // Update
+            conn.prepareStatement(
+                "UPDATE books SET in_stock = ? WHERE title = ?"
+            ).use { pstmt ->
+                pstmt.setBoolean(1, false)
+                pstmt.setString(2, "Brave New World")
+                pstmt.executeUpdate()
+
+                println("Updated stock status.")
+            }
+
+            conn.commit() // Commit transaction
+            println("Transaction committed successfully.")
+
+        } catch (e: SQLException) {
+            println("Transaction failed. Rolling back.")
+
+            conn.rollback()
+            e.printStackTrace()
+        }
+    }
+}
+```
+
+In `App.kt`, uncomment `transactionExample()`, then run:
+
+```bash
+./gradlew run
+```
+
+<details>
+
+<summary>**Notes for AI-assisted setup**</summary>
+
+- Always use `PreparedStatement` (with `?` placeholders) for INSERT, UPDATE, and DELETE operations. Do not use `Statement` for queries with user-provided data, as this is vulnerable to SQL injection.
+- Add library versions to `gradle/libs.versions.toml` and reference them with `implementation(libs.*)` in `app/build.gradle.kts`.
+- Wrap related database operations in a transaction (`autoCommit = false` / `commit()` / `rollback()`). Always call `rollback()` in a catch block to ensure atomicity on failure.
+- Close JDBC connections and statements using Kotlin's `.use { }` (equivalent to Java try-with-resources) to prevent connection leaks.
+- Do not hardcode credentials in `.kt` files. Use environment variables via `dotenv-kotlin`. For more information, see [Security overview](https://neon.com/docs/security/security-overview).
+
+</details>
+
+## Next steps: Using a framework
+
+While this guide demonstrates how to connect to Neon using raw SQL queries, for more advanced and maintainable data interactions in your Kotlin applications, consider using a framework or ORM. Frameworks help you manage schema changes and keep your database structure in sync with your application models.
+
+Explore the following resources to learn how to integrate frameworks with Neon:
+
+- [Connect a Micronaut Kotlin application to Neon](https://neon.com/docs/guides/micronaut-kotlin)
+- [Database Schema Changes with Hibernate, Spring Boot, and Neon](https://neon.com/guides/spring-boot-hibernate)
+
+## Next steps: Neon backend services
+
+- [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
+- [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
+
+## Resources
+
+- [Example project on GitHub](https://github.com/aaravmahajanofficial/neon-kotlin-jdbc)
+- [PostgreSQL JDBC Driver Documentation](https://jdbc.postgresql.org/documentation/use/)
+- [Gradle User Manual](https://docs.gradle.org/current/userguide/userguide.html)
+- [dotenv-kotlin](https://github.com/cdimascio/dotenv-kotlin)
+- [Connect a Micronaut Kotlin application to Neon](https://neon.com/docs/guides/micronaut-kotlin)
+
 --- [Document source](https://neon.com/docs/guides/koyeb.md) ---
 
 > Summary: Connect a Lakebase Postgres database to a Koyeb-deployed Node.js application using Prisma as the ORM and a DATABASE_URL environment variable. Use this guide when you need a managed Postgres backend on Koyeb without running your own database server. Covers both the Koyeb control panel and CLI deployment paths, including Prisma schema sync and database seeding.
@@ -82121,7 +82788,7 @@ For demonstration purposes, create a `blog` database in Neon with two tables, `p
 
 1. Open the [Neon Console](https://console.neon.tech/app/projects).
 2. Select your project.
-3. Select **Databases** from the sidebar and create a database named `blog`. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
+3. Select **Postgres database** > **Databases** from the sidebar and create a database named `blog`. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
 4. Using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), add the following tables:
 
    ```sql
@@ -82150,7 +82817,7 @@ Now, let's prepare a development database in Neon by creating a development bran
 
 To create a branch:
 
-1. In the Neon Console, select **Branches**. You will see your `production` branch, where you just created your `blog` database and tables.
+1. In the Neon Console, select **Branches** under **Project**. You will see your `production` branch, where you just created your `blog` database and tables.
 2. Click **New Branch** to open the branch creation dialog.
 3. Enter a name for the branch. Let's call it `feature/blog-schema`.
 4. Leave `production` selected as the parent branch. This is where you created the `blog` database.
@@ -82345,7 +83012,7 @@ When you run a changeset for the first time, Liquibase automatically creates two
 - [databasechangelog](https://docs.liquibase.com/concepts/tracking-tables/databasechangelog-table.html): Tracks which changesets have been run.
 - [databasechangeloglock](https://docs.liquibase.com/concepts/tracking-tables/databasechangeloglock-table.html): Ensures only one instance of Liquibase runs at a time.
 
-You can verify these tables were created by viewing the `blog` database on your `feature/blog-schema` branch on the **Tables** page in the Neon Console. Select **Tables** from the sidebar.
+You can verify these tables were created by viewing the `blog` database on your `feature/blog-schema` branch on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar.
 
 At this point, you can continue to iterate, applying schema changes to your database, until you are satisfied with the modified schema.
 
@@ -82631,7 +83298,7 @@ For demonstration purposes, create a `blog` database in Neon with two tables, `p
 
 1. Open the [Neon Console](https://console.neon.tech/app/projects).
 2. Select your project.
-3. Select **Databases** from the sidebar and create a database named `blog`. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
+3. Select **Postgres database** > **Databases** from the sidebar and create a database named `blog`. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
 4. Using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), add the following tables:
 
    ```sql
@@ -82815,7 +83482,7 @@ When you run a changeset for the first time, Liquibase automatically creates two
 - [databasechangelog](https://docs.liquibase.com/concepts/tracking-tables/databasechangelog-table.html): Tracks which changesets have been run.
 - [databasechangeloglock](https://docs.liquibase.com/concepts/tracking-tables/databasechangeloglock-table.html): Ensures only one instance of Liquibase runs at a time.
 
-You can verify these tables were created by viewing the `blog` database on the **Tables** page in the Neon Console. Select **Tables** from the sidebar.
+You can verify these tables were created by viewing the `blog` database on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar.
 
 ## Rollback a change
 
@@ -82841,7 +83508,7 @@ Liquibase command 'rollbackCount' was executed successfully.
 
 </details>
 
-You can verify that creation of the `comments` table was rolled back viewing the `blog` database on the **Tables** page in the Neon Console. Select **Tables** from the sidebar.
+You can verify that creation of the `comments` table was rolled back viewing the `blog` database on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar.
 
 ## Next steps
 
@@ -82929,12 +83596,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -83252,12 +83918,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -83715,12 +84380,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name (`replication_user`).
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name (`replication_user`).
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -84574,8 +85238,8 @@ Databricks recommends a dedicated database user for ingestion. Create a role in 
 
 **Console**
 
-1. In the [Neon Console](https://console.neon.tech), select your project and **Branches**.
-2. Select the branch, then the **Roles & Databases** tab.
+1. In the [Neon Console](https://console.neon.tech), select your project.
+2. In the sidebar, select your branch from the **BRANCH** selector, then under **Postgres database** select **Roles**.
 3. Click **Add Role**, enter the role name (e.g. `databricks_replication`), and click **Create**. Save the password.
 
 **CLI**
@@ -84851,12 +85515,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -85036,12 +85699,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name (for example, `cdc_role`).
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name (for example, `cdc_role`).
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -85194,12 +85856,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -85578,12 +86239,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -86078,12 +86738,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -86912,12 +87571,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -87529,12 +88187,11 @@ To create a role in the Neon Console:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. Select the **Roles & Databases** tab.
-6. Click **Add Role**.
-7. In the role creation dialog, specify a role name, such as `replication_user`.
-8. Click **Create**. The role is created, and you are provided with the password for the role.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add Role**.
+6. In the role creation dialog, specify a role name, such as `replication_user`.
+7. Click **Create**. The role is created, and you are provided with the password for the role.
 
 **API**
 
@@ -87995,7 +88652,7 @@ Following successful registration, you will be redirected to the Medusa Admin da
 After the installation is complete, you can optionally verify the tables in the Neon Console:
 
 1. Navigate to your Neon Project dashboard.
-2. Click the **Tables** tab.
+2. In the sidebar, select **Postgres database** > **Tables**.
 3. You should see all the Medusa tables created in your database.
 
 ![Medusa Tables in Neon](https://neon.com/docs/guides/medusa-neon-tables.png)
@@ -89606,7 +90263,7 @@ This isolation allows you to test data and schema changes safely in each pull re
 1. Go to **Vercel Dashboard → Settings → Build and Deployment Settings**
 2. Enable **Override** and add your build commands, including migrations, for example:
    ```bash
-   npx prisma migrate deploy && npm run build
+   npx prisma generate && npx prisma migrate deploy && npm run build
    ```
 
 This ensures schema changes in your commits are applied to each preview deployment's database branch.
@@ -90706,7 +91363,7 @@ After logging into the Neon Console, proceed to the [Projects](https://console.n
 
 1. Click `New Project` to start a new one.
 
-2. In the Neon **Dashboard**, use the `SQL Editor` from the sidebar to execute the SQL command below, creating a new table for coffee blends:
+2. In the Neon **Dashboard**, use **Postgres database** > **SQL Editor** from the sidebar to execute the SQL command below, creating a new table for coffee blends:
 
    ```sql
    CREATE TABLE favorite_coffee_blends (
@@ -90940,7 +91597,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 1. Create a Next.js project if you do not have one. For instructions, see [Create a Next.js App](https://nextjs.org/docs/app/getting-started/installation), in the Vercel documentation.
 
-2. Add project dependencies using one of the following commands:
+2. Add project dependencies using one of the following commands. If you're not sure which to use, use `@neondatabase/serverless`: it connects over HTTP instead of TCP, which works in Next.js Edge Functions and other environments without TCP support, and needs no extra SSL configuration.
 
    **node-postgres**
 
@@ -90954,7 +91611,7 @@ If you do not have one already, create a Neon project. Save your connection deta
    npm install postgres
    ```
 
-   **Neon serverless driver**
+   **Neon serverless driver (Recommended)**
 
    ```shell
    npm install @neondatabase/serverless
@@ -90962,7 +91619,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Store your Neon credentials
 
-Add a `.env` file to your project directory and add your Neon connection string to it. You can find your Neon database connection string by clicking the **Connect** button on your **Project Dashboard** to open the **Connect to your database** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+Add a `.env.local` file to your project directory and add your Neon connection string to it. You can find your Neon database connection string by clicking the **Connect** button on your **Project Dashboard** to open the **Connect to your database** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
 DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
@@ -91026,7 +91683,7 @@ export default async function Page() {
 }
 ```
 
-**Neon serverless driver**
+**Neon serverless driver (Recommended)**
 
 ```javascript
 import { neon } from '@neondatabase/serverless';
@@ -91107,7 +91764,7 @@ export default async function Page() {
 }
 ```
 
-**Neon serverless driver**
+**Neon serverless driver (Recommended)**
 
 ```javascript
 import { neon } from '@neondatabase/serverless';
@@ -91182,7 +91839,7 @@ export default function Page({ data }) {
 }
 ```
 
-**Neon serverless driver**
+**Neon serverless driver (Recommended)**
 
 ```javascript
 import { neon } from '@neondatabase/serverless';
@@ -91243,7 +91900,7 @@ export default function Page({ data }) {
 }
 ```
 
-**Neon serverless driver**
+**Neon serverless driver (Recommended)**
 
 ```javascript
 import { neon } from '@neondatabase/serverless';
@@ -91299,7 +91956,7 @@ export default async function handler(req, res) {
 }
 ```
 
-**Neon serverless driver**
+**Neon serverless driver (Recommended)**
 
 ```javascript
 import { neon } from '@neondatabase/serverless';
@@ -91340,6 +91997,11 @@ When you run `npm run dev` you can expect to see the following on `localhost:300
 ```shell
 PostgreSQL 17.7 on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
 ```
+
+## Connection issues
+
+- If you see an `endpoint ID is not specified` error, the TLS client your Postgres driver depends on doesn't support Server Name Indication (SNI), which Neon uses to route connections. For `pg` (node-postgres), this means an outdated `libpq`-compatible TLS stack; upgrading `pg` usually resolves it.
+- If you encounter an `SSL SYSCALL error: EOF detected` (or a similar connection-reset error), this typically happens when an application tries to reuse a connection after the Neon compute has been suspended due to inactivity. This mainly affects the `pg` and `postgres.js` examples above when used outside a serverless request lifecycle, since they can hold a connection open; reconnecting on error resolves it. `@neondatabase/serverless` isn't affected, since it opens a new HTTP connection per query.
 
 ### Where to upload and serve files?
 
@@ -92895,8 +93557,8 @@ Add both connection strings to your `.env` file. Get these from your Neon Consol
 # Pooled connection for your application (note the -pooler suffix)
 DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require"
 
-# Direct connection for Prisma CLI (migrations, introspection)
-DIRECT_URL="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
+# Direct (unpooled) connection for Prisma CLI (migrations, introspection)
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
 ```
 
 **Important:** Prisma Migrate requires a direct connection to perform schema changes. The pooled connection is used by your application at runtime.
@@ -92912,7 +93574,7 @@ import { defineConfig, env } from 'prisma/config'
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: env('DIRECT_URL'),
+    url: env('DATABASE_URL_UNPOOLED'),
   },
 })
 ```
@@ -93137,7 +93799,7 @@ Find the complete source code for this tutorial on GitHub:
 
 --- [Document source](https://neon.com/docs/guides/prisma.md) ---
 
-> Summary: Prisma ORM (Node.js/TypeScript) connects to Neon using the `@prisma/adapter-neon` serverless driver adapter, which routes queries over WebSockets for compatibility with serverless environments. The setup requires two connection strings: a pooled URL (`DATABASE_URL`) for application queries and a direct URL (`DIRECT_URL`) for Prisma CLI commands such as migrations and `db push`. Newer Prisma versions configure the direct connection in `prisma.config.ts`; older versions use the `directUrl` property in `schema.prisma`.
+> Summary: Prisma ORM (Node.js/TypeScript) connects to Neon using the `@prisma/adapter-neon` serverless driver adapter, which routes queries over WebSockets for compatibility with serverless environments. The setup requires two connection strings: a pooled URL (`DATABASE_URL`) for application queries and a direct URL (`DATABASE_URL_UNPOOLED`) for Prisma CLI commands such as migrations and `db push`. Newer Prisma versions configure the direct connection in `prisma.config.ts`; older versions use the `directUrl` property in `schema.prisma`.
 
 # Connect from Prisma to Neon
 
@@ -93167,7 +93829,7 @@ npm install prisma tsx --save-dev
 From your Neon Console, click **Connect** and copy both connection strings:
 
 - **Pooled connection** (has `-pooler` in the hostname): for your application
-- **Direct connection**: for Prisma CLI commands (migrations, introspection)
+- **Direct (unpooled) connection**: for Prisma CLI commands (migrations, introspection)
 
 ![Connection details modal](https://neon.com/docs/connect/connection_details.png)
 
@@ -93177,11 +93839,11 @@ Add them to your `.env` file:
 # Pooled connection for your application
 DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require"
 
-# Direct connection for Prisma CLI
-DIRECT_URL="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
+# Direct (unpooled) connection for Prisma CLI
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
 ```
 
-**Tip:** The pooled connection has `-pooler` in the hostname. The direct connection does not. Both are available in your Neon Console.
+**Tip:** The pooled connection has `-pooler` in the hostname. The direct (unpooled) connection does not. Both are available in your Neon Console.
 
 ### Step 3: Configure your Prisma schema
 
@@ -93218,7 +93880,7 @@ import { defineConfig, env } from 'prisma/config'
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: env('DIRECT_URL'),
+    url: env('DATABASE_URL_UNPOOLED'),
   },
 })
 ```
@@ -93303,7 +93965,7 @@ npx tsx src/main.ts
 Neon uses connection pooling to efficiently manage database connections in serverless environments:
 
 - **Pooled connection (`DATABASE_URL`)**: Your application connects through Neon's connection pooler, which is optimal for serverless functions that create many short-lived connections.
-- **Direct connection (`DIRECT_URL`)**: Prisma CLI commands like `prisma migrate` and `prisma db push` need a direct connection for schema operations.
+- **Direct (unpooled) connection (`DATABASE_URL_UNPOOLED`)**: Prisma CLI commands like `prisma migrate` and `prisma db push` need a direct connection for schema operations.
 
 ## Advanced configuration
 
@@ -93377,7 +94039,7 @@ In Prisma 6 and earlier, you configure the connection directly in `schema.prisma
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 ```
 
@@ -93410,7 +94072,7 @@ The `directUrl` property is available in Prisma 4.10.0 and higher.
 - Import `PrismaClient` from `./generated/prisma` (or your configured `output` path), not from `@prisma/client`. The import path changed in Prisma 7.
 - Do not install `@neondatabase/serverless` or `ws` as separate packages. The `@prisma/adapter-neon` package bundles everything needed for the Neon connection.
 - In Prisma 7+, do not include a `url` property in the `prisma/schema.prisma` datasource block. The connection is configured via `prisma.config.ts` and the adapter.
-- You need both a pooled connection (`DATABASE_URL`) for your application and a direct connection (`DIRECT_URL`) for Prisma CLI commands.
+- You need both a pooled connection (`DATABASE_URL`) for your application and a direct (unpooled) connection (`DATABASE_URL_UNPOOLED`) for Prisma CLI commands.
 - Call `prisma.$disconnect()` in a `.finally()` block when running standalone scripts. Omitting this can leave connections open.
 
 </details>
@@ -93515,7 +94177,7 @@ To set a branch as protected:
 
 1. In the Neon Console, select a project.
 
-2. Select **Branches** to view the branches for the project.
+2. Select **Branches** under **Project** to view the branches for the project.
 
    ![Branch page](https://neon.com/docs/guides/ip_allow_branch_page.png)
 
@@ -93707,7 +94369,7 @@ For your Python project, create a project directory, set up a virtual environmen
 
 3. Install the required libraries using `pip`.
 
-   - `psycopg`: The modern, synchronous database adapter for connecting to Postgres (Psycopg 3).
+   - `psycopg`: The modern, synchronous database adapter for connecting to Postgres (Psycopg 3). **Recommended** for new projects.
    - `psycopg2-binary`: An older, widely-used synchronous database adapter.
    - `asyncpg`: The asynchronous database adapter for connecting to Postgres.
    - `python-dotenv`: A helper library to manage environment variables.
@@ -93716,7 +94378,7 @@ For your Python project, create a project directory, set up a virtual environmen
    pip install "psycopg[binary]" psycopg2-binary asyncpg python-dotenv
    ```
 
-   > Install the library that best fits your project needs. This guide provides examples for all three.
+   > If you're not sure which driver to use, use `psycopg` (v3). It's the actively maintained successor to `psycopg2`. This guide provides examples for all three in case your project already depends on one of the others.
 
 ## Store your Neon connection string
 
@@ -94992,7 +95654,7 @@ To follow along with this guide, you will need:
 
 2. Click the `New Project` button to create a new project.
 
-3. From your project dashboard, navigate to the `SQL Editor` from the sidebar, and run the following SQL command to create a new table in your database:
+3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE plant_care_log (
@@ -95446,8 +96108,8 @@ Running ad-hoc queries on a read replica can help you:
 
 You can add a read replica compute to any branch in your Neon project by following these steps:
 
-1. In the Neon Console, select **Branches**.
-2. Select the branch where your database resides.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
 5. Specify the **Compute size settings**. You can configure a fixed-size compute with a specific amount of RAM (the default) or enable autoscaling by configuring a minimum and maximum compute size using the slider. On paid plans, you can adjust the **Scale to zero time** setting, which controls whether a compute suspends due to inactivity after 5 minutes.
@@ -95455,7 +96117,7 @@ You can add a read replica compute to any branch in your Neon project by followi
    **Note:** The compute size configuration determines the processing power of your database.
 6. When you finish making your selections, click **Create**.
 
-Your read replica is provisioned and appears on the **Computes** tab of the **Branches** page. The following section describes how to connect to your read replica.
+Your read replica is provisioned and appears on the **Computes** tab under **Postgres database**. The following section describes how to connect to your read replica.
 
 Alternatively, you can create read replicas using the [Neon CLI](https://neon.com/docs/cli/branches#create) or [Neon API](https://neon.com/docs/reference/api/endpoints/create-project-endpoint).
 
@@ -95579,8 +96241,8 @@ Creating a read replica involves adding a read replica compute to a branch.
 
 You can add a read replica compute to any branch in your Neon project by following these steps:
 
-1. In the Neon Console, select **Branches**.
-2. Select the branch where your database resides.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
 5. Specify the **Compute size settings**. You can configure a fixed size compute with a specific amount of RAM (the default) or enable autoscaling by configuring a minimum and maximum compute size using the slider. You can also configure a **Scale to zero** setting, which determines whether a compute suspends due to inactivity after 5 minutes.
@@ -95588,7 +96250,7 @@ You can add a read replica compute to any branch in your Neon project by followi
    **Note:** The compute size configuration determines the processing power of your database.
 6. When you finish making your selections, click **Create**.
 
-Your read replica is provisioned and appears on the **Computes** tab of the **Branches** page. The following section describes how to connect to your read replica.
+Your read replica is provisioned and appears on the **Computes** tab under **Postgres database**. The following section describes how to connect to your read replica.
 
 Alternatively, you can create read replicas using the [Neon CLI](https://neon.com/docs/cli/branches#create) or [Neon API](https://neon.com/docs/reference/api/endpoints/create-project-endpoint), providing the flexibility required to integrate read replicas into your workflows or CI/CD processes.
 
@@ -95672,9 +96334,9 @@ When you are finished running analytics queries, you can delete the read replica
 
 To delete a read replica:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. On the **Computes** tab, find the read replica you want to delete.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Find the read replica you want to delete.
 4. Click **Edit** → **Delete compute**.
 
 --- [Document source](https://neon.com/docs/guides/read-replica-guide.md) ---
@@ -95710,8 +96372,8 @@ Creating a read replica involves adding a read replica compute to a branch. You 
 
 To create a read replica from the Neon Console:
 
-1. In the Neon Console, select **Branches**.
-2. Select the branch where your database resides.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
 5. Specify the **Compute size settings**. You can configure a **Fixed Size** compute with a specific amount of RAM (the default) or enable autoscaling by configuring a minimum and maximum compute size. You can also configure the **Suspend compute after inactivity** setting, which is the amount of idle time after which your compute is automatically suspended. The default setting is 5 minutes.
@@ -95719,7 +96381,7 @@ To create a read replica from the Neon Console:
    **Note:** The compute size configuration determines the processing power of your database.
 6. When you finish making your selections, click **Create**.
 
-In a few seconds, your read replica is provisioned and appears on the **Computes** tab on the **Branches** page. The following section describes how to connect to your read replica.
+In a few seconds, your read replica is provisioned and appears on the **Computes** tab under **Postgres database**. The following section describes how to connect to your read replica.
 
 **CLI**
 
@@ -95773,7 +96435,7 @@ You can view read replicas using the Neon Console or [Neon API](https://neon.com
 
 **Console**
 
-To view read replicas for a branch, select **Branches** in the Neon Console, and select a branch. Read replicas are listed on the **Computes** tab.
+To view read replicas for a branch, in the Neon Console select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. Read replicas are listed on the **Computes** tab.
 
 ![View read replicas](https://neon.com/docs/guides/view_read_replica.png)
 
@@ -95800,9 +96462,9 @@ You can edit a read replica using the Neon Console or [Neon API](https://neon.co
 
 To edit a read replica compute using the Neon Console:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. Under **Computes**, identify the read replica compute you want to modify, and click **Edit**.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Identify the read replica compute you want to modify, and click **Edit**.
 4. Make the changes to your compute settings, and click **Save**.
 
 **API**
@@ -95837,9 +96499,9 @@ You can delete a read replica using the Neon Console or [Neon API](https://neon.
 
 To delete a read replica using the Neon Console:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. On the **Computes** tab, find the read replica you want to delete.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Find the read replica you want to delete.
 4. Click **Edit** → **Delete**.
 
 **API**
@@ -96121,8 +96783,8 @@ You can create read replicas for any branch in your Neon project.
 
 You can add a read replica by following these steps:
 
-1. In the Neon Console, select **Branches**.
-2. Select the branch where your database resides.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
 3. Click **Add Read Replica**.
 4. On the **Add new compute** dialog, select **Read replica** as the **Compute type**.
 5. Specify the **Compute size settings** options. You can configure a **Fixed Size** compute with a specific amount of RAM (the default) or enable autoscaling by configuring a minimum and maximum compute size. You can also configure the **Scale to zero** setting, which controls whether your read replica compute is automatically suspended due to inactivity after 5 minutes.
@@ -96130,7 +96792,7 @@ You can add a read replica by following these steps:
    **Note:** The compute size configuration determines the processing power of your database. More memory means more processing power but also higher compute costs. For information about compute costs, see [Billing metrics](https://neon.com/docs/introduction/billing).
 6. When you finish making selections, click **Create**.
 
-   Your read replica compute is provisioned and appears on the **Computes** tab of the **Branches** page.
+   Your read replica compute is provisioned and appears on the **Computes** tab under **Postgres database**.
 
 Alternatively, you can create read replicas using the [Neon API](https://neon.com/docs/reference/api/endpoints/create-project-endpoint) or [Neon CLI](https://neon.com/docs/cli/branches#create).
 
@@ -97074,7 +97736,7 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 
 - Click the `New Project` button to create a new project.
 
-- From your project dashboard, navigate to the `SQL Editor` from the sidebar, and run the following SQL command to create a new table in your database:
+- From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
   ```sql
   CREATE TABLE books_to_read (
@@ -97251,7 +97913,7 @@ You can reset any branch to its parent using any of our tools.
 
 **Console**
 
-On the **Branches** page in the Neon Console, select the branch that you want to reset.
+On the **Branches** page (under **Project**) in the Neon Console, select the branch that you want to reset.
 
 The console opens to the details page for your branch, giving you key information about the branch and its child status: its parent, the last time it was reset, and other relevant detail.
 
@@ -99245,9 +99907,9 @@ Paid plans permit disabling scale to zero. On the Scale plan, you can configure 
 
 To enable or disable scale to zero:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. On the **Computes** tab, click **Edit**.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Click **Edit**.
 4. Enable or disable the scale to zero setting, and save your selection.
 
 > Disabling scale to zero is only supported on paid plans.
@@ -99371,11 +100033,11 @@ First, create a new database called `people` on the `production` branch and add 
 
 1. Create the database.
 
-   In the **Neon Console**, go to **Databases** → **New Database**. Make sure your `production` branch is selected, then create the new database called `people`.
+   In the **Neon Console**, go to **Postgres database** > **Databases** → **New Database**. Make sure your `production` branch is selected, then create the new database called `people`.
 
 2. Add the schema.
 
-   Go to the **SQL Editor**, enter the following SQL statement and click **Run** to apply.
+   Go to **Postgres database** > **SQL Editor**, enter the following SQL statement and click **Run** to apply.
 
    ```sql
    CREATE TABLE person (
@@ -99488,7 +100150,7 @@ For the purposes of this tutorial, name the branch `feature/address`, which coul
 
 1. Create the development branch
 
-   On the **Branches** page, click **Create Branch**, making sure of the following:
+   On the **Branches** page (under **Project**), click **Create Branch**, making sure of the following:
 
    - Select `production` as the parent branch.
    - Name the branch `feature/address`.
@@ -102273,7 +102935,7 @@ Here is how to use Time Travel from the **SQL Editor**, from **Backup & Restore*
 
 **SQL Editor**
 
-1. In the Neon Console, open the **SQL Editor**.
+1. In the Neon Console, select your branch, then open **Postgres database** > **SQL Editor**.
 
 2. Use the **Time Travel** (🕣) icon to enable querying against an earlier point in time.
 
@@ -102285,7 +102947,7 @@ Here is how to use Time Travel from the **SQL Editor**, from **Backup & Restore*
 
 **Instant restore**
 
-1. In the Neon Console, open the branch's **Backup & Restore** page and go to **Restore from history**.
+1. In the Neon Console, select your branch, then open **Postgres database** > **Backup & Restore** and go to **Restore from history**.
 
 2. Select the branch you want to query against, then select a timestamp, the same as you would to [Restore a branch](https://neon.com/docs/guides/time-travel-assist#restore-a-branch-to-an-earlier-state).
 
@@ -102733,7 +103395,7 @@ If you do not have one already, create a Neon project:
 
 ## Create a table in Neon
 
-To create a table, navigate to the **SQL Editor** in the [Neon Console](https://console.neon.tech/):
+To create a table, navigate to **Postgres database** > **SQL Editor** in the [Neon Console](https://console.neon.tech/):
 
 In the SQL Editor, run the following queries to create a `users` table and insert some data:
 
@@ -103499,7 +104161,7 @@ This shows all branches with their names, states, and creation dates. Look for b
 
 To remove stale branches:
 
-- **Neon Console**: Go to the **Branches** page and delete branches individually
+- **Neon Console**: Go to the **Branches** page (under **Project**) and delete branches individually
 - **Neon CLI**: Use `neon branches delete <branch-id-or-name>` to remove specific branches. See [CLI branches reference](https://neon.com/docs/cli/branches#delete).
 - **Neon API**: Use `DELETE /projects/{project_id}/branches/{branch_id}`. See [Delete a branch with the API](https://neon.com/docs/manage/branches#delete-a-branch-with-the-api).
 
@@ -104301,7 +104963,7 @@ The deployment will take a few moments.
 
 While the project is deploying, add some sample data to your database.
 
-1. Navigate to the Console and select **SQL Editor** from the sidebar.
+1. Navigate to the Console and select **Postgres database** > **SQL Editor** from the sidebar.
 2. Run the following SQL statements to add the sample data.
 
 ```sql
@@ -105481,7 +106143,7 @@ Configure the table mapping:
 To verify that data was migrated to your Neon database:
 
 1. In the Neon Console, select your Neon project.
-2. Select **Tables** from the side bar.
+2. Select **Postgres database** > **Tables** from the sidebar.
 3. Select the **Branch**, **Database**, and **Schema** where you imported the data.
    ![Neon Tables view showing imported data](https://neon.com/docs/import/dms_neon_table_data.png).
 
@@ -106161,7 +106823,7 @@ This section describes how to prepare your destination Lakebase Postgres databas
 ### Create the Neon database
 
 1. In the Neon Console, go to your project dashboard.
-2. In the sidebar, click on **Databases**.
+2. In the sidebar, select **Postgres database** > **Databases**.
 3. Click the **New Database** button.
 4. Enter a name for your database and click **Create**.
 
@@ -106457,7 +107119,7 @@ heroku-cli: Pulling complete.
 
 1. Log in to the [Neon Console](https://console.neon.tech/app/projects).
 2. Select the Neon project that you transferred data to.
-3. Select the **Tables** tab.
+3. In the sidebar, select **Postgres database** > **Tables**.
 4. In the sidebar, verify that your database tables appear under the **Tables** heading.
 
 --- [Document source](https://neon.com/docs/import/migrate-from-neon.md) ---
@@ -108881,6 +109543,7 @@ Learn about using Neon to provision and manage databases for agentic platforms
 - [AI agent integration guide](https://neon.com/docs/guides/ai-agent-integration)
 - [Integrating with Neon](https://neon.com/docs/guides/platform-integration-overview)
 - [Database versioning with snapshots](https://neon.com/docs/ai/ai-database-versioning)
+- [neon-for-agent-platforms on GitHub](https://github.com/neondatabase/neon-for-agent-platforms)
 
 ## Overview
 
@@ -108998,6 +109661,14 @@ Once enrolled in the agent plan:
 4. Monitor usage and billing using the Neon API
 
 For step-by-step implementation instructions, see the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration).
+
+**Tip: Code samples and agent skill**
+
+The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides TypeScript samples and a companion agent skill for building on the agent plan. Install the companion skill with:
+
+```bash
+npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms -y
+```
 
 --- [Document source](https://neon.com/docs/introduction/architecture-overview.md) ---
 
@@ -109302,7 +109973,7 @@ With Neon's instant restore capability, also known as point-in-time restore or P
 
 ### Restore from history
 
-In the Neon Console, open a branch's **Backup & Restore** page and use **Restore from history** to start this flow.
+In the Neon Console, select your branch, then open **Postgres database** > **Backup & Restore** and use **Restore from history** to start this flow.
 
 Instant restore is only supported for root branches. You can revert a root branch to an earlier point in time in its own or another root branch's history, using time and date or Log Sequence Number (LSN). For example, you can revert to a state just before a data loss occurred.
 
@@ -109541,7 +110212,7 @@ Backup branches are deletable except in two cases:
 
 To delete a backup branch:
 
-1. Navigate to the **Branches** page.
+1. Navigate to the **Branches** page (under **Project**).
 
 2. Find the backup branch you want to delete. It will have a name with the following format:
 
@@ -114249,7 +114920,9 @@ jobs:
 
       - name: Run pg_dump
         run: |
-          $POSTGRES/pg_dump ${{ env.DATABASE_URL }} | gzip > "${{ env.GZIP_NAME }}"
+          set -o pipefail
+          : "${DATABASE_URL:?DATABASE_URL secret is not set}"
+          "${POSTGRES}/pg_dump" "$DATABASE_URL" | gzip > "$GZIP_NAME"
 
       - name: Empty bucket of old files
         run: |
@@ -114383,8 +115056,12 @@ This step runs `pg_dump` and saves the output in the Action's virtual memory usi
 ```yml
 - name: Run pg_dump
   run: |
-    $POSTGRES/$pg_dump ${{ env.DATABASE_URL }} | gzip > "${{ env.GZIP_NAME }}"
+    set -o pipefail
+    : "${DATABASE_URL:?DATABASE_URL secret is not set}"
+    "${POSTGRES}/pg_dump" "$DATABASE_URL" | gzip > "$GZIP_NAME"
 ```
+
+GitHub Actions already runs `bash` steps with `pipefail` enabled, but setting it explicitly makes the intent clear and keeps the step correct even if the shell is overridden: the step fails if `pg_dump` fails, instead of masking the error behind a successful `gzip`. The `DATABASE_URL` check fails the step early with a clear message if the secret is missing.
 
 ## Empty bucket of old files
 
@@ -114495,7 +115172,7 @@ If you do specify a custom branch name when creating or renaming a branch, it mu
 To create a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Click **New branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
 4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.
@@ -114522,7 +115199,7 @@ To view the branches in a Neon project:
 
 1. In the Neon Console, select a project.
 
-2. Select **Branches** to view all current branches in the project.
+2. Select **Branches** under **Project** to view all current branches in the project.
 
    ![all branches](https://neon.com/docs/manage/branches_all_list.png)
 
@@ -114547,7 +115224,7 @@ To view the branches in a Neon project:
    - **Data size**: The logical data size of the branch. Data size does not include history.
    - **Parent branch**: The branch from which this branch was created (only applicable to child branches).
 
-   The branch details page also includes details about the **Computes**, **Roles & Databases**, and **Child branches** that belong to the branch. All of these objects are associated with a particular branch. For information about these objects, see:
+   The branch details page also includes details about the **Computes**, **Roles**, **Databases**, and **Child branches** that belong to the branch. All of these objects are associated with a particular branch. For information about these objects, see:
 
    - [Manage computes](https://neon.com/docs/manage/computes#view-a-compute).
    - [Manage roles](https://neon.com/docs/manage/roles)
@@ -114565,7 +115242,7 @@ On the Free plan, Neon automatically archives inactive branches to cost-efficien
 Neon permits renaming a branch, including your project's default branch. To rename a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** to view the branches for the project.
+2. Select **Branches** under **Project** to view the branches for the project.
 3. Select a branch from the table.
 4. On the branch overview page, click the **More** drop-down menu and select **Rename**.
 5. Specify a new name for the branch and click **Save**.
@@ -114579,7 +115256,7 @@ For more information, see [Default branch](https://neon.com/docs/manage/branches
 To set a branch as the default branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** to view the branches for the project.
+2. Select **Branches** under **Project** to view the branches for the project.
 3. Select a branch from the table.
 4. On the branch overview page, click the **More** drop-down menu and select **Set as default**.
 5. In the **Set as default** confirmation dialog, click **Set as default** to confirm your selection.
@@ -114591,7 +115268,7 @@ This feature is available on all Neon's paid plans, which supports up to five pr
 To set a branch as protected:
 
 1. In the Neon Console, select a project.
-2. Select **Branches** to view the branches for the project.
+2. Select **Branches** under **Project** to view the branches for the project.
 3. Select a branch from the table.
 4. On the branch overview page, click the **More** drop-down menu and select **Set as protected**.
 5. In the **Set as protected** confirmation dialog, click **Set as protected** to confirm your selection.
@@ -114603,7 +115280,7 @@ For details and configuration instructions, refer to our [Protected branches gui
 To set or update a branch's expiration (auto-deletion TTL):
 
 1. In the Neon Console, select a project.
-2. Select **Branches** to view the branches for the project.
+2. Select **Branches** under **Project** to view the branches for the project.
 3. Select a branch from the table.
 4. On the branch overview page, click the **Actions** drop-down menu and select **Edit expiration**.
 5. Set a new expiration date and time, or toggle off "Automatically delete branch after" to remove expiration.
@@ -114654,7 +115331,7 @@ Deleting a branch is a permanent action. Deleting a branch also deletes the data
 To delete a branch:
 
 1. In the Neon Console, select a project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Select a branch from the table.
 4. On the branch overview page, click the **More** drop-down menu and select **Delete**.
 5. On the confirmation dialog, click **Delete**.
@@ -115116,7 +115793,7 @@ Your Neon plan determines the resources available to a compute. The Neon Free pl
 
 ## View a compute
 
-A compute is associated with a branch. To view a compute, select **Branches** in the Neon Console, and select a branch. If the branch has a compute, it is shown on the **Computes** tab on the branch page.
+A compute is associated with a branch. To view a compute, in the Neon Console select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes**. If the branch has a compute, it is shown on the **Computes** tab of the branch overview.
 
 Compute details shown on the **Computes** tab include:
 
@@ -115134,9 +115811,9 @@ You can only create a single primary read-write compute for a branch that does n
 
 To create an endpoint:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. On the **Computes** tab, click **Add a compute** or **Add Read Replica** if you already have a primary read-write compute.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Click **Add a compute** or **Add Read Replica** if you already have a primary read-write compute.
 4. On the **Add new compute** drawer or **Add read replica** drawer, specify your compute settings, and click **Add**. Selecting the **Read replica** compute type creates a [read replica](https://neon.com/docs/introduction/read-replicas).
 
 ## Edit a compute
@@ -115145,11 +115822,11 @@ You can edit a compute to change the [compute size](https://neon.com/docs/manage
 
 To edit a compute:
 
-1. In the Neon Console, select **Branches**.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
 
-2. Select a branch.
+2. Under **Postgres database**, select **Computes**.
 
-3. From the **Computes** tab, select **Edit** for the compute you want to edit.
+3. Select **Edit** for the compute you want to edit.
 
    The **Edit** drawer opens, letting you modify settings such as compute size, the autoscaling configuration, and your scale to zero setting.
 
@@ -115319,7 +115996,7 @@ Restarting ensures your compute is running with the latest configurations and im
 
 You can restart a compute using these methods:
 
-- Use the **Restart compute** option in the Neon console. Navigate to the **Branches** page from your project dashboard, and select a branch. On the Computes tab, select **Restart compute** from the menu.
+- Use the **Restart compute** option in the Neon console. Select your branch from the **BRANCH** selector, then select **Postgres database** > **Computes** and choose **Restart compute** from the compute's menu.
   ![Restart a compute in the console](https://neon.com/docs/manage/restart_compute.png)
 
 - Issue a [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) call using the Neon API. You can do this directly from the Neon API Reference using the **Try It!** feature or via the command line with a cURL command similar to the one shown below. You'll need your [project ID](https://neon.com/docs/reference/glossary#project-id), compute [endpoint ID](https://neon.com/docs/reference/glossary#endpoint-id), and an [API key](https://neon.com/docs/manage/api-keys#create-an-api-key).
@@ -115341,9 +116018,9 @@ A branch can have a single read-write compute and multiple read replica computes
 
 To delete a compute:
 
-1. In the Neon Console, select **Branches**.
-2. Select a branch.
-3. On the **Computes** tab, click **Edit** for the compute you want to delete.
+1. In the Neon Console, select your branch from the **BRANCH** selector.
+2. Under **Postgres database**, select **Computes**.
+3. Click **Edit** for the compute you want to delete.
 4. At the bottom of the **Edit compute** drawer, click **Delete compute**.
 
 ## Manage computes with the Neon API
@@ -116044,12 +116721,11 @@ To create a database:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches** from the sidebar.
-4. Select the branch where you want to create the database.
-5. Select the **Roles** & **Databases** tab.
-6. Click **Add database**.
-7. Enter a database name, and select a database owner.
-8. Click **Create**.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Databases**.
+5. Click **Add database**.
+6. Enter a database name, and select a database owner.
+7. Click **Create**.
 
 **Note:** Some names are not permitted. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
 
@@ -116059,9 +116735,8 @@ To view databases:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches** from the sidebar.
-4. Select the branch where you want to view databases.
-5. Select the **Roles** & **Databases** tab.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Databases**.
 
 ### Delete a database
 
@@ -116071,8 +116746,8 @@ To delete a database:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Databases** from the sidebar.
-4. Select a branch to view the databases in the branch.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Databases**.
 5. For the database you want to delete, click the delete icon.
 6. In the confirmation dialog, click **Delete**.
 
@@ -119184,9 +119859,9 @@ To create a role:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to create the role.
-5. On the **Roles & Databases** tab, click **Add role**.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Click **Add role**.
 6. In the role creation modal, specify a role name. The branch is pre-selected.
 7. Click **Create**. The role is created and you are provided with the password for the role.
 
@@ -119200,9 +119875,9 @@ To delete a role:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the branch where you want to delete a role.
-5. On the **Roles & Databases** tab, select **Delete role** from the role menu.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Select **Delete role** from the role menu.
 6. On the confirmation modal, click **Delete**.
 
 ### Reset a password
@@ -119211,9 +119886,9 @@ To reset a role's password:
 
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select a project.
-3. Select **Branches**.
-4. Select the role's branch.
-5. On the **Roles & Databases** tab, select **Reset password** from the role menu.
+3. In the sidebar, select your branch from the **BRANCH** selector.
+4. Under **Postgres database**, select **Roles**.
+5. Select **Reset password** from the role menu.
 6. On the **Reset password** modal, click **Reset**. A reset password modal is displayed with your new password.
 
 **Note:**
@@ -123411,7 +124086,7 @@ A Neon Control Plane operation that deletes stored data when a Neon project is d
 
 ## Endpoint ID
 
-A string that identifies a Neon compute endpoint. Neon Endpoint IDs are generated Heroku-like memorable random names, similar to `ep-calm-flower-a5b75h79`. These names are always prefixed by `ep` for "endpoint". You can find your Endpoint ID by navigating to your project in the Neon Console, selecting **Branches** from the sidebar, and clicking on a branch. The **Endpoint ID** is shown in the table under the **Computes** heading.
+A string that identifies a Neon compute endpoint. Neon Endpoint IDs are generated Heroku-like memorable random names, similar to `ep-calm-flower-a5b75h79`. These names are always prefixed by `ep` for "endpoint". You can find your Endpoint ID by navigating to your project in the Neon Console, selecting **Branches** under **Project** in the sidebar, and clicking on a branch. The **Endpoint ID** is shown in the table under the **Computes** heading.
 
 ## Egress
 
@@ -124110,7 +124785,7 @@ Method: `auth.getSession()`
 const { data, error } = await client.auth.getSession()
 
 if (data.session) {
-console.log('User is logged in:', data.session.user.email)
+console.log('User is logged in:', data.user.email)
 } else {
 console.log('No active session')
 }
@@ -128181,7 +128856,7 @@ An object storage credential requires at minimum one of:
 
 **Console**
 
-In the Neon Console, select your branch and click **Credentials** under **APP BACKEND** in the sidebar. Click **Create credential**, give it a name, and check the storage scopes you need.
+In the Neon Console, select your branch and click **Credentials** under **Branch** in the sidebar. Click **Create credential**, give it a name, and check the storage scopes you need.
 
 After creation, the credentials are shown once. Copy the snippet or click **Download .env** before closing:
 
@@ -128398,7 +129073,7 @@ You can create a bucket from the Neon Console, the Neon CLI, the Neon API, or di
 
 **Neon Console**
 
-In the Neon Console, navigate to your project, select a branch, and open the **Storage** tab. Click **New bucket**, enter a name, choose an access level, and click **Create**.
+In the Neon Console, navigate to your project, select a branch, and open the **Object storage** tab. Click **New bucket**, enter a name, choose an access level, and click **Create**.
 
 **neon**
 
@@ -128475,7 +129150,7 @@ Every bucket has an access level that controls who can read objects in it.
 | `private`     | Require a valid credential            | Require a valid credential |
 | `public_read` | Open to anyone (no credential needed) | Require a valid credential |
 
-The default is `private`. Set the access level when creating a bucket via the Neon API, or change it from the **Storage** tab in the Console.
+The default is `private`. Set the access level when creating a bucket via the Neon API, or change it from the **Object storage** tab in the Console.
 
 **Note:** Access level is set through the Neon Console or API, not through the S3 API. S3 ACL and bucket policy mutation requests (PutBucketAcl, PutBucketPolicy) return `501 Not Implemented`. If you need to change access level on an existing bucket, use the Console or Neon API.
 
@@ -130487,7 +131162,7 @@ This feature uses **static masking**, which permanently transforms data in the b
 To create a branch with anonymized data from the Neon Console:
 
 1. Select your project.
-2. Select **Branches**.
+2. Select **Branches** under **Project**.
 3. Click **New branch** to open the branch creation dialog.
    ![Neon Console 'Create new branch' dialog with 'Anonymized data' selected](https://neon.com/docs/workflows/anon-create-a-new-branch.png)
 4. Select a **Parent branch**. This determines the origin of the schema and data for your new branch. By default, your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) is selected, but you can choose any existing branch in your project.

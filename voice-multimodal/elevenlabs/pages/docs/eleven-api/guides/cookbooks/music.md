@@ -8,7 +8,7 @@ path: docs/eleven-api/guides/cookbooks/music
 
 # Music quickstart
 
-This guide will show you how to generate music with Eleven Music.
+This guide will show you how to generate music with our Music API.
 
 Use the [ElevenLabs music skill](https://github.com/elevenlabs/skills/tree/main/music) to generate music tracks from your AI coding assistant:
 
@@ -16,9 +16,9 @@ Use the [ElevenLabs music skill](https://github.com/elevenlabs/skills/tree/main/
 npx skills add elevenlabs/skills --skill music
 ```
 
-The Eleven Music API is only available to paid users.
+The Music API is only available to paid users.
 
-## Using the Eleven Music API
+## Using the Music API
 
 #### Create an API key
 

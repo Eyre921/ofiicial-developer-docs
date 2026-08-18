@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tool
 path: langsmith/javascript/managed-deep-agents-tools
 ---
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 
 

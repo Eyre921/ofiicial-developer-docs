@@ -24,18 +24,25 @@ Together's IAM is built around five concepts that work together:
 ## How it all fits together
 
 ```mermaid theme={null}
+%%{init: {"flowchart": {"rankSpacing": 60, "nodeSpacing": 30}}}%%
 flowchart TD
     U[User] -->|belongs to| O[Organization]
-    U -->|"added to (per project)"| P[Project]
+    U -->|joins or added to| P[Projects]
     O -->|contains| P
-    P -->|scopes| K[Project API Key]
+    EU[External user] -.->|added to| P
+    P -->|scopes| K[API keys]
     P -->|contains| R[Resources]
-    R --- R1[Clusters]
-    R --- R2[Fine-tuned Models]
-    R --- R3[Endpoints]
-    R --- R4[Evaluations]
-    R --- R5[Files]
-    EU[External User] -.->|added to| P
+    P -->|scopes| A[Analytics]
+    R --> R1[Clusters]
+    R --> R2[Fine-tuned models]
+    R --> R3[Endpoints]
+    R --> R4[Evaluations]
+    R --> R5[Files]
+    K ~~~ R1
+    A ~~~ R5
+
+    classDef box fill:#cbd5e1,stroke:#64748b,stroke-width:1.5px,color:#132133;
+    class U,EU,O,P,K,R,A,R1,R2,R3,R4,R5 box;
 ```
 
 **The key principle:** Projects are the collaboration boundary. Collaborators get access to a Project, and that gives them access to everything inside it (Clusters, Models, Endpoints, etc.). Access decisions happen at the Project level, not on individual resources.
@@ -72,7 +79,7 @@ Together's IAM model applies consistently across all products. These guides cove
 </CardGroup>
 
 <Note>
-  Projects and Project-level membership management are in early access. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable multi-Project support for your Organization.
+  To enable multi-Project support for your Organization, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
 </Note>
 
 ## Next steps

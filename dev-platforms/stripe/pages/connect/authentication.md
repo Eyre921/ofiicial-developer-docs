@@ -54,11 +54,14 @@ curl -X DELETE https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
-The `Stripe-Account` header approach is implied in any API request that includes the `Account` ID in the URL. This example shows how to [Retrieve an Account](https://docs.stripe.com/api/accounts/retrieve.md) by including its ID in the request URL.
+The `Stripe-Account` header approach is implied in any API request that includes the `Account` ID in the URL. This example shows how to [Retrieve an Account](https://docs.stripe.com/api/v2/core/accounts/retrieve.md) by including its ID in the request URL.
+
+> Stripe recommends using the [Accounts v2 API](https://docs.stripe.com/connect/accounts-v2.md) when retrieving connected accounts.
 
 ```curl
-curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \
-  -u "<<YOUR_SECRET_KEY>>:"
+curl https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-07-29.preview"
 ```
 
 All of Stripe’s server-side libraries support this approach on a per-request basis:

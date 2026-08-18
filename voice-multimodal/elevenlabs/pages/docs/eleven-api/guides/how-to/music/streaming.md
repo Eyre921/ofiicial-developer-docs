@@ -11,11 +11,9 @@ path: docs/eleven-api/guides/how-to/music/streaming
 **How-to guide** · Assumes you have completed the [Music
 quickstart](/docs/eleven-api/guides/cookbooks/music).
 
-This guide will show you how to stream music with Eleven Music.
+The Music API is only available to paid users.
 
-The Eleven Music API is only available to paid users.
-
-## Using the Eleven Music API
+## Using the Music API
 
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
@@ -40,6 +38,7 @@ elevenlabs = ElevenLabs(
 stream = elevenlabs.music.stream(
     prompt="Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
     music_length_ms=10000,
+    model_id="music_v2",
 )
 
 # Create a BytesIO object to hold the audio data in memory
@@ -66,6 +65,7 @@ const elevenlabs = new ElevenLabsClient();
 const stream = await elevenlabs.music.stream({
   prompt: "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts.",
   musicLengthMs: 10000,
+  modelId: "music_v2",
 });
 
 const chunks: Buffer[] = [];

@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/python/managed-deep-agents-memory
 path: langsmith/python/managed-deep-agents-memory
 ---
 
-Normally, a Managed Deep Agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
+Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
 
 When enabled, durable memory is backed by [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller. Managed Deep Agents do **not** have durable memory by default.
 

@@ -13426,6 +13426,73 @@ If you use self-hosted LangSmith, see the [self-hosted changelog](/langsmith/sel
 <Tabs>
 <Tab title="LangSmith Cloud">
 
+<Update label="August 10-17, 2026" rss={{ title: "2026-08-10 - LangSmith Cloud update" }}>
+
+## Observability and evaluations
+
+### Datasets and experiments
+
+- Annotation queue tables now label queue contents as items instead of runs, covering both single-run and pairwise queues.
+- Datasets whose input, output, or metadata keys contain a colon can now be exported to CSV. This unblocks datasets built from runs with feedback, where feedback is stored under a `source_run_feedback:<key>` metadata key.
+- Managed evaluator configuration no longer shows evaluator tracing controls.
+- The Datasets & Experiments table now labels dataset names with a Dataset column header, making the relationship between datasets and experiments clearer.
+
+### Monitoring and alerting
+
+- In dashboards and other surfaces where "All time" is unavailable, clearing both dates in the date picker now disables Apply instead of silently submitting an all-time range that fails to load.
+- Opening a run from a dashboard chart's runs table now shows a single trace pane instead of stacking a second, identical pane behind the first.
+
+### Automations
+
+- Online evaluators configured with a saved custom provider model configuration (OpenAI-compatible or Anthropic-compatible) now use that configuration's endpoint and credentials on live traces instead of failing with a permission error.
+- Non-admin users can now save evaluator edits from the dataset, tracing project, and thread panes without hitting a retention-permission error.
+- Automations grouped by thread can now add one annotation queue item for each matched conversation, so reviewers can inspect the whole thread instead of only one run.
+- Thread webhook and annotation-queue automations now show thread filters instead of run filters, and no longer default to `Is Trace = true`.
+
+### Engine
+
+- The Slack channel list now refreshes in the background even when Slack rate-limits the request, so large workspaces no longer lose picker options.
+- Engine fix runs no longer push a branch for every code fix. The commit is parked on a hidden ref and the branch is created when you open a pull request, so connected repositories keep a clean branch list.
+- Engine now highlights only Slack notifications in its announcement area and continues to honor prior dismissals.
+- Unread Engine issues now show a lighter brand pip aligned to the right of the title, so new issues are easier to scan without competing with the title.
+
+### Tracing
+
+- The Turns view in thread detail is deprecated in favor of the Messages or Details view, and LangSmith Cloud removes it on October 31, 2026, while self-hosted removes it in v17.
+- Thread annotation-queue and webhook automations now require SmithDB queries.
+- LangSmith Chat now offers GPT-5.6 Sol, GPT-5.6 Terra, and GPT-5.6 Luna alongside the existing OpenAI models.
+- LangSmith now recognizes older trace links containing timestamp-prefixed run and trace IDs.
+- The tracing quickstart now opens with Deep Agents selected and leads with Deep Agents, LangGraph, and LangChain framework guides.
+- Trace details now surface LLM Gateway outcomes, policy limits, selected models, and fallback attempts in a dedicated Gateway section. Errored LLM runs blocked by the gateway also show a Blocked badge in the trace tree.
+
+## Deployment
+
+- LangSmith services now accept both IPv4 and IPv6 connections.
+- Deployments now resolve the latest agent server version more reliably, preventing slow revision creation and duplicate revisions caused by request timeouts, especially in Asia Pacific.
+- LangSmith workers using Microsoft Entra ID authentication for standalone Redis now start successfully and continue refreshing credentials after the event loop starts.
+
+## Sandboxes
+
+- Mounting a git repository into a sandbox no longer fails silently. Clones now trust the sandbox's certificate bundle, so the repository appears at its mount path instead of starting in an empty directory.
+- Sandboxes now retain recent CPU, memory, and network usage history, making it easier to understand resource consumption and diagnose performance bottlenecks.
+- WebSocket connections through a sandbox service URL now reach your service with their query string intact. Dev servers that authenticate their own WebSocket with a query parameter, such as Vite's HMR token, now connect instead of failing.
+
+## Administration
+
+- The signup page animation stays aligned with the hero content after the confirmation message appears.
+- Users with the tag-on-create permission for datasets, projects, or prompts can now see and apply tags when creating those resources, instead of only workspace managers.
+- The API Keys page now filters keys across the full paginated list by key, description, and workspace.
+- The organization usage dashboard renders its charts again; they previously could appear blank even when usage data was present, showing only the workspace legend.
+
+### LLM Gateway
+
+- Requests to Bedrock models through the unified LLM Gateway now use the API format supported by each model family. Anthropic models use Messages, OpenAI models use Responses, and other Bedrock models use Chat Completions, preventing unsupported API errors for models such as Claude Opus.
+- The LLM Gateway can now reach Amazon Bedrock with an assumed IAM role or AWS access keys instead of a static Bedrock API key, and existing Bedrock API keys still take precedence when multiple credential types are configured.
+- The LLM Gateway quickstart now hides the Run request action for workspace members without gateway invocation permission.
+- LLM Gateway responses now include an `X-LangSmith-Gateway-Metadata` header describing gateway routing, limits, guard activity, and upstream errors, and clients can attach it to their own traces as `ls_gateway_info` metadata.
+
+</Update>
+
 <Update label="August 3-10, 2026" rss={{ title: "2026-08-03 - LangSmith Cloud update" }}>
 
 ## Access control
@@ -14824,6 +14891,28 @@ The experiments table now displays loading progress bars showing the number of r
 </Tab>
 <Tab title="LangSmith Fleet">
 
+
+<Update label="August 10-17, 2026" rss={{ title: "2026-08-10 - Fleet product update" }}>
+
+## Fleet
+
+- Models in Fleet usage reports now sort correctly by cost, including models with no recorded cost.
+- Read-only agents now keep the Configure entry point available after the panel is closed, so users can return to agent details and cloning.
+- The Teams reply to channel tool now asks for approval by default, matching the other Teams write tools. Agents that already set this tool to run automatically keep their current behavior, and you can switch it back to Auto per agent.
+- Agent Builder now shows actionable workspace-secret loading failures with retry guidance while preserving existing missing-key prompts.
+- Fleet agents can browse their OneDrive files, download and update documents, upload files, rename files, and create sharing links.
+- Fleet agents can list direct Outlook attachments and discover linked OneDrive or SharePoint files in message bodies.
+- Fleet agents can forward an email to new recipients with an optional comment, and move a message into another folder. Both ask for approval first.
+- Fleet agents can list a mailbox's folders, including nested ones, and scope an email search to a single folder instead of the whole mailbox.
+- Deleting an agent completes cleanly and removes the agent's files along with it. Previously the delete could return a permission error after the agent had already disappeared from the agent list.
+- Fleet can now load agent Prompt Hub directories up to 25 MiB, allowing agents with larger memory and file trees to remain accessible.
+- Self-hosted deployments can set `FLEET_SCHEDULES_ENABLED=false` to disable recurring runs, unbind the schedule tools, and remove scheduling prompts from agents.
+- Runs started through the Fleet API are attributed to the user whose credential invoked them, instead of grouping together under a blank user in the usage breakdown.
+- OneDrive tools now return exact drive-relative item paths and reuse them for downloads and updates. This reduces file-not-found errors caused by opaque item references.
+- Fleet validates Word, PowerPoint, and Excel files before uploading them to OneDrive or SharePoint, and automatically repairs valid base64-encoded Office files so they upload without corruption.
+- Fleet skill get, create, and update operations now resolve external OIDC users correctly while preserving workspace permissions.
+
+</Update>
 
 <Update label="August 3-10, 2026" rss={{ title: "2026-08-03 - Fleet product update" }}>
 ## Fleet
@@ -41549,7 +41638,7 @@ Learn [how run pairwise evaluations](/langsmith/evaluate-pairwise).
 
 Online evaluation assesses production application outputs in near real-time. Without reference outputs, these evaluations focus on detecting issues, monitoring quality trends, and identifying edge cases that inform future offline testing.
 
-Online evaluators typically run server-side. LangSmith provides built-in [LLM-as-judge evaluators](/langsmith/llm-as-judge) for configuration, and supports custom code evaluators that run within LangSmith.
+Online evaluators typically run server-side. LangSmith supports custom [LLM-as-judge evaluators](/langsmith/llm-as-judge) and code evaluators. [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) provide specialized judges managed by LangChain.
 
 ![Online](/langsmith/images/online.png)
 
@@ -42006,6 +42095,7 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
 1. Click **+ Evaluator** to open the new evaluator panel.
 1. The panel lets you:
    - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge) or [Code](/langsmith/online-evaluations-code) evaluator.
+   - **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
    - **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section surfaces popular templates first, followed by templates organized by the following categories:
 
      | Category | Description |
@@ -45404,6 +45494,28 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 **Subscribe**: This changelog includes an [RSS feed](https://docs.langchain.com/langsmith/fleet-changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 </Callout>
 
+
+<Update label="August 10-17, 2026" rss={{ title: "2026-08-10 - Fleet product update" }}>
+
+## Fleet
+
+- Models in Fleet usage reports now sort correctly by cost, including models with no recorded cost.
+- Read-only agents now keep the Configure entry point available after the panel is closed, so users can return to agent details and cloning.
+- The Teams reply to channel tool now asks for approval by default, matching the other Teams write tools. Agents that already set this tool to run automatically keep their current behavior, and you can switch it back to Auto per agent.
+- Agent Builder now shows actionable workspace-secret loading failures with retry guidance while preserving existing missing-key prompts.
+- Fleet agents can browse their OneDrive files, download and update documents, upload files, rename files, and create sharing links.
+- Fleet agents can list direct Outlook attachments and discover linked OneDrive or SharePoint files in message bodies.
+- Fleet agents can forward an email to new recipients with an optional comment, and move a message into another folder. Both ask for approval first.
+- Fleet agents can list a mailbox's folders, including nested ones, and scope an email search to a single folder instead of the whole mailbox.
+- Deleting an agent completes cleanly and removes the agent's files along with it. Previously the delete could return a permission error after the agent had already disappeared from the agent list.
+- Fleet can now load agent Prompt Hub directories up to 25 MiB, allowing agents with larger memory and file trees to remain accessible.
+- Self-hosted deployments can set `FLEET_SCHEDULES_ENABLED=false` to disable recurring runs, unbind the schedule tools, and remove scheduling prompts from agents.
+- Runs started through the Fleet API are attributed to the user whose credential invoked them, instead of grouping together under a blank user in the usage breakdown.
+- OneDrive tools now return exact drive-relative item paths and reuse them for downloads and updates. This reduces file-not-found errors caused by opaque item references.
+- Fleet validates Word, PowerPoint, and Excel files before uploading them to OneDrive or SharePoint, and automatically repairs valid base64-encoded Office files so they upload without corruption.
+- Fleet skill get, create, and update operations now resolve external OIDC users correctly while preserving workspace permissions.
+
+</Update>
 
 <Update label="August 3-10, 2026" rss={{ title: "2026-08-03 - Fleet product update" }}>
 ## Fleet
@@ -52521,7 +52633,7 @@ export const agent = defineDeepAgent({
 
 `name` is required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.
 
-MDA uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
+Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
 
 ## Model
 
@@ -52563,7 +52675,7 @@ Pass a LangChain chat model instance instead when you need to configure model pa
 
 ### Use LLM Gateway
 
-You can use [LangSmith Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
+You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
 
 In order to use LLM Gateway, you should:
 - Use the ChatOpenAI model directly
@@ -52662,7 +52774,7 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 # Connect a Managed Deep Agent to Slack
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-slack
 
-A Slack channel lets people invoke a Managed Deep Agent through app mentions, direct messages, and replies in an active Slack thread. Managed Deep Agents verifies Slack events, maps each conversation to a thread, runs the agent as the resolved caller, and posts the response back to Slack.
+A Slack channel lets people invoke a managed deep agent through app mentions, direct messages, and replies in an active Slack thread. Managed Deep Agents verifies Slack events, maps each conversation to a thread, runs the agent as the resolved caller, and posts the response back to Slack.
 
 Slack is a bring-your-own-app integration. You define a Slack app manifest in the agent project.
 
@@ -52708,8 +52820,8 @@ The file name sets the channel name to `slack` and mounts its Events API route a
 After setting up the Slack channel, you need to create and deploy your Slack app.
 
 <Steps>
-  <Step title="Deploy your Managed Deep Agent">
-  First, [deploy your Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy).
+  <Step title="Deploy your managed deep agent">
+  First, [deploy your managed deep agent](/langsmith/javascript/managed-deep-agents-deploy).
   
   ```
   mda deploy .
@@ -52724,7 +52836,7 @@ not active yet.
     ```bash
     mda channel add slack .
     ```
-    MDA finds the existing deployment and writes two files:
+    Managed Deep Agents finds the existing deployment and writes two files:
     - A "template" manifest to `slack-app-manifest.json`
     - The full manifest to `.mda/slack/app-manifest.json`
     
@@ -52892,7 +53004,7 @@ A Slack event runs as an identity derived from the Slack workspace and user, suc
 
 ## Deploy changes
 
-Redeploy after changing the channel declaration, secrets, or identity configuration. Rerun `mda channel add slack .` when you change `slack-app-manifest.json`, the channel name, or the deployment so MDA can regenerate the final manifest with the current Events URL. Apply the generated manifest to the existing Slack app after the deployment completes.
+Redeploy after changing the channel declaration, secrets, or identity configuration. Rerun `mda channel add slack .` when you change `slack-app-manifest.json`, the channel name, or the deployment so Managed Deep Agents can regenerate the final manifest with the current Events URL. Apply the generated manifest to the existing Slack app after the deployment completes.
 
 Avoid making lasting configuration changes only in the Slack dashboard. A later manifest update can replace settings that are not present in the checked-in template.
 
@@ -52912,9 +53024,9 @@ Design channel-triggered tools as idempotent when they perform external side eff
 
 
 - **`mda channel add slack` reports that it needs exactly one channel**: Keep exactly one `channels.slack(...)` declaration in the project when using the manifest workflow.
-- **MDA cannot read the template**: Confirm `slack-app-manifest.json` is a regular JSON file at the project root. Remove credentials and any `settings.event_subscriptions.request_url`, and keep Socket Mode disabled.
+- **Managed Deep Agents cannot read the template**: Confirm `slack-app-manifest.json` is a regular JSON file at the project root. Remove credentials and any `settings.event_subscriptions.request_url`, and keep Socket Mode disabled.
 - **The first deploy writes a bootstrap manifest and exits**: This is expected when the Slack credentials do not exist yet. Create and install the app, add both credentials, then rerun the same command.
-- **MDA does not write the final manifest**: Run `mda deploy .` without `--no-wait`, then rerun `mda channel add slack .`. The CLI needs the deployed Agent Server URL.
+- **Managed Deep Agents does not write the final manifest**: Run `mda deploy .` without `--no-wait`, then rerun `mda channel add slack .`. The CLI needs the deployed Agent Server URL.
 - **Slack cannot verify the request URL**: Confirm the deployment is healthy, the URL on the app's **Event Subscriptions** page matches `https://<agent-server>/channels/<name>/events`, and `SLACK_SIGNING_SECRET` belongs to that app. Redeploy after adding the Slack credentials, then apply the regenerated final manifest.
 - **Mentions do not start runs**: Subscribe to `app_mention`, add `app_mentions:read`, invite the bot to the conversation, and reinstall the app after changing scopes.
 - **Direct messages do not start runs**: Subscribe to `message.im` and add `im:history`.
@@ -52945,7 +53057,7 @@ Design channel-triggered tools as idempotent when they perform external side eff
 # Connect Managed Deep Agents to channels
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels
 
-A channel connects a Managed Deep Agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
+A channel connects a managed deep agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -53209,7 +53321,7 @@ mda build .
 
 ## Evaluate projects
 
-`evals/tasks/` is the canonical Harbor dataset. Author complete Harbor tasks there directly. The `mda eval` command, also available as `mda evals`, can scaffold a starter task and package the managed agent for Harbor. MDA prints a `harbor run` command but does not run trials.
+`evals/tasks/` is the canonical Harbor dataset. Author complete Harbor tasks there directly. The `mda eval` command, also available as `mda evals`, can scaffold a starter task and package the managed agent for Harbor. Managed Deep Agents prints a `harbor run` command but does not run trials.
 
 ```bash
 mda evals init smoke
@@ -53518,7 +53630,7 @@ evals/scaffold/<task>/ → mda evals compile → evals/tasks/<task>/
 ```
 
 <Note>
-`evals/scaffold/` is not a second eval system. Harbor runs the tasks under `evals/tasks/`. Use scaffolding only when you want MDA to create a minimal starting point.
+`evals/scaffold/` is not a second eval system. Harbor runs the tasks under `evals/tasks/`. Use scaffolding only when you want Managed Deep Agents to create a minimal starting point.
 </Note>
 
 ## Choose an authoring workflow
@@ -53537,7 +53649,7 @@ Use one of the following ways to populate the canonical Harbor dataset:
 - Model and tool credentials exported in the shell that runs Harbor.
 
 <Note>
-Harbor does not load values from the project `.env` file. When MDA generates a Harbor job config, it writes `${VAR}` placeholders for eligible `.env` keys, not their values. Export the required variables before you run Harbor.
+Harbor does not load values from the project `.env` file. When Managed Deep Agents generates a Harbor job config, it writes `${VAR}` placeholders for eligible `.env` keys, not their values. Export the required variables before you run Harbor.
 </Note>
 
 ## Author Harbor evals directly
@@ -53566,15 +53678,15 @@ Each task describes what the agent should do. Harbor runs the agent in the task 
 
 The verifier must write a numeric reward to `/logs/verifier/reward.txt` or numeric metrics to `/logs/verifier/reward.json`. For the full task format and verifier options, see the [Harbor task documentation](https://www.harborframework.com/docs/tasks).
 
-Files you author directly under `evals/tasks/` are preserved when MDA compiles scaffolds with other names.
+Files you author directly under `evals/tasks/` are preserved when Managed Deep Agents compiles scaffolds with other names.
 
 ## Scaffold a Harbor task
 
-This optional workflow creates a minimal source task that MDA can complete and copy into the canonical Harbor dataset.
+This optional workflow creates a minimal source task that Managed Deep Agents can complete and copy into the canonical Harbor dataset.
 
 
 
-MDA scaffolds the task from an instruction and a TypeScript test.
+Managed Deep Agents scaffolds the task from an instruction and a TypeScript test.
 
 
 Run the following command from the Managed Deep Agents project root:
@@ -53629,7 +53741,7 @@ To refresh specific scaffolds, repeat `--task`:
 mda evals compile . --task smoke --task regression
 ```
 
-For each selected scaffold, MDA:
+For each selected scaffold, Managed Deep Agents:
 
 1. Replaces the matching directory under `evals/tasks/`.
 2. Copies the complete scaffold from `evals/scaffold/`.
@@ -53641,7 +53753,7 @@ Unselected tasks under `evals/tasks/` are preserved, including tasks authored di
 Treat `evals/scaffold/<name>/` as the source of truth for a scaffolded task. Compiling that scaffold replaces the entire matching `evals/tasks/<name>/` directory, including changes made only to the canonical copy.
 </Warning>
 
-You can add Harbor files such as `task.toml`, `environment/`, or a custom `tests/test.sh` to a scaffold under `evals/scaffold/<name>/`. MDA copies them into the canonical Harbor task during compilation.
+You can add Harbor files such as `task.toml`, `environment/`, or a custom `tests/test.sh` to a scaffold under `evals/scaffold/<name>/`. Managed Deep Agents copies them into the canonical Harbor task during compilation.
 
 ### Inspect the compiled handoff
 
@@ -53659,8 +53771,8 @@ Compile supports the following repeatable flags:
 
 | Flag | Purpose |
 | --- | --- |
-| `--task <name>` | Select one task. Repeat to select more tasks. If a selected task has a source under `evals/scaffold/`, MDA refreshes its canonical copy. Omit the flag to select all tasks and refresh every scaffold. |
-| `--model <provider:model>` | Record a model in the artifact manifest. The generated job config uses the first model. If omitted, MDA uses the agent's model when available. |
+| `--task <name>` | Select one task. Repeat to select more tasks. If a selected task has a source under `evals/scaffold/`, Managed Deep Agents refreshes its canonical copy. Omit the flag to select all tasks and refresh every scaffold. |
+| `--model <provider:model>` | Record a model in the artifact manifest. The generated job config uses the first model. If omitted, Managed Deep Agents uses the agent's model when available. |
 
 Check in the Harbor definitions and configuration under `evals/` that your project uses. Keep local run output under `evals/harbor-jobs/` out of version control. The `evals/` directory is not included in the deployed agent build.
 
@@ -53944,7 +54056,7 @@ These defaults differ from a deployed agent. Test identity and sandbox behavior 
 # Connect to MCP servers
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-connectors
 
-An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/javascript/deepagents/mcp) servers to a Managed Deep Agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
+An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/javascript/deepagents/mcp) servers to a managed deep agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -54054,7 +54166,7 @@ If a server requires credentials, read them from environment variables and pass 
 # Add memory to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory
 
-Normally, a Managed Deep Agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
+Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
 
 When enabled, durable memory is backed by [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller. Managed Deep Agents do **not** have durable memory by default.
 
@@ -54166,7 +54278,7 @@ write fails, do not claim that you remembered it.
 # Add custom middleware to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-middleware
 
-Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
+Managed Deep Agents support the Deep Agents `middleware` configuration surface.
 
 
 
@@ -54291,7 +54403,7 @@ Managed Deep Agents (MDA) is the simplest way to build and deploy production age
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 - **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
-- **A managed runtime**: LangSmith Agent Server hosts and operates the agent, and keeps sessions running across restarts.
+- **A managed runtime**: [LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) hosts and operates the agent, and keeps sessions running across restarts.
 
 ```mermaid actions={false}
 %%{init: {"theme": "base", "themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
@@ -54434,14 +54546,14 @@ The only required file is `agent.ts` or `agent.tsx` at the project root. It must
 
 Use only one agent entry in a project. See [Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition).
 
-## How MDA treats project files
+## How Managed Deep Agents treats project files
 
 
 
-- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. MDA syncs both to Context Hub.
+- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. Managed Deep Agents syncs both to Context Hub.
 - **Application code**: Files under `tools/` and `middleware/` are ordinary project modules. Import them from the agent entry. Other local modules work the same way.
 - **Managed configuration**: Root `identity.ts` and `memory.ts`, direct children of `channels/`, `connectors/`, and `schedules/`, and `sandbox/index.ts` enable their corresponding capabilities. MCP connector modules export a named `connector`.
-- **Dependencies and secrets**: Declare dependencies in `package.json`. MDA loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
+- **Dependencies and secrets**: Declare dependencies in `package.json`. Managed Deep Agents loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
 - **Evals**: Managed Deep Agents evals are Harbor evals. `evals/tasks/` is the canonical Harbor task dataset. Author tasks there directly, or run `mda evals init <name>` to create an optional starter under `evals/scaffold/`. `mda evals compile` copies scaffolds into `evals/tasks/` and packages the agent for Harbor. The `evals/` directory is not included in the deployed agent build.
 
 
@@ -54737,7 +54849,7 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sandboxes
 
 Agents often want to write or execute code when doing their job.
-A sandbox gives a Managed Deep Agent an isolated filesystem and shell for working with files, running code, and executing commands.
+A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -54868,7 +54980,7 @@ export const schedule = defineSchedule({
 
 Each schedule must define exactly one of:
 
-- `prompt`: A natural-language prompt. MDA converts it to a user message when the cron fires.
+- `prompt`: A natural-language prompt. Managed Deep Agents converts it to a user message when the cron fires.
 - `input`: A structured LangGraph input object. Use this when you need to pass custom graph input instead of a single prompt.
 
 
@@ -54891,7 +55003,7 @@ export const schedule = defineSchedule({
 
 ## Choose thread behavior
 
-Schedules use ephemeral threads by default. MDA creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
+Schedules use ephemeral threads by default. Managed Deep Agents creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
 
 Use a persistent thread only when scheduled runs should accumulate durable thread state across invocations.
 
@@ -54965,7 +55077,7 @@ Schedule declarations are extracted at compile time. Keep schedule configuration
 
 Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/javascript/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing MDA-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
 If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
@@ -55088,7 +55200,7 @@ For skill authoring patterns and the complete format, see [Skills](/oss/javascri
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 
 
@@ -73413,6 +73525,8 @@ Source: https://docs.langchain.com/langsmith/online-evaluations-multi-turn
 
 Multi-turn online evaluators allow you to evaluate entire conversations between a human and an agent—not just individual exchanges. They measure end-to-end interaction quality across all turns in a thread.
 
+<Tip>To use a LangChain-managed, thread-level judge without configuring a model, API key, or prompt, see [LangChain Tuned Evaluators](/langsmith/tuned-evaluators).</Tip>
+
 You can use multi-turn evaluations to measure:
 1. Semantic Intent: What the user was trying to do.
 2. Semantic Outcome: What actually happened, did the task succeed.
@@ -78466,7 +78580,7 @@ agent = define_deep_agent(
 
 `name` is required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.
 
-MDA uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
+Managed Deep Agents uses the name as the LangGraph assistant ID and the default LangSmith deployment name. You can override the deployment name with `mda deploy --name` without changing the agent definition.
 
 ## Model
 
@@ -78508,7 +78622,7 @@ Pass a LangChain chat model instance instead when you need to configure model pa
 
 ### Use LLM Gateway
 
-You can use [LangSmith Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
+You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbacks, and more.
 
 In order to use LLM Gateway, you should:
 - Use the ChatOpenAI model directly
@@ -78611,7 +78725,7 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 # Connect a Managed Deep Agent to Slack
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-slack
 
-A Slack channel lets people invoke a Managed Deep Agent through app mentions, direct messages, and replies in an active Slack thread. Managed Deep Agents verifies Slack events, maps each conversation to a thread, runs the agent as the resolved caller, and posts the response back to Slack.
+A Slack channel lets people invoke a managed deep agent through app mentions, direct messages, and replies in an active Slack thread. Managed Deep Agents verifies Slack events, maps each conversation to a thread, runs the agent as the resolved caller, and posts the response back to Slack.
 
 Slack is a bring-your-own-app integration. You define a Slack app manifest in the agent project.
 
@@ -78657,8 +78771,8 @@ The file name sets the channel name to `slack` and mounts its Events API route a
 After setting up the Slack channel, you need to create and deploy your Slack app.
 
 <Steps>
-  <Step title="Deploy your Managed Deep Agent">
-  First, [deploy your Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy).
+  <Step title="Deploy your managed deep agent">
+  First, [deploy your managed deep agent](/langsmith/python/managed-deep-agents-deploy).
   
   ```
   mda deploy .
@@ -78673,7 +78787,7 @@ not active yet.
     ```bash
     mda channel add slack .
     ```
-    MDA finds the existing deployment and writes two files:
+    Managed Deep Agents finds the existing deployment and writes two files:
     - A "template" manifest to `slack-app-manifest.json`
     - The full manifest to `.mda/slack/app-manifest.json`
     
@@ -78837,7 +78951,7 @@ A Slack event runs as an identity derived from the Slack workspace and user, suc
 
 ## Deploy changes
 
-Redeploy after changing the channel declaration, secrets, or identity configuration. Rerun `mda channel add slack .` when you change `slack-app-manifest.json`, the channel name, or the deployment so MDA can regenerate the final manifest with the current Events URL. Apply the generated manifest to the existing Slack app after the deployment completes.
+Redeploy after changing the channel declaration, secrets, or identity configuration. Rerun `mda channel add slack .` when you change `slack-app-manifest.json`, the channel name, or the deployment so Managed Deep Agents can regenerate the final manifest with the current Events URL. Apply the generated manifest to the existing Slack app after the deployment completes.
 
 Avoid making lasting configuration changes only in the Slack dashboard. A later manifest update can replace settings that are not present in the checked-in template.
 
@@ -78855,9 +78969,9 @@ Design channel-triggered tools as idempotent when they perform external side eff
 ## Troubleshoot Slack channels
 
 - **`mda channel add slack` reports that it needs exactly one channel**: Keep exactly one `channels.slack(...)` declaration in the project when using the manifest workflow.
-- **MDA cannot read the template**: Confirm `slack-app-manifest.json` is a regular JSON file at the project root. Remove credentials and any `settings.event_subscriptions.request_url`, and keep Socket Mode disabled.
+- **Managed Deep Agents cannot read the template**: Confirm `slack-app-manifest.json` is a regular JSON file at the project root. Remove credentials and any `settings.event_subscriptions.request_url`, and keep Socket Mode disabled.
 - **The first deploy writes a bootstrap manifest and exits**: This is expected when the Slack credentials do not exist yet. Create and install the app, add both credentials, then rerun the same command.
-- **MDA does not write the final manifest**: Run `mda deploy .` without `--no-wait`, then rerun `mda channel add slack .`. The CLI needs the deployed Agent Server URL.
+- **Managed Deep Agents does not write the final manifest**: Run `mda deploy .` without `--no-wait`, then rerun `mda channel add slack .`. The CLI needs the deployed Agent Server URL.
 - **Slack cannot verify the request URL**: Confirm the deployment is healthy, the URL on the app's **Event Subscriptions** page matches `https://<agent-server>/channels/<name>/events`, and `SLACK_SIGNING_SECRET` belongs to that app. Redeploy after adding the Slack credentials, then apply the regenerated final manifest.
 - **Mentions do not start runs**: Subscribe to `app_mention`, add `app_mentions:read`, invite the bot to the conversation, and reinstall the app after changing scopes.
 - **Direct messages do not start runs**: Subscribe to `message.im` and add `im:history`.
@@ -78890,7 +79004,7 @@ Design channel-triggered tools as idempotent when they perform external side eff
 # Connect Managed Deep Agents to channels
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-channels
 
-A channel connects a Managed Deep Agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
+A channel connects a managed deep agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -79154,7 +79268,7 @@ mda build .
 
 ## Evaluate projects
 
-`evals/tasks/` is the canonical Harbor dataset. Author complete Harbor tasks there directly. The `mda eval` command, also available as `mda evals`, can scaffold a starter task and package the managed agent for Harbor. MDA prints a `harbor run` command but does not run trials.
+`evals/tasks/` is the canonical Harbor dataset. Author complete Harbor tasks there directly. The `mda eval` command, also available as `mda evals`, can scaffold a starter task and package the managed agent for Harbor. Managed Deep Agents prints a `harbor run` command but does not run trials.
 
 ```bash
 mda evals init smoke
@@ -79464,7 +79578,7 @@ evals/scaffold/<task>/ → mda evals compile → evals/tasks/<task>/
 ```
 
 <Note>
-`evals/scaffold/` is not a second eval system. Harbor runs the tasks under `evals/tasks/`. Use scaffolding only when you want MDA to create a minimal starting point.
+`evals/scaffold/` is not a second eval system. Harbor runs the tasks under `evals/tasks/`. Use scaffolding only when you want Managed Deep Agents to create a minimal starting point.
 </Note>
 
 ## Choose an authoring workflow
@@ -79483,7 +79597,7 @@ Use one of the following ways to populate the canonical Harbor dataset:
 - Model and tool credentials exported in the shell that runs Harbor.
 
 <Note>
-Harbor does not load values from the project `.env` file. When MDA generates a Harbor job config, it writes `${VAR}` placeholders for eligible `.env` keys, not their values. Export the required variables before you run Harbor.
+Harbor does not load values from the project `.env` file. When Managed Deep Agents generates a Harbor job config, it writes `${VAR}` placeholders for eligible `.env` keys, not their values. Export the required variables before you run Harbor.
 </Note>
 
 ## Author Harbor evals directly
@@ -79512,13 +79626,13 @@ Each task describes what the agent should do. Harbor runs the agent in the task 
 
 The verifier must write a numeric reward to `/logs/verifier/reward.txt` or numeric metrics to `/logs/verifier/reward.json`. For the full task format and verifier options, see the [Harbor task documentation](https://www.harborframework.com/docs/tasks).
 
-Files you author directly under `evals/tasks/` are preserved when MDA compiles scaffolds with other names.
+Files you author directly under `evals/tasks/` are preserved when Managed Deep Agents compiles scaffolds with other names.
 
 ## Scaffold a Harbor task
 
-This optional workflow creates a minimal source task that MDA can complete and copy into the canonical Harbor dataset.
+This optional workflow creates a minimal source task that Managed Deep Agents can complete and copy into the canonical Harbor dataset.
 
-MDA scaffolds the task from an instruction and a Python test.
+Managed Deep Agents scaffolds the task from an instruction and a Python test.
 
 
 
@@ -79572,7 +79686,7 @@ To refresh specific scaffolds, repeat `--task`:
 mda evals compile . --task smoke --task regression
 ```
 
-For each selected scaffold, MDA:
+For each selected scaffold, Managed Deep Agents:
 
 1. Replaces the matching directory under `evals/tasks/`.
 2. Copies the complete scaffold from `evals/scaffold/`.
@@ -79584,7 +79698,7 @@ Unselected tasks under `evals/tasks/` are preserved, including tasks authored di
 Treat `evals/scaffold/<name>/` as the source of truth for a scaffolded task. Compiling that scaffold replaces the entire matching `evals/tasks/<name>/` directory, including changes made only to the canonical copy.
 </Warning>
 
-You can add Harbor files such as `task.toml`, `environment/`, or a custom `tests/test.sh` to a scaffold under `evals/scaffold/<name>/`. MDA copies them into the canonical Harbor task during compilation.
+You can add Harbor files such as `task.toml`, `environment/`, or a custom `tests/test.sh` to a scaffold under `evals/scaffold/<name>/`. Managed Deep Agents copies them into the canonical Harbor task during compilation.
 
 ### Inspect the compiled handoff
 
@@ -79602,8 +79716,8 @@ Compile supports the following repeatable flags:
 
 | Flag | Purpose |
 | --- | --- |
-| `--task <name>` | Select one task. Repeat to select more tasks. If a selected task has a source under `evals/scaffold/`, MDA refreshes its canonical copy. Omit the flag to select all tasks and refresh every scaffold. |
-| `--model <provider:model>` | Record a model in the artifact manifest. The generated job config uses the first model. If omitted, MDA uses the agent's model when available. |
+| `--task <name>` | Select one task. Repeat to select more tasks. If a selected task has a source under `evals/scaffold/`, Managed Deep Agents refreshes its canonical copy. Omit the flag to select all tasks and refresh every scaffold. |
+| `--model <provider:model>` | Record a model in the artifact manifest. The generated job config uses the first model. If omitted, Managed Deep Agents uses the agent's model when available. |
 
 Check in the Harbor definitions and configuration under `evals/` that your project uses. Keep local run output under `evals/harbor-jobs/` out of version control. The `evals/` directory is not included in the deployed agent build.
 
@@ -79888,7 +80002,7 @@ These defaults differ from a deployed agent. Test identity and sandbox behavior 
 # Connect to MCP servers
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-connectors
 
-An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) servers to a Managed Deep Agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
+An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) servers to a managed deep agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -79998,7 +80112,7 @@ If a server requires credentials, read them from environment variables and pass 
 # Add memory to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-memory
 
-Normally, a Managed Deep Agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
+Normally, a managed deep agent's conversational memory is scoped to a thread or session. Durable memory is optional knowledge that an agent can retain **across** threads and sessions.
 
 When enabled, durable memory is backed by [Context Hub](/langsmith/use-the-context-hub). The deployment gets one read/write tree at `/memories/agent/`, shared by every caller. Managed Deep Agents do **not** have durable memory by default.
 
@@ -80110,7 +80224,7 @@ write fails, do not claim that you remembered it.
 # Add custom middleware to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware
 
-Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
+Managed Deep Agents support the Deep Agents `middleware` configuration surface.
 
 Add LangChain middleware to `define_deep_agent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
 
@@ -80245,7 +80359,7 @@ Managed Deep Agents (MDA) is the simplest way to build and deploy production age
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 - **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/python/deepagents/overview).
-- **A managed runtime**: LangSmith Agent Server hosts and operates the agent, and keeps sessions running across restarts.
+- **A managed runtime**: [LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) hosts and operates the agent, and keeps sessions running across restarts.
 
 ```mermaid actions={false}
 %%{init: {"theme": "base", "themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
@@ -80279,7 +80393,7 @@ flowchart LR
 A managed deep agent consists of a project folder that contains the business logic for its behavior:
 
 <Tabs>
-  <Tab title="Model & Configuration">
+  <Tab title="Model & configuration">
 ```python agent.py
 from managed_deepagents import define_deep_agent
 
@@ -80479,12 +80593,12 @@ The only required file is `agent.py` at the project root. It must export a named
 
 Use only one agent entry in a project. See [Agent definition](/langsmith/python/managed-deep-agents-agent-definition).
 
-## How MDA treats project files
+## How Managed Deep Agents treats project files
 
-- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. MDA syncs both to Context Hub.
+- **Managed context**: `instructions.md` defines the system prompt. Each directory under `skills/` contains task-specific instructions. Managed Deep Agents syncs both to Context Hub.
 - **Application code**: Files under `tools/` and `middleware/` are ordinary project modules. Import them from the agent entry. Other local modules work the same way.
 - **Managed configuration**: Root `identity.py` and `memory.py`, direct children of `channels/`, `connectors/`, and `schedules/`, and `sandbox/__init__.py` enable their corresponding capabilities. MCP connector modules export a module-level `connector`.
-- **Dependencies and secrets**: Declare dependencies in `pyproject.toml`. MDA loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
+- **Dependencies and secrets**: Declare dependencies in `pyproject.toml`. Managed Deep Agents loads `.env` locally and forwards eligible values as deployment secrets, but never includes `.env` files in the build archive.
 - **Evals**: Managed Deep Agents evals are Harbor evals. `evals/tasks/` is the canonical Harbor task dataset. Author tasks there directly, or run `mda evals init <name>` to create an optional starter under `evals/scaffold/`. `mda evals compile` copies scaffolds into `evals/tasks/` and packages the agent for Harbor. The `evals/` directory is not included in the deployed agent build.
 
 
@@ -80779,7 +80893,7 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-sandboxes
 
 Agents often want to write or execute code when doing their job.
-A sandbox gives a Managed Deep Agent an isolated filesystem and shell for working with files, running code, and executing commands.
+A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -80910,7 +81024,7 @@ schedule = define_schedule(
 
 Each schedule must define exactly one of:
 
-- `prompt`: A natural-language prompt. MDA converts it to a user message when the cron fires.
+- `prompt`: A natural-language prompt. Managed Deep Agents converts it to a user message when the cron fires.
 - `input`: A structured LangGraph input object. Use this when you need to pass custom graph input instead of a single prompt.
 
 ```python schedules/nightly_sweep.py
@@ -80933,7 +81047,7 @@ schedule = define_schedule(
 
 ## Choose thread behavior
 
-Schedules use ephemeral threads by default. MDA creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
+Schedules use ephemeral threads by default. Managed Deep Agents creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
 
 Use a persistent thread only when scheduled runs should accumulate durable thread state across invocations.
 
@@ -81007,7 +81121,7 @@ Schedule declarations are extracted at compile time. Keep schedule configuration
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing MDA-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
 If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
@@ -81130,7 +81244,7 @@ For skill authoring patterns and the complete format, see [Skills](/oss/python/d
 # Add custom tools to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-tools
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 Define LangChain tools in your project, import them into `agent.py`, and pass them to `define_deep_agent`.
 
@@ -92338,13 +92452,15 @@ bash mirror_langsmith_images.sh <your-registry> [<platform>]
 
 Where `<your-registry>` is the URL of your Docker registry (e.g. `myregistry.com`) and `<platform>` is the platform you are using (e.g. `linux/amd64`, `linux/arm64`, etc.). If you do not specify a platform, it will default to `linux/amd64`.
 
-For example, if your registry is `myregistry.com`, your platform is `linux/arm64`, and you want to use the latest version of the images, you would run:
+For example, if your registry is `myregistry.com`, your platform is `linux/arm64`, and your LangSmith app version is `0.16.36`, run:
 
 ```bash
-bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.10.66
+bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.16.36
 ```
 
 Note that this script will assume that you have Docker installed and that you are authenticated to your registry. It will also push the images to the specified registry with the same repository/tag as the original images.
+
+For LangSmith images, use the `appVersion` from your Helm chart release as the image tag. Do not use `latest`: it is mutable, and pulling images while a release is being published can result in mismatched service versions.
 
 Alternatively, you can pull, mirror, and push the images manually. The images that you will need to mirror are found in the `values.yaml` file of the LangSmith Helm Chart. These can be found here: [LangSmith Helm Chart values.yaml](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L14)
 
@@ -92352,9 +92468,9 @@ Here is an example of how to mirror the images using Docker:
 
 ```bash
 # Pull the images from the public registry
-docker pull langchain/langsmith-backend:latest
-docker tag langchain/langsmith-backend:latest <your-registry>/langsmith-backend:latest
-docker push <your-registry>/langsmith-backend:latest
+docker pull langchain/langsmith-backend:0.16.36
+docker tag langchain/langsmith-backend:0.16.36 <your-registry>/langsmith-backend:0.16.36
+docker push <your-registry>/langsmith-backend:0.16.36
 ```
 
 You will need to repeat this for each image that you want to mirror.
@@ -100441,6 +100557,15 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+
+<Update label="2026-08-16" tags={["self-hosted"]} rss={{ title: "2026-08-16 - self-hosted" }}>
+## langsmith-0.16.7
+
+- Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.16.7.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.7/langsmith-0.16.7.tgz)
+{/* langsmith-release-image: 0.16.7 0.16.38 */}
+</Update>
 
 <Update label="2026-08-14" tags={["self-hosted"]} rss={{ title: "2026-08-14 - self-hosted" }}>
 ## langsmith-0.16.6
@@ -130539,6 +130664,136 @@ langchain-clickhouse:
 </div>
 
 
+# Set up LangChain Tuned Evaluators
+Source: https://docs.langchain.com/langsmith/tuned-evaluators
+
+<Note>
+LangChain Tuned Evaluators are in **[beta](/langsmith/release-stages)**. Their interface and behavior may change before general availability.
+</Note>
+
+LangChain Tuned Evaluators attach feedback to your traces. Each evaluator uses a specialized judge trained for a specific evaluation task. LangChain writes, tests, versions, and maintains the prompt and judge model so that you can focus on using the feedback to find and fix problems in your agent.
+
+Perceived Error (Tuned) detects conversations with evidence that an agent made a mistake, misunderstood a request, or took the interaction in the wrong direction. It returns `true` when the user appears to perceive an error and `false` otherwise. Evidence can include a user correction, repeated request, rejected action, contradictory response, acknowledged mistake, persistent misunderstanding, or unresolved outcome.
+
+Use Perceived Error feedback to:
+
+- Find failures that did not produce a system error or explicit user rating.
+- Filter for conversations that need investigation and review the evaluator's explanation with the original interaction.
+- Compare flagged threads to identify recurring failure modes.
+- Add useful threads to evaluation datasets or send ambiguous cases for human review.
+- Test agent changes against examples drawn from traced failures.
+
+## Understand how LangChain Tuned Evaluators work
+
+<Steps>
+  <Step title="Add an evaluator">
+    Add a LangChain Tuned Evaluator to a compatible tracing project.
+  </Step>
+  <Step title="Identify an eligible thread">
+    LangSmith identifies a thread that meets the evaluator's requirements and the project's filters and sampling configuration.
+  </Step>
+  <Step title="Evaluate the thread">
+    The specialized LangChain-managed judge evaluates the eligible thread.
+  </Step>
+  <Step title="Attach feedback">
+    LangSmith attaches the result and its explanation to the thread as feedback.
+  </Step>
+</Steps>
+
+## Before you begin
+
+Before you add Perceived Error (Tuned):
+
+- An [organization admin](/langsmith/rbac#organization-admin) must enable LangChain Tuned Evaluators for the organization.
+- The source must be a tracing project that uses [threads](/langsmith/threads). The Perceived Error (Tuned) evaluator cannot run on individual runs.
+- Thread traces must contain supported [message lists](/langsmith/online-evaluations-multi-turn#prerequisites). At least one non-empty user message must be followed by a non-empty assistant message.
+- Each thread must contain at least two traces before the evaluator can run.
+
+## Enable LangChain Tuned Evaluators
+
+Enabling LangChain Tuned Evaluators lets members attach them to tracing projects throughout the organization. Evaluation data is processed using LangChain-managed API keys.
+
+To enable LangChain Tuned Evaluators as an organization admin:
+
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-tuned-evaluators), open **Settings**.
+1. Select **Tuned evaluators**.
+1. Turn on **Enable LangChain Tuned evaluators** and accept the terms.
+
+An organization admin can also accept and enable LangChain Tuned Evaluators when first saving one from the evaluator gallery.
+
+## Add a LangChain Tuned Evaluator to a project
+
+To add Perceived Error (Tuned) to a tracing project:
+
+1. Open a tracing project and select the **Evaluators** tab.
+1. Select **+ Evaluator**.
+1. Under **LangChain Tuned**, select **Perceived Error (Tuned)**.
+1. (Optional) Configure filters and the sampling rate.
+1. Click **Save**.
+
+Before creating the evaluator, LangSmith checks the recent threads in the project for the supported message list with a complete user-to-assistant exchange.
+
+LangSmith blocks creation when the project is empty or none of the recent threads has a compatible message structure.
+
+## Disable LangChain Tuned Evaluators
+
+To disable LangChain Tuned Evaluators for the organization:
+
+1. Open **Settings** and select **Tuned evaluators**.
+1. Turn off **Enable LangChain Tuned evaluators**.
+
+Disabling the feature pauses attached LangChain Tuned Evaluators. LangSmith preserves their configuration, and they resume when an organization admin enables the feature again.
+
+## Review usage charges
+
+Availability and pricing vary by LangChain Tuned Evaluator. LangSmith charges LCUs only for an evaluation run that attaches feedback. Skipped and failed evaluation attempts that do not attach feedback are not billed.
+
+Like other online evaluators, LangChain Tuned Evaluators upgrade evaluated traces to extended retention. This can increase trace storage charges. For current rates, see [LangSmith pricing](/langsmith/pricing-plans). For details about retention upgrades and trace charges, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+
+## Troubleshoot LangChain Tuned Evaluators
+
+### The project is empty
+
+Add a thread to the tracing project, then try to save the evaluator again. The thread must contain supported message lists and at least one complete user-to-assistant exchange.
+
+### The project does not contain a valid message list
+
+Check the inputs and outputs of the project's most recent threads. Their top-level `messages` fields must contain message lists in a [supported format](/langsmith/online-evaluations-multi-turn#prerequisites), and at least one user message must be followed by an assistant message.
+
+### The evaluator does not produce feedback
+
+Check the following conditions:
+
+- The organization still has LangChain Tuned Evaluators enabled.
+- The thread contains at least two traces.
+- The project's thread idle time has elapsed.
+- The thread matches the evaluator's filters and sampling configuration.
+- The thread contains a complete user-to-assistant exchange in a supported message format.
+
+To inspect evaluator activity, open the tracing project's **Evaluators** tab and select **Logs** for the evaluator.
+
+### Enabling the feature does not take effect immediately
+
+Organization settings can take a few seconds to propagate. If LangSmith reports that the managed-evaluator setting is still taking effect, wait a few seconds and try again.
+
+## See also
+
+- [Manage evaluators](/langsmith/evaluators)
+- [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)
+- [Trace with threads](/langsmith/threads)
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Callout>
+<Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+</div>
+
+
 # How to upload experiments run outside of LangSmith with the REST API
 Source: https://docs.langchain.com/langsmith/upload-existing-experiments
 
@@ -143343,14 +143598,6 @@ Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/list-issues-
 
 # Get issue (Beta)
 Source: https://docs.langchain.com/langsmith/smith-api/issues/get-issue-beta
-
-
-# Record a fix-verification verdict
-Source: https://docs.langchain.com/langsmith/smith-api/issues/record-a-fix-verification-verdict
-
-
-# Start preview-deploy verification for a fix
-Source: https://docs.langchain.com/langsmith/smith-api/issues/start-preview-deploy-verification-for-a-fix
 
 
 # Mark issue viewed (Beta)

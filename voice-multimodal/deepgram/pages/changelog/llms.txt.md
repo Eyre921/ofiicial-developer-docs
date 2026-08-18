@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Docs
 
+- [August 17, 2026](https://developers.deepgram.com/changelog/2026/8/17.md)
 - [August 14, 2026](https://developers.deepgram.com/changelog/2026/8/14.md)
 - [August 12, 2026](https://developers.deepgram.com/changelog/2026/8/12.md): Deepgram Self-Hosted release 260812 brings Flux TTS to self-hosted deployments in Early Access on the new /v2/speak endpoint, and adds Nova-3 support for Nepali and Punjabi.
 - [August 10, 2026](https://developers.deepgram.com/changelog/2026/8/10.md)

@@ -40,16 +40,6 @@ Search for **ElevenLabs** and select **Connect**.
 Complete the OAuth flow with your ElevenLabs account. Claude can then list, create, and update
 agents in your workspace on your behalf.
 
-## Connect from other MCP clients
-
-Add the server to any MCP client that supports remote servers with OAuth authentication:
-
-* **Server URL**: `https://api.elevenlabs.io/v1/mcp`
-* **OAuth client ID**: `dee9ba45-a592-4730-a321-a7b90a00c436`
-* **Transport**: Streamable HTTP
-
-When prompted, sign in with your ElevenLabs account to complete the OAuth flow.
-
 ## What you can do
 
 Once connected, your assistant can:
@@ -57,6 +47,8 @@ Once connected, your assistant can:
 * Create new agents by describing what you want
 * Update any agent setting, including the system prompt, voice, language, and first message
 * List your agents and inspect or compare their configurations
+* Review an agent's recent conversations and read full transcripts
+* Explore the topics your agents' conversations cover
 * Duplicate and delete agents
 * Estimate an agent's expected LLM usage and cost before making changes
 * Retrieve an agent's widget configuration and shareable link
@@ -73,11 +65,24 @@ Once connected, try prompts like:
 * "List my agents and tell me which ones still use the default first message."
 * "Generate a sample of my agent's voice saying our new greeting."
 
+## Permissions
+
+Two layers control what a connected assistant can do: the permissions you grant to ElevenLabs when you connect, and the tool controls in your MCP client.
+
+### ElevenLabs permissions
+
+When you connect, the OAuth consent screen lists the permissions the assistant is requesting, such as reading and writing agents. The assistant can only perform actions covered by the permissions you approve, and access is limited to the workspace you sign in with. You can revoke the connection at any time from your MCP client or from your ElevenLabs account settings.
+
+### Tool controls in your MCP client
+
+MCP clients such as Claude let you choose which of the connector's tools the assistant can use and which require your approval before each call. In Claude, open the ElevenLabs connector's settings to enable or disable individual tools and to set whether a tool runs automatically or asks for confirmation first.
+
+These controls work at two levels. Workspace administrators can configure the connector and its tools for everyone in their organization, and individual users can apply stricter settings for themselves. A tool disabled by an administrator cannot be re-enabled by an individual user.
+
 ## Security
 
 * Access is scoped by OAuth permissions covering ElevenAgents read and write operations and Text to Speech.
 * Deleting an agent is destructive. Review tool calls in your MCP client before approving them, and restrict write access to workspace members who need it.
-* You can revoke the connection at any time from your MCP client or from your ElevenLabs account settings.
 
 ## Related resources
 

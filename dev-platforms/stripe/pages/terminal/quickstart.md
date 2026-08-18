@@ -885,7 +885,7 @@ dependencies {
     // ...
 
     // Stripe Terminal SDK
-    implementation 'com.stripe:stripeterminal:5.7.0'
+    implementation 'com.stripe:stripeterminal:5.8.0'
 }
 ```
 
@@ -906,8 +906,8 @@ dependencies {
     // ...
 
     // Stripe Tap to Pay SDK
-    implementation 'com.stripe:stripeterminal-taptopay:5.7.0'
-    implementation 'com.stripe:stripeterminal-core:5.7.0'
+    implementation 'com.stripe:stripeterminal-taptopay:5.8.0'
+    implementation 'com.stripe:stripeterminal-core:5.8.0'
 }
 ```
 
@@ -4038,9 +4038,9 @@ import com.stripe.example.ServerPaymentIntent
         @Field("amount") amount: Int,
         @Field("currency") currency: String
     ): Call<ServerPaymentIntent>
-  implementation "com.stripe:stripeterminal:5.7.0"
-  implementation("com.stripe:stripeterminal-taptopay:5.7.0")
-  implementation("com.stripe:stripeterminal-core:5.7.0")
+  implementation "com.stripe:stripeterminal:5.8.0"
+  implementation("com.stripe:stripeterminal-taptopay:5.8.0")
+  implementation("com.stripe:stripeterminal-core:5.8.0")
                     .setAmount(500)
     private final DiscoveryConfiguration discoveryConfig =
             new DiscoveryConfiguration.InternetDiscoveryConfiguration(0, null, true, DiscoveryFilter.None.INSTANCE);
@@ -4201,9 +4201,9 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener;
         @Field("amount") Integer amount,
         @Field("currency") String currency
     );
-  implementation 'com.stripe:stripeterminal:5.7.0'
-  implementation 'com.stripe:stripeterminal-taptopay:5.7.0'
-  implementation 'com.stripe:stripeterminal-core:5.7.0'
+  implementation 'com.stripe:stripeterminal:5.8.0'
+  implementation 'com.stripe:stripeterminal-taptopay:5.8.0'
+  implementation 'com.stripe:stripeterminal-core:5.8.0'
 1. Build the server
 
 ~~~

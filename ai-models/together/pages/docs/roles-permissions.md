@@ -16,10 +16,10 @@ Together uses role-based access control (RBAC) at both the [Organization](/docs/
 
 Organizations have two roles: **Admin** and **Developer**.
 
-| Role          | Scope           | Description                                                                                    |
-| ------------- | --------------- | ---------------------------------------------------------------------------------------------- |
-| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects.                      |
-| **Developer** | Org (read-only) | Can see Organization-level info and the Projects list. Joins Projects as an Editor by default. |
+| Role          | Scope           | Description                                                                                                                                                                   |
+| ------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects. Can see and join any Project, regardless of its visibility.                                         |
+| **Developer** | Org (read-only) | Can see Organization-level info and the Open and Closed Projects list. Joins Open Projects as an Editor by default; must be added to Closed and Private Projects by an Admin. |
 
 <Info>
   The creator ("Owner") of an Organization is a special Admin. They cannot be removed from the Organization, their role cannot be changed from Admin, and they cannot delete their own account.
@@ -33,21 +33,27 @@ Organizations have two roles: **Admin** and **Developer**.
 | Organization settings: Write | Yes   | No        |
 | Billing: Read                | Yes   | Yes       |
 | Billing: Write               | Yes   | No        |
-| Projects: Read               | Yes   | Yes       |
 | Projects: Create             | Yes   | No        |
 | Members: Read                | Yes   | Yes       |
 | Members: Invite              | Yes   | No        |
 | Members: Remove              | Yes   | No        |
 | Members: Manage roles        | Yes   | No        |
 
+### Roles and project visibility
+
+A Project's [visibility](/docs/projects#project-visibility) (Open, Closed, or Private) controls which Members can discover and join it. Your Organization role affects what you can see:
+
+* Organization Admins can see and join any Project, but must join a Closed or Private Project before accessing its resources or settings.
+* Organization Developers must be added to a Closed or Private Project by an Admin.
+
 ## Project roles
 
 Projects have two roles: **Admin** and **Editor**.
 
-| Role       | Description                                                                                                                                                                                            |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Admin**  | Can access and update Project settings. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
-| **Editor** | Can use the Project's resources but cannot access or update Project settings. Organization Developers are added to Projects as Editors by default.                                                     |
+| Role       | Description                                                                                                                                                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Admin**  | Can access and update Project settings, including the Project's visibility and Collaborators. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
+| **Editor** | Can use the Project's resources but cannot update Project settings, change its visibility, or manage Collaborators. Organization Developers are added to Projects as Editors by default.                                                                     |
 
 ### Project permissions
 
@@ -55,6 +61,8 @@ Projects have two roles: **Admin** and **Editor**.
 | --------------------------- | ----- | ------ |
 | Project settings: Read      | Yes   | Yes    |
 | Project settings: Write     | Yes   | No     |
+| Project visibility: Read    | Yes   | Yes    |
+| Project visibility: Change  | Yes   | No     |
 | Project cost analytics      | Yes   | Yes    |
 | API keys: Read              | Yes   | Yes    |
 | API keys: Create            | Yes   | Yes    |
@@ -63,6 +71,8 @@ Projects have two roles: **Admin** and **Editor**.
 | Collaborators: Add          | Yes   | No     |
 | Collaborators: Remove       | Yes   | No     |
 | Collaborators: Manage roles | Yes   | No     |
+
+Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
 
 ## External collaborators (beta)
 

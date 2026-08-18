@@ -422,10 +422,12 @@ The table below shows a list of events logged on the Activity page.
 | ai-gateway-api-key-created | Active | A user created an AI Gateway API key. |
 | ai-gateway-api-key-deleted | Active | A user deleted an AI Gateway API key. |
 | ai-gateway-api-key-quota-updated | Active | A user set or changed the budget on an AI Gateway API key. |
+| ai-gateway-auto-reload-updated | Active | A user enabled, changed, or disabled automatic AI Gateway credit reloads, whether charged to a card or drawn from a flexible commitment. |
 | ai-gateway-budget-default-updated | Active | A user set, changed, or removed one scope's AI Gateway budget default. |
 | ai-gateway-byok-credential-created | Active | A user created an AI Gateway BYOK credential. |
 | ai-gateway-byok-credential-deleted | Active | A user deleted an AI Gateway BYOK credential. |
 | ai-gateway-byok-credential-updated | Active | A user updated an AI Gateway BYOK credential. |
+| ai-gateway-credits-purchased | Active | A user manually purchased AI Gateway credits. Automatic reloads are not recorded, as they have no acting user. |
 | ai-gateway-guardrails-updated | Active | A user updated the AI Gateway guardrail settings. |
 | ai-gateway-model-allowlist-models-updated | Active | Models were added to or removed from the AI Gateway model allowlist. |
 | ai-gateway-model-allowlist-toggled | Active | The AI Gateway model allowlist was enabled or disabled for a team. |
@@ -598,6 +600,9 @@ The table below shows a list of events logged on the Activity page.
 | env-variable-read:cli:pull | Active | An environment variable was decrypted via CLI pull. |
 | env-variable-read:unknown-source | Active | An environment variable was decrypted from an unknown source. |
 | env-variable-rotated | Active | An integration-managed environment variable was rotated during a secret rotation. |
+| experiment-created | Active | An experiment and its Flag were created. |
+| experiment-transitioned | Active | An experiment changed lifecycle state or ramp. |
+| experiment-updated | Active | An experiment configuration was updated. |
 | firewall-bypass-created | Active | A bypass of system firewall rules was created |
 | firewall-bypass-deleted | Active | A bypass of system firewall rules was deleted |
 | firewall-config-modified | Active | A firewall configuration was modified. |
@@ -4472,7 +4477,7 @@ https://ai-gateway.vercel.sh/claude-code
 
 Use it everywhere on this page. The URL takes no `/v1` suffix, because the Anthropic SDK appends `/v1/messages` itself, so adding it yourself produces a 404. To call the gateway from your own code rather than through Claude Code, see the [Anthropic Messages API](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api) instead.
 
-On the `/claude-code` surface, gateway models are listed with a `claude-code/` prefix, for example `claude-code/openai/gpt-5.6-sol`, and models with a context window of 1M tokens or more carry a `[1m]` suffix. Those are display IDs for the picker: the gateway strips them before routing, so a request still bills and traces against the underlying model. Image generation models are filtered out, since Claude Code can't use them.
+On the `/claude-code` surface, gateway models are listed with a `claude-code/` prefix, for example `claude-code/anthropic/claude-opus-5`, and models with a context window of 1M tokens or more carry a `[1m]` suffix. Those are display IDs for the picker: the gateway strips them before routing, so a request still bills and traces against the underlying model. Image generation models are filtered out, since Claude Code can't use them.
 
 To turn the picker on, set `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` alongside the base URL:
 
@@ -5150,13 +5155,20 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   > so remove `supports_websockets = true` when switching to a non-OpenAI model.
 
 - ### (Optional) Use a different model
-  To use a different model, update the `model` field in your config:
-  ```toml filename="~/.codex/config.toml"
-  model = "anthropic/claude-sonnet-5"
-  # Or try other models:
-  # model = "google/gemini-3.5-flash-lite"
-  # model = "openai/gpt-5.6-sol"
+  Run `/model` inside Codex to switch models without leaving your session. The picker lists the full gateway catalog and sets reasoning effort at the same time, because the Codex compatibility endpoint serves `/codex/v1/models` when the CLI starts.
+
+  To start a session on a specific model, pass `--model` (or `-m`):
+  ```bash
+  codex --model openai/gpt-5.5-pro
   ```
+  To change the model for every session, update the `model` field in your config:
+  ```toml filename="~/.codex/config.toml"
+  model = "openai/gpt-5.5-pro"
+  # Or try other models:
+  # model = "openai/gpt-5.4-mini"
+  # model = "openai/gpt-5.4-nano"
+  ```
+  Every model in the gateway catalog works here, not only OpenAI ones. The examples stay on OpenAI models because Codex reads their metadata natively.
   > **💡 Note:** When using non-OpenAI models through the gateway, you may see warnings about
   > model metadata not being found. These warnings are safe to ignore since the
   > gateway handles model routing.
@@ -5166,15 +5178,15 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   ```toml filename="~/.codex/fast.config.toml"
   model = "openai/gpt-5.4-nano"
   ```
-  ```toml filename="~/.codex/claude.config.toml"
-  model = "anthropic/claude-sonnet-5"
+  ```toml filename="~/.codex/pro.config.toml"
+  model = "openai/gpt-5.5-pro"
   ```
   Codex loads `~/.codex/config.toml` first, then overlays the profile file, so `model_provider = "vercel"` is inherited from your base config.
 
   Switch between profiles using the `--profile` flag:
   ```bash
   codex --profile fast
-  codex --profile claude
+  codex --profile pro
   ```
   > **💡 Note:** Codex 0.134.0 and later no longer reads `[profiles.<name>]` tables or the
   > `profile` selector from `config.toml`. If you have legacy profile tables,
@@ -5437,11 +5449,14 @@ wire_api = "responses"
 
 `/codex/v1` is Codex's own compatibility endpoint, and `wire_api = "responses"` is required, since Codex no longer speaks Chat Completions.
 
-Then start Codex:
+Then start Codex, optionally on a specific model:
 
 ```bash
 codex
+codex --model openai/gpt-5.5-pro
 ```
+
+Codex reads the gateway catalog from `/codex/v1/models` at startup, so `/model` inside a session lists every gateway model.
 
 For full configuration options, including the dedicated Codex compatibility endpoint and profiles, see [Configure OpenAI Codex](/docs/ai-gateway/coding-agents/openai-codex).
 
@@ -16288,16 +16303,16 @@ Routing rules are managed per team, so your access depends on your role in the t
 
 --------------------------------------------------------------------------------
 title: "Service Tiers"
-description: "Control processing priority and cost for OpenAI, Google AI Studio, and Google Vertex AI models using service tiers through AI Gateway, available via all supported APIs."
+description: "Control processing priority and cost for OpenAI, Google AI Studio, Google Vertex AI, and SpaceXAI models using service tiers through AI Gateway, available via all supported APIs."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/ai-gateway/models-and-providers/service-tiers"
 --------------------------------------------------------------------------------
 
 # Service Tiers
 
-OpenAI, Google AI Studio, and Google Vertex AI offer different processing tiers that trade off latency, availability, and cost. You can request a service tier through AI Gateway and AI Gateway adjusts pricing based on the tier the provider actually served.
+OpenAI, Google AI Studio, Google Vertex AI, and SpaceXAI offer different processing tiers that trade off latency, availability, and cost. You can request a service tier through AI Gateway and AI Gateway adjusts pricing based on the tier the provider actually served.
 
-> **💡 Note:** Service tiers are supported for OpenAI, Google AI Studio, and Google Vertex AI models. Setting a service tier on a model that doesn't support it has no effect. Tier availability varies by model and provider, so check the provider's pricing page for which models offer which tiers.
+> **💡 Note:** Service tiers are supported for OpenAI, Google AI Studio, Google Vertex AI, and SpaceXAI models. Setting a service tier on a model that doesn't support it has no effect. Tier availability varies by model and provider, so check the provider's pricing page for which models offer which tiers.
 
 ## Supported values
 
@@ -16309,6 +16324,8 @@ OpenAI, Google AI Studio, and Google Vertex AI offer different processing tiers 
 
 If you don't specify a service tier, requests use the standard tier.
 
+SpaceXAI supports `priority` only. Setting `flex` on a SpaceXAI model has no effect, and the request runs on the default tier.
+
 ## Best-effort routing
 
 Service tier is a best-effort routing hint, not a hard guarantee. If the provider serving a request doesn't support service tiers, the tier is ignored and the request runs on the default tier. If a provider supports the tier but doesn't grant it (for example, when priority capacity is full), the request is downgraded to the default tier. In both cases the request still succeeds and is billed at the default rate.
@@ -16319,7 +16336,7 @@ The only request that fails over a service tier is one that passes an invalid va
 
 You can set the service tier in two ways:
 
-- `gateway.serviceTier` (AI SDK v6 and v7): a unified option that AI Gateway translates to the right per-provider field. Use this when you want one configuration that works across OpenAI, Google AI Studio, and Google Vertex AI.
+- `gateway.serviceTier` (AI SDK v6 and v7): a unified option that AI Gateway translates to the right per-provider field. Use this when you want one configuration that works across OpenAI, Google AI Studio, Google Vertex AI, and SpaceXAI.
 - Per-provider options: set the tier directly on the provider namespace. Use these for direct REST API calls, for AI SDK v5, or when you need provider-specific behavior.
 
 ### Using `gateway.serviceTier`
@@ -16442,6 +16459,7 @@ You can also set the tier directly on the provider namespace. The supported keys
 - OpenAI: `openai.serviceTier` (or `service_tier` for the raw Chat Completions and OpenAI Responses APIs)
 - Google AI Studio: `google.serviceTier`
 - Google Vertex AI: `vertex.sharedRequestType`
+- SpaceXAI: `xai.serviceTier`
 
 #### OpenAI
 
@@ -16500,6 +16518,29 @@ const { text, usage, providerMetadata } = await generateText({
     },
     vertex: {
       sharedRequestType: 'flex',
+    },
+  },
+});
+
+console.log(text);
+console.log('Applied tier:', providerMetadata?.gateway?.serviceTier);
+console.log('Usage:', usage);
+```
+
+#### SpaceXAI
+
+```typescript filename="app/api/chat/route.ts"
+import { generateText } from 'ai';
+
+const { text, usage, providerMetadata } = await generateText({
+  model: 'xai/grok-4.5',
+  prompt: 'Explain quantum computing in two sentences.',
+  providerOptions: {
+    gateway: {
+      only: ['xai'],
+    },
+    xai: {
+      serviceTier: 'priority',
     },
   },
 });
@@ -16777,6 +16818,7 @@ AI Gateway adjusts pricing based on the service tier the provider actually serve
 - [OpenAI pricing](https://openai.com/api/pricing/)
 - [Google AI Studio pricing](https://ai.google.dev/gemini-api/docs/pricing)
 - [Google Vertex AI pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)
+- [SpaceXAI pricing](https://docs.x.ai/docs/pricing)
 
 
 --------------------------------------------------------------------------------
@@ -52451,6 +52493,18 @@ vercel sandbox create --connect
 
 [Learn more about the sandbox command](/docs/cli/sandbox)
 
+### security
+
+Inspect the security posture of your Vercel team with checks against vulnerable misconfigurations and settings.
+
+```bash
+vercel security
+vercel security check --findings
+vercel security check [check-name]
+```
+
+[Learn more about the security command](/docs/cli/security)
+
 ### skills
 
 Discover agent skills relevant to your project, or search the skill catalog.
@@ -54379,6 +54433,162 @@ For the full list of subcommands, flags, and examples, see the [Sandbox CLI Refe
 - [Sandbox CLI Reference](/docs/sandbox/cli-reference)
 - [Vercel Sandbox overview](/docs/sandbox)
 - [Sandbox quickstart](/docs/sandbox/quickstart)
+
+
+--------------------------------------------------------------------------------
+title: "vercel security"
+description: "Inspect the security posture of your Vercel team from the terminal: run every security check, list findings, and scope the report to a project."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/cli/security"
+--------------------------------------------------------------------------------
+
+# vercel security
+
+The `vercel security` command runs your team's security checks and prints them in your terminal. It surfaces the same checks as your team's [Security Dashboard](/docs/security/security-dashboard), so you can run every check for your team, list the individual findings behind a check, and pipe the raw report into scripts or have an agent address them.
+
+Security checks run against the current team, so you need a team scope. If no team is selected, run `vercel switch` to choose one before running the command.
+
+## Usage
+
+```bash filename="terminal"
+# Run all checks for the current team
+vercel security
+
+# List every finding across all checks
+vercel security check --findings
+
+# Deep-dive one check and list its findings
+vercel security check [check-name]
+
+# Output the raw report as JSON
+vercel security check --json
+```
+
+*Using the \`vercel security\` command to review the current team's security
+posture.*
+
+## Commands
+
+### check
+
+`check` is the default subcommand, so `vercel security` and `vercel security check` are equivalent. Both run every check for the current team and print a summary table. Pass one or more check slugs to run only those checks and list their findings.
+
+```bash filename="terminal"
+vercel security check
+vercel security check --findings
+vercel security check [check-name]
+vercel security check [check-name] [check-name]
+```
+
+*Run all checks, or pass one or more check slugs to compute and expand only
+those checks.*
+
+The summary table has six columns: `Check`, `Risk`, `Status`, `Violations`, `Muted`, and `Description`. When any check is failing, a footer hint points you to `--findings`.
+
+#### Options
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `--findings` | Boolean | List individual findings under each check, including muted ones. Implied when you pass a check slug |
+| `--limit <N>` | Number | Maximum findings returned per check. The default is 100, and the API caps it at 200. Violation counts stay exact even when findings are capped |
+| `-p, --project <NAME>` | String | Scope the report to a single project by name or ID |
+| `-F, --format <FORMAT>` | String | Output format. The only supported value is `json` |
+| `--json` | Boolean | Shorthand for `--format json`. Outputs the raw API response |
+
+#### Arguments
+
+| Argument | Required | Description |
+| --- | --- | --- |
+| `check` | No | One or more check slugs to run. Only the named checks are computed. Unknown slugs fail immediately with the list of valid slugs |
+
+## Available checks
+
+Each check has a slug, shown as `[check-name]` in the examples above, and a risk level of `high` or `medium`. Pass the slug to `vercel security check` to run just that check.
+
+| Slug | Risk | What it checks |
+| --- | --- | --- |
+| `members-no-mfa` | high | Team members without multi-factor authentication |
+| `members-too-many-owners` | high | Team owners to review |
+| `pats-no-expiration` | high | Personal access tokens that never expire |
+| `env-vars-creds-instead-of-oidc` | high | Long-lived credentials where OIDC is available |
+| `depl-no-git-fork-protection` | high | Projects without Git fork deploy prevention |
+| `proj-no-preview-depl-protection` | high | Projects without preview deployment protection |
+| `env-vars-non-sensitive` | medium | Environment variables not marked Sensitive |
+| `env-vars-non-sensitive-stale` | medium | Environment variables older than 90 days |
+| `env-vars-exposed-web-app-fwk` | medium | Environment variables exposed via a web application framework |
+
+## Check status
+
+The `Status` column reports one of the following values for each check. Each value maps to a card state on the [Security Dashboard](/docs/security/security-dashboard):
+
+| Status | Meaning | On the Security Dashboard |
+| --- | --- | --- |
+| `failing` | The check found one or more violations | A `High` or `Medium` risk badge |
+| `passing` | The check found no violations | A blue check-circle |
+| `muted` | Every finding for the check is muted | A blue check-circle with a `Check muted` badge when the whole check is muted, or an `N muted` badge when its findings are muted individually |
+| `no access` | Your role lacks permission to read the data for this check | A `Data Unavailable` overlay labeled `Insufficient Permissions` |
+| `error` | The check could not be computed | A `Data Unavailable` overlay |
+
+## Listing findings
+
+By default, `vercel security check` prints only the summary table. Add `--findings` to expand the individual findings under every check, or pass one or more check slugs to expand just those checks. Muted findings appear dimmed and tagged with `(muted)`.
+
+```bash filename="terminal"
+# Expand findings for all checks
+vercel security check --findings
+
+# Expand findings for a single check
+vercel security check [check-name]
+```
+
+When a check has more violations than the number of findings shown, the command prints a `Showing N of M findings` line so you can raise the cap with `--limit`.
+
+## Agent and non-interactive use
+
+In non-interactive environments, `vercel security check` writes the JSON report to stdout automatically, so you don't need to pass `--json`. Every error path emits a structured JSON payload with a machine-readable `reason` and suggested follow-up commands.
+
+The command uses two exit codes:
+
+| Exit code | Meaning |
+| --- | --- |
+| `0` | The report was produced, including when checks are failing or muted |
+| `1` | The command could not run because of an unknown slug, an invalid flag, a missing team scope, or a failed API request |
+
+A failing check still exits `0`, so gate a CI step on the report contents rather than the exit code.
+
+The report lists security findings such as member emails, token names, and project settings. Treat the output as sensitive: it can expose your team's security posture in CI logs or agent context, so don't write it to shared or public logs.
+
+## Examples
+
+### Scope the report to one project
+
+```bash filename="terminal"
+vercel security check --project my-app
+```
+
+*Run every check against a single project instead of the whole team.*
+
+### Raise the findings limit for one check
+
+```bash filename="terminal"
+vercel security check [check-name] --limit 200
+```
+
+*List up to 200 findings for a check.*
+
+### Pipe the report to jq
+
+```bash filename="terminal"
+vercel security check --json | jq '.report'
+```
+
+*Output the raw report as JSON and extract the fields you need.*
+
+## Related
+
+- [Vercel security overview](/docs/security)
+- [Vercel security dashboard](/docs/security/security-dashboard)
+- [Access roles](/docs/rbac/access-roles)
 
 
 --------------------------------------------------------------------------------
@@ -138911,15 +139121,36 @@ This is useful to reduce the chance of data exfiltration when running untrusted 
 
 ### User-defined
 
-Most specific policy, denying all traffic by default, while allowing users to get fine-grain control on their sandbox setup. Users can define:
+User-defined policies deny traffic by default and let you allow specific destinations. You can define:
 
-- a list of domains to allow traffic to. Domain-based policies are easy to use and maintain fine-grain access control for services like S3 (per bucket) or behind virtual hosting (as Vercel). Wildcard support (`*`) allows easier management for complex websites. Each domain can have specific rules attached to it, such as [credentials brokering](/docs/sandbox/concepts/firewall#credentials-brokering) via the `transform` field or [requests proxying](/docs/sandbox/concepts/firewall#requests-proxying) via the `forwardURL` field. Only one of these feature can be defined per rule.
-- a list of address ranges to allow traffic to. Those ranges will not enforce per-domain rules, supporting non-encrypted traffic. This is recommended when using secure-compute to connect to your private network securely.
-- a list of address ranges to deny traffic to. Those range will take precedence to block traffic. This is useful when using secure-compute, allowing Internet access to be granted while blocking internal network.
+- **Allowed domains**: Allow traffic by domain (for example, `api.example.com` or `*.example.com`), including services that use virtual hosting, such as Amazon S3. A domain can also use [credentials brokering](#credentials-brokering) through `transform` or [requests proxying](#requests-proxying) through `forwardURL`. A rule can define either `transform` or `forwardURL`.
+- **Allowed address ranges**: Allow traffic by CIDR range (for example, `10.0.0.0/8`). Use address ranges for non-encrypted traffic or private network access through Secure Compute. Address range rules do not enforce per-domain rules.
+- **Denied address ranges**: Block traffic to specific CIDR ranges (for example, `172.16.0.0/12`). Denied ranges take precedence over allowed domains and address ranges, but only remove access that an allow rule already granted.
 
-Address ranges and domains are enforced independently, so combining them does not compose the way it appears to. Because allowed ranges are not filtered by your domain rules, a domain allowlist alongside `subnets.allow` only controls the default resolver's DNS lookups. It does not restrict which IPs the sandbox can connect to within the allowed ranges. Code in the sandbox can reach any IP in an allowed range by connecting to a literal IP address or by using a custom DNS resolver, and that traffic bypasses SNI filtering, [credentials brokering](#credentials-brokering), and [requests proxying](#requests-proxying). A broad range such as `0.0.0.0/0` or `::/0` therefore grants access to the entire Internet regardless of the domain allowlist. Use a domain allowlist when you need per-domain enforcement, or use `subnets.allow` scoped to the exact hosts you trust when you need raw IP access, rather than relying on both together.
+A domain wildcard must replace an entire DNS label. You can place wildcard labels anywhere in a domain pattern. Partial-label wildcards such as `api*.example.com` are not supported.
 
-`subnets.allow` also does not restrict DNS. The sandbox's default resolver keeps resolving arbitrary domain names no matter which ranges you allow, even under a policy that lists only private ranges with no public resolver. Only domain rules constrain what the default resolver will resolve, so a policy with allowed ranges but no `allow` domains leaves DNS open. Code in the sandbox can then resolve any hostname and use those lookups to send data out over DNS. Define an `allow` domain list to restrict DNS, or use `deny-all` to block it entirely.
+Domain patterns match as follows:
+
+| Pattern | Matches | Does not match |
+| --- | --- | --- |
+| `example.com` | `example.com` | `www.example.com` |
+| `*.example.com` | `www.example.com`, `www.api.example.com` | `example.com` |
+| `www.*.com` | `www.example.com` | `example.com`, `www.api.example.com` |
+| `*` | Any domain | None |
+
+The following behaviors determine the effective scope of a user-defined policy.
+
+A leading wildcard such as `*.example.com` matches subdomains at any depth, but it does not match the apex domain. Add `example.com` separately if the sandbox needs access to both the apex domain and its subdomains.
+
+A user-defined policy with no allowed domains or CIDR ranges behaves as `deny-all` and blocks all outbound traffic, including DNS.
+
+Empty policies such as `{}`, `{ allow: {} }`, and `{ subnets: {} }` also behave as `deny-all`. Policies that contain only `subnets.deny` behave the same way, rather than creating an allow-all policy with exceptions. Use the explicit `deny-all` mode when you intend to block all traffic.
+
+When a policy has allow rules, domain and address range rules apply independently. Domain rules do not narrow the IP addresses allowed by `subnets.allow`. Code can reach any IP in an allowed range by using a literal IP address or a custom DNS resolver. This traffic bypasses SNI filtering, [credentials brokering](#credentials-brokering), and [requests proxying](#requests-proxying).
+
+A broad range such as `0.0.0.0/0` or `::/0` grants access to the entire Internet regardless of domain rules. Use domain rules for per-domain enforcement. Use `subnets.allow` with exact ranges when you need raw IP access.
+
+`subnets.allow` also leaves the sandbox's default DNS resolver unrestricted. A policy with allowed address ranges and no allowed domains can resolve any hostname, even when its ranges include only private networks. Code can use those lookups to send data over DNS. Use domain rules to restrict DNS resolution, or use `deny-all` to block DNS entirely.
 
 ## Supported protocols
 
@@ -145239,6 +145470,154 @@ For detailed setup instructions, please contact your Vercel account representati
 ## More resources
 
 - [Can I use Vercel as a reverse proxy?](/kb/guide/vercel-reverse-proxy-rewrites-external)
+
+
+--------------------------------------------------------------------------------
+title: "Security Dashboard"
+description: "The Security Dashboard aggregates the security posture of every account and project on your team, flags misconfigurations, and shows how to fix them."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/security/security-dashboard"
+--------------------------------------------------------------------------------
+
+# Security Dashboard
+
+The Security Dashboard aggregates the security posture of every account and project on your team into a single view. It runs a set of security checks against your team's members, tokens, projects, deployments, and environment variables, then flags the checks that fail and explains how to fix them.
+
+As your team grows and coding agents make it faster to spin up projects, small oversights accumulate such as:
+
+- a member without two-factor authentication
+- a preview deployment left publicly reachable
+- a long-lived credential used where a short-lived one would do
+
+The Security Dashboard surfaces these gaps in one place so you can address them before they turn into incidents.
+
+## Open the Security Dashboard
+
+You reach the [Security Dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsecurity\&title=Go+to+Security+Dashboard) from your team settings:
+
+1. From your team, go to **Settings**, then open the **Security & Privacy** tab.
+2. In the **Security Dashboard** card, review the score summary, then select **Visit** to open the full dashboard.
+
+The **Security & Privacy** tab is the main entry point. Its card shows the same score bar as the dashboard, so you can see your team's posture at a glance without leaving settings.
+
+## How the Security Dashboard works
+
+The Security Dashboard runs a fixed catalog of security checks against your team. Each check inspects one type of misconfiguration and reports the entities that violate it, called findings. For example, the `members-no-mfa` check reports each team member who can sign in without a second factor.
+
+Every check has a risk level that determines how it affects your score:
+
+| Risk level | Effect on the dashboard                                                       |
+| ---------- | ----------------------------------------------------------------------------- |
+| High       | Counts toward your score. Shown first, with a red segment in the progress bar. |
+| Medium     | Counts toward your score. Shown with an amber segment in the progress bar.     |
+
+The dashboard groups checks into two categories, [Account and authentication](#account-and-authentication-checks) and [Projects, deployments, and environment variables](#projects-deployments-and-environment-variables-checks), and orders them by risk level so the highest-priority work is at the top.
+
+### Your security score
+
+At the top of the dashboard, a progress bar summarizes how many checks pass and how many still need attention. The headline reads like `2 high and 1 medium issues remaining`, or `All recommended protections in place` when every check passes.
+
+The bar has three segments:
+
+- **Red**: high-risk checks with findings.
+- **Amber**: medium-risk checks with findings.
+- **Blue**: checks that pass or have every finding muted.
+
+## Account and authentication checks
+
+These checks cover your team's members and access tokens.
+
+| Check                                             | Risk | What it checks                                                                                     | How to resolve                                                                                                             |
+| ------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Team members without multi-factor authentication | High | Members who can sign in without a second factor, so a stolen password alone can take over the account. | [Enforce two-factor authentication](/docs/two-factor-enforcement) for the team so every member needs a second factor.     |
+| Team owners to review                             | High | Fires when more than 30% of your team are owners. Extra owners widen the blast radius of a compromised account. | Review member [roles](/docs/rbac/access-roles) and demote owners who don't need full access.                              |
+| Personal access tokens that never expire         | High | Personal access tokens with no expiration, which stay valid until someone revokes them manually.  | Recreate the token with an expiration from [account tokens](/docs/accounts/access-tokens).                                |
+
+> **💡 Note:** Personal access tokens belong to individual accounts. You can't edit or delete
+> another member's token, so ask the member who owns a flagged token to rotate
+> it.
+
+## Projects, deployments, and environment variables checks
+
+These checks cover your team's projects, their deployment settings, and their environment variables.
+
+| Check                                                         | Risk   | What it checks                                                                                     | How to resolve                                                                                                                                    |
+| ------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Long-lived credentials where OIDC is available                | High   | Static credentials stored as environment variables where a short-lived token would work instead.  | Replace the static credential with [OIDC federation](/docs/oidc) so your app exchanges a short-lived token at runtime.                            |
+| Projects without Git fork deploy prevention                   | High   | Projects where forked pull requests can deploy and read your environment variables without review. | Turn on [Git fork protection](/docs/project-configuration/security-settings#git-fork-protection) in the project's security settings.              |
+| Projects without preview deployment protection                | High   | Preview deployments that anyone with the URL can reach.                                            | Enable [deployment protection](/docs/deployment-protection) so only authorized users can open preview URLs.                                       |
+| Environment variables not marked Sensitive                    | Medium | Values that can be read back from the dashboard or API after they are written.                     | Mark the variable as [Sensitive](/docs/environment-variables/sensitive-environment-variables) so new values can't be read back once saved. Because the existing value was readable, [rotate it](/docs/environment-variables/rotating-secrets) when you make the change. |
+| Environment variables older than 90 days                      | Medium | Variables that have not been rotated in over 90 days.                                              | [Rotate the secret](/docs/environment-variables/rotating-secrets), or delete the variable if it's no longer needed.                               |
+| Environment variables exposed via a web application framework | Medium | Variables a web application framework exposes to the client, which increases the risk of a leak.   | Review your [framework environment variables](/docs/environment-variables/framework-environment-variables) and keep secrets server-only.          |
+
+## Card states
+
+The dashboard shows each check as a card. Its badge and icon reflect the check's current state:
+
+| What the card shows                                       | Meaning                                                                                                             |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| A `High` or `Medium` risk badge                          | The check has findings and counts against your score. High-risk checks show a red badge, medium-risk an amber one. |
+| A blue check-circle                                       | The check passes with no findings.                                                                                |
+| A blue check-circle with a `Check muted` badge           | The whole check is muted and excluded from your score.                                                             |
+| An `N muted` badge next to the risk badge or check-circle | Some of the check's findings are muted and excluded from your score.                                               |
+| A `Data Unavailable` overlay                             | The check couldn't be computed. When your role lacks permission to read the data, the overlay reads `Insufficient Permissions`. |
+
+## Act on findings
+
+Each check appears as a card with its title, a short explanation of the risk, the number of findings, and the affected entities. Select an entity to jump to the setting where you can fix it, such as a member's row in your team settings or a project's deployment protection settings.
+
+Cards also include actions that take you to the relevant settings, such as **Enforce 2FA** for the multi-factor authentication check or **Deployment Protection Settings** for preview protection. Once you resolve the underlying setting, the check shows as passing, with a blue check-circle, the next time the dashboard refreshes its checks.
+
+## Mute a check or finding
+
+Mute a check to hide its current and future findings, or mute a single finding to dismiss one entity while keeping the rest of the check active. Use muting for findings you have reviewed and accepted, so they stop counting against your score without hiding new issues elsewhere.
+
+- **Muted checks and findings are excluded from your score** and listed separately, so your headline reflects only the work that remains.
+- **You can add a reason** when you mute, which is recorded alongside who muted it and when.
+- **Muting requires permission to manage your team.** Members without that permission can view checks but cannot mute them.
+
+To reverse a mute, select the bell icon on the check again to unmute it, or unmute an individual finding from its row.
+
+## Export findings to CSV
+
+Export findings to a CSV file to share them or track them outside Vercel. Use the **Export CSV** button in the dashboard header to export every check, or export a single check from its card.
+
+The CSV has four columns:
+
+| Column      | Description                                                        |
+| ----------- | ----------------------------------------------------------------- |
+| Exported At | The timestamp of the export.                                      |
+| Check       | The name of the check.                                            |
+| Finding     | The affected entity. Grouped findings appear as `group / finding`. |
+| Muted       | `Yes` if the finding is muted, otherwise `No`.                    |
+
+## Run checks from the CLI
+
+The [`vercel security`](/docs/cli/security) command runs the same checks as the Security Dashboard in your terminal. Use it to review your posture without leaving the command line, or to pipe the report into scripts and coding agents:
+
+```bash filename="terminal"
+# Run every check for the current team
+vercel security
+
+# List the individual findings behind each check
+vercel security check --findings
+
+# Scope the report to a single project
+vercel security check --project my-app
+```
+
+The command outputs JSON in non-interactive environments, so you can run it in CI. A failing check still exits `0`, so gate a CI step on the report contents rather than the exit code. Because the report lists security findings, treat its output as sensitive and avoid writing it to shared or public logs. See the [`vercel security` reference](/docs/cli/security) for the full list of options.
+
+## Who can access the Security Dashboard
+
+Access to the Security Dashboard depends on your team role. Some checks read data that requires elevated permissions: when your role can't read the data behind a check, its card shows a `Data Unavailable` overlay labeled `Insufficient Permissions`, and the [`vercel security`](/docs/cli/security) command reports the check as `no access`. Muting checks and findings requires permission to manage your team. For an overview of team roles and what each can do, see [access roles](/docs/rbac/access-roles).
+
+## Related
+
+- [Vercel security overview](/docs/security)
+- [`vercel security` CLI reference](/docs/cli/security)
+- [Access roles](/docs/rbac/access-roles)
+- [Deployment protection](/docs/deployment-protection)
 
 
 --------------------------------------------------------------------------------

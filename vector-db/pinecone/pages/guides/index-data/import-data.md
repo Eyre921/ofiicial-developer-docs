@@ -16,9 +16,11 @@ To run through this guide in your browser, see the [Bulk import colab notebook](
 
 ## Before you import
 
-Before you can import records, ensure you have a serverless index, a storage integration, and data formatted in a Parquet file and uploaded to an Amazon S3 bucket, Google Cloud Storage bucket, or Azure Blob Storage container.
+Before you can import records, ensure you have a serverless index, a storage integration, and data uploaded to an Amazon S3 bucket, Google Cloud Storage bucket, or Azure Blob Storage container.
 
-### Create an index
+Your uploaded data must be in the file format required for your index type: Parquet for vector indexes, or [JSON Lines](https://jsonlines.org/) (JSONL) for indexes with a document schema. If your source data isn't already in that format, prepare it in that format before uploading.
+
+## 1. Create an index
 
 [Create a serverless index](/guides/index-data/create-an-index) for your data.
 
@@ -30,134 +32,163 @@ Be sure to create your index on a cloud that supports importing from the object 
 | Import from **Google Cloud Storage**… |           ✅          |          ✅          |            ✅           |
 | Import from **Azure Blob Storage**…   |           ✅          |          ✅          |            ✅           |
 
-### Add a storage integration
+## 2. Add a storage integration
 
-To import records from a public data source, a storage integration is not required. However, to import records from a secure data source, you must create an integration to allow Pinecone access to data in your object storage. See the following guides:
+To import records from a public data source, a storage integration isn't required. However, to import records from a secure data source, you must create an integration to allow Pinecone access to data in your object storage. See the following guides:
 
 * [Integrate with Amazon S3](/guides/operations/integrations/integrate-with-amazon-s3)
 * [Integrate with Google Cloud Storage](/guides/operations/integrations/integrate-with-google-cloud-storage)
 * [Integrate with Azure Blob Storage](/guides/operations/integrations/integrate-with-azure-blob-storage)
 
-### Prepare your data
+## 3. Prepare your data
 
-1. In your Amazon S3 bucket, Google Cloud Storage bucket, or Azure Blob Storage container, create an import directory containing a subdirectory for each namespace you want to import into. The namespaces must not yet exist in your index.
+<Steps>
+  <Step title="Create a directory for each namespace">
+    In your Amazon S3 bucket, Google Cloud Storage bucket, or Azure Blob Storage container, create an import directory containing a subdirectory for each namespace you want to import into. The namespaces must not yet exist in your index.
 
-   For example, to import data into the namespaces `example_namespace1` and `example_namespace2`, your directory structure would look like this:
+    For example, to import data into the namespaces `example_namespace1` and `example_namespace2`, your directory structure would look like this:
 
-   ```
-   <BUCKET_OR_CONTAINER_NAME>/
-   --/<IMPORT_DIR>/
-   ----/example_namespace1/
-   ----/example_namespace2/
-   ```
+    ```
+    <BUCKET_OR_CONTAINER_NAME>/
+    --/<IMPORT_DIR>/
+    ----/example_namespace1/
+    ----/example_namespace2/
+    ```
 
-   <Tip>
-     To import into the default namespace, use a subdirectory called `__default__`. The default namespace must be empty.
-   </Tip>
+    <Tip>
+      To import into the default namespace, use a subdirectory called `__default__`. The default namespace must be empty.
+    </Tip>
+  </Step>
 
-2. For each namespace, create one or more Parquet files defining the records to import.
+  <Step title="Create a data file for each namespace">
+    For each namespace, create one or more files defining the data to import. The file format and required fields depend on the index type:
 
-   Parquet files must contain specific columns, depending on the index type:
+    <Tabs>
+      <Tab title="Document schema">
+        To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/get-started/concepts#document), identical in shape to a document you would pass to [`documents.upsert`](/guides/search/full-text-search#data-plane-operations):
 
-   <Tabs>
-     <Tab title="Index of dense vectors">
-       To import into a namespace in an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors), the Parquet file must contain the following columns:
+        | Field             | JSON type                                      | Description                                                                                                                                                                                                                                                                                                  |
+        | ----------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | `_id`             | `string`                                       | Required. Unique identifier for each document within the namespace.                                                                                                                                                                                                                                          |
+        | Each schema field | Depends on the field's type                    | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A declared `dense_vector` field must appear in every document. |
+        | Any other field   | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/get-started/concepts#metadata). Field names can't start with `_` or `$`.                                                                                                                                                                  |
 
-       | Column name | Parquet type  | Description                                                                                                                     |
-       | ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-       | `id`        | `STRING`      | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                      |
-       | `values`    | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/concepts#dense-vector). |
-       | `metadata`  | `STRING`      | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`. |
+        <Note>
+          Unlike Parquet imports, fields not declared in the schema aren't ignored: they are stored and auto-indexed as filterable metadata.
+        </Note>
 
-       <Note>
-         Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, and `metadata` are processed.
-       </Note>
+        For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
 
-       For example:
+        ```jsonl theme={null}
+        {"_id": "doc1", "body": "Machine learning models are revolutionizing natural language processing", "embedding": [0.12, 0.34, 0.56], "category": "technology", "year": 2024}
+        {"_id": "doc2", "body": "Vector databases enable fast similarity search across embeddings", "embedding": [0.91, 0.05, 0.44], "category": "technology", "year": 2023}
+        ```
 
-       ```parquet theme={null}
-       id | values                   | metadata
-       --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-       1  | [ 3.82  2.48 -4.15 ... ] | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-       2  | [ 1.82  3.48 -2.15 ... ] | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-       ```
-     </Tab>
+        For the full file format, per-field encoding, and directory layout, see [Bulk import](/guides/search/full-text-search#bulk-import).
+      </Tab>
 
-     <Tab title="Index of sparse vectors">
-       To import into a namespace in an [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors), the Parquet file must contain the following columns:
+      <Tab title="Dense vectors">
+        To import into a namespace in an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors), the Parquet file must contain the following columns:
 
-       | Column name     | Parquet type                                          | Description                                                                                                                                                                                     |
-       | --------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-       | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                                                                                      |
-       | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/get-started/concepts#sparse-vector). |
-       | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`.                                                                 |
+        | Column name | Parquet type  | Description                                                                                                                     |
+        | ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+        | `id`        | `STRING`      | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                      |
+        | `values`    | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/concepts#dense-vector). |
+        | `metadata`  | `STRING`      | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`. |
 
-       <Note>
-         Additional columns in the Parquet file are silently ignored during import; only `id`, `sparse_values`, and `metadata` are processed.
-       </Note>
+        <Note>
+          Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, and `metadata` are processed.
+        </Note>
 
-       For example:
+        For example:
 
-       ```parquet theme={null}
-       id | sparse_values                                                                                       | metadata
-       --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-       1  | {"indices": [ 822745112 1009084850 1221765879 ... ], "values": [1.7958984 0.41577148 2.828125 ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-       2  | {"indices": [ 504939989 1293001993 3201939490 ... ], "values": [1.4383747 0.72849722 1.384775 ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-       ```
-     </Tab>
+        ```parquet theme={null}
+        id | values                   | metadata
+        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        1  | [ 3.82  2.48 -4.15 ... ] | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+        2  | [ 1.82  3.48 -2.15 ... ] | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+        ```
+      </Tab>
 
-     <Tab title="Index with both dense and sparse vectors">
-       To import into a namespace in an [index with both dense and sparse vectors](/guides/search/hybrid-search#use-a-single-index-for-dense-and-sparse-vectors), the Parquet file must contain the following columns:
+      <Tab title="Sparse vectors">
+        To import into a namespace in an [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors), the Parquet file must contain the following columns:
 
-       | Column name     | Parquet type                                          | Description                                                                                                                                                               |
-       | --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-       | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                                                                |
-       | `values`        | `LIST<FLOAT>`                                         | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/concepts#dense-vector).                                           |
-       | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/get-started/concepts#sparse-vector). To omit from specific rows, use `NULL`. |
-       | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`.                                           |
+        | Column name     | Parquet type                                          | Description                                                                                                                                                                                     |
+        | --------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                                                                                      |
+        | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/get-started/concepts#sparse-vector). |
+        | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`.                                                                 |
 
-       <Note>
-         Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, `sparse_values`, and `metadata` are processed.
-       </Note>
+        <Note>
+          Additional columns in the Parquet file are silently ignored during import; only `id`, `sparse_values`, and `metadata` are processed.
+        </Note>
 
-       For example:
+        For example:
 
-       ```parquet theme={null}
-       id | values                   | sparse_values                                                                          | metadata
-       --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-       1  | [ 3.82  2.48 -4.15 ... ] | {"indices": [1082468256, 1009084850, 1221765879, ...], "values": [2.0, 3.0, 4.0, ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-       2  | [ 1.82  3.48 -2.15 ... ] | {"indices": [2225824123, 1293001993, 3201939490, ...], "values": [5.0, 2.0, 3.0, ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-       ```
-     </Tab>
-   </Tabs>
+        ```parquet theme={null}
+        id | sparse_values                                                                                       | metadata
+        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        1  | {"indices": [ 822745112 1009084850 1221765879 ... ], "values": [1.7958984 0.41577148 2.828125 ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+        2  | {"indices": [ 504939989 1293001993 3201939490 ... ], "values": [1.4383747 0.72849722 1.384775 ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+        ```
+      </Tab>
 
-3. Upload the Parquet files into the relevant subdirectory.
+      <Tab title="Dense + sparse">
+        To import into a namespace in an [index with both dense and sparse vectors](/guides/search/hybrid-search#use-a-single-index-for-dense-and-sparse-vectors), the Parquet file must contain the following columns:
 
-   For example, if you have subdirectories for the namespaces `example_namespace1` and `example_namespace2` and upload 4 Parquet files into each, your directory structure would look as follows after the upload:
+        | Column name     | Parquet type                                          | Description                                                                                                                                                               |
+        | --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+        | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/get-started/concepts#record-id).                                                                                |
+        | `values`        | `LIST<FLOAT>`                                         | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/concepts#dense-vector).                                           |
+        | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/get-started/concepts#sparse-vector). To omit from specific rows, use `NULL`. |
+        | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/get-started/concepts#metadata) for each record. To omit from specific rows, use `NULL`.                                           |
 
-   ```
-   <BUCKET_OR_CONTAINER_NAME>/
-   --/<IMPORT_DIR>/
-   ----/example_namespace1/
-   ------0.parquet
-   ------1.parquet
-   ------2.parquet
-   ------3.parquet
-   ----/example_namespace2/
-   ------4.parquet
-   ------5.parquet
-   ------6.parquet
-   ------7.parquet
-   ```
+        <Note>
+          Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, `sparse_values`, and `metadata` are processed.
+        </Note>
 
-## Import records into an index
+        For example:
+
+        ```parquet theme={null}
+        id | values                   | sparse_values                                                                          | metadata
+        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        1  | [ 3.82  2.48 -4.15 ... ] | {"indices": [1082468256, 1009084850, 1221765879, ...], "values": [2.0, 3.0, 4.0, ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+        2  | [ 1.82  3.48 -2.15 ... ] | {"indices": [2225824123, 1293001993, 3201939490, ...], "values": [5.0, 2.0, 3.0, ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Upload the files">
+    Upload the files into the relevant subdirectory.
+
+    For example, if you have subdirectories for the namespaces `example_namespace1` and `example_namespace2` and upload 4 files into each, your directory structure would look as follows after the upload. Files use the `.parquet` extension for vector indexes, or `.jsonl` / `.jsonl.gz` for document-schema indexes:
+
+    ```
+    <BUCKET_OR_CONTAINER_NAME>/
+    --/<IMPORT_DIR>/
+    ----/example_namespace1/
+    ------0.<EXT>
+    ------1.<EXT>
+    ------2.<EXT>
+    ------3.<EXT>
+    ----/example_namespace2/
+    ------4.<EXT>
+    ------5.<EXT>
+    ------6.<EXT>
+    ------7.<EXT>
+    ```
+  </Step>
+</Steps>
+
+## 4. Import records into an index
 
 <Warning>
   Review [import limits](#import-limits) before starting an import.
 </Warning>
 
 <Note>
-  This guide covers importing Parquet files into indexes **without** a schema definition. Indexes with document schemas import [JSONL files](/guides/search/full-text-search#bulk-import) instead. Semantic-text (auto-embedded) fields are not yet supported in document schemas.
+  The examples below use Parquet files, for indexes **without** a schema definition. Indexes with document schemas import [JSONL files](/guides/search/full-text-search#bulk-import) instead. Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 </Note>
 
 Use the [`start_import`](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
@@ -171,13 +202,13 @@ Use the [`start_import`](/reference/api/latest/data-plane/start_import) operatio
 * For `integration_id`, specify the Integration ID of the Amazon S3, Google Cloud Storage, or Azure Blob Storage integration you created. The ID is found on the [Storage integrations](https://app.pinecone.io/organizations/-/projects/-/storage) page of the Pinecone console.
 
   <Note>
-    An Integration ID is not needed to import from a public bucket.
+    An Integration ID isn't needed to import from a public bucket.
   </Note>
 
 * For `error_mode`, use `continue` or `abort`.
 
   * With `abort`, the operation stops if any records fail to import.
-  * With `continue`, the operation continues on error, but there is not any notification about which records, if any, failed to import. To see how many records were successfully imported, use the [describe an import](#describe-an-import) operation.
+  * With `continue`, the operation continues on error, but there isn't any notification about which records, if any, failed to import. To see how many records were successfully imported, use the [describe an import](#describe-an-import) operation.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -312,12 +343,12 @@ Once all the data is loaded, the [index builder](/guides/get-started/database-ar
   You can start a new import using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Find the index you want to import into, and click the **ellipsis (...) menu > Import data**.
 </Tip>
 
-## Track import progress
+## 5. Track import progress
 
 The amount of time required for an import depends on various factors, including:
 
 * The number of records to import
-* The number of namespaces to import, and the the number of records in each
+* The number of namespaces to import, and the number of records in each
 * The total size (in bytes) of the import
 
 To track an import's progress, check its status bar in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or use the [`describe_import`](/reference/api/latest/data-plane/describe_import) operation with the import ID:
@@ -601,7 +632,7 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
 
 ### Cancel an import
 
-The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it is not yet finished. It has no effect if the import is already complete.
+The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it isn't yet finished. It has no effect if the import is already complete.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -729,9 +760,9 @@ Bulk import supports indexes without a schema definition (Parquet files) and ind
 
 Also:
 
-* You cannot import data from an AWS S3 bucket into a Pinecone index hosted on GCP or Azure.
-* You cannot import data from S3 Express One Zone storage.
-* You cannot import data into an existing namespace.
+* You can't import data from an AWS S3 bucket into a Pinecone index hosted on GCP or Azure.
+* You can't import data from S3 Express One Zone storage.
+* You can't import data into an existing namespace.
 * When importing data into the `__default__` namespace of an index, the default namespace must be empty.
 * Each import takes at least 10 minutes to complete.
 * When importing into an [index with integrated embedding](/guides/index-data/indexing-overview#vector-embedding), records must contain vectors, not text. To add records with text, you must use [upsert](/guides/index-data/upsert-data).
@@ -742,13 +773,13 @@ When an import fails, you'll see an error message with the reason for the failur
 
 <AccordionGroup>
   <Accordion title="Namespace already exists">
-    You cannot import data into an existing namespace. If your import directory structure contains a folder with the name of an existing namespace in your index, the import will fail with the following error:
+    You can't import data into an existing namespace. If your import directory structure contains a folder with the name of an existing namespace in your index, the import will fail with the following error:
 
     ```
     User error: The namespace "example-namespace" already exists. Imports are only allowed into nonexistent namespaces.
     ```
 
-    To fix this, rename the folder to use a namespace name that does not yet exist.
+    To fix this, rename the folder to use a namespace name that doesn't yet exist.
   </Accordion>
 
   <Accordion title="No namespace found">
@@ -769,41 +800,47 @@ When an import fails, you'll see an error message with the reason for the failur
     ------7.parquet
     ```
 
-    If a Parquet file is not nested under a namespace subdirectory, the import will fail with the following error:
+    If a Parquet file isn't nested under a namespace subdirectory, the import will fail with the following error:
 
     ```
-    User error: \"test-import/0.parquet\": No namespace detected. Each file should be nested under a subdirectory of the URI prefix. This indicates which namespace it should be imported into.
+    User error: "test-import/0.parquet": No namespace detected. Each file should be nested under a subdirectory of the URI prefix. This indicates which namespace it should be imported into.
     ```
 
     To fix this, move the Parquet file to a namespace subdirectory.
   </Accordion>
 
   <Accordion title="Parquet files not found">
-    Each namespace subdirectory must contain Parquet files with data to import. If a namespace subdirectory does not include Parquet files, the import will fail with the following error:
+    Each namespace subdirectory must contain Parquet files with data to import. If a namespace subdirectory doesn't include Parquet files, the import will fail with the following error:
 
     ```
-    User error: No Parquet files found under \"gs://example_bucket/imports\". Files must be stored with the specified bucket prefix.
+    User error: No Parquet files found under "gs://example_bucket/imports". Files must be stored with the specified bucket prefix.
     ```
 
     To fix this, add Parquet files to the namespace subdirectory.
+  </Accordion>
+
+  <Accordion title="Namespace not created (empty subdirectory)">
+    For document-schema (JSONL) imports, an empty namespace subdirectory behaves differently than for Parquet. A namespace subdirectory that contains no `.jsonl` or `.jsonl.gz` files is silently skipped: the import doesn't create that namespace and doesn't raise an error for it. If a namespace is missing after an import that otherwise succeeded, confirm its subdirectory actually contains importable files.
+
+    If no importable files are found anywhere under the dataset prefix, the import fails with the same `No Parquet files found` error shown above, which says "Parquet files" even for JSONL imports.
   </Accordion>
 
   <Accordion title="Invalid import URI">
     In your [start import](/reference/api/latest/data-plane/start_import) request, the import `uri` must specify only the bucket and import directory containing the namespaces and Parquet files you want to import. If the `uri` also contains a namespaces directory or a Parquet filename, the import will fail with the following error:
 
     ```
-    User error: \"test-import/0.parquet\": It looks like you specified a complete path to a parquet file as the URI prefix to import from. Note that the URI prefix should give an ancestor directory with subdirectories to specify each namespace to import into. See https://docs.pinecone.io/guides/data/understanding-imports#directory-structure.
+    User error: "test-import/0.parquet": It looks like you specified a complete path to a parquet file as the URI prefix to import from. Note that the URI prefix should give an ancestor directory with subdirectories to specify each namespace to import into. See https://docs.pinecone.io/guides/data/understanding-imports#directory-structure.
     ```
 
     To fix this, remove the namespaces directory or Parquet filename from the `uri`.
   </Accordion>
 
   <Accordion title="Invalid Parquet files">
-    When a Parquet file is not formatted correctly, the import will fail with a message like one of the following:
+    When a Parquet file isn't formatted correctly, the import will fail with a message like one of the following:
 
     ```shell File schema errors theme={null}
-    Missing required column \"{0}\"
-    Unsupported column \"{0}\"
+    Missing required column "{0}"
+    Unsupported column "{0}"
     ```
 
     ```shell File corruption errors theme={null}
@@ -811,26 +848,62 @@ When an import fails, you'll see an error message with the reason for the failur
     ```
 
     ```shell Type errors theme={null}
-    The expected data type for column \"{column}\" is \"{expected}\", but got \"{given}\"
-    The expected data type for metadata is a JSON encoded string in UTF-8 format, but got \"{given}\"
+    The expected data type for column "{column}" is "{expected}", but got "{given}"
+    The expected data type for metadata is a JSON encoded string in UTF-8 format, but got "{given}"
     ```
 
     These errors are returned for both `continue` and `abort` error modes.
 
-    To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#prepare-your-data) section.
+    To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#3-prepare-your-data) section.
+  </Accordion>
+
+  <Accordion title="Invalid JSONL files or documents">
+    For document-schema indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](/guides/search/full-text-search#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
+
+    ```
+    error reading record (file "0.jsonl", row 2, id "doc1"): {reason}
+    ```
+
+    Common reasons include:
+
+    ```shell Malformed JSON theme={null}
+    invalid JSON document: {details}
+    ```
+
+    ```shell Empty _id theme={null}
+    Vector ID must not be empty
+    ```
+
+    ```shell Dense-vector dimension mismatch theme={null}
+    Vector dimension {actual} does not match the dimension of the index {expected}
+    ```
+
+    ```shell Reserved field name theme={null}
+    Document with id '{id}': Field name '{name}' cannot start with '_' (reserved for internal use)
+    ```
+
+    ```shell Wrong field type theme={null}
+    Document with id '{id}': full text search field '{field}' must be a string
+    ```
+
+    A document that omits `_id` entirely fails JSON parsing and appears as a malformed-JSON error (`missing field _id`).
+
+    With `errorMode.onError` set to `continue` (the default), invalid documents are skipped and the rest import; with `abort`, the import stops on the first invalid document. If every document in a namespace is skipped, the import fails with `No vectors added, all rows were skipped for namespace: {namespace}`.
+
+    To fix these errors, validate your documents against the [file-format rules](/guides/search/full-text-search#file-format) before importing.
   </Accordion>
 
   <Accordion title="Invalid records">
     When the `error_mode` is `abort` and a file contains invalid records, the import will stop processing on the first invalid record and return an error message identifying the file name and row:
 
     ```
-    User error: error reading record (file \"/0.parquet\", row 0):
+    User error: error reading record (file "/0.parquet", row 0):
     ```
 
     This will be followed by an error message identifying the specific issue. For example:
 
     ```shell Missing values theme={null}
-    missing required values in column \"{column}\"
+    missing required values in column "{column}"
     ```
 
     ```shell Invalid metadata  theme={null}
@@ -841,13 +914,13 @@ When an import fails, you'll see an error message with the reason for the failur
     Upserting dense vectors is not supported for indexes that store only sparse vectors
     ```
 
-    When the `error_mode` is `continue`, the import will skip individual invalid records. However, if all records are invalid and skipped (for example, the vector type in the file does not match the vector type of the index), the import will fail with a general message:
+    When the `error_mode` is `continue`, the import will skip individual invalid records. However, if all records are invalid and skipped (for example, the vector type in the file doesn't match the vector type of the index), the import will fail with a general message:
 
     ```
     User error: No vectors added, all rows were skipped for namespace: example-namespace
     ```
 
-    To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#prepare-your-data) section.
+    To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#3-prepare-your-data) section.
   </Accordion>
 
   <Accordion title="Duplicate records">
@@ -882,6 +955,8 @@ When an import fails, you'll see an error message with the reason for the failur
     ```
 
     To fix this, either reduce the total size of your import to under 1 TB, use an index with [dedicated read nodes](/guides/index-data/dedicated-read-nodes) (which have no total data size limit for imports), or [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+
+    For `.jsonl.gz` files, size is measured as an estimated uncompressed size of 10× the compressed file, so gzip-compressed files count roughly 10× their on-disk size against this limit.
   </Accordion>
 </AccordionGroup>
 

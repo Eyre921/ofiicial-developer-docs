@@ -330,7 +330,7 @@ Records are how you model data for [indexes with dense vectors](/guides/get-star
     * **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects are not supported). You can filter by metadata when searching or deleting records.
 
     <Note>
-      When importing data from object storage, records must be in Parquet format. For more details, see [Import data](/guides/index-data/import-data#prepare-your-data).
+      When importing data from object storage, records must be in Parquet format. For more details, see [Import data](/guides/index-data/import-data#3-prepare-your-data).
     </Note>
 
     Example:

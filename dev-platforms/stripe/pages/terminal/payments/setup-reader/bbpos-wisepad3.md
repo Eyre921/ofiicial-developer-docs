@@ -37,6 +37,25 @@ You can design your own accessories for the BBPOS WisePad 3. To download the BBP
 
 [Download Stripe design files](https://d37ugbyn3rpeym.cloudfront.net/terminal/bbpos_wp3_mechanical_design_files_and_guidelines.zip)
 
+## Device specifications 
+
+The following table provides the specifications for the BBPOS WisePad 3. The battery life is only an estimate. The actual battery life varies depending on product settings and deployed features.
+
+| Spec | Details |
+| --- | --- |
+| Approximate dimensions | 69.7 x 121.7 x 17.7 mm / 2.74 x 4.79 x 0.7 in |
+| Approximate weight | 130g / 4.59oz |
+| Display | 2.4" color LCD (320 x 240) with backlight |
+| Battery capacity | Rechargeable Li-polymer, 3.7v, 750 mAh |
+| Battery life | 2 hours time to charge, 20 hours (standby), 15 hours (active use) |
+| Memory | 128kb RAM |
+| Storage | 1MB |
+| Processor | Cortex M4 Secure MCU |
+| Charging connection | USB-C port, Accessory dock |
+| Communication interface | Bluetooth 4.2 BLE, USB (Android SDK only) |
+| Operating system | Proprietary |
+| Security | End-to-end encryption, P2PE ready. [PCI listing](https://listings.pcisecuritystandards.org/popups/pts_device.php?appnum=4-30378) |
+
 ## See also
 
 - [Set up your integration](https://docs.stripe.com/terminal/payments/setup-integration.md)

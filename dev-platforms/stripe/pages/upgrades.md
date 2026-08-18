@@ -61,7 +61,7 @@ When you’re confident that your code can handle the latest API version, perfor
 
 This switches the version used by API calls that don’t have the `Stripe-Version` header and also switches the version used to render objects sent to your webhooks.
 
-> The resources inside of [events retrieved from the API](https://docs.stripe.com/api/events.md) are defined by the default API version of your account at the time the event occurred. If your code retrieves events created when your default API version was different, it must account for any differences in the event versions.
+> The default API version of your account at the time the event occurred defines the resources inside of [events retrieved from the API](https://docs.stripe.com/api/events.md). If your code retrieves events created when your default API version was different, it must account for any differences in the event versions.
 
 ### Roll back your API version
 

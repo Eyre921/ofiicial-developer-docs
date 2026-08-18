@@ -1282,7 +1282,7 @@ The same per-document size limits as [upsert](#data-plane-operations) apply.
 
 ### Directory layout
 
-Lay files out by namespace, exactly as for [Parquet imports](/guides/index-data/import-data#prepare-your-data): under a common dataset prefix in your bucket or container, create one subdirectory per namespace and place that namespace's `.jsonl` / `.jsonl.gz` files inside it.
+Lay files out by namespace, exactly as for [Parquet imports](/guides/index-data/import-data#3-prepare-your-data): under a common dataset prefix in your bucket or container, create one subdirectory per namespace and place that namespace's `.jsonl` / `.jsonl.gz` files inside it.
 
 ```
 <BUCKET_OR_CONTAINER_NAME>/
@@ -1337,7 +1337,7 @@ Upload the file to the relevant namespace subdirectory in your bucket or contain
 
 #### Convert Parquet files to JSONL
 
-If your data is already stored as Parquet in the [vector import format](/guides/index-data/import-data#prepare-your-data) (`id`, `values`, `sparse_values`, `metadata` columns), convert each file to JSONL for the document schema. Map `id` to `_id`, the vector columns to your schema's field names, and spread the `metadata` JSON string into top-level fields:
+If your data is already stored as Parquet in the [vector import format](/guides/index-data/import-data#3-prepare-your-data) (`id`, `values`, `sparse_values`, `metadata` columns), convert each file to JSONL for the document schema. Map `id` to `_id`, the vector columns to your schema's field names, and spread the `metadata` JSON string into top-level fields:
 
 ```python Python theme={null}
 import gzip
@@ -1373,7 +1373,7 @@ with gzip.open("0.jsonl.gz", "wt") as f:
 
 To import from a secure data source, you first need a [storage integration](/guides/operations/integrations/manage-storage-integrations) that gives Pinecone access to your object storage. An integration is not required for public data sources.
 
-Start the import against the index host with the [`start_import`](/reference/api/latest/data-plane/start_import) operation (`POST /bulk/imports`) — the same endpoint, parameters, and behavior as for [Parquet imports](/guides/index-data/import-data#import-records-into-an-index). Pinecone detects from the index's document schema that the files are JSONL. For `uri`, specify the bucket or container in your storage provider's URI format, plus the dataset prefix — not a path to a single file or a namespace subdirectory.
+Start the import against the index host with the [`start_import`](/reference/api/latest/data-plane/start_import) operation (`POST /bulk/imports`) — the same endpoint, parameters, and behavior as for [Parquet imports](/guides/index-data/import-data#4-import-records-into-an-index). Pinecone detects from the index's document schema that the files are JSONL. For `uri`, specify the bucket or container in your storage provider's URI format, plus the dataset prefix — not a path to a single file or a namespace subdirectory.
 
 <Note>
   Bulk import is not yet supported in any Pinecone SDK. Use the REST API to start and manage imports.
@@ -1408,7 +1408,7 @@ Imported documents are indexed asynchronously and may not be searchable immediat
 
 ### Track and manage an import
 
-The [`describe_import`](/reference/api/latest/data-plane/describe_import), [`list_imports`](/reference/api/latest/data-plane/list_imports), and [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operations behave the same for document and vector indexes. See [Import records](/guides/index-data/import-data#track-import-progress) for the full request and response shapes and troubleshooting.
+The [`describe_import`](/reference/api/latest/data-plane/describe_import), [`list_imports`](/reference/api/latest/data-plane/list_imports), and [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operations behave the same for document and vector indexes. See [Import records](/guides/index-data/import-data#5-track-import-progress) for the full request and response shapes and troubleshooting.
 
 ```bash curl theme={null}
 curl -X GET "https://$INDEX_HOST/bulk/imports/1" \

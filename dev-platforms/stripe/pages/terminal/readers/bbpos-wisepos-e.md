@@ -39,7 +39,7 @@ When you press and hold the power button for 2 seconds, the device powers on and
 
 ### Battery and charging status
 
-When the BBPOS WisePOS E is on, you can check the battery level in the left LED array. Learn more about [BBPOS WisePOS E battery life](https://docs.stripe.com/terminal/payments/setup-reader.md#device-specs-and-accessories).
+When the BBPOS WisePOS E is on, you can check the battery level in the left LED array. Learn more about [BBPOS WisePOS E battery life](https://docs.stripe.com/terminal/payments/setup-reader/bbpos-wisepos-e.md#device-specifications).
 
 | LEDs | Meaning |
 | --- | --- |

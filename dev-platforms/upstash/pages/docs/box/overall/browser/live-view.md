@@ -33,7 +33,7 @@ The URL is self-contained. Authentication is a token embedded in the URL itself,
 ></iframe>
 ```
 
-A common pattern is to start a [`tab.run()`](/docs/box/overall/browser/ai-actions) task and render the live view next to it, so users can watch the agent work in real time.
+A common pattern is to render the live view next to your own [`act`/`observe`/`extract`](/docs/box/overall/browser/ai-actions) loop, so users can watch the browser respond in real time.
 
 ## View-only
 

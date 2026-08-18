@@ -6,6 +6,8 @@ path: docs/box/overall/browser/connect
 
 The box browser is a real Chromium, and you can drive it with the tools you already use. `cdpUrl()` returns an authenticated Chrome DevTools Protocol WebSocket URL that Playwright, Puppeteer, or Stagehand can connect to directly. There is no browser to install and nothing to manage.
 
+For a single no-LLM step without wiring up a CDP client, replaying an observed action with [`act(action)`](/docs/box/overall/browser/ai-actions#replay-an-action-without-an-llm) is often enough. Reach for CDP when you want fully scripted, multi-step control.
+
 <CodeGroup>
 ```typescript box.ts
 const cdpUrl = await box.browser.cdpUrl()
@@ -78,6 +80,6 @@ await stagehand.act("click the first link")
 
 ## Mixing CDP and SDK control
 
-CDP clients and the SDK drive the same browser and the same tabs. A page opened by Playwright shows up in `box.browser.listTabs()`, and a tab created by the SDK is visible to Playwright. You can script the predictable steps like login and pagination with Playwright, hand the tab to [`act` or `run`](/docs/box/overall/browser/ai-actions) for the steps that are easier to describe in natural language, and watch either through [Live View](/docs/box/overall/browser/live-view).
+CDP clients and the SDK drive the same browser and the same tabs. A page opened by Playwright shows up in `box.browser.listTabs()`, and a tab created by the SDK is visible to Playwright. You can script the predictable steps like login and pagination with Playwright, hand the tab to [`act`](/docs/box/overall/browser/ai-actions) for the steps that are easier to describe in natural language, and watch either through [Live View](/docs/box/overall/browser/live-view).
 
-As a rule of thumb: use CDP when you want precise, repeatable scripting with no LLM in the loop. Use [AI Actions](/docs/box/overall/browser/ai-actions) when describing the task is easier than scripting it.
+As a rule of thumb: replay a cached [`act(action)`](/docs/box/overall/browser/ai-actions#replay-an-action-without-an-llm) for a single no-LLM step, reach for CDP when you want precise, repeatable multi-step scripting with no LLM in the loop, and use [AI Actions](/docs/box/overall/browser/ai-actions) when describing the task is easier than scripting it.

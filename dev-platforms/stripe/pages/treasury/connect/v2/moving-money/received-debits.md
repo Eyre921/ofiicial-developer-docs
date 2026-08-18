@@ -27,7 +27,7 @@ Receiving ACH or Bacs direct debits requires the `money_manager.capabilities.rec
 
 ## Manage mandates
 Available in: GB
-When a third party initiates a debit from a financial account for the first time, Stripe creates a `ReceivedDebitMandate` representing authorization for the third party to initiate such debits and sends the `v2.money_management.received_debit_mandate.created` webhook event.
+When a third party initiates a debit from a financial account for the first time, Stripe creates a [ReceivedDebitMandate](https://docs.stripe.com/api/v2/money-management/received-debit-mandates/object.md?api-version=preview). The mandate authorizes the third party to initiate debits. Stripe also sends the `v2.money_management.received_debit_mandate.created` webhook event.
 
 When you make API calls to manage mandates on behalf of a connected account, specify the connected account’s ID in the `Stripe-Account` header.
 
@@ -66,7 +66,7 @@ The response includes information about the initiating party. If you don’t can
 }
 ```
 
-Any subsequent debits from the third party authorized by the mandate automatically generate a `ReceivedDebit` with `scheduled` status.
+Any subsequent debits from the third party authorized by the mandate automatically generate a `ReceivedDebit` with `scheduled` status. The `settles_at` field indicates when Stripe expects the debit to arrive. Once the debit arrives, it will transition to either `succeeded` or `failed`.
 
 ### Cancel a mandate
 
@@ -240,7 +240,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes \
 
 Use the [debit test helper](https://docs.stripe.com/api/v2/money-management/financial-addresses/debit.md?api-version=preview) to simulate a `ReceivedDebit` in a sandbox so you can verify that your integration handles incoming debits correctly. You can trigger a failed debit by making sure the financial account has an insufficient balance for the test payment.
 
-If you simulate a Bacs GBP debit, the helper also creates a `ReceivedDebitMandate`.
+If you simulate a Bacs GBP debit, the helper also creates a `ReceivedDebitMandate`. The simulated debit remains `scheduled` for approximately five minutes before transitioning to `succeeded`. While it’s `scheduled`, its `settles_at` field indicates the expected settlement time.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \
@@ -278,6 +278,7 @@ Listen for the following `v2.money_management` events to track and handle status
 | `received_debit.scheduled` | A received debit is scheduled, but hasn’t debited the financial account yet. |
 | `received_debit.pending` | A received debit related to Issuing card spend is pending, but hasn’t debited the financial account yet. |
 | `received_debit.succeeded` | A received debit succeeds. |
+| `received_debit.returned` | A received debit is returned after it succeeds. |
 | `received_debit.failed` | A received debit fails. |
 | `received_debit.canceled` | A received debit related to Issuing card spend is canceled. |
 | `received_debit.updated` | A received debit is updated. |

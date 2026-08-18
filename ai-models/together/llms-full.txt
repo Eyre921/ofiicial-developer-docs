@@ -4871,10 +4871,12 @@ Each line of a JSONL file is one training example, formatted to match your task.
 | [Instruction](#instruction-data)       | Prompt and completion pairs.                                                              | `prompt`, `completion`                              |
 | [Preference](#preference-data)         | Paired preferred and dispreferred outputs for [DPO](/docs/fine-tuning/preference-tuning). | `input`, `preferred_output`, `non_preferred_output` |
 | [Generic text](#generic-text-data)     | Free-form text completion.                                                                | `text`                                              |
+| [Tool-calling](#tool-calling-data)     | Training a model to invoke tools.                                                         | `messages`, `tools`                                 |
+| [Reasoning](#reasoning-data)           | Chain-of-thought data for reasoning models.                                               | `messages` with `reasoning`                         |
 
 If the same file has two possible formats (for example both `text` and `messages`), the server rejects it. Trim unused fields before upload to speed up data transfer.
 
-## Conversational data
+### Conversational data
 
 Conversations are represented using a `messages` array. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The conversation must start with `system` or `user` and alternate `user` and `assistant` afterwards.
 
@@ -4899,7 +4901,7 @@ Example datasets:
 * [allenai/WildChat](https://huggingface.co/datasets/allenai/WildChat).
 * [davanstrien/cosmochat](https://huggingface.co/datasets/davanstrien/cosmochat).
 
-## Instruction data
+### Instruction data
 
 Each line carries a `prompt` and a `completion` field.
 
@@ -4915,7 +4917,7 @@ Example datasets:
 * [meta-math/MetaMathQA](https://huggingface.co/datasets/meta-math/MetaMathQA).
 * [glaiveai/glaive-code-assistant](https://huggingface.co/datasets/glaiveai/glaive-code-assistant).
 
-## Generic text data
+### Generic text data
 
 Each line carries a single `text` field. Use this for plain text completions.
 
@@ -4929,7 +4931,7 @@ Example datasets:
 * [unified\_joke\_explanations.jsonl](https://huggingface.co/datasets/laion/OIG/resolve/main/unified_joke_explanations.jsonl).
 * [togethercomputer/RedPajama-Data-1T-Sample](https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T-Sample).
 
-## Preference data
+### Preference data
 
 Used for [preference fine-tuning](/docs/fine-tuning/preference-tuning) with DPO. Each line carries:
 
@@ -4956,7 +4958,7 @@ Used for [preference fine-tuning](/docs/fine-tuning/preference-tuning) with DPO.
 
 Each output must contain exactly one assistant message.
 
-## Tool-calling data
+### Tool-calling data
 
 For training a model to invoke tools, the line carries a `tools` array listing the available tools. Assistant messages can include `tool_calls` instead of `content`, and `tool`-role messages carry call results. See [function-calling fine-tuning](/docs/fine-tuning/function-calling) for the end-to-end workflow.
 
@@ -5014,7 +5016,7 @@ For preference fine-tuning, the `tools` field nests inside `input`:
 }
 ```
 
-## Reasoning data
+### Reasoning data
 
 For fine-tuning reasoning models, assistant messages support a `reasoning` or `reasoning_content` field that carries the chain of thought. See [reasoning fine-tuning](/docs/fine-tuning/reasoning) for the full workflow.
 
@@ -21502,6 +21504,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
 | DeepSeek          | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
 | DeepSeek          | DeepSeek-V4-Flash-0731       | deepseek-ai/DeepSeek-V4-Flash-0731      | 1000000        | \$0.14                        | \$0.03                               | \$0.28                         | FP4          | Yes              | Yes                |
+| DeepSeek          | DeepSeek V4 Pro 0813         | deepseek-ai/DeepSeek-V4-Pro-0813        | 1048576        | \$1.32                        | \$0.13                               | \$3.96                         | NVFP4        | Yes              | Yes                |
 | NVIDIA            | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
 | Meta              | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
 | Qwen              | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
@@ -24771,10 +24774,6 @@ Create, manage, and authenticate with project-scoped API keys.
 
 Together AI uses API keys to authenticate requests. Keys are scoped to [projects](/docs/projects), meaning a key only has access to the resources within its project.
 
-<Note>
-  Multi-project key scoping is in early access. Not all resources and APIs fully support project-scoped keys yet. See [Early access limitations](/docs/projects#early-access-limitations) for details.
-</Note>
-
 ## Create an API key
 
 Create independent API keys for separate use cases, systems, or workloads. For example, one for production, one for development, one for CI/CD, and one for inference.
@@ -24853,7 +24852,7 @@ API keys are scoped to projects:
 This means you can safely share a project API key with a CI/CD pipeline or external collaborator without giving them access to resources in other projects.
 
 <Note>
-  Project key scoping is in early access. Not all resources and APIs fully support this feature yet. Keys created before multi-project support was enabled are scoped to your organization's default project.
+  Keys created before multi-project support was enabled are scoped to your organization's default project.
 </Note>
 
 ## Playground
@@ -34468,18 +34467,25 @@ Together's IAM is built around five concepts that work together:
 ## How it all fits together
 
 ```mermaid theme={null}
+%%{init: {"flowchart": {"rankSpacing": 60, "nodeSpacing": 30}}}%%
 flowchart TD
     U[User] -->|belongs to| O[Organization]
-    U -->|"added to (per project)"| P[Project]
+    U -->|joins or added to| P[Projects]
     O -->|contains| P
-    P -->|scopes| K[Project API Key]
+    EU[External user] -.->|added to| P
+    P -->|scopes| K[API keys]
     P -->|contains| R[Resources]
-    R --- R1[Clusters]
-    R --- R2[Fine-tuned Models]
-    R --- R3[Endpoints]
-    R --- R4[Evaluations]
-    R --- R5[Files]
-    EU[External User] -.->|added to| P
+    P -->|scopes| A[Analytics]
+    R --> R1[Clusters]
+    R --> R2[Fine-tuned models]
+    R --> R3[Endpoints]
+    R --> R4[Evaluations]
+    R --> R5[Files]
+    K ~~~ R1
+    A ~~~ R5
+
+    classDef box fill:#cbd5e1,stroke:#64748b,stroke-width:1.5px,color:#132133;
+    class U,EU,O,P,K,R,A,R1,R2,R3,R4,R5 box;
 ```
 
 **The key principle:** Projects are the collaboration boundary. Collaborators get access to a Project, and that gives them access to everything inside it (Clusters, Models, Endpoints, etc.). Access decisions happen at the Project level, not on individual resources.
@@ -34516,7 +34522,7 @@ Together's IAM model applies consistently across all products. These guides cove
 </CardGroup>
 
 <Note>
-  Projects and Project-level membership management are in early access. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable multi-Project support for your Organization.
+  To enable multi-Project support for your Organization, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
 </Note>
 
 ## Next steps
@@ -37716,7 +37722,7 @@ Projects are isolated workspaces within your Organization. They scope resources,
 
 Every Organization starts with a [**Default Project**](/docs/projects#default-project). All Members are automatically added to it when they join.
 
-For Organizations that need to separate resources by team, environment, or workload, multi-Project support is available in early access. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
+For Organizations that need to separate resources by team, environment, or workload, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable additional Projects.
 
 For full details on creating and managing Projects, see [Projects](/docs/projects).
 
@@ -38457,12 +38463,10 @@ Source: https://docs.together.ai/docs/projects
 
 Create isolated workspaces to organize resources, manage team access, and scope API keys.
 
-A Project is an isolated workspace within your [Organization](/docs/organizations). Resources, API keys, and Collaborator membership are all scoped to Projects. Think of a Project as the collaboration boundary: when you give someone access to a Project, they can use everything inside it.
+A project is an isolated workspace within your [organization](/docs/organizations). Resources, API keys, and collaborator membership are all scoped to projects. Think of a project as the collaboration boundary: when you give someone access to a project, they can use everything inside it.
 
 <Note>
-  Multi-Project support is currently in early access. Every Organization includes a [Default Project](#default-project). To enable additional Projects, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
-
-  Not all resources are Multi-Project supported yet. See [Early Access Limitations](#early-access-limitations) for how unsupported resources behave.
+  Every organization includes a [default project](#default-project). To enable additional projects, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
 </Note>
 
 ## How projects work
@@ -38480,29 +38484,42 @@ Organization
     Evaluation
 ```
 
-Each Project contains its own set of resources. Collaborators of Project A cannot see or access anything in Project B, and vice versa. This lets you separate work by team, environment (dev/staging/prod), workload type, or customer.
+Each project contains its own set of resources. Collaborators of project A cannot see or access anything in project B, and vice versa. This lets you separate work by team, environment (dev/staging/prod), workload type, or customer.
+
+## Project visibility
+
+Every project is assigned a level of visibility:
+
+* **Open:** Members of the organization can discover and join the project.
+* **Closed:** Members can discover the project, but can't join. Access is managed by project and organization admins.
+* **Private:** Only existing project collaborators and organization admins can see it. Access is managed by project and organization admins.
+
+When you create a project, you explicitly choose its visibility, with Open as the default. A project admin or organization admin can change a project's visibility between the three states at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current), and switching a project from Open to Closed or Private keeps its existing collaborators.
+
+Access to Closed and Private projects is managed by admins. A project admin adds you through the same [add-collaborator flow](#adding-collaborators) used for any project, and you become a collaborator immediately. When a project is Closed, organization members who aren't collaborators can see it in their project list but can't join it.
+
+Organization admins are exempt from these limits. They can see every project in the organization, including Closed and Private projects they haven't joined, and they can join any project without an invitation. To reach a Closed or Private project's resources or settings, an organization admin has to join it first.
 
 ## Default project
 
-Every Organization has a **Default Project**. A few things to know about it:
+Every organization has a **default project**. A few things to know about it:
 
-* All Organization Members are automatically granted access to the Default Project.
-* All historical account usage and resources that pre-date Projects are attributed to this Project (work in progress).
-* All Playground usage is attributed to this Project.
-* It has an "Organization Default Key" that is only accessible to the Organization Owner (see [API Keys & Authentication](/docs/api-keys-authentication#organization-default-key-deprecated)).
-* Because all Organization Members have access, do not use the Default Project for sensitive resources. Create a separate Project for those.
+* All organization members are automatically granted access to the default project.
+* All historical account usage and resources that pre-date projects are attributed to this project.
+* No one can leave the default project.
+* Because all organization members have access, do not use the default project for sensitive resources. Create a separate project for those.
 
 ## Project slugs
 
-A **project slug** is a short, URL-safe, human-readable identifier for a Project. It's globally unique across Together and distinct from the Project's internal `project_id`, the permanent identifier behind ownership, permissions, and billing. The slug is the friendly handle. The `project_id` never changes.
+A **project slug** is a short, URL-safe, human-readable identifier for a project. It's globally unique across Together and distinct from the project's internal `project_id`, the permanent identifier behind ownership, permissions, and billing. The slug is the friendly handle. The `project_id` never changes.
 
-You choose a slug when creating a new Project, and you can copy any Project's slug from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current).
+You choose a slug when creating a new project, and you can copy any project's slug from the projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current).
 
-When you create an endpoint with [dedicated model inference](/docs/dedicated-endpoints/overview), the Project's slug becomes part of its endpoint string, `<project_slug>/<endpoint_name>`. You choose only the endpoint name. The slug prefix is added automatically and makes the endpoint string globally unique.
+When you create an endpoint with [dedicated model inference](/docs/dedicated-endpoints/overview), the project's slug becomes part of its endpoint string, `<project_slug>/<endpoint_name>`. You choose only the endpoint name. The slug prefix is added automatically and makes the endpoint string globally unique.
 
 ### Changing a project slug
 
-Project Admins can change an existing Project's slug from [**Project Settings**](https://api.together.ai/settings/projects/~current): find the **Project Slug** field and select **Change**. The new slug takes effect immediately.
+Project admins can change an existing project's slug from [**Project Settings**](https://api.together.ai/settings/projects/~current): find the **Project Slug** field and select **Change**. The new slug takes effect immediately.
 
 <Warning>
   Changing a slug breaks existing API requests, scripts, and integrations that reference resources by their slug-qualified path (for example, `<slug>/<endpoint_name>`). There is no redirect from the old slug. Update any references that rely on the old slug.
@@ -38510,7 +38527,7 @@ Project Admins can change an existing Project's slug from [**Project Settings**]
 
 ## Managing project collaborators
 
-You can manage Project Collaborators from [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).
+You can manage project collaborators from [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).
 
 ### Adding collaborators
 
@@ -38519,22 +38536,22 @@ You can manage Project Collaborators from [**Settings > Project > Collaborators*
 3. Enter the user's email address.
 4. Select **Confirm**.
 
-New Collaborators are added with the **Editor** role by default, unless they are an Organization Admin (who are Admins for every Project by default). An Admin can change their role after they have been added.
+New collaborators are added with the **Editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
 
 <Info>
-  The user must already belong to your [Organization](/docs/organizations), unless they are being added as an [External Collaborator](/docs/roles-permissions#external-collaborators).
+  The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators).
 </Info>
 
 ### Removing collaborators
 
 1. Go to [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).
-2. Find the Collaborator you want to remove.
+2. Find the collaborator you want to remove.
 3. Select the three-dot menu next to their name.
 4. Select **Remove User**.
 5. Confirm the removal.
 
 <Warning>
-  Removing a Collaborator revokes their access to all resources in the Project, including clusters, volumes, SSH access, and management capabilities. This takes effect within minutes.
+  Removing a collaborator revokes their access to all resources in the project, including clusters, volumes, SSH access, and management capabilities. This takes effect within minutes.
 </Warning>
 
 ### External collaborators
@@ -38543,39 +38560,31 @@ New Collaborators are added with the **Editor** role by default, unless they are
   This feature is in beta. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
 </Info>
 
-To add users from outside your Organization as Collaborators, enable **Allow external collaborators** on the Project's [**Settings > Project**](https://api.together.ai/settings/projects/~current) page.
+To add users from outside your organization as collaborators, enable **Allow external collaborators** on the project's [**Settings > Project**](https://api.together.ai/settings/projects/~current) page.
 
-Once enabled, you can add External Collaborators the same way as any other Collaborator. See [External Collaborators](/docs/roles-permissions#external-collaborators) to learn more about their permissions.
+Once enabled, you can add external collaborators the same way as any other collaborator. See [External collaborators](/docs/roles-permissions#external-collaborators) to learn more about their permissions.
 
 ## Project API keys
 
-Each Project has [its own API keys](https://api.together.ai/settings/projects/~current/api-keys). These keys authenticate API requests and are scoped to the Project's resources.
+Each project has [its own API keys](https://api.together.ai/settings/projects/~current/api-keys). These keys authenticate API requests and are scoped to the project's resources.
 
 For details on creating, managing, and rotating API keys, see [API Keys & Authentication](/docs/api-keys-authentication).
 
-## Early access limitations
+## Known limitations
 
-Volumes aren't Project-aware yet. Usage attributes back to the **Default Project** of the Organization, and in-app views and API responses for those resources may be inaccurate. They might return all resources belonging to the Organization, or only resources in the Default Project, not the Project you're working in. Custom and fine-tuned models aren't fully Project-aware yet either: some may be visible across all Projects even when they're set to private.
-
-Additionally, costs in the Projects list and in cost analytics may be inaccurate for any Project running [legacy v1 dedicated endpoints](/docs/dedicated-endpoints/migrate-from-v1).
-
-### For external collaborators
-
-The behavior is more significant for [External Collaborators](/docs/roles-permissions#external-collaborators). Because many product decisions are based on the user's Organization, usage in unsupported products may attribute back to the **External Collaborator's own Organization** rather than the Project and parent Organization they are collaborating within. This means billing and resource attribution can be incorrect for external collaborators using products that don't yet work across multiple Projects.
+Costs in the projects list and in cost analytics may be inaccurate for any project running [legacy v1 dedicated endpoints](/docs/dedicated-endpoints/migrate-from-v1).
 
 <Warning>
-  If you have External Collaborators using unsupported resources, usage may be billed to their Organization instead of yours. If your External Collaborators are internal company employees, consider migrating them into your Organization using [SSO](/docs/sso) or [Org Invites](/docs/organizations#inviting-members). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
+  If you have external collaborators using unsupported resources, usage may be billed to their organization instead of yours. If your external collaborators are internal company employees, consider migrating them into your organization using [SSO](/docs/sso) or [organization invites](/docs/organizations#inviting-members). [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) for help with migration.
 </Warning>
-
-Together is actively expanding multi-Project support to all products. This section will be updated as more products are supported.
 
 ## Common project structures
 
-Teams organize Projects differently depending on their needs:
+Teams organize projects differently depending on their needs:
 
 | Strategy       | Example                                     | Best for                                               |
 | -------------- | ------------------------------------------- | ------------------------------------------------------ |
-| By team        | `ml-research`, `platform-eng`, `applied-ai` | Large Organizations with distinct teams                |
+| By team        | `ml-research`, `platform-eng`, `applied-ai` | Large organizations with distinct teams                |
 | By environment | `development`, `staging`, `production`      | Teams that want resource isolation across environments |
 | By workload    | `training`, `inference`, `evaluation`       | Teams that want to separate compute budgets            |
 | By customer    | `customer-a`, `customer-b`                  | Service providers managing multiple clients            |
@@ -38584,11 +38593,11 @@ Teams organize Projects differently depending on their needs:
 
 <CardGroup>
   <Card title="Roles & Permissions" icon="shield" href="/docs/roles-permissions">
-    What Admins and Editors can do within a Project
+    What admins and editors can do within a project
   </Card>
 
   <Card title="API Keys" icon="key" href="/docs/api-keys-authentication">
-    Create Project-scoped credentials
+    Create project-scoped credentials
   </Card>
 
   <Card title="Cluster Access" icon="server" href="/docs/gpu-clusters-management#managing-cluster-access">
@@ -41753,10 +41762,10 @@ Together uses role-based access control (RBAC) at both the [Organization](/docs/
 
 Organizations have two roles: **Admin** and **Developer**.
 
-| Role          | Scope           | Description                                                                                    |
-| ------------- | --------------- | ---------------------------------------------------------------------------------------------- |
-| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects.                      |
-| **Developer** | Org (read-only) | Can see Organization-level info and the Projects list. Joins Projects as an Editor by default. |
+| Role          | Scope           | Description                                                                                                                                                                   |
+| ------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects. Can see and join any Project, regardless of its visibility.                                         |
+| **Developer** | Org (read-only) | Can see Organization-level info and the Open and Closed Projects list. Joins Open Projects as an Editor by default; must be added to Closed and Private Projects by an Admin. |
 
 <Info>
   The creator ("Owner") of an Organization is a special Admin. They cannot be removed from the Organization, their role cannot be changed from Admin, and they cannot delete their own account.
@@ -41770,21 +41779,27 @@ Organizations have two roles: **Admin** and **Developer**.
 | Organization settings: Write | Yes   | No        |
 | Billing: Read                | Yes   | Yes       |
 | Billing: Write               | Yes   | No        |
-| Projects: Read               | Yes   | Yes       |
 | Projects: Create             | Yes   | No        |
 | Members: Read                | Yes   | Yes       |
 | Members: Invite              | Yes   | No        |
 | Members: Remove              | Yes   | No        |
 | Members: Manage roles        | Yes   | No        |
 
+### Roles and project visibility
+
+A Project's [visibility](/docs/projects#project-visibility) (Open, Closed, or Private) controls which Members can discover and join it. Your Organization role affects what you can see:
+
+* Organization Admins can see and join any Project, but must join a Closed or Private Project before accessing its resources or settings.
+* Organization Developers must be added to a Closed or Private Project by an Admin.
+
 ## Project roles
 
 Projects have two roles: **Admin** and **Editor**.
 
-| Role       | Description                                                                                                                                                                                            |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Admin**  | Can access and update Project settings. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
-| **Editor** | Can use the Project's resources but cannot access or update Project settings. Organization Developers are added to Projects as Editors by default.                                                     |
+| Role       | Description                                                                                                                                                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Admin**  | Can access and update Project settings, including the Project's visibility and Collaborators. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
+| **Editor** | Can use the Project's resources but cannot update Project settings, change its visibility, or manage Collaborators. Organization Developers are added to Projects as Editors by default.                                                                     |
 
 ### Project permissions
 
@@ -41792,6 +41807,8 @@ Projects have two roles: **Admin** and **Editor**.
 | --------------------------- | ----- | ------ |
 | Project settings: Read      | Yes   | Yes    |
 | Project settings: Write     | Yes   | No     |
+| Project visibility: Read    | Yes   | Yes    |
+| Project visibility: Change  | Yes   | No     |
 | Project cost analytics      | Yes   | Yes    |
 | API keys: Read              | Yes   | Yes    |
 | API keys: Create            | Yes   | Yes    |
@@ -41800,6 +41817,8 @@ Projects have two roles: **Admin** and **Editor**.
 | Collaborators: Add          | Yes   | No     |
 | Collaborators: Remove       | Yes   | No     |
 | Collaborators: Manage roles | Yes   | No     |
+
+Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
 
 ## External collaborators (beta)
 
@@ -47143,6 +47162,28 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 17, 2026">
+  ## Project visibility
+
+  Projects now support three visibility levels. **Open** projects let any organization member discover and join them. **Closed** projects are discoverable, but joining requires an admin to grant access. **Private** projects are visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
+
+  See [Project visibility](/docs/projects#project-visibility).
+
+  ## Multi-project resource scoping
+
+  Clusters, fine-tuned models, endpoints, evaluations, files, and API keys are now fully scoped to projects. The early-access limitations on project isolation no longer apply.
+
+  See [Projects](/docs/projects).
+</Update>
+
+<Update label="August 15, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `deepseek-ai/DeepSeek-V4-Pro-0813`: 1,048,576 context length, NVFP4 quantization. Pricing: \$1.32 input / \$3.96 output / \$0.13 cached input (per 1M tokens).
+</Update>
+
 <Update label="August 13, 2026">
   ## New models available for fine-tuning
 
@@ -47151,6 +47192,12 @@ Source: https://docs.together.ai/docs/changelog
   * `zai-org/GLM-5.2`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `deepseek-ai/DeepSeek-V4-Flash-0731`.
 
   ## Endpoint events in the CLI
 
@@ -47174,6 +47221,12 @@ Source: https://docs.together.ai/docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `Qwen/Qwen3.8-2.4T-A95B`: FP4 quantization. Pricing: \$2.50 input / \$6.25 output / \$0.50 cached input (per 1M tokens).
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-FP8`.
 </Update>
 
 <Update label="August 11, 2026">
@@ -47182,6 +47235,7 @@ Source: https://docs.together.ai/docs/changelog
   The following models are now available on [serverless](/docs/serverless/models):
 
   * `meta-models/Muse-Glimmer-30B`: 131,072 context length, FP8 quantization. Pricing: \$0.35 input / \$1.50 output / \$0.04 cached input (per 1M tokens).
+  * `ByteDance/Seedance-2.5`: Pricing: \$0.115/sec at 480p.
 
   ## New models available for fine-tuning
 

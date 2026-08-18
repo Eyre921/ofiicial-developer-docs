@@ -29,7 +29,7 @@ Use this table to understand what the icons in the following tables indicate.
 
 ### Battery and charging status
 
-When the Stripe Reader M2 is on, you can press and release the power button once to check the battery level. Learn more about [Stripe M2 battery life](https://docs.stripe.com/terminal/payments/setup-reader.md#device-specs-and-accessories).
+When the Stripe Reader M2 is on, you can press and release the power button once to check the battery level. Learn more about [Stripe M2 battery life](https://docs.stripe.com/terminal/payments/setup-reader/stripe-m2.md#device-specifications).
 
 | LEDs | Meaning |
 | --- | --- |

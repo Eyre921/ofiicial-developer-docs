@@ -62,7 +62,7 @@ Projects are isolated workspaces within your Organization. They scope resources,
 
 Every Organization starts with a [**Default Project**](/docs/projects#default-project). All Members are automatically added to it when they join.
 
-For Organizations that need to separate resources by team, environment, or workload, multi-Project support is available in early access. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
+For Organizations that need to separate resources by team, environment, or workload, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable additional Projects.
 
 For full details on creating and managing Projects, see [Projects](/docs/projects).
 

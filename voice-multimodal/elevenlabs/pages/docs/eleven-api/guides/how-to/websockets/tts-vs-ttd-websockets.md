@@ -8,10 +8,6 @@ path: docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets
 
 # Text to Speech vs Text to Dialogue WebSockets
 
-This feature is currently offered as a Beta Service. By enabling access, you agree to the [Beta
-Services Addendum](https://elevenlabs.io/bsa) and acknowledge that usage will be billed at \$70/1M
-chars starting on your next billing date, unless otherwise agreed with your account owner.
-
 ElevenLabs exposes two different WebSocket products for streaming synthesized speech. They solve different problems, accept different message shapes, and target different models.
 
 ## Which WebSocket should I use?

@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/python/managed-deep-agents-channels
 path: langsmith/python/managed-deep-agents-channels
 ---
 
-A channel connects a Managed Deep Agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
+A channel connects a managed deep agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.

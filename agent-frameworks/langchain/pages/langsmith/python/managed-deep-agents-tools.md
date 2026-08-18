@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/python/managed-deep-agents-tools
 path: langsmith/python/managed-deep-agents-tools
 ---
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 Define LangChain tools in your project, import them into `agent.py`, and pass them to `define_deep_agent`.
 

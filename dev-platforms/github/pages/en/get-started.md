@@ -16,7 +16,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
+  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
@@ -24,7 +24,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Hello World](/en/get-started/using-github/hello-world)
 
-  Follow this Hello World exercise to learn GitHub's pull request workflow.
+  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  <p>An overview of GitHub's pricing plans.</p>
+  An overview of GitHub's pricing plans.
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
@@ -40,7 +40,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  You can find ways to contribute to open source projects on GitHub that are relevant to you.
+  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
 
 ## Links
 
