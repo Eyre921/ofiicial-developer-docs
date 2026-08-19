@@ -16,11 +16,11 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
-  <p>Get started with your GitHub profile.</p>
+  Get started with your GitHub profile.
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
-  <p>Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.</p>
+  Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
@@ -32,19 +32,19 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
-  <p>You can set the email address that is used to author commits on GitHub and on your computer.</p>
+  You can set the email address that is used to author commits on GitHub and on your computer.
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
-  <p>If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.</p>
+  If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 
-  <p>You can see a history of your contributions on your profile.</p>
+  You can see a history of your contributions on your profile.
 
 ## Links
 

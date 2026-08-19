@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/flows
 
 # ElevenCreative Flows
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/476f79826c3bb57f85d46b402ec330dbb8a992fafa9c0a18bc81b9418898fb34/assets/images/product-guides/flows/flows-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=8078ff307a0f8586fc24f4ad3485a8ff85694a1f18930f049714287f457a7bc1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Flows canvas overview" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/476f79826c3bb57f85d46b402ec330dbb8a992fafa9c0a18bc81b9418898fb34/assets/images/product-guides/flows/flows-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=689d91473fadeec1f5f381db1fbd8b4e88fa6db32562715e3ee9865e6bd4c690&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Flows canvas overview" />
 
 ## Overview
 
@@ -50,25 +50,25 @@ Select **+ New Flow** from the dashboard to open a blank canvas.
 
 {' '}
 
-![Create a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c55e68567471280f6d4e713b2f46a23b0479ef64e4a48144e3876e0330fb3532/assets/images/product-guides/flows/flows-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=3f8266fb6423b67c91b3930b53b6f84d356fb2722f25f9d66049be4a261a1e6e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c55e68567471280f6d4e713b2f46a23b0479ef64e4a48144e3876e0330fb3532/assets/images/product-guides/flows/flows-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=24905d21a6d5397247548f261e35f368bdd2aaf3d021dce039fcb1cd4aac755e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Add nodes
 
 Right-click anywhere on the canvas or use the toolbar at the bottom to add a node. Nodes represent specific models or utility tools.
 
-![Add nodes](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3db741756fcf67e9969c2503dbae5bf00fc05103e1c22a2fe3334d962e0654b9/assets/images/product-guides/flows/flows-add-node.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=c1aec256388380ed555b7acb85950d407608ff6921795e9bbf641097e5265053&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add nodes](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3db741756fcf67e9969c2503dbae5bf00fc05103e1c22a2fe3334d962e0654b9/assets/images/product-guides/flows/flows-add-node.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=c5f818c56f70c3387fa81c918db76b907e0c1f16e2c0aa86e2df91c3a12f1dfb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Connect your workflow
 
 Click and drag from an output port of one node to the input port of another to chain them together. For example, connect a generated image to a video generation node.
 
-![Connect workflow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ea59847d2a725e920b5a03ecee5cc003f51d7f701c10d2b83c90679a469df685/assets/images/product-guides/flows/flows-connect-workflow.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=8ccc9160f7879fe1c1b91c6ad3edccc9bac941d0d8057cdac36785c790d7f0e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Connect workflow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ea59847d2a725e920b5a03ecee5cc003f51d7f701c10d2b83c90679a469df685/assets/images/product-guides/flows/flows-connect-workflow.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=a2c709f64f3c556fcc1457a0acac6799fd8ae5f6c358b67e9b658b5da3fd10e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Execute and iterate
 
 Click the **Run** button on individual nodes to generate content. Re-run a single node to test variations without affecting the rest of the chain.
 
-![Generate and iterate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5055f58da10a7c0ec9f79fb826ed9fd8f5f329e4d6169b58b47608bbdc362eb/assets/images/product-guides/flows/flows-run.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=5cf8711f3ea1faaa7a45c0c56e64c6aa606d666022d4207eb9081b838ee0e9a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Generate and iterate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5055f58da10a7c0ec9f79fb826ed9fd8f5f329e4d6169b58b47608bbdc362eb/assets/images/product-guides/flows/flows-run.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=4607667d4ab36501512dd0f71be2c096a876f2a77e673f1311eb54cee030d92d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Export or move to ElevenCreative Studio
 
@@ -101,14 +101,14 @@ Select from preset shortcuts at the center of the canvas to load pre-configured 
 
 Flows Agent is a conversational AI co-editor built directly into ElevenCreative Flows. To begin working with the agent, enter a description of what you want to create in the agent chat box. You have the option to upload existing files or start from scratch. The agent may ask clarifying questions, then builds your flow by placing nodes directly onto the canvas. Continue the conversation to keep iterating on your flow by providing feedback and requesting changes.
 
-![Flows Agent creating a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ce96a9170d9367e98816346dffbf429eaec694bdffa0eb0134b56b5fee5976b8/assets/images/product-guides/flows/flows-agent-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=b15849445d487bd18ab5f5c472ce2453edfbb85a229a1cbb65fa29eee72880d2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flows Agent creating a new flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ce96a9170d9367e98816346dffbf429eaec694bdffa0eb0134b56b5fee5976b8/assets/images/product-guides/flows/flows-agent-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=32ec82489a83328c17506d7eccce48800889ec3a28fab270fa76cfed4cefb11e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Using the agent with existing flows
 
 You can also work with Flows Agent on existing flows. Just enter a description of what you want to do in the agent chat box, and the agent will analyse your existing nodes and carry out your instructions.
 
 ![Flows Agent working with existing
-flows](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e76725a28de83ec701d984fb9620e8fddd22cdbded7858d0f31edd2f0f8d9d8/assets/images/product-guides/flows/flows-agent-existing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=7d270bf4bd19828f05e5f5f44bcdb62dc01dcb2c72a19fe41670a0d7f8b1b623&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+flows](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6e76725a28de83ec701d984fb9620e8fddd22cdbded7858d0f31edd2f0f8d9d8/assets/images/product-guides/flows/flows-agent-existing.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=9f640ee4dc70ff591447a607be61f374b657427281a780d1ea3d2a616f0d4e65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Agent permissions
 
@@ -123,7 +123,7 @@ You can set permissions for the agent, with the following options:
 Flows Agent does not replace manual editing. You can take over at any point to make adjustments, then hand control back to the agent. Manual and agent-assisted editing work side by side throughout your workflow.
 
 ![Completed flow with agent
-conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a394d1cf4a62de6640bb7127063ddb92c733afc234123f9e46b3c7c99797240/assets/images/product-guides/flows/flows-agent-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=5c6582b1914b702870e9954dadcaeab2dfad4ff61c9daf1918cb1d16970173ac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a394d1cf4a62de6640bb7127063ddb92c733afc234123f9e46b3c7c99797240/assets/images/product-guides/flows/flows-agent-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=728ce89b2a6897459d9f0f8c2806318b0b5030c30ab380ea6927ed4e876bf69e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Pricing
 
@@ -171,7 +171,7 @@ When you drag a connection from an output port, ElevenCreative Flows automatical
 
 Unlike linear editors, ElevenCreative Flows allows for non-destructive iteration.
 
-![Flow execution](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee84dc60f09c24b1ce7b170935640aedf5f158c153fb8a5e1947cf4a1ec0ade/assets/images/product-guides/flows/flows-run-from-here.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=fe1b3534b03d8eb03d8139d77dad7b7ee6a8d044ec3e93fb8881f61665c2f4ab&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flow execution](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee84dc60f09c24b1ce7b170935640aedf5f158c153fb8a5e1947cf4a1ec0ade/assets/images/product-guides/flows/flows-run-from-here.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=53df8c9bae813e604b39893e1fc0eba763801fe76c299f3e4383bb7cfd78deac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Partial generation:** If you want to change the voiceover but keep the generated video, you only need to re-run the [Text to Speech](/docs/overview/capabilities/text-to-speech) node. Only the subsequent nodes in that specific path will need to be updated.
 
@@ -193,7 +193,7 @@ Programmatic execution via API for mass creative production is planned for a fut
 
 You can create a template from an existing flow, allowing you to reuse the same flow with different inputs each time. Templates can be kept for personal use or shared with others.
 
-![Creating a template from a flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c42cf66b656de0e6764fa615b20986a40cee9f329416b2a80c50a76718c8f795/assets/images/product-guides/flows/flows-create-template.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T100832Z&X-Amz-Expires=604800&X-Amz-Signature=f3f8e18fa98e434c155accd5becdd08f5601f943b9518196218dc06883357814&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Creating a template from a flow](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c42cf66b656de0e6764fa615b20986a40cee9f329416b2a80c50a76718c8f795/assets/images/product-guides/flows/flows-create-template.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113133Z&X-Amz-Expires=604800&X-Amz-Signature=30a57bfcbcfea98367b14cc024d56c6acd2cb0db34a9f79e8f6141a7f895d886&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### To create a template
 

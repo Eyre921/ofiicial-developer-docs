@@ -5,5 +5,5 @@
 
 ## docs
 
-- `docs/docs-mcp` — [Langfuse Docs MCP Server](pages/docs/docs-mcp.md) · [原文](https://langfuse.com/docs/docs-mcp.md)
+- `docs/docs-mcp` — [REST endpoint](pages/docs/docs-mcp.md) · [原文](https://langfuse.com/docs/docs-mcp.md)
 - `docs/observability/best-practices` — [What does a good trace look like?](pages/docs/observability/best-practices.md) · [原文](https://langfuse.com/docs/observability/best-practices.md)

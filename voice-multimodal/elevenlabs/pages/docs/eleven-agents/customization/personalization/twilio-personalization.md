@@ -32,17 +32,17 @@ seamless experience where:
 In the [settings page](https://elevenlabs.io/app/agents/settings) of ElevenAgents, configure the webhook URL and add any
 secrets needed for authentication.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113235Z&X-Amz-Expires=604800&X-Amz-Signature=302c0667d6e97c734af6e503a7cab55d1de79f582995c96e5aaccd554fd4daac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603/assets/images/conversational-ai/convai-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T103359Z&X-Amz-Expires=604800&X-Amz-Signature=2ea949d78eb7cdc627c180494d365e845393b35167c191f74a7eb5675a67219f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Click on the webhook to modify which secrets are sent in the headers.
 
-![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113235Z&X-Amz-Expires=604800&X-Amz-Signature=e80a199bc8b7ddbb4d2a3c9132cce02612d3f3d315ef967f5d51075dd0de39c8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add secrets to headers](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T103359Z&X-Amz-Expires=604800&X-Amz-Signature=c7e53753d8e0721d423c3b32b8076b0bfdef9041471d3c62ec89be9c77864d43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enable fetching conversation initiation data
 
 In the "Security" tab of the [agent's page](https://elevenlabs.io/app/agents/agents/), enable fetching conversation initiation data for inbound Twilio calls, and define fields that can be overridden.
 
-![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113235Z&X-Amz-Expires=604800&X-Amz-Signature=4fba70d6b54a1fd3d0f6a100608322502a60c699ca23eaeb840907462ebee5f2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T103359Z&X-Amz-Expires=604800&X-Amz-Signature=0e2063424e6fb7e1837063a3bef8a309d873a54f2c4364480bd8f45a15d015a1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Implement the webhook endpoint to receive Twilio data
 

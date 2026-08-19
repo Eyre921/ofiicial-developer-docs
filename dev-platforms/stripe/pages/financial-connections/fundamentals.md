@@ -17,7 +17,19 @@ To initialize and complete the Financial Connections authentication flow:
 3. Return the session’s `client_secret` to your client.
 4. Initiate the authentication flow using [collectFinancialConnectionsAccounts](https://docs.stripe.com/js/financial_connections/collect_financial_connections_accounts).
 5. Your user completes the flow, which attaches [accounts](https://docs.stripe.com/api/financial_connections/accounts.md) to the session.
+
 An overview of the Financial Connections authentication flow (See full diagram at https://docs.stripe.com/financial-connections/fundamentals)
+
+```text
+[Client] -- Initiate account linking --> [Server]
+[Server] -- Create session --> [Stripe]
+[Stripe] -- Session --> [Server]
+[Server] -- Session client_secret --> [Client]
+[Client] -- User completes account linking --> [Client]
+[Server] -- Retrieve accounts from session --> [Stripe]
+[Stripe] -- Accounts --> [Server]
+```
+
 A completed session contains the linked accounts:
 
 ```json

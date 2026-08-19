@@ -87,7 +87,7 @@ An 8-bit floating point format. Faster and more memory-efficient than BF16, with
 A 4-bit floating point format. Faster and cheaper than FP8, with a larger quality tradeoff. FP4 deployment shapes do not support LoRA addons.
 
 **Speculative decoding**\
-An inference acceleration technique where a smaller draft model proposes tokens that are verified by the main model in parallel. Reduces latency with no quality loss.
+An inference acceleration technique where draft tokens are verified by the target model in parallel. It reduces generation latency when the target accepts enough proposed tokens per verification step to offset draft generation and verification overhead; see [Speculative Decoding](/deployments/speculative-decoding).
 
 **KV cache**\
 Key-value cache that stores intermediate attention computations across tokens. Reduces re-computation cost on repeated or shared prefixes. Cache hit percentage is reflected in billing. Configurable with `--kv-cache-fraction`.

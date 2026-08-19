@@ -105,7 +105,7 @@ Under **Container Definition**, expand **Environment variables**
 
 Add each `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` variable with its TOML expression as the value
 
-![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113258Z&X-Amz-Expires=604800&X-Amz-Signature=991b78dbb44e1cad640a60c13d07e8818fd0142313f79c6d5c5c718fafbf5306&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![SageMaker console showing environment variable configuration for a Deepgram model package](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55/images/sagemaker-env-vars-console.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113237Z&X-Amz-Expires=604800&X-Amz-Signature=567ece74e4a35e7a7b2607aaa47cc6de4a1b9476b860b14bab797942034236ed&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### AWS CLI
 

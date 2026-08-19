@@ -135,7 +135,18 @@ curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECT
 ### Wait for the balance refresh to complete
 
 The [balance_refresh](https://docs.stripe.com/api/financial_connections/accounts/object.md#financial_connections_account_object-balance_refresh) field on a Financial Connections account represents the balance refresh state. This field remains `null` until you request the `balances` permission and initiate a refresh. After you start a balance refresh, the state changes to `pending`, and after completion, it moves to either `succeeded` or `failed`. We send the [financial_connections.account.refreshed_balance](https://docs.stripe.com/api/events/types.md#event_types-financial_connections.account.refreshed_balance) event when the balance refresh completes. To determine the success of the refresh, check the `balance_refresh.status` field while handling the webhook.
+
 Balance refresh flow (See full diagram at https://docs.stripe.com/financial-connections/balances)
+
+```text
+[balance_refresh: null] -- prefetch --> [balance_refresh.status: pending]
+[balance_refresh: null] -- Refresh API --> [balance_refresh.status: pending]
+[balance_refresh.status: pending] -- success --> [balance_refresh.status: succeeded]
+[balance_refresh.status: pending] -- failure --> [balance_refresh.status: failed]
+[balance_refresh.status: succeeded] -- webhook emitted --> [financial_connections.account.refreshed_balance]
+[balance_refresh.status: failed] -- webhook emitted --> [financial_connections.account.refreshed_balance]
+```
+
 After a balance refresh completes, Stripe sets the availability of future refreshes through the [balance_refresh.next_refresh_available_at](https://docs.stripe.com/api/financial_connections/accounts/object.md#financial_connections_account_object-balance_refresh-next_refresh_available_at) field. Check this field before initiating a new balance refresh to make sure that refreshes are currently available. If you attempt a refresh while the value is `null` (as is always the case when the refresh is pending or the account is inactive) or the current time is less than the `next_refresh_available_at` timestamp, the refresh won’t be initiated.
 
 > In the unlikely event that a refresh fails, the `error` field on the refresh hash is a preview feature that provides the cause of the failure and recommended next steps. If you’d like to use it, [email us](mailto:financial-connections-beta+refresh-error@stripe.com) for access.

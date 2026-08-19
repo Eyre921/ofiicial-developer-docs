@@ -21,6 +21,7 @@ path: changelog/llms.txt
 - [August 4, 2026](https://developers.deepgram.com/changelog/2026/8/4.md)
 - [July 31, 2026](https://developers.deepgram.com/changelog/2026/7/31.md)
 - [July 28, 2026](https://developers.deepgram.com/changelog/2026/7/28.md): Deepgram Self-Hosted release 260728 brings FIPS 140-3 images to general availability, adds enhanced diarization metadata and a new .dgv2 encrypted model file format, and improves number and language formatting.
+- [July 22, 2026](https://developers.deepgram.com/changelog/2026/7/22.md)
 - [July 21, 2026](https://developers.deepgram.com/changelog/2026/7/21.md)
 - [July 17, 2026](https://developers.deepgram.com/changelog/2026/7/17.md)
 - [July 16, 2026](https://developers.deepgram.com/changelog/2026/7/16.md)

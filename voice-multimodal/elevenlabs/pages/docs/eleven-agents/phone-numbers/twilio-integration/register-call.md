@@ -64,7 +64,7 @@ Before using the register call endpoint, configure your agent to use the correct
 2. Go to the Voice section
 3. Select "μ-law 8000 Hz" from the dropdown
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b37196c36051755fb0b10a99b393501ec11573f963c83b6b092e1b5926c6617f/assets/images/conversational-ai/twilio-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113247Z&X-Amz-Expires=604800&X-Amz-Signature=323a4c190145085a8d606009b276eef85bb1522ba64f5fe4b8736d1ca8c918e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b37196c36051755fb0b10a99b393501ec11573f963c83b6b092e1b5926c6617f/assets/images/conversational-ai/twilio-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T100017Z&X-Amz-Expires=604800&X-Amz-Signature=d99ef0a52a4b323984658834d3c572e4922ffc30f8ccaa56fe58f2e9efaba95c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Set Input Format
 
@@ -72,7 +72,7 @@ Before using the register call endpoint, configure your agent to use the correct
 2. Go to the Advanced section
 3. Select "μ-law 8000 Hz" for the input format
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec87531c38e26f2293b90126f1b91ee9acb4cc677c6f3e83a6e1b6029743d3f7/assets/images/conversational-ai/twilio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113247Z&X-Amz-Expires=604800&X-Amz-Signature=a16aad23f5c326e8549df84e6eb94515d97f58fba69988aea2e3fb37ed677391&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec87531c38e26f2293b90126f1b91ee9acb4cc677c6f3e83a6e1b6029743d3f7/assets/images/conversational-ai/twilio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T100017Z&X-Amz-Expires=604800&X-Amz-Signature=706ac1326fb1a3f817437effe6ca98e34970ce8495b87a8dc85d131fa7665096&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## API reference
 
@@ -285,7 +285,7 @@ ngrok http 8000
 4. Under "Voice Configuration", set the webhook URL to your server endpoint (e.g., `https://your-ngrok-url.ngrok.app/twilio/inbound`)
 5. Set the HTTP method to POST
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/510d09d492b0c6ac9966f8fe39a9da685df79e8108f6fbc55fe502f48f650084/assets/images/conversational-ai/twilio-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113247Z&X-Amz-Expires=604800&X-Amz-Signature=52d7b7cef5699af7be0c6501094c18459ae613d57c8e36ef376a7680f2e8fbe0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/510d09d492b0c6ac9966f8fe39a9da685df79e8108f6fbc55fe502f48f650084/assets/images/conversational-ai/twilio-4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T100017Z&X-Amz-Expires=604800&X-Amz-Signature=6ce2a5e178b3c558a90e6260cf81290ad7ef2f7af660d37e20bb084b034d9de3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Limitations
 

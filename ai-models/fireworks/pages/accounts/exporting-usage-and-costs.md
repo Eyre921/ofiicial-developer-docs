@@ -25,10 +25,10 @@ The CLI and `billingUsage` share the same usage response shape and dimensions. M
 <Note title="Three billing endpoints, what each returns">
   * **`GET /billingUsage`** — metered *quantities* (tokens, accelerator-seconds) grouped by deployment/model/API key/custom tags. No dollars. To **filter** (not just group) over HTTP, use **`POST /billingUsage:query`** with the same request shape in a JSON body (see the filter examples below).
   * **`GET /billing/summary`** — rated *dollar line items* by billing category (serverless, dedicated, training), grouped by your billing config. Optional daily buckets. No per-model/per-key breakdown.
-  * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs).
+  * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs). For a ready-made CSV of the same data, use [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs).
 </Note>
 
-This page complements [Exporting Billing Metrics](/accounts/exporting-billing-metrics): use `export-metrics` for a raw per-event CSV dump, and the workflows here for grouped usage and rated views.
+This page complements the two CSV exports: use [`export-metrics`](/accounts/exporting-billing-metrics) for a raw per-event dump, [`export-usage-costs`](/accounts/exporting-usage-costs) for rated serverless costs grouped by model, model tier, user, or API key, and the workflows here for ad-hoc grouped usage and rated views.
 
 <Note>
   CLI examples require `firectl` 1.7.21 or later. Run `firectl version`, then `firectl upgrade` if needed.
@@ -426,5 +426,6 @@ done
 * [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage) - HTTP API reference
 * [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) - Rated dollar costs by billing category, with optional daily breakdown
 * [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/user/API key
+* [Exporting Usage Costs](/accounts/exporting-usage-costs) - Rated serverless cost CSV via `firectl billing export-usage-costs`
 * [Exporting Billing Metrics](/accounts/exporting-billing-metrics) - Raw per-event billing CSV export
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits

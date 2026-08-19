@@ -20,7 +20,27 @@ Stripe Tax allows you to calculate the tax amount on your recurring payments whe
 Watch a demonstration enabling Stripe Tax with a subscription Checkout. 
 [Watch on YouTube](https://www.youtube.com/watch?v=3QBRs4IfDNo)
 #### Customer v1
+
 A diagram providing a high level overview of a Stripe Tax and Billing integration using Customer v1. (See full diagram at https://docs.stripe.com/tax/subscriptions)
+
+```text
+[Customer] -- Go to your payment page --> [Client]
+[Customer] -- Enter address information --> [Client]
+[Client] -- Estimate taxes and total --> [Server]
+[Server] -- POST /v1/invoices/create_preview --> [Stripe]
+[Stripe] -- Return a preview invoice --> [Server]
+[Server] -- Return taxes and total --> [Client]
+[Customer] -- Submit --> [Client]
+[Client] -- Submit --> [Server]
+[Server] -- POST /v1/customers/:id --> [Stripe]
+[Stripe] -- Return the updated Customer --> [Server]
+[Server] -- POST /v1/subscriptions --> [Stripe]
+[Stripe] -- Return a new subscription --> [Server]
+[Server] -- Return client secret --> [Client]
+[Client] -- stripe.confirmPayment() --> [Stripe]
+[Stripe] -- Redirect to return_url --> [Customer]
+```
+
 This guide assumes you’re setting up Stripe Tax and Billing for the first time. See how to [update existing subscriptions](https://docs.stripe.com/tax/subscriptions/update.md).
 
 ## Add tax registrations [Dashboard] [Server-side]

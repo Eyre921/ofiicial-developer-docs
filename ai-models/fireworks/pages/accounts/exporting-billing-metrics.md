@@ -10,6 +10,12 @@ Export billing and usage metrics for all Fireworks services
 
 Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and fine-tuning jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
 
+<Note>
+  This export reports metered **quantities** — tokens and accelerator-seconds — not dollars. For a
+  CSV of rated serverless **costs** grouped by model, model tier, user, or API key, use
+  [Exporting Usage Costs](/accounts/exporting-usage-costs).
+</Note>
+
 ## Exporting billing metrics
 
 Use the Fireworks CLI to export a billing CSV that includes all usage:
@@ -133,6 +139,7 @@ This export includes:
 ## See also
 
 * [firectl CLI overview](/tools-sdks/firectl/firectl)
+* [Exporting Usage Costs](/accounts/exporting-usage-costs) - Rated serverless cost CSV grouped by model, model tier, user, or API key
 * [Exporting deployment metrics](/deployments/exporting-metrics) - Real-time Prometheus metrics for on-demand deployments
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers, monthly spend limits, and account-wide request limits
 * [Serverless rate limits](/serverless/rate-limits) - Adaptive serverless TPM bounds

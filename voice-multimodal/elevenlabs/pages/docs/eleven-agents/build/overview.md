@@ -16,7 +16,7 @@ Everything on this page can also be configured conversationally. Connect the [ho
 server](/docs/eleven-agents/operate/hosted-mcp) to Claude or another MCP client to create and
 update agents through natural language.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113219Z&X-Amz-Expires=604800&X-Amz-Signature=91a6ada121c12b8ead6b680f5972d4421ccb7eb8dab20e1a71dda2c4bbbd244d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Build your agent" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113144Z&X-Amz-Expires=604800&X-Amz-Signature=c30487e2a235aa55d8294f378212ccc267019b39ac41eb53868cf949c3c5c389&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Build your agent" />
 
 ### Design and configure
 

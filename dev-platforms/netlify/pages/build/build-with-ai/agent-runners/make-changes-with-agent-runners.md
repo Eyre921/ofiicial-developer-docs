@@ -66,13 +66,25 @@ To start an agent run to make changes to your project, follow these steps:
 2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. 
 3. Select a mode from the mode dropdown. To make changes, use the default **Build** mode so your agent can make code or file changes. To get answers or make plans without changing your project, use  **Ask** mode. For details, see [Agent run modes](#agent-run-modes).
 4. Choose **Run task**. 
-5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks.
+5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks. If your agent needs a decision from you before it can continue, it will pause and ask you a question. For details, see [Respond to any questions from your agent](#2-respond-to-any-questions-from-your-agent).
 
 ### Note
 
 Because Ask mode doesn't change your code, the steps below for previewing and shipping updates apply only to Build mode runs.
 
-### 2. Check the status of your agent run
+### 2. Respond to any questions from your agent
+
+When your prompt leaves open a decision that would change the result, your agent can pause and ask you a few questions instead of guessing. This usually happens early in the run, as your agent first assesses your prompt.
+
+If your agent asks you a question, you can answer it, or skip it and let your agent decide for itself. When your agent asks more than one question, you can skip a single question or all of them, and you can always add extra context in your own words. If you'd rather send your agent in a different direction, enter a new prompt instead of answering and your agent follows that instruction.
+
+There's no need to hurry. Your agent run waits until you respond, and it doesn't use any credits while it waits.
+
+### Note
+
+An agent run that is waiting for answers is still active, so it holds one of your team's concurrent agent run slots. How many runs your team can have active at once depends on your plan, and the limit applies across all of your team's projects. To free up the slot, answer or skip the questions so your agent can finish the run, or stop the run. For details, see [Why you may not be able to start a new run](#why-you-may-not-be-able-to-start-a-new-run).
+
+### 3. Check the status of your agent run
 
 To check the status of your agent run, go to the **Agent Runs** tab in your Netlify project dashboard. Then choose your agent run and check the log for the current status.
 
@@ -80,7 +92,7 @@ You can expand an individual agent run to view its credit usage. Note that credi
 
 If you change your mind about a run that's still going, you can stop it and take a different approach. For details, see [Stop an agent run](#stop-an-agent-run).
 
-### 3. Preview Agent Runners updates 
+### 4. Preview Agent Runners updates 
 
 To preview your agent run's proposed updates, check out the **Files changed** tab, which shows you the changes that the agent made. 
 
@@ -90,7 +102,7 @@ You can also preview your agent run's proposed updates in a preview environment 
 
 If your project is connected to a GitHub repository, then you can optionally open up a pull request or update an existing pull request with your updates from your agent run.
 
-### 4. Ship your agent run updates
+### 5. Ship your agent run updates
 
 To ship your agent run updates, you have two options: 
    - **For projects using Git & GitHub:** Open a pull request or update an existing pull request with your updates from your agent run. When you merge your pull request into your production branch, Netlify publishes your changes to your production site for you.

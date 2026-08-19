@@ -78,10 +78,6 @@ Together's IAM model applies consistently across all products. These guides cove
   </Card>
 </CardGroup>
 
-<Note>
-  To enable multi-Project support for your Organization, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
-</Note>
-
 ## Next steps
 
 <CardGroup>

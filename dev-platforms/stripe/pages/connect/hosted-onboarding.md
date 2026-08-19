@@ -280,7 +280,19 @@ Accounts store identity information in the `company` and `individual` hashes.
 Listen to the [account.updated](https://docs.stripe.com/api/events/types.md#event_types-account.updated) event. If the account contains any `currently_due` fields when the `current_deadline` arrives, the corresponding functionality is disabled and those fields are added to `past_due`.
 
 Let your accounts remediate their verification requirements by directing them to the Stripe-hosted onboarding form.
- (See full diagram at https://docs.stripe.com/connect/hosted-onboarding)
+
+(See full diagram at https://docs.stripe.com/connect/hosted-onboarding)
+
+```text
+[If requirements.past_due contains fields] -- Yes --> [Account possibly disabled; direct it to onboarding]
+[If requirements.currently_due contains fields] -- Yes --> [Direct account to onboarding in time to finish before current_deadline]
+[If requirements.past_due contains fields] -- No --> [If requirements.currently_due contains fields]
+[If requirements.currently_due contains fields] -- No --> [No action required]
+[account.updated event] --> [If requirements.past_due contains fields]
+[Direct account to onboarding in time to finish before current_deadline] --> [Redirect to the Stripe-hosted onboarding form]
+[Account possibly disabled; direct it to onboarding] --> [Redirect to the Stripe-hosted onboarding form]
+```
+
 ## Handle the connected account returning to your platform [Server-side]
 
 The Account Link requires a `refresh_url` and `return_url` to handle all cases in which the connected account is redirected back to your platform. It’s important to implement these correctly to provide the best onboarding flow for your connected accounts.

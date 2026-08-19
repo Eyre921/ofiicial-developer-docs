@@ -189,9 +189,9 @@ You can require that your customers accept your terms of service before completi
 
 #### API
 
-Collect terms of service agreement from your customers by setting [consent_collection.terms_of_service](https://docs.stripe.com/api/payment_links/payment_links/create.md#create_payment_link-consent_collection-terms_of_service) to `required`. This displays a checkbox for collecting the customer’s terms of service agreement, and links the customer to the terms of service URL set in your Stripe Dashboard’s [Public details](https://dashboard.stripe.com/settings/public).
+Collect terms of service agreement from your customers by setting [consent_collection.terms_of_service](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-consent_collection-terms_of_service) to `required`. This displays a checkbox for collecting the customer’s terms of service agreement, and links the customer to the terms of service URL set in your Stripe Dashboard’s [Public details](https://dashboard.stripe.com/settings/public).
 
-If you set [consent_collection.terms_of_service](https://docs.stripe.com/api/payment_links/payment_links/create.md#create_payment_link-consent_collection-terms_of_service) to `none`, Checkout won’t display the checkbox and won’t require customers to accept your terms of service.
+If you set [consent_collection.terms_of_service](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-consent_collection-terms_of_service) to `none`, Checkout won’t display the checkbox and won’t require customers to accept your terms of service.
 
 Before requiring agreement to your terms, set your terms of service URL in your business’s [Public details](https://dashboard.stripe.com/settings/public). Setting a privacy policy URL is optional. Checkout also links to your privacy policy when a URL to your privacy policy is set in your [Public details](https://dashboard.stripe.com/settings/public).
 
@@ -200,7 +200,6 @@ curl https://api.stripe.com/v1/payment_links \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=1" \
-  -d "payment_method_types[0]=card" \
   -d "consent_collection[terms_of_service]=required"
 ```
 
@@ -233,7 +232,7 @@ The custom fields are also included in the [checkout.session.completed](https://
 
 #### API
 
-Create a payment link while specifying an array of [custom fields](https://docs.stripe.com/api/payment_links/payment_links/create.md#create_payment_link-custom_fields). Each field must have a unique `key` that your integration uses to reconcile it. Also provide a label for the field that you display to your customer. Labels for custom fields aren’t translated, but you can use the `locale` [URL parameter](https://docs.stripe.com/payment-links/url-parameters.md) to set the language of your payment link to match the same language as your labels.
+Create a payment link while specifying an array of [custom fields](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-custom_fields). Each field must have a unique `key` that your integration uses to reconcile it. Also provide a label for the field that you display to your customer. Labels for custom fields aren’t translated, but you can use the `locale` [URL parameter](https://docs.stripe.com/payment-links/url-parameters.md) to set the language of your payment link to match the same language as your labels.
 
 ```curl
 curl https://api.stripe.com/v1/payment_links \
@@ -347,7 +346,7 @@ To let your customers update the quantity of the items they purchase, [create a 
 
 #### API
 
-To let your customers update the quantity of the items they purchase, specify [adjustable_quantity](https://docs.stripe.com/api/payment_links/payment_links/create.md#create_payment_link-line_items-adjustable_quantity) for the line item. You can also set the minimum and maximum quantities that customers can purchase:
+To let your customers update the quantity of the items they purchase, specify [adjustable_quantity](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-line_items-adjustable_quantity) for the line item. You can also set the minimum and maximum quantities that customers can purchase:
 
 ```curl
 curl https://api.stripe.com/v1/payment_links \

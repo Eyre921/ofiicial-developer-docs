@@ -36,7 +36,7 @@ These instructions explain how to use Copilot code review in the GitHub website.
 
    ![Screenshot of a code review left by Copilot.](/assets/images/help/copilot/code-review/review-comment@2x.png)
 
-   Copilot always leaves a "Comment" review, not an "Approve" review or a "Request changes" review. This means that Copilot's reviews do not count toward required approvals for the pull request, and Copilot's reviews will not block merging changes. For more details, see [Approving a pull request with required reviews](/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews).
+   Copilot always leaves a "Comment" review, not an "Approve" review or a "Request changes" review. This means that Copilot's reviews do not count toward required approvals for the pull request, and Copilot's reviews will not block merging changes. For more details, see [Approving a pull request with required reviews](/en/pull-requests/how-tos/review-pull-requests/approving-a-pull-request-with-required-reviews).
 
 5. Copilot's review comments behave like review comments from humans. You can add reactions to them, comment on them, resolve them and hide them.
 
@@ -63,7 +63,7 @@ For more information, see [About GitHub Copilot code review](/en/copilot/concept
 
 Where possible, Copilot's feedback includes suggested changes which you can apply with a couple of clicks.
 
-If you're happy with the changes, you can accept a single suggestion from Copilot and commit it, or accept a group of suggestions together in a single commit. For more information, see [Incorporating feedback in your pull request](/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request).
+If you're happy with the changes, you can accept a single suggestion from Copilot and commit it, or accept a group of suggestions together in a single commit. For more information, see [Incorporating feedback in your pull request](/en/pull-requests/how-tos/review-pull-requests/incorporating-feedback-in-your-pull-request).
 
 You can also invoke Copilot cloud agent to implement suggested changes. To do this, you must:
 
@@ -74,7 +74,7 @@ You can also invoke Copilot cloud agent to implement suggested changes. To do th
 
 When you push changes to a pull request that Copilot has reviewed, it won't automatically re-review your changes unless you've configured it to review new pushes after enabling automatic reviews.
 
-To manually request a re-review from Copilot, click the <svg version="1.1" width="16" height="16" viewBox="0 0 16 16" class="octicon octicon-sync" aria-label="Re-request review" role="img"><path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path></svg> button next to Copilot's name in the **Reviewers** menu. For more information, see [Requesting a pull request review](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review).
+To manually request a re-review from Copilot, click the <svg version="1.1" width="16" height="16" viewBox="0 0 16 16" class="octicon octicon-sync" aria-label="Re-request review" role="img"><path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path></svg> button next to Copilot's name in the **Reviewers** menu. For more information, see [Requesting a pull request review](/en/pull-requests/how-tos/create-pull-requests/requesting-a-pull-request-review).
 
 To automatically request re-reviews from Copilot on every push, enable automatic code review for the repository and select **Review new pushes** in the ruleset settings. For more information, see [Configuring automatic code review by GitHub Copilot](/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-automatic-review#configuring-automatic-code-review-for-repositories-in-an-organization).
 
@@ -135,7 +135,7 @@ You can use either of the following files to configure Copilot code review's env
 * `.github/workflows/copilot-setup-steps.yml`: If you have already configured this file for Copilot cloud agent, Copilot code review will use the same configuration by default.
 * `.github/workflows/copilot-code-review.yml`: We recommend creating this file if you want to configure Copilot code review's environment independently of Copilot cloud agent. If this file is present in your repository, it is used for Copilot code review instead of `copilot-setup-steps.yml`.
 
-You can also configure firewall rules to control the domains and URLs that Copilot code review can access, at both the organization and repository level. These settings are configured separately from Copilot cloud agent's firewall settings, in their own section of the same "Internet access" tab. See [Customizing or disabling the firewall for GitHub Copilot](/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-firewall).
+You can also configure firewall rules to control the domains and URLs that Copilot code review can access, at both the organization and repository level. These settings are configured separately from Copilot cloud agent's firewall settings, in their own section of the same "Internet access" tab. See [Customizing or disabling the firewall for GitHub Copilot](/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-the-firewall).
 
 ## Providing feedback on Copilot's reviews
 

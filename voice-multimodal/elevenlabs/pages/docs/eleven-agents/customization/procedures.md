@@ -15,7 +15,7 @@ A procedure contains instructions for one specific task. Each procedure has a tr
 Use procedures when your agent needs to handle many distinct tasks. One example use case is a customer support agent, where each procedure covers one type of request: refunds, identity verification, account recovery, or connection troubleshooting.
 
 ![Procedures tab in the agent
-dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af/assets/images/conversational-ai/procedures/procedures-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T105201Z&X-Amz-Expires=604800&X-Amz-Signature=5426dbfcc7c3b979b139d404f6c4677c78e484d6c708a9d67fda8ceda2a3965f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af/assets/images/conversational-ai/procedures/procedures-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T104436Z&X-Amz-Expires=604800&X-Amz-Signature=f729414123f3de22f6b104abbd6d075cf0851c87f907807a06f247b736c502e4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Procedure types
 

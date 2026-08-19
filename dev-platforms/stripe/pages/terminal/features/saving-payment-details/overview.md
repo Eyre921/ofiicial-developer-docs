@@ -40,7 +40,6 @@ If the customer isn’t in your checkout flow when you charge them, set [off_ses
 ```bash
 curl https://api.stripe.com/v1/payment_intents \
   -u <<YOUR_SECRET_KEY>>: \
-  -d "payment_method_types[]"="card" \
   -d "amount"=1099 \
   -d "currency"="usd" \
   -d "customer_account"="{{CUSTOMER_ACCOUNT_ID}}" \
@@ -54,7 +53,6 @@ curl https://api.stripe.com/v1/payment_intents \
 ```bash
 curl https://api.stripe.com/v1/payment_intents \
   -u <<YOUR_SECRET_KEY>>: \
-  -d "payment_method_types[]"="card" \
   -d "amount"=1099 \
   -d "currency"="usd" \
   -d "customer"="{{CUSTOMER_ID}}" \

@@ -42191,6 +42191,27 @@ The change applies to traces scored after you save the evaluator. Existing score
 
 The **Extend trace retention** toggle described above applies to both trace-level and thread-level (multi-turn) online evaluators. For more information on multi-turn evaluators, see [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn).
 
+## Include extended stats
+
+Use **Include extended stats (feedback, costs, tokens)** in a [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) to evaluate feedback statistics, token usage, or cost data from the run. The `feedback_stats` field contains feedback statistics, including the number and average for each feedback key. This option is not available for [multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn).
+
+LangSmith fetches additional data for evaluators with this option enabled. Enable it only when your evaluation logic or prompt requires these fields.
+
+To include extended stats:
+
+1. When you [create](#create-an-evaluator) or [edit](#edit-an-evaluator) a run-level evaluator, expand the **Advanced** section in the evaluator configuration panel.
+1. Select **Include extended stats (feedback, costs, tokens)**.
+
+### Access extended stats
+
+[Code evaluators](/langsmith/online-evaluations-code) receive these fields in the `run` object, including `feedback_stats`, `total_tokens`, and `total_cost`. They also receive [individual feedback records](/langsmith/feedback-data-format) in `run["feedback"]`, regardless of whether you enable extended stats. For [LLM-as-a-judge evaluators](/langsmith/online-evaluations-llm-as-judge), map the corresponding `run.*` field to a prompt variable. For example, map `{{correctness_average}}` to `run.feedback_stats.correctness.avg` to include a `correctness` feedback average in the prompt. The available `run.*` fields also include prompt and completion token, cost, and detail fields. For the full run data schema, see [Run data format](/langsmith/run-data-format).
+
+### Chain evaluators
+
+Extended stats can be used to chain evaluators, where a code evaluator reads a score that another evaluator already produced. Filter the second evaluator on the first evaluator's feedback key (for example, `has(feedback_key, "answer_usefulness")`), then enable extended stats. The filter makes the code evaluator run only after the score exists, and extended stats make the score readable at `run["feedback_stats"]["answer_usefulness"]["avg"]`.
+
+The filter matches on the feedback key rather than the evaluator that produced it, so feedback from any source with that key triggers the code evaluator. To configure the filter, see [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-code#configure-online-evaluators).
+
 ## Delete an evaluator
 
 You cannot delete an evaluator while it is attached to a tracing project or dataset. To delete an evaluator:
@@ -52680,7 +52701,7 @@ You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbac
 In order to use LLM Gateway, you should:
 - Use the ChatOpenAI model directly
 - Set a base url of `https://gateway.smith.langchain.com/v1`
-- Set an environment variable of `LANGSMITH_GATEWAY_API_KEY` to be your LangSmith API key.
+- Use your `LANGSMITH_API_KEY` for authentication. Set `LANGSMITH_GATEWAY_API_KEY` only if you need a different key for gateway calls.
 
 
 
@@ -52689,7 +52710,9 @@ import { defineDeepAgent } from "managed-deepagents";
 import { ChatOpenAI } from "@langchain/openai";
 
 const apiKey =
-  process.env.LANGSMITH_GATEWAY_API_KEY ?? "missing-langsmith-gateway-api-key";
+  process.env.LANGSMITH_GATEWAY_API_KEY ??
+  process.env.LANGSMITH_API_KEY ??
+  "missing-langsmith-api-key";
 const baseURL = "https://gateway.smith.langchain.com/v1";
 
 export const agent = defineDeepAgent({
@@ -54228,7 +54251,7 @@ Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/age
 
 Keep hot memory compact because it consumes context on every run. Put detailed material—such as procedures, decision logs, and research notes—in cold files, and link to them from hot memory when useful.
 
-The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Writes elsewhere, including elsewhere under `/memories/`, are not durable.
+The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Only writes to the `memories/agent` Context Hub tree, mounted at `/memories/agent/` in the agent filesystem, are durable and available across future threads and sessions. Writes elsewhere in the agent filesystem, including elsewhere under `/memories/`, are runtime-only and may be discarded after the current run.
 
 <Warning>
 Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
@@ -54913,7 +54936,7 @@ Use `idleTtlSeconds` to control when an idle sandbox can be reclaimed. Use `defa
 
 ## How the agent uses the sandbox
 
-The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
+The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
 
 ## Sandbox lifecycle
 
@@ -55226,12 +55249,6 @@ my-agent/
     customer.ts
 ```
 
-
-## Add authored tools
-
-Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project. Managed Deep Agents copies the source into the compiled build and passes the tools to Deep Agents.
-
-For more about LangChain tool definitions, see [Tools](/oss/javascript/langchain/tools).
 
 ## Add a tool module
 
@@ -56012,6 +56029,10 @@ You will also need to specify connection details for any external databases you 
    * Replace `<namespace>` with the namespace you want to deploy LangSmith to.
    * Replace `<version>` with the version of LangSmith you want to install from the previous step. Most users should install the latest version available.
 
+   <Note>
+   The namespace specified with `-n <namespace>` must already exist before running this command. If it does not exist, you can either create it first with `kubectl create namespace <namespace>`, or add the `--create-namespace` flag to the helm command above.
+   </Note>
+
    Once the `helm install` command runs and finishes successfully, you should see output similar to this:
 
    ```
@@ -56294,7 +56315,7 @@ Source: https://docs.langchain.com/langsmith/langgraph-python-sdk
 # LangSmith CLI
 Source: https://docs.langchain.com/langsmith/langsmith-cli
 
-The LangSmith CLI is a command-line tool for querying and managing your LangSmith data. It's designed for both developers and AI coding agents and outputs JSON by default for scripting, with a `--format pretty` option for human-readable tables. Use it when you need scriptable access to your LangSmith data, such as bulk exports, automation, or giving a coding agent direct access to your [traces, runs, and datasets](/langsmith/observability-concepts).
+The LangSmith CLI is a command-line tool for querying and managing your LangSmith data. It's designed for both developers and AI coding agents and outputs human-readable tables by default, with a `--format json` option for scripting. Use it when you need scriptable access to your LangSmith data, such as bulk exports, automation, or giving a coding agent direct access to your [traces, runs, and datasets](/langsmith/observability-concepts).
 
 ## Install
 
@@ -56480,18 +56501,18 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 
 **Default**
 
-JSON to stdout — easy to pipe, script, or feed to an agent:
+Human-readable tables:
 
   ```bash
   langsmith trace list --project my-app
   ```
 
-**Pretty tables**
+**JSON**
 
-`--format pretty` for human-readable output:
+`--format json` to pipe, script, or feed output to an agent:
 
   ```bash
-  langsmith --format pretty trace list --project my-app
+  langsmith --format json trace list --project my-app
   ```
 
 **Write to file**
@@ -56513,7 +56534,7 @@ Returns up to 20 projects by default, sorted by most recent activity. Lists trac
 ```bash
 langsmith project list
 langsmith project list --limit 50 --name-contains chatbot
-langsmith --format pretty project list
+langsmith --format json project list
 ```
 
 ### Query traces
@@ -60373,19 +60394,21 @@ Direct paths use the provider's native model name without a provider prefix.
 
 ## Configure LangChain and Deep Agents
 
-[LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview), including [Deep Agents Code](/oss/deepagents/code/overview), support direct gateway paths through two convenience environment variables:
+[LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview), including [Deep Agents Code](/oss/deepagents/code/overview), support direct gateway paths through a convenience environment variable:
 
 ```bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-This routes supported chat models through their provider-specific paths at `https://gateway.smith.langchain.com`. To use a regional gateway, set its URL instead of `true`:
+This routes supported chat models through their provider-specific paths at `https://gateway.smith.langchain.com`, using `LANGSMITH_API_KEY` for authentication. To use a regional gateway, set its URL instead of `true`:
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
+
+<Note>
+If you need to use a different API key for gateway calls than your default `LANGSMITH_API_KEY`, set `LANGSMITH_GATEWAY_API_KEY` as an override. It must be a workspace-scoped key with the `gateway:invoke` permission.
+</Note>
 
 <Accordion title="Supported models and configuration precedence">
 
@@ -60956,32 +60979,28 @@ To preserve a provider's native API without format translation, use a [direct pr
 
 ```bash Bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 ```python Python
 import os
 
 os.environ["LANGSMITH_GATEWAY"] = "true"
-os.environ["LANGSMITH_GATEWAY_API_KEY"] = os.environ["LANGSMITH_API_KEY"]
 ```
 
 ```typescript TypeScript
 process.env.LANGSMITH_GATEWAY = "true";
-process.env.LANGSMITH_GATEWAY_API_KEY = process.env.LANGSMITH_API_KEY;
 ```
 
 </CodeGroup>
 
-This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`. To use a different gateway (for example, the EU instance), set its URL instead of `true`:
+This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`, using `LANGSMITH_API_KEY` for authentication. To use a different gateway (for example, the EU instance), set its URL instead of `true`:
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 <Note>
-If the gateway is enabled but `LANGSMITH_GATEWAY_API_KEY` is unset, the gateway falls back to `LANGSMITH_API_KEY`.
+If you need to use a different API key for gateway calls than your default `LANGSMITH_API_KEY`, set `LANGSMITH_GATEWAY_API_KEY` as an override. It must be a workspace-scoped key with the `gateway:invoke` permission.
 </Note>
 
 Configuring these environment variables will route supported chat models through their [direct access endpoints](/langsmith/llm-gateway-direct-model-access). To access the unified `/v1` endpoint or [Gateway Credits](/langsmith/llm-gateway-credits), specify the `"langsmith"` provider in [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent), [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model), or other entrypoint as shown below (requires `langchain >= 1.3.15`)
@@ -67604,21 +67623,21 @@ If you are in a non-Node environment, "includeModel" is not supported for non-Op
 
 ## Use with the LangSmith gateway
 
-If your workspace uses the [LangSmith LLM Gateway](/langsmith/llm-gateway), you can route prompt model calls through it by setting two environment variables before pulling and invoking your prompt. No other code changes are required.
+If your workspace uses the [LangSmith LLM Gateway](/langsmith/llm-gateway), you can route prompt model calls through it by setting an environment variable before pulling and invoking your prompt. No other code changes are required.
 
 ```bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="lsv2_..."
 ```
 
-Set `LANGSMITH_GATEWAY_API_KEY` to a workspace-scoped LangSmith API key that has the `gateway:invoke` permission. If this variable is not set, the gateway falls back to `LANGSMITH_API_KEY`.
-
-To use a regional gateway instance instead of the default, set `LANGSMITH_GATEWAY` to the full gateway URL:
+This uses your existing `LANGSMITH_API_KEY` for authentication. To use a regional gateway instance instead of the default, set `LANGSMITH_GATEWAY` to the full gateway URL:
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="lsv2_..."
 ```
+
+<Note>
+If you need to use a different API key for gateway calls than your default `LANGSMITH_API_KEY`, set `LANGSMITH_GATEWAY_API_KEY` as an override. It must be a workspace-scoped key with the `gateway:invoke` permission.
+</Note>
 
 Once the environment variables are set, pull and invoke a prompt with a model as normal:
 
@@ -73227,6 +73246,8 @@ For example, you may want to apply specific evaluators based on:
 
 Filters on evaluators work the same way as when you're filtering traces in a project. For more information on filters, you can refer to [Filter traces](/langsmith/filter-traces-in-application).
 
+To process feedback from an earlier evaluator, filter this evaluator for the feedback key, then [include extended stats](/langsmith/evaluators#include-extended-stats). For example, use `has(feedback_key, "answer_usefulness")` to run when the `answer_usefulness` feedback exists. The filter is based on the feedback key, not the evaluator that produced it, so feedback from any source with that key triggers the code evaluator.
+
 <Tip>
 It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
 </Tip>
@@ -76197,10 +76218,10 @@ Common profile commands:
 | `langsmith profile set-workspace <workspace-id>` | Set the default workspace for the selected profile. |
 | `langsmith profile delete <name>` | Delete a saved profile. |
 
-Use `--format pretty` for human-readable tables:
+Output is a human-readable table by default. Use `--format json` for scriptable output:
 
 ```shell
-langsmith --format pretty profile list
+langsmith --format json profile list
 ```
 
 ## Authenticate with `langsmith auth login`
@@ -78627,7 +78648,7 @@ You can use [LLM Gateway](langsmith/llm-gateway) to control rate limits, fallbac
 In order to use LLM Gateway, you should:
 - Use the ChatOpenAI model directly
 - Set a base url of `https://gateway.smith.langchain.com/v1`
-- Set an environment variable of `LANGSMITH_GATEWAY_API_KEY` to be your LangSmith API key.
+- Use your `LANGSMITH_API_KEY` for authentication. Set `LANGSMITH_GATEWAY_API_KEY` only if you need a different key for gateway calls.
 
 ```py
 import os
@@ -78637,7 +78658,7 @@ from langchain_openai import ChatOpenAI
 
 api_key = os.environ.get(
     "LANGSMITH_GATEWAY_API_KEY",
-    "missing-langsmith-gateway-api-key",
+    os.environ.get("LANGSMITH_API_KEY", "missing-langsmith-api-key"),
 )
 base_url = "https://gateway.smith.langchain.com/v1"
 
@@ -80174,7 +80195,7 @@ Enabling memory mounts one Context Hub tree, `memories/agent`, at `/memories/age
 
 Keep hot memory compact because it consumes context on every run. Put detailed material—such as procedures, decision logs, and research notes—in cold files, and link to them from hot memory when useful.
 
-The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Writes elsewhere, including elsewhere under `/memories/`, are not durable.
+The agent reads and updates memory with `read_file`, `edit_file`, and `write_file`. Only writes to the `memories/agent` Context Hub tree, mounted at `/memories/agent/` in the agent filesystem, are durable and available across future threads and sessions. Writes elsewhere in the agent filesystem, including elsewhere under `/memories/`, are runtime-only and may be discarded after the current run.
 
 <Warning>
 Memory is shared by every caller of the deployment, and every caller can influence it. Store only knowledge that every caller may read and modify. Never store personal or customer-private data, credentials, API keys, tokens, or other secrets.
@@ -80957,7 +80978,7 @@ Use `idle_ttl_seconds` to control when an idle sandbox can be reclaimed. Use `de
 
 ## How the agent uses the sandbox
 
-The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
+The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, and `grep`, and runs shell commands with `execute`. Use `instructions.md` to specify where the agent should work and what it must not modify.
 
 ## Sandbox lifecycle
 
@@ -81270,12 +81291,6 @@ my-agent/
 
 
 
-
-## Add authored tools
-
-Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project. Managed Deep Agents copies the source into the compiled build and passes the tools to Deep Agents.
-
-For more about LangChain tool definitions, see [Tools](/oss/python/langchain/tools).
 
 ## Add a tool module
 
@@ -85450,7 +85465,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "db-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "access_control": {
         "allow_list": [
@@ -85463,6 +85477,10 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 ```
 
 The connection to `db.example.com:5432` is passed through at the TCP layer with no interception, so the PostgreSQL wire protocol—and TLS, host-key checking, and any other end-to-end protocol on top of it—works unchanged.
+
+<Note>
+Creating a sandbox boots it and returns once it reports `ready`, so there is no wait step to add. `GET /api/v2/sandboxes/boxes/{name}/status` reports the current state if you need to re-check it later.
+</Note>
 
 ### Configure via SDK
 
@@ -85560,7 +85578,7 @@ AWS auth rules are different from header injection rules:
 - Set `type` to `aws`.
 - Put credentials under the `aws` object.
 - Do not set `match_hosts`, `match_paths`, or `headers`; AWS host matching is built into the proxy.
-- Configure at most one AWS auth rule per sandbox.
+- Configure at most one AWS auth rule per sandbox. The limit counts every AWS rule, including disabled ones.
 
 ```bash
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -85568,7 +85586,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "aws-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -85665,7 +85682,7 @@ GCP auth rules are different from header injection rules:
 - Put credentials under `gcp.service_account_json`.
 - Set `gcp.scopes` to a non-empty list of OAuth scopes.
 - The proxy matches Google API hosts automatically and authenticates those requests with the configured service account.
-- Configure at most one enabled GCP auth rule per sandbox.
+- Configure at most one GCP auth rule per sandbox. The limit counts every GCP rule, including disabled ones.
 
 The SDK `gcp_auth` and `gcpAuth` helpers build this same rule shape.
 
@@ -85675,7 +85692,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "gcp-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -85761,7 +85777,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "openai-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -85792,7 +85807,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "multi-api-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -86023,7 +86037,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -d '{
     "snapshot_id": "<snapshot-uuid>",
     "name": "callback-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "callbacks": [
         {
@@ -86138,10 +86151,10 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 `LANGSMITH_ENDPOINT` defaults to `https://api.smith.langchain.com` (GCP US). Set it to your data plane URL on [BYOC](/langsmith/byoc), your instance URL on [self-hosted](/langsmith/self-hosted), or the [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk) on other Cloud regions.
 
-CLI output is JSON by default. Add `--format pretty` to list commands for human-readable tables:
+CLI output is human-readable tables by default. Add `--format json` for scriptable output:
 
 ```bash
-langsmith --format pretty sandbox list
+langsmith --format json sandbox list
 ```
 
 ## End-to-end workflow
@@ -86149,10 +86162,12 @@ langsmith --format pretty sandbox list
 Create a sandbox, then run commands inside it:
 
 ```bash
-langsmith sandbox create my-vm --wait
+langsmith sandbox create my-vm
 
 langsmith sandbox exec my-vm -- python --version
 ```
+
+`create` boots the sandbox and returns once it reports `ready`, so the next command can run straight away. There is no separate wait step. Pass `--console` to drop into an interactive shell as soon as the sandbox comes up.
 
 When you are done with a sandbox, delete it:
 
@@ -86167,33 +86182,30 @@ Build snapshots from Docker images:
 ```bash
 langsmith sandbox snapshot build my-snapshot \
   --docker-image ubuntu:24.04 \
-  --capacity 8gb \
-  --wait
+  --capacity 8gb
 ```
+
+`build` queues the build and returns immediately with the snapshot's `status`. Poll `langsmith sandbox snapshot get <SNAPSHOT_ID>` until it reports `ready`. `--capacity` defaults to `4gb` and caps at `64gb`.
 
 For private images, create a registry first (see [Private registries](/langsmith/sandbox-snapshots#private-registries)), then pass its id with `--registry-id`:
 
 ```bash
 langsmith sandbox snapshot build internal-python \
   --docker-image registry.example.com/internal/python:3.12 \
-  --registry-id "$REGISTRY_ID" \
-  --wait
+  --registry-id "$REGISTRY_ID"
 ```
 
 Capture the filesystem from a running sandbox:
 
 ```bash
-langsmith sandbox snapshot capture ml-ready \
-  --box my-vm \
-  --wait
+langsmith sandbox snapshot capture ml-ready --box my-vm
 ```
 
-List, inspect, wait for, and delete snapshots:
+List, inspect, and delete snapshots:
 
 ```bash
 langsmith sandbox snapshot list
 langsmith sandbox snapshot get <SNAPSHOT_ID>
-langsmith sandbox snapshot wait <SNAPSHOT_ID>
 langsmith sandbox snapshot delete <SNAPSHOT_ID>
 ```
 
@@ -86202,9 +86214,13 @@ langsmith sandbox snapshot delete <SNAPSHOT_ID>
 Create a sandbox with the default runtime. Add `--snapshot-id` only when you want to boot from a reusable custom snapshot:
 
 ```bash
-langsmith sandbox create my-vm \
-  --rootfs-capacity 8gb \
-  --wait
+langsmith sandbox create my-vm --rootfs-capacity 8gb
+```
+
+Size the sandbox with `--vcpus` and `--memory`. Memory is tied to CPU at 4 GiB per vCPU and must stay within 50% of that target, so a 2-vCPU sandbox accepts 4 to 12 GiB. Omit `--memory` and it follows the ratio.
+
+```bash
+langsmith sandbox create my-vm --vcpus 2 --memory 8gb
 ```
 
 List and inspect sandboxes:
@@ -86212,14 +86228,13 @@ List and inspect sandboxes:
 ```bash
 langsmith sandbox list
 langsmith sandbox get my-vm
-langsmith sandbox wait my-vm
 ```
 
-Stop and start a sandbox while preserving its filesystem:
+Stop a sandbox to release resources early. Its filesystem is preserved, and the next `exec`, `console`, or service request wakes it automatically, so there is no start step to run:
 
 ```bash
 langsmith sandbox stop my-vm
-langsmith sandbox start my-vm --wait
+langsmith sandbox exec my-vm -- echo awake
 ```
 
 Update resources or proxy configuration:
@@ -86229,7 +86244,7 @@ langsmith sandbox update my-vm --rootfs-capacity 16gb
 langsmith sandbox update my-vm --proxy-config @proxy.json
 ```
 
-Resource changes take effect the next time the sandbox starts. Proxy configuration changes take effect immediately.
+Resource changes take effect the next time the sandbox boots. Proxy configuration changes take effect immediately.
 
 ### Proxy configuration
 
@@ -86358,15 +86373,12 @@ The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-s
 | `langsmith sandbox snapshot build <name> --docker-image <image>` | Build a snapshot from a Docker image. |
 | `langsmith sandbox snapshot capture <name> --box <sandbox>` | Capture a snapshot from a running sandbox. |
 | `langsmith sandbox snapshot get <snapshot-id>` | Inspect a snapshot. |
-| `langsmith sandbox snapshot wait <snapshot-id>` | Wait for a snapshot to become ready. |
 | `langsmith sandbox snapshot delete <snapshot-id>` | Delete a snapshot. |
 | `langsmith sandbox create <name>` | Create a sandbox with the default runtime. |
 | `langsmith sandbox list` | List sandboxes. |
 | `langsmith sandbox get <name>` | Inspect a sandbox. |
 | `langsmith sandbox update <name>` | Update sandbox resources or proxy config. |
-| `langsmith sandbox wait <name>` | Wait for a sandbox to become ready. |
-| `langsmith sandbox start <name>` | Start a stopped sandbox. |
-| `langsmith sandbox stop <name>` | Stop a running sandbox while preserving filesystem state. |
+| `langsmith sandbox stop <name>` | Stop a running sandbox while preserving filesystem state. A later `exec`, `console`, or service request wakes it again. |
 | `langsmith sandbox delete <name>` | Delete a sandbox. |
 | `langsmith sandbox exec <name> -- <command>` | Run a one-off command inside a sandbox. |
 | `langsmith sandbox console <name>` | Open an interactive shell inside a sandbox. |
@@ -86504,7 +86516,9 @@ try {
 
 ## Mount a GCS bucket
 
-GCS mounts require GCP auth. Read/write mounts require the `https://www.googleapis.com/auth/devstorage.read_write` or `https://www.googleapis.com/auth/cloud-platform` OAuth scope. Read-only mounts can use `https://www.googleapis.com/auth/devstorage.read_only`.
+GCS mounts require GCP auth. The OAuth scope is supplied by the backend, derived from the mounts themselves: read-only mounts get `devstorage.read_only` and writable mounts get `devstorage.read_write`.
+
+Because a single `mount_config` resolves to one scope, all of its GCS mounts must agree: mixing read-only and writable GCS mounts in one config is rejected. Use writable mounts throughout, or create separate sandboxes.
 
 <CodeGroup>
 
@@ -86525,7 +86539,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         )
     ],
     mounts=[
@@ -86559,7 +86572,6 @@ const mountCfg = mountConfig({
   auth: [
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [
@@ -86677,7 +86689,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         ),
     ],
     mounts=[
@@ -86719,7 +86730,6 @@ const mountCfg = mountConfig({
     }),
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [
@@ -87298,6 +87308,44 @@ try {
 
 Pass `initial_pull_only` / `initialPullOnly` to sync once at startup instead of polling for repo updates.
 
+## Size a sandbox
+
+Pass `vcpus`, `mem_bytes`, and `fs_capacity_bytes` (`vCpus`, `memBytes`, `fsCapacityBytes` in TypeScript) to size a sandbox at creation. Omit them and the sandbox gets the defaults below.
+
+<CodeGroup>
+
+```python Python
+sb = client.create_sandbox(
+    name="big-vm",
+    vcpus=4,
+    mem_bytes=16 * 1024**3,        # 16 GiB
+    fs_capacity_bytes=32 * 1024**3, # 32 GiB
+)
+```
+
+```ts TypeScript
+const sb = await client.createSandbox({
+  name: "big-vm",
+  vCpus: 4,
+  memBytes: 17_179_869_184,        // 16 GiB
+  fsCapacityBytes: 34_359_738_368, // 32 GiB
+});
+```
+
+</CodeGroup>
+
+| Resource | Default | Range |
+|----------|---------|-------|
+| CPU | 0.5 vCPU | 0.05 to 16 vCPU. Use `cpu_millicores` for sub-core requests (`500` is 0.5 vCPU); it takes precedence over `vcpus`. |
+| Memory | 4 GiB per vCPU | Up to 64 GiB. Must stay within 50% of the per-vCPU target, so a 1 vCPU sandbox accepts 2 to 6 GiB. Set memory without CPU and the CPU is derived from the same ratio. |
+| Filesystem | Snapshot capacity | Up to 64 GiB, and never smaller than the snapshot it boots from. |
+
+Sandboxes burst to twice their requested CPU when the host has spare capacity. Resizing an existing sandbox with `update_sandbox` / `updateSandbox` takes effect at its next start, and a resize enforces only the 64 GiB ceiling rather than the per-vCPU ratio.
+
+<Note>
+Free-form `labels` (up to 128 per sandbox, 256 bytes per key and 4096 bytes per value) can be set through the REST API on create. Sandboxes inherit their snapshot's labels unless overridden. The `langsmith.sandbox` clients do not expose this field yet.
+</Note>
+
 ## Sandbox lifetime and retention
 
 Sandboxes are governed by a two-stage retention model anchored to **idle
@@ -87308,14 +87356,13 @@ activity** and the **`stopped`** state.
 | `idle_ttl_seconds` | The launcher stops the sandbox after this many seconds of inactivity. Any command execution or file I/O resets the timer. `0` disables the idle stop. | Default `600` (10 minutes) when omitted. |
 | `delete_after_stop_seconds` | Once the sandbox enters the `stopped` state, this timer starts. After it elapses, the sandbox row + filesystem clone are permanently deleted by a server-side sweep. `0` disables stop-anchored deletion (manual cleanup required). | Server applies its configured default (typically 14 days) when omitted. |
 
-Both values must be multiples of 60 (minute resolution). The full lifecycle is:
+Both values must be multiples of 60 (minute resolution), and `delete_after_stop_seconds` caps at 2592000 (30 days). The full lifecycle is:
 
 ```
 running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_stop_seconds)──▶ deleted
 ```
 
-You can also call `stop_sandbox` / `stopSandbox` explicitly — that also
-populates `stopped_at` and starts the deletion timer.
+You can also call `stop_sandbox` / `stopSandbox` explicitly to release resources before the idle timeout fires; that also populates `stopped_at` and starts the deletion timer. You do not need to start it again afterwards: a stopped sandbox wakes on the next command, file operation, or service-URL request.
 
 <CodeGroup>
 
@@ -87373,8 +87420,8 @@ await client.updateSandbox(sb.name, {
 
 The sandbox daemon manages command session lifecycles with two timeout mechanisms:
 
-- **Session TTL (finished commands)**: After a command finishes, its session remains in memory for a TTL period. During this window you can reconnect to retrieve output. After the TTL expires, the session is cleaned up.
-- **Idle timeout (running commands)**: Running commands with no connected clients are killed after an idle timeout (default: 5 minutes). The idle timer resets each time a client connects. Set to `-1` for no idle timeout.
+- **Session TTL (finished commands)**: After a command finishes, its session remains in memory for a TTL period (default: 5 minutes). During this window you can reconnect to retrieve output. After the TTL expires, the session is cleaned up. Set `ttl_seconds` to `-1` to keep the session indefinitely.
+- **Idle timeout (running commands)**: Running commands with no connected clients are killed after an idle timeout (default: 1 hour). The idle timer resets each time a client connects. Set `idle_timeout` to `-1` for no idle timeout.
 
 ### Combine lifecycle options
 
@@ -88051,7 +88098,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
 
 ### Speed up cold builds
 
-`vcpus` / `vCpus` and `mem_bytes` / `memBytes` size the temporary builder sandbox. The build runs BuildKit plus the native snapshotter's layer copies inside it, which contend for a single core by default, so giving the builder an extra vCPU can cut a cold build's wall time substantially.
+`vcpus` / `vCpus` and `mem_bytes` / `memBytes` size the temporary builder sandbox. The build runs BuildKit plus the native snapshotter's layer copies inside it, which contend for the builder's default 0.5 vCPU, so giving the builder more CPU can cut a cold build's wall time substantially. Memory is tied to CPU at 4 GiB per vCPU and must stay within 50% of that target, so a 2-vCPU builder accepts 4 to 12 GiB. Omit memory and it follows the ratio.
 
 <CodeGroup>
 
@@ -88061,7 +88108,7 @@ snapshot = client.create_snapshot_from_dockerfile(
     dockerfile="Dockerfile",
     fs_capacity_bytes=2 * 1024**3,
     vcpus=2,
-    mem_bytes=4 * 1024**3,  # 4 GiB
+    mem_bytes=8 * 1024**3,  # 8 GiB
     timeout=600,
 )
 ```
@@ -88073,7 +88120,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
   2_147_483_648,
   {
     vCpus: 2,
-    memBytes: 4_294_967_296, // 4 GiB
+    memBytes: 8_589_934_592, // 8 GiB
     timeout: 600,
   },
 );
@@ -88131,7 +88178,7 @@ try {
 </CodeGroup>
 
 <Note>
-Capture preserves the **persistent filesystem only**. Installed packages (under `/usr/local`, `/root`, `/opt`, the home directory, etc.) and files you wrote to those locations are kept. Running processes, open sockets, in-memory state, and anything under `/tmp` (which is a tmpfs) are **not** carried over — boot the new sandbox and start the processes you need again.
+By default, capture preserves the **filesystem only**. Installed packages (under `/usr/local`, `/root`, `/opt`, the home directory, etc.) and files you wrote to those locations are kept, as is `/tmp`. Only `/dev/shm` is a tmpfs, so everything else lives on the sandbox's disk. Running processes, open sockets, and in-memory state are **not** carried over: boot the new sandbox and start the processes you need again, or [capture memory too](#resume-from-memory).
 </Note>
 
 <Tip>
@@ -88167,6 +88214,49 @@ const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
 ```
 
 </CodeGroup>
+
+### Resume from memory
+
+A snapshot can carry the sandbox's RAM alongside its filesystem. Boot from one and the sandbox resumes where it left off, with its processes still running, instead of cold-booting. Use this for environments that are slow to warm up, such as a loaded model or a started database.
+
+<Note>
+Memory snapshots are available over the REST API only. The `langsmith.sandbox` Python and TypeScript clients do not expose these fields yet.
+</Note>
+
+Capture memory by setting `include_memory` on a capture:
+
+```bash
+curl -X POST \
+  "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes/my-vm/snapshot" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "warm-model", "include_memory": true}'
+```
+
+The response reports `memory_snapshot_size_bytes` when memory was captured. `include_memory` requires a sandbox that is running or stopped, and it cannot be combined with `checkpoint` or `docker_image`.
+
+Some sandboxes run on an overlay filesystem runtime that cannot carry a memory image. Capturing one returns `include_memory is not supported for overlay-rootfs sandboxes`. LangSmith assigns that runtime, so it is not something you select per sandbox.
+
+Two fields on create control the other half:
+
+| Field | What it does |
+|-------|--------------|
+| `restore_memory` | Omit it to resume from memory when the snapshot has it and cold-boot when it does not. `true` requires memory and fails the request if the snapshot has none. `false` always cold-boots. |
+| `preserve_memory_on_stop` | `true` suspends RAM on a voluntary stop (idle timeout or explicit stop) so the sandbox resumes where it left off when it next wakes, rather than cold-booting. Defaults to `false`, which keeps only the filesystem. Restarts triggered by infrastructure maintenance preserve memory either way. |
+
+```bash
+curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "warm-vm",
+    "snapshot": "warm-model",
+    "restore_memory": true,
+    "preserve_memory_on_stop": true
+  }'
+```
+
+Capturing memory from a **stopped** sandbox only works when that sandbox was created with `preserve_memory_on_stop`. Without it, the stop discards RAM and there is nothing to capture.
 
 ## List, fetch, and delete snapshots
 
@@ -88215,9 +88305,9 @@ const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
 
 </Note>
 
-## Stop and start sandboxes
+## Stopped sandboxes
 
-Sandboxes can be stopped and restarted without losing filesystem state. Files you wrote during the previous run are still there when the sandbox comes back up.
+A stopped sandbox keeps its filesystem, and the next request wakes it automatically. You do not need to start it yourself: send the command you wanted to run and the sandbox comes back up to serve it.
 
 <CodeGroup>
 
@@ -88225,12 +88315,10 @@ Sandboxes can be stopped and restarted without losing filesystem state. Files yo
 sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
 sb.run("echo 'hello' > /tmp/state.txt")
 
-# Stop the sandbox — preserves files on disk
+# Stop early to release resources. The idle timeout does this for you.
 sb.stop()
 
-# Later: start it again (blocks until ready, default timeout=120s)
-sb.start()
-
+# No start call: this wakes the sandbox and runs once it is up.
 result = sb.run("cat /tmp/state.txt")
 assert result.stdout.strip() == "hello"
 ```
@@ -88241,15 +88329,13 @@ await sb.run("echo 'hello' > /tmp/state.txt");
 
 await sb.stop();
 
-await sb.start();
-
 const result = await sb.run("cat /tmp/state.txt");
 console.log(result.stdout.trim()); // "hello"
 ```
 
 </CodeGroup>
 
-You can also stop and start by name via the client directly (`client.stop_sandbox(name)` / `client.start_sandbox(name)` in Python, `client.stopSandbox(name)` / `client.startSandbox(name)` in TypeScript).
+The first request after a stop pays the boot cost, so it is slower than the ones that follow. Create the sandbox with `preserve_memory_on_stop` to [resume from memory](#resume-from-memory) instead of cold-booting.
 
 ## Next steps
 
@@ -100561,7 +100647,7 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 <Update label="2026-08-16" tags={["self-hosted"]} rss={{ title: "2026-08-16 - self-hosted" }}>
 ## langsmith-0.16.7
 
-- Internal improvements and maintenance updates
+- LangSmith workers using Microsoft Entra ID authentication for standalone Redis started successfully and continued refreshing credentials after the event loop starts.
 
 **Download the Helm chart:** [`langsmith-0.16.7.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.7/langsmith-0.16.7.tgz)
 {/* langsmith-release-image: 0.16.7 0.16.38 */}
@@ -100624,7 +100710,7 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 <Update label="2026-08-11" tags={["self-hosted"]} rss={{ title: "2026-08-11 - self-hosted" }}>
 ## langsmith-0.16.2
 
-- Internal improvements and maintenance updates
+- Self-hosted Fleet agents can use sandbox-backed computer access without requiring a cloud billing plan tier.
 
 **Download the Helm chart:** [`langsmith-0.16.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.2/langsmith-0.16.2.tgz)
 {/* langsmith-release-image: 0.16.2 0.16.36 */}
@@ -100723,7 +100809,11 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-08-04" tags={["self-hosted"]} rss={{ title: "2026-08-04 - self-hosted" }}>
 ## langsmith-0.16.0-rc.29
 
-- Internal improvements and maintenance updates
+- Dataset and run attachments resolved relative signed download URLs before previewing, opening, or downloading them in self-hosted deployments.
+- Fixed dynamic client registration for the LangSmith MCP server so that clients requesting a confidential authentication method are issued a public client instead of an error.
+- Online self-hosted installations reported finalized sandbox uptime and resource usage for billing when phone-home usage reporting is enabled. Offline and opted-out installations do not send sandbox usage.
+- Self-hosted LangSmith enabled sandbox API and UI access only when the deployment license includes sandbox access.
+- Added Redis CPU and memory requests and limits to self-hosted deployment forms, applied to the Redis workload managed by the Kubernetes operator.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.29.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.29/langsmith-0.16.0-rc.29.tgz)
 {/* langsmith-release-image: 0.16.0-rc.29 0.16.33rc1 */}
@@ -100732,7 +100822,10 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-08-04" tags={["self-hosted"]} rss={{ title: "2026-08-04 - self-hosted" }}>
 ## langsmith-0.16.0-rc.28
 
-- Internal improvements and maintenance updates
+- Correcting an evaluator score from the experiment results grid updated the cell and its popover immediately, without requiring a page refresh.
+- Engine run webhooks and sandbox links resolved the externally reachable API base from `LANGSMITH_PUBLIC_API_ENDPOINT`, falling back to `LANGCHAIN_PLATFORM_ENDPOINT` and then `LANGCHAIN_ENDPOINT`. Installations that set only `LANGSMITH_PUBLIC_API_ENDPOINT` previously built relative URLs, which caused every non-shadow Engine run to fail.
+- Added a streaming sandbox execute request that returns stdout and stderr as Server-Sent Events, for clients that cannot hold a WebSocket. Passing a command ID reuses a running command, and a separate resume request continues an interrupted stream.
+- Self-hosted deployments with an online license key showed the monthly organization usage graph automatically, without the `enable_monthly_usage_charts` organization config. Offline deployments now point to the Granular usage tab for locally recorded billable usage.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.28.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.28/langsmith-0.16.0-rc.28.tgz)
 {/* langsmith-release-image: 0.16.0-rc.28 0.16.32rc1 */}
@@ -100741,7 +100834,8 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-08-01" tags={["self-hosted"]} rss={{ title: "2026-08-01 - self-hosted" }}>
 ## langsmith-0.16.0-rc.27
 
-- Internal improvements and maintenance updates
+- The Configure Evaluator pane header and templates navigation painted the same background as the pane itself in dark mode.
+- Self-hosted deployments caught up missing tracing project last-run timestamps, so project sorting reflects recent historical activity.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.27/langsmith-0.16.0-rc.27.tgz)
 {/* langsmith-release-image: 0.16.0-rc.27 0.16.31rc1 */}
@@ -100768,7 +100862,12 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.24
 
-- Internal improvements and maintenance updates
+- Tracing project activity and sorting stayed up to date for self-hosted deployments using Redis versions before 6.2.
+- Dataset example views restored clear spacing between the example details and tab navigation.
+- The evaluator onboarding navigation matched the background of the surrounding pane.
+- The evaluator spend view listed only gateway-routed providers as tracked.
+- Metadata columns in the experiment comparison grid, including `example.metadata.<key>`, rendered their values instead of staying empty.
+- Uploading a `.csv` or `.jsonl` dataset worked regardless of the Content-Type reported by the browser. Windows browsers label `.csv` files as an Excel type, which previously caused valid uploads to fail. Uppercase filenames such as `DATASET.CSV` are also accepted.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.24.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.24/langsmith-0.16.0-rc.24.tgz)
 {/* langsmith-release-image: 0.16.0-rc.24 0.16.28rc1 */}
@@ -100777,7 +100876,8 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.23
 
-- Internal improvements and maintenance updates
+- Updated the `langsmith` CLI in sandboxes to v0.2.44. Its requests now resolve on self-hosted deployments that serve the API under `/api`, where commands such as `trace messages` and the project issues commands previously failed.
+- Negative feedback-key filters returned matching traces correctly when ClickHouse uses optimized runs tables.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.23.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
 {/* langsmith-release-image: 0.16.0-rc.23 0.16.27rc1 */}
@@ -100786,7 +100886,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-07-29" tags={["self-hosted"]} rss={{ title: "2026-07-29 - self-hosted" }}>
 ## langsmith-0.16.0-rc.22
 
-- Internal improvements and maintenance updates
+- The Granular usage page showed a notice that long-lived trace usage is not tracked in self-hosted deployments, so the Long-lived only filter is expected to return zero results.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.22.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.22/langsmith-0.16.0-rc.22.tgz)
 {/* langsmith-release-image: 0.16.0-rc.22 0.16.25rc1 */}
@@ -100831,7 +100931,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.17.0-rc.1
 
-- Internal improvements and maintenance updates
+- Engine worked in supported self-hosted deployments without Eppo rollout configuration, while organization enablement and existing permissions remain enforced.
 
 **Download the Helm chart:** [`langsmith-0.17.0-rc.1.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.1/langsmith-0.17.0-rc.1.tgz)
 {/* langsmith-release-image: 0.17.0-rc.1 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
@@ -100876,7 +100976,16 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 <Update label="2026-07-25" tags={["self-hosted"]} rss={{ title: "2026-07-25 - self-hosted" }}>
 ## langsmith-0.16.0-rc.16
 
-- Internal improvements and maintenance updates
+- Giving feedback on a thread annotation queue item recorded the last reviewed time using the queue membership ID, so review progress is saved for both runs and threads.
+- The LLM Gateway spend chart and table labeled spend from service keys as "Unaffiliated with any user" instead of showing a blank name, with a tooltip explaining that the spend came from a workspace-scoped or organization-scoped key.
+- Hybrid deployments remained compatible with older listeners during control plane upgrades, preventing new deployments from staying queued.
+- The Spend share column on the LLM Gateway monitoring spend dashboard no longer cut off its header text.
+- Stat card and table headers in the Spend tab of the LLM Gateway monitoring page capitalized every word, matching the header style used elsewhere.
+- Selecting a specific start and end date in the LLM Gateway monitoring date range picker showed the dates in UTC and appended "(UTC)" to the button. Relative ranges such as Last 7 days are unaffected.
+- Fresh deployments tolerated an unmigrated billing configuration.
+- Custom output renderer URLs were restricted to HTTPS.
+- Fixed routing for `/api/v1/info` in single-origin deployments.
+- Bulk-adding runs from a tracing project listed the default dataset of that project first in the dataset picker.
 
 **Download the Helm chart:** [`langsmith-0.16.0-rc.16.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.16/langsmith-0.16.0-rc.16.tgz)
 {/* langsmith-release-image: 0.16.0-rc.16 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
@@ -136358,6 +136467,7 @@ Source: https://docs.langchain.com/oss/deepagents/code/config-file
 `~/.deepagents/config.toml` lets you customize model providers, set defaults, and pass extra parameters to model constructors. For environment variables and inspection commands, see [Configuration](/oss/deepagents/code/configuration). This page covers:
 
 - **Defaults**: pin a [default model](#default-and-recent-model) or [agent](#default-and-recent-agent).
+- **Warnings**: [session cost](#session-cost-warning) and [cold prompt-cache](#cold-prompt-cache-warning) thresholds, and [trusted gateway endpoints](#trust-a-gateway-endpoint-for-cache-policies).
 - **Provider setup**: the [`[models.providers.<name>]` table](#provider-configuration), [constructor params](#model-constructor-params), [retries](#retries), [profile overrides](#profile-overrides-advanced), and [adding models to the `/model` switcher](#adding-models-to-the-interactive-switcher).
 - **Auto mode**: the [auto classifier timeout](#auto-classifier-timeout).
 - **Custom endpoints and providers**: [custom base URLs](#custom-base-url), [OpenAI- or Anthropic-compatible APIs](#compatible-apis), and [arbitrary providers](#arbitrary-providers).
@@ -136396,6 +136506,33 @@ Deep Agents Code warns once per thread when its cumulative estimated cost exceed
 [warnings]
 session_cost_threshold_usd = 25
 ```
+
+## Cold prompt-cache warning
+
+Some LLM providers automatically cache the conversation prefix between turns, so a follow-up sent while the cache is warm re-processes only new tokens. That cache expires after a provider-specific idle window. Deep Agents Code currently detects this for Anthropic and OpenAI models: when an interactive chat message would be sent to a thread whose cache has likely expired (or whose model or cache settings changed since the last turn), it estimates the re-warm cost and, if it reaches a threshold, asks before sending:
+
+- **Send anyway**: send this turn; the warning still appears on future cold-cache turns.
+- **Send and don't warn again this session**: mute the warning until the app restarts.
+- **Send and never warn again**: persistently suppress the warning. Re-enable it from the `/notifications` settings screen.
+- **Don't send (keep draft)**: restore the message to the chat input so you can `/clear` first.
+
+Set the minimum estimated extra cost (cold versus warm cache) that triggers the warning, in USD. The default is `0.50`; set it to `0` to disable:
+
+```toml title="~/.deepagents/config.toml"
+[warnings]
+cold_cache_min_delta_usd = 1.00
+```
+
+### Trust a gateway endpoint for cache policies
+
+If requests reach the provider through a gateway or proxy instead of the official API, the cold-cache warning stays silent. Declaring an endpoint trusted asserts that it forwards cache settings untouched and honors the provider's documented retention:
+
+```toml title="~/.deepagents/config.toml"
+[warnings]
+trusted_cache_endpoints = ["smith.langchain.com"]
+```
+
+Entries are hostnames matched exactly — trusting `example.com` does not trust `gw.example.com`. One entry covers every provider routed through that endpoint. Cross-format routes through the LangSmith gateway (for example, an OpenAI-format request routed to an Anthropic model) stay silent even when trusted, because translation rewrites the cache settings the estimate assumes.
 
 ## Diff line numbers
 

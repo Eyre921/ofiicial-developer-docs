@@ -12,6 +12,8 @@ Use Predicted Outputs to boost output generation speeds for editing / rewriting 
 
 In cases where large parts of the LLM output are known in advance, e.g. editing or rewriting a document or code snippet, you can improve output generation speeds with predicted outputs. Predicted outputs allows you to provide strong "guesses" of what output may look like.
 
+Predicted Outputs is configured per request and can work alongside the model-based speculative decoding configured on a dedicated deployment. See [Speculative Decoding](/deployments/speculative-decoding) to compare the available methods.
+
 To use Predicted Outputs, set the `prediction` field in the Fireworks API with the predicted output. For example, you may want to edit a survey and add an option to contact users by text message:
 
 ```

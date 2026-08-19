@@ -14,7 +14,7 @@ Refunds use your available Stripe balance (not including pending amounts). If yo
 
 ## Refund requests 
 
-We submit refund requests to your customer’s bank or *card issuer* (The entity that issued a payment card to a cardholder. This could be a bank, such as with the Visa or Mastercard network, or it could be the card network itself, such as with American Express). Successful refunds appear on the bank statement of your customers in real time, depending on the card network and issuing bank. Disputes and chargebacks aren’t possible on credit card charges that are fully refunded.
+We submit refund requests to your customer’s bank or *card issuer* (The entity that issued a payment card to a cardholder. This could be a bank, such as with the Visa or Mastercard network, or it could be the card network itself, such as with American Express). Successful refunds appear on the bank statement of your customers in real time, depending on the card network and issuing bank.
 
 If all of the following conditions apply, we send an email to your customer notifying them of the refund:
 

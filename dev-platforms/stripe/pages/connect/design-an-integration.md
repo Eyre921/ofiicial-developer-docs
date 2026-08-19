@@ -54,7 +54,20 @@ Build out each aspect of the onboarding flow by calling the corresponding Stripe
 > #### Stripe recommendation
 > 
 > Building and maintaining an API onboarding flow is resource-intensive and requires regular updates. If you want to implement a customized onboarding flow, Stripe strongly recommends that you use [embedded onboarding](https://docs.stripe.com/connect/embedded-onboarding.md).
- (See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+(See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+```text
+[Onboard new connected account] --> [Show UI to collect requirements from your connected account]
+[Show UI to collect requirements from your connected account] --> [Create a connected account]
+[Create a connected account] --> [If requirements.currently_due isn’t empty]
+[Retrieve the connected account] --> [If requirements.currently_due isn’t empty]
+[Present forms to collect information and validate fields] --> [Update the connected account with the collected information]
+[Re-onboard existing connected account] --> [Retrieve the connected account]
+[Update the connected account with the collected information] --> [If requirements.currently_due isn’t empty]
+[If requirements.currently_due isn’t empty] --> [Present forms to collect information and validate fields]
+```
+
 Best for when you want to have full control over the onboarding flow:
 
 - Build and maintain all onboarding flow logic yourself. Can be resource intensive and expensive to build.
@@ -161,15 +174,72 @@ Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/conn
 Stripe collects Stripe fees from your platform account, inclusive of processing fees. You control the processing fee amounts you bill connected accounts. Use the application fee parameter to collect processing fees from your connected accounts.
 
 #### Item 1
- (See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+(See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+```text
+[customer] -- Direct charge --> [10 USD charge]
+[10 USD charge] --> [0.59 USD application fee]
+[10 USD charge] -- 9.41 USD net --> [bank]
+[0.59 USD application fee] -- (0.23 USD) Stripe --> [stripe]
+[0.59 USD application fee] -- 0.36 USD net --> [bank]
+[account]
+[platform]
+```
+
 #### Item 2
- (See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+(See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+```text
+[customer] --> [10 USD Charge]
+[10 USD Charge] --> [10 USD Transfer]
+[10 USD Transfer] --> [10 USD Payment]
+[10 USD Payment] --> [(1.23 USD) Application fee]
+[(1.23 USD) Application fee] --> [8.77 USD net]
+[(1.23 USD) Application fee] --> [1.23 USD Application fee]
+[1.23 USD Application fee] --> [(0.59 USD) Stripe fees]
+[(0.59 USD) Stripe fees] --> [stripe]
+[(0.59 USD) Stripe fees] --> [0.64 USD net]
+[platform]
+[account]
+```
+
 #### Item 3
- (See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+(See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+```text
+[customer] --> [100 USD Charge]
+[100 USD Charge] --> [(70 USD) Transfer]
+[(70 USD) Transfer] --> [70 USD Payment]
+[(70 USD) Transfer] --> [(20 USD) Transfer]
+[(20 USD) Transfer] --> [20 USD Payment]
+[(20 USD) Transfer] --> [(3.20 USD) Stripe fees]
+[(3.20 USD) Stripe fees] --> [stripe]
+[(3.20 USD) Stripe fees] --> [6.80 USD net]
+[platform]
+[account]
+[account]
+```
+
 #### Item 2
 
 Stripe collects Stripe fees directly from your connected accounts. You can collect an optional application fee when you create the direct charge.
- (See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+(See full diagram at https://docs.stripe.com/connect/design-an-integration)
+
+```text
+[customer] -- Direct charge --> [10 USD Charge]
+[10 USD Charge] --> [(1.23 USD) Application fee]
+[(1.23 USD) Application fee] --> [1.23 USD Application fee]
+[1.23 USD Application fee] --> [platform]
+[(1.23 USD) Application fee] --> [(0.59 USD) Stripe fees]
+[(1.23 USD) Application fee] --> [8.18 USD net]
+[(0.59 USD) Stripe fees] --> [stripe]
+[account]
+```
+
 ### Pay out users
 
 When the funds from the payment settle and your user’s connected account has a positive Stripe balance, you can pay out those funds to their external account.

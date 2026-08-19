@@ -13,7 +13,19 @@ Use [Payment Element](https://docs.stripe.com/payments/payment-element.md) to bu
 > #### Request access
 > 
 > To gain access to use Stripe’s forwarding service, contact [Stripe support](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fsupport.stripe.com%2Fcontact%2Femail%3Fquestion%3Dother%26topic%3Dpayment_apis%26subject%3DHow%2520can%2520I%2520access%2520the%2520Vault%2520and%2520Forward%2520API%3F%26body%3DWhat%2520endpoint%28s%29%2520would%2520you%2520like%2520to%2520forward%2520card%2520details%2520to%3F).
+
 Forward card details to a third-party processor (See full diagram at https://docs.stripe.com/payments/forwarding-third-party-processors)
+
+```text
+[Client] -- Create a PaymentMethod --> [Stripe]
+[Client] -- Process the payment on your server --> [Server]
+[Server] -- Call the Vault and Forward API with the provided payment method --> [Stripe]
+[Stripe] -- Stripe forwards the request with card data --> [Third-party processor]
+[Third-party processor] -- Third-party processor returns a response --> [Stripe]
+[Stripe] -- Stripe redacts identified PCI-sensitive data and relays the response --> [Server]
+[Server] -- Handle server response --> [Client]
+```
+
 ## Create a PaymentMethod [Client-side]
 
 Use a Payment Element to collect payment details. If you’re not integrated with the Payment Element, learn how to [get started](https://docs.stripe.com/payments/accept-a-payment.md). After the customer submits your payment form, call [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method) to create a *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs). Pass the PaymentMethod ID to the ForwardingRequest endpoint on your server.

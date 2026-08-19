@@ -54,7 +54,7 @@ Here are some examples of valid comparison operator searches:
 
 * `event.timestamp:>2023-09-28T00:00:00-07:00`
 * `count_dead_clicks:<=10`
-* `transaction.duration:>5s`
+* `span.duration:>5s`
 
 ### [Using `OR` and `AND`](https://docs.sentry.io/concepts/search.md#using-or-and-and)
 

@@ -44,7 +44,7 @@ Scan this QR code or use this [link](https://apps.apple.com/us/app/stripe-paymen
 
 ## Layout
 
-Set the layout to `.automatic` for Stripe to provide the appropriate payment method layout. You can also select `.vertical` or `horizontal` layout.
+Choose the automatic layout to let Stripe select the appropriate payment method layout. You can also choose a vertical or horizontal layout.
 ![Payment Sheet layout options](https://b.stripecdn.com/docs-statics-srv/assets/ps-layout.588da531e61ebf4cc11175235a8cd08f.png)
 
 The Payment Sheet supports vertical and horizontal layouts.

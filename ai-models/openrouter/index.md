@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 317 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -219,6 +219,7 @@
 - `docs/guides/community/mastra` — [Mastra](pages/docs/guides/community/mastra.md) · [原文](https://openrouter.ai/docs/guides/community/mastra.md)
 - `docs/guides/community/openai-sdk` — [OpenAI SDK](pages/docs/guides/community/openai-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/openai-sdk.md)
 - `docs/guides/community/pydantic-ai` — [PydanticAI](pages/docs/guides/community/pydantic-ai.md) · [原文](https://openrouter.ai/docs/guides/community/pydantic-ai.md)
+- `docs/guides/community/render` — [Render](pages/docs/guides/community/render.md) · [原文](https://openrouter.ai/docs/guides/community/render.md)
 - `docs/guides/community/replit` — [Replit](pages/docs/guides/community/replit.md) · [原文](https://openrouter.ai/docs/guides/community/replit.md)
 - `docs/guides/community/tanstack-ai` — [TanStack AI](pages/docs/guides/community/tanstack-ai.md) · [原文](https://openrouter.ai/docs/guides/community/tanstack-ai.md)
 - `docs/guides/community/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/guides/community/vercel-ai-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/vercel-ai-sdk.md)

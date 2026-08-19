@@ -54,7 +54,24 @@ You can integrate Issuing with [Bridge](https://apidocs.bridge.xyz/platform/card
 With Stripe *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients), you onboard customers to your platform with connected accounts. For each of these connected accounts, you can create account holders and provide cards to authorized users. The following diagram shows a platform with a Stripe Issuing integration using an Issuing balance and a financial accounts balance:
 
 #### Issuing balance funding source
+
 Diagram of a platform integrated with Issuing (See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
+
+```text
+[platform] --> [account]
+[account] --> [Issuing Balance]
+[bank] -- Top-up --> [Issuing Balance]
+[account] --> [Cardholder]
+[Cardholder] --> [Card]
+[Card] --> [Issuing Balance]
+[platform] --> [account]
+[account] --> [Issuing Balance]
+[bank] -- Top-up --> [Issuing Balance]
+[account] --> [Cardholder]
+[Cardholder] --> [Card]
+[Card] --> [Issuing Balance]
+```
+
 ### Connected accounts
 
 Issuing only supports connected accounts that don’t use a Stripe-hosted Dashboard, and where your platform is responsible for requirements collection and loss liability, also known as a Custom connected account. Learn how to [create connected accounts](https://docs.stripe.com/connect/interactive-platform-guide.md?connect-charge-type=direct&connect-loss-liability-owner=platform) that work with Issuing.
@@ -72,7 +89,24 @@ For stablecoin-backed card programs, cards draw funds from a Bridge custodial wa
 Learn more about [stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md).
 
 #### Financial accounts balance funding source
- (See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
+
+(See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
+
+```text
+[platform] --> [account]
+[account] --> [finaccount]
+[bank] -- InboundTransfer --> [finaccount]
+[account] --> [Cardholder]
+[Cardholder] --> [Card]
+[Card] --> [finaccount]
+[platform] --> [account]
+[account] --> [finaccount]
+[bank] -- InboundTransfer --> [finaccount]
+[account] --> [Cardholder]
+[Cardholder] --> [Card]
+[Card] --> [finaccount]
+```
+
 ### Connected accounts
 
 Connected accounts are businesses, sellers, or service providers that use a platform. For example, as an expense management platform, you provide software that small businesses can leverage to manage and control their business spend. Each digital store owner that uses the storefront platform to collect payments is a connected account.

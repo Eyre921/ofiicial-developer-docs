@@ -277,7 +277,23 @@ By now, your integration:
 - Expose the financing reporting link in your platform Dashboard by using Account Links with the `capital_financing_reporting` type
 
 The Capital section of your platform dashboard might appear differently depending on which phase the connected account’s financing is in. Review the state diagram below for a list of possible financing offer status values.
+
 Capital financing offer state machine (See full diagram at https://docs.stripe.com/capital/api-integration)
+
+```text
+[Undelivered] --> [Delivered]
+[Delivered] --> [Accepted]
+[Accepted] --> [Paid out]
+[Paid out] --> [Fully repaid]
+[Undelivered] --> [Expired]
+[Delivered] --> [Expired]
+[Accepted] --> [Canceled]
+[Accepted] --> [Rejected]
+[Paid out] --> [Canceled]
+[Undelivered] --> [Replaced]
+[Delivered] --> [Replaced]
+```
+
 | **Segment** | **What it means for the platform** |
 | --- | --- |
 | Undelivered | Stripe has created the financing offer, but it hasn’t yet been communicated to the connected account through an approved offer delivery channel. All offers begin in this state. |

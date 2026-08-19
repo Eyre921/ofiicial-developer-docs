@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 370 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -9,8 +9,11 @@
 
 ## accounts
 
+- `accounts/enterprise-features` — [Enterprise features](pages/accounts/enterprise-features.md) · [原文](https://docs.fireworks.ai/accounts/enterprise-features)
 - `accounts/exporting-billing-metrics` — [Exporting Billing Metrics](pages/accounts/exporting-billing-metrics.md) · [原文](https://docs.fireworks.ai/accounts/exporting-billing-metrics)
 - `accounts/exporting-usage-and-costs` — [Usage & Cost Breakdown](pages/accounts/exporting-usage-and-costs.md) · [原文](https://docs.fireworks.ai/accounts/exporting-usage-and-costs)
+- `accounts/exporting-usage-costs` — [Exporting Usage Costs](pages/accounts/exporting-usage-costs.md) · [原文](https://docs.fireworks.ai/accounts/exporting-usage-costs)
+- `accounts/model-access-policy` — [Model access policy](pages/accounts/model-access-policy.md) · [原文](https://docs.fireworks.ai/accounts/model-access-policy)
 - `accounts/service-accounts` — [Service Accounts](pages/accounts/service-accounts.md) · [原文](https://docs.fireworks.ai/accounts/service-accounts)
 - `accounts/sso` — [Custom SSO](pages/accounts/sso.md) · [原文](https://docs.fireworks.ai/accounts/sso)
 - `accounts/users` — [Managing users](pages/accounts/users.md) · [原文](https://docs.fireworks.ai/accounts/users)

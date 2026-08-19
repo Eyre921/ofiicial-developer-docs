@@ -14,7 +14,16 @@ To be tax compliant, you need to:
 2. Register for tax in those locations.
 3. Calculate and collect tax.
 4. File and remit the tax you collected.
+
 The tax compliance cycle (See full diagram at https://docs.stripe.com/tax/how-tax-works)
+
+```text
+[Register for tax] -- You register, Stripe Tax tracks your registrations --> [Calculate and collect tax]
+[Calculate and collect tax] -- Stripe Tax calculates and collects taxes --> [File and remit]
+[File and remit] -- You file and remit (or use Stripe and our partners) --> [Monitor where you have tax obligations]
+[Monitor where you have tax obligations] -- The Stripe Tax monitoring tool highlights where you have obligations based on your transactions --> [Register for tax]
+```
+
 ## Indirect taxes with Stripe Tax
 
 Each country handles tax on sold products and services differently, often calling it by a different name. In the US, businesses deal with [sales tax](https://stripe.com/guides/introduction-to-us-sales-tax-and-economic-nexus). Throughout Europe, it’s called value-added tax (*VAT* (A value-added tax (VAT), known in some countries as a goods and services tax (GST), is a type of tax levied on the price of a product or service at each stage of production, distribution, or sale to the end consumer. VAT and GST are also generally known as "consumption" taxes. The buyer pays the tax and the seller forwards it to the government)). Canada and most countries in the Asia Pacific region refer to it as goods and services tax (*GST* (A goods and services tax (GST), known in some countries as a value added tax (VAT), is a type of tax levied on the price of a product or service at each stage of production, distribution, or sale to the end consumer. GST and VAT are also generally known as "consumption" taxes. The buyer pays the tax and the seller forwards it to the government)).

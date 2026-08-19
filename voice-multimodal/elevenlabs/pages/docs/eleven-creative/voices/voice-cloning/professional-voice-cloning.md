@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-cloning/professional-voice-cloning
 
 # Professional Voice Cloning
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d01dc823cfce0a18de62027f92f80471d8e95604956a951bb858c2b45a8a2d0/assets/images/product-guides/voices/voice-cloning/voice-cloning-pvc-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113206Z&X-Amz-Expires=604800&X-Amz-Signature=aaa7f216e7a8bb1a9a462629ea6016c435377480b654ab230f2744c524903718&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Professional voice cloning feature" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d01dc823cfce0a18de62027f92f80471d8e95604956a951bb858c2b45a8a2d0/assets/images/product-guides/voices/voice-cloning/voice-cloning-pvc-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T101024Z&X-Amz-Expires=604800&X-Amz-Signature=e0480380a04c5276542459eba45d9f72c31f8fcdb5c4c165632719da67227bfd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Professional voice cloning feature" />
 
 ## Creating a Professional Voice Clone
 
@@ -31,7 +31,7 @@ From the pop-up, select **Professional Voice Clone**.
 Professional Voice Clones do not currently support singing. Audio recordings must consist of
 spoken voice only.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113206Z&X-Amz-Expires=604800&X-Amz-Signature=0b115a48246087c634fcf0af4fa0b49b1d9a46db0b78b162f23b7760348b88af&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T101024Z&X-Amz-Expires=604800&X-Amz-Signature=4bc56cdba558914d2500810b2806eee1b276c3546ab3b762e5ad2173af1f7209&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Upload your audio samples by clicking **Upload samples**.
 
@@ -41,13 +41,13 @@ If you don't already have pre-recorded training audio, you can also record direc
 
 Once your audio has been uploaded, you will see feedback on the length of your samples. For the best results, we recommend uploading at least an hour of training audio, and ideally as close to three hours as possible.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-samples.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113206Z&X-Amz-Expires=604800&X-Amz-Signature=c0ab13467aca5dad7f02799bcee139680390d2e060c32baf1271477235baa906&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-samples.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T101024Z&X-Amz-Expires=604800&X-Amz-Signature=12c1b2804366d85327473505031b214d14cec2221a2ff9d17b420eac9b7883d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Process your audio
 
 Once your audio samples have been uploaded, you can process them to improve the quality. You can remove any background noise, and you can also separate out different speakers, if your audio includes more than one speaker. To access these options, click the **Audio settings** button next to the clip you want to process.
 
-![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113206Z&X-Amz-Expires=604800&X-Amz-Signature=9599f9fada984020efc2be602c96dd2ae7d673da4cd82d9afed0e1bf10821bc8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create a new Professional Voice Clone](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T101024Z&X-Amz-Expires=604800&X-Amz-Signature=5a1b302be9aaa7497c1ba0ce7f71e1b8162cb025c0aec75efce6fe0bd135f9e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Verify your voice
 

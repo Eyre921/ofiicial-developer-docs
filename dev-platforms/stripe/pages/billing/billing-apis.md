@@ -27,9 +27,155 @@ When you create a subscription, Stripe automatically generates an *Invoice* (Inv
 > For most use cases, we recommend [modeling your customers as customer-configured Account objects](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md) instead of using [Customer](https://docs.stripe.com/api/customers.md) objects.
 
 #### Accounts v2
+
 A diagram illustrating common billing objects and their relationships (See full diagram at https://docs.stripe.com/billing/billing-apis)
+
+```text
++---------------------------------+
+| Subscription object             |
++---------------------------------+
+| id: sub_1234                    |
+| status: active                  |
+| latest_invoice: in_1234         |
+| default_payment_method: pm_1234 |
+| customer_account: acct_1234     |
+| items.data.price: price_1234    |
++---------------------------------+
+
++----------------+
+| Invoice object |
++----------------+
+| id: in_1234    |
+| currency: usd  |
+| status: open   |
++----------------+
+
++----------------------+
+| PaymentMethod object |
++----------------------+
+| id: pm_1234          |
+| type: card           |
+| card[brand]: visa    |
++----------------------+
+
++---------------------------------------+
+| Customer-configured Account object    |
++---------------------------------------+
+| id: acct_1234                         |
+| display_name: Jenny Rosen             |
+| contact_email: jennyrosen@example.com |
++---------------------------------------+
+
++--------------------+
+| Price object       |
++--------------------+
+| id: price_1234     |
+| product: prod_1234 |
+| type: recurring    |
++--------------------+
+
++---------------------------+
+| Product object            |
++---------------------------+
+| id: prod_1234             |
+| active: true              |
+| name: Widget, blue        |
+| default_price: price_1234 |
++---------------------------+
+
++-----------------------------+
+| PaymentIntent               |
++-----------------------------+
+| id: pi_1234                 |
+| amount: 1000                |
+| customer_account: acct_1234 |
+| invoice: in_1234            |
+| status: processing          |
++-----------------------------+
+
+[Subscription object.latest_invoice] --> [Invoice object]
+[Subscription object.default_payment_method] --> [PaymentMethod object]
+[Subscription object.customer_account] --> [Customer-configured Account object]
+[Subscription object.items.data.price] --> [Price object]
+[Price object.product] --> [Product object]
+[PaymentIntent.invoice] --> [Invoice object]
+```
+
 #### Customer v1
+
 A diagram illustrating common billing objects and their relationships (See full diagram at https://docs.stripe.com/billing/billing-apis)
+
+```text
++---------------------------------+
+| Subscription object             |
++---------------------------------+
+| id: sub_1234                    |
+| status: active                  |
+| latest_invoice: in_1234         |
+| default_payment_method: pm_1234 |
+| customer: cus_1234              |
+| items.data.price: price_1234    |
++---------------------------------+
+
++----------------+
+| Invoice object |
++----------------+
+| id: in_1234    |
+| currency: usd  |
+| status: open   |
++----------------+
+
++----------------------+
+| PaymentMethod object |
++----------------------+
+| id: pm_1234          |
+| type: card           |
+| card[brand]: visa    |
++----------------------+
+
++-------------------------------+
+| Customer object               |
++-------------------------------+
+| id: cus_1234                  |
+| name: Jenny Rosen             |
+| email: jennyrosen@example.com |
++-------------------------------+
+
++--------------------+
+| Price object       |
++--------------------+
+| id: price_1234     |
+| product: prod_1234 |
+| type: recurring    |
++--------------------+
+
++---------------------------+
+| Product object            |
++---------------------------+
+| id: prod_1234             |
+| active: true              |
+| name: Widget, blue        |
+| default_price: price_1234 |
++---------------------------+
+
++--------------------+
+| PaymentIntent      |
++--------------------+
+| id: pi_1234        |
+| amount: 1000       |
+| customer: cus_1234 |
+| invoice: in_1234   |
+| status: processing |
++--------------------+
+
+[Subscription object.latest_invoice] --> [Invoice object]
+[Subscription object.default_payment_method] --> [PaymentMethod object]
+[Subscription object.customer] --> [Customer object]
+[Subscription object.items.data.price] --> [Price object]
+[Price object.product] --> [Product object]
+[PaymentIntent.invoice] --> [Invoice object]
+```
+
 ## API object definitions
 
 | Resource | Definition |

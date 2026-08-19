@@ -121516,6 +121516,17 @@ const result = await runCodeMode({
 `runCodeMode` returns the value returned by the program. It uses the same
 sandbox and execution limits as the AI SDK tool.
 
+## Tool Approval
+
+Code mode does not currently integrate with AI SDK tool approval flows. Tool
+calls made by generated code are nested inside the code mode invocation, so
+they cannot pause the generation and surface a tool approval request to your
+application.
+
+Do not expose tools that rely on user approval to code mode. Keep those tools
+directly callable by the model instead. If a nested tool requires approval,
+the call is rejected rather than executed.
+
 ## Execution Limits
 
 Every invocation has limits for runtime, memory, source size, results, tool
@@ -121580,9 +121591,6 @@ to code mode.
 
 Tool input schemas are validated before their `execute` functions run. Abort
 signals and AI SDK tool execution context are forwarded to nested tool calls.
-
-Code mode does not currently support approval flows for nested tool calls.
-Tools that require approval are rejected instead of being executed.
 
 ---
 title: Prompt Engineering
@@ -124481,22 +124489,23 @@ try {
 
 ## Video Models
 
-| Provider                                                                | Model                       | Features                                                                      |
-| ----------------------------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video                                                 |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `minimax-video`             | Text-to-video                                                                 |
-| [Google](/providers/ai-sdk-providers/google#video-models)               | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-generate-001`      | Text-to-video, audio generation                                               |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-fast-generate-001` | Text-to-video, audio generation                                               |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-generate-001`      | Text-to-video, audio generation                                               |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-fast-generate-001` | Text-to-video, audio generation                                               |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                        |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-t2v`            | Text-to-video                                                                 |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-i2v`            | Image-to-video                                                                |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-motion-control` | Motion control                                                                |
-| [Replicate](/providers/ai-sdk-providers/replicate#video-models)         | `minimax/video-01`          | Text-to-video                                                                 |
-| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V                        |
-| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V (with reference audio) |
+| Provider                                                                        | Model                       | Features                                                                       |
+| ------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------ |
+| [Black Forest Labs](/providers/ai-sdk-providers/black-forest-labs#video-models) | `flux-3-video`              | Text-to-video, image-to-video, keyframes, video continuation, audio generation |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                             | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video                                                  |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                             | `minimax-video`             | Text-to-video                                                                  |
+| [Google](/providers/ai-sdk-providers/google#video-models)                       | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                         |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.1-generate-001`      | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.1-fast-generate-001` | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.0-generate-001`      | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.0-fast-generate-001` | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                         |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-t2v`            | Text-to-video                                                                  |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-i2v`            | Image-to-video                                                                 |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-motion-control` | Motion control                                                                 |
+| [Replicate](/providers/ai-sdk-providers/replicate#video-models)                 | `minimax/video-01`          | Text-to-video                                                                  |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                             | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V                         |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                             | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V (with reference audio)  |
 
 Above are a small subset of the video models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -135852,7 +135861,8 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       name: 'maxRetries',
       type: 'number',
       isOptional: true,
-      description: 'How many times to retry on failure. Default: 2.',
+      description:
+        'How many times to retry retryable model-call failures. Set to 0 to disable retries. Retry-After response headers are respected, and durable workflow step retries are not stacked. Default: 2.',
     },
     {
       name: 'headers',
@@ -136125,6 +136135,12 @@ Returns a `Promise<WorkflowAgentStreamResult>` with the following properties:
       type: 'Array<ToolResult>',
       description:
         'Tool results from the last step. Only includes results for tools that were executed.',
+    },
+    {
+      name: 'error',
+      type: 'unknown | undefined',
+      description:
+        "The original value from a model stream error part. The property is present when an error part was emitted, even if its value is undefined; use `'error' in result` to distinguish that case.",
     },
     {
       name: 'output',
@@ -142214,6 +142230,64 @@ The custom tool can be configured with:
   - **syntax** _'regex' | 'lark'_ - (grammar only) The grammar syntax. Use `'regex'` for regular expression patterns or `'lark'` for [Lark parser grammar](https://lark-parser.readthedocs.io/).
   - **definition** _string_ - (grammar only) The grammar definition string (a regex pattern or Lark grammar).
 - **execute** _function_ (optional) - An async function that receives the raw string input and returns a string result. Enables multi-turn tool calling.
+
+#### Restricting Callable Tools
+
+The `allowedTools` provider option restricts which of the tools you declared the model is allowed to
+call, while still sending the full `tools` list to OpenAI. Because the tools list stays byte-identical
+across requests, the prompt cache is preserved — unlike `activeTools`, which removes tools from the
+request and invalidates the cache whenever the allow-list changes.
+
+`allowedTools` is only supported by the Responses API, and it overrides the request-level `toolChoice`.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: openai.responses('gpt-5.5'),
+  tools: {
+    weather: weatherTool,
+    cityAttractions: cityAttractionsTool,
+    search: openai.tools.webSearch(),
+  },
+  providerOptions: {
+    openai: {
+      allowedTools: { toolNames: ['weather', 'search'], mode: 'auto' },
+    },
+  },
+  prompt: 'What is the weather in San Francisco?',
+});
+```
+
+- **toolNames** _string[]_ - The tools the model may call, named as you declared them in `tools`. For
+  provider-defined tools you may also use the canonical OpenAI name (for example `web_search`).
+- **mode** _'auto' | 'required'_ (optional) - `'auto'` (default) lets the model pick one of the allowed
+  tools or answer with a message; `'required'` forces it to call at least one of them.
+
+Both function tools and provider-defined tools can be allow-listed, including web search, file search,
+image generation, code interpreter, computer, apply patch, shell, programmatic tool calling, custom
+tools, and MCP servers.
+
+If a name matches both a tool you declared and the canonical OpenAI name of a different tool, the tool
+you declared under that name wins, and a warning reports the ambiguity. If several tools share the same
+canonical name — two MCP servers, for example — that name is ambiguous, so it is dropped with a warning;
+name those tools as you declared them instead.
+
+<Note>
+  Three kinds of tools cannot be allow-listed, because OpenAI's `allowed_tools`
+  only sees the eagerly-loaded tool list: the [tool search tool](#tool-search),
+  tools marked with `deferLoading`, and tools grouped into a namespace. Naming
+  one of these in `allowedTools` removes it from the allow-list and emits a
+  warning; if that leaves no tools at all, the request fails with an error
+  instead of silently sending no restriction.
+</Note>
+
+<Note>
+  An MCP server is allow-listed as a whole: the entry carries the server label,
+  so every tool on that server is callable. To restrict which tools on a server
+  the model may call, use the MCP tool's own `allowedTools` argument.
+</Note>
 
 #### Image Inputs
 
@@ -151840,11 +151914,11 @@ You can use the following optional settings to customize the Google provider ins
 ## Language Models
 
 You can create models that call the [Google Generative AI API](https://ai.google.dev/api/rest) using the provider instance.
-The first argument is the model id, e.g. `gemini-2.5-flash`.
+The first argument is the model id, e.g. `gemini-3.7-flash`.
 The models support tool calls and some have multi-modal capabilities.
 
 ```ts
-const model = google('gemini-2.5-flash');
+const model = google('gemini-3.7-flash');
 ```
 
 You can use Google language models to generate text with the `generateText` function:
@@ -151854,7 +151928,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -151879,7 +151953,7 @@ You can pass them as an options argument:
 ```ts
 import { google, type GoogleLanguageModelOptions } from '@ai-sdk/google';
 
-const model = google('gemini-2.5-flash');
+const model = google('gemini-3.7-flash');
 
 await generateText({
   model,
@@ -152034,7 +152108,7 @@ For Gemini 3 and later models, use the `thinkingLevel` parameter to control the 
 import { google, GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
-const model = google('gemini-3.1-pro-preview');
+const model = google('gemini-3.7-flash');
 
 const { text, reasoning } = await generateText({
   model: model,
@@ -152091,7 +152165,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   messages: [
     {
       role: 'user',
@@ -152118,7 +152192,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   messages: [
     {
       role: 'user',
@@ -152154,15 +152228,15 @@ Google supports both explicit and implicit caching to help reduce costs on repet
 
 #### Implicit Caching
 
-Gemini 2.5 models automatically provide cache cost savings without needing to create an explicit cache. When you send requests that share common prefixes with previous requests, you'll receive a 75% token discount on cached content.
+Gemini models automatically provide cache cost savings without needing to create an explicit cache. When you send requests that share common prefixes with previous requests, you'll receive a 75% token discount on cached content.
 
 To maximize cache hits with implicit caching:
 
 - Keep content at the beginning of requests consistent
 - Add variable content (like user questions) at the end of prompts
 - Ensure requests meet minimum token requirements:
-  - Gemini 2.5 Flash: 1024 tokens minimum
-  - Gemini 2.5 Pro: 2048 tokens minimum
+  - Gemini 3 series: 4096 tokens minimum
+  - Gemini 2.5 series: 2048 tokens minimum
 
 ```ts
 import { google } from '@ai-sdk/google';
@@ -152173,13 +152247,13 @@ const baseContext =
   'You are a cooking assistant with expertise in Italian cuisine. Here are 1000 lasagna recipes for reference...';
 
 const { text: veggieLasagna } = await generateText({
-  model: google('gemini-2.5-pro'),
+  model: google('gemini-3.7-flash'),
   prompt: `${baseContext}\n\nWrite a vegetarian lasagna recipe for 4 people.`,
 });
 
 // Second request with same prefix - eligible for cache hit
 const { text: meatLasagna, providerMetadata } = await generateText({
-  model: google('gemini-2.5-pro'),
+  model: google('gemini-3.7-flash'),
   prompt: `${baseContext}\n\nWrite a meat lasagna recipe for 12 people.`,
 });
 
@@ -152190,11 +152264,11 @@ console.log('Cached tokens:', providerMetadata.google);
 //   groundingMetadata: null,
 //   safetyRatings: null,
 //   usageMetadata: {
-//     cachedContentTokenCount: 2027,
+//     cachedContentTokenCount: 5027,
 //     thoughtsTokenCount: 702,
-//     promptTokenCount: 2152,
+//     promptTokenCount: 5152,
 //     candidatesTokenCount: 710,
-//     totalTokenCount: 3564
+//     totalTokenCount: 6564
 //   }
 // }
 ```
@@ -152207,7 +152281,7 @@ console.log('Cached tokens:', providerMetadata.google);
 
 #### Explicit Caching
 
-For guaranteed cost savings, you can still use explicit caching with Gemini 2.5 and 2.0 models. See the [models page](https://ai.google.dev/gemini-api/docs/models) to check if caching is supported for the used model:
+For guaranteed cost savings, you can still use explicit caching with Gemini 2.5 and 3 series models. See the [models page](https://ai.google.dev/gemini-api/docs/models) to check if caching is supported for the used model:
 
 ```ts
 import { google, type GoogleLanguageModelOptions } from '@ai-sdk/google';
@@ -152218,7 +152292,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
-const model = 'gemini-2.5-pro';
+const model = 'gemini-3.7-flash';
 
 // Create a cache with the content you want to reuse
 const cache = await ai.caches.create({
@@ -152267,7 +152341,7 @@ import { googleTools } from '@ai-sdk/google/internal';
 import { generateText } from 'ai';
 
 const { text, toolCalls, toolResults } = await generateText({
-  model: google('gemini-2.5-pro'),
+  model: google('gemini-3.7-flash'),
   tools: { code_execution: google.tools.codeExecution({}) },
   prompt: 'Use python to calculate the 20th fibonacci number.',
 });
@@ -152286,7 +152360,7 @@ import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -152394,7 +152468,7 @@ const vertex = createGoogleVertex({
 });
 
 const { text, sources, providerMetadata } = await generateText({
-  model: vertex('gemini-2.5-flash'),
+  model: vertex('gemini-3.7-flash'),
   tools: {
     enterprise_web_search: vertex.tools.enterpriseWebSearch({}),
   },
@@ -152417,7 +152491,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: google('gemini-2.5-pro'),
+  model: google('gemini-3.7-flash'),
   tools: {
     file_search: google.tools.fileSearch({
       fileSearchStoreNames: [
@@ -152444,7 +152518,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   prompt: `Based on the document: https://ai.google.dev/gemini-api/docs/url-context.
           Answer this question: How many links we can consume in one request?`,
   tools: {
@@ -152522,7 +152596,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   prompt: `Based on this context: https://ai-sdk.dev/providers/ai-sdk-providers/google, tell me how to use Gemini with AI SDK.
     Also, provide the latest news about AI SDK V5.`,
   tools: {
@@ -152547,7 +152621,7 @@ import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources, providerMetadata } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   tools: {
     google_maps: google.tools.googleMaps({}),
   },
@@ -152611,7 +152685,7 @@ const vertex = createGoogleVertex({
 });
 
 const { text, sources, providerMetadata } = await generateText({
-  model: vertex('gemini-2.5-flash'),
+  model: vertex('gemini-3.7-flash'),
   tools: {
     vertex_rag_store: vertex.tools.vertexRagStore({
       ragCorpus:
@@ -152778,7 +152852,7 @@ You can disable structured outputs for object generation as a workaround:
 
 ```ts highlight="3,8"
 const { output } = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: google('gemini-3.7-flash'),
   providerOptions: {
     google: {
       structuredOutputs: false,
@@ -152971,13 +153045,13 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   prompt: 'Hello, how are you?',
 });
 ```
 
 `google.interactions(...)` accepts a model ID string (e.g.
-`'gemini-2.5-flash'`, `'gemini-3-pro-preview'`), `{ agent: <name> }` to use
+`'gemini-3.7-flash'`, `'gemini-3.1-pro-preview'`), `{ agent: <name> }` to use
 a Gemini [agent preset](#agent-presets), or `{ managedAgent: <name> }` to
 invoke a [managed agent](#managed-agents) you created on Google's side.
 The returned model can be passed to `generateText` and `streamText` like
@@ -153004,7 +153078,7 @@ import {
 import { generateText } from 'ai';
 
 await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   prompt: 'What color is the sky in one word?',
   providerOptions: {
     google: {
@@ -153144,7 +153218,7 @@ import {
 import { generateText } from 'ai';
 
 const turn1 = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   prompt: 'What are the three largest cities in Spain?',
 });
 
@@ -153153,7 +153227,7 @@ const interactionId = turn1.providerMetadata?.google?.interactionId as
   | undefined;
 
 const turn2 = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   prompt: 'What is the most famous landmark in the second one?',
   providerOptions: {
     google: {
@@ -153178,7 +153252,7 @@ const messages: Array<ModelMessage> = [
 ];
 
 const turn1 = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   messages,
   providerOptions: {
     google: { store: false } satisfies GoogleLanguageModelInteractionsOptions,
@@ -153192,7 +153266,7 @@ messages.push({
 });
 
 const turn2 = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   messages,
   providerOptions: {
     google: { store: false } satisfies GoogleLanguageModelInteractionsOptions,
@@ -153225,7 +153299,7 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   tools: {
     google_search: google.tools.googleSearch({}),
   },
@@ -153249,7 +153323,7 @@ const weatherTool = tool({
 });
 
 const { text, toolCalls } = await generateText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   tools: { getWeather: weatherTool },
   stopWhen: stepCountIs(5),
   prompt: 'What is the weather in San Francisco right now?',
@@ -153548,7 +153622,7 @@ import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
 
 const result = streamText({
-  model: google.interactions('gemini-2.5-flash'),
+  model: google.interactions('gemini-3.7-flash'),
   prompt: 'Hello, how are you?',
 });
 
@@ -154292,10 +154366,10 @@ const googleVertex = createGoogleVertex({
 ### Language Models
 
 You can create models that call the Vertex API using the provider instance.
-The first argument is the model id, e.g. `gemini-2.5-pro`.
+The first argument is the model id, e.g. `gemini-3.7-flash`.
 
 ```ts
-const model = googleVertex('gemini-2.5-pro');
+const model = googleVertex('gemini-3.7-flash');
 ```
 
 <Note>
@@ -154312,7 +154386,7 @@ an options argument:
 import { googleVertex } from '@ai-sdk/google-vertex';
 import { type GoogleLanguageModelOptions } from '@ai-sdk/google';
 
-const model = googleVertex('gemini-2.5-pro');
+const model = googleVertex('gemini-3.1-pro-preview');
 
 await generateText({
   model,
@@ -154472,7 +154546,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -154522,7 +154596,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   tools: { code_execution: googleVertex.tools.codeExecution({}) },
   prompt:
     'Use python to calculate 20th fibonacci number. Then find the nearest palindrome to it.',
@@ -154540,7 +154614,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   tools: { url_context: googleVertex.tools.urlContext({}) },
   prompt: 'What are the key points from https://example.com/article?',
 });
@@ -154555,7 +154629,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   tools: { google_search: googleVertex.tools.googleSearch({}) },
   prompt: 'What are the latest developments in AI?',
 });
@@ -154570,7 +154644,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-flash'),
+  model: googleVertex('gemini-3.7-flash'),
   tools: {
     enterprise_web_search: googleVertex.tools.enterpriseWebSearch({}),
   },
@@ -154588,7 +154662,7 @@ import { type GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-flash'),
+  model: googleVertex('gemini-3.7-flash'),
   tools: {
     google_maps: googleVertex.tools.googleMaps({}),
   },
@@ -154730,7 +154804,7 @@ import { googleVertex } from '@ai-sdk/google-vertex';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   messages: [
     {
       role: 'user',
@@ -154773,13 +154847,13 @@ const baseContext =
   'You are a cooking assistant with expertise in Italian cuisine. Here are 1000 lasagna recipes for reference...';
 
 const { text: veggieLasagna } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   prompt: `${baseContext}\n\nWrite a vegetarian lasagna recipe for 4 people.`,
 });
 
 // Second request with same prefix - eligible for cache hit
 const { text: meatLasagna, providerMetadata } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   prompt: `${baseContext}\n\nWrite a meat lasagna recipe for 12 people.`,
 });
 
@@ -154842,7 +154916,7 @@ import { type GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
 const { text: veggieLasagnaRecipe } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
   providerOptions: {
     vertex: {
@@ -154852,7 +154926,7 @@ const { text: veggieLasagnaRecipe } = await generateText({
 });
 
 const { text: meatLasagnaRecipe } = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   prompt: 'Write a meat lasagna recipe for 12 people.',
   providerOptions: {
     vertex: {
@@ -154926,7 +155000,7 @@ import { type GoogleLanguageModelOptions } from '@ai-sdk/google';
 import { generateText, Output } from 'ai';
 
 const result = await generateText({
-  model: googleVertex('gemini-2.5-pro'),
+  model: googleVertex('gemini-3.1-pro-preview'),
   providerOptions: {
     vertex: {
       structuredOutputs: false,

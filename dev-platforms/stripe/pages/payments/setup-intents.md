@@ -48,7 +48,7 @@ Add terms to your website or app that state how you plan to process payments, an
 - The anticipated frequency of payments (that is, one-time or recurring)
 - How the payment amount will be determined
 
-See recommended mandate text for [saving cards](https://docs.stripe.com/payments/save-and-reuse.md?platform=web&ui=elements#collect-payment-details) or [saving SEPA bank details](https://docs.stripe.com/payments/sepa-debit/set-up-payment.md).
+See recommended mandate text for [saving cards](https://docs.stripe.com/payments/save-and-reuse.md?platform=web&ui=elements&payment-ui=elements#collect-payment-details) or [saving SEPA bank details](https://docs.stripe.com/payments/sepa-debit/set-up-payment.md).
 
 For users impacted by *SCA* (Strong Customer Authentication (SCA) is a regulatory requirement in effect as of September 14, 2019, that impacts many European online payments. It requires customers to use two-factor authentication like 3D Secure to verify their purchase), this agreement helps payments succeed without interruption. When you set up your integration to properly save a card, Stripe marks any subsequent off-session payment as a *merchant-initiated transaction* (A payment made off-session with a properly authenticated saved card, can qualify as merchant-initiated transaction and be exempt from SCA) (MIT) so that your customers don’t have to come back online and authenticate. Merchant-initiated transactions require an agreement between you and your customer.
 

@@ -48,8 +48,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=500 \
   -d currency=gbp \
-  -d payment_method=pm_card_visa \
-  -d "payment_method_types[]=card"
+  -d payment_method=pm_card_visa
 ```
 
 When you’re ready to take your integration live, replace your test publishable and secret [API keys](https://docs.stripe.com/keys.md) with live ones.

@@ -251,6 +251,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Cloud Endpoints and Data Residency](#cloud-endpoints-and-data-residency-docs-llm-gateway-cloud-endpoints-and-data-residency-mdx)
 - [Create a chat completion](#create-a-chat-completion-docs-llm-gateway-api-reference-create-chat-completion-mdx)
 - [Create speech understanding](#create-speech-understanding-docs-llm-gateway-api-reference-create-speech-understanding-mdx)
+- [List available models](#list-available-models-docs-llm-gateway-api-reference-list-available-models-mdx)
 - [Improve Latency](#improve-latency-docs-llm-gateway-improve-latency-mdx)
 - [Ask Questions About Your Audio Transcripts](#ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx)
 - [Agentic Workflows](#agentic-workflows-docs-llm-gateway-agentic-workflows-mdx)
@@ -65405,7 +65406,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers = headers,
     json = {
-        "model": "claude-sonnet-4-6",
+        "model": "qwen3.5-4b-32k-fast",
         "messages": [
             {"role": "user", "content": "What is the capital of France?"}
         ],
@@ -65427,7 +65428,7 @@ const response = await fetch(
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-6",
+      model: "qwen3.5-4b-32k-fast",
       messages: [{ role: "user", content: "What is the capital of France?" }],
       max_tokens: 1000,
     }),
@@ -65450,7 +65451,7 @@ client = OpenAI(
 import json
 
 messages = [{"role": "user", "content": "What is the capital of france"}]
-response = client.chat.completions.create(model="claude-sonnet-4.6", messages=messages)
+response = client.chat.completions.create(model="qwen3.5-4b-32k-fast", messages=messages)
 print(response.choices[0].message.content)
 ```
 
@@ -67272,6 +67273,20 @@ Description: Apply LLM Gateway to audio transcripts.
 
 Metadata:
 - openapi: ../../api-reference/specs/llm-gateway.yaml POST /understanding
+
+---
+
+<a id="list-available-models-docs-llm-gateway-api-reference-list-available-models-mdx"></a>
+
+# List available models
+
+URL: https://www.assemblyai.com/docs/llm-gateway/api-reference/list-available-models
+Source: docs/llm-gateway/api-reference/list-available-models.mdx
+Navigation: LLM Gateway > API reference
+Description: List the models available through LLM Gateway.
+
+Metadata:
+- openapi: ../../api-reference/specs/llm-gateway.yaml GET /models
 
 ---
 
@@ -89985,7 +90000,7 @@ paths:
               messages_example:
                 summary: Chat with messages
                 value:
-                  model: "claude-sonnet-4-6"
+                  model: "qwen3.5-4b-32k-fast"
                   messages:
                     - role: "user"
                       content: "Hello, how are you?"
@@ -89994,7 +90009,7 @@ paths:
               prompt_example:
                 summary: Simple prompt
                 value:
-                  model: "claude-sonnet-4-6"
+                  model: "qwen3.5-4b-32k-fast"
                   prompt: "Write a haiku about coding"
                   max_tokens: 50
                   temperature: 0.5
@@ -90223,6 +90238,114 @@ paths:
                           es: "¡Gracias! Me pondré en contacto entonces."
                           de: "Danke! Ich werde mich dann melden."
                     words: []
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /models:
+    get:
+      x-fern-sdk-group-name: LLM Gateway
+      x-fern-display-name: List available models
+      summary: List available models
+      description: "\n\n<Note>To use our EU server for LLM Gateway, replace `llm-gateway.assemblyai.com` with `llm-gateway.eu.assemblyai.com`.</Note>\n\nReturns the list of models available through LLM Gateway, including the supported parameters, context length, pricing, and regional availability of each model. This endpoint doesn't require authentication."
+      operationId: listAvailableModels
+      security: []
+      responses:
+        "200":
+          description: Successful response containing the list of available models.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListAvailableModelsResponse"
+              examples:
+                models_example:
+                  summary: List of available models
+                  value:
+                    data:
+                      - id: "qwen3.5-4b-32k-fast"
+                        name: "Qwen3.5 4B Fast"
+                        description: ""
+                        creator: "Qwen"
+                        context_length: 32768
+                        supported_parameters:
+                          - "max_tokens"
+                          - "temperature"
+                          - "stream"
+                        default_parameters:
+                          temperature: null
+                          top_p: null
+                          frequency_penalty: null
+                        top_provider:
+                          is_moderated: false
+                          context_length: 32768
+                          max_completion_tokens: 8192
+                        pricing:
+                          global:
+                            prompt: 0.1
+                            completions: 0.5
+                        retirement_date: 0
+                        available_regions: ["us", "eu"]
+                      - id: "claude-sonnet-4-6"
+                        name: "Sonnet 4.6"
+                        description: ""
+                        creator: "Claude"
+                        context_length: 200000
+                        supported_parameters:
+                          - "max_tokens"
+                          - "temperature"
+                          - "tools"
+                          - "tool_choice"
+                          - "response_format"
+                          - "stream"
+                        default_parameters:
+                          temperature: null
+                          top_p: null
+                          frequency_penalty: null
+                        top_provider:
+                          is_moderated: false
+                          context_length: 200000
+                          max_completion_tokens: 128000
+                        pricing:
+                          global:
+                            prompt: 3
+                            completions: 15
+                            input_cache_read: 0.3
+                            input_cache_write: 3.75
+                            input_cache_write_1h: 6
+                          regional_increase_percent: 0.1
+                        retirement_date: 0
+                        available_regions: ["us", "eu", "global"]
+                      - id: "gemini-2.5-flash-lite"
+                        name: "Gemini 2.5 Flash Lite"
+                        description: ""
+                        creator: "Google"
+                        context_length: 1048576
+                        supported_parameters:
+                          - "max_tokens"
+                          - "response_format"
+                          - "temperature"
+                          - "tools"
+                          - "tool_choice"
+                          - "stream"
+                        default_parameters:
+                          temperature: null
+                          top_p: null
+                          frequency_penalty: null
+                        top_provider:
+                          is_moderated: false
+                          context_length: 1048576
+                          max_completion_tokens: 65535
+                        pricing:
+                          global:
+                            prompt: 0.1
+                            completions: 0.4
+                            input_cache_read: 0.01
+                          regional_increase_percent: 0.1
+                        retirement_date: 0
+                        available_regions: ["us", "eu", "global"]
         default:
           description: An unexpected error occurred.
           content:
@@ -90914,6 +91037,144 @@ components:
                     - action_items
                     - status
 
+
+    # Models Endpoint Schemas
+    ListAvailableModelsResponse:
+      type: object
+      description: The response returned by the models endpoint.
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModelDetails"
+          description: The list of models available through LLM Gateway.
+      required:
+        - data
+
+    ModelDetails:
+      type: object
+      description: Details about a model available through LLM Gateway.
+      properties:
+        id:
+          type: string
+          description: The model ID. Use this value in the `model` field of a chat completion request.
+          examples: ["qwen3.5-4b-32k-fast"]
+        name:
+          type: string
+          description: The human-readable name of the model.
+          examples: ["Qwen3.5 4B Fast"]
+        description:
+          type: string
+          description: A description of the model.
+        creator:
+          type: string
+          description: The creator of the model.
+          examples: ["Qwen"]
+        context_length:
+          type: integer
+          description: The maximum context length of the model, in tokens.
+          examples: [32768]
+        supported_parameters:
+          type: array
+          items:
+            type: string
+          description: The request parameters and features supported by the model (e.g., `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream`).
+        default_parameters:
+          $ref: "#/components/schemas/DefaultParameters"
+          description: Default parameter values applied to requests for this model. A `null` value means no default is set.
+        top_provider:
+          $ref: "#/components/schemas/TopProvider"
+          description: Information about the best provider for this model. Not yet supported.
+        pricing:
+          $ref: "#/components/schemas/ModelPricing"
+          description: Pricing details for the model, in USD per 1 million tokens.
+        retirement_date:
+          type: integer
+          format: int64
+          description: The Unix timestamp of the model's retirement date. `0` if no retirement date is set.
+        available_regions:
+          type: array
+          items:
+            type: string
+          description: The regions where the model is available (`us`, `eu`, and/or `global`). See [Cloud endpoints & data residency](https://www.assemblyai.com/docs/llm-gateway/cloud-endpoints-and-data-residency) for more details.
+
+    DefaultParameters:
+      type: object
+      description: Default parameter values applied to requests for this model. A `null` value means no default is set.
+      properties:
+        temperature:
+          type: number
+          format: float
+          nullable: true
+          description: The default temperature for this model, if any.
+        top_p:
+          type: number
+          format: float
+          nullable: true
+          description: The default top_p for this model, if any.
+        frequency_penalty:
+          type: integer
+          nullable: true
+          description: The default frequency penalty for this model, if any.
+
+    TopProvider:
+      type: object
+      description: Information about the best provider for this model. Not yet supported.
+      properties:
+        is_moderated:
+          type: boolean
+          description: Whether the provider moderates requests.
+        context_length:
+          type: integer
+          description: The maximum context length supported by the provider, in tokens.
+        max_completion_tokens:
+          type: integer
+          description: The maximum number of completion tokens supported by the provider.
+
+    ModelPricing:
+      type: object
+      description: Pricing details for the model, in USD per 1 million tokens.
+      properties:
+        global:
+          $ref: "#/components/schemas/ModelPricingData"
+          description: Pricing for global processing. See [Global routing](https://www.assemblyai.com/docs/llm-gateway/cloud-endpoints-and-data-residency#global-routing) for more details.
+        us:
+          $ref: "#/components/schemas/ModelPricingData"
+          description: US-specific pricing. Only present when the model has pricing distinct from global pricing in the US region.
+        eu:
+          $ref: "#/components/schemas/ModelPricingData"
+          description: EU-specific pricing. Only present when the model has pricing distinct from global pricing in the EU region.
+        regional_increase_percent:
+          type: number
+          format: float
+          description: The fractional price increase applied to in-region (US or EU) processing relative to global pricing (e.g., `0.1` means 10%).
+      required:
+        - global
+
+    ModelPricingData:
+      type: object
+      description: Prices in USD per 1 million tokens.
+      properties:
+        prompt:
+          type: number
+          format: float
+          description: The price per 1 million input (prompt) tokens.
+        completions:
+          type: number
+          format: float
+          description: The price per 1 million output (completion) tokens.
+        input_cache_read:
+          type: number
+          format: float
+          description: The price per 1 million cached input tokens read. Only present for models that support prompt caching.
+        input_cache_write:
+          type: number
+          format: float
+          description: The price per 1 million input tokens written to the cache. Only present for models that support prompt caching.
+        input_cache_write_1h:
+          type: number
+          format: float
+          description: The price per 1 million input tokens written to the cache with a 1-hour TTL. Only present for models that support prompt caching.
 
     # Error Schema
     ErrorResponse:

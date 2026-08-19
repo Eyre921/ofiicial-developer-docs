@@ -35,7 +35,15 @@ Marketplaces typically charge a commission or fee to their connected accounts fo
 - **Collecting subscription fees**: Charge your connected accounts a subscription fee for using your platform using [Stripe Billing](https://docs.stripe.com/connect/subscriptions.md).
 
 Charging an application fee allows you to earn revenue and cover your costs to keep your balance from becoming negative. Use the [platform pricing tool](https://docs.stripe.com/connect/platform-pricing-tools.md) to automatically set pricing logic for the application fees you charge your connected accounts.
+
 A diagram showing monetization for a marketplace (See full diagram at https://docs.stripe.com/connect/marketplace)
+
+```text
+[Customer] -- Customer pays 100.00 --> [Platform]
+[Platform] -- Platform pays 1.50 Stripe fee --> [Stripe]
+[Platform] -- Platform keeps 1.00 application fee and pays out 97.50 --> [Merchant]
+```
+
 ## Merchant risk
 
 Your marketplace platform is responsible for covering the negative balances of your connected accounts. Use [Radar](https://docs.stripe.com/radar.md) to prevent, detect, and mitigate both customer risk and financially risky connected accounts.

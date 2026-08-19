@@ -6,11 +6,7 @@ path: docs/projects
 
 Create isolated workspaces to organize resources, manage team access, and scope API keys.
 
-A project is an isolated workspace within your [organization](/docs/organizations). Resources, API keys, and collaborator membership are all scoped to projects. Think of a project as the collaboration boundary: when you give someone access to a project, they can use everything inside it.
-
-<Note>
-  Every organization includes a [default project](#default-project). To enable additional projects, [contact support](https://portal.usepylon.com/together-ai/forms/support-request).
-</Note>
+A project is an isolated workspace within your [organization](/docs/organizations). Resources, API keys, and collaborator membership are all scoped to projects. Think of a project as the collaboration boundary: when you give someone access to a project, they can use everything inside it. Every organization includes a [default project](#default-project), and you can create additional projects to separate work by team, environment, or workload.
 
 ## How projects work
 

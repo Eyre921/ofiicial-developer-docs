@@ -364,7 +364,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { Resend } from "resend";
 
-import { EmailTemplate } from "../../../../../components/email/post-call-webhook-email";
+import { EmailTemplate } from "@/components/email/post-call-webhook-email";
 
 // Initialize Redis
 const redis = Redis.fromEnv();
@@ -617,7 +617,7 @@ Once the agent is created, you can send an email to the user to notify them that
 ```ts ./app/api/convai-webhook/route.ts
 import { Resend } from "resend";
 
-import { EmailTemplate } from "../../../../../components/email/post-call-webhook-email";
+import { EmailTemplate } from "@/components/email/post-call-webhook-email";
 
 // ...
 

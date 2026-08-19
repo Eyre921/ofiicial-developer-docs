@@ -30,7 +30,7 @@ In this tutorial you will learn how to build a Telegram bot that transcribes aud
 
 Use the [BotFather](https://t.me/BotFather) to create a new Telegram bot. Run the `/newbot` command and follow the instructions to create a new bot. At the end, you will receive your secret bot token. Note it down securely for the next step.
 
-![BotFather](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/28aa856bb6ace1b49b82076a18f1e281a8a4f37bbb6cfc59c22d644564377248/assets/images/cookbooks/scribe/telegram-bot/bot-father.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=7a81e4dcec0fe3bd68cc82217186ee3db6488ac7b9a38621de8354fddad1e88a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![BotFather](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/28aa856bb6ace1b49b82076a18f1e281a8a4f37bbb6cfc59c22d644564377248/assets/images/cookbooks/scribe/telegram-bot/bot-father.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=69bb9c222d415337e42c13eb2295f6eae6a2b2f61be62a28bcbb1218ac9f661e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Create a Supabase project locally
 
@@ -395,7 +395,7 @@ supabase db push
 
 Navigate to the [table editor](https://supabase.com/dashboard/project/_/editor) in your Supabase dashboard and you should see and empty `transcription_logs` table.
 
-![Empty table](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1493deafcd6c53712dcb4fa7a44b3253b571ade0bb2e9c2b4fdb090088b0695/assets/images/cookbooks/scribe/telegram-bot/supa-empty-table.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=9a9a63131db4f1a6b2d2af07d663101b0e3645637b562239d97a25e9b2a71314&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Empty table](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1493deafcd6c53712dcb4fa7a44b3253b571ade0bb2e9c2b4fdb090088b0695/assets/images/cookbooks/scribe/telegram-bot/supa-empty-table.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=efbee656e494eb6225d9fa74a839284d704dcd983b99043c7a2cc660dc4ca026&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Lastly, run the following command to deploy the Edge Function:
 
@@ -405,7 +405,7 @@ supabase functions deploy --no-verify-jwt scribe-bot
 
 Navigate to the [Edge Functions view](https://supabase.com/dashboard/project/_/functions) in your Supabase dashboard and you should see the `scribe-bot` function deployed. Make a note of the function URL as you'll need it later, it should look something like `https://<project-ref>.functions.supabase.co/scribe-bot`.
 
-![Edge Function deployed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d12141a51a09563d625b379201de844800e0c7dcfa9e6c7f21484cbca7ff37cf/assets/images/cookbooks/scribe/telegram-bot/supa-edge-function-deployed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=660e16e7fa6d3e145a1554680f62a41a67b553ac5bc2a2fe3885360b8da71f33&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Edge Function deployed](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d12141a51a09563d625b379201de844800e0c7dcfa9e6c7f21484cbca7ff37cf/assets/images/cookbooks/scribe/telegram-bot/supa-edge-function-deployed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=9e05179ba09390f9f00a3e761b722a51369985211d78025d07b7eb92396acbcd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Set up the webhook
 
@@ -417,7 +417,7 @@ https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=https://<PROJECT
 
 Note that the `FUNCTION_SECRET` is the secret you set in your `.env` file.
 
-![Set webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ac72044bd3df138da3d8a0df09e8413e8a9fd8a5c3156a525d6b13664854482f/assets/images/cookbooks/scribe/telegram-bot/set-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=638c0065dd5b8f2d66ee95db27641b8b979f87099d3a0cdf2868f29ea7526560&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Set webhook](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ac72044bd3df138da3d8a0df09e8413e8a9fd8a5c3156a525d6b13664854482f/assets/images/cookbooks/scribe/telegram-bot/set-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=95b2c2be30ba3810ae0e7d9737b466d72b5bcbd2267730c6fa630e375ee91f94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Set the function secrets
 
@@ -431,11 +431,11 @@ supabase secrets set --env-file supabase/functions/.env
 
 Finally you can test the bot by sending it a voice message, audio or video file.
 
-![Test the bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a42c784e6324f15575e0299bafe02a253a2bdc57f2ad5844f83e5b64297780e7/assets/images/cookbooks/scribe/telegram-bot/test-bot.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=44bf8858884b604866c4836990582cd383cd55d4ed0e22527adff13dd5c167a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Test the bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a42c784e6324f15575e0299bafe02a253a2bdc57f2ad5844f83e5b64297780e7/assets/images/cookbooks/scribe/telegram-bot/test-bot.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=1112073f2a3f75f5feab5594bb67082ffb0f602a2f3eae720dd79c201295bec8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 After you see the transcript as a reply, navigate back to your table editor in the Supabase dashboard and you should see a new row in your `transcription_logs` table.
 
-![New row in table](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25c008858276b7cd4af6f8e72473891176bb9e2ce62e7002af353a2dac205e06/assets/images/cookbooks/scribe/telegram-bot/supa-new-row.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113326Z&X-Amz-Expires=604800&X-Amz-Signature=f4fad81af43b82582756406dc296819eebf68c65704bb336fbd009d664718230&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![New row in table](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25c008858276b7cd4af6f8e72473891176bb9e2ce62e7002af353a2dac205e06/assets/images/cookbooks/scribe/telegram-bot/supa-new-row.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113251Z&X-Amz-Expires=604800&X-Amz-Signature=02540c3ef69be2c1edeae4f59f45e33dec95ba0821ab7cb09ad88f31741ea331&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Next steps
 

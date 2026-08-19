@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113150Z&X-Amz-Expires=604800&X-Amz-Signature=5ec3d22bbb40178adf0932e74752bbfea5c7a35b916f40d72f7d11abda3bec8d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T102051Z&X-Amz-Expires=604800&X-Amz-Signature=2493f9838b4422c0ef35e8fc88cc6ba4379a859c228638ee39f6bc3ef7ef48bd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 
@@ -429,7 +429,7 @@ To access [usage analytics](https://elevenlabs.io/app/usage) for your account, c
 
 The Analytics tab includes **API Requests**, **Usage**, and **Webhooks**. You can filter and analyze data by time period and at different levels of granularity. Use the **Request Log** tab to search and inspect individual API requests.
 
-![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113150Z&X-Amz-Expires=604800&X-Amz-Signature=a757fcc0162e05907ffe80ddedf4b1507189e97ed7575d8d5a751ec31199111f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analytics tab showing API Requests](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdbcf3b2a35085656de4c63af220637ae39728f93f9fd88623fc2ccca4fb6193/assets/images/product-guides/administration/analytics.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T102051Z&X-Amz-Expires=604800&X-Amz-Signature=df00f64b2d7aa613803e647bc627cbabb88d05d0972ecd9654a1af5610db19b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -448,7 +448,7 @@ The Usage view shows credit consumption and related performance metrics, includi
 
 When viewing workspace usage, you can also break usage down by individual user or workspace group.
 
-![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113150Z&X-Amz-Expires=604800&X-Amz-Signature=319e41d7b3a3e03078a0e750920d2dffbd8f4ae560da1ae2381c3194a01607c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Usage metrics in Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f901489e15c1211a1e7e99d75e6033848d5e3f86df55a320046af43b20614f7/assets/images/product-guides/administration/analytics-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T102051Z&X-Amz-Expires=604800&X-Amz-Signature=ee80f5daebc0106801635dcd83a5c9e32c0c8768b84f2f652db54265486190f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you are part of a multi-seat workspace, you can switch between data for your account and your workspace. Account shows data for your individual account, while Workspace covers all accounts in your workspace. If you are not in a multi-seat workspace, you will not see this option.
 
@@ -468,7 +468,7 @@ The API Requests view shows request volume and performance for your account or w
 * Top called path
 
 ![API Requests metrics in
-Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113150Z&X-Amz-Expires=604800&X-Amz-Signature=5a06100b407f8ca0366045052f7ee54f2d51d6ed9c258f59d76645aeacdc2218&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Analytics](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401/assets/images/product-guides/administration/analytics-requests.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T102051Z&X-Amz-Expires=604800&X-Amz-Signature=63fb2885bf35289686bffd39764f32e5bfada8231b62a16dca4e869a76b98196&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
 
@@ -485,7 +485,7 @@ Yes. [Usage analytics](https://elevenlabs.io/app/usage) lets you export the data
 Open **Developers** in the sidebar, go to the **Analytics** tab, set up the view you want, then click **Export**.
 
 ![Export button on an Analytics
-chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113150Z&X-Amz-Expires=604800&X-Amz-Signature=b718694f05f74acf6772ef1b393d5856b0de26f10d44c1f2f956360b3791c2c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+chart](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/52d44c4736ed92ccb037fe8ffb7a3292f20a695350d689785e137fb75fac62a4/assets/images/product-guides/administration/analytics-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T102051Z&X-Amz-Expires=604800&X-Amz-Signature=ae7c2b8a0157a20c71e4fcb1b6435c9dcf8dd80d615777194a78fa87ad25b74e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For more information on Analytics views and filters, see [Usage analytics](/docs/overview/administration/usage-analytics).
 

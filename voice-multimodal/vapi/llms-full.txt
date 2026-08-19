@@ -47,6 +47,10 @@
 - [How voice-to-voice latency works in voice agents](https://docs.vapi.ai/assistants/model-intelligence/understanding-latency.md): Understand voice-to-voice latency, the components included in Vapi performance metrics, and how model capability, endpointing, and transport affect response time.
 - [Introduction to Tools](https://docs.vapi.ai/tools.md): Extend your assistant's capabilities with powerful function calling tools.
 - [Default Tools](https://docs.vapi.ai/tools/default-tools.md): Adding Transfer Call, End Call, Dial Keypad, and API Request capabilities to your assistants.
+- [Transfer call tool](https://docs.vapi.ai/tools/transfer-call.md): Create a transfer call tool in the Vapi Dashboard or API, add it to an assistant, configure destinations, and troubleshoot invocation and routing failures.
+- [Configure blind transfer modes](https://docs.vapi.ai/tools/transfer-call/blind-transfer.md): Configure blind call transfers in the Vapi Dashboard or API, choose a SIP transfer method, add a summary header, verify routing, and diagnose failures.
+- [Configure warm transfer modes](https://docs.vapi.ai/tools/transfer-call/warm-transfer.md): Configure traditional warm transfer modes in the Vapi Dashboard or API, including messages, summaries, operator-first timing, TwiML, and timeouts.
+- [Configure assistant-based warm transfer](https://docs.vapi.ai/calls/assistant-based-warm-transfer.md): Configure an assistant-based warm transfer in the Vapi Dashboard or API, including operator prompts, fallback behavior, summaries, custom audio, and testing.
 - [Voicemail Tool](https://docs.vapi.ai/tools/voicemail-tool.md): Learn how to use the assistant-controlled voicemail tool for flexible voicemail handling
 - [Custom Tools](https://docs.vapi.ai/tools/custom-tools.md): Learn how to create and configure Custom Tools for use by your Vapi assistants.
 - [Code Tool](https://docs.vapi.ai/tools/code-tool.md): Execute custom TypeScript code directly within your assistant without setting up a server.
@@ -103,8 +107,6 @@
 - [Live Call Control](https://docs.vapi.ai/calls/call-features.md)
 - [Customer Join Timeout](https://docs.vapi.ai/calls/customer-join-timeout.md): Set maximum time for users to join web calls before automatic termination
 - [Voicemail Detection](https://docs.vapi.ai/calls/voicemail-detection.md)
-- [Call Forwarding](https://docs.vapi.ai/call-forwarding.md)
-- [Assistant-based warm transfer](https://docs.vapi.ai/calls/assistant-based-warm-transfer.md): Use AI assistants to facilitate call transfers
 - [Dynamic call transfers](https://docs.vapi.ai/calls/call-dynamic-transfers.md): Learn how Vapi's dynamic call transfers work and explore implementation patterns for intelligent call routing.
 - [Call Handling with Vapi and Twilio](https://docs.vapi.ai/calls/call-handling-with-vapi-and-twilio.md)
 - [Debug call forwarding drops](https://docs.vapi.ai/phone-calling/in-call-control/transfer-calls/debug-forwarding-drops.md): Learn to troubleshoot calls that drop immediately after initiating transfer

@@ -21,7 +21,21 @@ When you use the connector, the automated bank reconciliation process occurs dai
 3. The connector creates a bank deposit record in NetSuite that contains all of the payments, refunds, and disputes from that day’s bank deposit.
 4. The connector calculates any fees for processing, currency conversion, disputes, and refunds, and includes these as separate line items that post to your specified expense accounts.
 5. The connector ensures that the deposit total and deposit date match your bank statement.
+
 A diagram providing a high level overview of the deposit automation flow outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/deposit-automation)
+
+```text
+[Stripe] -- Stripe creates payment --> [Connector]
+[Connector] -- Connector creates NetSuite payment and posts to Undeposited Funds account --> [NetSuite]
+[NetSuite] -- Connector adds payment to bank deposit and moves payment to bank account specified on the deposit --> [Cash reconciliation]
+[Stripe] -- Stripe issues refund or chargeback --> [Connector]
+[Connector] -- Connector creates NetSuite refund and posts to Undeposited Funds account --> [NetSuite]
+[NetSuite] -- Connector adds refund to bank deposit and moves refund to bank account specified on the deposit --> [Cash reconciliation]
+[Stripe] -- Stripe sends payout to your bank --> [Connector]
+[Connector] -- Stripe payout arrives in your bank account --> [NetSuite]
+[NetSuite] -- Connector creates bank deposit that includes all transactions and processing fees --> [Cash reconciliation]
+```
+
 ## See also
 
 - [Charges in NetSuite](https://docs.stripe.com/use-stripe-apps/netsuite/stripe-charges-netsuite.md)

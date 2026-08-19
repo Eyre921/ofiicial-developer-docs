@@ -16,7 +16,16 @@ You can use the Stripe Dashboard to create an embeddable pricing table to:
 - Embed into your website with a `<script>` tag and web component. Stripe automatically generates the tag. You copy and paste it into your website’s code.
 
 The diagram below summarizes how the customer goes from viewing a pricing table to completing checkout.
+
 Pricing table (See full diagram at https://docs.stripe.com/payments/checkout/pricing-table)
+
+```text
+[Customer] -- Views pricing table --> [Your application]
+[Your application] -- Clicks on “subscribe” button --> [Stripe Checkout]
+[Stripe Checkout] -- Completes purchase --> [Stripe Checkout]
+[Stripe Checkout] -- checkout.session.completed: Returns to your website --> [Your application]
+```
+
 ## Create a pricing table 
 
 1. In the Dashboard, go to **Product catalog** > [pricing tables](https://dashboard.stripe.com/pricing-tables).

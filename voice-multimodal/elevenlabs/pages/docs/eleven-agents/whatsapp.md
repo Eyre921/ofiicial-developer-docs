@@ -12,8 +12,12 @@ path: docs/eleven-agents/whatsapp
 
 You can connect your WhatsApp business account to an ElevenLabs Agent. The agent can then handle:
 
-* Message conversations
-* Calls
+* Message conversations — text, voice notes, media, and [interactive messages](/docs/eleven-agents/whatsapp/interactive-messages)
+* Calls — inbound and [outbound](/docs/eleven-agents/whatsapp/outbound#scheduling-an-outbound-call)
+
+Agents on other channels can also send WhatsApp messages through [WhatsApp tools](/docs/eleven-agents/whatsapp/tools).
+
+New to WhatsApp on ElevenLabs? Follow the [getting started guide](/docs/eleven-agents/whatsapp/getting-started).
 
 ## Importing a WhatsApp business account
 
@@ -21,19 +25,19 @@ You can connect your WhatsApp business account to an ElevenLabs Agent. The agent
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp) and click the ***Import account*** button:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/734d6e0c2af1c50b769700e084368bed2a8c7eccf47aece6cfb6fc5ca7623f44/assets/images/agents/whatsapp/main-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=d68836fb0e3b8a0342d7a9b5b1a5978a7f37a8d67230a2eb1672a89c8abf0bad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp page" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/734d6e0c2af1c50b769700e084368bed2a8c7eccf47aece6cfb6fc5ca7623f44/assets/images/agents/whatsapp/main-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=6398baa8c5416d53e9656f9613ff61e55863725154bd507898f5ef6475676475&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp page" />
 
 #### Authorize ElevenLabs
 
 This will open the authorization flow where you select your account and give ElevenLabs permission to manage it:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351/assets/images/agents/whatsapp/auth-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=0c42d0df25df8680b5bd2f03f8dd872dc9e0787326ca0a95b6a2e4c439185742&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp authorization flow" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351/assets/images/agents/whatsapp/auth-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=8b261b4abd46fbae89f355393a30a89f2353072360c0fda9b8fc1b642c0dfa59&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp authorization flow" />
 
 #### Assign an agent
 
 When you finish importing your account, you will be taken to its settings page where you can assign an agent to it:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6/assets/images/agents/whatsapp/account-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=eccf9052314b19f49fc2be52413fe2ced071d5a36ca3020f9efcaea50d4e00d1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp account page" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6/assets/images/agents/whatsapp/account-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=62bfa1d9f3754f9b3474077ef4335b2df7ddb69eda22179a6003f7e32f39c7e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp account page" />
 
 If you don't assign an agent to your account, inbound messages will be ignored and inbound calls
 will be rejected. However, you will still be able to make outbound calls.
@@ -46,11 +50,20 @@ Go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/)
 * Allow voice calls: open the ***Phone numbers*** page, select a phone number and go to the ***Call settings*** tab
 * If you want to make outbound calls, add a payment method: open the ***Overview*** page and click the ***Add payment method*** button
 
+## Account settings
+
+Each imported number has settings that control the agent's behavior:
+
+* **Enable messaging** — whether the agent responds to messages. Turn it off to let ElevenLabs handle only calls while your own application handles messages.
+* **Enable audio message response** — when on (the default), the agent answers voice notes with voice notes; when off, it always replies with text.
+* **Enable typing indicator** — when on (the default), the agent marks incoming messages as read and shows a typing indicator while composing its response.
+
 ## Message conversations
 
-WhatsApp message conversations end when the agent uses the ***End conversation*** system tool, the
-configured ***Max conversation duration*** elapses, or the default inactivity timeout elapses after
-the agent's most recent response.
+WhatsApp message conversations end when the agent uses the [***End conversation*** system
+tool](/docs/eleven-agents/customization/tools/system-tools/end-call), the configured ***Max
+conversation duration*** elapses, or the default inactivity timeout elapses after the agent's most
+recent response.
 
 WhatsApp message conversations have a default 15-minute inactivity timeout measured from the
 agent's most recent response. Learn more about [conversation
@@ -60,106 +73,49 @@ timeouts](/docs/eleven-agents/customization/conversation-flow#maximum-conversati
 
 You can send a message to your WhatsApp business account and the agent will respond:
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244/assets/images/agents/whatsapp/text-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=9d29a4856bbc5eda514b8ee7b612fa3bdc38525fced03c724cef19a6b7e9cd94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp text conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244/assets/images/agents/whatsapp/text-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=58038bc5170633d80615a128f6e6d2d92db5ec4b4ffd265229857f3df4935864&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp text conversation" width="300" />
 
 When either timeout expires, ElevenAgents sends the configured ***Max conversation duration
 message*** before closing the conversation. If the message is empty, the conversation closes
 without a farewell.
 
+The agent understands more than plain text:
+
+* **Quoted replies** — when the user long-presses a message and replies to it, the agent knows which message they are responding to.
+* **Reactions** — emoji reactions to the agent's messages are passed to the agent.
+* **Template button taps** — when the user taps a quick-reply button on a template, the agent sees which button was chosen.
+* **Interactive replies** — taps on [interactive buttons and lists](/docs/eleven-agents/whatsapp/interactive-messages) arrive with the selected option.
+
+The agent responds to each incoming message individually. Rapid consecutive messages are not
+batched into a single reply.
+
 ### Outbound
 
-You can start a conversation by sending an outbound message.
-
-First, go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/message_templates) and create a message template.
-
-You can then go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Message*** button. This will open a dialog where you select an agent, provide a WhatsApp user ID, as well as the message template & its parameters:
-
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/13913c2ccc1d92cb59e7332b6fdb4a8c8c64760a334d1a311fa2007831eeb986/assets/images/agents/whatsapp/outbound-message-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=0f00f44574c4d252a8ca229053254d45751ef2a4739b55106175ad673ef20376&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp outbound message dialog" />
-
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8d9022503a76eb94a6f674ed22cd6f5ad1cc24d34fd8c50cefa35da6b9fc508d/assets/images/agents/whatsapp/text-conversation-outbound.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=8d4bcd645e56a46241c648ba76ac44ef2e1055cac516791998f79a64f1a0def7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp text conversation" width="300" />
-
-Alternatively, you can send the message via [the API](/docs/api-reference/whats-app/outbound-message). The `conversation_initiation_client_data` field lets you set [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) for the conversation, and pin it to a specific [agent branch](/docs/eleven-agents/operate/versioning) and [environment](/docs/eleven-agents/integrate/environment-variables):
-
-```python title="Python"
-from elevenlabs import ElevenLabs
-
-elevenlabs = ElevenLabs()
-
-elevenlabs.conversational_ai.whatsapp.outbound_message(
-    whatsapp_phone_number_id="524029457612345",
-    whatsapp_user_id="12213231492",
-    template_name="welcome",
-    template_language_code="en",
-    template_params=[
-      {
-        "type":"text",
-        "parameter_name":"name",
-        "text":"Daniele"
-      }
-    ],
-    agent_id="agent_9201kwcrbq9qfxaa2t8nnnkqf2w9",
-    conversation_initiation_client_data={
-        "dynamic_variables": {"customer_name": "Daniele"},
-        "branch_id": "agtbrch_8721kwarbs83e233mg1fzkaf9pg0",
-        "environment": "staging",
-    }
-)
-```
-
-```typescript title="TypeScript"
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-const elevenlabs = new ElevenLabsClient();
-
-await elevenlabs.conversationalAi.whatsapp.outboundMessage({
-  whatsappPhoneNumberId: "524029457612345",
-  whatsappUserId: "12213231492",
-  templateName: "welcome",
-  templateLanguageCode: "en",
-  templateParams: [
-    {
-      type: "text",
-      parameterName: "name",
-      text: "Daniele",
-    },
-  ],
-  agentId: "agent_9201kwcrbq9qfxaa2t8nnnkqf2w9",
-  conversationInitiationClientData: {
-    dynamicVariables: { customer_name: "Daniele" },
-    branchId: "agtbrch_8721kwarbs83e233mg1fzkaf9pg0",
-    environment: "staging",
-  },
-});
-```
-
-These settings persist for the conversation: when the user replies, the agent resumes on the requested branch and environment. The branch and environment are validated first — if either does not exist, the request fails with an error and no message is sent.
-
-Sending an outbound template starts neither timer. The maximum conversation duration begins when
-the customer responds and the conversation resumes. The inactivity timeout begins after the agent
-sends its first live response.
+You can start a conversation by sending a Meta-approved message template, from the dashboard or the API, and schedule outbound calls with a call permission request. See [Outbound messages & templates](/docs/eleven-agents/whatsapp/outbound) for template creation, code examples, recipient format rules, and batch campaigns.
 
 ### Message types
 
 In addition to text, you can also send:
 
 * audio
-  * Inbound audio messages will be transcribed to text before being passed to the agent.
-  * By default, the agent will respond to audio messages with audio messages. You can make the agent always respond with text in your WhatsApp account settings.
+  * Inbound voice notes are transcribed to text before being passed to the agent.
+  * By default, the agent responds to voice notes with voice notes, generated in the agent's configured voice — any voice, any language. Turn off ***Enable audio message response*** in the account settings to always respond with text. If audio generation fails, the agent falls back to a text reply.
   * Audio messages result in extra charges for speech-to-text and text-to-speech. Pricing is the same as in the STT and TTS APIs.
 * image
 * document
+* sticker
 * location
 * contact
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372158bc0f86d62b6742f2bb44a741e5299ee7b95e36e38c3df1f9c06cffe2a0/assets/images/agents/whatsapp/audio-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=ebdbb68009b4257b73b79b7c6bd0b3aa0af8d65564d085c5710f20de958c5ae8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp audio conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/372158bc0f86d62b6742f2bb44a741e5299ee7b95e36e38c3df1f9c06cffe2a0/assets/images/agents/whatsapp/audio-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=f09446dad48765382ff0caf098a014cb173ac93212ca502a07ea96ca1e35d609&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp audio conversation" width="300" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cbfbadb9d0a20f35537ce3bd137eb12b1005a862a7e1cf0155d271502fb713da/assets/images/agents/whatsapp/image-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=2671c6994592a7ed131f99f95e831e1b013f94ca3386aac3f05dc19937c15612&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp image conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cbfbadb9d0a20f35537ce3bd137eb12b1005a862a7e1cf0155d271502fb713da/assets/images/agents/whatsapp/image-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=25702ca57e25192f012c08dc7615dbe550b12fe32ac0f55c2629e80d0e831c19&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp image conversation" width="300" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2b91d4077ac19a56dda9c5c016a47ed7d574ba2cb77ac89eb8785925bc89fa13/assets/images/agents/whatsapp/document-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=81a1be700a647a8973b01520624a11decb878e862ad14077c87688896bf924be&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp document conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2b91d4077ac19a56dda9c5c016a47ed7d574ba2cb77ac89eb8785925bc89fa13/assets/images/agents/whatsapp/document-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=0d81750ae089e5e35f57b7fbbd2b302da2434c35a57b17cda39724d410e2e9cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp document conversation" width="300" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bcd0d8f7df69d6c381be5be7c7a91ec7752b2b1894a80539823b7d9266beb3dd/assets/images/agents/whatsapp/location-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=0c1988413ddc02f193d36ec551bdee8a6136a421c90d395c8c73f2eca3b77d2b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp location conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bcd0d8f7df69d6c381be5be7c7a91ec7752b2b1894a80539823b7d9266beb3dd/assets/images/agents/whatsapp/location-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=f8cf90c4df97afd692ccaa3ef2fc11cfdc03f3605b4df47fc4399fd4fef7950c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp location conversation" width="300" />
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75e56544700c87817a7f842943301a95e9e0b1fb84fc87e19139adb77f49ea5a/assets/images/agents/whatsapp/contacts-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=9bb42b3956630b2f72fc7b0e66514ad2b83dfa2a5a2cf09f1fe6af0d4ef88a7c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp contacts conversation" width="300" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/75e56544700c87817a7f842943301a95e9e0b1fb84fc87e19139adb77f49ea5a/assets/images/agents/whatsapp/contacts-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113214Z&X-Amz-Expires=604800&X-Amz-Signature=c9e5d1d0172dd327cf4238136c1da9d628fd7cb545a8e5b61a19e1895405b975&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp contacts conversation" width="300" />
 
 ## Calls
 
@@ -169,43 +125,48 @@ You can call your WhatsApp business account and the agent will respond. During t
 
 ### Outbound
 
-Making an outbound call requires permission from the user. You can read more about this in [WhatsApp documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/user-call-permissions). When you schedule an outbound call, we will automatically send a template message with a call permission request if necessary, and make the call as soon as the user approves it.
+Outbound calls require the user's permission, requested through a template. See [scheduling an outbound call](/docs/eleven-agents/whatsapp/outbound#scheduling-an-outbound-call) for the flow, code examples, and batch calling.
 
-First, go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/message_templates) and create a message template with a call permission request component.
+## Personalization
 
-You can then go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Call*** button. This will open a dialog where you select an agent, provide a WhatsApp user ID, and the call permission request template to use:
-
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1fcf7968f1651ce8e9474e770aad4dce4e702c69b4522f5bcc65efcd8bf8a3e4/assets/images/agents/whatsapp/outbound-call-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113253Z&X-Amz-Expires=604800&X-Amz-Signature=716580fe147d4bd570180ce90aec972acb0cc140d230238b03e4b3f4f8d8d99a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="WhatsApp outbound call dialog" />
-
-Alternatively, you can schedule the call via [the API](/docs/api-reference/whats-app/outbound-call) or schedule multiple calls with [batch calling](/docs/eleven-agents/phone-numbers/batch-calls).
-
-As with outbound messages, the API accepts `conversation_initiation_client_data` to set dynamic variables and pin the conversation to a specific [agent branch](/docs/eleven-agents/operate/versioning) and [environment](/docs/eleven-agents/integrate/environment-variables). An unknown branch or environment is rejected with an error before the call is scheduled.
-
-## Next steps: personalization
-
-We set the `{{system__caller_id}}` and `{{system__called_number}}` [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) to the WhatsApp user ID and your WhatsApp phone number ID (or vice versa, depending on who started the conversation). You can use those in a tool or a [conversation initiation webhook](/docs/eleven-agents/customization/personalization/twilio-personalization) to personalize conversations.
+We set the `{{system__caller_id}}` and `{{system__called_number}}` [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) to the WhatsApp user ID and your WhatsApp phone number ID (or vice versa, depending on who started the conversation). You can use those in a tool or a [conversation initiation webhook](/docs/eleven-agents/customization/personalization/twilio-personalization) to fetch information about your user in the conversation.
 
 You can find your WhatsApp phone number ID by going to the [WhatsApp
 page](https://elevenlabs.io/app/agents/whatsapp), clicking the menu next to your account and
 selecting ***Copy phone number ID***.
 
+### Initialization context
+
+If your agent uses [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) beyond the system variables above, you will need to plan where their values come from. If your agent uses no dynamic variables, none of this applies.
+
+**Inbound conversations** start with no user-provided dynamic variables. The supported way to provide values is a [conversation initiation webhook](/docs/eleven-agents/customization/personalization/twilio-personalization): when a WhatsApp message starts a conversation, ElevenAgents calls your endpoint with the WhatsApp user ID as `caller_id` and your WhatsApp phone number ID as `called_number`, and applies the dynamic variables your response returns. Have the webhook always return every variable the agent requires — a CRM value when you have one, a fallback constant otherwise.
+
+The values entered under **Dynamic Variables** in the agent editor are test placeholders for
+previewing the agent. They are not used in production and do not act as defaults for inbound
+conversations.
+
+**Outbound conversations** receive their values from the `conversation_initiation_client_data.dynamic_variables` field of the [outbound message or call request](/docs/eleven-agents/whatsapp/outbound#dynamic-variables-branches-and-environments). These values persist for the conversation and are still available when the user replies. Template parameters are a separate field and do not populate dynamic variables.
+
+A required variable that ends up without a value will fail the conversation. See [missing dynamic variables](/docs/eleven-agents/whatsapp/troubleshooting#the-agent-doesnt-respond-to-inbound-messages) in the troubleshooting guide.
+
+The `system__called_number` value is your WhatsApp **phone number ID**, not the phone number
+itself. WhatsApp user identifiers are also migrating to [Business-Scoped User IDs
+(BSUIDs)](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-scoped-user-ids);
+ElevenAgents supports BSUIDs, so conversations work even when Meta provides an ID rather than the
+user's phone number.
+
+## Limitations
+
+The following are not currently supported:
+
+* **WhatsApp Flows** — interactive forms cannot be sent, and Flow replies are not passed to the agent.
+* **Video messages** — inbound videos are not passed to the agent.
+* **Message batching** — the agent replies to each message individually rather than coalescing rapid consecutive messages.
+* **Numbers managed by another provider** — a number registered with another WhatsApp provider, or active in the WhatsApp Business app, cannot be imported. We are working with Meta to enable [Multi-Solution Conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-solution-conversations); voice-only setups may already be possible over SIP (see the [FAQ](/docs/eleven-agents/whatsapp/troubleshooting#faq)).
+* **WABAs created under a developer app** — these cannot be imported through the standard flow.
+* **Ad referral metadata** — Click-to-WhatsApp ad attribution data is not exposed to the agent (see the [FAQ](/docs/eleven-agents/whatsapp/troubleshooting#faq)).
+* **Human handoff** — coming soon (see the [FAQ](/docs/eleven-agents/whatsapp/troubleshooting#faq)).
+
 ## FAQ
 
-#### Pricing
-
-Meta charges for outbound calls and call permission requests sent outside of a [Customer Service
-Window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows).
-You will not be able to make outbound calls until you add a payment method to your WhatsApp
-business account. You can read more in [WhatsApp
-documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing).
-
-#### Zero-Retention Mode
-
-[Zero-Retention Mode](/docs/eleven-api/resources/zero-retention-mode) limits our ability to
-provide certain functionality: we ignore messages and disallow outbound calls.
-
-#### Joint account management
-
-If you have your own WhatsApp app responding to messages on your account, you can configure ElevenLabs to only respond to calls: go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account and turn off the ***Enable messaging*** switch.
-
-If you rely on a third-party partner (e.g. Gupshup) to manage your account, then you will not be able to also import it into ElevenLabs. Meta is currently working on adding support for this (see [Multi-Solution Conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-solution-conversations)).
+Common questions — pricing, multi-provider setups, human handoff, Zero-Retention Mode, OTP, compliance — are answered in [Troubleshooting & FAQ](/docs/eleven-agents/whatsapp/troubleshooting).

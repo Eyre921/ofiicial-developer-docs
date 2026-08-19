@@ -26776,6 +26776,12 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 6. Under **Provisioning > To App**, click **Edit** and enable **Create Users**, **Update User Attributes**, and **Deactivate Users**.
 
+7. Still under **Provisioning > To App**, scroll to **Pinecone Attribute Mappings** and check the source for `userName`. If it's set to `user.login` or an Active Directory attribute, change it to `user.email` and click **Save**.
+
+<Warning>
+  The SCIM `userName` must be the same email address your members sign in with through SAML SSO. If your members are sourced from Active Directory or LDAP, `user.login` is often a local domain login such as `user@example.local` rather than an email address. When the two values differ, Pinecone treats the provisioned member and the member who signs in as two different people. The result is duplicate accounts, and sign-in fails with a `jit_disabled` error. Fix the mapping before you enable SCIM in [Step 6](#6-enable-scim-in-pinecone).
+</Warning>
+
 <Note>
   If the **Provisioning** tab or **Configure API Integration** button does not appear, SCIM provisioning is not enabled on the app.
 

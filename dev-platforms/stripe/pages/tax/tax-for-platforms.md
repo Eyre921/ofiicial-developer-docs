@@ -825,7 +825,17 @@ If you’re rolling out Stripe Tax incrementally, you can control which accounts
 ### Check the connected account’s country before enabling tax
 
 Before setting `automatic_tax[enabled]: true`, check the connected account’s country. Only enable tax for jurisdictions you’re ready to support:
+
 Platform retrieves tax settings from Stripe, evaluates eligibility, then creates a Checkout Session with automatic tax enabled or disabled accordingly. (See full diagram at https://docs.stripe.com/tax/tax-for-platforms)
+
+```text
+[Platform] -- GET /v1/tax/settings (stripe-account header) --> [Stripe]
+[Stripe] -- Tax Settings object (includes status, head_office.address.country) --> [Platform]
+[Platform] -- Evaluate: head_office.address.country in supported list and status == "active" --> [Platform]
+[Platform] -- POST /v1/checkout/sessions with automatic_tax: { enabled: enable_tax } --> [Stripe]
+[Stripe] -- Checkout Session --> [Platform]
+```
+
 ```ruby
 # Example: Only enable automatic tax for accounts in supported countries
 supported_countries = ["US", "GB", "DE", "FR", "AU", "CA"]

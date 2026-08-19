@@ -26,13 +26,47 @@ When you use the connector with [Stripe Billing](https://docs.stripe.com/billing
 6. The connector [automatically reconciles](https://docs.stripe.com/use-stripe-apps/netsuite/deposit-automation.md) Stripe payments against a bank deposit in NetSuite. This includes calculating and recording any processing fees or currency conversion fees.
 
 ## Customer flow
+
 A diagram providing a high level overview of the customer flow for billing and invoice automation outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/invoice-automation)
+
+```text
+[Customer] -- To initiate the customer flow, a customer submits payment on your website --> [Stripe]
+[Stripe] -- Stripe creates a Customer object to store payment details --> [Connector]
+[Connector] -- The connector creates a NetSuite customer when creating an invoice --> [NetSuite]
+```
+
 ## Invoice flow
+
 A diagram providing a high level overview of the invoice flow for billing and invoice automation outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/invoice-automation)
+
+```text
+[Business] -- You initiate the Stripe invoice flow through the backend or Dashboard --> [Stripe]
+[Stripe] -- Stripe finalizes the invoice --> [Connector]
+[Connector] -- The connector creates a NetSuite invoice --> [NetSuite]
+```
+
 ## Payment flow
+
 A diagram providing a high level overview of the payment flow for billing and invoice automation outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/invoice-automation)
+
+```text
+[Customer] -- To initiate the payment flow, a customer pays an invoice --> [Stripe]
+[Stripe] -- Stripe applies the charge to the invoice --> [Connector]
+[Connector] -- The connector creates and posts the customer payment to the Undeposited Funds account, and applies it to the invoice --> [NetSuite]
+[NetSuite] -- The connector moves the settled deposit from the bank to a general ledger account --> [Cash reconciliation]
+```
+
 ## Refund or chargeback flow
+
 A diagram providing a high level overview of the refund or chargeback flow for billing and invoice automation outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/invoice-automation)
+
+```text
+[Customer] -- To initiate the refund or chargeback flow, a customer requests a refund or disputes a charge --> [Stripe]
+[Stripe] -- Stripe issues a refund or chargeback --> [Connector]
+[Connector] -- The connector creates a credit memo and customer refund, and posts it to the Undeposited Funds account for a full or partial refund --> [NetSuite]
+[NetSuite] -- The connector moves the settled deposit from the bank to a general ledger account --> [Cash reconciliation]
+```
+
 ## See also
 
 - [Deposit automation](https://docs.stripe.com/use-stripe-apps/netsuite/deposit-automation.md)

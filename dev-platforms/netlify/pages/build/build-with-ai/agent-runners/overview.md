@@ -102,6 +102,8 @@ When you start an agent run, you can select a mode from the dropdown:
 
 Both modes are available for all supported AI agents.
 
+In both modes, your agent can pause and ask you a question when your prompt leaves open a decision that would change the result. Learn more about [answering questions from your agent](/build/build-with-ai/agent-runners/make-changes-with-agent-runners#2-respond-to-any-questions-from-your-agent).
+
 Learn more about starting a run in each mode in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#1-start-an-agent-run).
 
 ## Requirements
@@ -126,7 +128,7 @@ Agent runs use your pricing plan credits and these usage meters:
 
 You can view the Netlify credits used for an individual agent run by expanding it in the agent run detail view.  This credit usage summary shows you the credits used by the AI inference usage meter.
 
-Learn more in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#2-check-the-status-of-your-agent-run).
+Learn more in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#3-check-the-status-of-your-agent-run).
 
 To learn more about how pricing works for Agent Runners, check out [Pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
 

@@ -237,20 +237,6 @@ components:
         - 'role'
         - 'tools'
       type: 'object'
-    AdvisorNestedTool:
-      additionalProperties: {}
-      description: 'A tool made available to the advisor sub-agent. Only OpenRouter server tools (e.g. openrouter:web_search) are supported; function tools are rejected because the advisor has no way to execute them. The advisor tool may not list itself.'
-      example:
-        type: 'openrouter:web_search'
-      properties:
-        parameters:
-          additionalProperties: {}
-          type: 'object'
-        type:
-          type: 'string'
-      required:
-        - 'type'
-      type: 'object'
     AdvisorReasoning:
       description: 'Reasoning configuration forwarded to the advisor call. Use this to control reasoning effort and token budget for models that support extended thinking.'
       example:
@@ -272,7 +258,7 @@ components:
           type: 'integer'
       type: 'object'
     AdvisorServerTool_OpenRouter:
-      description: 'OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. The advisor may run as a sub-agent with its own tools. Include multiple entries to offer several named advisors; at most one entry may omit `name` to act as the default advisor.'
+      description: 'OpenRouter built-in server tool: consults a higher-intelligence advisor model (any OpenRouter model) for guidance mid-generation and returns its response. Include multiple entries to offer several named advisors; at most one entry may omit `name` to act as the default advisor.'
       example:
         parameters:
           model: '~anthropic/claude-opus-latest'
@@ -306,14 +292,8 @@ components:
           description: 'Maximum number of output tokens (including reasoning) the advisor may produce. When omitted, the provider''s default applies.'
           example: 2048
           type: 'integer'
-        max_tool_calls:
-          description: 'Maximum number of tool-calling steps the advisor sub-agent may take during its agentic loop. Capped at 25. Only relevant when the advisor is given tools.'
-          example: 5
-          maximum: 25
-          minimum: 1
-          type: 'integer'
         model:
-          description: 'Slug of the advisor model to consult (any OpenRouter model). When omitted, the executor can choose it via the tool call''s `model` argument; if neither is set, the model from the outer API request is used. The advisor tool itself cannot be the advisor model.'
+          description: 'Slug of the advisor model to consult (any OpenRouter model). When omitted, the executor can choose it via the tool call''s `model` argument; if neither is set, the model from the outer API request is used.'
           example: '~anthropic/claude-opus-latest'
           type: 'string'
         name:
@@ -334,11 +314,6 @@ components:
           example: 0.7
           format: 'double'
           type: 'number'
-        tools:
-          description: 'Tools the advisor sub-agent may use while forming its advice. The advisor runs as an agentic sub-agent over these tools, then returns its text. Only OpenRouter server tools are supported — function tools are rejected — and the list must not include the advisor tool itself.'
-          items:
-            $ref: '#/components/schemas/AdvisorNestedTool'
-          type: 'array'
       type: 'object'
     AgentMessageItem:
       additionalProperties: {}
@@ -26781,10 +26756,10 @@ paths:
                       type: 'string'
                     dimension_names:
                       items:
-                        description: 'Classifier dimension name (snake_case identifier). When exactly one name is provided, the response uses it as the column key; with multiple names or none, the response uses `clf_dimension_name`/`clf_dimension_value` columns.'
+                        description: 'Classifier dimension name (snake_case identifier). Each name becomes its own column key in the response; providing two names cross-groups results by both dimensions. With no names, the response uses `clf_dimension_name`/`clf_dimension_value` columns (one row per dimension/value pair).'
                         example: 'department'
                         type: 'string'
-                      maxItems: 10
+                      maxItems: 2
                       type: 'array'
                     include_nulls:
                       description: 'When true, also include generations that have no tag from this classifier. Defaults to false, which returns only classified generations.'

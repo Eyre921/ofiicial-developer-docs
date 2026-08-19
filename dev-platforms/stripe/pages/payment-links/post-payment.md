@@ -55,7 +55,7 @@ You can also choose to redirect your customers to your website instead of provid
 
 #### API
 
-After a customer completes a purchase, you can redirect them to a URL or display a custom message by setting [after_completion](https://docs.stripe.com/api/payment_links/payment_links/create.md#create_payment_link-after_completion) on the payment link.
+After a customer completes a purchase, you can redirect them to a URL or display a custom message by setting [after_completion](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-after_completion) on the payment link.
 
 ```curl
 curl https://api.stripe.com/v1/payment_links \

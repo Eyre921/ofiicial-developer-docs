@@ -32,7 +32,17 @@ Stripe doesn’t charge your platform in this model and you can earn revenue by:
 - Charging your connected accounts a subscription fee for using your platform.
 - Charging your connected accounts an application fee per transaction.
 - Qualifying for revenue share from Stripe when your connected accounts meet product activation targets.
+
 A diagram showing Stripe-owned pricing monetization for a SaaS platform (See full diagram at https://docs.stripe.com/connect/saas)
+
+```text
+[Customer] -- Customer pays 100.00 --> [Merchant]
+[Merchant] -- Merchant pays 1.50 Stripe fee --> [Stripe]
+[Merchant] -- Merchant pays .75 application fee --> [Platform]
+[Stripe] -- Stripe pays .25 referral --> [Platform]
+[Merchant] -- Monthly subscription fee --> [Platform]
+```
+
 ### Buy rate model
 
 Your platform purchases and white labels payment processing and other products from Stripe, and offers them to your connected accounts. In this model, the platform’s connected accounts:
@@ -46,7 +56,16 @@ Stripe charges your platform in this model and you can earn revenue by:
 
 - Charging your connected accounts a subscription fee for using your platform.
 - Charging your connected accounts an application fee per transaction. Use the [platform pricing](https://docs.stripe.com/connect/platform-pricing-tools.md) tool to automatically set pricing logic for the application fees you charge your connected accounts.
+
 A diagram showing buy rate monetization for a SaaS platform (See full diagram at https://docs.stripe.com/connect/saas)
+
+```text
+[Customer] -- Customer pays 100.00 --> [Merchant]
+[Merchant] -- Merchant pays 2.50 application fee --> [Platform]
+[Platform] -- Platform pays 1.50 Stripe fee --> [Stripe]
+[Merchant] -- Monthly subscription fee --> [Platform]
+```
+
 ## Resources
 
 [SaaS platform blueprint](https://dashboard.stripe.com/test/workbench/blueprints/learn-accounts-v2?code-pane-shown=true): Use this guided API Blueprint in the Dashboard to learn how to add connected accounts to your platform and charge them a subscription fee through Billing.

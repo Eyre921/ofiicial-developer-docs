@@ -22,7 +22,7 @@ Use the Dashboard to copy your payment link, and share it online. Click the copy
 
 #### API
 
-Each payment link contains a [url](https://docs.stripe.com/api/payment_links/payment_links/object.md#payment_link_object-url) that you can share with your customers through email, on social media, with a website link, in an app, or through other channels.
+Each payment link contains a [url](https://docs.stripe.com/api/payment-link/object.md#payment_link_object-url) that you can share with your customers through email, on social media, with a website link, in an app, or through other channels.
 
 ## Generate a QR code 
 
@@ -42,5 +42,5 @@ You can use the Dashboard to deactivate a payment link. For the selected payment
 
 #### API
 
-After you create a payment link, you can’t delete it. You can deactivate a payment link by setting the [active](https://docs.stripe.com/api/payment_links/payment_links/update.md#update_payment_link-active) attribute to `false`. After you deactivate a link, customers can no longer use it to finalize purchases, and are redirected to an expiration page. To reuse a deactivated payment link, set [active](https://docs.stripe.com/api/payment_links/payment_links/update.md#update_payment_link-active) to `true`.
+After you create a payment link, you can’t delete it. You can deactivate a payment link by setting the [active](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-active) attribute to `false`. After you deactivate a link, customers can no longer use it to finalize purchases, and are redirected to an expiration page. To reuse a deactivated payment link, set [active](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-active) to `true`.
 

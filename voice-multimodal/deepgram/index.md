@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -105,8 +105,10 @@
 - `docs/flux-tts/client-messages` — [Client Messages](pages/docs/flux-tts/client-messages.md) · [原文](https://developers.deepgram.com/docs/flux-tts/client-messages.md)
 - `docs/flux-tts/context` — [Cross-Turn Context](pages/docs/flux-tts/context.md) · [原文](https://developers.deepgram.com/docs/flux-tts/context.md)
 - `docs/flux-tts/feature-overview` — [Flux TTS Feature Overview](pages/docs/flux-tts/feature-overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/feature-overview.md)
+- `docs/flux-tts/interrupt-handling` — [Interruption Handling](pages/docs/flux-tts/interrupt-handling.md) · [原文](https://developers.deepgram.com/docs/flux-tts/interrupt-handling.md)
 - `docs/flux-tts/migrating` — [Migrating from /v1/speak to Flux TTS](pages/docs/flux-tts/migrating.md) · [原文](https://developers.deepgram.com/docs/flux-tts/migrating.md)
 - `docs/flux-tts/overview` — [Flux TTS Overview](pages/docs/flux-tts/overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/overview.md)
+- `docs/flux-tts/quickstart` — [Getting Started with Flux TTS](pages/docs/flux-tts/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux-tts/quickstart.md)
 - `docs/flux-tts/server-messages` — [Server Messages](pages/docs/flux-tts/server-messages.md) · [原文](https://developers.deepgram.com/docs/flux-tts/server-messages.md)
 - `docs/flux-tts/state` — [The Speech Lifecycle and State Machine](pages/docs/flux-tts/state.md) · [原文](https://developers.deepgram.com/docs/flux-tts/state.md)
 - `docs/flux-tts/template-apps` — [Template Apps](pages/docs/flux-tts/template-apps.md) · [原文](https://developers.deepgram.com/docs/flux-tts/template-apps.md)
@@ -226,6 +228,7 @@
 - `docs/text-intelligence-tagging` — [Tagging Intelligence Requests](pages/docs/text-intelligence-tagging.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-tagging.md)
 - `docs/text-intelligence-template-apps` — [Template Apps](pages/docs/text-intelligence-template-apps.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-template-apps.md)
 - `docs/text-intention-recognition` — [Intent Recognition](pages/docs/text-intention-recognition.md) · [原文](https://developers.deepgram.com/docs/text-intention-recognition.md)
+- `docs/text-sentiment-analysis` — [Sentiment Analysis](pages/docs/text-sentiment-analysis.md) · [原文](https://developers.deepgram.com/docs/text-sentiment-analysis.md)
 - `docs/text-summarization` — [Summarization](pages/docs/text-summarization.md) · [原文](https://developers.deepgram.com/docs/text-summarization.md)
 - `docs/text-to-speech` — [Getting Started](pages/docs/text-to-speech.md) · [原文](https://developers.deepgram.com/docs/text-to-speech.md)
 - `docs/text-to-speech-latency` — [Text to Speech Latency](pages/docs/text-to-speech-latency.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-latency.md)
@@ -341,6 +344,7 @@
 - `reference/manage/billing/get` — [Get a Project Balance](pages/reference/manage/billing/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/get.md)
 - `reference/manage/billing/list` — [Get Project Balances](pages/reference/manage/billing/list.md) · [原文](https://developers.deepgram.com/reference/manage/billing/list.md)
 - `reference/manage/billing/purchases/get` — [List Project Purchases](pages/reference/manage/billing/purchases/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/purchases/get.md)
+- `reference/manage/invites/create` — [Create a Project Invite](pages/reference/manage/invites/create.md) · [原文](https://developers.deepgram.com/reference/manage/invites/create.md)
 - `reference/manage/invites/delete` — [Delete a Project Invite](pages/reference/manage/invites/delete.md) · [原文](https://developers.deepgram.com/reference/manage/invites/delete.md)
 - `reference/manage/invites/list` — [List Project Invites](pages/reference/manage/invites/list.md) · [原文](https://developers.deepgram.com/reference/manage/invites/list.md)
 - `reference/manage/keys/create` — [Create a Project Key](pages/reference/manage/keys/create.md) · [原文](https://developers.deepgram.com/reference/manage/keys/create.md)

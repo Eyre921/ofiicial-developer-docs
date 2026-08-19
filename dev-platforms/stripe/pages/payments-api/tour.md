@@ -62,7 +62,17 @@ In a modern Stripe integration, every payment uses an object called a [PaymentIn
 For instance, suppose a customer clicks a **Check out** button with a 100 USD item in their cart. They haven’t bought it yet, and they might never buy it (maybe at some point they abandon the payment flow, or their card issuer declines the payment). But clicking **Check out** indicates their *intent* to buy—and you intend to help them. At that point, an integration creates a `PaymentIntent` object in the amount of 100 USD to track the rest of the process.
 
 The `PaymentIntent`’s path to success goes through [several statuses](https://docs.stripe.com/payments/paymentintents/lifecycle.md)—here’s a simplified version:
+
 Shows the status of a PaymentIntent changing from requires_payment_method to requires_confirmation to processing which either ends in a state of succeeded or canceled (See full diagram at https://docs.stripe.com/payments-api/tour)
+
+```text
+[requires_payment_method] --> [requires_confirmation]
+[requires_confirmation] --> [processing]
+[requires_confirmation] -- retry --> [requires_payment_method]
+[processing] --> [succeeded]
+[processing] --> [canceled]
+```
+
 ### Payment methods
 
 A PaymentIntent starts with the status `requires_payment_method`. To move it forward, Stripe needs details about the customer’s payment method—either a card number or credentials for some other payment system.

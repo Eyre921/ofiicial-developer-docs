@@ -71,7 +71,7 @@ In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL an
 
 Open [Agents settings](https://elevenlabs.io/app/agents/settings), assign the webhook as the post-call webhook, enable the **Transcript** event, and turn on **OpenTelemetry transcript payloads**.
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5edf1792c3791281ade98202614e51d7e93b7b3f6e25db1fdb261d71c13b5ef/assets/images/conversational-ai/postcallwebhooksettings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113300Z&X-Amz-Expires=604800&X-Amz-Signature=f64b6a5849fee619398b075d5f6ccb39891a24d1c186021f26fd8e1b67ecb3aa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5edf1792c3791281ade98202614e51d7e93b7b3f6e25db1fdb261d71c13b5ef/assets/images/conversational-ai/postcallwebhooksettings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113224Z&X-Amz-Expires=604800&X-Amz-Signature=2ec7085f9f0c71a2e8ecf89feecfecc657a742565a2c1550c761c8513037c8d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure via the CLI
 

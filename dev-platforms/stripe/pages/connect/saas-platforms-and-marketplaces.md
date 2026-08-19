@@ -24,7 +24,17 @@ Your platform provides services to connected accounts, including the ability to 
 ### SaaS platform flow of funds
 
 The following diagram illustrates the flow of funds in a basic SaaS platform. A customer makes a purchase from a connected account, and might not be aware that their transaction involves any other entity. In turn, the connected account purchases services from both Stripe and the platform.
+
 Direct Charges (See full diagram at https://docs.stripe.com/connect/saas-platforms-and-marketplaces)
+
+```text
+[customer] -- Payment --> [account]
+[account] --> [Fulfillment]
+[Fulfillment] --> [customer]
+[account] -- Stripe fees --> [stripe]
+[account] -- Platform fees* --> [platform]
+```
+
 \*Platform fees can include application fees and subscription fees.
 
 ### Example SaaS platform Connect integration
@@ -44,7 +54,18 @@ Your platform processes payments for connected accounts and distributes funds to
 ### Marketplace flow of funds
 
 The following diagram illustrates the flow of funds in a basic marketplace. A customer makes a purchase from the platform, but can be aware of connected accounts that participate in fulfillment. The platform pays Stripe for payment processing services and pays the connected account for goods or services that it provides to the customer.
+
 Destination & Separate Charges (See full diagram at https://docs.stripe.com/connect/saas-platforms-and-marketplaces)
+
+```text
+[customer] -- Payment --> [platform]
+[platform] --> [Fulfillment]
+[account] --> [Fulfillment]
+[Fulfillment] --> [customer]
+[platform] -- Stripe fees --> [stripe]
+[platform] -- Payment minus fees* --> [account]
+```
+
 \*The platform withholds fees from the connected account’s funds to cover its Stripe fees and other monetization.
 
 ### Example marketplace Connect integration

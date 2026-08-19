@@ -17,7 +17,7 @@ Use a structured procedure when specific steps must happen the same way on every
 Like every procedure, a structured procedure has a trigger that describes when it applies. When a conversation matches the trigger, the agent runs the procedure's steps in order, then returns to the rest of the conversation.
 
 ![Structured procedure
-editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113220Z&X-Amz-Expires=604800&X-Amz-Signature=bfde1ba96bbcf536b6e73b0d41b9219659308eb047213c219d9408e524429306&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113145Z&X-Amz-Expires=604800&X-Amz-Signature=dc1e3d5b18e49edc7331c885acced835a709dfdc2e25ea40fce9651000352750&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## When to use a structured procedure
 
@@ -51,7 +51,7 @@ The procedure body is an ordered list of typed steps. There are multiple step ty
 | **Retry**         | Reattempts a failed tool call. Available only inside tool failure handling.      |
 
 ![Structured procedure step type
-menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113220Z&X-Amz-Expires=604800&X-Amz-Signature=244ab4807ff86f73ed90019d33147c40fab06de2e3701197df393cd1d72f6500&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113145Z&X-Amz-Expires=604800&X-Amz-Signature=d316d799df85928aa76296f3f42f7fedaeed8ec5db4b7602eb484ab467ccfc30&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## API step reference
 

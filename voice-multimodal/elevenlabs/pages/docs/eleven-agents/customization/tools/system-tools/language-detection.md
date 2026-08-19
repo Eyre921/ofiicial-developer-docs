@@ -54,20 +54,20 @@ Our language detection tool triggers language switching in two cases, both based
 
 The languages that the agent can switch to must be defined in the `Agent` settings tab.
 
-![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113231Z&X-Amz-Expires=604800&X-Amz-Signature=97611c7042ea6b6d89765e237da4e812a37ad3304de6cb4721f6eee010977aae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent languages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113151Z&X-Amz-Expires=604800&X-Amz-Signature=81a7f0f592202c47ef5493db0fc4c095107c5ca40e6493825000702a73ece59e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add the language detection tool
 
 Enable language detection by selecting the pre-configured system tool to your agent's tools in the `Agent` tab.
 This is automatically available as an option when selecting `add tool`.
 
-![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113231Z&X-Amz-Expires=604800&X-Amz-Signature=7018975d2522957c2417346b9e8a9c774ede35dbd723e5b63ec527732189009d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![System tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113151Z&X-Amz-Expires=604800&X-Amz-Signature=077d319aa1a9f66ec5d26af244f7e758be8296b4edce1b89820dc18c5b370caa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure tool description
 
 Add a description that specifies when to call the tool
 
-![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113231Z&X-Amz-Expires=604800&X-Amz-Signature=43fd787db1c4bb766290180b40c31b0876538a19f22ff8bb166c7897639e26ac&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Description](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df/assets/images/conversational-ai/language_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113151Z&X-Amz-Expires=604800&X-Amz-Signature=594b6e0041f06cc7079500c8bf1cb06b7876007c1b4d9c8ab8391ef81583917e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### API Implementation
 

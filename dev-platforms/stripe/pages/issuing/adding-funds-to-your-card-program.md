@@ -103,6 +103,24 @@ Businesses on Stripe Issuing can operate a card program with the default funding
 For example, suppose you’re an e-commerce platform providing an expense management card to each of the online shops on your platform. In this case, build a [Connect integration](https://docs.stripe.com/issuing/connect.md) where each shop on your platform represents a connected account. Shops on your platform can accept payments and fund cards by transferring balances, all on Stripe. If your merchants also collect funds from users outside of Stripe, they can use push-funded top-ups from an external bank account. When you’re ready, allocate collected funds by transferring funds from your platform Issuing balance to the Issuing balance of specific connected accounts.
 
 Taking a US platform as an example, your funding setup could look like this:
+
 Diagram of fund set up with bank to platform Issuing balance (See full diagram at https://docs.stripe.com/issuing/adding-funds-to-your-card-program)
+
+```text
+[bank] -- Wires / ACH credit (same business day) --> [Platform Account Issuing Balance]
+[Platform Account Stripe Balance] -- Balance Transfers (instant) --> [Platform Account Issuing Balance]
+[Platform Account Issuing Balance] -- Connect Account Transfers (instant) --> [Connected Account Stripe Balance]
+[Platform Account Issuing Balance] -- Connect Account Transfers (instant) --> [Connected Account Issuing Balance]
+```
+
 You could also enable your shops, represented as connected accounts, to directly accept payments and move funds into their account to pay for their expenses.
+
 Diagram of fund set up with bank to connect account Issuing balance (See full diagram at https://docs.stripe.com/issuing/adding-funds-to-your-card-program)
+
+```text
+[Platform Account Stripe Balance] --> [Connected Account Stripe Balance]
+[Platform Account Issuing Balance] --> [Connected Account Issuing Balance]
+[Connected Account Stripe Balance] -- Balance Transfers (instant) --> [Connected Account Issuing Balance]
+[bank] -- Wires / ACH credit (same business day) --> [Connected Account Issuing Balance]
+```
+

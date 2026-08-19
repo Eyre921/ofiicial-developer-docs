@@ -100,7 +100,7 @@
 
 - `capital/api-integration` — [Build a custom Capital program](pages/capital/api-integration.md) · [原文](https://docs.stripe.com/capital/api-integration.md)
 - `capital/getting-started` — [Set up Capital](pages/capital/getting-started.md) · [原文](https://docs.stripe.com/capital/getting-started.md)
-- `capital/how-capital-for-platforms-works` — [How Stripe Capital for platforms works](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
+- `capital/how-capital-for-platforms-works` — [Stripe Capital for platforms](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
 - `capital/how-stripe-capital-works` — [How Stripe Capital works](pages/capital/how-stripe-capital-works.md) · [原文](https://docs.stripe.com/capital/how-stripe-capital-works.md)
 - `capital/marketing` — [Marketing your Capital program](pages/capital/marketing.md) · [原文](https://docs.stripe.com/capital/marketing.md)
 - `capital/refills` — [Refills](pages/capital/refills.md) · [原文](https://docs.stripe.com/capital/refills.md)

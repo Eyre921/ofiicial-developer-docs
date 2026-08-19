@@ -10900,6 +10900,24 @@ Streamable HTTP first and automatically fall back to SSE if needed.
   ```
 </CodeGroup>
 
+### Session ids on the Streamable HTTP endpoint
+
+The `/mcp` endpoint may return an `Mcp-Session-Id` header on the response to
+your `initialize` request. Per the
+[Streamable HTTP transport spec](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#session-management),
+a client that receives one must send it back in an `Mcp-Session-Id` header on
+every later request in that session. The official MCP SDKs do this for you. A
+hand-written HTTP client needs to capture the header and echo it.
+
+Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
+
+* The id is opaque. Don't parse it or attach meaning to its contents.
+* Notion doesn't validate or expire it. A missing, unknown, or stale session id
+  is never rejected on this endpoint, so there is no `400 Bad Request` or
+  `404 Not Found` session error to recover from and no session to re-establish.
+* Echoing it lets Notion group the requests of one client session together,
+  which helps when you report an issue — include the id in your report.
+
 ### Identify the connected workspace
 
 The OAuth token response includes `user_id` and `workspace_id`, but not

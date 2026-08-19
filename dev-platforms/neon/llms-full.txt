@@ -23361,7 +23361,7 @@ Organization-scoped API keys (those created at the organization level rather tha
 
 --- [Document source](https://neon.com/docs/cli/logs.md) ---
 
-> Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit (Postgres compute, storage, and Neon Functions). Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available only in AWS US East (Ohio) (aws-us-east-2).
+> Summary: The Neon CLI `neon logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attributes, run raw LogQL, and list which fields and values a branch reports. Logs are in beta and available only in AWS US East (Ohio) (aws-us-east-2).
 
 # Neon CLI command: logs
 
@@ -23371,7 +23371,7 @@ Query the logs a branch's services emit
 
 This feature is in Beta. Please give us [Feedback](https://console.neon.tech/app/projects?modal=feedback) from the Neon Console or by connecting with us on [Discord](https://discord.gg/92vNTzKDGp).
 
-The `logs` command reads the logs a branch's services emit: the Postgres compute, storage, and Neon Functions. Query records over a time window, filter by source, severity, or OpenTelemetry attribute, and list which fields and values a branch reports so you can build precise filters.
+The `logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attribute, and list which fields and values a branch reports so you can build precise filters.
 
 Logs are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so your project must be in that region to use them.
 
@@ -23410,14 +23410,18 @@ Bound the window with `--since` (a duration like `30m` or `1h`, ending at `--end
 
 The structured content filters (`--source`, `--service-name`, `--scope-name`, `--minimum-severity`, `--severity-text`, `--body-contains`, and `--trace-id`) combine with each other. Passing `--logql` replaces all of them with a raw [LogQL](https://grafana.com/docs/loki/latest/query/) expression (stream selectors and line filters only); the window, `--limit`, `--sort-order`, and `--cursor` still apply.
 
+`--source` accepts `function`, `storage`, and `pg_endpoint`. Only `function` and `storage` return records today; `pg_endpoint` (Postgres compute) is accepted but comes back empty until Postgres logs ship.
+
+Filter by severity with `--severity-text`, which matches the exact, case-sensitive value a record carries (for example `ERROR` or `INFO`, uppercase). Severities vary by source, so a filter can legitimately return nothing: storage logs are S3 access records and are all `INFO`, so `--source storage --severity-text ERROR` matches none. Run `neon logs field-values severity_text` to see the values a branch actually reports before filtering. `--minimum-severity` (match a level and everything above it) is not supported by the branch log backend; use `--severity-text` for an exact match instead.
+
 ```bash
 neon logs query --since 30m
 ```
 
-Filter Postgres compute errors on a specific branch:
+Filter function errors on a specific branch:
 
 ```bash
-neon logs query --branch main --source pg_endpoint --minimum-severity error
+neon logs query --branch main --source function --minimum-severity error
 ```
 
 Use a raw LogQL selection instead of the structured filters:
@@ -23464,6 +23468,29 @@ Show the service names seen in the last six hours:
 ```bash
 neon logs field-values service_name --since 6h
 ```
+
+## Loki-compatible read API
+
+The same branch logs are also readable over HTTP through a Loki-compatible endpoint, for tools that speak the [Loki](https://grafana.com/docs/loki/latest/reference/loki-http-api/) query API directly rather than through the CLI. Authenticate with a Neon API key as a bearer token, against this branch-scoped base URL:
+
+```text
+https://console.neon.tech/telemetry/v1/projects/{project_id}/branches/{branch_id}/loki
+```
+
+It exposes a read-only subset of the Loki HTTP API:
+
+- `GET /api/v1/query_range`: query log lines over a window. Supports LogQL stream selectors and line filters, `since` or `start`/`end`, `limit`, and `direction`. It does not support aggregations, parsers, or formatting stages.
+- `GET /api/v1/labels`: list the available stream labels (for example `entity_type`, `service_name`, `severity_text`).
+- `GET /api/v1/label/{name}/values`: list the values a label carries (for example `entity_type` returns `function` and `storage`).
+
+```bash
+curl "https://console.neon.tech/telemetry/v1/projects/$PROJECT_ID/branches/$BRANCH_ID/loki/api/v1/labels" \
+  -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+The stream label is `entity_type` (not `--source`), so a LogQL selector reads `{entity_type="function"}`. This is a read-only subset, not a push endpoint or a complete Loki deployment. A Loki client that builds its own paths may need a different root: a Grafana data source, for example, appends `/loki/api/v1` to whatever URL it is given. Confirm the data-source URL against this base rather than pasting it verbatim.
+
+Like the CLI, this API reads logs only on branches in **AWS US East (Ohio) (`aws-us-east-2`)**, the only region where branch logs are available during the beta period. A branch in any other region returns `404`.
 
 --- [Document source](https://neon.com/docs/cli/me.md) ---
 
@@ -23753,8 +23780,10 @@ neon neon-auth domain add <domain> [options]
 | `--project-id` | Project ID        | string | —       |    No    |
 
 ```bash
-neon neon-auth domain add example.com
+neon neon-auth domain add https://app.example.com
 ```
+
+A trusted domain is an origin, so include the protocol (`https://`, or `http://` for local development) and omit any trailing slash. Use `https://app.example.com`, not `app.example.com` or `https://app.example.com/`. See [Configure trusted domains](https://neon.com/docs/auth/guides/configure-domains).
 
 ### neon neon-auth domain delete
 
@@ -28957,18 +28986,22 @@ export default defineConfig({
 Install the AI SDK, the Neon provider, and `pg`:
 
 ```bash
-npm install ai @neon/ai-sdk-provider pg zod
+npm install ai@^7 @neon/ai-sdk-provider @neon/functions pg zod
 ```
+
+Pin `ai` to v7, the major `@neon/ai-sdk-provider` supports.
 
 The handler streams a tool-calling agent. The `@neon/ai-sdk-provider` reads the injected gateway credentials on its own, so `neon('<model>')` is the only model configuration you need. Tools run inside the function, right next to Postgres:
 
 ```ts filename="functions/agent.ts"
 import { neon } from '@neon/ai-sdk-provider';
+import { attachDatabasePool } from '@neon/functions';
 import { streamText, tool, stepCountIs, type ModelMessage } from 'ai';
 import { z } from 'zod';
 import { Pool } from 'pg';
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool);
 
 export default {
   async fetch(request: Request) {
@@ -29005,14 +29038,9 @@ export default {
     });
   },
 };
-
-// Optional: drain the pool on shutdown (the platform sends SIGINT).
-process.on('SIGINT', () => {
-  pool.end().then(() => process.exit(0));
-});
 ```
 
-`tool({ inputSchema, execute })` is the AI SDK v5+ shape. Create the `pg` pool once at module scope so it's reused across requests (see [Connecting to Postgres](https://neon.com/docs/compute/functions/get-started#connect-to-postgres)). Pick any model from the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models); swap `claude-sonnet-4-6` for a different one without changing anything else.
+`tool({ inputSchema, execute })` is the AI SDK v5+ shape. Create the `pg` pool once at module scope so it's reused across requests, and call `attachDatabasePool(pool)` so an idle disconnect can't crash the isolate (see [Connecting to Postgres](https://neon.com/docs/compute/functions/get-started#connect-to-postgres)). Pick any model from the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models); swap `claude-sonnet-4-6` for a different one without changing anything else.
 
 Deploy and call it. `toUIMessageStreamResponse()` returns a stream the AI SDK's `useChat` hook consumes directly:
 
@@ -29125,7 +29153,8 @@ export default {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: cors(request) });
     }
-    // ... verify the JWT as above, then return responses with cors(request) headers
+    // ... verify the JWT as above, then do the work ...
+    return Response.json({ ok: true }, { headers: cors(request) });
   },
 };
 ```
@@ -29526,7 +29555,7 @@ To pull from a different branch, switch with `neon checkout`; it pulls the new b
 
 --- [Document source](https://neon.com/docs/compute/functions/get-started.md) ---
 
-> Summary: Deploy your first Neon Function with neon: initialize a project, define the function in neon.ts, develop locally with neon dev, and deploy with neon deploy. The function gets a public HTTPS URL with DATABASE_URL injected from the branch's Postgres database.
+> Summary: Deploy your first Neon Function, a long-running serverless function that runs on your Neon branch: initialize a project, define the function in neon.ts, develop locally with neon dev, and deploy with neon deploy. The function gets a public HTTPS URL with DATABASE_URL injected from the branch's Postgres database.
 
 # Get started with Neon Functions
 
@@ -29642,7 +29671,7 @@ The slug is permanent: it can't be renamed after the first deploy. See the [neon
 Install dependencies:
 
 ```bash
-npm install @neon/config hono pg
+npm install @neon/config @neon/functions hono pg
 npm install --save-dev @types/pg
 ```
 
@@ -29666,10 +29695,12 @@ A Hono app exports the object shape, so `export default app` works directly. For
 
 ```ts filename="functions/hello.ts"
 import { Hono } from 'hono';
+import { attachDatabasePool } from '@neon/functions';
 import { Pool } from 'pg';
 
 // Create the pool once at module scope so it's reused across requests.
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool);
 const app = new Hono();
 
 app.get('/', async (c) => {
@@ -29678,16 +29709,13 @@ app.get('/', async (c) => {
 });
 
 export default app;
-
-// Optional: drain the pool on shutdown (the platform sends SIGINT).
-process.on('SIGINT', () => {
-  pool.end().then(() => process.exit(0));
-});
 ```
 
 **Important: Use a connection pool, not the serverless driver**
 
 A function keeps running across requests, so connect to Postgres with a long-lived `pg` `Pool` created once at module scope. Don't use `@neondatabase/serverless` here: it's built for short-lived, edge-style invocations that open a connection per request, which wastes the persistent runtime a function gives you. Use the pooled `DATABASE_URL` for queries; use `DATABASE_URL_UNPOOLED` only where you need a dedicated connection (such as `LISTEN`/`NOTIFY`).
+
+Call `attachDatabasePool(pool)` once after creating the pool (requires `@neon/functions` 0.8.0 or later). When Postgres drops an idle client (scale-to-zero, pooler reclaim, a TCP reset), `pg` emits an `error` on the pool; with no listener attached, that becomes an uncaught exception and the isolate exits. `attachDatabasePool` swallows expected idle disconnects and logs anything unexpected. The pool has already discarded the dead client, so the next query opens a fresh connection. You don't need to drain the pool on shutdown: when the runtime evicts an isolate, Neon's pooler reclaims those connections for you.
 
 ## Develop locally
 
@@ -29751,7 +29779,7 @@ The response is a JSON object with your branch's Postgres version:
 
 --- [Document source](https://neon.com/docs/compute/functions/logs.md) ---
 
-> Summary: View a deployed function's logs in the Neon Console: standard output and standard error from your handler, plus a platform-emitted invoke begin / invoke end line around each request. Covers the console-method-to-level mapping and common log entries that look like a problem but aren't.
+> Summary: View a deployed function's logs in the Neon Console: standard output and standard error from your handler, plus a platform-emitted invoke begin / invoke end line around each request. Covers the console-method-to-level mapping, common log entries that look like a problem but aren't, and wiring up application instrumentation like Sentry or OpenTelemetry.
 
 # Neon Functions logs
 
@@ -29810,19 +29838,31 @@ It's a `pg` (node-postgres) deprecation warning, not a connection problem: the i
 
 **Function not starting after a deploy? Read the response body, not the logs.** A missing entry point, an import that throws at load time, or a default export of the wrong shape returns a `function_load_failed` error with your actual error message in the response body of the failed request, not as a log line. Check the response you got back from calling the function, not the Logs tab.
 
+## Application instrumentation
+
+A function is a long-lived Node.js process, so standard Node monitoring SDKs like [Sentry](https://sentry.io) and [OpenTelemetry](https://opentelemetry.io) work unchanged. Initialize the SDK once at module load, before your handler starts serving requests, so the whole isolate is instrumented. Gate it on an environment variable (the SDK's DSN or endpoint) so local `neon dev` runs and branches without the secret configured stay a no-op, then pass the SDK's secret at deploy time as a [user-defined variable](https://neon.com/docs/compute/functions/environment-variables#user-defined-variables).
+
+Neon sends `SIGINT`/`SIGTERM` before evicting an idle isolate, so flush buffered telemetry in a shutdown handler or the last events are lost:
+
+```ts
+process.on('SIGINT', () => void Sentry.flush(2000));
+```
+
+`neon deploy` bundles your code with esbuild, which defeats auto-instrumentation that patches modules at import time. If a library's spans are missing from a deployed function, that's the first thing to check.
+
 ## Filter, search, and retention
 
 For details on filtering by level or service name, searching log bodies, live tail, downloading logs, and the 3-day retention window, see [Monitor logs](https://neon.com/docs/introduction/monitor-logs).
 
 --- [Document source](https://neon.com/docs/compute/functions/overview.md) ---
 
-> Summary: Neon Functions are serverless compute you deploy onto a Neon branch. Host an API, AI agent, real-time server, or webhook handler that runs next to your Postgres data, with DATABASE_URL injected automatically.
+> Summary: Neon Functions are long-running serverless functions you deploy onto a Neon branch. Host an API, AI agent, real-time server, or webhook handler that runs next to your Postgres data, with DATABASE_URL injected automatically.
 
 # Neon Functions
 
-Deploy a backend onto your Neon branch, next to your data.
+Long-running serverless functions on your Neon branch, next to your data.
 
-Neon Functions are serverless compute you deploy onto a Neon branch, so your backend code runs right next to your database. Use them to host an API, an AI agent, a real-time server, or a webhook handler without standing up separate infrastructure.
+Neon Functions are serverless functions you deploy onto a Neon branch, so your backend code runs right next to your database. Use them to host an API, an AI agent, a real-time server, or a webhook handler without standing up separate infrastructure.
 
 What makes Neon Functions different from lambda-style serverless?
 
@@ -29919,7 +29959,7 @@ Neon Functions run on Node.js 24.
 
 Neon Functions are long-running: you can host WebSocket servers, SSE endpoints, and agents that stream over HTTP without hitting a short execution timeout. They're still serverless. The platform shuts a function down when it's idle, with no open connections or pending `waitUntil` work, and can also evict and restart it for operational reasons. Treat eviction like a process restart: clients should reconnect when a connection drops.
 
-When the platform stops a function, it sends `SIGINT`. If the process is still running 5 seconds later, the platform forcibly stops the function. Handle `SIGINT` with `process.on('SIGINT', ...)` to close connections and flush in-flight work within that window. When the process exits, the OS closes its sockets, so dropped connections are usually detected without extra handling.
+When the platform stops a function, it sends `SIGINT`. If the process is still running 5 seconds later, the platform forcibly stops the function. Handle `SIGINT` with `process.on('SIGINT', ...)` to flush in-flight work within that window. You don't need to drain a `pg` pool: when the process exits, the OS closes its sockets and Neon's pooler reclaims those connections, so dropped connections are detected without extra handling.
 
 ## Timeouts
 
@@ -30089,12 +30129,16 @@ export default {
 
 WebSocket connections are local to the isolate they land on, so clients on different isolates can't communicate through shared memory.
 
-For broadcast, use Postgres `LISTEN/NOTIFY`. Each isolate maintains one `LISTEN` connection at module scope and a `Set` of its connected clients. When a message arrives via `NOTIFY`, every isolate broadcasts it to its clients, so all users receive it regardless of which isolate they landed on.
+One approach is Postgres `LISTEN/NOTIFY`. Each isolate maintains one `LISTEN` connection at module scope and a `Set` of its connected clients. When a message arrives via `NOTIFY`, every isolate broadcasts it to its clients, so all users receive it regardless of which isolate they landed on.
+
+**Warning: LISTEN/NOTIFY disables scale to zero**
+
+The `LISTEN` client holds an idle connection open on every isolate, and an idle connection doesn't count as active traffic. [Scale to zero](https://neon.com/docs/introduction/scale-to-zero) suspends the compute on its normal timer and drops that connection, silently killing the feed. Only use `LISTEN`/`NOTIFY` on an always-on compute, with scale to zero disabled (a paid-plan setting). To keep scale to zero, poll Postgres on a short interval instead: each isolate re-reads new rows past a cursor and pushes them to its own clients, and polling stops when an isolate has no clients, so an idle compute still suspends.
 
 Install the additional dependencies:
 
 ```bash
-npm install pg
+npm install @neon/functions pg
 npm install --save-dev @types/pg
 ```
 
@@ -30102,13 +30146,18 @@ npm install --save-dev @types/pg
 import type { IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
 import { Hono } from 'hono';
+import { attachDatabasePool } from '@neon/functions';
 import { WebSocketServer, type WebSocket } from 'ws';
 import { Pool, Client } from 'pg';
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool);
 
-// One dedicated LISTEN client per isolate.
+// One dedicated LISTEN client per isolate. Don't call attachDatabasePool on it:
+// that would swallow the idle drop that kills the feed. A plain error listener
+// keeps the isolate alive; the feed resumes when the isolate restarts.
 const listener = new Client({ connectionString: process.env.DATABASE_URL_UNPOOLED });
+listener.on('error', (err) => console.error('[listen]', err));
 listener
   .connect()
   .then(() => listener.query('LISTEN chat'))
@@ -30144,11 +30193,6 @@ export default {
     });
   },
 };
-
-// Optional: drain the pool and listener on shutdown (the platform sends SIGINT).
-process.on('SIGINT', () => {
-  Promise.allSettled([pool.end(), listener.end()]).then(() => process.exit(0));
-});
 ```
 
 **Note:** Use `DATABASE_URL_UNPOOLED` for the `LISTEN` client. The pooled `DATABASE_URL` routes through PgBouncer, which doesn't support `LISTEN/NOTIFY`.
@@ -30253,7 +30297,7 @@ For a complete example with JWT verification, Managed Better Auth integration, a
 
 ## Eviction and shutdown
 
-On shutdown the platform sends `SIGINT`, then forcibly stops the function 5 seconds later. Cleanup is optional: when the process exits, the OS closes its sockets, so dropped connections are usually detected without it. To shut down more gracefully, drain open resources in a `SIGINT` handler, as the LISTEN/NOTIFY example above does with `Promise.allSettled([pool.end(), listener.end()])`.
+On shutdown the platform sends `SIGINT`, then forcibly stops the function 5 seconds later. You don't need to drain the `pg` pool: when the process exits, the OS closes its sockets and Neon's pooler reclaims those connections. Use a `SIGINT` handler only to flush in-flight work that would otherwise be lost, such as clearing the heartbeat timer above.
 
 See [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits) for eviction and timeout behavior.
 
@@ -60119,13 +60163,14 @@ Install the function's dependencies, then create `functions/posts.ts`.
 A function keeps running across requests, so open a `pg` `Pool` once at module scope and reuse it. Don't use `@neondatabase/serverless` inside a function; it's built for short-lived, per-request invocations. See [Connecting to Postgres](https://neon.com/docs/compute/functions/get-started#connect-to-postgres).
 
 ```bash filename="Terminal"
-npm install hono pg ai @neon/ai-sdk-provider zod
+npm install hono pg ai@^7 @neon/ai-sdk-provider @neon/functions zod
 npm install -D @types/pg
 ```
 
 ```typescript filename="functions/posts.ts"
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { attachDatabasePool } from '@neon/functions';
 import { Pool } from 'pg';
 import { neon } from '@neon/ai-sdk-provider';
 import { streamText, generateText, convertToModelMessages, tool, stepCountIs } from 'ai';
@@ -60133,6 +60178,8 @@ import { z } from 'zod';
 
 // Reused across requests. Use a pooled pg client, not the serverless driver.
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+// Keep an idle disconnect from crashing the isolate.
+attachDatabasePool(pool);
 
 const app = new Hono();
 
@@ -61762,27 +61809,27 @@ When a user on your platform needs a database, create a project in the appropria
 
 The two-organization structure enables you to:
 
-1. **Offer a truly free tier**: Neon sponsors all infrastructure costs for up to 30,000 free projects
+1. **Offer a truly free tier**: Neon sponsors infrastructure costs for free-tier projects (unlimited projects; we incrementally raise your limit to accommodate growing usage)
 2. **Scale sustainably**: Paid users consume from your credits ($0.106 per compute unit hour)
 3. **Upgrade users**: Transfer projects from free to paid organizations when users upgrade
 4. **Control resources**: Set different usage quotas/limits for projects to match your desired pricing model
 
 ### Project limits by organization
 
-Each organization has different limits that apply to all projects created within it. Understanding these limits helps you design your platform's features and set appropriate user expectations.
+Each organization has different limits that apply to all projects created within it. Understanding these limits helps you design your platform's features and set appropriate user expectations. For how Agent compares to Scale, see [Agent vs Scale](https://neon.com/docs/introduction/agent-plan#agent-vs-scale).
 
-| Limit                    | Free Organization | Paid Organization       | Notes                                                                                                            |
-| ------------------------ | ----------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **Max branches**         | 10 per project    | Custom limits available | Includes all branches (production, development, snapshots)                                                       |
-| **Max manual snapshots** | 1 per project     | 100 per project         | Manual snapshots only. On paid plans, scheduled backup snapshots do not count. Critical for versioning workflows |
-| **Compute range**        | 0.25 - 2 CU       | 0.25 - 16 CU            | CU = Compute Units (\~4GB RAM per CU)                                                                            |
-| **History window**       | 1 day             | Up to 7 days            | Point-in-time recovery window                                                                                    |
-| **Min auto-suspend**     | 5 minutes         | 1 minute                | Minimum time before compute suspends                                                                             |
+| Limit                    | Free Organization | Paid Organization | Notes                                                                                             |
+| ------------------------ | ----------------- | ----------------- | ------------------------------------------------------------------------------------------------- |
+| **Max branches**         | 10 per project    | Up to 1,000       | Includes all branches (production, development, snapshots)                                        |
+| **Max manual snapshots** | 1 per project     | 100 per project   | Manual snapshots only. Automated snapshot schedules are available upon request on the Agent plan. |
+| **Compute range**        | 0.25 - 2 CU       | 0.25 - 16 CU      | CU = Compute Units (\~4GB RAM per CU). Fixed sizes up to 16 CU (Scale allows up to 56 CU).        |
+| **History window**       | 1 day             | Up to 7 days      | Point-in-time recovery window (Scale allows up to 30 days)                                        |
+| **Min auto-suspend**     | 5 minutes         | 1 minute          | Minimum time before compute suspends                                                              |
 
 **Key constraints to consider:**
 
-- **Manual snapshot limits**: Free projects can only maintain 1 manual snapshot at a time, while paid projects can keep up to 100. On paid projects, scheduled backup snapshots do not count toward this limit. This significantly impacts versioning strategies.
-- **Branch limits**: Free projects are limited to 10 branches total, so you'll need to implement cleanup for development branches and temporary snapshots.
+- **Manual snapshot limits**: Free projects can only maintain 1 manual snapshot at a time, while paid projects can keep up to 100. Automated snapshot schedules are available upon request on the Agent plan.
+- **Branch limits**: Free projects are limited to 10 branches total, so you'll need to implement cleanup for development branches and temporary snapshots. Paid projects support up to 1,000 branches.
 - **Compute limits**: Free projects can autoscale up to 2 CU, while paid projects can scale up to 16 CU for more demanding workloads.
 
 For detailed quota examples and consumption limits, see [Configure consumption limits](https://neon.com/docs/guides/consumption-limits).
@@ -62116,7 +62163,7 @@ Development branches are:
 - **Cost-efficient**: Only pay for storage differences and actual compute usage
 - **Easy to reset**: Restore development branch to match production anytime
 
-**Note:** **Branch limits:** Remember that Free organization projects have a **10 branch maximum** (including main branch, development branches, and snapshots), while Paid organization projects have **custom limits available** (see [Agent plan pricing](https://neon.com/docs/introduction/agent-plan#pricing)). Implement branch cleanup for temporary development branches to stay within limits.
+**Note:** **Branch limits:** Remember that Free organization projects have a **10 branch maximum** (including main branch, development branches, and snapshots), while Paid organization projects support **up to 1,000 branches** (see [Agent plan pricing](https://neon.com/docs/introduction/agent-plan#pricing)). Implement branch cleanup for temporary development branches to stay within limits.
 
 Example creating a development branch using the [Create branch](https://neon.com/docs/reference/api/branches/create-project-branch) API:
 
@@ -62213,7 +62260,7 @@ All platform integrations use the Neon API. You can call it directly or use lang
 
 ## Cost management
 
-- **Free organization**: No charges to you for up to 30,000 free tier projects (Neon-sponsored).
+- **Free organization**: No charges to you for free-tier projects (Neon-sponsored). Project limits are unlimited; we incrementally raise your limit to accommodate growing usage.
 - **Paid organization**: Usage-based billing at $0.106 per compute unit hour, covered by your initial credits. See [Agent plan pricing](https://neon.com/docs/introduction/agent-plan#pricing).
 - **Monitor usage**: Track `active_time_seconds`, `compute_time_seconds`, `written_data_bytes`, `synthetic_storage_size_bytes` using [project metrics API](https://neon.com/docs/reference/api/consumption/get-consumption-history-per-project). Poll every 15 minutes; doesn't wake computes. See [Query consumption metrics](https://neon.com/docs/guides/consumption-metrics).
 - **Set quotas**: Configure usage limits during [project creation](https://neon.com/docs/guides/ai-agent-integration#provisioning-projects) or update later. See [Configure consumption limits](https://neon.com/docs/guides/consumption-limits).
@@ -66219,7 +66266,7 @@ Restore your branch from a point in time or snapshot
 
 **Note: Snapshots**
 
-The **Snapshots** feature is available to all users. Manual snapshot limits: 1 on the Free plan and 100 on paid plans. On paid plans, snapshots created by backup schedules do not count toward this limit. Automated backup schedules are available on paid plans except for the Agent plan. If you need higher limits, please reach out to [Neon support](https://neon.com/docs/introduction/support).
+The **Snapshots** feature is available to all users. Manual snapshot limits: 1 on the Free plan and 100 on paid plans. On paid plans, snapshots created by backup schedules do not count toward this limit. Automated backup schedules are available on paid plans; on the Agent plan, they are available upon request. If you need higher limits, please reach out to [Neon support](https://neon.com/docs/introduction/support).
 
 **Pricing:** Snapshot storage is billed at $0.09/GB-month.
 
@@ -109526,7 +109573,7 @@ Learn about Neon's pricing plans and how to manage billing
 
 --- [Document source](https://neon.com/docs/introduction/agent-plan.md) ---
 
-> Summary: The Neon Agent Plan is a purpose-built pricing tier for platforms that provision and manage Postgres databases for end users at scale. It is organized into sponsored organizations (free and paid), each supporting up to 30,000 projects by default. Platforms building multi-tenant SaaS or agentic applications choose this plan for sponsored free-tier infrastructure and up to $25,000 in paid-tier credits. Compute is billed at $0.106 per compute unit hour. Enrollment requires an active Neon Scale plan and team approval. All provisioning and fleet management runs through the Neon API, with autoscaling, scale-to-zero, branching, and point-in-time recovery included.
+> Summary: The Neon Agent Plan is a pricing tier for platforms that provision and manage Postgres databases for end users at scale. It is organized into sponsored organizations (free and paid) with unlimited projects. Platforms building multi-tenant SaaS or agentic applications choose this plan for sponsored free-tier infrastructure and up to $25,000 in paid-tier credits. Compute is billed at $0.106 per compute unit hour. Enrollment requires an active Neon Scale plan and team approval. All provisioning and fleet management runs through the Neon API, with autoscaling, scale-to-zero, branching, and point-in-time recovery included.
 
 # Neon Agent Plan
 
@@ -109535,7 +109582,7 @@ Learn about using Neon to provision and manage databases for agentic platforms
 **What you will learn:**
 
 - How the agent plan is organized
-- How the agent plan works
+- How Agent differs from Scale
 - How to get started
 
 **Related topics**
@@ -109547,7 +109594,9 @@ Learn about using Neon to provision and manage databases for agentic platforms
 
 ## Overview
 
-The Neon agent plan provides infrastructure for platforms that deploy Postgres databases on behalf of end users. The plan uses a two-organization structure to separate free and paid user tiers, with each organization supporting up to 30,000 projects by default. You can request limit increases as your platform scales.
+The Neon agent plan provides infrastructure for platforms that deploy Postgres databases on behalf of end users. The plan uses a two-organization structure to separate free and paid user tiers, with unlimited projects in each organization. We incrementally raise your limit to accommodate growing usage.
+
+Agent plan pricing and limits differ from the [Scale plan](https://neon.com/docs/introduction/plans). Agent is optimized for high project volume at Launch-rate compute pricing, with some Scale features and limits adjusted for fleet-style workloads.
 
 ## Why Neon for agent platforms
 
@@ -109583,28 +109632,47 @@ Neon creates two organizations in your account:
 
 ### Free organization
 
-This sponsored free organization hosts databases for your free-tier users at no cost to you; Neon sponsors the infrastructure. This organization includes Neon Scale plan features, but individual projects have resource limits similar to Neon's standard free tier.
+This sponsored free organization hosts databases for your free-tier users at no cost to you; Neon sponsors the infrastructure. Individual projects have resource limits similar to Neon's standard free tier.
 
 You are not charged for usage in this organization. Use this for users who haven't upgraded to your platform's paid plans. This means your free tier is truly free, with no database infrastructure costs passed to you.
 
-For an overview of Free plan limits and Scale plan features, see [Neon plans](https://neon.com/docs/introduction/plans).
+For an overview of Free plan limits, see [Neon plans](https://neon.com/docs/introduction/plans).
 
 ### Paid organization
 
-The paid organization hosts databases for your paying users. This organization includes Scale plan features but with agent-specific pricing. Neon provides up to $25,000 in initial credits to cover usage charges.
+The paid organization hosts databases for your paying users with Agent plan pricing and limits. Neon provides up to $25,000 in initial credits to cover usage charges.
 
-Compute is billed at $0.106 per compute unit hour (lower than standard Scale pricing). You can create your own internal tier/plan structure within this organization, configuring different resource quotas for different user segments. Use this organization for users on your paid plans that need resource flexibility.
+Compute is billed at $0.106 per compute unit hour (Launch rate, lower than Scale). You can create your own internal tier/plan structure within this organization, configuring different resource quotas for different user segments. Use this organization for users on your paid plans that need resource flexibility.
+
+## Agent vs Scale
+
+Agent and Scale are different plans. Enrollment starts from Scale, but after you join Agent your organizations use Agent pricing and limits.
+
+| Feature                        | Agent plan                                                                 | Scale plan                                 |
+| ------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------ |
+| Projects                       | Unlimited. We incrementally raise your limit to accommodate growing usage. | 1,000 (can be increased on request)        |
+| Compute                        | $0.106 per CU-hour                                                         | $0.222 per CU-hour                         |
+| Max fixed compute size         | 16 CU                                                                      | 56 CU                                      |
+| Autoscaling                    | Up to 16 CU                                                                | Up to 16 CU                                |
+| Branches per project           | Up to 1,000                                                                | Up to 5,000                                |
+| Root branches per project      | 5                                                                          | 25                                         |
+| Read replicas                  | Up to 3                                                                    | Unlimited                                  |
+| Instant restore history window | Up to 7 days                                                               | Up to 30 days                              |
+| Public network transfer        | 100 GB per project included, then $0.10/GB                                 | 500 GB per project included, then $0.10/GB |
+| Automated snapshot schedules   | Available upon request                                                     | Available                                  |
+
+Both plans include metrics/logs export, SOC 2 reporting, private networking, and configurable scale-to-zero. For the full Scale feature list, see [Neon plans](https://neon.com/docs/introduction/plans).
 
 ## Managing projects
 
-After initial enrollment, you have full control over both organizations as admin. Each organization supports 30,000 projects by default. All project operations are performed through the [Neon API](https://neon.com/docs/reference/api), enabling fleet management at scale with small engineering teams. You can:
+After initial enrollment, you have full control over both organizations as admin. Project limits are unlimited; we incrementally raise your limit to accommodate growing usage. All project operations are performed through the [Neon API](https://neon.com/docs/reference/api), enabling fleet management at scale with small engineering teams. You can:
 
 - Create and delete projects in either organization
 - Set per-project resource quotas and billing limits
 - Monitor compute, storage, and network usage across all projects
 - Track consumption metrics for building usage-based billing
 
-The API-first approach means you can provision and manage thousands of databases programmatically without manual intervention. When you need to scale beyond the default limits, you can request increases through your Neon contact.
+The API-first approach means you can provision and manage thousands of databases programmatically without manual intervention.
 
 ### Project transfers between organizations
 
@@ -109614,18 +109682,19 @@ See [transfer projects between organizations](https://neon.com/docs/manage/orgs-
 
 ## Pricing
 
-The agent plan uses usage-based, agent-specific pricing with custom limits and dedicated support:
+The agent plan uses usage-based pricing with dedicated support. See [Agent vs Scale](https://neon.com/docs/introduction/agent-plan#agent-vs-scale) for how limits compare to Scale.
 
-| Resource                        | Agent plan                                                                                            |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Projects                        | **Custom limits available** <br/> _Agents create a new project for each user application._            |
-| Branches per Project            | **Custom limits available** <br/> _Agents use branches to quickly toggle between application states._ |
-| Compute                         | **$0.106 per compute unit hour** <br/> _Usage-based pricing for agent-specific workloads_             |
-| Storage                         | **$0.35 per GB-month** <br/> _Standard storage pricing_                                               |
-| Instant Restore (PITR)          | **$0.2 per GB-month** <br/> _Point-in-time recovery storage_                                          |
-| Management API                  | **Higher Rate Limits Available** <br/> _API for instant provisioning and management of databases_     |
-| Data API (PostgREST-compatible) | **Higher Rate Limits Available** <br/> _REST API for direct database access_                          |
-| Support                         | **Shared Slack Channel** <br/> _Direct access to the Neon team_                                       |
+| Resource                        | Agent plan                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Projects                        | **Unlimited** <br/> _We incrementally raise your limit to accommodate growing usage._             |
+| Branches per Project            | **Up to 1,000** <br/> _Agents use branches to quickly toggle between application states._         |
+| Compute                         | **$0.106 per compute unit hour** <br/> _Same rate as Launch; lower than Scale_                    |
+| Storage                         | **$0.35 per GB-month** <br/> _Same as Launch and Scale_                                           |
+| Instant Restore (PITR)          | **$0.2 per GB-month** <br/> _Up to 7-day history window_                                          |
+| Public network transfer         | **100 GB per project included**, then $0.10/GB                                                    |
+| Management API                  | **Higher Rate Limits Available** <br/> _API for instant provisioning and management of databases_ |
+| Data API (PostgREST-compatible) | **Higher Rate Limits Available** <br/> _REST API for direct database access_                      |
+| Support                         | **Shared Slack Channel** <br/> _Direct access to the Neon team_                                   |
 
 > _Pricing applies to the paid organization only._
 
@@ -109643,13 +109712,13 @@ Track compute time, storage, and network I/O per project to monitor usage and bu
 
 The agent plan includes these benefits for participating platforms:
 
-| Benefit                    | Description                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Your Free Tier is free** | Neon sponsors up to 30,000 projects in your free tier, covering all infrastructure costs.                                                   |
-| **General use credits**    | Up to $25,000 in credits for paid tier usage (for platforms not already enrolled in the [Neon Startup Program](https://neon.com/startups)). |
-| **Higher rate limits**     | Custom rate limits for Management API and Data API to support high-volume operations.                                                       |
-| **Dedicated support**      | Shared Slack channel with direct access to the Neon team for technical support.                                                             |
-| **Co-marketing**           | Blog features, social promotions, hackathon support, and joint marketing opportunities.                                                     |
+| Benefit                    | Description                                                                                                                                                            |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Your Free Tier is free** | Neon sponsors projects in your free tier, covering infrastructure costs. Project limits are unlimited; we incrementally raise your limit to accommodate growing usage. |
+| **General use credits**    | Up to $25,000 in credits for paid tier usage (for platforms not already enrolled in the [Neon Startup Program](https://neon.com/startups)).                            |
+| **Higher rate limits**     | Custom rate limits for Management API and Data API to support high-volume operations.                                                                                  |
+| **Dedicated support**      | Shared Slack channel with direct access to the Neon team for technical support.                                                                                        |
+| **Co-marketing**           | Blog features, social promotions, hackathon support, and joint marketing opportunities.                                                                                |
 
 ## Getting started
 
@@ -111887,7 +111956,7 @@ Compare Neon's **Free**, **Launch**, and **Scale** plans.
 
 **Coming Soon: Building an agent platform?**
 
-For AI agent platforms that provision thousands of databases, Neon offers an **Agent Plan** with custom resource limits and credits for **your** free tier. [Learn more](https://neon.com/docs/introduction/agent-plan)
+For AI agent platforms that provision thousands of databases, Neon offers an **Agent Plan** with unlimited projects, Launch-rate compute, and credits for **your** free tier. Agent limits differ from Scale. [Learn more](https://neon.com/docs/introduction/agent-plan)
 
 | Plan feature                                                                                  | **Free**                                   | **Launch**                                 | **Scale**                                                                                                         |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
@@ -112162,7 +112231,7 @@ Manual snapshot limits per plan:
 
 For billing, manual snapshots are charged as full snapshots. Scheduled snapshots are charged as full snapshots for the first snapshot in a schedule, then as incremental (delta) storage for subsequent snapshots in that schedule.
 
-Automated backup schedules are available on paid plans except for the Agent plan. See [Backup & restore](https://neon.com/docs/guides/backup-restore) for details.
+Automated backup schedules are available on paid plans. On the Agent plan, they are available upon request. See [Backup & restore](https://neon.com/docs/guides/backup-restore) for details.
 
 ### Auth
 
@@ -118579,7 +118648,7 @@ Neon is a full backend platform for apps and agents, not just a database. For an
 - [Auth](https://neon.com/docs/auth/overview): Managed Better Auth with sign-up, OAuth, and sessions. Users live in your Postgres and branch with it.
 - [Data API](https://neon.com/docs/data-api/overview): HTTPS queries with no backend code. Drop-in compatible with Supabase.
 - [Object Storage](https://neon.com/docs/storage/overview): S3-compatible object storage that branches with your database.
-- [Functions](https://neon.com/docs/compute/functions/overview): Long-running Node.js compute, deployed alongside your database.
+- [Functions](https://neon.com/docs/compute/functions/overview): Long-running serverless functions on Node.js, deployed alongside your database.
 - [AI Gateway](https://neon.com/docs/ai-gateway/overview): One API for frontier and open-source models, built into your Neon project.
 
 This page covers the platform's management and operations side: the account, project, and infrastructure tasks you use to run your Neon projects day to day.
@@ -125972,6 +126041,39 @@ postgres.databaseUrl; // string (databaseUrlUnpooled is absent)
 ```
 
 The key list autocompletes from your config, so selecting a variable from a service you haven't declared is a type error.
+
+### Inject env at runtime without a file
+
+`@neon/env` also ships a `neon-env` binary for the cases where you don't want the branch's variables written to disk. It resolves them from your `neon.ts` policy at runtime:
+
+```bash
+# Run a command with the branch's Neon env vars injected into its environment.
+# Use `--` to separate the command:
+neon-env run -- npm run dev
+
+# Print the branch's Neon env vars to stdout, as dotenv lines or JSON,
+# for piping into another env manager:
+neon-env export
+neon-env export --format json
+```
+
+Use `neon-env run` as the runtime counterpart to the on-disk [`neon env pull`](https://neon.com/docs/cli/env) when you'd rather not keep secrets in the working tree, and `neon-env export` when another tool (for example [varlock](https://varlock.dev)) should ingest the values.
+
+### Resolve env in code with `fetchEnv`
+
+`parseEnv` reads variables already present in `process.env`. `fetchEnv` is its programmatic runtime sibling: it fetches a branch's env from Neon and returns the same typed, namespaced shape, so code can resolve a branch's env without shelling out or writing a file first. Unlike the `neon-env` CLI, `fetchEnv` reads no environment variables or credential files on your behalf. Pass a Neon API key explicitly as `apiKey`, or it throws.
+
+```ts
+import { fetchEnv } from '@neon/env';
+import config from './neon';
+
+const env = await fetchEnv(config, {
+  projectId: 'patient-art-12345',
+  branch: 'main',
+  apiKey: process.env.NEON_API_KEY,
+});
+env.postgres.databaseUrl;
+```
 
 ## CLI commands
 

@@ -8,7 +8,7 @@ path: docs/overview/administration/assets
 
 # Assets
 
-![Assets interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b5f5c5423d8be02f36f341792959f03f6e294ca402dd4039495e78011e54d79/assets/images/product-guides/administration/assets-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113153Z&X-Amz-Expires=604800&X-Amz-Signature=ac7cb2029bb44be46377b4bd5ed4590e727420ac0ba9368680edc3e6921e2022&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Assets interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b5f5c5423d8be02f36f341792959f03f6e294ca402dd4039495e78011e54d79/assets/images/product-guides/administration/assets-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T100016Z&X-Amz-Expires=604800&X-Amz-Signature=364afd243d1d08ba50988508a3d8fed2244375060f9969e47380f62e8adf4e22&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -50,7 +50,7 @@ Add content generated from various ElevenCreative tools directly to Assets:
 
 ### Organizing assets
 
-![Organizing assets with folders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f790d6dd3237f14d691e70b2d0b5a6d825f1d6f8656f3337287fe41d2e5f27cd/assets/images/product-guides/administration/assets-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260818%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260818T113153Z&X-Amz-Expires=604800&X-Amz-Signature=fae33fa864e2ae6d01164978acec957c8771f254bcfdbaf8ee0b59441a906575&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Organizing assets with folders](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f790d6dd3237f14d691e70b2d0b5a6d825f1d6f8656f3337287fe41d2e5f27cd/assets/images/product-guides/administration/assets-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T100016Z&X-Amz-Expires=604800&X-Amz-Signature=bfd49f5be99d3e325f7da0c7e94b94ff71b73903e27feef434a089283b62fb14&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Keep your assets organized with folders and collections:
 

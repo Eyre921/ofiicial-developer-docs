@@ -60,9 +60,7 @@ Organizations support two roles: **Admin** and **Developer**. For a full breakdo
 
 Projects are isolated workspaces within your Organization. They scope resources, API keys, and membership so teams can work independently.
 
-Every Organization starts with a [**Default Project**](/docs/projects#default-project). All Members are automatically added to it when they join.
-
-For Organizations that need to separate resources by team, environment, or workload, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable additional Projects.
+Every Organization starts with a [**Default Project**](/docs/projects#default-project). All Members are automatically added to it when they join. Create additional Projects to separate resources by team, environment, or workload.
 
 For full details on creating and managing Projects, see [Projects](/docs/projects).
 

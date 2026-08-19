@@ -14,15 +14,7 @@ Deepgram provides FIPS 140-3 self-hosted images for the API, Engine, License Pro
 
 ## Container Images
 
-Use the FIPS variants of the `release-260728` images (the `-fips` tag suffix):
-
-| Component         | Image                                                            |
-| ----------------- | ---------------------------------------------------------------- |
-| **API**           | `quay.io/deepgram/self-hosted-api:release-260728-fips`           |
-| **Engine**        | `quay.io/deepgram/self-hosted-engine:release-260728-fips`        |
-| **License Proxy** | `quay.io/deepgram/self-hosted-license-proxy:release-260728-fips` |
-
-See the [release changelog](/changelog/2026/7/28) for the equivalent component versions.
+Use the FIPS variants (the `-fips` tag suffix) of API, Engine, and License Proxy images from a recent self-hosted release. See the [release changelog](/changelog?filter=Self+Hosted) for specific release versions and tags.
 
 ## Configuration
 
@@ -97,7 +89,7 @@ The `[fips]` configuration flag does not control TLS behavior. TLS 1.3 enforceme
 
 ## Airgapped (Offline) Deployment
 
-The deployment above reaches Deepgram's hosted license server through the License Proxy, which requires outbound internet access. If you require running FIPS-compliant self-hosted Deepgram deployments in environments without public internet connectivity, contact your Deepgram account team to inquire about airgapped access, which uses the FIPS Billing image (`quay.io/deepgram/self-hosted-billing:release-260728-fips`) to run license validation offline.
+The deployment above reaches Deepgram's hosted license server through the License Proxy, which requires outbound internet access. If you require running FIPS-compliant self-hosted Deepgram deployments in environments without public internet connectivity, contact your Deepgram account team to inquire about airgapped access, which uses the FIPS Billing image to run license validation offline.
 
 ---
 
