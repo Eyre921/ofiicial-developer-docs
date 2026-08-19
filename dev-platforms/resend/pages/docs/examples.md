@@ -141,6 +141,10 @@ Explore sample apps for different use cases.
     Create and manage sending domains
   </Card>
 
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/automations">
+    Create and manage lifecycle automations
+  </Card>
+
   <Card title="Better Auth" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/better-auth">
     Email authentication with Better Auth
   </Card>
@@ -195,6 +199,10 @@ Explore sample apps for different use cases.
 
   <Card title="Domains" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/javascript/src/app/domains">
     Create and manage sending domains
+  </Card>
+
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/javascript/src/app/automations">
+    Create and manage lifecycle automations
   </Card>
 
   <Card title="Better Auth" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/javascript/src/app/better-auth">
@@ -663,6 +671,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
     Create and manage sending domains
   </Card>
 
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/php-resend-examples/src/automations">
+    Create and manage lifecycle automations
+  </Card>
+
   <Card title="Symfony App" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/php-resend-examples/symfony_app">
     Full Symfony web application
   </Card>
@@ -735,6 +747,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
     Create and manage sending domains
   </Card>
 
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/python-resend-examples/examples/automations.py">
+    Create and manage lifecycle automations
+  </Card>
+
   <Card title="Inbound Webhooks" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/python-resend-examples/examples/inbound.py">
     Receive and process inbound emails
   </Card>
@@ -793,6 +809,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
 
   <Card title="Domains" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/ruby-resend-examples/examples/domains.rb">
     Create and manage sending domains
+  </Card>
+
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/ruby-resend-examples/examples/automations.rb">
+    Create and manage lifecycle automations
   </Card>
 
   <Card title="Inbound Webhooks" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/ruby-resend-examples/examples/inbound.rb">
@@ -907,6 +927,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
     Create and manage sending domains
   </Card>
 
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/java-resend-examples/src/main/java/com/resend/examples/Automations.java">
+    Create and manage lifecycle automations
+  </Card>
+
   <Card title="Inbound Webhooks" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/java-resend-examples/src/main/java/com/resend/examples/Inbound.java">
     Receive and process inbound emails
   </Card>
@@ -963,6 +987,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
     Create and manage sending domains
   </Card>
 
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/dotnet-resend-examples/Examples/Automations.cs">
+    Create and manage lifecycle automations
+  </Card>
+
   <Card title="Inbound Webhooks" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/dotnet-resend-examples/Examples/Inbound.cs">
     Receive and process inbound emails
   </Card>
@@ -1017,6 +1045,10 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
 
   <Card title="Domains" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/rust-resend-examples/examples/domains.rs">
     Create and manage sending domains
+  </Card>
+
+  <Card title="Automations" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/rust-resend-examples/examples/automations.rs">
+    Create and manage lifecycle automations
   </Card>
 
   <Card title="Inbound Webhooks" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/rust-resend-examples/examples/inbound.rs">

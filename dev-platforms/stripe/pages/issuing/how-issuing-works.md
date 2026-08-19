@@ -39,7 +39,7 @@ Complete the following steps to set up a commercial card program with Issuing:
 
 ### Treasury for platforms
 
-You can integrate Issuing with [Treasury for platforms](https://docs.stripe.com/treasury/connect.md) to attach cards to open loop fiat or [stablecoin wallets](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md) and offer your users additional transaction options. Treasury for platforms is only available to platforms and connected accounts [located in the United States](https://docs.stripe.com/treasury/connect/requirements.md#supported-countries). Learn how to [set up a Treasury for platforms integration](https://docs.stripe.com/treasury/connect/account-management/issuing-cards.md).
+You can integrate Issuing with [Treasury for platforms](https://docs.stripe.com/treasury/connect.md) to attach cards to open loop fiat or [stablecoin wallets](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md) and offer your users additional transaction options. Treasury for platforms is only available to platforms and connected accounts [located in the United States](https://docs.stripe.com/treasury/connect/legacy/v1/requirements.md#supported-countries). Learn how to [set up a Treasury for platforms integration](https://docs.stripe.com/treasury/connect/legacy/v1/account-management/issuing-cards.md).
 
 ### Connect
 
@@ -80,7 +80,7 @@ Issuing only supports connected accounts that don’t use a Stripe-hosted Dashbo
 
 An Issuing balance is a funding source attached to a connected account that provides the funds for spending with the associated card account. You can add funds to the connected account’s Issuing balance either by transferring from the connected account’s Stripe account balance, or through a top-up from an external bank account. You can also pay out funds from the Issuing balance to an external bank account.
 
-Connected accounts can also use a [Treasury for platforms](https://docs.stripe.com/treasury/connect/account-management/issuing-cards.md) account to fund cards for a full embedded finance solution.
+Connected accounts can also use a [Treasury for platforms](https://docs.stripe.com/treasury/connect/legacy/v1/account-management/issuing-cards.md) account to fund cards for a full embedded finance solution.
 
 #### Bridge, Privy, or non-custodial wallet funding source
 

@@ -14,7 +14,7 @@ Use a Pinecone SDK to create an assistant, upload documents, and chat with the a
 
 ## 1. Install an SDK
 
-The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to the [Assistant API](/reference/api/latest/assistant/).
+The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to the [Assistant API](/reference/api/assistant/introduction).
 
 <CodeGroup>
   ```shell Python theme={null}

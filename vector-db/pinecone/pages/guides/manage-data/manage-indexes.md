@@ -333,7 +333,7 @@ for index_name in pc.list_indexes().names:
 
 ## Describe an index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint to get a complete description of a specific index:
+Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}

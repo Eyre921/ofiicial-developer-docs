@@ -14,7 +14,7 @@ ElevenLabs exposes two different WebSocket products for streaming synthesized sp
 
 Use the **Text to Speech (TTS) WebSocket** when you stream plain text for **one voice per connection** (the voice is fixed in the URL) and you want **non-v3** models such as Flash or Multilingual v2, optional SSML, chunk schedules, or the **multi-context** variant for agent-style interruption handling.
 
-Use the **Text to Dialogue (TTD) WebSocket** when you need **Eleven v3** dialogue behavior: expressive delivery, **per-chunk `voice_id`**, turn boundaries (`new_turn`), and the same dialogue-oriented buffering used for v3 on the server. Access may require workspace enablement in addition to normal Text to Speech permissions.
+Use the **Text to Dialogue (TTD) WebSocket** when you need **Eleven v3** dialogue behavior: expressive delivery, **per-chunk `voice_id`**, turn boundaries (`new_turn`), and the same dialogue-oriented buffering used for v3 on the server.
 
 For **batch or HTTP streaming** dialogue (full request in one call), use [Create dialogue](/docs/api-reference/text-to-dialogue/convert) or [Stream dialogue](/docs/api-reference/text-to-dialogue/stream) instead of a WebSocket.
 

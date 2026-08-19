@@ -10416,7 +10416,7 @@ For guidance on serverless indexes, see [Manage serverless indexes](/guides/mana
 
 ## Describe a pod-based index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint to get a complete description of a specific index:
+Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -12649,7 +12649,7 @@ After creating an index, you cannot vertically downscale the index/pod size. Ins
 
 ### Check the status of a pod size change
 
-To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
+To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
 
 The index fullness metric provided by [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) may be inaccurate until the resizing process is complete.
 
@@ -17363,7 +17363,7 @@ for index_name in pc.list_indexes().names:
 
 ## Describe an index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint to get a complete description of a specific index:
+Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -25656,7 +25656,7 @@ Answers to common questions about BYOC:
   </Accordion>
 
   <Accordion title="What is the difference between BYOC and Pinecone's standard service?">
-    In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts.
+    In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts. For a cost breakdown, see [Pricing](#pricing).
   </Accordion>
 
   <Accordion title="How does authentication work?">
@@ -25682,21 +25682,36 @@ Answers to common questions about BYOC:
 
 ### Pricing
 
-BYOC pricing is based on provisioned resources (compute and storage) in your deployment, metered over time. Usage is measured by the Pinecone BYOC agent running in your cluster, which periodically reports the resources that are provisioned.
+Your Pinecone bill for a BYOC environment has two parts: a flat platform fee and a rate for each dedicated read node you run. Separately, you pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, databases, networking, etc.).
 
-What you pay:
+```
+Pinecone bill = platform fee + (node rate × number of nodes)
+```
 
-* Pinecone fees: Based on provisioned compute (vCPU and RAM) and storage (NVMe) resources
-* Cloud provider fees: You pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, databases, networking, etc.)
+| Term                | Description                                                                                                                                                                                                                                                        |
+| :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Platform fee**    | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support.                                                                                                                       |
+| **Node rate**       | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
+| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes#shards) × [replicas](/guides/index-data/dedicated-read-nodes#replicas) across every index in the environment, counted separately for each node type.                                                       |
 
-Billing follows the agent heartbeat connection to Pinecone's control plane:
+If an environment runs both `b1` and `t1` nodes, calculate the node cost for each type and add the results.
 
-* When heartbeats are received, you are billed for the provisioned compute and storage the agent reports, even if the cluster is unhealthy.
+Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
+
+<Tip>
+  For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).
+</Tip>
+
+**Example:** An environment with one index using two shards and two replicas runs four `b1` nodes, so its monthly bill is the platform fee plus four times the `b1` node rate, plus what you pay your cloud provider.
+
+The Pinecone BYOC agent running in your cluster measures node usage, periodically reporting which nodes are provisioned. Billing follows the agent heartbeat connection to Pinecone's control plane:
+
+* When Pinecone receives heartbeats, you're billed for the nodes the agent reports, even if the cluster is unhealthy.
 * Short heartbeat interruptions (under 60 minutes) are treated as a grace period.
 * If heartbeats are missing for more than 60 minutes, billing stops and the deployment is marked disconnected.
 
 <Note>
-  Billing is based on provisioned resources, not query volume. Resources that are running in your cluster are billed whether they are idle, actively processing queries, or experiencing errors.
+  Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster whether they're idle, actively processing queries, or experiencing errors.
 </Note>
 
 
@@ -26201,7 +26216,7 @@ To add a Private Endpoint using the [Pinecone console](https://app.pinecone.io/o
 9. Click **Finish setup**.
 
 <Note>
-  Private Endpoints only affect [data plane](/reference/api/latest/data-plane) access. [Control plane](/reference/api/latest/control-plane) access will continue over the public internet.
+  Private Endpoints only affect [data plane](/guides/get-started/database-architecture#data-plane) access. [Control plane](/guides/get-started/database-architecture#control-plane) access will continue over the public internet.
 </Note>
 
 ## Read and write data
@@ -82753,11 +82768,11 @@ Pinecone Assistant is useful for a variety of tasks, especially for the followin
 
 ## SDK support
 
-You can use the [Assistant API](/reference/api/latest/assistant/) directly, through the [Pinecone Python SDK](/reference/sdks/python/overview), or through the [Pinecone Node.js SDK](/reference/sdks/node/overview).
+You can use the [Assistant API](/reference/api/assistant/introduction) directly, through the [Pinecone Python SDK](/reference/sdks/python/overview), or through the [Pinecone Node.js SDK](/reference/sdks/node/overview).
 
 ## Workflow
 
-You can use the Pinecone Assistant through the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or [Pinecone API](/reference/api/latest/assistant/list_assistants).
+You can use the Pinecone Assistant through the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or [Pinecone API](/reference/api/assistant/introduction).
 
 <Tabs>
   <Tab title="Overview">
@@ -83289,7 +83304,7 @@ Use a Pinecone SDK to create an assistant, upload documents, and chat with the a
 
 ## 1. Install an SDK
 
-The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to the [Assistant API](/reference/api/latest/assistant/).
+The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to the [Assistant API](/reference/api/assistant/introduction).
 
 <CodeGroup>
   ```shell Python theme={null}
@@ -88327,7 +88342,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-10-24">
   ### Pinecone API version `2024-10` is now the latest stable version
 
-  `2024-10` is now the latest [stable version](/reference/api/versioning#release-schedule) of the [Database API](/reference/api/2024-10/data-plane/) and [Inference API](/reference/api/2024-10/inference/). For highlights, see [SDKs](#sdks) below.
+  `2024-10` is now the latest [stable version](/reference/api/versioning#release-schedule) of the [Database API](/reference/api/2024-10/control-plane/list_indexes) and [Inference API](/reference/api/2024-10/inference/generate-embeddings). For highlights, see [SDKs](#sdks) below.
 </Update>
 
 <Update label="2024-10-17">
@@ -88520,7 +88535,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-07-19">
-  Released version `2024-07` of the [Database API](/reference/api/2024-07/data-plane/) and Inference API. This version includes the following highlights:
+  Released version `2024-07` of the [Database API](/reference/api/2024-07/control-plane/list_indexes) and Inference API. This version includes the following highlights:
 
   * The [`create_index`](/reference/api/2024-07/control-plane/create_index) and [`configure_index`](/reference/api/2024-07/control-plane/configure_index) endpoints now support the `deletion_protection` parameter. Setting this parameter to `"enabled"` prevents an index from accidental deletion. For more details, see [Prevent index deletion](/guides/manage-data/manage-indexes#configure-deletion-protection).
 
@@ -88673,7 +88688,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-04-22">
-  As announced in January 2024, [control plane](/reference/api/2024-07/control-plane) operations like `create_index`, `describe_index`, and `list_indexes` now use a single global URL, `https://api.pinecone.io`, regardless of the cloud environment where an index is hosted. This is now in general availability. As a result, the legacy version of the API, which required regional URLs for control plane operations, is deprecated as of April 15, 2024 and will be removed in a future, to be announced, release.
+  As announced in January 2024, [control plane](/guides/get-started/database-architecture#control-plane) operations like `create_index`, `describe_index`, and `list_indexes` now use a single global URL, `https://api.pinecone.io`, regardless of the cloud environment where an index is hosted. This is now in general availability. As a result, the legacy version of the API, which required regional URLs for control plane operations, is deprecated as of April 15, 2024 and will be removed in a future, to be announced, release.
 </Update>
 
 <Update label="2024-04-15">
@@ -94500,7 +94515,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-10-24">
   ### Pinecone API version `2024-10` is now the latest stable version
 
-  `2024-10` is now the latest [stable version](/reference/api/versioning#release-schedule) of the [Database API](/reference/api/2024-10/data-plane/) and [Inference API](/reference/api/2024-10/inference/). For highlights, see [SDKs](#sdks) below.
+  `2024-10` is now the latest [stable version](/reference/api/versioning#release-schedule) of the [Database API](/reference/api/2024-10/control-plane/list_indexes) and [Inference API](/reference/api/2024-10/inference/generate-embeddings). For highlights, see [SDKs](#sdks) below.
 </Update>
 
 <Update label="2024-10-17">
@@ -94693,7 +94708,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-07-19">
-  Released version `2024-07` of the [Database API](/reference/api/2024-07/data-plane/) and Inference API. This version includes the following highlights:
+  Released version `2024-07` of the [Database API](/reference/api/2024-07/control-plane/list_indexes) and Inference API. This version includes the following highlights:
 
   * The [`create_index`](/reference/api/2024-07/control-plane/create_index) and [`configure_index`](/reference/api/2024-07/control-plane/configure_index) endpoints now support the `deletion_protection` parameter. Setting this parameter to `"enabled"` prevents an index from accidental deletion. For more details, see [Prevent index deletion](/guides/manage-data/manage-indexes#configure-deletion-protection).
 
@@ -94846,7 +94861,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-04-22">
-  As announced in January 2024, [control plane](/reference/api/2024-07/control-plane) operations like `create_index`, `describe_index`, and `list_indexes` now use a single global URL, `https://api.pinecone.io`, regardless of the cloud environment where an index is hosted. This is now in general availability. As a result, the legacy version of the API, which required regional URLs for control plane operations, is deprecated as of April 15, 2024 and will be removed in a future, to be announced, release.
+  As announced in January 2024, [control plane](/guides/get-started/database-architecture#control-plane) operations like `create_index`, `describe_index`, and `list_indexes` now use a single global URL, `https://api.pinecone.io`, regardless of the cloud environment where an index is hosted. This is now in general availability. As a result, the legacy version of the API, which required regional URLs for control plane operations, is deprecated as of April 15, 2024 and will be removed in a future, to be announced, release.
 </Update>
 
 <Update label="2024-04-15">
@@ -97319,9 +97334,9 @@ Source: https://docs.pinecone.io/guides/nexus/query-tracing
 
 Trace any query to see the steps, retrieval code, tokens, and cost behind its answer.
 
-Every query is recorded as a trace. The trace explorer shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
+Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
 
-To open a trace, click **Show in trace explorer** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
+To open a trace, click **Show trace** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
 
 ## Summary bar
 
@@ -97359,14 +97374,27 @@ The trace ends with the final answer produced for the query, the same grounded r
 # Nexus quickstart
 Source: https://docs.pinecone.io/guides/nexus/quickstart
 
-Deploy Pinecone Nexus with bring-your-own-cloud (BYOC), build a context from your own documents, and run your first query from the deployment console.
+Deploy Pinecone Nexus in your own cloud with BYOC, build a context from your documents, and query it for grounded, cited answers.
 
-Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with bring-your-own-cloud (BYOC), then builds a context from your own documents and queries it from your deployment's console.
+Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with bring-your-own-cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
+
+Nexus organizes knowledge in a hierarchy:
+
+* A **workspace** holds one or more contexts.
+* A **context** is built from the documents you ingest into it.
+* A **query** can read one or more contexts, so several contexts together can give an agent its knowledge.
+
+See [key concepts](/guides/nexus/concepts) for the full model.
+
+<Note>
+  The examples in this quickstart use a company knowledge base of internal policies for illustration. You bring your own documents, and any set works.
+</Note>
 
 ## Prerequisites
 
 * A Pinecone **Enterprise** plan (required for BYOC).
 * A dedicated cloud account (AWS, GCP, or Azure) with admin access, plus the install tooling. See the [deploy prerequisites](/guides/nexus/byoc/deploy#prerequisites) for the full list.
+* Documents to build your context from, such as files to upload or a Hugging Face, GitHub, Box, or Google Drive source.
 
 ## 1. Deploy Nexus
 
@@ -97384,11 +97412,17 @@ Nexus runs in your own cloud, so deploying it comes first.
 
 ## 2. Add a context
 
-Build a context from your own documents.
+Build a context from your own documents. A company knowledge base might include a refund policy, an expense policy, and a vendor-approval matrix. Nexus ingests dense documents like PDFs directly, alongside Markdown and plain text. For example, two PDFs and a Markdown file could read:
+
+* `policies/refunds.md`: Refund requests must be submitted within 30 days of purchase. After that window, customers receive store credit, not a direct refund.
+* `policies/expenses.pdf`: Standard expenses over \$1,000 require manager approval before reimbursement.
+* `policies/vendors.pdf`: Vendor invoices over \$10,000 require finance approval. Invoices over \$25,000 also require VP sign-off.
+
+The queries later in this quickstart draw on these files.
 
 <Steps>
   <Step title="Create a context">
-    In your deployment's console sidebar, next to **Contexts**, click **+ New**. On the **New context** tab, enter a **Name** (the URL slug is generated from it) and a **Description**, then click **Create context**.
+    In your deployment's console sidebar, next to **Contexts**, click **+ New**. On the **New context** tab, enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
   </Step>
 
   <Step title="Import sources">
@@ -97400,11 +97434,13 @@ Build a context from your own documents.
   </Step>
 
   <Step title="Design the manifest">
-    On the **Design** tab, pick a **[manifest](/guides/nexus/context-design) template** that fits your sources (for example, **General knowledge base**). The template describes the artifacts and edges it will build and shows an estimated cost and time.
+    On the **Design** tab, pick a **[manifest](/guides/nexus/context-design) template** that fits your sources (for example, **General knowledge base**). The template describes the artifacts and edges it'll build and shows an estimated cost and time.
   </Step>
 
   <Step title="Curate">
-    Apply the template to [curate](/guides/nexus/how-curation-works). Nexus chunks your sources and distills them into the artifacts the manifest defines, then indexes everything. Follow progress on the **Sources** and **Knowledge** tabs, and under **Activity**.
+    On the **Design** tab, click **Save and curate**. Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+
+    You can follow the task under **Activity**. When it finishes, it reports the context is ready, with **View artifacts** and **Query this context**.
   </Step>
 </Steps>
 
@@ -97414,7 +97450,7 @@ Build a context from your own documents.
 
 ## 3. Query your context
 
-Once curation finishes, ask your context a question and get a grounded, cited answer.
+Once curation finishes, ask your context a question and get back a grounded answer with citations.
 
 <Steps>
   <Step title="Open the Query tab">
@@ -97422,15 +97458,55 @@ Once curation finishes, ask your context a question and get a grounded, cited an
   </Step>
 
   <Step title="Ask a question">
-    Type your question in the **Search this context** box and run it. Nexus returns a grounded, cited answer with suggested follow-up topics, and saves it as a session you can reopen from **Sessions**.
+    Type your question in the **Search this context** box and run it.
   </Step>
 </Steps>
+
+### A grounded, cited answer
+
+Nexus plans its own retrieval across the context's curated knowledge, gathers the relevant evidence, and composes a single grounded answer with inline citations. Asking the company knowledge base "What is the refund policy?" returns something like:
+
+> Refund requests must be submitted within 30 days of purchase. After that window, customers can still get store credit, but not a direct refund. **\[1]**
+>
+> **\[1]** `policies/refunds.md`
+
+The answer is grounded in your sources, and every claim cites the document it came from, so you can check it. To see how Nexus produced it, open the query's [trace](/guides/nexus/query-tracing). Nexus also suggests follow-up topics and saves the query as a session you can reopen from **Sessions**.
+
+### A multi-document answer
+
+Questions that span multiple documents work the same way. Asking "Which purchases need approval, and what is the threshold for each?" returns something like:
+
+> * Standard expenses over \$1,000 need manager approval. **\[1]**
+> * Vendor invoices over \$10,000 need finance approval. **\[2]**
+> * Vendor invoices over \$25,000 need VP and finance approval. **\[2]**
+>
+> **\[1]** `policies/expenses.pdf`  **\[2]** `policies/vendors.pdf`
+
+To answer this, Nexus queried the structured tables it compiled from your policies during curation, so it enumerates every matching rule across documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Answering completely across your whole corpus is a core reason to reach for Nexus over RAG. See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
 
 <Tip>
   To query several contexts at once, start a session from **Sessions** with **+ New session**, click each context in the **Query across** row, and ask.
 </Tip>
 
-You can also query from your own code, using the [Nexus API](/reference/api/nexus/introduction) or an [MCP server](/guides/nexus/mcp-server).
+## Query from your own code
+
+Agents send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`, and get back the same answer plus citations to act on:
+
+```bash curl theme={null}
+curl -fsS "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -H 'Content-Type: application/json' \
+  -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
+| jq -r '.output[].content[].text'
+```
+
+```console Output theme={null}
+Refund requests must be submitted within 30 days of purchase. After that
+window, customers can still get store credit, but not a direct refund.
+```
+
+The full response also carries `citations` and `usage`. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and `NEXUS_TOKEN`, or the [Nexus API](/reference/api/nexus/introduction) for the full surface. You can also connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
 
 
 # 2026 releases

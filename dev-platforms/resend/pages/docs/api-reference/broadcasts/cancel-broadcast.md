@@ -7,7 +7,10 @@ path: docs/api-reference/broadcasts/cancel-broadcast
 POST /broadcasts/:broadcast_id/cancel
 Cancel a queued or scheduled broadcast.
 
-You can only cancel Broadcasts that are `queued` or `scheduled`. Canceling a `queued` Broadcast stops it mid-send. Any emails already sent are not affected, but no further emails will go out.
+You can only cancel Broadcasts that are `queued` or `scheduled`. When you cancel a Broadcast, here's what happens based on its status:
+
+* `scheduled` → `draft`: no emails are sent. You can update the Broadcast and reschedule it to be sent.
+* `queued` → `canceled`: emails that have already been sent are not affected, but any emails still in the queue will no longer be sent.
 
 ## Path Parameters
 
@@ -26,10 +29,78 @@ You can only cancel Broadcasts that are `queued` or `scheduled`. Canceling a `qu
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->broadcasts->cancel('559ac32e-9ef5-46fb-82a1-b76b840c0f7b');
+  ```
+
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Broadcasts.cancel(id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Broadcasts.cancel("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Broadcasts.Cancel("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _canceled = resend
+      .broadcasts
+      .cancel("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  CancelBroadcastResponseSuccess data = resend.broadcasts().cancel("559ac32e-9ef5-46fb-82a1-b76b840c0f7b");
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  await resend.BroadcastCancelAsync( new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ) );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/cancel' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend broadcasts cancel 559ac32e-9ef5-46fb-82a1-b76b840c0f7b
   ```
 </RequestExample>
 

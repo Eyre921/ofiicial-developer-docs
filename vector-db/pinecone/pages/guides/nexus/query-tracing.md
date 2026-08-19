@@ -6,9 +6,9 @@ path: guides/nexus/query-tracing
 
 Trace any query to see the steps, retrieval code, tokens, and cost behind its answer.
 
-Every query is recorded as a trace. The trace explorer shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
+Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
 
-To open a trace, click **Show in trace explorer** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
+To open a trace, click **Show trace** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
 
 ## Summary bar
 

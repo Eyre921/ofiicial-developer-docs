@@ -11,7 +11,9 @@ description: "Learn how to use Agent Runners to build and iterate."
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
-Learn how to make changes and iterate on an existing project with your preferred AI agent using Agent Runners.
+Learn how to make changes and iterate on an existing project with your preferred AI agent using Agent Runners in your Netlify project dashboard.
+
+If you want to create a new project with an AI agent, check out our [Agent Runners quickstart for new projects](/start/quickstarts/create-new-project-with-ai-agent/).
 
 ## Prerequisites
 
@@ -51,11 +53,7 @@ Ask mode is read-only: the agent can read your whole project but can't edit file
 - **Ask questions about your database:**
   > Which data fields are required to add a new entry to the users list?
 
-## Overview
-
-This guide will help you make changes to an existing project through Agent Runners in your Netlify project dashboard.
-
-If you want to create a new project with an AI agent, check out our [Agent Runners quickstart for new projects](/start/quickstarts/create-new-project-with-ai-agent/).
+## How to use Agent Runners
 
 ### 1. Start an agent run
 

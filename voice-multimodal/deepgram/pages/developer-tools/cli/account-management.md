@@ -10,18 +10,21 @@ path: developer-tools/cli/account-management
 
 # Account Management Commands
 
+Account commands are flag-based: the action is a flag, not a subcommand. Run `dg keys --help`, `dg projects --help`, or `dg members --help` for the full set.
+
 ## Projects
 
 ### List Projects
 
 ```shell
-dg projects list
+dg projects --list
 ```
 
 ### Switch Project
 
 ```shell
-dg projects use <project-id>
+dg projects --set-default <project-id>
+dg projects --current
 ```
 
 ## API Keys
@@ -29,26 +32,28 @@ dg projects use <project-id>
 ### List Keys
 
 ```shell
-dg keys list
+dg keys --list
 ```
 
 ### Create Key
 
 ```shell
-dg keys create "ci-runner"
-dg keys create "production" --scope scopes.json
+dg keys --create --comment "ci-runner"
+dg keys --create --comment "production" --scopes member --tags prod
 ```
+
+`--scopes` takes comma-separated scope names and defaults to `member`. See [Working With Roles & API Scopes](/guides/deep-dives/working-with-roles) for what each scope grants.
 
 ### Delete Key
 
 ```shell
-dg keys delete <key-id>
+dg keys --delete <key-id>
 ```
 
 Use `--dry-run` to preview:
 
 ```shell
-dg keys delete <key-id> --dry-run
+dg keys --delete <key-id> --dry-run
 ```
 
 ## Team Members
@@ -56,21 +61,23 @@ dg keys delete <key-id> --dry-run
 ### List Members
 
 ```shell
-dg members list
+dg members --list
+dg members --invites   # Pending invites
 ```
 
 ### Invite Member
 
 ```shell
-dg members invite user@example.com --role admin
+dg members --invite user@example.com --scope admin
 ```
 
-Available roles: `admin`, `member`, `viewer`
+Available scopes: `owner`, `admin`, `member`. See [Working With Roles & API Scopes](/guides/deep-dives/working-with-roles).
 
 ### Remove Member
 
 ```shell
-dg members remove <member-id>
+dg members --remove <member-id>
+dg members --revoke-invite user@example.com
 ```
 
 ## Usage
@@ -79,14 +86,17 @@ dg members remove <member-id>
 
 ```shell
 dg usage
-dg usage --start 2024-01-01 --end 2024-01-31
+dg usage --start-date 2024-01-01 --end-date 2024-01-31
+dg usage --current-month
 ```
 
 ### Export Usage
 
+`-o` belongs to `dg` itself, so it goes before the subcommand name:
+
 ```shell
-dg usage -o json > usage.json
-dg usage --format csv > usage.csv
+dg -o json usage > usage.json
+dg -o csv usage > usage.csv
 ```
 
 ## Billing
@@ -95,15 +105,16 @@ dg usage --format csv > usage.csv
 
 ```shell
 dg billing
+dg billing --balances
 ```
 
 ## Direct API Access
 
-Use `dg api` to call any Deepgram API endpoint:
+Use `dg api` to call any Deepgram API endpoint. The endpoint is positional; set the method with `-X` and body fields with `-f`:
 
 ```shell
-dg api GET /v1/projects
-dg api POST /v1/listen --data '{"url": "https://example.com/audio.mp3"}'
+dg api /v1/projects
+dg api -X POST /v1/listen -f url=https://example.com/audio.mp3
 ```
 
 Authentication is handled automatically.

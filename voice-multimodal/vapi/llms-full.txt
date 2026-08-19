@@ -66,7 +66,7 @@
 - [Using the Query Tool for Knowledge Bases](https://docs.vapi.ai/knowledge-base/using-query-tool.md): Learn how to configure and use the query tool to enhance your AI assistants with custom knowledge bases.
 - [Custom Knowledge Base](https://docs.vapi.ai/knowledge-base/custom-knowledge-base.md): Create and implement your own knowledge base server for full control over document retrieval
 - [Tool Arguments Encryption](https://docs.vapi.ai/tools/encryption.md): Learn to encrypt tool arguments and protect sensitive data
-- [Deepgram Keywords and Keyterm Prompting](https://docs.vapi.ai/customization/custom-keywords.md): Boost STT accuracy for domain words and phrases
+- [Keywords and keyterm prompting](https://docs.vapi.ai/customization/custom-keywords.md): Boost STT accuracy for domain words and phrases
 - [Custom voices](https://docs.vapi.ai/customization/custom-voices/custom-voice.md): Use a custom voice with your preferred provider
 - [ElevenLabs](https://docs.vapi.ai/customization/custom-voices/elevenlabs.md): Set up a custom ElevenLabs voice in Vapi
 - [PlayHT](https://docs.vapi.ai/customization/custom-voices/playht.md): Set up a custom PlayHT voice in Vapi
@@ -128,14 +128,6 @@
 - [SMS chat](https://docs.vapi.ai/chat/sms-chat.md): Connect a 10DLC-approved Twilio number to a Vapi assistant, receive customer-initiated SMS messages, and maintain context through managed chat sessions.
 - [Web widget](https://docs.vapi.ai/chat/web-widget.md): Add Vapi's web widget to a website for voice and text conversations, configure its appearance and behavior, and meet pay-as-you-go chat access requirements.
 - [Workflows migration guide](https://docs.vapi.ai/workflows/legacy-migration.md): Migrate your Vapi Workflows to Squads before Workflows is retired on August 18, 2026.
-- [Workflows quickstart](https://docs.vapi.ai/workflows/quickstart.md): Build a simple agent that greets users and gathers basic information using Vapi workflows.
-- [Workflows overview](https://docs.vapi.ai/workflows/overview.md): Learn to create robust, deterministic conversation flows with a visual builder.
-- [Appointment scheduling workflow](https://docs.vapi.ai/workflows/examples/appointment-scheduling.md): Build a voice AI appointment scheduling workflow with calendar integration, availability checking, and automated confirmations using Vapi's workflow builder.
-- [Lead qualification workflow](https://docs.vapi.ai/workflows/examples/lead-qualification.md): Build a voice AI outbound sales workflow with lead qualification, CRM integration, and automated follow-up using Vapi's visual workflow builder.
-- [Clinic triage and scheduling workflow](https://docs.vapi.ai/workflows/examples/clinic-triage-scheduling.md): Build a voice AI clinic workflow with medical triage protocols, appointment booking, and emergency routing using Vapi's visual workflow builder.
-- [E-commerce order management workflow](https://docs.vapi.ai/workflows/examples/ecommerce-order-management.md): Build a voice AI e-commerce workflow with order tracking, return processing, and customer support automation using Vapi's visual workflow builder.
-- [Property management call routing](https://docs.vapi.ai/workflows/examples/property-management.md): Build a voice AI property management system with dynamic call routing that determines destinations based on tenant verification, inquiry type analysis, and real-time agent availability using workflow API requests.
-- [Multilingual support workflow](https://docs.vapi.ai/workflows/examples/multilingual-support.md): Build a multilingual voice AI customer support workflow with language selection, dedicated conversation nodes, and cultural context using Vapi's workflow builder.
 - [Configuring Inbound and Outbound Calls for Squads](https://docs.vapi.ai/squads-example.md): Configuring assistants for inbound/outbound calls.
 - [Introduction to Squads (Multi-Assistant Conversations)](https://docs.vapi.ai/squads.md): Use Squads to handle complex workflows and tasks.
 - [Handoff tool](https://docs.vapi.ai/squads/handoff.md): Transfer the call to another assistant, squad, or dynamically determined destination.
@@ -165,7 +157,7 @@
 - [Scorecard quickstart](https://docs.vapi.ai/observability/scorecard-quickstart.md): Automatically grade calls against KPIs using structured outputs
 - [Monitoring quickstart](https://docs.vapi.ai/observability/monitoring-quickstart.md): Set up automated quality monitoring for your voice AI agents
 - [Voice AI Prompting Guide](https://docs.vapi.ai/prompting-guide.md): How to write effective prompts for voice AI assistants
-- [Debugging voice agents](https://docs.vapi.ai/debugging.md): Learn to identify, diagnose, and fix common issues with your voice assistants and workflows
+- [Debugging voice agents](https://docs.vapi.ai/debugging.md): Learn to identify, diagnose, and fix common issues with your voice assistants
 - [Enterprise environments (DEV/UAT/PROD)](https://docs.vapi.ai/documentation/best-practices/enterprise-environments-dev-uat-prod.md): Promotion and configuration management for assistants and squads
 - [IVR Navigation](https://docs.vapi.ai/ivr-navigation.md): How to navigate IVR menu systems effectively
 - [Test Suites](https://docs.vapi.ai/test/test-suites.md): End-to-end test automation for AI voice agents
@@ -198,10 +190,10 @@
 - [Model providers](https://docs.vapi.ai/providers/model/overview.md): Reference of every large language model provider Vapi supports, including provider IDs, HIPAA, GDPR, and PCI coverage, and where to configure each one.
 - [Anthropic](https://docs.vapi.ai/providers/model/anthropic.md): Connect Anthropic to Vapi to use Claude models as your voice agent's language model. Covers the supported Claude models and how to use them in the API.
 - [Anthropic Bedrock](https://docs.vapi.ai/providers/model/anthropic-bedrock.md): Connect AWS Bedrock credentials to Vapi and use Anthropic Claude models with your AWS account, regions, rate limits, and data controls.
-- [Anyscale](https://docs.vapi.ai/providers/model/anyscale.md): Connect Anyscale to Vapi to use an OpenAI-compatible endpoint as your voice agent's language model. Covers how to specify the model in the API.
+- [Anyscale](https://docs.vapi.ai/providers/model/anyscale.md): Connect an Anyscale account to Vapi and configure an assistant with the exact model ID available through your Anyscale account.
 - [Azure OpenAI](https://docs.vapi.ai/providers/model/azure-openai.md): Connect an Azure OpenAI resource to Vapi. Configure credentials, deployment names, supported models, regions, and endpoints.
 - [Cerebras](https://docs.vapi.ai/providers/model/cerebras.md): Connect Cerebras credentials to Vapi for use with supported integrations.
-- [DeepInfra](https://docs.vapi.ai/providers/model/deepinfra.md): Connect DeepInfra to Vapi and configure a model served by your DeepInfra account as your assistant's language model.
+- [DeepInfra](https://docs.vapi.ai/providers/model/deepinfra.md): Connect a DeepInfra account to Vapi and configure an assistant with an exact model ID from DeepInfra's current model catalog.
 - [DeepSeek](https://docs.vapi.ai/providers/model/deepseek.md): Connect DeepSeek credentials to Vapi for use with supported integrations.
 - [Google](https://docs.vapi.ai/providers/model/gemini.md): Configure Google Gemini as your Vapi assistant's language model and choose from the models Vapi supports.
 - [Groq](https://docs.vapi.ai/providers/model/groq.md): Connect Groq to Vapi, choose a supported model, and configure it as your assistant's language model.
@@ -209,12 +201,12 @@
 - [MiniMax](https://docs.vapi.ai/providers/model/minimax.md): Configure MiniMax as your Vapi assistant's language model and choose from the models Vapi supports.
 - [Mistral](https://docs.vapi.ai/providers/model/mistral.md): Connect Mistral to Vapi to use Mistral Large and Mistral Small as your voice agent's language model. Configure it in the dashboard.
 - [OpenAI](https://docs.vapi.ai/providers/model/openai.md): Configure OpenAI as your Vapi assistant's language model and choose from the GPT models Vapi supports.
-- [OpenRouter](https://docs.vapi.ai/providers/model/openrouter.md): Connect OpenRouter to Vapi and use a text-generation model ID from OpenRouter's current model catalog.
-- [Perplexity](https://docs.vapi.ai/providers/model/perplexity.md): Connect Perplexity to Vapi and configure a model served by your Perplexity account as your assistant's language model.
-- [Together AI](https://docs.vapi.ai/providers/model/togetherai.md): Connect Together AI to Vapi and configure a model served by your Together AI account as your assistant's language model.
+- [OpenRouter](https://docs.vapi.ai/providers/model/openrouter.md): Connect an OpenRouter account to Vapi and configure an assistant with an exact model ID from OpenRouter's current model catalog.
+- [Perplexity](https://docs.vapi.ai/providers/model/perplexity.md): Connect a Perplexity account to Vapi and configure an assistant with an exact model ID supported by the Perplexity Sonar API.
+- [Together AI](https://docs.vapi.ai/providers/model/togetherai.md): Connect a Together AI account to Vapi and configure an assistant with an exact model ID from Together AI's current serverless catalog.
 - [xAI](https://docs.vapi.ai/providers/model/xai.md): Configure xAI as your Vapi assistant's language model and choose from the Grok models Vapi supports.
 - [Transcribers (Speech-to-text)](https://docs.vapi.ai/providers/transcriber/overview.md): Reference of every speech-to-text provider Vapi supports, including provider IDs, HIPAA and GDPR (EU) coverage, and where to configure each one.
-- [AssemblyAI](https://docs.vapi.ai/providers/transcriber/assembly-ai.md): Configure AssemblyAI Universal-Streaming as your Vapi assistant's transcriber through the dashboard or API.
+- [AssemblyAI](https://docs.vapi.ai/providers/transcriber/assembly-ai.md): Configure AssemblyAI speech models, multilingual transcription, language steering, and prompting for a Vapi assistant.
 - [Azure](https://docs.vapi.ai/providers/transcriber/azure.md): Configure Azure Speech as your Vapi assistant's transcriber and select from the languages Vapi supports.
 - [Cartesia](https://docs.vapi.ai/providers/transcriber/cartesia.md): Configure Cartesia as your Vapi assistant's transcriber, including supported languages and transcription options.
 - [Deepgram](https://docs.vapi.ai/providers/transcriber/deepgram.md): Configure Deepgram as your Vapi assistant's transcriber, including supported models and languages.
@@ -322,6 +314,15 @@
 - API reference > Files [Get File](https://docs.vapi.ai/api-reference/files/get.md)
 - API reference > Files [Delete File](https://docs.vapi.ai/api-reference/files/delete.md)
 - API reference > Files [Update File](https://docs.vapi.ai/api-reference/files/update.md)
+- API reference > Knowledge Bases V2 [List Knowledge Bases V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-find-all.md)
+- API reference > Knowledge Bases V2 [Create a Knowledge Base V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-create.md)
+- API reference > Knowledge Bases V2 [List files in a Knowledge Base V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-files-get.md)
+- API reference > Knowledge Bases V2 [Attach and ingest a file](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-file-attach.md)
+- API reference > Knowledge Bases V2 [Detach a file](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-file-detach.md)
+- API reference > Knowledge Bases V2 [Retry indexing a failed file](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-file-retry.md)
+- API reference > Knowledge Bases V2 [Get a Knowledge Base V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-find-one.md)
+- API reference > Knowledge Bases V2 [Delete a Knowledge Base V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-remove.md)
+- API reference > Knowledge Bases V2 [Update a Knowledge Base V2](https://docs.vapi.ai/api-reference/knowledge-bases-v-2/knowledge-base-v-2-controller-update.md)
 - API reference > Structured Outputs [List Structured Outputs](https://docs.vapi.ai/api-reference/structured-outputs/structured-output-controller-find-all.md)
 - API reference > Structured Outputs [Create Structured Output](https://docs.vapi.ai/api-reference/structured-outputs/structured-output-controller-create.md)
 - API reference > Structured Outputs [Get Structured Output](https://docs.vapi.ai/api-reference/structured-outputs/structured-output-controller-find-one.md)

@@ -74,5 +74,5 @@ For CI/CD pipelines, use the `--api-key` flag or environment variable:
 - name: Transcribe audio
   env:
     DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
-  run: dg listen audio.mp3 -o json > transcript.json
+  run: dg -o json listen audio.mp3 > transcript.json
 ```

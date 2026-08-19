@@ -33,7 +33,7 @@ If you make changes to any items in the table at a later date, you must submit a
 - Includes required agreements
 - Required KYC fields
 - Approved by Stripe Compliance | Treasury for platforms and Issuing |
-| Fees and credits | You’ve [submitted your planned fees and credits to Stripe](https://docs.stripe.com/treasury/connect/compliance.md#fees-credits-rewards-terms) | Treasury for platforms and Issuing |
+| Fees and credits | You’ve [submitted your planned fees and credits to Stripe](https://docs.stripe.com/treasury/connect/legacy/v1/compliance.md#fees-credits-rewards-terms) | Treasury for platforms and Issuing |
 | Marketing and user interfaces | Your marketing materials, including your website landing pages, dashboards, and support pages:
 - Are approved by Stripe Compliance (or align with messaging guidelines)
 - Include bank disclosures | Treasury for platforms and Issuing |
@@ -59,7 +59,7 @@ Before you launch Treasury for platforms or Issuing, you must implement the prop
 
 ### Complaints program guidance
 
-Complaints are any expression of dissatisfaction with a product, service, policy, or employee related to Treasury for platforms or Issuing, except those expressions made by employees of your company. Properly handling complaints is mandatory when offering financial services products. See the [Handling complaints](https://docs.stripe.com/treasury/connect/handling-complaints.md) guide for detailed complaint management requirements.
+Complaints are any expression of dissatisfaction with a product, service, policy, or employee related to Treasury for platforms or Issuing, except those expressions made by employees of your company. Properly handling complaints is mandatory when offering financial services products. See the [Handling complaints](https://docs.stripe.com/treasury/connect/legacy/v1/handling-complaints.md) guide for detailed complaint management requirements.
 
 ### Disputes and charge errors
 
@@ -215,7 +215,7 @@ Providing statements, while optional, is a best practice that allows your Treasu
 
 ### Receipts
 
-One of the most important ongoing obligations you have in overseeing your Treasury for platforms or Issuing program is providing your customers with money transmissions receipts. Every regulated transaction your customers initiate generates a compliant money transmission receipt URL that you must share with your customer. You can provide these URL receipts in a few different ways, such as emailing them or making them available in your customer’s Dashboard. See the [Regulatory receipts guide](https://docs.stripe.com/treasury/connect/moving-money/regulatory-receipts.md) for more information on how to access hosted receipts. If you plan to charge your connected account owners any fees, whether they’re transactional or monthly recurring, include a description of the fee on the receipt so that they can reconcile it to corresponding transactions or monthly statements.
+One of the most important ongoing obligations you have in overseeing your Treasury for platforms or Issuing program is providing your customers with money transmissions receipts. Every regulated transaction your customers initiate generates a compliant money transmission receipt URL that you must share with your customer. You can provide these URL receipts in a few different ways, such as emailing them or making them available in your customer’s Dashboard. See the [Regulatory receipts guide](https://docs.stripe.com/treasury/connect/legacy/v1/moving-money/regulatory-receipts.md) for more information on how to access hosted receipts. If you plan to charge your connected account owners any fees, whether they’re transactional or monthly recurring, include a description of the fee on the receipt so that they can reconcile it to corresponding transactions or monthly statements.
 
 ## Going live and marketing 
 
@@ -332,7 +332,7 @@ Don’t use words like “bank account,” “deposit account," “checking acco
 - Financial account
 - Money transfer account
 
-See [Marketing Treasury for platforms-based services](https://docs.stripe.com/treasury/connect/marketing-financial-accounts.md) for a full list of terms you can and can’t use to describe your accounts and to learn how to talk about FDIC pass-through insurance eligibility. If you’re planning to describe FDIC pass-through insurance at all, your content must include [Stripe’s required FDIC pass-through insurance disclosure language](https://docs.stripe.com/treasury/connect/marketing-financial-accounts.md#how-to-talk-about-fdic-pass-through-insurance-eligibility). Inaccurately referring to financial accounts as “bank accounts” could result in regulatory action, including fines.
+See [Marketing Treasury for platforms-based services](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md) for a full list of terms you can and can’t use to describe your accounts and to learn how to talk about FDIC pass-through insurance eligibility. If you’re planning to describe FDIC pass-through insurance at all, your content must include [Stripe’s required FDIC pass-through insurance disclosure language](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md#how-to-talk-about-fdic-pass-through-insurance-eligibility). Inaccurately referring to financial accounts as “bank accounts” could result in regulatory action, including fines.
 
 | Category | Do | Don’t |
 | --- | --- | --- |

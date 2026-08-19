@@ -40,7 +40,7 @@ The **Voicemail Detection** tool allows your ElevenLabs agent to automatically i
 The voicemail detection tool can be configured with the following options:
 
 ![Voicemail detection configuration
-interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550/assets/images/conversational-ai/voicemail_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T113153Z&X-Amz-Expires=604800&X-Amz-Signature=b780477cb1700171666bd8c98b12e61478cf4de9f75c3c77e0058ed2dc6cc64e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550/assets/images/conversational-ai/voicemail_detection.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260819T233237Z&X-Amz-Expires=604800&X-Amz-Signature=d7359c59b0db10f133fd37e5b26467da371e51589cc5191e3582f47a111721a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * **Voicemail Message**: You can configure an optional custom message to be played when voicemail is detected. This message supports [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables), allowing you to personalize voicemail messages with runtime values such as `{{user_name}}` or `{{appointment_time}}`
 

@@ -630,7 +630,7 @@ Answers to common questions about BYOC:
   </Accordion>
 
   <Accordion title="What is the difference between BYOC and Pinecone's standard service?">
-    In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts.
+    In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts. For a cost breakdown, see [Pricing](#pricing).
   </Accordion>
 
   <Accordion title="How does authentication work?">
@@ -656,19 +656,34 @@ Answers to common questions about BYOC:
 
 ### Pricing
 
-BYOC pricing is based on provisioned resources (compute and storage) in your deployment, metered over time. Usage is measured by the Pinecone BYOC agent running in your cluster, which periodically reports the resources that are provisioned.
+Your Pinecone bill for a BYOC environment has two parts: a flat platform fee and a rate for each dedicated read node you run. Separately, you pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, databases, networking, etc.).
 
-What you pay:
+```
+Pinecone bill = platform fee + (node rate × number of nodes)
+```
 
-* Pinecone fees: Based on provisioned compute (vCPU and RAM) and storage (NVMe) resources
-* Cloud provider fees: You pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, databases, networking, etc.)
+| Term                | Description                                                                                                                                                                                                                                                        |
+| :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Platform fee**    | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support.                                                                                                                       |
+| **Node rate**       | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
+| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes#shards) × [replicas](/guides/index-data/dedicated-read-nodes#replicas) across every index in the environment, counted separately for each node type.                                                       |
 
-Billing follows the agent heartbeat connection to Pinecone's control plane:
+If an environment runs both `b1` and `t1` nodes, calculate the node cost for each type and add the results.
 
-* When heartbeats are received, you are billed for the provisioned compute and storage the agent reports, even if the cluster is unhealthy.
+Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
+
+<Tip>
+  For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).
+</Tip>
+
+**Example:** An environment with one index using two shards and two replicas runs four `b1` nodes, so its monthly bill is the platform fee plus four times the `b1` node rate, plus what you pay your cloud provider.
+
+The Pinecone BYOC agent running in your cluster measures node usage, periodically reporting which nodes are provisioned. Billing follows the agent heartbeat connection to Pinecone's control plane:
+
+* When Pinecone receives heartbeats, you're billed for the nodes the agent reports, even if the cluster is unhealthy.
 * Short heartbeat interruptions (under 60 minutes) are treated as a grace period.
 * If heartbeats are missing for more than 60 minutes, billing stops and the deployment is marked disconnected.
 
 <Note>
-  Billing is based on provisioned resources, not query volume. Resources that are running in your cluster are billed whether they are idle, actively processing queries, or experiencing errors.
+  Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster whether they're idle, actively processing queries, or experiencing errors.
 </Note>

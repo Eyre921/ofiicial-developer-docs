@@ -83,4 +83,5 @@ Learn how to [set up stablecoin-backed Issuing cards](https://docs.stripe.com/is
 
 - [Creating Cards](https://docs.stripe.com/issuing/cards/virtual/issue-cards.md)
 - [Stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md)
+- [Managed Support](https://docs.stripe.com/managed-support.md)
 

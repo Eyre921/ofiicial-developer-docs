@@ -71467,22 +71467,23 @@ try {
 
 ## Video Models
 
-| Provider                                                                | Model                       | Features                               |
-| ----------------------------------------------------------------------- | --------------------------- | -------------------------------------- |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video          |
-| [FAL](/providers/ai-sdk-providers/fal#video-models)                     | `minimax-video`             | Text-to-video                          |
-| [Google](/providers/ai-sdk-providers/google-generative-ai#video-models) | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-generate-001`      | Text-to-video, audio generation        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.1-fast-generate-001` | Text-to-video, audio generation        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-generate-001`      | Text-to-video, audio generation        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-3.0-fast-generate-001` | Text-to-video, audio generation        |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models) | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-t2v`            | Text-to-video                          |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-i2v`            | Image-to-video                         |
-| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)            | `kling-v2.6-motion-control` | Motion control                         |
-| [Replicate](/providers/ai-sdk-providers/replicate#video-models)         | `minimax/video-01`          | Text-to-video                          |
-| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V |
-| [xAI](/providers/ai-sdk-providers/xai#video-models)                     | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V |
+| Provider                                                                        | Model                       | Features                                                                       |
+| ------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------ |
+| [Black Forest Labs](/providers/ai-sdk-providers/black-forest-labs#video-models) | `flux-3-video`              | Text-to-video, image-to-video, keyframes, video continuation, audio generation |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                             | `luma-dream-machine/ray-2`  | Text-to-video, image-to-video                                                  |
+| [FAL](/providers/ai-sdk-providers/fal#video-models)                             | `minimax-video`             | Text-to-video                                                                  |
+| [Google](/providers/ai-sdk-providers/google-generative-ai#video-models)         | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                         |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.1-generate-001`      | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.1-fast-generate-001` | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.0-generate-001`      | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-3.0-fast-generate-001` | Text-to-video, audio generation                                                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#video-models)         | `veo-2.0-generate-001`      | Text-to-video, up to 4 videos per call                                         |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-t2v`            | Text-to-video                                                                  |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-i2v`            | Image-to-video                                                                 |
+| [Kling AI](/providers/ai-sdk-providers/klingai#video-models)                    | `kling-v2.6-motion-control` | Motion control                                                                 |
+| [Replicate](/providers/ai-sdk-providers/replicate#video-models)                 | `minimax/video-01`          | Text-to-video                                                                  |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                             | `grok-imagine-video`        | Text-to-video, image-to-video, editing, extension, R2V                         |
+| [xAI](/providers/ai-sdk-providers/xai#video-models)                             | `grok-imagine-video-1.5`    | Text-to-video, image-to-video, editing, extension, R2V                         |
 
 Above are a small subset of the video models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -84116,6 +84117,63 @@ The custom tool can be configured with:
   - **syntax** _'regex' | 'lark'_ - (grammar only) The grammar syntax. Use `'regex'` for regular expression patterns or `'lark'` for [Lark parser grammar](https://lark-parser.readthedocs.io/).
   - **definition** _string_ - (grammar only) The grammar definition string (a regex pattern or Lark grammar).
 - **execute** _function_ (optional) - An async function that receives the raw string input and returns a string result. Enables multi-turn tool calling.
+
+#### Restricting Callable Tools
+
+The `allowedTools` provider option restricts which of the tools you declared the model is allowed to
+call, while still sending the full `tools` list to OpenAI. Because the tools list stays byte-identical
+across requests, the prompt cache is preserved — unlike `activeTools`, which removes tools from the
+request and invalidates the cache whenever the allow-list changes.
+
+`allowedTools` is only supported by the Responses API, and it overrides the request-level `toolChoice`.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { generateText } from 'ai';
+
+const result = await generateText({
+  model: openai.responses('gpt-5.5'),
+  tools: {
+    weather: weatherTool,
+    cityAttractions: cityAttractionsTool,
+    search: openai.tools.webSearch(),
+  },
+  providerOptions: {
+    openai: {
+      allowedTools: { toolNames: ['weather', 'search'], mode: 'auto' },
+    },
+  },
+  prompt: 'What is the weather in San Francisco?',
+});
+```
+
+- **toolNames** _string[]_ - The tools the model may call, named as you declared them in `tools`. For
+  provider-defined tools you may also use the canonical OpenAI name (for example `web_search`).
+- **mode** _'auto' | 'required'_ (optional) - `'auto'` (default) lets the model pick one of the allowed
+  tools or answer with a message; `'required'` forces it to call at least one of them.
+
+Both function tools and provider-defined tools can be allow-listed, including web search, file search,
+image generation, code interpreter, apply patch, shell, custom tools, and MCP servers.
+
+If a name matches both a tool you declared and the canonical OpenAI name of a different tool, the tool
+you declared under that name wins, and a warning reports the ambiguity. If several tools share the same
+canonical name — two MCP servers, for example — that name is ambiguous, so it is dropped with a warning;
+name those tools as you declared them instead.
+
+<Note>
+  Three kinds of tools cannot be allow-listed, because OpenAI's `allowed_tools`
+  only sees the eagerly-loaded tool list: the [tool search tool](#tool-search),
+  tools marked with `deferLoading`, and tools grouped into a namespace. Naming
+  one of these in `allowedTools` removes it from the allow-list and emits a
+  warning; if that leaves no tools at all, the request fails with an error
+  instead of silently sending no restriction.
+</Note>
+
+<Note>
+  An MCP server is allow-listed as a whole: the entry carries the server label,
+  so every tool on that server is callable. To restrict which tools on a server
+  the model may call, use the MCP tool's own `allowedTools` argument.
+</Note>
 
 #### Image Inputs
 
@@ -116456,10 +116514,10 @@ For simpler use cases that don't need durability, use [`ToolLoopAgent`](/docs/ag
 ## Installation
 
 ```bash
-npm install @ai-sdk/workflow workflow
+npm install @ai-sdk/workflow workflow@beta
 ```
 
-`@ai-sdk/workflow` requires the `ai` package and `zod` as peer dependencies. The `workflow` package provides the Workflow DevKit runtime (`getWritable`, `'use workflow'`, `'use step'`).
+`@ai-sdk/workflow` requires Workflow 5, which is currently available under the `beta` tag, as well as the `ai` package and `zod` peer dependencies. The `workflow` package provides the Workflow DevKit runtime (`getWritable`, `'use workflow'`, `'use step'`).
 
 ## Creating a WorkflowAgent
 
@@ -116604,6 +116662,11 @@ return createUIMessageStreamResponse({
   stream: run.readable.pipeThrough(createModelCallToUIChunkTransform()),
 });
 ```
+
+The transform also forwards `reset-step` events emitted by `WorkflowAgent` on
+retries.
+Clients remove partial parts from the failed model-call step before processing
+the retried output.
 
 ## Resumable Streaming with WorkflowChatTransport
 
@@ -117009,7 +117072,7 @@ export type MyAgentUIMessage = InferWorkflowAgentUIMessage<typeof myAgent>;
 Install the new package alongside `workflow`:
 
 ```bash
-npm install @ai-sdk/workflow
+npm install @ai-sdk/workflow workflow@beta
 ```
 
 ### Write `ModelCallStreamPart`, not `UIMessageChunk`
@@ -120277,6 +120340,12 @@ Create an MCP client using one of the following transport options:
 - SSE (Server-Sent Events): An alternative HTTP-based transport
 - `stdio`: For local development only. Uses standard input/output streams for local MCP servers
 
+The AI SDK MCP client supports both legacy initialization-based protocol
+versions and stateless MCP `2026-07-28`. The built-in stdio transport probes
+with `server/discover` and automatically falls back to the legacy
+`initialize` handshake for older servers. Custom transports can opt into this
+negotiation with `supportsProtocolVersionDiscovery: true`.
+
 ### HTTP Transport (Recommended)
 
 For production deployments, we recommend using the HTTP transport. You can configure it directly on the client:
@@ -120301,8 +120370,9 @@ const mcpClient = await createMCPClient({
 });
 ```
 
-If the MCP server uses Streamable HTTP sessions, you can reattach to a saved
-session by restoring both the previous session id and initialize result:
+If a legacy MCP server uses Streamable HTTP sessions, you can reattach to a
+saved session by restoring both the previous session id and initialize result.
+MCP `2026-07-28` is stateless and does not use these options:
 
 ```typescript
 import { createMCPClient } from '@ai-sdk/mcp';
@@ -120454,6 +120524,32 @@ const myOAuthClientProvider = {
 This hook is called before the SDK fetches authorization server metadata, so a
 rejected URL is not requested. It is optional and does not change existing OAuth
 flows unless you implement it.
+
+### OAuth Callback Issuer Validation
+
+When completing an OAuth authorization callback, pass the callback's `iss`
+parameter to `auth` as `callbackIssuer`:
+
+```typescript
+import { auth } from '@ai-sdk/mcp';
+
+const callbackUrl = new URL(request.url);
+
+await auth(myOAuthClientProvider, {
+  serverUrl: 'https://mcp.example.com',
+  authorizationCode: callbackUrl.searchParams.get('code')!,
+  callbackState: callbackUrl.searchParams.get('state') ?? undefined,
+  callbackIssuer: callbackUrl.searchParams.get('iss') ?? undefined,
+});
+```
+
+When `iss` is present, it must exactly match the discovered authorization
+server issuer. The authorization code is not exchanged when it does not match.
+
+Dynamic client registration requests include an OAuth `application_type`. The
+client infers `native` for loopback, localhost, and custom-scheme redirects,
+and `web` for remote HTTP(S) redirects. You can override this by setting
+`application_type` in the provider's `clientMetadata`.
 
 ### Retrying Transient Tool Failures
 
@@ -128712,6 +128808,11 @@ End every session explicitly:
 Use `destroy()` for one-off scripts and tests. Use `detach()` or `stop()` for
 HTTP routes that need multi-turn continuity.
 
+When you pass `sandboxSession` to `agent.createSession()`, the caller retains
+ownership of that sandbox. `session.stop()` and `session.destroy()` still end
+the harness runtime but do not stop or destroy the supplied sandbox session.
+In this case, the agent does not need a `sandbox` provider in its constructor.
+
 ```ts
 const session = await agent.createSession({ sessionId: chatId });
 
@@ -128933,10 +129034,7 @@ const sandboxFromSnapshot = await Sandbox.create({
 
 const agent = new HarnessAgent({
   harness: claudeCode,
-  sandbox: createVercelSandbox({
-    sandbox: sandboxFromSnapshot,
-    bridgePorts: [4000],
-  }),
+  sandbox: createVercelSandbox({ sandbox: sandboxFromSnapshot }),
   sandboxConfig,
 });
 
@@ -128968,6 +129066,51 @@ console.log(preparation.identity);
 
 Adapter-specific settings belong on the adapter factory, for example
 `createCodex({ reasoningEffort: 'high' })`.
+
+## Custom Sandbox Orchestration
+
+When your application creates and manages sandboxes itself, prepare the network
+sandbox session first and then pass that same session to `agent.createSession()`.
+The agent does not need a sandbox provider and does not stop or destroy the
+caller-owned sandbox.
+
+```ts
+import { HarnessAgent, prepareSandboxForHarness } from '@ai-sdk/harness/agent';
+import { claudeCode } from '@ai-sdk/harness-claude-code';
+import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { Sandbox } from '@vercel/sandbox';
+
+const sandbox = await Sandbox.create({
+  runtime: 'node24',
+  ports: [4000],
+});
+const sandboxProvider = createVercelSandbox({ sandbox });
+const sandboxSession = await sandboxProvider.createSession();
+
+await prepareSandboxForHarness({
+  session: sandboxSession.restricted(),
+  harnesses: [claudeCode],
+});
+
+const agent = new HarnessAgent({ harness: claudeCode });
+const session = await agent.createSession({ sandboxSession });
+
+try {
+  const result = await agent.stream({
+    session,
+    prompt: 'Create a short TODO.md for this repository.',
+  });
+
+  for await (const part of result.stream) {
+    if (part.type === 'text-delta') {
+      process.stdout.write(part.text);
+    }
+  }
+} finally {
+  await session.destroy();
+  await sandbox.stop();
+}
+```
 
 ## Next Steps
 

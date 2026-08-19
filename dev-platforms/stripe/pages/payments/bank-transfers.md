@@ -46,7 +46,7 @@ Bank transfers provide a safe way for customers to send money over bank rails. W
 
 - **Dispute support**
 
-   [US only](https://docs.stripe.com/payments/bank-transfers.md#disputes)
+  [US only](https://docs.stripe.com/payments/bank-transfers.md#disputes)
 
 - **Manual capture support**
 

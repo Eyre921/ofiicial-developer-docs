@@ -160,7 +160,7 @@ To add a Private Endpoint using the [Pinecone console](https://app.pinecone.io/o
 9. Click **Finish setup**.
 
 <Note>
-  Private Endpoints only affect [data plane](/reference/api/latest/data-plane) access. [Control plane](/reference/api/latest/control-plane) access will continue over the public internet.
+  Private Endpoints only affect [data plane](/guides/get-started/database-architecture#data-plane) access. [Control plane](/guides/get-started/database-architecture#control-plane) access will continue over the public internet.
 </Note>
 
 ## Read and write data

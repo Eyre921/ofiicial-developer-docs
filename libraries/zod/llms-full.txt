@@ -213,6 +213,14 @@ Zod provides a handful of built-in string validation and transform APIs. To perf
   </Tab>
 </Tabs>
 
+Length is measured in Unicode code points, not UTF-16 code units. Emoji outside the Basic Multilingual Plane count as one, and combining marks and ZWJ sequences count as several.
+
+```ts
+z.string().length(1).parse("😀"); // one code point, two UTF-16 units
+z.string().length(2).parse("e\u0301"); // "é" — an e plus a combining acute
+z.string().length(3).parse("🧑‍🍼"); // person + ZWJ + baby bottle
+```
+
 To perform some simple string transforms:
 
 <Tabs groupId="lib" items={["Zod", "Zod Mini"]}>
@@ -408,7 +416,7 @@ This schema validates strings with a leading `+`, a non-zero country code, and 7
 
 As you may have noticed, Zod string includes a few date/time related validations. These validations are regular expression based, so they are not as strict as a full date/time library. However, they are very convenient for validating user input.
 
-The `z.iso.datetime()` method enforces ISO 8601; by default, no timezone offsets are allowed:
+The `z.iso.datetime()` method accepts a strict subset of ISO 8601; by default, no timezone offsets are allowed:
 
 ```ts
 const datetime = z.iso.datetime();
@@ -2217,6 +2225,20 @@ blobSchema.parse("hello there!"); // ✅
 blobSchema.parse("hello."); // ❌
 ```
 
+Use `z.properties()` to declare several property checks from an object literal. It returns an array to spread into `.check()`.
+
+```ts
+const httpsUrl = z.instanceof(URL).check(
+  ...z.properties({
+    protocol: z.literal("https:" as string),
+    hostname: z.string().regex(z.regexes.domain),
+  })
+);
+
+httpsUrl.parse(new URL("https://example.com")); // ✅
+httpsUrl.parse(new URL("http://localhost")); // ❌ protocol
+```
+
 ## Refinements
 
 Every Zod schema stores an array of *refinements*. Refinements are a way to perform custom validation that Zod doesn't provide a native API for.
@@ -3362,6 +3384,19 @@ Use `.apply()` to incorporate external functions into Zod's method chain:
   </Tab>
 </Tabs>
 
+Additional arguments are passed through to the function:
+
+```ts
+function withDefault<T extends z.ZodType>(schema: T, value: z.output<T>) {
+  return schema.nullish().transform((val) => val ?? value);
+}
+
+const schema = z.string().apply(withDefault, "anonymous");
+
+schema.parse(undefined); // => "anonymous"
+schema.parse("sandwich"); // => "sandwich"
+```
+
 
 # Basic usage
 
@@ -4119,6 +4154,12 @@ uriComponent.encode("Hello World!");      // => "Hello%20World!"
 
 # AOT compilation
 
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Callout type="warn">
+  Compilation is canary-only — it has not shipped in a stable release yet. Install with `npm install zod@canary`.
+</Callout>
+
 For hot validation paths, Zod can compile a schema into a specialized validator ahead of time, with identical results and identical errors.
 
 Across a 55-schema benchmark the median speedup is **2.4x**. It scales with how much work the schema does per parse, because what compilation removes is per-node dispatch and allocation rather than the checks themselves:
@@ -4206,6 +4247,8 @@ Compilation is sync and forward-only. `z.compile()` throws if the schema can't b
   * `.catch()` given a *callback*. A callback receives issues finalized against the caller's error map, which compiled code never sees. `.catch(value)` with a constant compiles normally.
 
 Inside containers (objects, arrays, tuples, records, intersections), an unsupported *child* doesn't prevent compilation — the child runs on the standard parser while the surrounding structure stays compiled.
+
+`.catch()` with a callback is the exception: it's the one construct that *consumes* issues instead of propagating them, so running only that node on the standard parser would finalize its issues against the wrong error map and still succeed. A schema containing one refuses to compile as a whole.
 
 Under global mode, schemas that fail to compile silently keep using the standard parser. There is no behavioral difference — only the speedup is lost. For this reason, avoid enabling global mode in a library on behalf of your users; leave the choice to the application.
 
@@ -5612,11 +5655,14 @@ z.null();
 
 Note that `z.undefined()` is unrepresentable in JSON Schema (see [below](#unrepresentable)).
 
-Similarly, `nullable` is represented via a union with `null`:
+Similarly, `nullable` adds `"null"` to the set of accepted types. Inner schemas that can't be written as a bare type fall back to `anyOf`:
 
 ```ts
 z.nullable(z.string());
-// => { oneOf: [{ type: "string" }, { type: "null" }] }
+// => { type: ["string", "null"] }
+
+z.nullable(z.string().min(5));
+// => { anyOf: [{ type: "string", minLength: 5 }, { type: "null" }] }
 ```
 
 Optional schemas are represented as-is, though they are decorated with an `optional` annotation.

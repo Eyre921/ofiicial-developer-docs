@@ -148,7 +148,7 @@ After creating an index, you cannot vertically downscale the index/pod size. Ins
 
 ### Check the status of a pod size change
 
-To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
+To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
 
 The index fullness metric provided by [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) may be inaccurate until the resizing process is complete.
 

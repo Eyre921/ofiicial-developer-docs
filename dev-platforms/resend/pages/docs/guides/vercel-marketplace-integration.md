@@ -21,7 +21,7 @@ Before you begin, make sure you have the following:
 * A Vercel account with a project.
 * A domain purchased in Vercel.
 
-## Three surfaces
+## Two surfaces
 
 You can add Resend to a Vercel project from any of these surfaces:
 
@@ -60,6 +60,15 @@ Add Resend to the linked project from your terminal. With the [Vercel CLI](https
 7. Click **Auto configure** to automatically add the DNS records to your Vercel domain.
 
 Get more help adding a custom domain in [Resend's documentation](/docs/dashboard/domains/introduction).
+
+## Billing
+
+Accounts created from the Marketplace are billed by Vercel. Manage your account from the Vercel installation dashboard.
+
+<Warning>
+  Discounts, promo codes, and startup or partner credits do not apply to
+  Marketplace plans.
+</Warning>
 
 ## Next steps
 

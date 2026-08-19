@@ -280,6 +280,7 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins):** Build, debug & deploy with AI.
 - **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins):** Your AI accelerator for every workflow, from the editor to the enterprise.
 - **[Goose](https://supabase.com/docs/guides/ai-tools/mcp):** Your native open source AI agent — desktop app, CLI, and API.
+- **[Grok](https://supabase.com/docs/guides/ai-tools/plugins):** Connect using the Supabase MCP server or plugin.
 - **[Kimi Code](https://supabase.com/docs/guides/ai-tools/plugins):** Engineered to drop into any dev workflow and get programming tasks done fast.
 - **[Kiro](https://supabase.com/docs/guides/ai-tools/mcp):** Move beyond AI coding to agentic engineering.
 - **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp):** The open source AI coding agent.
@@ -673,6 +674,25 @@ codex mcp login supabase
 
 Finally, run `/mcp` inside Codex to verify authentication.
 
+**Grok**
+
+Add the Supabase MCP server to Grok:
+
+```bash
+grok mcp add supabase "https://mcp.supabase.com/mcp" --transport http
+```
+
+Alternatively, add this configuration to `~/.grok/config.toml`:
+
+```toml
+[mcp_servers.supabase]
+url = "https://mcp.supabase.com/mcp"
+```
+
+The command writes the server to your user config (`~/.grok/config.toml`), making it available across all your projects. Start Grok and complete the Supabase OAuth flow when prompted on first use.
+
+Verify the connection by running `/mcps` inside a Grok session, or `grok mcp doctor supabase` from your terminal.
+
 **Gemini CLI**
 
 > **Warning:** Ensure you are running Gemini CLI version `0.20.2` or higher.
@@ -953,9 +973,7 @@ Add this configuration to `~/.warp/.mcp.json`:
 
 **Authentication**
 
-Some MCP clients automatically prompt you to log in during setup, while others require manual authentication steps. Either way, a browser window opens where you log in to your Supabase account and grant the MCP client access to your organization.
-
-A personal access token (PAT) was previously required, but is no longer needed.
+Some MCP clients automatically prompt you to log in during setup. Others require manual authentication steps. Either method opens a browser window where you log in to your Supabase account and grant the MCP client access to your organization. You don't need a personal access token (PAT).
 
 ### Next steps
 
@@ -7624,7 +7642,7 @@ end;
 $$ language plpgsql stable security definer set search_path = '';
 ```
 
-Note: You can read more about using functions in RLS policies in the [RLS guide](https://supabase.com/docs/guides/database/postgres/row-level-security#using-functions).
+Note: You can read more about using functions in RLS policies in the [RLS guide](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions).
 
 You can then use the `authorize` method within your RLS policies. For example, to enable the desired delete access, you would add the following policies:
 
@@ -7660,7 +7678,7 @@ You now have a robust system in place to manage user roles and permissions withi
 
 - [Auth Hooks](https://supabase.com/docs/guides/auth/auth-hooks)
 - [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
-- [RLS Functions](https://supabase.com/docs/guides/database/postgres/row-level-security#using-functions)
+- [RLS helper functions](https://supabase.com/docs/guides/database/postgres/row-level-security#helper-functions)
 - [Next.js Slack Clone Example](https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-slack-clone)
 
 
@@ -19101,7 +19119,7 @@ https://<project-ref>.supabase.co/auth/v1/oauth/authorize?
 | `client_id`             | The client ID from registration              |
 | `redirect_uri`          | Must exactly match a registered redirect URI |
 | `code_challenge`        | The generated code challenge                 |
-| `code_challenge_method` | Must be `S256` (SHA-256)                     |
+| `code_challenge_method` | `S256` (SHA-256, recommended) or `plain`     |
 
 #### Optional parameters
 
@@ -63821,7 +63839,48 @@ EXECUTE FUNCTION dont_drop_function();
 
 ### Example trigger function - auto enable Row Level Security
 
-See how to [auto enable RLS for new tables](https://supabase.com/docs/guides/database/postgres/row-level-security#auto-enable-rls-for-new-tables).
+If you want [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled automatically for new tables, create an event trigger that runs after table creation and calls `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` on each newly created table.
+
+```sql
+CREATE OR REPLACE FUNCTION rls_auto_enable()
+RETURNS EVENT_TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  cmd record;
+BEGIN
+  FOR cmd IN
+    SELECT *
+    FROM pg_event_trigger_ddl_commands()
+    WHERE command_tag IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')
+      AND object_type IN ('table','partitioned table')
+  LOOP
+     IF cmd.schema_name IS NOT NULL AND cmd.schema_name IN ('public') AND cmd.schema_name NOT IN ('pg_catalog','information_schema') AND cmd.schema_name NOT LIKE 'pg_toast%' AND cmd.schema_name NOT LIKE 'pg_temp%' THEN
+      BEGIN
+        EXECUTE format('alter table if exists %s enable row level security', cmd.object_identity);
+        RAISE LOG 'rls_auto_enable: enabled RLS on %', cmd.object_identity;
+      EXCEPTION
+        WHEN OTHERS THEN
+          RAISE LOG 'rls_auto_enable: failed to enable RLS on %', cmd.object_identity;
+          RAISE;
+      END;
+     ELSE
+        RAISE LOG 'rls_auto_enable: skip % (either system schema or not in enforced list: %.)', cmd.object_identity, cmd.schema_name;
+     END IF;
+  END LOOP;
+END;
+$$;
+
+DROP EVENT TRIGGER IF EXISTS ensure_rls;
+CREATE EVENT TRIGGER ensure_rls
+ON ddl_command_end
+WHEN TAG IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')
+EXECUTE FUNCTION rls_auto_enable();
+```
+
+Note that this applies to tables created after the trigger is installed. Existing tables still need RLS enabled manually.
 
 ### Event trigger Functions and firing events
 
@@ -64189,46 +64248,180 @@ An internal role Supabase uses for administrative tasks, such as running upgrade
 
 ---
 
+# Row Level Security performance
+
+Measure and tune Postgres Row Level Security policies.
+
+Measure the cost of Row Level Security (RLS) and tune policies that are already correct. To learn how to write correct policies, see [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
+Postgres evaluates a policy expression against each candidate row, so the cost scales with the rows a query scans. This matters most for queries that scan every row in a table, like many `select` operations, including those using limit, offset, and ordering.
+
+Three policy rules affect performance enough that they belong with the policy itself rather than here. Apply them first:
+
+- [Index the columns your policies filter on](https://supabase.com/docs/guides/database/postgres/row-level-security#add-indexes)
+- [Call functions with `select`](https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select)
+- [Specify roles in your policies](https://supabase.com/docs/guides/database/postgres/row-level-security#specify-roles-in-your-policies)
+
+## Diagnose whether RLS is the bottleneck
+
+Confirm that policies are the cost before you rewrite one. Run the query with RLS enabled, then again with it disabled, and compare. If the times are similar, the query itself is the problem.
+
+Caution: Disabling RLS exposes every row in the table to any role with a matching grant. Only do this in a non-production environment.
+
+To reproduce an API request, set the JWT claims and switch to the role the request runs as:
+
+```sql
+set session role authenticated;
+set request.jwt.claims to '{"role":"authenticated", "sub":"5950b438-b07c-4012-8190-6ce79e4bd8e5"}';
+
+explain analyze select count(*) from rlstest;
+
+set session role postgres;
+```
+
+The output shows the policy expression as a filter, and the execution time is the number to compare:
+
+```
+Seq Scan on rlstest  (cost=0.00..4334.00 rows=1 width=35) (actual time=170.999..170.999 rows=0 loops=1)
+  Filter: ((COALESCE(NULLIF(current_setting('request.jwt.claim.sub'::text, true), ''::text), ((NULLIF(current_setting('request.jwt.claims'::text, true), ''::text))::jsonb ->> 'sub'::text)))::uuid = user_id)
+  Rows Removed by Filter: 100000
+Planning Time: 0.216 ms
+Execution Time: 171.033 ms
+```
+
+`Rows Removed by Filter` is the signal to watch. A policy that removes most of the table on every read is a policy whose filter column needs an index.
+
+### Measure through the Data API
+
+PostgREST can return the query plan to a Supabase client. Enable it first:
+
+```sql
+alter role authenticator set pgrst.db_plan_enabled to true;
+notify pgrst, 'reload config';
+```
+
+Caution: `pgrst.db_plan_enabled` exposes query plans over your Data API. Don't enable it in production.
+
+Then add the `.explain()` modifier to a query:
+
+```js
+const { data, error } = await supabase
+  .from('projects')
+  .select('*')
+  .eq('id', 1)
+  .explain({ analyze: true })
+
+console.log(data)
+```
+
+```
+Aggregate  (cost=8.18..8.20 rows=1 width=112) (actual time=0.017..0.018 rows=1 loops=1)
+  ->  Index Scan using projects_pkey on projects  (cost=0.15..8.17 rows=1 width=40) (actual time=0.012..0.012 rows=0 loops=1)
+        Index Cond: (id = 1)
+        Filter: false
+        Rows Removed by Filter: 1
+Planning Time: 0.092 ms
+Execution Time: 0.046 ms
+```
+
+## Filter in the client query too
+
+Policies are implicit `where` clauses, so it's common to run `select` statements without any filters. That's a bad pattern for performance. Instead of this:
+
+```js
+const { data } = await supabase
+  .from('table')
+  .select()
+```
+
+Always add a filter:
+
+```js
+const { data } = await supabase
+  .from('table')
+  .select()
+  .eq('user_id', userId)
+```
+
+Even though this duplicates the contents of the policy, Postgres can use the filter to construct a better query plan.
+
+## Avoid joins in policy expressions
+
+You can often rewrite a policy to avoid a join between the source and the target table. Fetch the relevant data from the target table into an array or set instead, then use an `in` or `any` operation in your filter.
+
+This policy joins the source `test_table` to the target `team_user`:
+
+```sql
+create policy "rls_test_select" on test_table
+to authenticated
+using (
+  (select auth.uid()) in (
+    select user_id
+    from team_user
+    where team_user.team_id = test_table.team_id -- joins to the source table
+  )
+);
+```
+
+Rewriting it selects the filter criteria into a set instead:
+
+```sql
+create policy "rls_test_select" on test_table
+to authenticated
+using (
+  team_id in (
+    select team_id
+    from team_user
+    where user_id = (select auth.uid()) -- no join
+  )
+);
+```
+
+You can also use a [security definer function](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions) to bypass RLS on the join table.
+
+Note: If the list exceeds 1000 items, a different approach may be needed, or you may need to analyze the approach to ensure that the performance is acceptable.
+
+## More resources
+
+- [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+- [Managing indexes in Postgres](https://supabase.com/docs/guides/database/postgres/indexes)
+- [Query optimization](https://supabase.com/docs/guides/database/query-optimization)
+
+
+---
+
 # Row Level Security
 
 Secure your data using Postgres Row Level Security.
 
-When you need granular authorization rules, nothing beats Postgres's [Row Level Security (RLS)](https://www.postgresql.org/docs/current/ddl-rowsecurity.html).
+Postgres [Row Level Security (RLS)](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) gives you granular authorization rules that run inside the database.
 
-## Row Level Security in Supabase
+Danger: A table in an exposed schema without RLS is readable and writable by any role with a grant on it. Enable RLS on every table in an exposed schema. On projects that still grant `anon` and `authenticated` by default, revoke those grants. Adding policies doesn't remove them.
 
-Danger: Supabase allows convenient and secure data access from the browser, as long as you enable RLS.
+Use the guide in three parts:
 
-RLS *must* always be enabled on any tables stored in an exposed schema. By default, this is the `public` schema.
+- [Understand Row Level Security](#understand-row-level-security) explains how grants and policies combine to control access.
+- [Secure a table with RLS](#secure-a-table-with-rls) is the procedure to follow for every table in an exposed schema.
+- [RLS reference](#rls-reference) documents the helper functions and patterns you use inside a policy expression.
 
-RLS is enabled by default on tables created with the Table Editor in the dashboard. If you create one in raw SQL or with the SQL editor, remember to enable RLS yourself and grant only the permissions each Postgres role needs.
+Read the first section when you're deciding how to model access. Go directly to the second section when you're ready to secure a table.
 
-```sql
-GRANT SELECT ON <schema_name>.<table_name> TO anon;
-GRANT SELECT, INSERT, UPDATE, DELETE ON <schema_name>.<table_name> TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON <schema_name>.<table_name> TO service_role;
+## Understand Row Level Security
 
-alter table <schema_name>.<table_name>
-enable row level security;
-```
+### What a policy does
 
-RLS is incredibly powerful and flexible, allowing you to write complex SQL rules that fit your unique business needs. RLS can be combined with [Supabase Auth](https://supabase.com/docs/guides/auth) for end-to-end user security from the browser to the database.
+[Policies](https://www.postgresql.org/docs/current/sql-createpolicy.html) are Postgres's rule engine. Each policy is attached to a table, and the policy is executed every time a table is accessed.
 
-RLS is a Postgres primitive and can provide "[defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_\(computing\))" to protect your data from malicious actors even when accessed through third-party tooling.
-
-## Policies
-
-[Policies](https://www.postgresql.org/docs/current/sql-createpolicy.html) are Postgres's rule engine. Policies are easy to understand once you get the hang of them. Each policy is attached to a table, and the policy is executed every time a table is accessed.
-
-You can just think of them as adding a `WHERE` clause to every query. For example a policy like this ...
+Think of a policy as adding a `WHERE` clause to every query. A policy like this:
 
 ```sql
 create policy "Individuals can view their own todos."
 on todos for select
+to authenticated
 using ( (select auth.uid()) = user_id );
 ```
 
-.. would translate to this whenever a user tries to select from the todos table:
+That policy translates to this whenever a user selects from the todos table:
 
 ```sql
 select *
@@ -64237,83 +64430,27 @@ where auth.uid() = todos.user_id;
 -- Policy is implicitly added.
 ```
 
-## Enabling Row Level Security
+You write RLS rules in SQL, so a rule can express whatever access logic your app needs. Because RLS is a Postgres primitive, it also protects your data when it is reached through third-party tooling, which is what makes it "[defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_\(computing\))". Combine RLS with [Supabase Auth](https://supabase.com/docs/guides/auth) for end-to-end user security from the browser to the database.
 
-You can enable RLS for any table using the `enable row level security` clause:
+### Grants and policies
 
-```sql
-alter table "table_name" enable row level security;
-```
+Postgres runs two checks before a client touches a table. Grants decide whether a role can run an operation on the table at all. Policies decide which rows that operation applies to. Set both for every table you expose.
 
-Once you have enabled RLS, no data will be accessible via the [API](https://supabase.com/docs/guides/api) when using a publishable key, until you create policies.
+On existing projects, a new table in `public` starts with every privilege already granted to all three roles:
 
-## Auto-enable RLS for new tables
+| Role            | Granted automatically                  | What it should keep                                     |
+| --------------- | -------------------------------------- | ------------------------------------------------------- |
+| `anon`          | `select`, `insert`, `update`, `delete` | Only what signed-out visitors are meant to read         |
+| `authenticated` | `select`, `insert`, `update`, `delete` | Only the operations your app exposes to signed-in users |
+| `service_role`  | `select`, `insert`, `update`, `delete` | Full access. It bypasses RLS, so keep it server-side    |
 
-If you want RLS enabled automatically for new tables, you can create an event trigger that runs after table creation. This uses a Postgres [event trigger](https://supabase.com/docs/guides/database/postgres/event-triggers) to call `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` on each newly created table.
+Adding policies doesn't take those grants back. A table protected only by policies still hands `anon` an insert path if you never revoke the grant.
 
-```sql
-CREATE OR REPLACE FUNCTION rls_auto_enable()
-RETURNS EVENT_TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = pg_catalog
-AS $$
-DECLARE
-  cmd record;
-BEGIN
-  FOR cmd IN
-    SELECT *
-    FROM pg_event_trigger_ddl_commands()
-    WHERE command_tag IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')
-      AND object_type IN ('table','partitioned table')
-  LOOP
-     IF cmd.schema_name IS NOT NULL AND cmd.schema_name IN ('public') AND cmd.schema_name NOT IN ('pg_catalog','information_schema') AND cmd.schema_name NOT LIKE 'pg_toast%' AND cmd.schema_name NOT LIKE 'pg_temp%' THEN
-      BEGIN
-        EXECUTE format('alter table if exists %s enable row level security', cmd.object_identity);
-        RAISE LOG 'rls_auto_enable: enabled RLS on %', cmd.object_identity;
-      EXCEPTION
-        WHEN OTHERS THEN
-          RAISE LOG 'rls_auto_enable: failed to enable RLS on %', cmd.object_identity;
-      END;
-     ELSE
-        RAISE LOG 'rls_auto_enable: skip % (either system schema or not in enforced list: %.)', cmd.object_identity, cmd.schema_name;
-     END IF;
-  END LOOP;
-END;
-$$;
+Not every project grants these automatically. See [Default privileges](https://supabase.com/docs/guides/api/securing-your-api#default-privileges). Grant each role only the operations it needs.
 
-DROP EVENT TRIGGER IF EXISTS ensure_rls;
-CREATE EVENT TRIGGER ensure_rls
-ON ddl_command_end
-WHEN TAG IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')
-EXECUTE FUNCTION rls_auto_enable();
-```
+A missing grant raises a `42501` error before any policy runs. When a request fails that your policy should allow, check the grants before you change the policy. To set them, see [Lock down the table](#lock-down-the-table).
 
-Note that this applies to tables created after the trigger is installed. Existing tables still need RLS enabled manually.
-
-Caution: When a request is made without an authenticated user (e.g., no access token is provided or the session has expired), `auth.uid()` returns `null`.
-
-This means that a policy like:
-
-```sql
-USING (auth.uid() = user_id)
-```
-
-will silently fail for unauthenticated users, because:
-
-```sql
-null = user_id
-```
-
-is always false in SQL.
-
-To avoid confusion and make your intention clear, we recommend explicitly checking for authentication:
-
-```sql
-USING (auth.uid() IS NOT NULL AND auth.uid() = user_id)
-```
-
-## Authenticated and unauthenticated roles
+### Authenticated and unauthenticated roles
 
 Supabase maps every request to one of the roles:
 
@@ -64338,206 +64475,148 @@ using ( true );
 
 Note: Using the `anon` Postgres role is different from an [anonymous user](https://supabase.com/docs/guides/auth/auth-anonymous) in Supabase Auth. An anonymous user assumes the `authenticated` role to access the database and can be differentiated from a permanent user by checking the `is_anonymous` claim in the JWT.
 
-## Creating policies
+A policy that reads `to anon using ( true )` grants every unauthenticated visitor read access to every row the role can already reach through grants. Use it only for data that is meant to be public.
 
-Policies are SQL logic that you attach to a Postgres table. You can attach as many policies as you want to each table.
+### Views and RLS
 
-Supabase provides some [helpers](#helper-functions) that simplify RLS if you're using Supabase Auth. We'll use these helpers to illustrate some basic policies:
+Views bypass RLS by default because they are usually created with the `postgres` user. This is a feature of Postgres, which automatically creates views with `security definer`. A view over a protected table hands out every row its policies were meant to withhold, so a view needs the same attention as a table. To create one safely, see [Expose a view safely](#expose-a-view-safely).
 
-### SELECT policies
+## Secure a table with RLS
+
+Follow these steps for every table in an exposed schema.
+
+### Lock down the table
+
+Run these statements in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) for a one-off change, or in a [migration](https://supabase.com/docs/guides/deployment/database-migrations) to keep the change reproducible across environments. Grants and RLS belong in the same migration.
+
+Enable RLS, then set the grants to match what each role does in your app:
+
+1. Enable RLS on the table.
+
+   ```sql
+   alter table public.reports enable row level security;
+   ```
+
+   Once RLS is enabled, no data is accessible through the [API](https://supabase.com/docs/guides/api) when using a publishable key, until you create policies.
+
+2. Revoke any existing grants from both client roles.
+
+   ```sql
+   revoke all on table public.reports from anon, authenticated;
+   ```
+
+3. Grant back only the privileges the role needs.
+
+   ```sql
+   -- Signed-in users manage reports. Signed-out visitors get nothing.
+   grant select, insert, update, delete on table public.reports to authenticated;
+   ```
+
+Data that clients read but never write, such as a feed a backend job populates, gets no write grant at all:
+
+```sql
+revoke all on table public.weather_readings from anon, authenticated;
+grant select on table public.weather_readings to anon, authenticated;
+```
+
+If new tables still receive automatic grants, see [Revoke default privileges](https://supabase.com/docs/guides/api/securing-your-api#revoke-default-privileges). To enable RLS automatically on every new table, see [Event triggers](https://supabase.com/docs/guides/database/postgres/event-triggers).
+
+Write the tests for this table in the same change. See [Test your policies](#test-your-policies).
+
+### Write a policy for each operation
+
+Write a separate policy for `select`, `insert`, `update`, and `delete`. Postgres does not accept multiple operations in one `for` clause, and a `for all` policy hides which operation each rule was meant to cover.
+
+These examples use a `profiles` table where each user manages only their own row:
+
+```sql
+create table profiles (
+  id uuid primary key,
+  user_id uuid references auth.users,
+  avatar_url text
+);
+
+alter table profiles enable row level security;
+
+revoke all on table profiles from anon, authenticated;
+grant select, insert, update, delete on table profiles to authenticated;
+```
+
+Supabase provides [helper functions](#helper-functions) that simplify RLS if you are using Supabase Auth. `auth.uid()` returns the ID of the user making the request.
+
+#### SELECT policies
 
 You can specify select policies with the `using` clause.
 
-Say you have a table called `profiles` in the public schema and you want to enable read access to everyone.
-
 ```sql
--- 1. Create table
-create table profiles (
-  id uuid primary key,
-  user_id uuid references auth.users,
-  avatar_url text
-);
-
--- 2. Enable RLS
-alter table profiles enable row level security;
-
--- 3. Create Policy
-create policy "Public profiles are visible to everyone."
+create policy "Users can view their own profile."
 on profiles for select
-to anon         -- the Postgres Role (recommended)
-using ( true ); -- the actual Policy
+to authenticated
+using ( (select auth.uid()) = user_id );
 ```
 
-Alternatively, if you only wanted users to be able to see their own profiles:
+#### INSERT policies
+
+You can specify insert policies with the `with check` clause. The `with check` expression ensures that any new row adheres to the policy constraints, so a user cannot create a row that belongs to someone else.
 
 ```sql
-create policy "User can see their own profile only."
-on profiles
-for select using ( (select auth.uid()) = user_id );
-```
-
-### INSERT policies
-
-You can specify insert policies with the `with check` clause. The `with check` expression ensures that any new row data adheres to the policy constraints.
-
-Say you have a table called `profiles` in the public schema and you only want users to create a profile for themselves. In that case, we want to check their User ID matches the value that they are trying to insert:
-
-```sql
--- 1. Create table
-create table profiles (
-  id uuid primary key,
-  user_id uuid references auth.users,
-  avatar_url text
-);
-
--- 2. Enable RLS
-alter table profiles enable row level security;
-
--- 3. Create Policy
-create policy "Users can create a profile."
+create policy "Users can create their own profile."
 on profiles for insert
-to authenticated                          -- the Postgres Role (recommended)
-with check ( (select auth.uid()) = user_id );      -- the actual Policy
+to authenticated
+with check ( (select auth.uid()) = user_id );
 ```
 
-### UPDATE policies
+#### UPDATE policies
 
-You can specify update policies by combining both the `using` and `with check` expressions.
-
-The `using` clause represents the condition that must be true for the update to be allowed, and `with check` clause ensures that the updates made adhere to the policy constraints.
-
-Say you have a table called `profiles` in the public schema and you only want users to update their own profile.
-
-You can create a policy where the `using` clause checks if the user owns the profile being updated. And the `with check` clause ensures that, in the resultant row, users do not change the `user_id` to a value that is not equal to their User ID, maintaining that the modified profile still meets the ownership condition.
+You can specify update policies by combining the `using` and `with check` expressions. The `using` clause decides which existing rows can be updated. The `with check` clause decides what the resulting row is allowed to look like, which stops a user from reassigning `user_id` to someone else.
 
 ```sql
--- 1. Create table
-create table profiles (
-  id uuid primary key,
-  user_id uuid references auth.users,
-  avatar_url text
-);
-
--- 2. Enable RLS
-alter table profiles enable row level security;
-
--- 3. Create Policy
 create policy "Users can update their own profile."
 on profiles for update
-to authenticated                    -- the Postgres Role (recommended)
-using ( (select auth.uid()) = user_id )       -- checks if the existing row complies with the policy expression
-with check ( (select auth.uid()) = user_id ); -- checks if the new row complies with the policy expression
+to authenticated
+using ( (select auth.uid()) = user_id )       -- checks the existing row
+with check ( (select auth.uid()) = user_id ); -- checks the resulting row
 ```
 
-If no `with check` expression is defined, then the `using` expression will be used both to determine which rows are visible (normal USING case) and which new rows will be allowed to be added (WITH CHECK case).
+If no `with check` expression is defined, the `using` expression decides both which rows are visible and which new rows are allowed.
 
 Caution: To perform an `UPDATE` operation, a corresponding [`SELECT` policy](#select-policies) is required. Without a `SELECT` policy, the `UPDATE` operation will not work as expected.
 
-### DELETE policies
+#### DELETE policies
 
 You can specify delete policies with the `using` clause.
 
-Say you have a table called `profiles` in the public schema and you only want users to be able to delete their own profile:
-
 ```sql
--- 1. Create table
-create table profiles (
-  id uuid primary key,
-  user_id uuid references auth.users,
-  avatar_url text
-);
-
--- 2. Enable RLS
-alter table profiles enable row level security;
-
--- 3. Create Policy
-create policy "Users can delete a profile."
+create policy "Users can delete their own profile."
 on profiles for delete
-to authenticated                     -- the Postgres Role (recommended)
-using ( (select auth.uid()) = user_id );      -- the actual Policy
-```
-
-### Views
-
-Views bypass RLS by default because they are usually created with the `postgres` user. This is a feature of Postgres, which automatically creates views with `security definer`.
-
-In Postgres 15 and above, you can make a view obey the RLS policies of the underlying tables when invoked by `anon` and `authenticated` roles by setting `security_invoker = true`.
-
-```sql
-create view <VIEW_NAME>
-with(security_invoker = true)
-as select <QUERY>
-```
-
-In older versions of Postgres, protect your views by revoking access from the `anon` and `authenticated` roles, or by putting them in an unexposed schema.
-
-## Helper functions
-
-Supabase provides some helper functions that make it easier to write Policies.
-
-### `auth.uid()`
-
-Returns the ID of the user making the request.
-
-### `auth.jwt()`
-
-Caution: Not all information present in the JWT should be used in RLS policies. For instance, creating an RLS policy that relies on the `user_metadata` claim can create security issues in your application as this information can be modified by authenticated end users.
-
-Returns the JWT of the user making the request. Anything that you store in the user's `raw_app_meta_data` column or the `raw_user_meta_data` column will be accessible using this function. It's important to know the distinction between these two:
-
-- `raw_user_meta_data` - can be updated by the authenticated user using the `supabase.auth.update()` function. It is not a good place to store authorization data.
-- `raw_app_meta_data` - cannot be updated by the user, so it's a good place to store authorization data.
-
-The `auth.jwt()` function is extremely versatile. For example, if you store some team data inside `app_metadata`, you can use it to determine whether a particular user belongs to a team. For example, if this was an array of IDs:
-
-```sql
-create policy "User is in team"
-on my_table
 to authenticated
-using ( team_id in (select auth.jwt() -> 'app_metadata' -> 'teams'));
+using ( (select auth.uid()) = user_id );
 ```
 
-Caution: Keep in mind that a JWT is not always "fresh". In the example above, even if you remove a user from a team and update the `app_metadata` field, that will not be reflected using `auth.jwt()` until the user's JWT is refreshed.
+### Specify roles in your policies
 
-Also, if you are using Cookies for Auth, then you must be mindful of the JWT size. Some browsers are limited to 4096 bytes for each cookie, and so the total size of your JWT should be small enough to fit inside this limitation.
-
-### MFA
-
-The `auth.jwt()` function can be used to check for [Multi-Factor Authentication](https://supabase.com/docs/guides/auth/auth-mfa#enforce-rules-for-mfa-logins). For example, you could restrict a user from updating their profile unless they have at least 2 levels of authentication (Assurance Level 2):
+Always name the role a policy applies to, using the `to` clause. Instead of this:
 
 ```sql
-create policy "Restrict updates."
-on profiles
-as restrictive
-for update
-to authenticated using (
-  (select auth.jwt()->>'aal') = 'aal2'
-);
+create policy "rls_test_select" on rls_test
+using ( auth.uid() = user_id );
 ```
 
-## Bypassing Row Level Security
-
-Supabase provides special "Service" keys, which can be used to bypass RLS. These should never be used in the browser or exposed to customers, but they are useful for administrative tasks.
-
-Note: Supabase will adhere to the RLS policy of the signed-in user, even if the client library is initialized with a Service Key.
-
-You can also create new [Postgres Roles](https://supabase.com/docs/guides/database/postgres/roles) which can bypass Row Level Security using the "bypass RLS" privilege:
+Use:
 
 ```sql
-alter role "role_name" with bypassrls;
+create policy "rls_test_select" on rls_test
+to authenticated
+using ( (select auth.uid()) = user_id );
 ```
 
-This can be useful for system-level access. You should *never* share login credentials for any Postgres Role with this privilege.
+This prevents the policy `( (select auth.uid()) = user_id )` from running for any `anon` users, since the execution stops at the `to authenticated` step.
 
-## RLS performance recommendations
-
-Every authorization system has an impact on performance. While row level security is powerful, the performance impact is important to keep in mind. This is especially true for queries that scan every row in a table - like many `select` operations, including those using limit, offset, and ordering.
-
-Based on a series of [tests](https://github.com/GaryAustin1/RLS-Performance), we have a few recommendations for RLS:
+These three rules keep policies correct as a table grows. For the measured impact and for tuning beyond them, see [Row Level Security performance](https://supabase.com/docs/guides/database/postgres/row-level-security-performance).
 
 ### Add indexes
 
-Make sure you've added [indexes](https://supabase.com/docs/guides/database/postgres/indexes) on any columns used within the Policies which are not already indexed (or primary keys). For a Policy like this:
+Add an [index](https://supabase.com/docs/guides/database/postgres/indexes) on every column your policies filter on. Postgres evaluates the policy against each candidate row, so an unindexed filter column turns a read into a sequential scan. For a policy like this:
 
 ```sql
 create policy "rls_test_select" on test_table
@@ -64553,11 +64632,20 @@ on test_table
 using btree (user_id);
 ```
 
-#### Benchmarks
+A column counts as indexed only when it comes first in a `btree` index. Postgres can't use a multi-column index to filter on a column that isn't the leading one, so a composite primary key indexes its first column and no others. A membership table keyed on `(team_id, user_id)` has no index on `user_id`:
 
-| Test                                                                                          | Before (ms) | After (ms) | % Improvement | Change                                 |
-| --------------------------------------------------------------------------------------------- | ----------- | ---------- | ------------- | -------------------------------------- |
-| [test1-indexed](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test1-indexed) | 171         | \< 0.1     | 99.94%        | Before:No indexAfter:`user_id` indexed |
+```sql
+create table team_members (
+  team_id uuid references teams (id),
+  user_id uuid references auth.users (id),
+  primary key (team_id, user_id)
+);
+
+-- The primary key covers team_id. A policy filtering on user_id needs its own index.
+create index team_members_user_id_idx
+on team_members
+using btree (user_id);
+```
 
 ### Call functions with `select`
 
@@ -64581,42 +64669,180 @@ This method works well for JWT functions like `auth.uid()` and `auth.jwt()` as w
 
 Caution: You can only use this technique if the results of the query or function do not change based on the row data.
 
-#### Benchmarks
+### Expose a view safely
 
-| Test                                                                                                                              | Before (ms) | After (ms) | % Improvement | Change                                                                                                  |
-| --------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------- | ------------- | ------------------------------------------------------------------------------------------------------- |
-| [test2a-wrappedSQL-uid](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test2a-wrappedSQL-uid\(\))                 | 179         | 9          | 94.97%        | Before:`auth.uid() = user_id` After: `(select auth.uid()) = user_id`                                    |
-| [test2b-wrappedSQL-isadmin](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test2b-wrappedSQL-isadmin\(\))         | 11,000      | 7          | 99.94%        | Before:`is_admin()` *table join*After:`(select is_admin())` *table join*                                |
-| [test2c-wrappedSQL-two-functions](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test2c-wrappedSQL-two-functions) | 11,000      | 10         | 99.91%        | Before:`is_admin() OR auth.uid() = user_id`After:`(select is_admin()) OR (select auth.uid() = user_id)` |
-| [test2d-wrappedSQL-sd-fun](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test2d-wrappedSQL-sd-fun)               | 178,000     | 12         | 99.993%       | Before:`has_role() = role` After:(select has_role()) = role                                             |
-| [test2e-wrappedSQL-sd-fun-array](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test2e-wrappedSQL-sd-fun-array)   | 173000      | 16         | 99.991%       | Before:`team_id=any(user_teams())` After:team_id=any(array(select user_teams()))                        |
+In Postgres 15 and above, make a view obey the RLS policies of its underlying tables when invoked by `anon` and `authenticated` by setting `security_invoker = true`.
 
-### Add filters to every query
-
-Policies are "implicit where clauses," so it's common to run `select` statements without any filters. This is a bad pattern for performance. Instead of doing this (JS client example):
-
-```js
-const { data } = supabase
-  .from('table')
-  .select()
+```sql
+create view <VIEW_NAME>
+with(security_invoker = true)
+as select <QUERY>
 ```
 
-You should always add a filter:
+In older versions of Postgres, protect your views by revoking access from the `anon` and `authenticated` roles, or by putting them in an unexposed schema.
 
-```js
-const { data } = supabase
-  .from('table')
-  .select()
-  .eq('user_id', userId)
+### Test your policies
+
+We recommend writing tests for every policy, in the same change that sets the grants and creates the policies. Tests are a fundamental part of a secure setup, and they give you a repeatable way to prove a policy behaves the way you intended.
+
+A wrong policy fails quietly. Too permissive, and a query returns rows it shouldn't. Too strict, and it returns nothing and raises no error. Neither case surfaces as an error, so tests are how you find out.
+
+Supabase runs database tests with [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap) through the CLI. Test files are `.sql` files under `supabase/tests/`.
+
+#### Anatomy of a policy test
+
+Each case sets an identity, runs one statement as that identity, and asserts the outcome. Three things decide whether the assertion means anything.
+
+**Identity.** Switch role and identity between cases with `set local role` and `set local request.jwt.claim.sub`, so each assertion runs as the user it describes. Without the switch, every case runs as the same role and proves nothing about access.
+
+**Denials.** A denied request doesn't always raise an error, so match the assertion to the way the denial happens:
+
+- A missing grant raises `42501`. Assert it with `throws_ok`.
+- A `with check` violation raises `42501`. Assert it with `throws_ok`.
+- A `using` clause that filters the target row out raises nothing. The update or delete matches zero rows instead. Assert that no row changed.
+
+**Allowed writes.** The absence of an error doesn't prove that anything changed. Add `returning` to the statement so one assertion covers both directions. An allowed write returns the changed row, and a write the policy filters out returns nothing.
+
+#### Write and run the tests
+
+1. Create a test file:
+
+   ```bash
+   supabase test new profiles_rls
+   ```
+
+2. Write the tests. Cover `select`, `insert`, `update`, and `delete` twice each, once for a request the policy allows and once for a request it denies, for `anon` as well as `authenticated`.
+
+   [`supabase-test-helpers`](https://github.com/usebasejump/supabase-test-helpers/tree/main) removes most of the setup below. It adds `tests.create_supabase_user()`, `tests.authenticate_as()`, and `tests.rls_enabled()`, so you don't hand-roll user seeding or role switching. See [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended) for schema-wide assertions and a worked multi-tenant example.
+
+3. Run the suite:
+
+   ```bash
+   supabase test db
+   ```
+
+This example shows each of those techniques against a `profiles` table where `authenticated` holds every privilege, `anon` holds none, and each user reads and writes only their own row. Extend it to the remaining operations:
+
+```sql supabase/tests/profiles_rls.test.sql
+begin;
+select plan(4);
+
+insert into auth.users (id, email)
+values
+  ('11111111-1111-1111-1111-111111111111', 'owner@example.com'),
+  ('22222222-2222-2222-2222-222222222222', 'other@example.com');
+
+-- anon holds no grant, so the request stops before any policy runs.
+set local role anon;
+select throws_ok(
+  $$select * from profiles$$,
+  '42501',
+  null,
+  'anon cannot read profiles'
+);
+
+-- The owner writes their own row. returning proves the row changed.
+set local role authenticated;
+set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+select results_eq(
+  $$insert into profiles (id, user_id, avatar_url)
+    values (
+      gen_random_uuid(),
+      '11111111-1111-1111-1111-111111111111',
+      'owner.png'
+    )
+    returning avatar_url$$,
+  array['owner.png'],
+  'the owner creates their own profile'
+);
+
+-- A signed-in stranger holds the grant, so the policy is what stops them. The
+-- using clause filters the row out, so these match nothing and raise nothing.
+set local request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
+select is_empty(
+  $$select * from profiles$$,
+  'another user reads no profiles'
+);
+select is_empty(
+  $$update profiles set avatar_url = 'stolen.png' returning avatar_url$$,
+  'another user updates no profiles'
+);
+
+select * from finish();
+rollback;
 ```
 
-Even though this duplicates the contents of the Policy, Postgres can use the filter to construct a better query plan.
+For CLI setup and more pgTAP helpers, see [Testing your database](https://supabase.com/docs/guides/database/testing).
 
-#### Benchmarks
+## RLS reference
 
-| Test                                                                                              | Before (ms) | After (ms) | % Improvement | Change                                                               |
-| ------------------------------------------------------------------------------------------------- | ----------- | ---------- | ------------- | -------------------------------------------------------------------- |
-| [test3-addfilter](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test3-addfilter) | 171         | 9          | 94.74%        | Before:`auth.uid() = user_id`After:add `.eq` or `where` on `user_id` |
+These are the functions and patterns available inside a policy expression.
+
+### Helper functions
+
+Supabase provides some helper functions that make it easier to write policies.
+
+#### `auth.uid()`
+
+Returns the ID of the user making the request.
+
+Caution: When a request is made without an authenticated user (e.g., no access token is provided or the session has expired), `auth.uid()` returns `null`.
+
+This means that a policy like:
+
+```sql
+USING (auth.uid() = user_id)
+```
+
+will silently fail for unauthenticated users, because:
+
+```sql
+null = user_id
+```
+
+is always false in SQL.
+
+To avoid confusion and make your intention clear, we recommend explicitly checking for authentication:
+
+```sql
+USING (auth.uid() IS NOT NULL AND auth.uid() = user_id)
+```
+
+#### `auth.jwt()`
+
+Caution: Not all information present in the JWT should be used in RLS policies. For instance, creating an RLS policy that relies on the `user_metadata` claim can create security issues in your application as this information can be modified by authenticated end users.
+
+Returns the JWT of the user making the request. Anything that you store in the user's `raw_app_meta_data` column or the `raw_user_meta_data` column will be accessible using this function. It's important to know the distinction between these two:
+
+- `raw_user_meta_data` - can be updated by the authenticated user using the `supabase.auth.update()` function. It is not a good place to store authorization data.
+- `raw_app_meta_data` - cannot be updated by the user, so it's a good place to store authorization data.
+
+The `auth.jwt()` function is extremely versatile. For example, if you store some team data inside `app_metadata`, you can use it to determine whether a particular user belongs to a team. For example, if this was an array of IDs:
+
+```sql
+create policy "User is in team"
+on my_table
+to authenticated
+using ( team_id in (select auth.jwt() -> 'app_metadata' -> 'teams'));
+```
+
+Caution: Keep in mind that a JWT is not always up-to-date. In the team policy example, even if you remove a user from a team and update the `app_metadata` field, that will not be reflected using `auth.jwt()` until the user's JWT is refreshed.
+
+Also, if you are using Cookies for Auth, then you must be mindful of the JWT size. Some browsers are limited to 4096 bytes for each cookie, and so the total size of your JWT should be small enough to fit inside this limitation.
+
+#### MFA
+
+The `auth.jwt()` function can be used to check for [Multi-Factor Authentication](https://supabase.com/docs/guides/auth/auth-mfa#enforce-rules-for-mfa-logins). For example, you could restrict a user from updating their profile unless they have at least 2 levels of authentication (Assurance Level 2):
+
+```sql
+create policy "Restrict updates."
+on profiles
+as restrictive
+for update
+to authenticated using (
+  (select auth.jwt()->>'aal') = 'aal2'
+);
+```
 
 ### Use security definer functions
 
@@ -64640,10 +64866,11 @@ create function private.has_good_role()
 returns boolean
 language plpgsql
 security definer -- will run as the creator
+set search_path = '' -- every name inside must be schema-qualified
 as $$
 begin
   return exists (
-    select 1 from roles_table
+    select 1 from public.roles_table
     where (select auth.uid()) = user_id and role = 'good_role'
   );
 end;
@@ -64656,80 +64883,34 @@ to authenticated
 using ( (select private.has_good_role()) );
 ```
 
-Caution: Security-definer functions should never be created in a schema in the "Exposed schemas" inside your [API settings](https://supabase.com/dashboard/project/_/settings/api)\`.
+Set `search_path = ''` on every `security definer` function and schema-qualify the names inside it. Without a pinned `search_path`, a caller can point an unqualified name at their own object and run it with the function owner's privileges.
 
-### Minimize joins
+Caution: A `security definer` function in an exposed schema is callable over the Data API with the creator's privileges. Never create one in a schema listed under "Exposed schemas" in your [API settings](https://supabase.com/dashboard/project/_/settings/api).
 
-You can often rewrite your Policies to avoid joins between the source and the target table. Instead, try to organize your policy to fetch all the relevant data from the target table into an array or set, then you can use an `IN` or `ANY` operation in your filter.
+### Bypassing Row Level Security
 
-For example, this is an example of a slow policy which joins the source `test_table` to the target `team_user`:
+Use a [secret key](https://supabase.com/docs/guides/getting-started/api-keys) for administrative tasks that need to bypass RLS. A secret key authorizes access through the `service_role` Postgres role, which has the `bypassrls` attribute. Never use a secret key in the browser or expose it to customers.
 
-```sql
-create policy "rls_test_select" on test_table
-to authenticated
-using (
-  (select auth.uid()) in (
-    select user_id
-    from team_user
-    where team_user.team_id = team_id -- joins to the source "test_table.team_id"
-  )
-);
-```
+The JWT-based `service_role` key is a legacy alternative. Prefer a secret key where possible.
 
-We can rewrite this to avoid this join, and instead select the filter criteria into a set:
+Note: A secret key bypasses RLS only when the request carries no user access token. If the request carries one, it runs under the RLS policies of that signed-in user, even when the client library was initialized with a secret key.
+
+You can also create new [Postgres Roles](https://supabase.com/docs/guides/database/postgres/roles) which can bypass Row Level Security using the "bypass RLS" privilege:
 
 ```sql
-create policy "rls_test_select" on test_table
-to authenticated
-using (
-  team_id in (
-    select team_id
-    from team_user
-    where user_id = (select auth.uid()) -- no join
-  )
-);
+alter role "role_name" with bypassrls;
 ```
 
-In this case you can also consider [using a `security definer` function](#use-security-definer-functions) to bypass RLS on the join table:
+This can be useful for system-level access. **Never** share login credentials for any Postgres Role with this privilege.
 
-Note: If the list exceeds 1000 items, a different approach may be needed or you may need to analyze the approach to ensure that the performance is acceptable.
+## Related content
 
-#### Benchmarks
-
-| Test                                                                                                | Before (ms) | After (ms) | % Improvement | Change                                                                          |
-| --------------------------------------------------------------------------------------------------- | ----------- | ---------- | ------------- | ------------------------------------------------------------------------------- |
-| [test5-fixed-join](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test5-fixed-join) | 9,000       | 20         | 99.78%        | Before:`auth.uid()` in table join on colAfter:col in table join on `auth.uid()` |
-
-### Specify roles in your policies
-
-Always use the Role of inside your policies, specified by the `TO` operator. For example, instead of this query:
-
-```sql
-create policy "rls_test_select" on rls_test
-using ( auth.uid() = user_id );
-```
-
-Use:
-
-```sql
-create policy "rls_test_select" on rls_test
-to authenticated
-using ( (select auth.uid()) = user_id );
-```
-
-This prevents the policy `( (select auth.uid()) = user_id )` from running for any `anon` users, since the execution stops at the `to authenticated` step.
-
-#### Benchmarks
-
-| Test                                                                                          | Before (ms) | After (ms) | % Improvement | Change                                                         |
-| --------------------------------------------------------------------------------------------- | ----------- | ---------- | ------------- | -------------------------------------------------------------- |
-| [test6-To-role](https://github.com/GaryAustin1/RLS-Performance/tree/main/tests/test6-To-role) | 170         | \< 0.1     | 99.78%        | Before:No `TO` policyAfter:`TO authenticated` (anon accessing) |
-
-## More resources
-
-- [Testing your database](https://supabase.com/docs/guides/database/testing)
-- [RLS Guide and Best Practices](https://github.com/orgs/supabase/discussions/14576)
-- Community repo on testing RLS using [pgTAP and dbdev](https://github.com/usebasejump/supabase-test-helpers/tree/main)
+- [Row Level Security performance](https://supabase.com/docs/guides/database/postgres/row-level-security-performance): diagnose whether policies are your bottleneck, and tune ones that are already correct.
+- [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended): schema-wide RLS test helpers and a worked multi-tenant example.
+- [Testing your database](https://supabase.com/docs/guides/database/testing): the CLI test workflow that `supabase test db` runs.
+- [Securing your API](https://supabase.com/docs/guides/api/securing-your-api): grants, dedicated schemas, and pre-request checks around the Data API.
+- [Column Level Security](https://supabase.com/docs/guides/database/postgres/column-level-security): restrict access to individual columns.
+- [`supabase-test-helpers`](https://github.com/usebasejump/supabase-test-helpers/tree/main): a community extension that adds user creation and role impersonation helpers to pgTAP.
 
 
 ---
@@ -76225,8 +76406,8 @@ Limits applied Edge Functions in Supabase's hosted platform.
 - Maximum Function Size: 20MB (bundled locally via the CLI) or 5MB (bundled server-side, e.g. via the Management API or Dashboard)
 - Maximum no. of Functions per project:
   - Free: 100
-  - Pro: 500
-  - Team: 1000
+  - Pro: 1000
+  - Team: 2000
   - Enterprise: Unlimited
 - Maximum log message length: 10,000 characters
 - Log event threshold: 100 events per 10 seconds
@@ -99817,6 +99998,8 @@ rollback;
 
 Monitor your project, debug errors, and understand what's happening across the Supabase stack.
 
+Debugging with an AI agent? See [Debug with AI tools](https://supabase.com/docs/guides/monitoring-and-debugging/debugging#debug-with-ai-tools) for the MCP tools and agent skill that let it read your logs and advisors.
+
 ## Debugging
 
 - **[Debugging guide](https://supabase.com/docs/guides/monitoring-and-debugging/debugging):** Isolate the failing layer, read logs as evidence, and match symptoms to troubleshooting guides.
@@ -100386,6 +100569,17 @@ Isolate and fix Supabase issues by reading the error, isolating the failing laye
 
 Debug by evidence, not by guessing. A Supabase error almost always surfaces at one layer but originates at another, so the fastest path to a fix is finding *where* the problem is, not pattern-matching the symptom. Retrying a failed request rarely helps; isolating the layer does.
 
+## Debug with AI tools
+
+An AI agent can work through this loop for you, but only if it can read your project's evidence instead of guessing from the error message.
+
+Debugging with an agent needs two things:
+
+- The [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) provides the tools this guide relies on: `get_logs` for a per-service log dump, `query_logs` to run read-only SQL against your logs for filtering and aggregation, `get_advisors` for security and performance findings, and `execute_sql` to inspect your schema and policies.
+- The [Supabase agent skill](https://supabase.com/docs/guides/ai-tools/ai-skills) teaches the agent this workflow: locate the failing layer, gather evidence from the matching log source, and verify the fix by re-running the operation that failed.
+
+Install both in one step with the [Supabase plugin for AI coding agents](https://supabase.com/docs/guides/ai-tools/plugins). Connecting an agent to your project carries security risks, so read the [MCP security best practices](https://supabase.com/docs/guides/ai-tools/mcp#security-risks) first.
+
 ## Follow these debugging steps
 
 Work through these steps in order, skipping straight to a fix before you have evidence for the cause is the most common way to waste time on a bug.
@@ -100640,7 +100834,7 @@ Logs are batched and sent to Datadog with Gzip compression. Each event's log sou
 **Required configuration:**
 
 - API Key — from [Datadog Organization Settings](https://app.datadoghq.com/organization-settings/api-keys)
-- Region — the Datadog site your account uses (US1, US3, US5, EU, AP1, AP2, US1-FED)
+- Region — the Datadog site your account uses (US1, US3, US5, EU, AP1, AP2, UK1, US1-FED, US2-FED)
 
 **Steps:**
 
@@ -110137,7 +110331,6 @@ show log_connections;
 Secure private network connectivity to your Supabase database using AWS VPC Lattice.
 
 Note: PrivateLink is available only to Team and Enterprise customers.
-Contact support if you would like to create a PrivateLink connection for a read-only replica.
 
 PrivateLink provides enterprise-grade private network connectivity between your AWS VPC and your Supabase database using AWS VPC Lattice. This eliminates exposure to the public internet by creating a secure, private connection that keeps your database traffic within the AWS network backbone.
 
@@ -110165,19 +110358,24 @@ To use PrivateLink with your Supabase project:
 
 ## Getting started
 
-### Step 1: Add AWS account
+### Step 1: Add connection
 
 Navigate to your project's Integrations section to set up PrivateLink:
 
 1. Go to your Supabase project dashboard
 2. Navigate to [**Settings** > **Integrations**](https://supabase.com/dashboard/project/_/settings/integrations)
 3. Find the **AWS PrivateLink** section
-4. Click **Add Account**
-5. Enter your AWS Account ID
-6. Provide a description for the account (recommended)
-7. Click **Add Account** to submit
+4. Click **Add connection**
+5. Enter the destination AWS account ID
+6. Select the database: the primary database or a specific read replica
+7. Optionally add a description
+8. Click **Add connection** to submit
 
-After submission, Supabase creates a VPC Lattice Resource Configuration for your project and sends an AWS Resource Share to the specified AWS Account ID. This process may take a few moments. Once complete, the account will show a "Ready" status, indicating that the resource share has been sent to your AWS account and is ready to be accepted.
+Each database, whether the primary or a read replica, needs its own connection. Create a separate connection for every database you want to reach over PrivateLink.
+
+After submission, Supabase creates a VPC Lattice Resource Configuration for your project and sends an AWS Resource Share to the specified AWS account ID. This process may take a few moments. Once complete, the connection will show a "Waiting" status, indicating that the resource share has been sent to your AWS account and still needs to be accepted. You must accept the resource share within 12 hours, or the request expires and can no longer be accepted in AWS. You'll need to create a new connection to try again.
+
+Select **View connection** to see the VPC Lattice resource configuration ID and ARNs for the connection. This is useful for confirming which resource configuration corresponds to which database when a project has multiple connections, for example one for the primary database and one for each read replica.
 
 ### Step 2: Accept resource share
 
@@ -110188,6 +110386,7 @@ Supabase will send you an AWS Resource Share containing the VPC Lattice Resource
 3. Go to [Shared with me > Resource shares](https://console.aws.amazon.com/ram/home#SharedResourceShares)
 4. Locate the resource share from Supabase.
    - The resource share has the format `sspl-[project_ref]-[random alphanumeric string]`
+   - If your project has multiple connections, for example one for the primary database and one for each read replica, match the share's ARN to the **Resource share ARN** shown for that connection in **View connection** to confirm you're accepting the correct one
 5. Click on the resource share name to view details. Review the list of resource shares - it should only include resources of type vpc-lattice:ResourceConfiguration.
 6. Click **Accept resource share**
 7. Confirm the acceptance in the dialog box
@@ -110221,6 +110420,7 @@ In your AWS account, you have two options to establish connectivity:
 5. Under Type, select **Resources**
 6. In the **Resource configurations** section select the appropriate resource configuration
    - The resource configuration name will be in the format `[organisation]-[project-ref]-rc`
+   - If you have multiple connections, match the **Resource configuration ID** shown for that connection in **View connection** to confirm you select the configuration for the correct database
 7. Select your VPC from the dropdown. This should match the VPC you selected for your security group in Step 3
 8. Enable the **Enable DNS name** option if you want to use a DNS record instead of the endpoints IP address(es)
 9. Choose the appropriate subnets for your network
@@ -110241,6 +110441,7 @@ In your AWS account, you have two options to establish connectivity:
 4. In the service network details, go to the **Resource configuration associations** tab
 5. Click **Create associations**
 6. Select the appropriate **Resource configuration** from the dropdown
+   - If you have multiple connections, match the **Resource configuration ID** shown for that connection in **View connection** to confirm you select the configuration for the correct database
 7. Click **Save changes**
 8. After creation, you will see the resource configuration in the Resource configurations section of your service network with the status "Active"
 9. For connectivity, click on the association details and the domain name will be listed in the **DNS entries** section
@@ -110300,7 +110501,7 @@ For maximum security, you can restrict public database access in your project se
 
 ## Limitations
 
-- **Read Replicas**: To establish PrivateLink with a Read Replica, reach out to your account rep.
+- **Service Scope**: PrivateLink only supports database connections (Postgres and PgBouncer). Other Supabase services (API, Storage, Auth, Realtime) will continue to operate over public internet connections.
 - **Feature Evolution**: The setup process and capabilities may evolve as we refine the offering
 
 ## Compatibility
@@ -125621,6 +125822,8 @@ The gateway applies a permissive CORS policy at the virtual-host level:
 
 This matches both the current Supabase platform behavior and the previous Kong-based gateway. The auth boundary for Supabase APIs is the `apikey` header rather than the request origin.
 
+The `/pg/` route (direct Postgres introspection via `meta`, gated by the service role key) is the exception: it carries its own stricter per-route CORS override, restricted to `SUPABASE_PUBLIC_URL` and `localhost`/`127.0.0.1` origins, since there's no legitimate reason for this route to be called from an arbitrary third-party origin.
+
 Note: If you customize the `cors:` block in `lds.template.yaml` to enable `allow_credentials: true`, you must restrict `allow_origin_string_match` to specific origins - browsers (and Envoy) reject the combination of credentials with a wildcard origin.
 
 ## Security hardening
@@ -140276,7 +140479,7 @@ Excessive IO usage is highly problematic as it clarifies that your database is e
 
 - **Excessive and needless sequential scans:** poorly indexed tables force requests to scan disk ([guide to resolve](https://github.com/orgs/supabase/discussions/22449))
 - **Too little cache**: There is not enough memory, so instead of reading data from the memory cache, it is accessed from disk ([guide to inspect](https://github.com/orgs/supabase/discussions/22449))
-- **Poorly optimized RLS policies**: RLS that rely heavily on joins are more likely to hit disk. If possible, they should optimized ([RLS best practice guide](https://supabase.com/docs/guides/database/postgres/row-level-security#rls-performance-recommendations))
+- **Poorly optimized RLS policies**: RLS that rely heavily on joins are more likely to hit disk. If possible, they should be optimized ([RLS performance guide](https://supabase.com/docs/guides/database/postgres/row-level-security-performance))
 - **Excessive bloat**: This is the least likely to cause major issues, but bloat can take up space, preventing data on disk from being placed in the same locality. This can force the database to scan more pages than necessary. ([explainer guide](https://supabase.com/blog/postgres-bloat))
 - **Uploading high amounts of data:** temporarily increase compute add-on size for the duration of the uploads
 - **Insufficient memory**: Sometimes an inadequate amount of memory forces queries to hit disk instead of the memory cache. Address memory issues ([guide](https://github.com/orgs/supabase/discussions/27021)) can reduce disk strain.

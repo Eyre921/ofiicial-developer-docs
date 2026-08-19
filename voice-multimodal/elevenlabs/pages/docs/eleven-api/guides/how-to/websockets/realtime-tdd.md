@@ -8,9 +8,6 @@ path: docs/eleven-api/guides/how-to/websockets/realtime-tdd
 
 # Stream dialogue in real-time
 
-The Text to Dialogue WebSocket API is rolling out to customers gradually over the coming weeks.
-You may not have access immediately.
-
 The Text to Dialogue WebSocket (`/v1/text-to-dialogue/stream-input`) keeps a single connection open while you send dialogue lines and receive base64-encoded audio chunks. It is intended for **Eleven v3** dialogue models only (`model_id` must start with `eleven_v3`).
 
 This guide covers the **Text to Dialogue** WebSocket. For **Flash**, **Multilingual v2**, or other
@@ -23,7 +20,6 @@ WebSockets](/docs/eleven-api/guides/how-to/websockets/tts-vs-ttd-websockets).
 
 * An ElevenLabs account with an API key ([authentication](/docs/api-reference/authentication)).
 * The API key must have `Text to Speech` permissions.
-* Workspace level access to the Text to Dialogue WebSocket (product feature)
 * Python or Node.js installed on your machine.
 
 ## Setup

@@ -1,5 +1,5 @@
 ---
-title: "Treasury for platforms v1"
+title: "Treasury for Platforms"
 source: https://docs.stripe.com/treasury/connect.md
 path: treasury/connect
 ---
@@ -7,87 +7,52 @@ path: treasury/connect
 # Treasury for platforms
 
 Learn how to provide financial services to connected accounts.
-
-> #### Legacy integration
+Available in: GB, US
+> #### Treasury for platforms naming
 > 
-> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+> Treasury for platforms supersedes the previous product names **Treasury** (deprecated for platforms November 2025) and **Financial Accounts for platforms** (deprecated April 2026).
 
-[Stripe Treasury for platforms](https://stripe.com/treasury) is a suite of APIs for Stripe *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platforms that allows you to embed financial services in your product. Stripe provides the infrastructure in partnership with trusted banks.
-
-Your financial account enables your connected accounts to hold funds, pay bills, earn cash back, and manage their cash flow. Many platforms using Connect also use [Stripe Issuing](https://docs.stripe.com/issuing.md) to issue cards for accessing financial accounts. To learn more about Treasury for platforms, see its [features](https://docs.stripe.com/treasury/connect.md#features).
-
-[See the Treasury for platforms Demo](https://baas.stripe.dev/)
+[Treasury for platforms](https://stripe.com/treasury/platforms) allows *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platforms to offer financial services, such as funds separation and storage, bill pay, and cash flow management, to [eligible](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#eligibility) connected accounts. Stripe partners with trusted banks to provide the necessary infrastructure.
 
 ## Get started
 
-[How Treasury for platforms works](https://docs.stripe.com/treasury/connect/how-financial-accounts-for-platforms-works.md): Learn about connected accounts, financial accounts, and moving money.
+[How Treasury for platforms works](https://docs.stripe.com/treasury/connect/how-treasury-for-platforms-works.md): Learn about connected accounts, financial accounts, and moving money with Treasury for platforms.
 
-[Get started with API access](https://docs.stripe.com/treasury/connect/access.md): Use Treasury for platforms and Issuing in a *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) environment to see what functionality you want to enable in your live integration.
+[Build a Treasury for platforms integration](https://docs.stripe.com/treasury/connect/build-an-integration.md): Set up an end-to-end Treasury for platforms integration and familiarize yourself with the basic concepts of Treasury for platforms.
 
-[Eligibility requirements](https://docs.stripe.com/treasury/connect/requirements.md): Understand the requirements for using Treasury for platforms.
+[Manage fraud](https://docs.stripe.com/treasury/connect/fraud-guide.md): Learn best practices for managing fraud with Treasury for platforms.
 
-[Onboard users with Treasury for platforms](https://docs.stripe.com/treasury/connect/examples/onboarding-guide.md): Learn best practices to onboard your connected accounts when offering financial services with Treasury for platforms.
+## Example implementations
 
-[Manage fraud](https://docs.stripe.com/treasury/connect/examples/fraud-guide.md): Learn best practices for managing fraud with Treasury for platforms.
+[Multiple financial accounts and external funding](https://docs.stripe.com/treasury/connect/examples/multi-financial-accounts.md): Create and move funds between multiple financial accounts.
 
-[Marketing and compliance guidelines](https://docs.stripe.com/treasury/connect/compliance.md): Learn how to keep your Treasury for platforms or Issuing program and marketing campaigns compliant.
+[Cross-border payouts and automatic transfer rules](https://docs.stripe.com/treasury/connect/examples/cross-border-and-automatic-transfer-rules.md): End-to-end guide about cross-border payouts and automatic transfer rules.
 
-## Sample integrations
-
-[Set up financial accounts](https://docs.stripe.com/treasury/connect/examples/financial-accounts.md): Use a sample Treasury for platforms and Issuing integration to set up a financial account and create cards.
-
-[Use Treasury for platforms to move money](https://docs.stripe.com/treasury/connect/requirements.md): Learn how an example business uses SetupIntents and PaymentMethods, and verifies bank accounts with Treasury for platforms.
-
-[Issuing and Treasury for platforms sample app](https://docs.stripe.com/treasury/connect/examples/sample-app.md): Use the Stripe Next.js sample app to start your own Issuing and Treasury for platforms integration.
-
-## Integrate Treasury for platforms with Stripe Issuing
-
-[Webhooks for Issuing and Treasury for platforms](https://docs.stripe.com/treasury/connect/examples/webhooks.md): Learn about webhook events for Stripe Issuing and Treasury for platforms and why they occur.
-
-[Integrate Issuing with Treasury for platforms](https://docs.stripe.com/treasury/connect/account-management/issuing-cards.md): Use Stripe Issuing to create physical and virtual cards using a financial account as the source of funds.
-
-[Issuing and Treasury for platforms sample app](https://docs.stripe.com/treasury/connect/examples/sample-app.md): Use the Stripe Next.js sample app to start your own Issuing and Treasury for platforms integration.
+[Prebuilt embedded finance (Private preview)](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md): Embed financial account dashboards, transaction history, and bill pay in your application UI.
 
 ## Manage your accounts
 
-[Treasury for platforms accounts structure](https://docs.stripe.com/treasury/connect/account-management/accounts-structure.md): Learn how the financial account components fit together and interact.
+[Connected accounts](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md): Configure connected accounts with the capabilities needed to use Treasury for platforms features.
 
-[Connected accounts](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md): Collect onboarding requirements for your connected accounts.
+[Financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md): Learn how financial accounts store, send, and receive funds and how to monitor their activity and balances.
 
-[Financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md): Use financial accounts to store, send, and receive funds.
+## Moving money
 
-[Financial accounts features](https://docs.stripe.com/treasury/connect/account-management/financial-account-features.md): Learn about the features available for financial accounts.
+[Fund a financial account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md): Move money to financial account balances.
 
-[Balances and transactions](https://docs.stripe.com/treasury/connect/account-management/working-with-balances-and-transactions.md): Learn about financial account balances and the effect transactions have on them.
+[Transfer between same-owner accounts](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md): Transfer money from financial accounts to other accounts owned by the same entity.
 
-## Move money
-
-[Payouts and top-ups](https://docs.stripe.com/treasury/connect/moving-money/payouts.md): Move money between Payments account balances and financial account balances.
-
-[Work with SetupIntents, PaymentMethods, and BankAccounts](https://docs.stripe.com/treasury/connect/moving-money/working-with-bankaccount-objects.md): Learn how to set up money movements with financial accounts.
-
-[Move money into financial accounts](https://docs.stripe.com/treasury/connect/moving-money/moving-money-into-financial-accounts.md): Learn the requests available to move money into financial accounts.
-
-[Move money out of financial accounts](https://docs.stripe.com/treasury/connect/moving-money/moving-money-out.md): Learn the requests available to move money out of financial accounts.
-
-### Stablecoins in Treasury for platforms
-
-### Get early access to stablecoins in your Treasury for platforms integration.
-
-Enter your email to request access.
-
-```bash
-curl https://docs.stripe.com/preview/register \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -H "Referer: https://docs.stripe.com/treasury/connect" \
-  -d '{"email": "EMAIL", "preview": "treasury_for_platforms_stablecoin_interests_preview"}'
-```
+[Pay others](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md): Make payments from financial accounts to other recipients.
 
 ## Features
 
-- [Financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md): Offer accounts eligible for FDIC insurance to your customers within your platform.
-- [Funds transfers](https://docs.stripe.com/treasury/connect/moving-money/payouts.md): Send and receive funds using traditional bank transfer methods such as ACH credits and debits.
-- [Fraud prevention](https://docs.stripe.com/treasury/connect/examples/fraud-guide.md): Use tools to detect and prevent fraudulent activity such as delaying transaction processing on risky money movement.
-- [Faster payouts into financial accounts](https://docs.stripe.com/treasury/connect/moving-money/payouts.md): Enable faster access to funds for customers who sell using Stripe Payments at no additional cost.
+- [Financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md): Offer multiple financial accounts to your customers within your platform.
+
+- [Transfer between same-owner accounts](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md) Transfer money from financial accounts to other accounts owned by the same entity.
+
+- [Pay others](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md)
+
+- [Fund a financial account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md): Enable easy and fast access to funds for customers who sell using Stripe Payments.
+
+- [Prebuilt embedded finance](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md): Embed financial dashboards, transaction history, and bill pay in your platform UI using prebuilt ConnectJS components.
 

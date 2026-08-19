@@ -48,7 +48,7 @@ dg listen https://example.com/audio.mp3
 dg listen --mic
 
 # Pipe transcript to another tool
-dg listen audio.mp3 -o json | jq '.results.channels[0].alternatives[0].transcript'
+dg -o json listen audio.mp3 | jq '.results.channels[0].alternatives[0].transcript'
 ```
 
 ### Text-to-speech
@@ -75,43 +75,76 @@ cat transcript.txt | dg read --summarize
 
 ```shell
 # List your projects
-dg projects list
+dg projects --list
 
 # Create an API key
-dg keys create "ci-runner"
+dg keys --create --comment "ci-runner"
 
 # Check your usage
 dg usage
 ```
+
+Account commands are flag-based. Run `dg keys --help` or `dg projects --help` for the full set.
 
 ## Output Formats
 
 The CLI defaults to human-readable output in the terminal. Use `-o` or `--output` to switch formats:
 
 ```shell
-dg listen audio.mp3 -o json   # Structured JSON
-dg listen audio.mp3 -o yaml   # YAML
-dg listen audio.mp3 -o table  # ASCII table
-dg listen audio.mp3 -o csv    # CSV
+dg -o json listen audio.mp3   # Structured JSON
+dg -o yaml listen audio.mp3   # YAML
+dg -o table listen audio.mp3  # ASCII table
+dg -o csv listen audio.mp3    # CSV
 ```
 
-When stdout is a pipe, the CLI automatically switches to JSON.
+`-o` belongs to `dg` itself, so it goes before the subcommand name. After the subcommand it fails to parse — `dg listen audio.mp3 -o json` exits `1` with `Error: No such option '-o'.` On `dg speak` the collision is quieter: there, a bare `-o` is the output file path, not a format.
+
+[Agent-friendly mode](#agent-friendly-mode) selects JSON on its own, without `-o`. A piped stdout alone does not trigger it.
+
+Usage errors, cancellation messages, and progress output go to stderr rather than stdout, so redirecting stderr leaves stdout carrying the payload:
+
+```shell
+dg -o json listen audio.mp3 2>/dev/null > transcript.json
+```
+
+Some command-level errors still print to stdout — an authentication failure is the common one — so check the exit code rather than assuming stdout parses.
+
+## Exit Codes
+
+Every command reports its outcome through the exit code, so scripts and CI steps can branch on it:
+
+| Code | Meaning                                                                              |
+| ---- | ------------------------------------------------------------------------------------ |
+| `0`  | Success                                                                              |
+| `1`  | Error, including crashes and usage errors such as an unknown command or invalid flag |
+| `2`  | User interrupt: Ctrl-C, or Ctrl-D at a prompt                                        |
+
+```shell
+if dg -o json listen audio.mp3 > transcript.json; then
+  echo "transcribed"
+else
+  echo "failed with code $?" >&2
+fi
+```
+
+Exit codes are enforced as of CLI `0.3.0`. Earlier versions exited `0` regardless of outcome, so a pipeline that ignored the exit code may begin surfacing failures it previously swallowed. No command that succeeds changes its exit code.
 
 ## Agent-Friendly Mode
 
 The CLI auto-detects AI agent environments (Claude Code, Aider, OpenAI Codex, Gemini) and adjusts its behavior:
 
 * Disables interactive prompts
-* Routes status messages to stderr
 * Defaults to JSON output
+* Routes status messages and warnings to stderr
 
-To explicitly enable agent-friendly mode:
+To force the mode on:
 
 ```shell
-dg listen audio.mp3 --agent-friendly
+CI=true dg listen audio.mp3
+dg listen audio.mp3 --non-interactive
 ```
 
-To get machine-readable parameter documentation:
+`--agent-friendly` does something different on a subcommand: it prints that command's parameter documentation as JSON and exits without running it.
 
 ```shell
 dg listen --agent-friendly

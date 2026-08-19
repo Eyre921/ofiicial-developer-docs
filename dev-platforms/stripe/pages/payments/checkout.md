@@ -25,7 +25,7 @@ You can use three payment UIs with the Checkout Sessions API. The following imag
 
 [Elements](https://docs.stripe.com/payments/quickstart.md): Build a fully customized payment page using elements
 
-| &nbsp; | [FULL PAGE](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=checkout&ui=stripe-hosted) (Recommended) | [EMBEDDED FORM](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) (Private preview) | [ELEMENTS](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout) |
+| &nbsp; | [FULL PAGE](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=checkout&ui=stripe-hosted) (Recommended) | [EMBEDDED FORM](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) (Public preview) | [ELEMENTS](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout) |
 | --- | --- | --- | --- |
 | **API** | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) |
 | **Feature list** | Built-in UI support for Billing, Tax, Adaptive Pricing, Stripe Managed Payments, Link, dynamic payment methods, Surcharging, Split-tender | Built-in UI support for Billing, Tax, Adaptive Pricing, Stripe Managed Payments, Link, dynamic payment methods, Surcharging | Built-in UI support for Adaptive Pricing, Link, dynamic payment methods |

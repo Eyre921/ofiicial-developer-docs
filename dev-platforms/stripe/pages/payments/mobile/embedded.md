@@ -87,6 +87,10 @@ Examples of how customers can access saved payment methods in Payment Element
 ## Collect address details
 
 You can configure the Payment Element to collect additional payment information, including name, email, phone number, and billing address, regardless of which payment method a customer uses.
+
+Full address collection includes Stripe-provided autocomplete for supported countries, with no additional setup required.
+
+> By using autocomplete, you agree to comply with the [Google Maps Platform Acceptable Use Policy](https://cloud.google.com/maps-platform/terms/aup). If you violate this policy, Stripe might disable autocomplete or take other necessary action.
 ![Payment Element address collection](https://b.stripecdn.com/docs-statics-srv/assets/pe-collecting-address-details.f806ddc435848cdf38470fb4e5adb15b.png)
 
 Example showing full billing details collected

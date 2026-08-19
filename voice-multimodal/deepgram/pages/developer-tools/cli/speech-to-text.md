@@ -45,11 +45,13 @@ ffmpeg -i video.mp4 -f wav - | dg listen -
 ### Output Format
 
 ```shell
-dg listen audio.mp3 -o json    # JSON (default for pipes)
-dg listen audio.mp3 -o yaml    # YAML
-dg listen audio.mp3 -o table   # ASCII table
-dg listen audio.mp3 -o text    # Plain text transcript
+dg -o json listen audio.mp3    # JSON
+dg -o yaml listen audio.mp3    # YAML
+dg -o table listen audio.mp3   # ASCII table
+dg -o csv listen audio.mp3     # CSV
 ```
+
+`-o` belongs to `dg` itself, so it goes before the subcommand name. Without it, `dg listen` prints the plain-text transcript.
 
 ### Model Selection
 

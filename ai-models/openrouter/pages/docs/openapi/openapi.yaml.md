@@ -7594,6 +7594,12 @@ components:
         sequence_number: 6
         type: 'response.custom_tool_call_input.done'
     CustomToolCallItem:
+      allOf:
+        - $ref: '#/components/schemas/OpenAIResponseCustomToolCall'
+        - properties:
+            status:
+              $ref: '#/components/schemas/ToolCallStatus'
+          type: 'object'
       description: 'A call to a custom (freeform-grammar) tool created by the model — distinct from `function_call`. Used for tools like Codex CLI''s `apply_patch` whose payload is opaque text rather than JSON arguments.'
       example:
         call_id: 'call-abc123'
@@ -7601,28 +7607,6 @@ components:
         input: "*** Begin Patch\n*** End Patch"
         name: 'apply_patch'
         type: 'custom_tool_call'
-      properties:
-        call_id:
-          type: 'string'
-        id:
-          type: 'string'
-        input:
-          type: 'string'
-        name:
-          type: 'string'
-        namespace:
-          description: 'Namespace qualifier for tools registered as part of a namespace tool group (e.g. an MCP server)'
-          type: 'string'
-        type:
-          enum:
-            - 'custom_tool_call'
-          type: 'string'
-      required:
-        - 'type'
-        - 'call_id'
-        - 'name'
-        - 'input'
-      type: 'object'
     CustomToolCallOutputItem:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponseCustomToolCallOutput'
@@ -8059,6 +8043,14 @@ components:
         param: null
         sequence_number: 2
         type: 'error'
+    FailableToolCallStatus:
+      enum:
+        - 'in_progress'
+        - 'completed'
+        - 'incomplete'
+        - 'failed'
+      example: 'completed'
+      type: 'string'
     FailedEvent:
       description: 'Event emitted when a response has failed'
       example:
@@ -18052,7 +18044,7 @@ components:
           description: 'The advisor model''s response (the advice text returned to the executor).'
           type: 'string'
         error:
-          description: 'Error message when the advisor call did not produce advice.'
+          description: 'Error message when the advisor call did not produce advice. Set together with `status: ''failed''` on the terminal item.'
           type: 'string'
         id:
           type: 'string'
@@ -18067,7 +18059,7 @@ components:
           description: 'The prompt the executor sent to the advisor.'
           type: 'string'
         status:
-          $ref: '#/components/schemas/ToolCallStatus'
+          $ref: '#/components/schemas/FailableToolCallStatus'
         type:
           enum:
             - 'openrouter:advisor'
@@ -19443,7 +19435,7 @@ components:
           description: 'EXPERIMENTAL — subject to change without notice. The `call_id` of the tool call that spawned this subagent. This id will also be included as the `subagent_id` on any `function_call` items created by the subagent. This must be returned in the request so the `function_call` can be matched with the correct subagent. A suspended `in_progress` item is announced once and never re-emitted or terminally closed — completion arrives as a new item with the same `call_id`.'
           type: 'string'
         error:
-          description: 'Error message when the subagent task did not produce an outcome.'
+          description: 'Error message when the subagent task did not produce an outcome. Set together with `status: ''failed''` on the terminal item.'
           type: 'string'
         id:
           type: 'string'
@@ -19462,7 +19454,7 @@ components:
           description: 'The worker model''s result (the outcome text returned to the delegating model).'
           type: 'string'
         status:
-          $ref: '#/components/schemas/ToolCallStatus'
+          $ref: '#/components/schemas/FailableToolCallStatus'
         task_description:
           description: 'The task description the delegating model sent to the worker.'
           type: 'string'
@@ -25389,6 +25381,10 @@ components:
           example: 'https://example.com/webhook'
           format: 'uri'
           type: 'string'
+        creativity:
+          description: 'Creativity level for video upscaling models only. This parameter is not supported by video generation models.'
+          example: 1
+          type: 'integer'
         duration:
           description: 'Duration of the generated video in seconds'
           example: 8
@@ -25444,6 +25440,12 @@ components:
           description: 'Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable with resolution + aspect_ratio.'
           example: '1280x720'
           type: 'string'
+        upscale_factor:
+          description: 'Upscale factor for video upscaling models only. This parameter is not supported by video generation models.'
+          example: 2
+          exclusiveMinimum: true
+          minimum: 0
+          type: 'number'
       required:
         - 'model'
       type: 'object'
@@ -25536,6 +25538,13 @@ components:
           description: 'Unix timestamp of when the model was created'
           example: 1692901234
           type: 'integer'
+        creativity:
+          description: 'Supported creativity levels for video upscaling models'
+          items:
+            type: 'integer'
+          type:
+            - 'array'
+            - 'null'
         description:
           description: 'Description of the model'
           example: 'GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.'
@@ -25690,6 +25699,22 @@ components:
           type:
             - 'array'
             - 'null'
+        upscale_factor:
+          description: 'Supported upscale factor range for video upscaling models'
+          properties:
+            max:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+            min:
+              format: 'double'
+              type:
+                - 'number'
+                - 'null'
+          type:
+            - 'object'
+            - 'null'
       required:
         - 'id'
         - 'canonical_slug'
@@ -25700,6 +25725,8 @@ components:
         - 'supported_sizes'
         - 'supported_durations'
         - 'supported_frame_images'
+        - 'upscale_factor'
+        - 'creativity'
         - 'generate_audio'
         - 'seed'
         - 'allowed_passthrough_parameters'

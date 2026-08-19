@@ -30,11 +30,11 @@ Pinecone Assistant is useful for a variety of tasks, especially for the followin
 
 ## SDK support
 
-You can use the [Assistant API](/reference/api/latest/assistant/) directly, through the [Pinecone Python SDK](/reference/sdks/python/overview), or through the [Pinecone Node.js SDK](/reference/sdks/node/overview).
+You can use the [Assistant API](/reference/api/assistant/introduction) directly, through the [Pinecone Python SDK](/reference/sdks/python/overview), or through the [Pinecone Node.js SDK](/reference/sdks/node/overview).
 
 ## Workflow
 
-You can use the Pinecone Assistant through the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or [Pinecone API](/reference/api/latest/assistant/list_assistants).
+You can use the Pinecone Assistant through the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or [Pinecone API](/reference/api/assistant/introduction).
 
 <Tabs>
   <Tab title="Overview">

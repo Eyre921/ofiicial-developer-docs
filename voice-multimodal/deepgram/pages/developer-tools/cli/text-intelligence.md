@@ -72,11 +72,13 @@ dg read document.txt --sentiment --topics --summarize --intents
 ## Output Format
 
 ```shell
-dg read document.txt -o json    # JSON (structured)
-dg read document.txt -o yaml    # YAML
-dg read document.txt -o table   # ASCII table
-dg read document.txt -o text    # Plain text
+dg -o json read document.txt    # JSON
+dg -o yaml read document.txt    # YAML
+dg -o table read document.txt   # ASCII table
+dg -o csv read document.txt     # CSV
 ```
+
+`-o` belongs to `dg` itself, so it goes before the subcommand name. Without it, `dg read` prints human-readable output.
 
 ## Use Cases
 

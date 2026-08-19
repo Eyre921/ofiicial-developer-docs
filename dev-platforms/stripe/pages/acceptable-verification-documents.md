@@ -821,7 +821,7 @@ If you’re still having issues, contact [Stripe support](https://support.stripe
 
 ## Identify your required documents
 
-To see verification requests and what your account still needs to provide, go to [Account verifications](https://dashboard.stripe.com/account/verifications) in your Dashboard.
+To see verification requests and what your account still needs to provide, go to [Account status](https://dashboard.stripe.com/account/status) in your Dashboard.
 
 If your entity type isn’t listed, your document was rejected, or you’re unsure what to upload, [contact Stripe Support](https://support.stripe.com/contact) and describe your organization type and available documents.
 
@@ -832,7 +832,7 @@ Due to the sensitive nature of your verification documents, Stripe can only acce
 To upload your document:
 
 1. Go to your [Stripe Dashboard](https://dashboard.stripe.com).
-2. Navigate to [Account verifications](https://dashboard.stripe.com/account/verifications).
+2. Navigate to **Settings** > **Business** > [Account status](https://dashboard.stripe.com/account/status).
 3. Find the verification request banner or the document type you need to provide.
 4. Upload your document in the required format (PDF for scans, JPEG or PNG for photos)
 

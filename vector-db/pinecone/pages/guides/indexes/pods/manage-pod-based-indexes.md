@@ -16,7 +16,7 @@ For guidance on serverless indexes, see [Manage serverless indexes](/guides/mana
 
 ## Describe a pod-based index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) endpoint to get a complete description of a specific index:
+Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}

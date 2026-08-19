@@ -159,6 +159,6 @@ After the authorization is captured, Stripe creates an Issuing [Transaction](htt
 - [Spending controls](https://docs.stripe.com/issuing/controls/spending-controls.md)
 - [Issuing authorizations](https://docs.stripe.com/issuing/purchases/authorizations.md)
 - [Issuing transactions](https://docs.stripe.com/issuing/purchases/transactions.md)
-- [Working with Issuing cards and Treasury for platforms](https://docs.stripe.com/treasury/connect/account-management/issuing-cards.md)
+- [Working with Issuing cards and Treasury for platforms](https://docs.stripe.com/treasury/connect/legacy/v1/account-management/issuing-cards.md)
 - [Manage transaction fraud](https://docs.stripe.com/issuing/manage-fraud.md)
 

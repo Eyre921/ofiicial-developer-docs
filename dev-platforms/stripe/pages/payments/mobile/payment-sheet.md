@@ -33,9 +33,9 @@ With the Payment Sheet, you get:
 
 - [UI customizations to match your app](https://docs.stripe.com/elements/appearance-api/mobile.md): Match the UI to the design of your app. The layout stays consistent, but you can modify colors, fonts, and so on.
 
-- [Address collection](https://docs.stripe.com/payments/mobile/save-during-payment.md?platform=ios&mobile-ui=payment-element#collect-payment-details): Collect full or partial billing addresses with any payment method.
+- [Address collection](https://docs.stripe.com/payments/mobile/save-during-payment.md?mobile-ui=payment-sheet#collect-payment-details): Collect full or partial billing addresses with any payment method.
 
-- [Saved payment methods](https://docs.stripe.com/payments/mobile/accept-payment.md?platform=ios&type=payment#enable-saved-cards): Save, reuse, and manage cards and bank accounts. You can also [store a customer’s payment details without an initial payment](https://docs.stripe.com/payments/mobile/accept-payment.md?platform=ios&type=setup).
+- [Saved payment methods](https://docs.stripe.com/payments/mobile/accept-payment.md?type=payment#enable-saved-cards): Save, reuse, and manage cards and bank accounts. You can also [store a customer’s payment details without an initial payment](https://docs.stripe.com/payments/mobile/accept-payment.md?type=setup).
 
 ## Stripe in-app Elements demo
 
@@ -91,6 +91,10 @@ Examples of how customers can access saved payment methods in Payment Sheet
 ## Collecting address details
 
 You can configure Payment Sheet to collect additional payment information, including name, email, phone and billing address, regardless of which payment method is being used.
+
+Full address collection includes Stripe-provided autocomplete for supported countries, with no additional setup required.
+
+> By using autocomplete, you agree to comply with the [Google Maps Platform Acceptable Use Policy](https://cloud.google.com/maps-platform/terms/aup). If you violate this policy, Stripe might disable autocomplete or take other necessary action.
 ![Payment Sheet address collection](https://b.stripecdn.com/docs-statics-srv/assets/ps-collecting-address-details.4ae80224105d1835b2d7eaf8d4747642.png)
 
 Example with full billing details collected

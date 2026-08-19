@@ -71,7 +71,7 @@ dg completion --verify
 ## What Gets Completed
 
 * Commands: `dg listen`, `dg speak`, `dg read`, etc.
-* Subcommands: `--mic`, `--model`, `-o json`, etc.
+* Options: command options such as `--mic` and `--model`, and root options such as `-o`
 * File paths after `dg listen`
 * Project IDs and key names
 

@@ -28,6 +28,7 @@ Here are all the statuses that can be associated with a Broadcast:
 * `scheduled`: The Broadcast is scheduled to be sent at a specific time. Scheduled Broadcasts can have their schedule canceled, which returns them to draft status and prevents any emails from being sent.
 * `sent`: The Broadcast was sent.
 * `queued`: The Broadcast is queued for delivery. Canceling a queued Broadcast stops delivery to the remaining recipients only. Emails already sent cannot be recalled.
+* `canceled`: The Broadcast was canceled while it was queued for delivery. It cannot be sent again.
 
 ## Edit Broadcasts
 
@@ -50,7 +51,7 @@ To cancel the schedule for one or more scheduled Broadcasts in the Dashboard:
 3. Type `CANCEL` to confirm.
 4. Press **Cmd+Enter** or click **Cancel schedules** to complete.
 
-When you cancel a scheduled Broadcast, it returns to draft status and won't be sent at the scheduled time.
+When you cancel a scheduled Broadcast, it returns to draft status and won't be sent at the scheduled time. When you cancel a Broadcast that is mid-send (`queued`), it is set to the `canceled` status and cannot be sent again.
 
 ## Delete draft Broadcasts
 
