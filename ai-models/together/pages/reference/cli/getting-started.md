@@ -118,6 +118,7 @@ Fine tune custom models.
 
 ```bash theme={null}
 tg fine-tuning create
+tg fine-tuning model-limits
 tg fine-tuning list-checkpoints
 tg fine-tuning download
 

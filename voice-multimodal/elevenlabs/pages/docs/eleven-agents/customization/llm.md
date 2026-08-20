@@ -20,38 +20,42 @@ ElevenAgents provides a unified interface to connect your agent to multiple mode
 
 Currently, the following models are natively supported and can be configured via the agent settings:
 
-| Provider       | Model                         |
-| -------------- | ----------------------------- |
-| **ElevenLabs** | Qwen3.6-35B-A3B               |
-|                | Qwen3.5-397B-A17B             |
-| **Google**     | Gemini 3.5 Flash              |
-|                | Gemini 3.1 Pro Preview        |
-|                | Gemini 3.1 Flash Lite         |
-|                | Gemini 3.1 Flash Lite Preview |
-|                | Gemini 3 Pro Preview          |
-|                | Gemini 3 Flash Preview        |
-|                | Gemini 2.5 Flash              |
-|                | Gemini 2.5 Flash Lite         |
-| **OpenAI**     | GPT-5.5                       |
-|                | GPT-5.4                       |
-|                | GPT-5.4 Mini                  |
-|                | GPT-5.4 Nano                  |
-|                | GPT-5.2                       |
-|                | GPT-5.2 Chat Latest           |
-|                | GPT-5.1                       |
-|                | GPT-5                         |
-|                | GPT-5 Mini                    |
-|                | GPT-5 Nano                    |
-|                | GPT-4.1                       |
-|                | GPT-4.1 Mini                  |
-|                | GPT-4.1 Nano                  |
-|                | GPT-4o                        |
-|                | GPT-4o Mini                   |
-| **Anthropic**  | Claude Opus 4.7               |
-|                | Claude Sonnet 4.6             |
-|                | Claude Sonnet 4.5             |
-|                | Claude Sonnet 4               |
-|                | Claude Haiku 4.5              |
+| Provider       | Model                  |
+| -------------- | ---------------------- |
+| **ElevenLabs** | Qwen3.6-35B-A3B        |
+|                | Qwen3.5-397B-A17B      |
+| **Google**     | Gemini 3.7 Flash       |
+|                | Gemini 3.6 Flash       |
+|                | Gemini 3.5 Flash       |
+|                | Gemini 3.5 Flash-Lite  |
+|                | Gemini 3.1 Pro Preview |
+|                | Gemini 3.1 Flash Lite  |
+|                | Gemini 3 Flash Preview |
+|                | Gemini 2.5 Flash       |
+|                | Gemini 2.5 Flash Lite  |
+| **OpenAI**     | GPT-5.6 Sol            |
+|                | GPT-5.6 Terra          |
+|                | GPT-5.6 Luna           |
+|                | GPT-5.5                |
+|                | GPT-5.4                |
+|                | GPT-5.4 Mini           |
+|                | GPT-5.4 Nano           |
+|                | GPT-5.2                |
+|                | GPT-5.1                |
+|                | GPT-5                  |
+|                | GPT-5 Mini             |
+|                | GPT-5 Nano             |
+|                | GPT-4.1                |
+|                | GPT-4.1 Mini           |
+|                | GPT-4.1 Nano           |
+|                | GPT-4o                 |
+|                | GPT-4o Mini            |
+| **Anthropic**  | Claude Opus 4.8        |
+|                | Claude Opus 4.7        |
+|                | Claude Sonnet 5        |
+|                | Claude Sonnet 4.6      |
+|                | Claude Sonnet 4.5      |
+|                | Claude Haiku 4.5       |
 
 Pricing is typically denoted in USD per 1 million tokens unless specified otherwise. A token is a
 fundamental unit of text data for LLMs, roughly equivalent to 4 characters on average.
@@ -69,8 +73,8 @@ residency](/docs/overview/administration/data-residency).
 
 Selecting the most suitable LLM for your application involves considering several factors:
 
-* **Task complexity**: More demanding or nuanced tasks generally benefit from more powerful models (e.g., OpenAI's GPT-4 series, Anthropic's Claude Sonnet 4, Google's Gemini 2.5 models)
-* **Latency requirements**: For applications requiring real-time or near real-time responses, such as live voice conversations, models optimized for speed are preferable (e.g., Google's Gemini Flash series, Anthropic's Claude Haiku, OpenAI's GPT-4o-mini)
+* **Task complexity**: More demanding or nuanced tasks generally benefit from more powerful models (for example, OpenAI's GPT-5.6 / GPT-5.5 series, Anthropic's Claude Opus and Claude Sonnet 5, or Google's Gemini Pro models)
+* **Latency requirements**: For live voice conversations and other real-time applications, [ElevenLabs-hosted models](#models-hosted-by-elevenlabs) typically have the lowest latency. Google's Gemini Flash series, Anthropic's Claude Haiku, and OpenAI Mini and Nano models are also optimized for speed.
 * **Context window size**: If your application needs to process, understand, or recall information from long conversations or extensive documents, select models with larger context windows
 * **Cost-effectiveness**: Balance the desired performance and features against your budget. LLM prices can vary significantly, so analyze the pricing structure (input, output, and cache tokens) in relation to your expected usage patterns
 * **HIPAA compliance**: If your application involves Protected Health Information (PHI), it is crucial to use an LLM that is designated as HIPAA compliant and ensure your entire data handling process meets regulatory standards
@@ -116,15 +120,15 @@ Control how many internal reasoning tokens the model can use before responding. 
 
 ### Reasoning effort
 
-Some models support configurable reasoning effort levels (None, Low, Medium, High).
+Some models support configurable reasoning effort. Higher effort can improve answer quality but increases latency.
 
 **For conversational use-cases:**
 
-Keep reasoning effort set to **None** to avoid the agent thinking too long, which can disrupt natural conversation flow.
+Keep reasoning effort as low as the model allows to avoid the agent thinking too long, which can disrupt natural conversation flow.
 
 **For workflow steps:**
 
-Reasoning effort is perfect for workflow steps that require complex thought or decision-making where response time is less critical.
+Higher reasoning effort is useful for workflow steps that require complex thought or decision-making where response time is less critical.
 
 ### Reasoning summary
 

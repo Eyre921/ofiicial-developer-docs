@@ -80,18 +80,6 @@ Enable tab completions for your shell:
 ntn completions bash  # or fish, zsh, powershell, elvish
 ```
 
-## Building from source
-
-Clone the repository and use [mise](https://mise.jdx.dev/) to build a local debug binary installed as `ntnd`:
-
-```bash theme={null}
-git clone https://github.com/makenotion/cli.git
-cd cli
-mise build
-```
-
-See the [CLI README](https://github.com/makenotion/cli/blob/main/README.md#building-from-source) for `mise watch` and other development workflows.
-
 ## Next steps
 
 <CardGroup>

@@ -44,6 +44,22 @@ This value becomes `CHAT_API_KEY`. It is different from your `TOGETHER_API_KEY`.
   The shared `CHAT_API_KEY` is a minimal guard for a server-to-server demo. Do not embed it in browser or mobile application code. For a public application, add user authentication, per-user authorization, and rate limits.
 </Warning>
 
+## Deploy an example
+
+<CardGroup>
+  <Card title="TypeScript + Express" icon="js">
+    [Live demo](https://together-chat-ts.onrender.com/) · [GitHub](https://github.com/render-examples/together-render-chat-ts)
+
+    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/together-render-chat-ts)
+  </Card>
+
+  <Card title="Python + FastAPI" icon="python">
+    [Live demo](https://together-chat-python.onrender.com/) · [GitHub](https://github.com/render-examples/together-render-chat-python)
+
+    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/together-render-chat-python)
+  </Card>
+</CardGroup>
+
 ## Step 1: Create the project
 
 Create a new directory and initialize a Git repository:

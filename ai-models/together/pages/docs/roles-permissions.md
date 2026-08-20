@@ -27,17 +27,18 @@ Organizations have two roles: **Admin** and **Developer**.
 
 ### Organization permissions
 
-| Scope                        | Admin | Developer |
-| ---------------------------- | ----- | --------- |
-| Organization settings: Read  | Yes   | Yes       |
-| Organization settings: Write | Yes   | No        |
-| Billing: Read                | Yes   | Yes       |
-| Billing: Write               | Yes   | No        |
-| Projects: Create             | Yes   | No        |
-| Members: Read                | Yes   | Yes       |
-| Members: Invite              | Yes   | No        |
-| Members: Remove              | Yes   | No        |
-| Members: Manage roles        | Yes   | No        |
+| Scope                             | Admin | Developer |
+| --------------------------------- | ----- | --------- |
+| Organization settings: Read       | Yes   | Yes       |
+| Organization settings: Write      | Yes   | No        |
+| Billing: Read                     | Yes   | Yes       |
+| Billing: Write                    | Yes   | No        |
+| Organization cost analytics: Read | Yes   | No        |
+| Projects: Create                  | Yes   | No        |
+| Members: Read                     | Yes   | Yes       |
+| Members: Invite                   | Yes   | No        |
+| Members: Remove                   | Yes   | No        |
+| Members: Manage roles             | Yes   | No        |
 
 ### Roles and project visibility
 
@@ -57,20 +58,20 @@ Projects have two roles: **Admin** and **Editor**.
 
 ### Project permissions
 
-| Scope                       | Admin | Editor |
-| --------------------------- | ----- | ------ |
-| Project settings: Read      | Yes   | Yes    |
-| Project settings: Write     | Yes   | No     |
-| Project visibility: Read    | Yes   | Yes    |
-| Project visibility: Change  | Yes   | No     |
-| Project cost analytics      | Yes   | Yes    |
-| API keys: Read              | Yes   | Yes    |
-| API keys: Create            | Yes   | Yes    |
-| API keys: Revoke            | Yes   | Yes    |
-| Collaborators: Read         | Yes   | Yes    |
-| Collaborators: Add          | Yes   | No     |
-| Collaborators: Remove       | Yes   | No     |
-| Collaborators: Manage roles | Yes   | No     |
+| Scope                        | Admin | Editor |
+| ---------------------------- | ----- | ------ |
+| Project settings: Read       | Yes   | Yes    |
+| Project settings: Write      | Yes   | No     |
+| Project visibility: Read     | Yes   | Yes    |
+| Project visibility: Change   | Yes   | No     |
+| Project cost analytics: Read | Yes   | Yes    |
+| API keys: Read               | Yes   | Yes    |
+| API keys: Create             | Yes   | Yes    |
+| API keys: Revoke             | Yes   | Yes    |
+| Collaborators: Read          | Yes   | Yes    |
+| Collaborators: Add           | Yes   | No     |
+| Collaborators: Remove        | Yes   | No     |
+| Collaborators: Manage roles  | Yes   | No     |
 
 Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
 

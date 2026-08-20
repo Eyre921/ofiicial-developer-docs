@@ -1728,7 +1728,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/billing/usage-based-billing-for-individuals
 /en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises
 /en/copilot/concepts/billing/budgets-for-usage-based-billing
-/en/copilot/concepts/billing/individual-plans
 /en/copilot/concepts/billing/organizations-and-enterprises
 /en/copilot/concepts/about-enterprise-accounts-for-copilot-business
 /en/copilot/concepts/policies

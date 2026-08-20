@@ -16,7 +16,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
+  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  An overview of GitHub's pricing plans.
+  <p>An overview of GitHub's pricing plans.</p>
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 

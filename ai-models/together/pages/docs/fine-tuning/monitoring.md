@@ -19,6 +19,20 @@ Use the filter control (funnel icon) in the metrics toolbar to adjust how points
 
 The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Select **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
 
+## Download the tokenized dataset
+
+When a job has produced a tokenized dataset archive, the job details on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning) show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
+
+When the archive upload finishes, the job events include a `tokenized_dataset_upload_complete` event. The event `message` appends the CLI download command, for example:
+
+```text theme={null}
+Tokenized dataset archive uploaded. Run the following command to download the data: tg ft download-tokenized-dataset ft-xxxx
+```
+
+List events with `tg fine-tuning list-events <JOB_ID>` or [`GET /fine-tunes/{id}/events`](/reference/get-fine-tunes-id-events). The same message appears on the console **Events** tab. `tg ft` is the shorthand for `tg fine-tuning`.
+
+The row appears only when the job response includes `tokenized_dataset_path`. If the archive is not available yet, use the API or CLI later, or wait for tokenization to finish. See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset) for `tg fine-tuning download-tokenized-dataset` and [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset).
+
 ## Poll until the job is done
 
 A fine-tuning job moves through the states: `pending → queued → running → uploading → completed`. Queue wait is typically under an hour but varies with platform load. Once a job is running, multiply the duration of the first epoch by `n_epochs` to estimate remaining training time.

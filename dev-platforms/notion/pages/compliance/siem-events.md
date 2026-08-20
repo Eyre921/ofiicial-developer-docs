@@ -172,6 +172,7 @@ For page events, the page audience describes the visibility level of the target 
 * **workspace.integration\_removed**: All bots for a specific public integration were removed from the workspace.
 * **workspace.integration\_webhook\_inactivated**: An integration's webhook was inactivated due to repeated delivery failures.
 * **workspace.integration\_webhook\_reactivated**: An integration's webhook was reactivated after being inactive.
+* **workspace.mcp\_connection.tool\_list\_updated**: The selected tools for a workspace MCP connection were updated.
 * **workspace.mcp.allowlist\_disabled**: The MCP allowlist was disabled for the workspace.
 * **workspace.mcp.allowlist\_enabled**: The MCP allowlist was enabled for the workspace.
 * **workspace.mcp.client\_added**: An MCP client was added to the workspace's allowlist.

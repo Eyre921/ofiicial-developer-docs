@@ -75,7 +75,7 @@
 - `reference/admin/get-agents-credit-usage` — [Get credit usage for agents in a space](pages/reference/admin/get-agents-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agents-credit-usage)
 - `reference/admin/get-legal-hold` — [Retrieve a legal hold](pages/reference/admin/get-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/get-legal-hold)
 - `reference/admin/get-space-export-status` — [Get workspace export status](pages/reference/admin/get-space-export-status.md) · [原文](https://developers.notion.com/reference/admin/get-space-export-status)
-- `reference/admin/get-workflows-metadata-for-space` — [Get general workflows metadata for a space](pages/reference/admin/get-workflows-metadata-for-space.md) · [原文](https://developers.notion.com/reference/admin/get-workflows-metadata-for-space)
+- `reference/admin/get-workflows-metadata-for-space` — [Get agents in a space](pages/reference/admin/get-workflows-metadata-for-space.md) · [原文](https://developers.notion.com/reference/admin/get-workflows-metadata-for-space)
 - `reference/admin/intro` — [Introduction](pages/reference/admin/intro.md) · [原文](https://developers.notion.com/reference/admin/intro)
 - `reference/admin/list-legal-hold-pages` — [List pages on a legal hold](pages/reference/admin/list-legal-hold-pages.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-pages)
 - `reference/admin/list-legal-hold-users` — [List users on a legal hold](pages/reference/admin/list-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-users)

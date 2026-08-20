@@ -35,6 +35,18 @@ path: docs/changelog
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 
+  ## Fine-tuning model limits in the CLI
+
+  `tg fine-tuning model-limits` (alias `tg ft model-limits`) queries [`GET /fine-tunes/models/limits`](/reference/get-fine-tunes-models-limits) for a base model's capability flags and hyperparameter bounds. Use `--json` for the full response body.
+
+  See [Model limits](/reference/cli/finetune#model-limits).
+
+  ## Tokenized dataset download in fine-tune events
+
+  When a fine-tuning job finishes uploading its tokenized dataset archive, the `tokenized_dataset_upload_complete` event message includes the CLI command to download it (`tg ft download-tokenized-dataset <JOB_ID>`). The message appears in the console **Events** tab and in [`GET /fine-tunes/{id}/events`](/reference/get-fine-tunes-id-events).
+
+  See [Download the tokenized dataset](/docs/fine-tuning/monitoring#download-the-tokenized-dataset).
+
   ## New dedicated endpoint models
 
   The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
@@ -88,6 +100,20 @@ path: docs/changelog
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
+<Update label="August 10, 2026">
+  ## Tokenized dataset download in the fine-tuning console
+
+  Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
+
+  The same archive is available from the API and CLI. See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset).
+
+  ## Non-interactive fine-tune deletion in the CLI
+
+  `tg fine-tuning delete` now honors global non-interactive mode. `--non-interactive`, `--json`, and non-TTY sessions skip the confirmation prompt, so scripts and CI no longer need `--force` for unattended deletes.
+
+  See [Delete](/reference/cli/finetune#delete).
+</Update>
+
 <Update label="August 8, 2026">
   ## Longer context for GLM-5.2
 
@@ -110,6 +136,18 @@ path: docs/changelog
   LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.
 
   See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers) for how to enable it.
+</Update>
+
+<Update label="August 6, 2026">
+  ## Fine-tune tokenized dataset download
+
+  You can download the tokenized dataset archive generated for a fine-tuning job. Call [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset) for a presigned URL, or use the CLI:
+
+  ```bash theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] --output-dir ./tokenized
+  ```
+
+  See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset) for flags and output formats.
 </Update>
 
 <Update label="August 3, 2026">

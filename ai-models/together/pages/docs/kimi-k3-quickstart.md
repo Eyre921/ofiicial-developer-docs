@@ -6,7 +6,7 @@ path: docs/kimi-k3-quickstart
 
 Call Kimi K3 on Together for long-horizon coding, vision-in-the-loop work, and deep reasoning.
 
-Kimi K3 is Moonshot AI's flagship model and the first open-weight model in the 3-trillion-parameter class, at 2.8 trillion total parameters. It is built for frontier intelligence work: long-horizon coding, end-to-end knowledge work, and deep reasoning. It accepts both text and image inputs, thinks by default, and holds a 1M-token context window.
+Kimi K3 is Moonshot AI's flagship model and the first open-weight model in the 3-trillion-parameter class, at 2.8 trillion total parameters. It is built for frontier intelligence work: long-horizon coding, end-to-end knowledge work, and deep reasoning. It accepts both text and image inputs, thinks by default, and holds a 1.05M-token context window.
 
 The model ID is `moonshotai/Kimi-K3`. Pricing is \$3.00 per 1M input tokens, \$15.00 per 1M output tokens, and \$0.30 per 1M cached input tokens, flat across the full context window.
 
@@ -675,9 +675,9 @@ print(second.choices[0].message.tool_calls)
 # -> convert_currency({"amount":100,"from_currency":"USD","to_currency":"EUR"})
 ```
 
-## Work with the 1M context and the cache
+## Work with the 1.05M context and the cache
 
-K3 accepts up to 1M input tokens on Together, and context caching is automatic. There is no cache ID, TTL, or extra parameter. Keep your long prefix (system prompt, knowledge base, repo dump) byte-stable across requests so later calls hit the cache. Moonshot reports cache hit rates above 90% in coding workloads, which pulls effective input cost toward the \$0.30 floor.
+K3 accepts up to 1.05M input tokens on Together, and context caching is automatic. There is no cache ID, TTL, or extra parameter. Keep your long prefix (system prompt, knowledge base, repo dump) byte-stable across requests so later calls hit the cache. Moonshot reports cache hit rates above 90% in coding workloads, which pulls effective input cost toward the \$0.30 floor.
 
 Moonshot recommends placing fixed bulk context such as knowledge documents at the very beginning of the `messages` array, ahead of the system message, then appending questions and replies after it.
 
@@ -767,7 +767,7 @@ Most sampling parameters are fixed server-side. Omit them and let the defaults a
 | `presence_penalty`, `frequency_penalty`                | Fixed at 0.                                                                                                          |
 | `logprobs`                                             | Not supported. Returns `400`.                                                                                        |
 | `top_k`, `min_p`, `repetition_penalty`, `stop`, `seed` | Accepted.                                                                                                            |
-| `max_tokens`                                           | No ceiling below the 1M context limit. Cap it yourself for short answers.                                            |
+| `max_tokens`                                           | No ceiling below the 1.05M context limit. Cap it yourself for short answers.                                         |
 | `reasoning_effort`                                     | `"low"`, `"medium"`, `"high"`, or `"max"` (default). Invalid strings are accepted silently, so validate client-side. |
 | `reasoning`                                            | `{"enabled": False}` disables thinking entirely.                                                                     |
 
@@ -775,7 +775,7 @@ Most sampling parameters are fixed server-side. Omit them and let the defaults a
 
 Two architectural changes form K3's backbone, both aimed at moving information through longer sequences and deeper into the network:
 
-* **Kimi Delta Attention (KDA):** A hybrid linear attention mechanism that provides an efficient foundation for scaling attention across very long contexts. This is Moonshot's first model to support a 1M context window.
+* **Kimi Delta Attention (KDA):** A hybrid linear attention mechanism that provides an efficient foundation for scaling attention across very long contexts. This is Moonshot's first model to support a 1.05M context window.
 * **Attention Residuals (AttnRes):** Selectively retrieves representations across model depth rather than accumulating them uniformly.
 
 On top of that, Moonshot pushed mixture-of-experts (MoE) sparsity further with the Stable LatentMoE framework, activating 16 of 896 experts. At roughly 2% of experts active per token, routing and optimization become first-order problems, so four supporting techniques keep training stable at 2.8T scale:
@@ -795,7 +795,7 @@ K3 is strongest where a task runs long and needs little supervision:
 * **Vision in the loop:** Iterating between code and live screenshots for game development, frontend engineering, and CAD, using visual feedback rather than a written description of the render.
 * **Research pipelines:** Reviewing literature, implementing a numerical pipeline, cross-validating results, and producing an interactive deliverable in one run.
 * **End-to-end knowledge work:** Deep research reports with interactive charts, timelines, and slides rather than a paragraph of prose.
-* **Large-repository refactoring:** Cross-file, multi-step engineering work held together by the 1M context window.
+* **Large-repository refactoring:** Cross-file, multi-step engineering work held together by the 1.05M context window.
 * **Agentic tool orchestration:** Long tool-calling loops with reasoning between steps and tools loaded on demand.
 
 ## Limitations

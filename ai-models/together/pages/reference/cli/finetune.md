@@ -128,6 +128,8 @@ To list events of a past or running job:
 tg fine-tuning list-events [FT_ID]
 ```
 
+When tokenization finishes, a `tokenized_dataset_upload_complete` event message includes `tg ft download-tokenized-dataset [FT_ID]`. See [Download tokenized dataset](#download-tokenized-dataset).
+
 ## Cancel
 
 To cancel a running job:
@@ -269,20 +271,37 @@ The command downloads Zstandard-compressed (`.zst`) weights. To extract them, ru
 
 ## Download tokenized dataset
 
-To download the tokenized dataset a job trained on:
+To download the tokenized dataset archive generated for a fine-tuning job:
 
-```bash theme={null}
-tg fine-tuning download-tokenized-dataset [FT_ID] \
-  --output-dir ./datasets
-```
+<CodeGroup>
+  ```bash Basic theme={null}
+  # Download the archive to the current working directory.
+  tg fine-tuning download-tokenized-dataset [FT_ID]
+  ```
 
-The command saves a Zstandard-compressed archive named `[FT_ID]_tokenized_datasets.tar.zst` to the output directory (default: the current working directory). To extract it, run `tar -xf filename`. Use it to audit exactly what the model was trained on, for example to inspect the tokenization and loss masking of a finished job.
+  ```bash Specify directory theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] \
+    --output-dir ./tokenized
+  ```
+
+  ```bash JSON output theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] \
+    --output-dir ./tokenized \
+    --json
+  ```
+</CodeGroup>
+
+The command calls [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset) for a presigned URL, then downloads the archive to disk. Without `--output-dir`, it writes to the current working directory using the archive filename from the API (for example, `tokenized-dataset.tar.gz`). If the job has no tokenized dataset archive yet, the API returns `404`.
+
+Pass `--json` to print local file metadata (`object`, `id`, `filename`, and `size`) instead of the human-readable path message. The presigned URL is never printed.
+
+In the console, open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. See [Download the tokenized dataset](/docs/fine-tuning/monitoring#download-the-tokenized-dataset).
 
 ### Parameters
 
-| Flag                     | Description                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. Default: the current working directory. |
+| Flag                     | Description                                      |
+| ------------------------ | ------------------------------------------------ |
+| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. |
 
 ## Delete
 
@@ -295,8 +314,10 @@ tg fine-tuning delete [FT_ID]
 tg ft -d [FT_ID]
 ```
 
+The CLI asks for confirmation before deleting. Pass `--force` to skip the prompt, or run with `--non-interactive` or `--json` in scripts and CI. Non-TTY sessions also skip confirmation.
+
 ### Parameters
 
-| Flag      | Description                 |
-| --------- | --------------------------- |
-| `--force` | Bypass confirmation prompt. |
+| Flag      | Description                                                                                                                                    |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--force` | Bypass the confirmation prompt. Useful in interactive terminals when you want to skip the prompt without enabling global non-interactive mode. |

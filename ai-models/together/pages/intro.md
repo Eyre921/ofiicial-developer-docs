@@ -13,7 +13,7 @@ Run, train, and serve open-source AI models on Together AI.
     client = Together()
 
     completion = client.chat.completions.create(
-      model="MiniMaxAI/MiniMax-M3",
+      model="moonshotai/Kimi-K3",
       messages=[{"role": "user", "content": "What are the top 3 things to do in New York?"}],
     )
 
@@ -25,7 +25,7 @@ Run, train, and serve open-source AI models on Together AI.
     const together = new Together();
 
     const completion = await together.chat.completions.create({
-      model: 'MiniMaxAI/MiniMax-M3',
+      model: 'moonshotai/Kimi-K3',
       messages: [{ role: 'user', content: 'Top 3 things to do in New York?' }],
     });
 
@@ -37,7 +37,7 @@ Run, train, and serve open-source AI models on Together AI.
          -H "Authorization: Bearer $TOGETHER_API_KEY" \
          -H "Content-Type: application/json" \
          -d '{
-         	"model": "MiniMaxAI/MiniMax-M3",
+         	"model": "moonshotai/Kimi-K3",
          	"messages": [
               {"role": "user", "content": "What are the top 3 things to do in New York?"}
          	]
@@ -81,7 +81,7 @@ Run, train, and serve open-source AI models on Together AI.
 
   <CtaCard href="/docs/json-mode" title="Use structured inputs with LLMs" description="Get reliable JSON by defining schemas and using structured outputs." />
 
-  <CtaCard href="/docs/reasoning-models-guide#reasoning-models-guide" title="Work with reasoning models" description="Use open reasoning models like DeepSeek-R1 for logic-heavy, multi-step tasks." />
+  <CtaCard href="/docs/reasoning-models-guide#reasoning-models-guide" title="Work with reasoning models" description="Use open reasoning models like DeepSeek V4 and Kimi K3 for logic-heavy, multi-step tasks." />
 
   <CtaCard href="/docs/dedicated_containers_image" title="Deploy an image generation container" description="Run a FLUX2 model on dedicated GPUs with autoscaling and job queues." />
 </div>

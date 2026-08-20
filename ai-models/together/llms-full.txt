@@ -15251,49 +15251,48 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Chat & text
 
-| Use case                     | Recommended model          | Model string                | Alternatives                              | Learn more                                                    |
-| :--------------------------- | :------------------------- | :-------------------------- | :---------------------------------------- | :------------------------------------------------------------ |
-| **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                    | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                         | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                         | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`   | -                                                             |
-| **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
-| **Function calling**         | GLM-5.2                    | `zai-org/GLM-5.2`           | `moonshotai/Kimi-K2.6`                    | [Function calling](/docs/inference/function-calling/overview) |
+| Use case                     | Recommended model | Model string                         | Alternatives                                            | Learn more                                                    |
+| :--------------------------- | :---------------- | :----------------------------------- | :------------------------------------------------------ | :------------------------------------------------------------ |
+| **Chat**                     | Kimi K3           | `moonshotai/Kimi-K3`                 | `Qwen3.8-2.4T-A95B`                                     | [Chat completions](/docs/inference/chat/overview)             |
+| **Reasoning**                | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Pro`                           | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Coding agents**            | Kimi K3           | `moonshotai/Kimi-K3`                 | `deepseek-ai/DeepSeek-V4-Flash-0731`, `zai-org/GLM-5.2` | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Small and fast**           | Gemma 4 31B IT    | `google/gemma-4-31B-it`              | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`                 | -                                                             |
+| **Mid-size general purpose** | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `MiniMaxAI/MiniMax-M3`                                  | -                                                             |
+| **Function calling**         | DeepSeek V4 Flash | `deepseek-ai/DeepSeek-V4-Flash-0731` | `zai-org/GLM-5.2`                                       | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 
-| Use case   | Recommended model | Model string           | Alternatives                                    | Learn more                                                                                  |
-| :--------- | :---------------- | :--------------------- | :---------------------------------------------- | :------------------------------------------------------------------------------------------ |
-| **Vision** | Kimi K2.6         | `moonshotai/Kimi-K2.6` | `google/gemma-4-31B-it`, `MiniMaxAI/MiniMax-M3` | [Vision](/docs/inference/vision/overview), [OCR quickstart](/docs/quickstart-how-to-do-ocr) |
+| Use case   | Recommended model | Model string        | Alternatives                                 | Learn more                                                                                  |
+| :--------- | :---------------- | :------------------ | :------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| **Vision** | Qwen3.8 2.4T A95B | `Qwen3.8-2.4T-A95B` | `moonshotai/Kimi-K3`, `MiniMaxAI/MiniMax-M3` | [Vision](/docs/inference/vision/overview), [OCR quickstart](/docs/quickstart-how-to-do-ocr) |
 
 ## Image generation
 
-| Use case           | Recommended model | Model string             | Alternatives                                                        | Learn more                                                |
-| :----------------- | :---------------- | :----------------------- | :------------------------------------------------------------------ | :-------------------------------------------------------- |
-| **Text-to-image**  | Flash Image 2.5   | `google/flash-image-2.5` | `black-forest-labs/FLUX.2-pro`, `ByteDance-Seed/Seedream-4.0`       | [Text-to-image](/docs/inference/images/overview)          |
-| **Image-to-image** | Flash Image 2.5   | `google/flash-image-2.5` | `black-forest-labs/FLUX.1-kontext-max`, `google/gemini-3-pro-image` | [Image-to-image](/docs/inference/images/reference-images) |
+| Use case           | Recommended model | Model string         | Alternatives             | Learn more                                                |
+| :----------------- | :---------------- | :------------------- | :----------------------- | :-------------------------------------------------------- |
+| **Text-to-image**  | GPT Image 2       | `openai/gpt-image-2` | `google/flash-image-2.5` | [Text-to-image](/docs/inference/images/overview)          |
+| **Image-to-image** | GPT Image 2       | `openai/gpt-image-2` | `google/flash-image-2.5` | [Image-to-image](/docs/inference/images/reference-images) |
 
 ## Video generation
 
-| Use case           | Recommended model | Model string        | Alternatives                                             | Learn more                                          |
-| :----------------- | :---------------- | :------------------ | :------------------------------------------------------- | :-------------------------------------------------- |
-| **Text-to-video**  | Sora 2 Pro        | `openai/sora-2-pro` | `google/veo-3.0`, `ByteDance/Seedance-1.0-pro`           | [Video generation](/docs/inference/videos/overview) |
-| **Image-to-video** | Veo 3.0           | `google/veo-3.0`    | `ByteDance/Seedance-1.0-pro`, `kwaivgI/kling-2.1-master` | [Video generation](/docs/inference/videos/overview) |
+| Use case           | Recommended model      | Model string             | Alternatives               | Learn more                                          |
+| :----------------- | :--------------------- | :----------------------- | :------------------------- | :-------------------------------------------------- |
+| **Text-to-video**  | ByteDance Seedance 2.5 | `ByteDance/Seedance-2.5` | `black-forest-labs/FLUX-3` | [Video generation](/docs/inference/videos/overview) |
+| **Image-to-video** | ByteDance Seedance 2.5 | `ByteDance/Seedance-2.5` | `black-forest-labs/FLUX-3` | [Video generation](/docs/inference/videos/overview) |
 
 ## Audio
 
-| Use case           | Recommended model | Model string              | Alternatives                                         | Learn more                                                |
-| :----------------- | :---------------- | :------------------------ | :--------------------------------------------------- | :-------------------------------------------------------- |
-| **Text-to-speech** | Cartesia Sonic 3  | `cartesia/sonic-3`        | `canopylabs/orpheus-3b-0.1-ft`, `hexgrad/Kokoro-82M` | [Text-to-speech](/docs/inference/text-to-speech/overview) |
-| **Speech-to-text** | Whisper Large v3  | `openai/whisper-large-v3` | `nvidia/parakeet-tdt-0.6b-v3`, `deepgram/nova-3-en`  | [Speech-to-text](/docs/inference/transcription/overview)  |
+| Use case           | Recommended model                      | Model string                             | Alternatives                                         | Learn more                                                |
+| :----------------- | :------------------------------------- | :--------------------------------------- | :--------------------------------------------------- | :-------------------------------------------------------- |
+| **Text-to-speech** | Cartesia Sonic 3                       | `cartesia/sonic-3`                       | `canopylabs/orpheus-3b-0.1-ft`, `hexgrad/Kokoro-82M` | [Text-to-speech](/docs/inference/text-to-speech/overview) |
+| **Speech-to-text** | NVIDIA Nemotron 3.5 ASR Streaming 0.6B | `nvidia/nemotron-3.5-asr-streaming-0.6b` | `openai/whisper-large-v3`                            | [Speech-to-text](/docs/inference/transcription/overview)  |
 
-## Embeddings, rerank, and moderation
+## Embeddings and rerank
 
 | Use case       | Recommended model       | Model string                              | Notes                                                                   | Learn more                                                                                                               |
 | :------------- | :---------------------- | :---------------------------------------- | :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
 | **Embeddings** | Multilingual E5 Large   | `intfloat/multilingual-e5-large-instruct` | -                                                                       | [Embeddings](/reference/embeddings-2)                                                                                    |
 | **Rerank**     | MixedBread Rerank Large | `mixedbread-ai/Mxbai-Rerank-Large-V2`     | Only on [dedicated model inference](/docs/dedicated-endpoints/overview) | [Rerank](/docs/inference/embeddings/rerank), [Improve search with rerankers](/docs/how-to-improve-search-with-rerankers) |
-| **Moderation** | Llama Guard 4 12B       | `meta-llama/Llama-Guard-4-12B`            | -                                                                       | -                                                                                                                        |
 
 ## Related resources
 
@@ -21496,7 +21495,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
-| Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1000000        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
+| Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
 | Moonshot          | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 512000         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
@@ -21613,7 +21612,7 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 | Qwen         | Qwen3.5 9B     | Qwen/Qwen3.5-9B           | 262144         | \$0.17                        | \$0.25                         |
 | Google       | Gemma 4 31B IT | google/gemma-4-31B-it     | 262144         | \$0.39                        | \$0.97                         |
 | Minimax      | Minimax M3     | MiniMaxAI/MiniMax-M3      | 524288         | \$0.30                        | \$1.20                         |
-| Moonshot     | Kimi K3        | moonshotai/Kimi-K3        | 1000000        | \$3.00                        | \$15.00                        |
+| Moonshot     | Kimi K3        | moonshotai/Kimi-K3        | 1048576        | \$3.00                        | \$15.00                        |
 | Moonshot     | Kimi K2.7 Code | moonshotai/Kimi-K2.7-Code | 262144         | \$0.95                        | \$4.00                         |
 | Moonshot     | Kimi K2.6      | moonshotai/Kimi-K2.6      | 262144         | \$1.20                        | \$4.50                         |
 
@@ -23086,7 +23085,7 @@ Run, train, and serve open-source AI models on Together AI.
     client = Together()
 
     completion = client.chat.completions.create(
-      model="MiniMaxAI/MiniMax-M3",
+      model="moonshotai/Kimi-K3",
       messages=[{"role": "user", "content": "What are the top 3 things to do in New York?"}],
     )
 
@@ -23098,7 +23097,7 @@ Run, train, and serve open-source AI models on Together AI.
     const together = new Together();
 
     const completion = await together.chat.completions.create({
-      model: 'MiniMaxAI/MiniMax-M3',
+      model: 'moonshotai/Kimi-K3',
       messages: [{ role: 'user', content: 'Top 3 things to do in New York?' }],
     });
 
@@ -23110,7 +23109,7 @@ Run, train, and serve open-source AI models on Together AI.
          -H "Authorization: Bearer $TOGETHER_API_KEY" \
          -H "Content-Type: application/json" \
          -d '{
-         	"model": "MiniMaxAI/MiniMax-M3",
+         	"model": "moonshotai/Kimi-K3",
          	"messages": [
               {"role": "user", "content": "What are the top 3 things to do in New York?"}
          	]
@@ -23154,7 +23153,7 @@ Run, train, and serve open-source AI models on Together AI.
 
   <CtaCard href="/docs/json-mode" title="Use structured inputs with LLMs" description="Get reliable JSON by defining schemas and using structured outputs." />
 
-  <CtaCard href="/docs/reasoning-models-guide#reasoning-models-guide" title="Work with reasoning models" description="Use open reasoning models like DeepSeek-R1 for logic-heavy, multi-step tasks." />
+  <CtaCard href="/docs/reasoning-models-guide#reasoning-models-guide" title="Work with reasoning models" description="Use open reasoning models like DeepSeek V4 and Kimi K3 for logic-heavy, multi-step tasks." />
 
   <CtaCard href="/docs/dedicated_containers_image" title="Deploy an image generation container" description="Run a FLUX2 model on dedicated GPUs with autoscaling and job queues." />
 </div>
@@ -28824,6 +28823,20 @@ Use the filter control (funnel icon) in the metrics toolbar to adjust how points
 * **Step range:** Limit the chart to a contiguous step window (maps to `global_step_from` and `global_step_to`).
 
 The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Select **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
+
+## Download the tokenized dataset
+
+When a job has produced a tokenized dataset archive, the job details on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning) show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
+
+When the archive upload finishes, the job events include a `tokenized_dataset_upload_complete` event. The event `message` appends the CLI download command, for example:
+
+```text theme={null}
+Tokenized dataset archive uploaded. Run the following command to download the data: tg ft download-tokenized-dataset ft-xxxx
+```
+
+List events with `tg fine-tuning list-events <JOB_ID>` or [`GET /fine-tunes/{id}/events`](/reference/get-fine-tunes-id-events). The same message appears on the console **Events** tab. `tg ft` is the shorthand for `tg fine-tuning`.
+
+The row appears only when the job response includes `tokenized_dataset_path`. If the archive is not available yet, use the API or CLI later, or wait for tokenization to finish. See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset) for `tg fine-tuning download-tokenized-dataset` and [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset).
 
 ## Poll until the job is done
 
@@ -35790,7 +35803,7 @@ Source: https://docs.together.ai/docs/kimi-k3-quickstart
 
 Call Kimi K3 on Together for long-horizon coding, vision-in-the-loop work, and deep reasoning.
 
-Kimi K3 is Moonshot AI's flagship model and the first open-weight model in the 3-trillion-parameter class, at 2.8 trillion total parameters. It is built for frontier intelligence work: long-horizon coding, end-to-end knowledge work, and deep reasoning. It accepts both text and image inputs, thinks by default, and holds a 1M-token context window.
+Kimi K3 is Moonshot AI's flagship model and the first open-weight model in the 3-trillion-parameter class, at 2.8 trillion total parameters. It is built for frontier intelligence work: long-horizon coding, end-to-end knowledge work, and deep reasoning. It accepts both text and image inputs, thinks by default, and holds a 1.05M-token context window.
 
 The model ID is `moonshotai/Kimi-K3`. Pricing is \$3.00 per 1M input tokens, \$15.00 per 1M output tokens, and \$0.30 per 1M cached input tokens, flat across the full context window.
 
@@ -36459,9 +36472,9 @@ print(second.choices[0].message.tool_calls)
 # -> convert_currency({"amount":100,"from_currency":"USD","to_currency":"EUR"})
 ```
 
-## Work with the 1M context and the cache
+## Work with the 1.05M context and the cache
 
-K3 accepts up to 1M input tokens on Together, and context caching is automatic. There is no cache ID, TTL, or extra parameter. Keep your long prefix (system prompt, knowledge base, repo dump) byte-stable across requests so later calls hit the cache. Moonshot reports cache hit rates above 90% in coding workloads, which pulls effective input cost toward the \$0.30 floor.
+K3 accepts up to 1.05M input tokens on Together, and context caching is automatic. There is no cache ID, TTL, or extra parameter. Keep your long prefix (system prompt, knowledge base, repo dump) byte-stable across requests so later calls hit the cache. Moonshot reports cache hit rates above 90% in coding workloads, which pulls effective input cost toward the \$0.30 floor.
 
 Moonshot recommends placing fixed bulk context such as knowledge documents at the very beginning of the `messages` array, ahead of the system message, then appending questions and replies after it.
 
@@ -36551,7 +36564,7 @@ Most sampling parameters are fixed server-side. Omit them and let the defaults a
 | `presence_penalty`, `frequency_penalty`                | Fixed at 0.                                                                                                          |
 | `logprobs`                                             | Not supported. Returns `400`.                                                                                        |
 | `top_k`, `min_p`, `repetition_penalty`, `stop`, `seed` | Accepted.                                                                                                            |
-| `max_tokens`                                           | No ceiling below the 1M context limit. Cap it yourself for short answers.                                            |
+| `max_tokens`                                           | No ceiling below the 1.05M context limit. Cap it yourself for short answers.                                         |
 | `reasoning_effort`                                     | `"low"`, `"medium"`, `"high"`, or `"max"` (default). Invalid strings are accepted silently, so validate client-side. |
 | `reasoning`                                            | `{"enabled": False}` disables thinking entirely.                                                                     |
 
@@ -36559,7 +36572,7 @@ Most sampling parameters are fixed server-side. Omit them and let the defaults a
 
 Two architectural changes form K3's backbone, both aimed at moving information through longer sequences and deeper into the network:
 
-* **Kimi Delta Attention (KDA):** A hybrid linear attention mechanism that provides an efficient foundation for scaling attention across very long contexts. This is Moonshot's first model to support a 1M context window.
+* **Kimi Delta Attention (KDA):** A hybrid linear attention mechanism that provides an efficient foundation for scaling attention across very long contexts. This is Moonshot's first model to support a 1.05M context window.
 * **Attention Residuals (AttnRes):** Selectively retrieves representations across model depth rather than accumulating them uniformly.
 
 On top of that, Moonshot pushed mixture-of-experts (MoE) sparsity further with the Stable LatentMoE framework, activating 16 of 896 experts. At roughly 2% of experts active per token, routing and optimization become first-order problems, so four supporting techniques keep training stable at 2.8T scale:
@@ -36579,7 +36592,7 @@ K3 is strongest where a task runs long and needs little supervision:
 * **Vision in the loop:** Iterating between code and live screenshots for game development, frontend engineering, and CAD, using visual feedback rather than a written description of the render.
 * **Research pipelines:** Reviewing literature, implementing a numerical pipeline, cross-validating results, and producing an interactive deliverable in one run.
 * **End-to-end knowledge work:** Deep research reports with interactive charts, timelines, and slides rather than a paragraph of prose.
-* **Large-repository refactoring:** Cross-file, multi-step engineering work held together by the 1M context window.
+* **Large-repository refactoring:** Cross-file, multi-step engineering work held together by the 1.05M context window.
 * **Agentic tool orchestration:** Long tool-calling loops with reasoning between steps and tools loaded on demand.
 
 ## Limitations
@@ -41202,6 +41215,22 @@ This value becomes `CHAT_API_KEY`. It is different from your `TOGETHER_API_KEY`.
   The shared `CHAT_API_KEY` is a minimal guard for a server-to-server demo. Do not embed it in browser or mobile application code. For a public application, add user authentication, per-user authorization, and rate limits.
 </Warning>
 
+## Deploy an example
+
+<CardGroup>
+  <Card title="TypeScript + Express" icon="js">
+    [Live demo](https://together-chat-ts.onrender.com/) · [GitHub](https://github.com/render-examples/together-render-chat-ts)
+
+    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/together-render-chat-ts)
+  </Card>
+
+  <Card title="Python + FastAPI" icon="python">
+    [Live demo](https://together-chat-python.onrender.com/) · [GitHub](https://github.com/render-examples/together-render-chat-python)
+
+    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/together-render-chat-python)
+  </Card>
+</CardGroup>
+
 ## Step 1: Create the project
 
 Create a new directory and initialize a Git repository:
@@ -41763,17 +41792,18 @@ Organizations have two roles: **Admin** and **Developer**.
 
 ### Organization permissions
 
-| Scope                        | Admin | Developer |
-| ---------------------------- | ----- | --------- |
-| Organization settings: Read  | Yes   | Yes       |
-| Organization settings: Write | Yes   | No        |
-| Billing: Read                | Yes   | Yes       |
-| Billing: Write               | Yes   | No        |
-| Projects: Create             | Yes   | No        |
-| Members: Read                | Yes   | Yes       |
-| Members: Invite              | Yes   | No        |
-| Members: Remove              | Yes   | No        |
-| Members: Manage roles        | Yes   | No        |
+| Scope                             | Admin | Developer |
+| --------------------------------- | ----- | --------- |
+| Organization settings: Read       | Yes   | Yes       |
+| Organization settings: Write      | Yes   | No        |
+| Billing: Read                     | Yes   | Yes       |
+| Billing: Write                    | Yes   | No        |
+| Organization cost analytics: Read | Yes   | No        |
+| Projects: Create                  | Yes   | No        |
+| Members: Read                     | Yes   | Yes       |
+| Members: Invite                   | Yes   | No        |
+| Members: Remove                   | Yes   | No        |
+| Members: Manage roles             | Yes   | No        |
 
 ### Roles and project visibility
 
@@ -41793,20 +41823,20 @@ Projects have two roles: **Admin** and **Editor**.
 
 ### Project permissions
 
-| Scope                       | Admin | Editor |
-| --------------------------- | ----- | ------ |
-| Project settings: Read      | Yes   | Yes    |
-| Project settings: Write     | Yes   | No     |
-| Project visibility: Read    | Yes   | Yes    |
-| Project visibility: Change  | Yes   | No     |
-| Project cost analytics      | Yes   | Yes    |
-| API keys: Read              | Yes   | Yes    |
-| API keys: Create            | Yes   | Yes    |
-| API keys: Revoke            | Yes   | Yes    |
-| Collaborators: Read         | Yes   | Yes    |
-| Collaborators: Add          | Yes   | No     |
-| Collaborators: Remove       | Yes   | No     |
-| Collaborators: Manage roles | Yes   | No     |
+| Scope                        | Admin | Editor |
+| ---------------------------- | ----- | ------ |
+| Project settings: Read       | Yes   | Yes    |
+| Project settings: Write      | Yes   | No     |
+| Project visibility: Read     | Yes   | Yes    |
+| Project visibility: Change   | Yes   | No     |
+| Project cost analytics: Read | Yes   | Yes    |
+| API keys: Read               | Yes   | Yes    |
+| API keys: Create             | Yes   | Yes    |
+| API keys: Revoke             | Yes   | Yes    |
+| Collaborators: Read          | Yes   | Yes    |
+| Collaborators: Add           | Yes   | No     |
+| Collaborators: Remove        | Yes   | No     |
+| Collaborators: Manage roles  | Yes   | No     |
 
 Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
 
@@ -46651,14 +46681,6 @@ Lists the managed live-traffic experiments configured for an endpoint.
 
 
 
-# Update an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-update
-
-openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
-Updates an experiment's description or member traffic percentages. Use the experiment etag for optimistic concurrency.
-
-
-
 # Add a deployment adapter
 Source: https://docs.together.ai/reference/dmi/adapters-add
 
@@ -46902,6 +46924,14 @@ Source: https://docs.together.ai/reference/get-fine-tunes-id-checkpoint
 
 openapi.yaml GET /fine-tunes/{id}/checkpoints
 List the checkpoints for a single fine-tuning job.
+
+
+
+# Download tokenized dataset
+Source: https://docs.together.ai/reference/get-fine-tunes-id-download-tokenized-dataset
+
+openapi.yaml GET /fine-tunes/{id}/download-tokenized-dataset
+Get a presigned URL for the tokenized dataset archive generated for a fine-tune job.
 
 
 
@@ -47183,6 +47213,18 @@ Source: https://docs.together.ai/docs/changelog
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 
+  ## Fine-tuning model limits in the CLI
+
+  `tg fine-tuning model-limits` (alias `tg ft model-limits`) queries [`GET /fine-tunes/models/limits`](/reference/get-fine-tunes-models-limits) for a base model's capability flags and hyperparameter bounds. Use `--json` for the full response body.
+
+  See [Model limits](/reference/cli/finetune#model-limits).
+
+  ## Tokenized dataset download in fine-tune events
+
+  When a fine-tuning job finishes uploading its tokenized dataset archive, the `tokenized_dataset_upload_complete` event message includes the CLI command to download it (`tg ft download-tokenized-dataset <JOB_ID>`). The message appears in the console **Events** tab and in [`GET /fine-tunes/{id}/events`](/reference/get-fine-tunes-id-events).
+
+  See [Download the tokenized dataset](/docs/fine-tuning/monitoring#download-the-tokenized-dataset).
+
   ## New dedicated endpoint models
 
   The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
@@ -47236,6 +47278,20 @@ Source: https://docs.together.ai/docs/changelog
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
+<Update label="August 10, 2026">
+  ## Tokenized dataset download in the fine-tuning console
+
+  Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. Selecting **Download** opens a presigned archive URL in a new tab.
+
+  The same archive is available from the API and CLI. See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset).
+
+  ## Non-interactive fine-tune deletion in the CLI
+
+  `tg fine-tuning delete` now honors global non-interactive mode. `--non-interactive`, `--json`, and non-TTY sessions skip the confirmation prompt, so scripts and CI no longer need `--force` for unattended deletes.
+
+  See [Delete](/reference/cli/finetune#delete).
+</Update>
+
 <Update label="August 8, 2026">
   ## Longer context for GLM-5.2
 
@@ -47258,6 +47314,18 @@ Source: https://docs.together.ai/docs/changelog
   LoRA fine-tuning jobs on `deepseek-ai/DeepSeek-V3.1` can now target the MoE expert layers.
 
   See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers) for how to enable it.
+</Update>
+
+<Update label="August 6, 2026">
+  ## Fine-tune tokenized dataset download
+
+  You can download the tokenized dataset archive generated for a fine-tuning job. Call [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset) for a presigned URL, or use the CLI:
+
+  ```bash theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] --output-dir ./tokenized
+  ```
+
+  See [Download tokenized dataset](/reference/cli/finetune#download-tokenized-dataset) for flags and output formats.
 </Update>
 
 <Update label="August 3, 2026">
@@ -50403,6 +50471,8 @@ To list events of a past or running job:
 tg fine-tuning list-events [FT_ID]
 ```
 
+When tokenization finishes, a `tokenized_dataset_upload_complete` event message includes `tg ft download-tokenized-dataset [FT_ID]`. See [Download tokenized dataset](#download-tokenized-dataset).
+
 ## Cancel
 
 To cancel a running job:
@@ -50544,20 +50614,37 @@ The command downloads Zstandard-compressed (`.zst`) weights. To extract them, ru
 
 ## Download tokenized dataset
 
-To download the tokenized dataset a job trained on:
+To download the tokenized dataset archive generated for a fine-tuning job:
 
-```bash theme={null}
-tg fine-tuning download-tokenized-dataset [FT_ID] \
-  --output-dir ./datasets
-```
+<CodeGroup>
+  ```bash Basic theme={null}
+  # Download the archive to the current working directory.
+  tg fine-tuning download-tokenized-dataset [FT_ID]
+  ```
 
-The command saves a Zstandard-compressed archive named `[FT_ID]_tokenized_datasets.tar.zst` to the output directory (default: the current working directory). To extract it, run `tar -xf filename`. Use it to audit exactly what the model was trained on, for example to inspect the tokenization and loss masking of a finished job.
+  ```bash Specify directory theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] \
+    --output-dir ./tokenized
+  ```
+
+  ```bash JSON output theme={null}
+  tg fine-tuning download-tokenized-dataset [FT_ID] \
+    --output-dir ./tokenized \
+    --json
+  ```
+</CodeGroup>
+
+The command calls [`GET /fine-tunes/{id}/download-tokenized-dataset`](/reference/get-fine-tunes-id-download-tokenized-dataset) for a presigned URL, then downloads the archive to disk. Without `--output-dir`, it writes to the current working directory using the archive filename from the API (for example, `tokenized-dataset.tar.gz`). If the job has no tokenized dataset archive yet, the API returns `404`.
+
+Pass `--json` to print local file metadata (`object`, `id`, `filename`, and `size`) instead of the human-readable path message. The presigned URL is never printed.
+
+In the console, open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning). When the job has a tokenized dataset archive, the job details show a **Tokenized dataset** row with **Download**. See [Download the tokenized dataset](/docs/fine-tuning/monitoring#download-the-tokenized-dataset).
 
 ### Parameters
 
-| Flag                     | Description                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. Default: the current working directory. |
+| Flag                     | Description                                      |
+| ------------------------ | ------------------------------------------------ |
+| `--output-dir/-o [Path]` | Directory to save the tokenized dataset archive. |
 
 ## Delete
 
@@ -50570,11 +50657,13 @@ tg fine-tuning delete [FT_ID]
 tg ft -d [FT_ID]
 ```
 
+The CLI asks for confirmation before deleting. Pass `--force` to skip the prompt, or run with `--non-interactive` or `--json` in scripts and CI. Non-TTY sessions also skip confirmation.
+
 ### Parameters
 
-| Flag      | Description                 |
-| --------- | --------------------------- |
-| `--force` | Bypass confirmation prompt. |
+| Flag      | Description                                                                                                                                    |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--force` | Bypass the confirmation prompt. Useful in interactive terminals when you want to skip the prompt without enabling global non-interactive mode. |
 
 
 # Get started
@@ -50694,6 +50783,7 @@ Fine tune custom models.
 
 ```bash theme={null}
 tg fine-tuning create
+tg fine-tuning model-limits
 tg fine-tuning list-checkpoints
 tg fine-tuning download
 
@@ -51873,6 +51963,14 @@ Source: https://docs.together.ai/reference/dmi/ab-experiments-delete
 
 openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Deletes an A/B experiment and removes its managed traffic split. The deployments themselves are not deleted.
+
+
+
+# Update an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-update
+
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+Updates an experiment's description or member traffic percentages. Use the experiment etag for optimistic concurrency.
 
 
 

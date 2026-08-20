@@ -160,6 +160,7 @@ Events are split into the following categories:
 * **MCP allowlist enabled**: That the MCP allowlist was enabled.
 * **MCP client added to allowlist**: That an MCP client was added to the allowlist.
 * **MCP client removed from allowlist**: That an MCP client was removed from the allowlist.
+* **MCP connection tools updated**: That the selected tools for a workspace MCP connection were updated.
 * **MCP server connected**: That an MCP server was connected to the workspace, including via an enterprise-managed connection.
 * **Member added to group**: That a workspace owner or membership admin has added a user to a group.
 * **Member invited**: That a workspace owner or Membership admin invited a user to the workspace. The new user's role will be specified as `Workspace owner` if they are invited as a workspace owner, or as `Membership admin` if they are invited as a membership admin.

@@ -6302,6 +6302,8 @@ export N8N_PROXY_HOPS=1
 
 Refer to [Environment variables reference](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/endpoints) for more information on this variable.
 
+If you also run n8n's [instance-level MCP server](/connect/connect-to-n8n-mcp-server) behind the same reverse proxy, make sure it forwards the [MCP request headers](/connect/connect-to-n8n-mcp-server#mcp-request-headers) too.
+
 
 # Enable Prometheus metrics
 
