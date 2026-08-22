@@ -17,6 +17,10 @@ Process large volumes of requests asynchronously at **50% off** [Serverless per-
   Batch jobs automatically use [prompt caching](/guides/prompt-caching) for additional 50% cost savings on cached tokens. Maximize cache hits by placing static content first in your prompts.
 </Tip>
 
+<Frame>
+  <iframe title="Run a batch inference job on Fireworks" />
+</Frame>
+
 ## Model compatibility
 
 Not all models support the Batch API. Before submitting a batch job, verify your target model is batch-compatible.

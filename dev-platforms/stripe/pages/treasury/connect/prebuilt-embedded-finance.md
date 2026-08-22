@@ -10,7 +10,7 @@ Add financial accounts, money movement, and card issuing to your platform withou
 Available in: US
 Launch Stripe Treasury and Issuing for platforms as a prebuilt set of embeddable components. Render Stripe financial account features such as bill pay, issuing, and cash rewards as a branded UI in your platform application while avoiding custom coding and compliance reviews. Stripe provides features such as pre-configured fees, pre-configured Radar rules, and extending [managed risk](https://docs.stripe.com/connect/risk-management/managed-risk.md) coverage to both payments and financial accounts.
 
-### Request to join the preview for prebuilt embedded finance.
+### Request preview access to prebuilt embedded finance.
 
 Enter your email to request access.
 

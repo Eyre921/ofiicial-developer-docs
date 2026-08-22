@@ -328,7 +328,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Observability</span>
     <h2>Langtrace</h2>
-    <p>Access rich and high cardinal tracing for Pinecone API calls, ingestible into your observability tool of choice.</p>
+    <p>Get high-cardinality tracing of your Pinecone API calls, exported to the observability tool of your choice.</p>
   </Card>
 
   <Card href="/integrations/llamaindex">

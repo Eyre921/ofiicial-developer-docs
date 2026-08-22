@@ -1,5 +1,5 @@
 ---
-title: "Design a subscriptions integration"
+title: "plan your integration"
 source: https://docs.stripe.com/billing/subscriptions/design-an-integration.md
 path: billing/subscriptions/design-an-integration
 ---

@@ -204,18 +204,23 @@ With a webhook endpoint, your customer is redirected to the `success_url` when y
 
 The following example endpoint demonstrates how to acknowledge and handle events.
 
-#### Ruby
-
 ```ruby
+
+require 'json'
+require 'sinatra'
+require 'stripe'
 
 # Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 # Find your keys at https://dashboard.stripe.com/apikeys.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
+client = Stripe::StripeClient.new('$$TEST_KEY_REPLACE_ME$$')
 
-# You can find your endpoint's secret in your webhook settings
+# If you are testing your webhook locally with the Stripe CLI, you can find the
+# endpoint's secret by running `stripe listen`. Otherwise, find your
+# endpoint's secret in your webhook settings in the Developer Dashboard
 endpoint_secret = 'whsec_...'
 
-# Using Sinatra
+set :port, 4242
+
 post '/webhook' do
   payload = request.body.read
   event = nil
@@ -237,13 +242,14 @@ post '/webhook' do
     return
   end
 
-  # Handle the checkout.session.completed event
-  if event['type'] == 'checkout.session.completed'
-    session = event['data']['object']
-
-    # Fulfill the purchase...
-    handle_checkout_session(session)
-  end
+  # Handle the event
+    case event.type
+    when 'checkout.session.completed'
+        session = event.data.object
+    # ... handle other event types
+    else
+        puts "Unhandled event type: #{event.type}"
+    end
 
   status 200
 end

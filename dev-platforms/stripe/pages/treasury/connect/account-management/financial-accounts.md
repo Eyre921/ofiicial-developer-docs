@@ -40,7 +40,7 @@ The `FinancialAccount` object has a [type](https://docs.stripe.com/api/v2/money-
 
 ### Storage
 
-You can create FDIC-eligible `storage` financial accounts to separate funds for different purposes and different currencies, such as:
+You can create `storage` financial accounts to separate funds for different purposes and different currencies, such as:
 
 - Holding funds transferred from the payments balance, received from a FinancialAddress, or pulled by InboundTransfer.
 - Supporting OutboundPayments, OutboundTransfers, card spend, and other money management APIs.
@@ -51,8 +51,12 @@ Your [connected account](https://docs.stripe.com/treasury/connect/account-manage
 - `money_manager.business_storage.inbound.{currency}`: Enables creating storage FAs and receiving funds into them
 - `money_manager.business_storage.outbound.{currency}`: Enables sending funds out of storage FAs
 
-### Payments (Private preview)
+> #### FDIC eligibility
+> 
+> Storage financial accounts for US businesses are FDIC-eligible.
 
+### Payments (Private preview)
+Available in: US
 If you’re a platform in the US using [Prebuilt embedded finance](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md), Stripe automatically creates a `payments` financial account representing the Stripe payments balance you see in your Dashboard. The funds in this financial account aren’t FDIC-eligible.
 
 - Every Stripe user has only one `payments` financial account, which Stripe creates automatically.

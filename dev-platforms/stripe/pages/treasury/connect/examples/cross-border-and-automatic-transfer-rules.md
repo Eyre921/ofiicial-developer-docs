@@ -36,7 +36,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     "contact_email": "property.manager@example.com",
     "display_name": "Property Manager Ltd",
     "identity": {
-        "country": "gb",
+        "country": "US",
         "entity_type": "company"
     },
     "configuration": {
@@ -85,7 +85,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     },
     "dashboard": "none",
     "defaults": {
-        "currency": "gbp",
+        "currency": "usd",
         "responsibilities": {
             "fees_collector": "application",
             "losses_collector": "application"
@@ -137,7 +137,7 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
     "type": "storage",
     "storage": {
         "holds_currencies": [
-            "gbp"
+            "usd"
         ]
     }
   }'
@@ -150,15 +150,15 @@ The response includes the financial account ID:
   "id": "{{FINANCIAL_ACCOUNT_ID}}",
   "object": "v2.money_management.financial_account",
   "balance": {
-    "available": { "gbp": { "value": 0, "currency": "gbp" } },
-    "inbound_pending": { "gbp": { "value": 0, "currency": "gbp" } },
-    "outbound_pending": { "gbp": { "value": 0, "currency": "gbp" } }
+    "available": { "usd": { "value": 0, "currency": "usd" } },
+    "inbound_pending": { "usd": { "value": 0, "currency": "usd" } },
+    "outbound_pending": { "usd": { "value": 0, "currency": "usd" } }
   },
-  "country": "GB",
+  "country": "US",
   "created": "2025-06-18T11:05:27.930Z",
   "status": "pending",
   "status_details": null,
-  "storage": { "holds_currencies": ["gbp"] },
+  "storage": { "holds_currencies": ["usd"] },
   "type": "storage",
   "livemode": false
 }

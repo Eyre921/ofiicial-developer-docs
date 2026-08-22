@@ -10,7 +10,7 @@ Return statistics about the contents of an index, including the vector count per
 Serverless indexes scale automatically as needed, so index fullness is relevant only for pod-based indexes.
 
 <Note>
-  Index fullness is also relevant for [dedicated read nodes](/guides/index-data/dedicated-read-nodes#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, monitor these values and [add shards](/guides/index-data/dedicated-read-nodes#add-or-remove-shards) before the index reaches capacity.
+  Index fullness is also relevant for [dedicated read nodes](/guides/index-data/dedicated-read-nodes#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, these values indicate when the index needs more capacity. See [Scale your index](/guides/index-data/dedicated-read-nodes#scale-your-index).
 </Note>
 
 <RequestExample>

@@ -1463,6 +1463,7 @@ components:
           description: Source of the conversation initiation
         version:
           type: string
+          maxLength: 50
           description: The SDK version number
       description: Information about the source of conversation initiation
       title: ConversationInitiationClientDataSourceInfo

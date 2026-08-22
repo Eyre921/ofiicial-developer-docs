@@ -27,11 +27,11 @@ With the Payment Element, you get:
 
 - [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md): Dynamically order and display payment methods and [launch A/B tests](https://docs.stripe.com/payments/a-b-testing.md) for new payment methods.
 
-- [UI customizations to match your app](https://docs.stripe.com/elements/appearance-api/mobile.md): Match the UI to the design of your app. The layout stays consistent, but you can modify colors, fonts, and so on.
+- [UI customizations to match your app](https://docs.stripe.com/elements/appearance-api/embedded-mobile.md): Match the UI to the design of your app. The layout stays consistent, but you can modify colors, fonts, and so on.
 
-- [Address collection](https://docs.stripe.com/payments/mobile/save-during-payment.md?platform=ios&mobile-ui=payment-element#collect-payment-details): Collect full or partial billing addresses with any payment method.
+- [Address collection](https://docs.stripe.com/payments/mobile/address-element.md): Collect full or partial billing addresses with any payment method.
 
-- [Saved payment methods](https://docs.stripe.com/payments/mobile/accept-payment.md?platform=ios&type=payment#enable-saved-cards): Save, reuse, and manage cards and bank accounts. You can also [store a customer’s payment details without an initial payment](https://docs.stripe.com/payments/mobile/accept-payment.md?platform=ios&type=setup).
+- [Saved payment methods](https://docs.stripe.com/payments/mobile/accept-payment-embedded.md?type=payment#enable-saved-cards): Save, reuse, and manage cards and bank accounts. You can also [store a customer’s payment details without an initial payment](https://docs.stripe.com/payments/mobile/accept-payment-embedded.md?type=setup).
 
 ## Stripe in-app Elements demo
 
@@ -100,5 +100,5 @@ Example showing full billing details collected
 The Payment Element also contains the following features:
 
 - CVC recollection: Configure whether CVC re-collection is required when users pay with a saved payment method.
-- [Card brand filtering](https://docs.stripe.com/payments/mobile/filter-card-brands.md): Configure which card brands you accept.
+- [Card brand filtering](https://docs.stripe.com/payments/mobile/embedded-filter-card-brands.md): Configure which card brands you accept.
 

@@ -1,5 +1,5 @@
 ---
-title: "Save a customer's payment method when they use it for a payment"
+title: "Save a customer’s payment method when they use it for a payment"
 source: https://docs.stripe.com/payments/save-during-payment.md
 path: payments/save-during-payment
 ---

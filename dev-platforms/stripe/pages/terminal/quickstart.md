@@ -14,7 +14,7 @@ When you’re ready to use a physical reader, you only need to update the [reade
 
 > #### Verifone reader support
 > 
-> Verifone P630 and UX700 are **generally available** in the United States. Verifone V660p and M425 are in **public preview** for the United States and Canada, with P630 and UX700 also in **public preview** for Canada, Belgium, Italy, the Netherlands, Norway, Spain, and Sweden. V660p, UX700, and P630 are in **private preview** for Ireland and the United Kingdom, France, Singapore (V660p, P630), and Australia.
+> Verifone P630 and UX700 are **generally available** in the United States. Verifone V660p and M425 are in **public preview** for the United States and Canada, with V660p, P630, and UX700 also in **public preview** for Canada, Belgium, Italy, the Netherlands, New Zealand, Norway, Spain, and Sweden. V660p, UX700, and P630 are in **private preview** for Ireland and the United Kingdom, France, Singapore (V660p, P630), and Australia.
 > 
 > To order a Verifone reader or join a preview, you must [contact the Sales team](https://stripe.com/contact/sales).
 

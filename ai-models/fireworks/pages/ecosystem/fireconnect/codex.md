@@ -102,7 +102,7 @@ Run `fireconnect codex help` for all options.
 
 ```bash theme={null}
 fireconnect codex on --model glm-5p2
-fireconnect codex on --model deepseek-v4-flash
+fireconnect codex on --model deepseek-flash-latest
 ```
 
 Some models expose multiple reasoning levels in the Codex catalog (for example, `glm-5p2` supports `high` and `max`). Pick the model in Codex with `/model` after switching.

@@ -35,9 +35,7 @@ that add databases, pacers, and capabilities to the worker manifest.
 | [`worker.webhook()`](#worker-webhook)   | Capability | Defines an HTTP webhook handler.                                 |
 | [`worker.oauth()`](#worker-oauth)       | Capability | Defines OAuth configuration for external service authentication. |
 
-<h2>
-  worker.database()
-</h2>
+## worker.database()
 
 Declares a managed Notion database for sync output.
 
@@ -85,9 +83,7 @@ editable in Notion.
 
 `worker.database()` returns an opaque database handle. Pass that handle to `worker.sync()`.
 
-<h2>
-  worker.pacer()
-</h2>
+## worker.pacer()
 
 Declares a rate limit budget for calls to an external API.
 
@@ -117,9 +113,7 @@ progress throughout the pacer window. When multiple capabilities use the same
 pacer, the server calculates the number of concurrently executing capabilities
 and divides the pace across them.
 
-<h2>
-  worker.sync()
-</h2>
+## worker.sync()
 
 Registers a sync capability that writes changes into a [database](#worker-database). See the [Syncs guide](/workers/guides/syncs) for usage patterns, pagination, and scheduling.
 
@@ -356,13 +350,11 @@ Both syncs must use unique sync keys. When multiple syncs share a pacer, the
 server apportions the request budget across them. Use `upstreamUpdatedAt` on
 upsert changes when multiple syncs can update the same record.
 
-<h2>
-  worker.tool()
-</h2>
+## worker.tool()
 
 Registers a tool that can be called by Notion Custom Agents. See the [Agent tools guide](/workers/guides/tools) for a walkthrough of defining inputs, testing locally, and deploying.
 
-Tools extend custom agent functionality. A worker is attached to a custom agent,
+Tools extend Custom Agent functionality. A worker is attached to a Custom Agent,
 and each tool declared by that worker can be enabled or disabled on that
 connection.
 
@@ -407,9 +399,7 @@ Tool hints describe how the tool behaves. `readOnlyHint: true` marks a tool as
 read-only and safe to auto-execute. Tools without `readOnlyHint: true` are
 treated as write tools and prompt for confirmation.
 
-<h2>
-  worker.webhook()
-</h2>
+## worker.webhook()
 
 Registers an HTTP webhook endpoint for external services. See the [Webhooks guide](/workers/guides/webhooks) for request verification, retries, and using the Notion API from a webhook handler.
 
@@ -440,9 +430,7 @@ worker.webhook("onGithubPush", {
 
 Throw `WebhookVerificationError` from `execute` to signal signature verification failure. After five consecutive verification failures, the platform rejects incoming requests for the webhook without executing the handler.
 
-<h2>
-  worker.oauth()
-</h2>
+## worker.oauth()
 
 Registers a user-managed OAuth provider and returns an OAuth capability handle. See the [OAuth guide](/workers/guides/oauth) for the full setup flow, including provider configuration and testing locally.
 

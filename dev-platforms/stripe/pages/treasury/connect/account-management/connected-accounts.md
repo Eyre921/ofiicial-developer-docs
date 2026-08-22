@@ -58,7 +58,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     "contact_email": "test@example.com",
     "display_name": "John Smith",
     "identity": {
-        "country": "gb",
+        "country": "US",
         "entity_type": "individual"
     },
     "configuration": {
@@ -82,12 +82,12 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
                 },
                 "business_storage": {
                     "inbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     },
                     "outbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     }
@@ -123,7 +123,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     },
     "dashboard": "none",
     "defaults": {
-        "currency": "gbp",
+        "currency": "usd",
         "responsibilities": {
             "fees_collector": "application",
             "losses_collector": "application"
@@ -162,7 +162,7 @@ The response includes the connected account ID.
         },
         "business_storage": {
           "inbound": {
-            "gbp": {
+            "usd": {
               "requested": true,
               "status": "restricted",
               "status_details": [
@@ -174,7 +174,7 @@ The response includes the connected account ID.
             }
           },
           "outbound": {
-            "gbp": {
+            "usd": {
               "requested": true,
               "status": "restricted",
               "status_details": [
@@ -286,12 +286,12 @@ curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
             "capabilities": {
                 "business_storage": {
                     "inbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     },
                     "outbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     }
@@ -589,7 +589,7 @@ When the status of requested capabilities change for a connected account, you re
   "object": "v2.core.event",
   "type": "v2.core.account[configuration.money_manager].capability_status_updated",
   "data": {
-    "updated_capability": "business_storage.outbound.gbp"
+    "updated_capability": "business_storage.outbound.usd"
   },
   "related_object": {
     "id": "{{CONNECTED_ACCOUNT_ID}}",

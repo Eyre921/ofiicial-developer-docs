@@ -180,12 +180,11 @@ Index fullness measures how much of your index's allocated capacity is being use
   <Note>
     `indexFullness` is the maximum of `memoryFullness` and `storageFullness`.
   </Note>
+* To monitor fullness over time, use `pinecone_db_index_fullness`, `pinecone_db_index_memory_fullness`, and/or `pinecone_db_index_storage_fullness` [metrics](/guides/production/monitoring#available-metrics), which you access via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
 * Usually, storage fills up first. However, memory can be the limiting factor when you have `b1` nodes with many low-dimension vectors, or when you have `t1` nodes with high-dimension vectors and lots of metadata.
-* Monitor fullness regularly and [add shards](#add-or-remove-shards) before your index reaches capacity. When `indexFullness` reaches 1.0 (100%), write operations (upsert, update, delete) are blocked, but read operations continue to work normally.
+* When `indexFullness` reaches 1.0 (100%), write operations (upsert, update, delete) are blocked, but read operations continue to work normally.
 
-<Note>
-  Add shards when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
-</Note>
+To decide when to add capacity, see [Add shards when fullness is high](#add-shards-when-fullness-is-high).
 
 ## Query-time search parameters
 
@@ -538,10 +537,10 @@ To maintain optimal performance, provision additional shards to keep your index 
 **Other considerations**
 
 * Every index must have at least one shard. However, you can [pause an index](#pause-an-index) by reducing its replicas to 0.
-* After you've created your index, [monitor its fullness](#monitor-index-fullness). When your index approaches capacity, you can [add shards](#add-or-remove-shards).
+* After you've created your index, [monitor its fullness](#monitor-index-fullness).
 
 <Note>
-  Add shards when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
+  [Add shards](#add-or-remove-shards) when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
 </Note>
 
 ### Number of replicas
@@ -847,6 +846,47 @@ To migrate an existing on-demand index to dedicated read nodes—including one y
   </Step>
 </Steps>
 
+## Scale your index
+
+Dedicated read nodes don't yet scale automatically. You decide when to scale, guided by two signals:
+
+| Scenario    | What to check                                       | What to do                              |
+| :---------- | :-------------------------------------------------- | :-------------------------------------- |
+| Query load  | [CPU usage](#add-replicas-when-cpu-is-high)         | [Add replicas](#add-or-remove-replicas) |
+| Data volume | [Index fullness](#add-shards-when-fullness-is-high) | [Add shards](#add-or-remove-shards)     |
+
+Diagnose which one you're facing before you scale. Adding shards won't relieve query latency that's driven by CPU saturation, and adding replicas won't create room on a shard that's running out of space.
+
+### Add replicas when CPU is high
+
+CPU usage reflects query pressure. As query load outgrows what your replicas can serve, query latency climbs and throughput drops.
+
+Pinecone exposes CPU usage as the `pinecone_db_drn_cpu_usage_percent` metric, reported per shard. To collect it, [monitor your index with Prometheus](/guides/production/monitoring#monitor-with-prometheus).
+
+Alert on the highest value across your shards rather than the index-wide average, which can look healthy while a single shard is already saturated:
+
+```shell theme={null}
+max(avg_over_time(pinecone_db_drn_cpu_usage_percent{index_name="docs-example"}[5m]))
+```
+
+Add a replica when this exceeds 80%. Averaging over a window keeps a brief spike from triggering a scale-up, so shorten or lengthen the window to suit how quickly your traffic shifts.
+
+Throughput scales approximately linearly with replicas. For high availability, allocate `n+1` replicas, where `n` is the minimum number of replicas required to serve your expected throughput at your target latency. See [Number of replicas](#number-of-replicas).
+
+<Tip>
+  If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](#query-time-search-parameters) to trade some recall for higher throughput.
+</Tip>
+
+### Add shards when fullness is high
+
+[Index fullness](#index-fullness) reflects data volume. Writes are blocked once the index reaches capacity, while reads continue normally.
+
+<Note>
+  [Add shards](#add-or-remove-shards) when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
+</Note>
+
+To check the current value, see [Monitor index fullness](#monitor-index-fullness).
+
 ## Manage your index
 
 The following sections describe how to manage a dedicated read nodes index using version `2025-10` of the Pinecone API.
@@ -999,6 +1039,8 @@ The following sections describe how to manage a dedicated read nodes index using
     </CodeGroup>
 
     In the response, `indexFullness` describes how full the index is, on a scale of 0 to 1. It's set to the greater of `memoryFullness` and `storageFullness`.
+
+    Pinecone also [emits these values](/guides/production/monitoring#available-metrics). Use them to track fullness over time in Prometheus or Datadog, and to alert before your index reaches capacity.
   </Accordion>
 
   <Accordion title="Add or remove shards">
@@ -1465,7 +1507,7 @@ The following limits apply to dedicated read nodes:
 
 <AccordionGroup>
   <Accordion title="Read limits">
-    Dedicated read nodes indexes are not subject to [read-operation rate limits](/reference/api/database-limits#rate-limits), like on-demand indexes are. However, if your query rate exceeds the compute capacity of your index, you may observe decreased query throughput. In such cases, consider [adding replicas](#add-or-remove-replicas) to increase compute resources, or use [query-time search parameters](#query-time-search-parameters) to reduce per-query compute and increase throughput without adding replicas.
+    Dedicated read nodes indexes aren't subject to [read-operation rate limits](/reference/api/database-limits#rate-limits), like on-demand indexes are. However, if your query rate exceeds the compute capacity of your index, you may observe decreased query throughput. In such cases, consider [adding replicas](#add-or-remove-replicas) to increase compute resources, or use [query-time search parameters](#query-time-search-parameters) to reduce per-query compute and increase throughput without adding replicas. To decide when to add replicas, see [Add replicas when CPU is high](#add-replicas-when-cpu-is-high).
   </Accordion>
 
   <Accordion title="Write limits">

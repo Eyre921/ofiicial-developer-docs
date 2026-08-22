@@ -93,7 +93,7 @@ Setting up OAuth requires multiple steps in a specific order. The worker must be
     ntn workers oauth start githubAuth
     ```
 
-    This opens a browser window where you authorize the connection. Once complete, the worker runtime stores the token securely.
+    This opens a browser window where you authorize the connection. Once complete, the Workers runtime stores the token securely.
   </Step>
 </Steps>
 

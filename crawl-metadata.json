@@ -22,7 +22,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 336,
+    "pages": 338,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -45,7 +45,7 @@
     "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "agent-frameworks/langchain": {
-    "pages": 1142,
+    "pages": 1146,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -80,7 +80,7 @@
     "status": "ok"
   },
   "dev-platforms/supabase": {
-    "status": "error: curl failed (28) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1032192 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) Operation timed out after 9"
+    "status": "error: curl failed (28) for https://supabase.com/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 1867776 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_read: OpenSSL/3"
   },
   "dev-platforms/prisma": {
     "pages": 0,
@@ -95,15 +95,14 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 330,
+    "pages": 333,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (35) for https://docs.convex.dev/llms-full.txt: curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading\n"
   },
   "dev-platforms/neon": {
     "pages": 0,
@@ -145,11 +144,11 @@
     "status": "ok"
   },
   "dev-platforms/sentry": {
-    "pages": 122,
+    "pages": 116,
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 211,
+    "pages": 227,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -173,7 +172,7 @@
     "status": "ok"
   },
   "dev-platforms/netlify": {
-    "pages": 104,
+    "pages": 66,
     "status": "ok"
   },
   "libraries/zod": {
@@ -184,15 +183,15 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 93,
+    "pages": 98,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 459,
+    "pages": 452,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 317,
+    "pages": 316,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -200,8 +199,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1273,
+    "pages": 1272,
     "status": "ok"
   },
-  "_last_crawl": "2026-08-20T11:31:07Z"
+  "_last_crawl": "2026-08-22T11:30:54Z"
 }

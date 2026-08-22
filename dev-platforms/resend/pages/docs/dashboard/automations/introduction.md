@@ -102,8 +102,9 @@ To start executing an Automation, you need to:
 
         <Note>
           While an Automation is enabled, its steps cannot be edited. To make changes,
-          duplicate the Automation, edit the copy, and switch over by stopping new runs
-          on the original. In-flight runs will finish on the version they started with.
+          [duplicate the Automation](/docs/api-reference/automations/duplicate-automation),
+          edit the copy, and switch over by stopping new runs on the original. In-flight
+          runs will finish on the version they started with.
         </Note>
       </Step>
 

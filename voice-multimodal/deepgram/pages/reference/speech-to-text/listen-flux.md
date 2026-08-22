@@ -283,6 +283,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -333,10 +334,12 @@ components:
         start:
           type: number
           format: double
+          minimum: 0
           description: The start time of the word
         end:
           type: number
           format: double
+          minimum: 0
           description: The end time of the word
       required:
         - word
@@ -355,6 +358,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: >
             Starts at `0` and increments for each message the server sends to
             the client.  This includes messages of other types, like `Connected`
@@ -382,6 +386,7 @@ components:
             - **EndOfTurn** - The user has finished speaking for the turn
         turn_index:
           type: integer
+          minimum: 0
           description: The index of the current turn
         audio_window_start:
           type: string
@@ -482,6 +487,7 @@ components:
             flux-general-multi model.
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -507,6 +513,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -530,6 +537,7 @@ components:
           description: Message type identifier
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like

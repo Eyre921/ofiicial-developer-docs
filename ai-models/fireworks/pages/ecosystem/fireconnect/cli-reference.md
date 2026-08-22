@@ -18,7 +18,7 @@ fireconnect logout       # Clear the stored key (keychain entry + config ref)
 fireconnect status       # Show sign-in state and where the key is stored
 fireconnect configure    # Set the provider (Azure/Foundry) and Anthropic key for FireRouter
 fireconnect model list   # Browse the global Fireworks coding model catalog
-fireconnect demo         # Race your provider vs Fireworks on the same prompt
+fireconnect claude demo  # Race two models in live Claude Code sessions
 fireconnect upgrade      # Update FireConnect (curl/git install only)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
 fireconnect help         # Show help
@@ -62,10 +62,10 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 
 ## Providers
 
-| Provider flag         | Where inference runs           | API key                                           | Supported harnesses                |
-| --------------------- | ------------------------------ | ------------------------------------------------- | ---------------------------------- |
-| `fireworks` (default) | Fireworks gateway              | `fw_...` (all harnesses) or `fpk_...` (not Codex) | All harnesses with a supported key |
-| `azure`               | Fireworks on Microsoft Foundry | Azure API key                                     | All harnesses except Claude Code   |
+| Provider flag         | Where inference runs           | API key                                           | Supported harnesses                                   |
+| --------------------- | ------------------------------ | ------------------------------------------------- | ----------------------------------------------------- |
+| `fireworks` (default) | Fireworks gateway              | `fw_...` (all harnesses) or `fpk_...` (not Codex) | All harnesses with a supported key                    |
+| `azure`               | Fireworks on Microsoft Foundry | Azure API key                                     | All harnesses except Claude Code and DeepSeek Harness |
 
 Set the default with `fireconnect configure --provider fireworks` or `--provider azure`. Harness `on` commands use the configured provider unless you pass `--azure` or per-command `--base-url` / `--api-key` overrides.
 
@@ -77,14 +77,14 @@ fireconnect claude on --model glm-fast-latest --sonnet kimi-latest
 fireconnect opencode on --model glm-fast-latest
 ```
 
-Each CLI harness (`claude`, `opencode`, `codex`, `pi`, `deepagents`) supports:
+Each CLI harness (`claude`, `opencode`, `codex`, `pi`, `deepseek`) supports:
 
 * `fireconnect <harness> on`: route through the configured provider
 * `fireconnect <harness> off`: restore your previous config
 * `fireconnect <harness> status`: show provider, auth, and models
 * `fireconnect <harness> help`: harness-specific help
 
-Claude Code also has `usage` and `live`. See [Usage and live meter](/ecosystem/fireconnect/claude-code#usage-and-live-meter).
+Claude Code also has `usage`, `live`, and `demo`. See [Usage and live meter](/ecosystem/fireconnect/claude-code#usage-and-live-meter) and the [side-by-side demo](/ecosystem/fireconnect/demo).
 
 Each IDE harness (`cursor`, `vscode`) supports `on`, `off`, `status`, and `help`. Commands that write settings require quitting the IDE first; `status` is read-only.
 
@@ -144,6 +144,24 @@ Only needed if you still have old scripts or muscle memory. Day-to-day use is `f
     | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
     | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
     | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+  </Accordion>
+
+  <Accordion title="v0.9.4 changes">
+    | Feature        | Details                                                                       |
+    | -------------- | ----------------------------------------------------------------------------- |
+    | `claude demo`  | Improved side-by-side race cost calculation and terminal experience           |
+    | Cursor restore | More robust `on` / `off`; uninstall waits for Cursor to quit before restoring |
+    | `uninstall`    | Guided harness-by-harness restore that waits for running IDEs                 |
+  </Accordion>
+
+  <Accordion title="v0.9.3 changes">
+    | Feature              | Details                                                                                                                                                                       |
+    | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | Claude defaults      | First connect uses `firerouter` for Opus; otherwise Opus defaults to `deepseek-pro-latest`. Sonnet stays on Claude's default, and Haiku/subagents use `deepseek-flash-latest` |
+    | Deprecated Flash pin | Existing Claude `deepseek-v4-flash` defaults migrate to `deepseek-flash-latest` on the next `claude on`                                                                       |
+    | Mixed models         | Claude Code can mix Anthropic and Fireworks models while routed through FireConnect                                                                                           |
+    | Harness replacement  | `fireconnect deepseek` for DeepSeek Harness replaces `fireconnect deepagents`                                                                                                 |
+    | Demo command         | Use `fireconnect claude demo`; the old top-level `fireconnect demo` form is deprecated                                                                                        |
   </Accordion>
 
   <Accordion title="v0.9.2 changes">

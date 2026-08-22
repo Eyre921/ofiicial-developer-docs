@@ -45,13 +45,15 @@ There’s an additional cost for using Express or Custom connected accounts.
 | **Connected account access to the Stripe Dashboard** | Full Dashboard | Express Dashboard | None |
 | **Supported charge types** | Direct only | - Destination
 - Separate with transfers
-- Direct | - Destination
+- Direct1 | - Destination
 - Separate with transfers
-- Direct |
+- Direct1 |
 | **Connected account support provided by** | Platform and Stripe | Platform and Stripe | Platform |
 | **Automatic updates for new compliance requirements** | Yes | Yes | No |
 | **Support new countries without integration changes** | Yes | Yes | No |
 | **Ideal for platforms** | With experienced online businesses as connected accounts | Any type | With significant engineering resources to dedicate to a fully white-labeled experience |
+
+1Using [direct charges](https://docs.stripe.com/connect/direct-charges.md) on legacy Express or Custom accounts charges connected accounts directly at standard sticker rates rather than billing the platform. For pricing control, use [destination charges](https://docs.stripe.com/connect/destination-charges.md) instead.
 
 ## Express connected accounts 
 

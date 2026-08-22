@@ -81,6 +81,16 @@ worker.sync("tasksSync", {
 });
 ```
 
+## Synced database semantics
+
+Once a database is under sync control, the sync is the only writer to the data it owns. This applies equally to `managed` and `attached` databases:
+
+* **Synced columns are read-only.** You cannot manually edit any property declared in the sync's `schema.properties`. Columns outside the schema are not synced and remain editable.
+* **Row titles and icons are read-only.** To change them, set them explicitly from the sync: the title via the title property's value in each upsert, and the icon and cover via the upsert's `icon` and `cover` fields — see [Set page icons and covers](#set-page-icons-and-covers).
+* **Rows cannot be added or deleted manually.** Only the sync creates rows (via upserts) or deletes them (via `type: "delete"` changes, or replace-mode mark-and-sweep).
+
+[Detaching a database](#detach-a-database) releases it from sync control and removes these locks without touching its data.
+
 ## Choose a sync mode
 
 Workers support two sync modes. Pick the one that fits your needs:

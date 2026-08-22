@@ -108,7 +108,7 @@ Download any accounting report or statement you’re viewing by selecting **Down
 | **Event type** | Available in the debits and credits reports. Revenue recognition organized by event type, with descriptions of recorded events to help you understand each journal entry. |
 | **Invoice event type** | Available in the debits and credits reports. Revenue recognition organized by invoice and event type, including charges, refunds, and dispute IDs. |
 | **Line item event type** | Available in the debits and credits reports. Revenue recognition organized by line item and event type, including charges, refunds, and dispute IDs at the line item level. |
-| **QuickBooks format** | Available in the debits and credits report, this CSV can be imported directly into QuickBooks Online. Stripe groups entries by accounting period and currency, and nets debit and credit amounts by account. See [Download in QuickBooks format](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md#quickbooks-format). |
+| **QuickBooks format** | Available in the debits and credits report, import this CSV directly into QuickBooks Online. Stripe groups entries by accounting period and currency, and nets debit and credit amounts by account. See [Download in QuickBooks format](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md#quickbooks-format). |
 
 #### Feedback and customization 
 

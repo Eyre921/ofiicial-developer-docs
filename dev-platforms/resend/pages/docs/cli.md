@@ -508,6 +508,7 @@ resend automations create --file ./automation.json
 resend automations list              # List all automations
 resend automations get <id>          # Retrieve an automation with steps and connections
 resend automations update <id>       # Update an automation's status (enable or disable)
+resend automations duplicate <id>    # Duplicate an automation
 resend automations stop <id>         # Stop an enabled automation
 resend automations delete <id>       # Delete an automation
 resend automations open [id]         # Open an automation in the dashboard

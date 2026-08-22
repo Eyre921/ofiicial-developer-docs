@@ -121,6 +121,7 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | Model ID                     | Description                                                                                       | Languages                                                                                                                                                                     |
 | ---------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `eleven_v3`                  | Human-like and expressive speech generation                                                       | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                   | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                      | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_multilingual_v2`     | Our most lifelike model with rich emotional expression                                            | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~75ms†)                                            | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
@@ -252,7 +253,7 @@ For guidance on which model best fits your requirements and use case, see the [m
 
 #### Quality
 
-Use `eleven_multilingual_v2`
+Use `eleven_v3` or `eleven_multilingual_v2`
 
 Best for high-fidelity audio output with rich emotional expression
 
@@ -262,15 +263,21 @@ Use Flash models
 
 Optimized for real-time applications (\~75ms latency)
 
+#### Expressive realtime
+
+Use `eleven_v3_conversational`
+
+Our most expressive model for realtime speech synthesis (\~280ms latency)
+
 #### Multilingual
 
-Use either either `eleven_multilingual_v2` or `eleven_flash_v2_5`
+Use either `eleven_v3` or `eleven_v3_conversational`
 
-Both support up to 32 languages
+Both support 70+ languages
 
 #### Balanced
 
-Use `eleven_flash_v2_5`
+Use `eleven_flash_v2_5` or `eleven_v3_conversational`
 
 Good balance between quality and speed
 
@@ -278,15 +285,15 @@ Good balance between quality and speed
 
 #### Content creation
 
-Use `eleven_multilingual_v2`
+Use `eleven_v3` or `eleven_multilingual_v2`
 
 Ideal for professional content, audiobooks & video narration.
 
 #### Agents Platform
 
-Use `eleven_flash_v2_5`, `eleven_flash_v2` or`eleven_multilingual_v2`
+Use `eleven_v3_conversational`, `eleven_flash_v2_5`, `eleven_flash_v2` or `eleven_multilingual_v2`
 
-Perfect for real-time conversational applications
+Perfect for real-time conversational applications. Use `eleven_v3_conversational` for the most expressive delivery.
 
 #### Voice changer
 
@@ -422,7 +429,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260820%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260820T091429Z&X-Amz-Expires=604800&X-Amz-Signature=e19a34ea0850317d4067eb7a79fa431f135d908a3ae424edbf8e7cc2e1ce1b90&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T111330Z&X-Amz-Expires=604800&X-Amz-Signature=a192cdb6e7cea53308a06606c4bd13f4f15087478d2de0d07cff44cfa166dda0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Concurrency limits" />
 
 #### Building AI Voice Agents
 

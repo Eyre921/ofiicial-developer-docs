@@ -30,7 +30,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
   -d amount=10000 \
-  -d currency=gbp \
+  -d currency=usd \
   -d payment_method=pm_card_bypassPending \
   -d confirm=true \
   --data-urlencode "return_url=https://example.com/return"
@@ -43,7 +43,7 @@ curl https://api.stripe.com/v1/payouts \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
   -d amount=978 \
-  -d currency=gbp \
+  -d currency=usd \
   -d "payout_method={{FINANCIALACCOUNTID_ID}}"
 ```
 
@@ -55,7 +55,7 @@ curl https://api.stripe.com/v1/payouts \
   -H "Stripe-Version: 2026-06-24.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
   -d amount=78 \
-  -d currency=gbp \
+  -d currency=usd \
   -d "payout_method={{FINANCIALACCOUNTID_ID}}"
 ```
 
@@ -67,9 +67,7 @@ To get the bank credentials for your financial account, you must create a [Finan
 
 To create a financial address for your financial account, use the [Create FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/create.md?api-version=preview) API.
 
-Create a [Financial Address](https://docs.stripe.com/api/v2/money-management/financial-addresses.md?api-version=preview) to assign bank details to your financial account you can share with customers or partners so they can send funds directly to the financial account. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number or a British sort code).
-
-After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
+Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
@@ -78,18 +76,51 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-    "type": "gb_bank_account"
+    "type": "us_bank_account"
   }'
 ```
 
-If successful, the response provides the ID for the financial address you’re creating:
+If successful, the response provides the ID for the financial address, along with the relevant credentials for the jurisdiction.
+
+#### US
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "credentials": {
+    "type": "us_bank_account",
+    "us_bank_account": {
+      "account_number": "123456890",
+      "routing_number": "110000000",
+      "bic": "TSTEZ122",
+      "bank_name": "STRIPE TEST BANK",
+      "last4": "6890"
+    }
+  },
+  "status": "active",
+  "financial_account": "fa_6504m3x1JLdhVIIIT1A16O0lef0dSQgZ0EhGyZsQCXQ28m",
+  "created": "2023-03-30T17:32:06.665Z",
+  "currency": "usd"
+}
+```
+
+#### UK
 
 ```json
 {
   "id": "{{FINANCIAL_ADDRESS_ID}}",
   "object": "v2.money_management.financial_address",
   "created": "2025-06-19T19:17:54.607Z",
-  "credentials": null,
+  "credentials": {
+    "type": "gb_bank_account",
+    "gb_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "account_number": "123456890",
+      "last4": "6890",
+      "sort_code": "12-34-56"
+    }
+  },
   "currency": "gbp",
   "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "settlement_currency": "gbp",
@@ -98,6 +129,34 @@ If successful, the response provides the ID for the financial address you’re c
 }
 ```
 
+#### EU
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "created": "2025-06-19T19:17:54.607Z",
+  "credentials": {
+    "type": "sepa_bank_account",
+    "sepa_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "bank_name": "SEPA Test Bank",
+      "bic": "TSTEZ122",
+      "country": "IE",
+      "iban": "IE29AIBK93115212345678",
+      "last4": "6890"
+    }
+  },
+  "currency": "eur",
+  "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
+  "settlement_currency": "eur",
+  "status": "pending",
+  "livemode": false
+}
+```
+
+After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
+
 You can use the [Get FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/retrieve.md?api-version=preview) API to fetch details about the financial address:
 
 ```curl
@@ -105,31 +164,10 @@ curl -G https://api.stripe.com/v2/money_management/financial_addresses/{{FINANCI
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
-  -d "include[0]=credentials.gb_bank_account.account_number"
+  -d "include[0]=credentials.us_bank_account.account_number"
 ```
 
-After you retrieve the FinancialAddress, you can view the account credentials, such as a US routing number or British sort code, which you can use to send money from your external bank account.
-
-```json
-{
-  "id": "{{FINANCIAL_ADDRESS_ID}}",
-  "object": "v2.money_management.financial_address",
-  "created": "2025-07-21T10:43:17.249Z",
-  "credentials": {
-    "gb_bank_account": {
-      "account_holder_name": "John Smith",
-      "account_number": "00000000",
-      "last4": "0000",
-      "sort_code": "000000"
-    },
-    "type": "gb_bank_account"
-  },
-  "currency": "gbp",
-  "financial_account": "fa_12345",
-  "status": "active",
-  "livemode": false
-}
-```
+After you retrieve the `FinancialAddress`, you can view the account credentials, such as a US routing number, British sort code, or European IBAN, which you can use to send money from your external bank account.
 
 To list financial addresses associated with your financial account, use the [List Financial Addresses](https://docs.stripe.com/api/v2/money-management/financial-addresses/list.md?api-version=preview) API. You can use different parameters to filter out financial addresses for your financial account.
 
@@ -153,7 +191,7 @@ In the US, connected accounts can fund USD financial accounts by sending ACH, RT
 > RTP funding is available only for financial accounts in the US. If your Stripe account is outside the US, you can fund your USD financial account using ACH or a wire.
 
 ## Use inbound transfers from a linked external bank account  (Private preview)
-
+Available in: US
 If you’re a platform in the US, you can use inbound transfers to debit your connected account’s linked external bank account to fund their Stripe financial account.
 
 You embed a component in your platform where users link and verify their bank account for instant verification with no microdeposits or waiting period. Stripe:
@@ -271,7 +309,7 @@ curl https://api.stripe.com/v2/money_management/received_credits/{{RECEIVED_CRED
       "object": "v2.money_management.received_credit",
       "amount": {
         "value": 1,
-        "currency": "gbp"
+        "currency": "usd"
       },
       "balance_transfer": {
         "payout_v1": "",
@@ -305,18 +343,13 @@ curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANC
   --json '{
     "amount": {
         "value": 250,
-        "currency": "gbp"
+        "currency": "usd"
     },
-    "network": "fps"
+    "network": "ach"
   }'
 ```
 
-Set `network` to `fps` or `chaps` to simulate the respective payment network:
-
-| Network value | Settlement | Transaction limit |
-| --- | --- | --- |
-| `fps` | Typically within minutes | 1,000,000 GBP |
-| `chaps` | Same day | No upper limit |
+Set `network` to a [supported value](https://docs.stripe.com/api/v2/money-management/financial-addresses/credit.md?api-version=preview#v2_credit_financial_addresses-network) for the country and currency.
 
 The response indicates if the simulation was successful, and you can check the balance of the financial account to confirm the increase.
 
@@ -364,9 +397,9 @@ curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][type]=transfer_up_to_amount" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][transfer_up_to_amount]=1500000"
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][type]=transfer_up_to_amount" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][transfer_up_to_amount]=1500000"
 ```
 
 ### Transfer all funds
@@ -391,9 +424,9 @@ curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][type]=transfer_up_to_amount" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][transfer_up_to_amount]=2000000"
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][type]=transfer_up_to_amount" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][transfer_up_to_amount]=2000000"
 ```
 
 ### Remove automatic transfer rules

@@ -17,28 +17,31 @@ Each context, identified by a client-chosen `context_id`, behaves like an indepe
 The connection uses Eleven v3 dialogue models only (`model_id` must start with `eleven_v3`). The default model is `eleven_v3_conversational`.
 
 ## Context setup
-- Every message **must** include a `context_id`. A message containing only `close_socket` is the exception.
-- The first message for a new `context_id` creates that context and **must** include `voices` (voice IDs to register for the context). Optional `voice_settings` and `pronunciation_dictionary_locators` are only accepted on this first message.
-- For `eleven_v3_conversational`, only **one** voice ID may be registered per context. For `eleven_v3`, you may register up to **10** voices per context.
-- A connection can hold at most **5** simultaneous contexts; close a context to free a slot.
+
+* Every message **must** include a `context_id`. A message containing only `close_socket` is the exception.
+* The first message for a new `context_id` creates that context and **must** include `voices` (voice IDs to register for the context). Optional `voice_settings` and `pronunciation_dictionary_locators` are only accepted on this first message.
+* For `eleven_v3_conversational`, only **one** voice ID may be registered per context. For `eleven_v3`, you may register up to **10** voices per context.
+* A connection can hold at most **5** simultaneous contexts; close a context to free a slot.
 
 ## Streaming text
-- Send `inputs`: an array of `{ "text", "voice_id", "new_turn"? }`. Each `voice_id` must be registered for that context. Text for the same turn is buffered per context until the server has enough context, then partial audio chunks tagged with the `context_id` are emitted.
-- Set `new_turn` to `true` (or switch `voice_id`) to finalize the current prosody segment and start a new speaker turn.
+
+* Send `inputs`: an array of `{ "text", "voice_id", "new_turn"? }`. Each `voice_id` must be registered for that context. Text for the same turn is buffered per context until the server has enough context, then partial audio chunks tagged with the `context_id` are emitted.
+* Set `new_turn` to `true` (or switch `voice_id`) to finalize the current prosody segment and start a new speaker turn.
 
 ## Control messages
-- `flush`: force generation of the context's buffered text.
-- `close_context`: flush the context's remaining audio, emit its `is_final` message, and close it. Other contexts stay open.
-- `close_socket`: flush and close **all** contexts, then close the connection.
-- `keep_alive`: reset the context's **20 second** inactivity timeout (no generation). A context idle for longer is automatically flushed and closed (its `is_final` message is sent); other contexts are unaffected.
+
+* `flush`: force generation of the context's buffered text.
+* `close_context`: flush the context's remaining audio, emit its `is_final` message, and close it. Other contexts stay open.
+* `close_socket`: flush and close **all** contexts, then close the connection.
+* `keep_alive`: reset the context's **20 second** inactivity timeout (no generation). A context idle for longer is automatically flushed and closed (its `is_final` message is sent); other contexts are unaffected.
 
 Protocol errors — a missing `context_id`, an unregistered voice, messaging a context that is closing, or exceeding the context limit — send an error payload and close the whole connection.
 
 ## Authentication
+
 Authentication is connection-level, not per context: use the `xi-api-key` or `Authorization` header, `single_use_token` query parameter, or include `xi_api_key`, `authorization`, or `single_use_token` in the first message of the connection. Anonymous sessions are rejected.
 
 For a single dialogue stream per connection, see the [Text to Dialogue WebSocket](/docs/api-reference/text-to-dialogue/ttd-websocket). For non-streaming dialogue over HTTP, see [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream).
-
 
 Reference: https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-multi-websocket
 
@@ -404,6 +407,8 @@ components:
         stability:
           type: number
           format: double
+          minimum: 0
+          maximum: 1
           default: 0.5
           description: >-
             Determines how stable the voice is and the randomness between each

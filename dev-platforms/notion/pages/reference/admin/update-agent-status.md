@@ -110,4 +110,4 @@ The request makes no change and is idempotent.
 
 **Disabling won't replace another pause reason.** If an agent is already paused for a platform or usage reason (for example, a credit limit), an admin disable will not overwrite that reason. Resolve the underlying condition first.
 
-**Workspace policy takes precedence.** If your workspace policy currently disallows custom agents, you cannot re-enable and run an agent — even one that was only admin-disabled.
+**Workspace policy takes precedence.** If your workspace policy currently disallows Custom Agents, you cannot re-enable and run an agent — even one that was only admin-disabled.

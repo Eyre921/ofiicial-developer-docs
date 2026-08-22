@@ -4,9 +4,9 @@ source: https://docs.together.ai/docs/roles-permissions
 path: docs/roles-permissions
 ---
 
-Understand Organization and Project role-based access control (RBAC), including Admin, Developer, and Editor roles, and what each can do across Together
+Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together
 
-Together uses role-based access control (RBAC) at both the [Organization](/docs/organizations) and [Project](/docs/projects) level. Every Member of an Organization is assigned an Organization role, and every Collaborator of a Project is assigned a Project role.
+Together uses role-based access control (RBAC) at both the [organization](/docs/organizations) and [project](/docs/projects) level. Every member of an organization is assigned an organization role, and every collaborator of a project is assigned a project role.
 
 <Note>
   Roles and permissions are being progressively rolled out across Together's products and services. This page will be updated as more granular controls become available.
@@ -14,15 +14,15 @@ Together uses role-based access control (RBAC) at both the [Organization](/docs/
 
 ## Organization roles
 
-Organizations have two roles: **Admin** and **Developer**.
+Organizations have two roles: **admin** and **developer**.
 
-| Role          | Scope           | Description                                                                                                                                                                   |
-| ------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects. Can see and join any Project, regardless of its visibility.                                         |
-| **Developer** | Org (read-only) | Can see Organization-level info and the Open and Closed Projects list. Joins Open Projects as an Editor by default; must be added to Closed and Private Projects by an Admin. |
+| Role          | Scope           | Description                                                                                                                                                                      |
+| ------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **admin**     | Org-wide        | Full access to all organization settings, billing, members, and projects. Can see and join any project, regardless of its visibility.                                            |
+| **developer** | Org (read-only) | Can see organization-level info and the list of open and closed projects. Joins open projects as an editor by default. Must be added to closed and private projects by an admin. |
 
 <Info>
-  The creator ("Owner") of an Organization is a special Admin. They cannot be removed from the Organization, their role cannot be changed from Admin, and they cannot delete their own account.
+  The creator ("owner") of an organization is a special admin. They cannot be removed from the organization, their role cannot be changed from admin, and they cannot delete their own account.
 </Info>
 
 ### Organization permissions
@@ -42,19 +42,19 @@ Organizations have two roles: **Admin** and **Developer**.
 
 ### Roles and project visibility
 
-A Project's [visibility](/docs/projects#project-visibility) (Open, Closed, or Private) controls which Members can discover and join it. Your Organization role affects what you can see:
+A project's [visibility](/docs/projects#project-visibility) (open, closed, or private) controls which members can discover and join it. Your organization role affects what you can see:
 
-* Organization Admins can see and join any Project, but must join a Closed or Private Project before accessing its resources or settings.
-* Organization Developers must be added to a Closed or Private Project by an Admin.
+* Organization admins can see and join any project, but must join a closed or private project before accessing its resources or settings.
+* Organization developers must be added to a closed or private project by an admin.
 
 ## Project roles
 
-Projects have two roles: **Admin** and **Editor**.
+Projects have two roles: **admin** and **editor**.
 
 | Role       | Description                                                                                                                                                                                                                                                  |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Admin**  | Can access and update Project settings, including the Project's visibility and Collaborators. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
-| **Editor** | Can use the Project's resources but cannot update Project settings, change its visibility, or manage Collaborators. Organization Developers are added to Projects as Editors by default.                                                                     |
+| **admin**  | Can access and update project settings, including the project's visibility and collaborators. Organization admins are granted project admin in any project they join. Organization developers can be promoted to project admin by an existing project admin. |
+| **editor** | Can use the project's resources but cannot update project settings, change its visibility, or manage collaborators. Organization developers are added to projects as editors by default.                                                                     |
 
 ### Project permissions
 
@@ -73,7 +73,7 @@ Projects have two roles: **Admin** and **Editor**.
 | Collaborators: Remove        | Yes   | No     |
 | Collaborators: Manage roles  | Yes   | No     |
 
-Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
+Changing a project's visibility between open, closed, and private takes effect immediately and keeps the project's existing collaborators.
 
 ## External collaborators (beta)
 
@@ -81,18 +81,18 @@ Changing a Project's visibility between Open, Closed, and Private takes effect i
   This feature is in beta. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
 </Info>
 
-An External Collaborator is someone who participates in a Project without being a Member of the Project's parent Organization. They can be assigned any Project role but have no Organization-level permissions beyond seeing the Organization's name.
+An external collaborator is someone who participates in a project without being a member of the project's parent organization. They can be assigned any project role but have no organization-level permissions beyond seeing the organization's name.
 
-What External Collaborators can do:
+What external collaborators can do:
 
-* Full access to any Project they have been explicitly added to (based on their Project role)
-* View their own profile settings
+* Full access to any project they have been explicitly added to (based on their project role).
+* View their own profile settings.
 
 What they cannot do:
 
-* Access billing settings
-* View the Organization Members list
-* See Organization-level settings
+* Access billing settings.
+* View the organization members list.
+* See organization-level settings.
 
 ## Product-specific permissions
 
@@ -128,7 +128,7 @@ The data plane covers using clusters for actual work: running jobs, accessing no
 
 ### Fine-tuning, endpoints, serverless inference & other products
 
-Role-based access control for fine-tuning, endpoints, serverless inference, and other Together products is still being rolled out. Today, all Project Collaborators (both Admin and Editor) have full access to these services.
+Role-based access control for fine-tuning, endpoints, serverless inference, and other Together products is still being rolled out. Today, all project collaborators (both admins and editors) have full access to these services.
 
 ## What's coming
 

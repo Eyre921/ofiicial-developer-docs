@@ -69,7 +69,7 @@ Because the parameter is in beta, re-validate your chosen value when Deepgram sh
 
 ## Usage
 
-Set `expressivity` as a query parameter on either `/v2/speak` transport. On streaming, the value is fixed when you open the connection and applies for its duration; on batch, it applies to that request.
+Set `expressivity` as a query parameter on either `/v2/speak` transport, or as an `agent.speak.provider` field in the Voice Agent API. On streaming, the value is fixed when you open the connection and applies for its duration; on batch, it applies to that request.
 
 ### Streaming
 
@@ -86,6 +86,27 @@ curl "https://api.deepgram.com/v2/speak?model=flux-haley-en&expressivity=2" \
      -d '{"text": "Your appointment is confirmed for 3pm tomorrow."}' \
      --output audio.mp3
 ```
+
+### Voice Agent
+
+In the Voice Agent API, set `agent.speak.provider.expressivity` in the `Settings` message rather than a query parameter. It takes the same `-2` to `2` values and applies for the whole session.
+
+```json
+{
+  "agent": {
+    "speak": {
+      "provider": {
+        "type": "deepgram",
+        "version": "v2",
+        "model": "flux-haley-en",
+        "expressivity": -1
+      }
+    }
+  }
+}
+```
+
+See [Configure the Voice Agent](/docs/configure-voice-agent#agent---speak-settings-tts).
 
 ## Behavior notes
 

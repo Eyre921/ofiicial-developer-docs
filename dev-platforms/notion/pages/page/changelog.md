@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 20, 2026">
+  ### Notion Agent APIs in public beta
+
+  The [Notion Agent APIs](/guides/notion-agent-apis/overview) are now in public beta. Use sessions to start a chat with a Custom Agent, stream its reply, submit an action, and page through a session's event history, so you can bring Custom Agents into a Slack bot, an internal tool, or a mobile client. The [quickstart](/guides/notion-agent-apis/quickstart) walks through a first request end to end with a personal access token.
+
+  The beta also covers managing Custom Agents programmatically: find the agents a token can reach with [Query agents](/reference/notion-agent-apis/query-agents), read per-agent usage with [Retrieve agent insights](/reference/notion-agent-apis/retrieve-agent-insights), and set credit limits, enable, disable, or delete agents — individually or in an [asynchronous batch](/reference/notion-agent-apis/batch-manage-agent).
+
+  If you built against the private alpha routes for agents, threads, messages, or chat, see [Upgrading to public beta](/guides/notion-agent-apis/upgrading-to-public-beta). The replacements take JSON request bodies instead of query parameters and return sessions and events instead of threads and messages. Migrate off the alpha routes by September 30, 2026.
+</Update>
+
 <Update label="August 13, 2026">
   ### More filters in Notion MCP view tools
 
@@ -216,7 +226,7 @@ path: page/changelog
 <Update label="June 10, 2026">
   ### Bots in people properties and user mentions
 
-  Bots that appear as [user objects](/reference/user) in API responses can now be assigned to `people` [page property values](/reference/page-property-values#people) and referenced in `user` [rich text mentions](/reference/rich-text#user-mention-type-object). You can set a `people` property when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). Previously these writes returned a `validation_error`, even though the same bots were already returned when reading those fields. Some bots never appear as user objects, including integrations Notion uses internally to power features like database automations and custom agents. Assigning one of those still returns a `validation_error`.
+  Bots that appear as [user objects](/reference/user) in API responses can now be assigned to `people` [page property values](/reference/page-property-values#people) and referenced in `user` [rich text mentions](/reference/rich-text#user-mention-type-object). You can set a `people` property when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). Previously these writes returned a `validation_error`, even though the same bots were already returned when reading those fields. Some bots never appear as user objects, including integrations Notion uses internally to power features like database automations and Custom Agents. Assigning one of those still returns a `validation_error`.
 </Update>
 
 <Update label="June 8, 2026">

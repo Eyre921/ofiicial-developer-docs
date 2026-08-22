@@ -561,6 +561,9 @@ components:
     SpeakV2SpeedValue:
       type: number
       format: double
+      minimum: 0.85
+      maximum: 1.15
+      multipleOf: 0.05
       default: 1
       description: >-
         Speech-rate multiplier. `1.0` is the model's nominal rate; lower is

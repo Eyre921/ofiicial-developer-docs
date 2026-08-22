@@ -100,6 +100,6 @@ Together manages its own session timeouts independently from your IdP's default 
   </Card>
 
   <Card title="Roles & Permissions" icon="shield" href="/docs/roles-permissions">
-    What Admins, Developers, and Editors can do
+    What admins, developers, and editors can do
   </Card>
 </CardGroup>

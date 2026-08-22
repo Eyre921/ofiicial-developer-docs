@@ -8,48 +8,56 @@ path: billing/subscriptions/pause-payment
 
 Learn how to pause payment collection on subscriptions.
 
-Pausing payment collection is often used to temporarily offer your services for free. This is sometimes referred to as a “grace period” if a customer needs additional time to pay or can’t pay for one or more billing periods.
+You can pause payment collection to temporarily offer a customer your services for free. This is sometimes called a grace period—for example, when a customer needs more time to pay or can’t pay for one or more billing periods.
 
-## Pause subscription versus pause payment collection
+When you pause payment collection, the *subscription* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis)  remains `active` and *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) continue to generate, but Stripe doesn’t collect payment. Your customer retains access to the service during this time.
 
-Pausing payment collection keeps the subscription `active`, invoices still generate, and only collection pauses. Your customers keep access to the service while you pause collection.
+## Before you begin
 
-[Pausing a subscription](https://docs.stripe.com/billing/subscriptions/pause.md) is different, because it stops both service and billing. The subscription moves to `paused` status, Stripe stops generating invoices, and your customer loses access to the subscription’s service for the duration of the pause.
+- If you want to pause customer access to the service, pause payment collection, and also pause invoices, see [Pause subscriptions](https://docs.stripe.com/billing/subscriptions/pause.md) instead.
+- If you want to permanently stop renewal, see [Cancel subscriptions](https://docs.stripe.com/billing/subscriptions/cancel.md) instead.
+- Invoices created before you pause subscriptions continue to be [retried](https://docs.stripe.com/invoicing/automatic-collection.md) unless you [void](https://docs.stripe.com/api/invoices/void.md) them.
 
-|  | Servicing is paused (customer loses service access) | Invoicing is paused | Payment collection is paused |
-| --- | --- | --- | --- |
-| **Pause payment collection** | No | No | Yes |
-| **Pause subscription** | Yes | Yes | Yes |
+## Pause payment collection
 
-You can pause or resume collection in the [Stripe Dashboard](https://support.stripe.com/questions/how-to-pause-or-cancel-subscriptions) or the API. While collection is paused, *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) still generate *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice), but you have a few options for handling these invoices. Review the following use cases to determine the best approach for you:
+Use the Dashboard or the API to pause payment collection.
 
-| Use case | API configuration |
-| --- | --- |
-| [Temporarily offer services for free and never collect payment](https://docs.stripe.com/billing/subscriptions/pause-payment.md#collect-payment-never) | Use `behavior=void` |
-| [Temporarily offer services for free and collect payment later](https://docs.stripe.com/billing/subscriptions/pause-payment.md#collect-payment-later) | Use `behavior=keep_as_draft` |
-| [Temporarily offer services for free and mark invoice as uncollectible](https://docs.stripe.com/billing/subscriptions/pause-payment.md#mark-as-uncollectible) | Use `behavior=mark_uncollectible` |
+You can choose to pause payment collection indefinitely or automatically resume payment collection at a specific time in the future. During the time that payment collection is paused, Stripe won’t send any upcoming invoice emails or webhooks for these invoices and the subscription’s status remains unchanged.
 
-If these options don’t fit your use case, you might want to consider [canceling subscriptions](https://docs.stripe.com/billing/subscriptions/cancel.md) instead.
+When you pause payment collection for a subscription, you have three options for how to handle invoices during the paused timeframe:
 
-Invoices created before subscriptions are paused continue to be [retried](https://docs.stripe.com/invoicing/automatic-collection.md) unless you [void](https://docs.stripe.com/api/invoices/void.md) them.
+|  |
+| **Keep invoices as drafts** (`keep_as_draft`) | - Invoices are created in `draft` status with `auto_advance` set to false.
+- You can finalize and collect payment later.
+  > If you have custom logic that finalizes invoices, you might need to disable or modify it so that it doesn’t conflict with these settings. |
+| **Mark invoices uncollectible** (`mark_uncollectible`) | - Invoices are marked as uncollectible. No payment are collected for these periods. Stripe doesn’t send any upcoming invoice emails or webhooks for these invoices.
+- Despite this pause, Stripe applies any existing customer balance to invoices. This behavior helps use available funds before we mark an invoice as uncollectible. If the invoice’s total is paid off entirely using customer balance, then the invoice’s status is set to `paid`. Otherwise, the invoice’s status is set to `uncollectible`. |
+| **Void invoices** (`void`) | Invoices are voided. No record of charges is created for these periods. |
 
-## Temporarily offer services for free and never collect payment 
+To pause payment collection for a subscription:
 
-If you temporarily want to offer your services for free and you don’t want to collect payment on the invoice (for example, a “grace period”), you can void invoices that your subscription creates to make sure that your customers aren’t charged and the subscription remains `status=active`. Use the Subscription ID to update `pause_collection[behavior]` to `void` and `pause_collection[resumes_at]` to the date you want to start collecting payments again.
+#### Dashboard
 
-```curl
-curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d "pause_collection[behavior]=void"
-```
+1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions) page, select the subscription.
 
-All invoices created before the `resumes_at` date are immediately marked as void. Stripe won’t send any upcoming invoice emails or webhooks and the subscription’s status remains unchanged.
+2. Click the overflow menu (⋯) and select **Pause payment collection**.
 
-If you don’t set a `resumes_at` date, the subscription remains paused until you unset `pause_collection`.
+3. Choose the duration:
 
-## Temporarily offer services for free and collect payment later 
+   - **Indefinite**: We keep payment collection paused until you resume it.
+   - **Until a custom date**: We automatically resume payment collection on the date you choose.
 
-If you want to temporarily offer your services for free and collect payments later, set `pause_collection[behavior]=keep_as_draft`. If you know when you want to resume collection, pass a timestamp for `resumes_at`.
+4. Choose the Invoice behavior:
+
+   - **Keep invoices as drafts**: Invoices are created as drafts. You can finalize and collect payment later.
+   - **Mark invoices uncollectible**: Invoices are marked uncollectible. No payment is collected for these periods.
+   - **Void invoices**: Invoices are voided. No record of charges is created for these periods.
+
+5. Click **Pause**.
+
+#### API
+
+To pause payment collection for a subscription, [update the subscription](https://docs.stripe.com/api/subscriptions/update.md) and set `pause_collection[behavior]`. Optionally, set `pause_collection[resumes_at]` to automatically resume payment collection at a specific time.
 
 ```curl
 curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
@@ -57,42 +65,38 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -d "pause_collection[behavior]=keep_as_draft"
 ```
 
-All invoices created before the `resumes_at` date remain in `draft` status and `auto_advance` is set to `false`. During this time, Stripe won’t send any upcoming invoice emails or webhooks for these invoices and the subscription’s status remains unchanged.
+### pause_collection[behavior]
 
-If you don’t set a `resumes_at` date, the subscription remains paused until you unset `pause_collection`.
+Choose how to handle invoices created while payment collection is paused:
 
-> If you have custom logic that finalizes invoices you might need to disable or modify it so that it doesn’t conflict with these settings.
+- `keep_as_draft`: Keeps all invoices in draft status while collection is paused.
+- `mark_uncollectible`: Marks all invoices as uncollectible while collection is paused.
+- `void`: Voids all invoices while collection is paused.
 
-When you want to collect payment for these invoices:
+### pause_collection[resumes_at]
 
-1. Unset `pause_collection` on the subscription. While paused, Stripe automatically sets `auto_advance=false` on all draft invoices, even if you explicitly set it to `true`. To unset `pause_collection`, see [Manually unpausing](https://docs.stripe.com/billing/subscriptions/pause-payment.md#unpausing).
-2. Set `auto_advance=true` on each draft invoice. If you don’t have the invoice IDs, look them up using the subscription ID with `status=draft` as a filter. For example:
+A Unix timestamp after which the subscription resumes collecting payments.
 
-```curl
-curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d auto_advance=true
-```
+If you don’t set `resumes_at`, payment collection remains paused until you unset `pause_collection`.
 
-## Temporarily offer services for free and mark invoices as uncollectible 
+> If you pause a subscription that’s managed by a subscription schedule, scheduled updates still take effect. A subscription schedule phase transition doesn’t automatically remove `pause_collection` behavior that was set directly on the subscription.
 
-If you temporarily want to offer your services for free and mark any invoices generated by the subscription as uncollectible, use the Subscription ID to update `pause_collection[behavior]` to `mark_uncollectible` and optionally `pause_collection[resumes_at]` to the date you want to start collecting payments again. This makes sure that any downstream reporting is accurate, your customer isn’t charged, and the subscription remains `status=active`.
+## Resume payment collection 
 
-```curl
-curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d "pause_collection[behavior]=mark_uncollectible"
-```
+You can resume payment collection at any time using the Dashboard or API for a subscription or for invoices kept as drafts.
 
-If you set `pause_collection[behavior]` to `mark_uncollectible`, we’ll stop active payment collection on new invoices the subscription creates before the `resumes_at` date. Stripe won’t send any upcoming invoice emails or webhooks for these invoices.
+### Resume collection from a subscription
 
-Despite this pause, Stripe applies any existing customer balance to invoices. This behavior helps use available funds before we mark an invoice as `uncollectible`. If the invoice’s `total` is paid off entirely using customer balance, then the invoice’s status is set to `paid`. Otherwise, the invoice’s status is set to `uncollectible`.
+#### Dashboard
 
-If you don’t set a `resumes_at` date, the payment collection on the subscription remains paused until you unset `pause_collection`.
+To resume payment collection in the Dashboard:
 
-## Manually unpausing 
+1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions) page, find the applicable subscription.
+2. Click the overflow menu (⋯), and select **Resume payment collection**.
 
-To resume collecting payments at any time, you can update the subscription and unset `pause_collection`:
+#### API
+
+To resume payment collection, [update the subscription](https://docs.stripe.com/api/subscriptions/update.md) and unset `pause_collection`. You can unset individual keys by posting an empty value to them:
 
 #### curl
 
@@ -102,9 +106,38 @@ curl https://api.stripe.com/v1/subscriptions/sub_GTbTiykEwMRog0 \
   -d "pause_collection"= 
 ```
 
-Resuming collection this way only affects future invoices.
+### Collect payment on draft invoices
 
-## Pausing and subscription schedules 
+After you resume payment collection from a subscription, set `auto_advance=true` on each draft invoice. If you don’t have the invoice IDs, look them up using the subscription ID with `status=draft` as a filter.
 
-If you pause a subscription on a [subscription schedule](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md), the scheduled updates still take effect. However, payment isn’t collected while the subscription is paused. When you want to collect payment again, you need to [manually unpause](https://docs.stripe.com/billing/subscriptions/pause-payment.md#unpausing) the subscription. You also need to update `auto_advance` to `true` on any invoices with `status=draft` that you want to collect payment on.
+#### Dashboard
+
+After you resume payment collection from a subscription, for each draft invoice:
+
+1. Go to the [Invoices page](https://dashboard.stripe.com/invoices/) in the Dashboard, and click the invoice to see its details page.
+2. Click the overflow menu (⋯).
+3. Click **Turn on automatic collection**. This changes the `auto_advance` property on the invoice to `true`.
+
+#### API
+
+Retrieve the draft invoices for the subscription:
+
+```curl
+curl -G https://api.stripe.com/v1/invoices \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "subscription={{SUBSCRIPTION_ID}}" \
+  -d status=draft
+```
+
+Then, for each draft invoice, set `auto_advance` to `true`:
+
+```curl
+curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d auto_advance=true
+```
+
+## See also
+
+- [Pause subscriptions](https://docs.stripe.com/billing/subscriptions/pause.md)
 

@@ -289,9 +289,7 @@ Creates a reference schema with `$ref` set to `path`.
 j.ref("#/$defs/user")
 ```
 
-<h2>
-  Database schema helpers
-</h2>
+## Database schema helpers
 
 Use `Schema` helpers to define the properties of managed databases declared with `worker.database()`.
 

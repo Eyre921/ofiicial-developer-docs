@@ -232,6 +232,7 @@ components:
         speaker changes. Each word in the transcript will be assigned a speaker
         number starting at 0
       title: ListenV1Diarize
+      deprecated: true
     ListenV1_diarize_model:
       type: string
       enum:
@@ -623,6 +624,7 @@ components:
         transaction_key:
           type: string
           description: The transaction key
+          deprecated: true
         request_id:
           type: string
           format: uuid

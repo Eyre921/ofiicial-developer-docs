@@ -4566,12 +4566,11 @@ Index fullness measures how much of your index's allocated capacity is being use
   <Note>
     `indexFullness` is the maximum of `memoryFullness` and `storageFullness`.
   </Note>
+* To monitor fullness over time, use `pinecone_db_index_fullness`, `pinecone_db_index_memory_fullness`, and/or `pinecone_db_index_storage_fullness` [metrics](/guides/production/monitoring#available-metrics), which you access via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
 * Usually, storage fills up first. However, memory can be the limiting factor when you have `b1` nodes with many low-dimension vectors, or when you have `t1` nodes with high-dimension vectors and lots of metadata.
-* Monitor fullness regularly and [add shards](#add-or-remove-shards) before your index reaches capacity. When `indexFullness` reaches 1.0 (100%), write operations (upsert, update, delete) are blocked, but read operations continue to work normally.
+* When `indexFullness` reaches 1.0 (100%), write operations (upsert, update, delete) are blocked, but read operations continue to work normally.
 
-<Note>
-  Add shards when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
-</Note>
+To decide when to add capacity, see [Add shards when fullness is high](#add-shards-when-fullness-is-high).
 
 ## Query-time search parameters
 
@@ -4924,10 +4923,10 @@ To maintain optimal performance, provision additional shards to keep your index 
 **Other considerations**
 
 * Every index must have at least one shard. However, you can [pause an index](#pause-an-index) by reducing its replicas to 0.
-* After you've created your index, [monitor its fullness](#monitor-index-fullness). When your index approaches capacity, you can [add shards](#add-or-remove-shards).
+* After you've created your index, [monitor its fullness](#monitor-index-fullness).
 
 <Note>
-  Add shards when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
+  [Add shards](#add-or-remove-shards) when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
 </Note>
 
 ### Number of replicas
@@ -5233,6 +5232,47 @@ To migrate an existing on-demand index to dedicated read nodes—including one y
   </Step>
 </Steps>
 
+## Scale your index
+
+Dedicated read nodes don't yet scale automatically. You decide when to scale, guided by two signals:
+
+| Scenario    | What to check                                       | What to do                              |
+| :---------- | :-------------------------------------------------- | :-------------------------------------- |
+| Query load  | [CPU usage](#add-replicas-when-cpu-is-high)         | [Add replicas](#add-or-remove-replicas) |
+| Data volume | [Index fullness](#add-shards-when-fullness-is-high) | [Add shards](#add-or-remove-shards)     |
+
+Diagnose which one you're facing before you scale. Adding shards won't relieve query latency that's driven by CPU saturation, and adding replicas won't create room on a shard that's running out of space.
+
+### Add replicas when CPU is high
+
+CPU usage reflects query pressure. As query load outgrows what your replicas can serve, query latency climbs and throughput drops.
+
+Pinecone exposes CPU usage as the `pinecone_db_drn_cpu_usage_percent` metric, reported per shard. To collect it, [monitor your index with Prometheus](/guides/production/monitoring#monitor-with-prometheus).
+
+Alert on the highest value across your shards rather than the index-wide average, which can look healthy while a single shard is already saturated:
+
+```shell theme={null}
+max(avg_over_time(pinecone_db_drn_cpu_usage_percent{index_name="docs-example"}[5m]))
+```
+
+Add a replica when this exceeds 80%. Averaging over a window keeps a brief spike from triggering a scale-up, so shorten or lengthen the window to suit how quickly your traffic shifts.
+
+Throughput scales approximately linearly with replicas. For high availability, allocate `n+1` replicas, where `n` is the minimum number of replicas required to serve your expected throughput at your target latency. See [Number of replicas](#number-of-replicas).
+
+<Tip>
+  If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](#query-time-search-parameters) to trade some recall for higher throughput.
+</Tip>
+
+### Add shards when fullness is high
+
+[Index fullness](#index-fullness) reflects data volume. Writes are blocked once the index reaches capacity, while reads continue normally.
+
+<Note>
+  [Add shards](#add-or-remove-shards) when [index fullness](#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
+</Note>
+
+To check the current value, see [Monitor index fullness](#monitor-index-fullness).
+
 ## Manage your index
 
 The following sections describe how to manage a dedicated read nodes index using version `2025-10` of the Pinecone API.
@@ -5385,6 +5425,8 @@ The following sections describe how to manage a dedicated read nodes index using
     </CodeGroup>
 
     In the response, `indexFullness` describes how full the index is, on a scale of 0 to 1. It's set to the greater of `memoryFullness` and `storageFullness`.
+
+    Pinecone also [emits these values](/guides/production/monitoring#available-metrics). Use them to track fullness over time in Prometheus or Datadog, and to alert before your index reaches capacity.
   </Accordion>
 
   <Accordion title="Add or remove shards">
@@ -5851,7 +5893,7 @@ The following limits apply to dedicated read nodes:
 
 <AccordionGroup>
   <Accordion title="Read limits">
-    Dedicated read nodes indexes are not subject to [read-operation rate limits](/reference/api/database-limits#rate-limits), like on-demand indexes are. However, if your query rate exceeds the compute capacity of your index, you may observe decreased query throughput. In such cases, consider [adding replicas](#add-or-remove-replicas) to increase compute resources, or use [query-time search parameters](#query-time-search-parameters) to reduce per-query compute and increase throughput without adding replicas.
+    Dedicated read nodes indexes aren't subject to [read-operation rate limits](/reference/api/database-limits#rate-limits), like on-demand indexes are. However, if your query rate exceeds the compute capacity of your index, you may observe decreased query throughput. In such cases, consider [adding replicas](#add-or-remove-replicas) to increase compute resources, or use [query-time search parameters](#query-time-search-parameters) to reduce per-query compute and increase throughput without adding replicas. To decide when to add replicas, see [Add replicas when CPU is high](#add-replicas-when-cpu-is-high).
   </Accordion>
 
   <Accordion title="Write limits">
@@ -11560,14 +11602,16 @@ This page shows you how to migrate a pod-based index to [serverless](/guides/get
 
 ## Limitations
 
-Migration is supported for pod-based indexes with less than 25 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure).
+Migration is supported for pod-based indexes with up to 50 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 50 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate. The record limit can often be raised for your project.
 
-Also, serverless indexes do not support the following features. If you were using these features for your pod-based index, you will need to adapt your code. If you are blocked by these limitations, [contact Pinecone Support](/troubleshooting/contact-support).
+After you migrate, note that serverless indexes don't support the following features:
 
 * [Selective metadata indexing](/guides/indexes/pods/manage-pod-based-indexes#selective-metadata-indexing)
 
-  * Because high-cardinality metadata in serverless indexes does not cause high memory utilization, this operation is not relevant.
+  * Because high-cardinality metadata in serverless indexes doesn't cause high memory utilization, this operation isn't relevant.
 * [Filtering index statistics by metadata](/reference/api/latest/data-plane/describeindexstats)
+
+If you were using either feature with your pod-based index, you'll need to adapt your code. If you're blocked by these limitations, [contact Pinecone Support](/troubleshooting/contact-support).
 
 ## How it works
 
@@ -27467,40 +27511,43 @@ For more configuration details, see the [Prometheus docs](https://prometheus.io/
 The following metrics are available when you integrate Pinecone with Prometheus:
 
 <div>
-  | Name                                         | Type    | Description                                                                                                                    |
-  | :------------------------------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------- |
-  | `pinecone_db_record_total`                   | gauge   | The total number of records in the index.                                                                                      |
-  | `pinecone_db_storage_size_bytes`             | gauge   | The total size of the index in bytes.                                                                                          |
-  | `pinecone_db_op_upsert_count`                | counter | The number of [upsert](/guides/index-data/upsert-data) requests.                                                               |
-  | `pinecone_db_op_upsert_duration_sum`         | counter | The total time taken processing [upsert](/guides/index-data/upsert-data) requests in milliseconds.                             |
-  | `pinecone_db_op_query_count`                 | counter | The number of [query](/guides/search/search-overview) requests.                                                                |
-  | `pinecone_db_op_query_duration_sum`          | counter | The total time taken processing [query](/guides/search/search-overview) requests in milliseconds.                              |
-  | `pinecone_db_op_fetch_count`                 | counter | The number of [fetch](/guides/manage-data/fetch-data) requests.                                                                |
-  | `pinecone_db_op_fetch_duration_sum`          | counter | The total time taken processing [fetch](/guides/manage-data/fetch-data) requests in milliseconds.                              |
-  | `pinecone_db_op_update_count`                | counter | The number of [update](/guides/manage-data/update-data) requests.                                                              |
-  | `pinecone_db_op_update_duration_sum`         | counter | The total time taken processing [update](/guides/manage-data/update-data) requests in milliseconds.                            |
-  | `pinecone_db_op_delete_count`                | counter | The number of [delete](/guides/manage-data/delete-data) requests.                                                              |
-  | `pinecone_db_op_delete_duration_sum`         | counter | The total time taken processing [delete](/guides/manage-data/delete-data) requests in milliseconds.                            |
-  | `pinecone_db_op_list_count`                  | counter | The number of [list](/guides/manage-data/list-record-ids) requests.                                                            |
-  | `pinecone_db_op_list_duration_sum`           | counter | The total time taken processing [list](/guides/manage-data/list-record-ids) requests in milliseconds.                          |
-  | `pinecone_db_write_unit_count`               | counter | The total number of [write units](/guides/manage-cost/understanding-cost#write-units) consumed by an index.                    |
-  | `pinecone_db_read_unit_count`                | counter | The total number of [read units](/guides/manage-cost/understanding-cost#read-units) consumed by an index.                      |
-  | `pinecone_db_scheduled_backup_failure_total` | counter | The number of terminal failures for [scheduled backup](/guides/manage-data/back-up-an-index) create operations.                |
-  | `pinecone_db_drn_cpu_usage_percent`          | gauge   | The CPU usage percentage for a [dedicated read node](/guides/index-data/dedicated-read-nodes) shard, averaged across replicas. |
+  | Name                                         | Type    | Description                                                                                                                                                 |
+  | :------------------------------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `pinecone_db_record_total`                   | gauge   | The total number of records in the index.                                                                                                                   |
+  | `pinecone_db_storage_size_bytes`             | gauge   | The total size of the index in bytes.                                                                                                                       |
+  | `pinecone_db_op_upsert_count`                | counter | The number of [upsert](/guides/index-data/upsert-data) requests.                                                                                            |
+  | `pinecone_db_op_upsert_duration_sum`         | counter | The total time taken processing [upsert](/guides/index-data/upsert-data) requests in milliseconds.                                                          |
+  | `pinecone_db_op_query_count`                 | counter | The number of [query](/guides/search/search-overview) requests.                                                                                             |
+  | `pinecone_db_op_query_duration_sum`          | counter | The total time taken processing [query](/guides/search/search-overview) requests in milliseconds.                                                           |
+  | `pinecone_db_op_fetch_count`                 | counter | The number of [fetch](/guides/manage-data/fetch-data) requests.                                                                                             |
+  | `pinecone_db_op_fetch_duration_sum`          | counter | The total time taken processing [fetch](/guides/manage-data/fetch-data) requests in milliseconds.                                                           |
+  | `pinecone_db_op_update_count`                | counter | The number of [update](/guides/manage-data/update-data) requests.                                                                                           |
+  | `pinecone_db_op_update_duration_sum`         | counter | The total time taken processing [update](/guides/manage-data/update-data) requests in milliseconds.                                                         |
+  | `pinecone_db_op_delete_count`                | counter | The number of [delete](/guides/manage-data/delete-data) requests.                                                                                           |
+  | `pinecone_db_op_delete_duration_sum`         | counter | The total time taken processing [delete](/guides/manage-data/delete-data) requests in milliseconds.                                                         |
+  | `pinecone_db_op_list_count`                  | counter | The number of [list](/guides/manage-data/list-record-ids) requests.                                                                                         |
+  | `pinecone_db_op_list_duration_sum`           | counter | The total time taken processing [list](/guides/manage-data/list-record-ids) requests in milliseconds.                                                       |
+  | `pinecone_db_write_unit_count`               | counter | The total number of [write units](/guides/manage-cost/understanding-cost#write-units) consumed by an index.                                                 |
+  | `pinecone_db_read_unit_count`                | counter | The total number of [read units](/guides/manage-cost/understanding-cost#read-units) consumed by an index.                                                   |
+  | `pinecone_db_scheduled_backup_failure_total` | counter | The number of terminal failures for [scheduled backup](/guides/manage-data/back-up-an-index) create operations.                                             |
+  | `pinecone_db_drn_cpu_usage_percent`          | gauge   | The CPU usage percentage for a [dedicated read node](/guides/index-data/dedicated-read-nodes) shard, averaged across replicas.                              |
+  | `pinecone_db_index_fullness`                 | gauge   | The greater of storage and memory fullness for a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index, on a scale of 0 to 1.               |
+  | `pinecone_db_index_memory_fullness`          | gauge   | The memory used by a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index as a ratio of its total memory capacity, on a scale of 0 to 1.   |
+  | `pinecone_db_index_storage_fullness`         | gauge   | The storage used by a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index as a ratio of its total storage capacity, on a scale of 0 to 1. |
 </div>
 
 ### Metric labels
 
 Each metric contains the following labels:
 
-| Label           | Description                                                        |
-| :-------------- | :----------------------------------------------------------------- |
-| `index_name`    | Name of the index to which the metric applies.                     |
-| `cloud`         | Cloud where the index is deployed: `aws`, `gcp`, or `azure`.       |
-| `region`        | Region where the index is deployed.                                |
-| `capacity_mode` | Type of index: `serverless` or `byoc`.                             |
-| `instance`      | Server instance (only available for counter metrics).              |
-| `shard_id`      | Shard identifier (only available for dedicated read node metrics). |
+| Label           | Description                                                                  |
+| :-------------- | :--------------------------------------------------------------------------- |
+| `index_name`    | Name of the index to which the metric applies.                               |
+| `cloud`         | Cloud where the index is deployed: `aws`, `gcp`, or `azure`.                 |
+| `region`        | Region where the index is deployed.                                          |
+| `capacity_mode` | Type of index: `serverless` or `byoc`.                                       |
+| `instance`      | Server instance (only available for counter metrics).                        |
+| `shard_id`      | Shard identifier (only available for per-shard dedicated read node metrics). |
 
 ### Example queries
 
@@ -27540,10 +27587,28 @@ Return the total write units consumed per second for the Pinecone index `docs-ex
 sum (rate(pinecone_db_write_unit_count{index_name="docs-example"}[5m]))
 ```
 
-Return the CPU usage percentage per shard for Pinecone index `docs-example`:
+Return the highest CPU usage percentage across all shards of Pinecone index `docs-example`:
 
 ```shell theme={null}
-avg by (shard_id) (pinecone_db_drn_cpu_usage_percent{index_name="docs-example"})
+max(pinecone_db_drn_cpu_usage_percent{index_name="docs-example"})
+```
+
+For each dedicated read nodes index, return the highest CPU usage percentage across its shards:
+
+```shell theme={null}
+max by (index_name) (pinecone_db_drn_cpu_usage_percent)
+```
+
+Return the fullness of Pinecone index `docs-example`:
+
+```shell theme={null}
+pinecone_db_index_fullness{index_name="docs-example"}
+```
+
+Return the indexes that are at least 80% full:
+
+```shell theme={null}
+pinecone_db_index_fullness >= 0.8
 ```
 
 
@@ -40413,7 +40478,7 @@ Return statistics about the contents of an index, including the vector count per
 Serverless indexes scale automatically as needed, so index fullness is relevant only for pod-based indexes.
 
 <Note>
-  Index fullness is also relevant for [dedicated read nodes](/guides/index-data/dedicated-read-nodes#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, monitor these values and [add shards](/guides/index-data/dedicated-read-nodes#add-or-remove-shards) before the index reaches capacity.
+  Index fullness is also relevant for [dedicated read nodes](/guides/index-data/dedicated-read-nodes#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, these values indicate when the index needs more capacity. See [Scale your index](/guides/index-data/dedicated-read-nodes#scale-your-index).
 </Note>
 
 <RequestExample>
@@ -71475,7 +71540,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
     <span>Observability</span>
     <h2>Langtrace</h2>
-    <p>Access rich and high cardinal tracing for Pinecone API calls, ingestible into your observability tool of choice.</p>
+    <p>Get high-cardinality tracing of your Pinecone API calls, exported to the observability tool of your choice.</p>
   </Card>
 
   <Card href="/integrations/llamaindex">
@@ -85813,11 +85878,11 @@ Source: https://docs.pinecone.io/integrations/langtrace
 
 Trace Pinecone API calls with Langtrace's OpenTelemetry SDK to debug RAG pipelines, monitor vector DB latency, and ship LLM observability.
 
-Scale3 Labs recently launched Langtrace AI, an open-source monitoring and evaluation platform for LLM-powered applications. Langtrace is built based on Open Telemetry(OTEL) standards and supports native tracing for the most popular LLM vendors, VectorDBs, and frameworks(like Langchain and LlamaIndex).
+[Langtrace AI](https://docs.langtrace.ai/) from Scale3 Labs is an open-source monitoring and evaluation platform for LLM-powered applications. It's built on [OpenTelemetry](https://opentelemetry.io/) (OTel) standards and supports native tracing for the most popular LLM vendors, vector databases, and frameworks, including LangChain and LlamaIndex.
 
-Langtrace AI supports tracing Pinecone natively, which means the Langtrace SDK can generate OTEL standard traces with automatic instrumentation in just 2 lines of code. These traces can be ingested by an observability tool that supports OTEL, such as Datadog, Grafana/Prometheus, SigNoz, Sentry, etc. Langtrace also has a visualization client that is optimized for visualizing the traces generated in an LLM stack.
+Langtrace traces Pinecone natively, so its SDK generates OTel-standard traces with automatic instrumentation in two lines of code. You can send those traces to any observability tool that supports OTel, such as Datadog, Grafana Tempo, New Relic, or SigNoz. You can also view them in Langtrace's own client, which is optimized for LLM stacks.
 
-By having a Pinecone integration, Pinecone users can get access to rich and high cardinal tracing for the Pinecone API calls using Langtrace, which they can ingest into their observability tool of choice. This helps customers gain insights into the DB calls and help with debugging and troubleshooting applications in case of incidents.
+Either way, you get high-cardinality tracing of your Pinecone API calls. That makes it easier to see what your database calls are doing and to troubleshoot your application during an incident.
 
 <PrimarySecondaryCTA />
 
@@ -89548,10 +89613,18 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
-<Update label="2026-08-11">
-  ### New guide: reciprocal rank fusion (RRF)
+<Update label="2026-08-21">
+  ### Index fullness metrics for dedicated read nodes
 
-  Added a guide on [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion), a client-side method for combining the results of separate searches (for example, full-text and semantic) into one ranking without normalizing scores. RRF fuses rankings rather than raw scores, so it needs no per-signal weighting.
+  Indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) now emit [index fullness](/guides/index-data/dedicated-read-nodes#index-fullness) as time-series metrics. [Monitor fullness over time](/guides/production/monitoring#available-metrics) via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
+</Update>
+
+<Update label="2026-08-19">
+  ### Pod-to-serverless migration supports up to 50 million records
+
+  [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#limitations) now supports indexes with up to 50 million records, up from 25 million.
+
+  If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
 </Update>
 
 <Update label="2026-08-01">
@@ -95721,10 +95794,18 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
 ## August 2026
 
-<Update label="2026-08-11">
-  ### New guide: reciprocal rank fusion (RRF)
+<Update label="2026-08-21">
+  ### Index fullness metrics for dedicated read nodes
 
-  Added a guide on [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion), a client-side method for combining the results of separate searches (for example, full-text and semantic) into one ranking without normalizing scores. RRF fuses rankings rather than raw scores, so it needs no per-signal weighting.
+  Indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) now emit [index fullness](/guides/index-data/dedicated-read-nodes#index-fullness) as time-series metrics. [Monitor fullness over time](/guides/production/monitoring#available-metrics) via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
+</Update>
+
+<Update label="2026-08-19">
+  ### Pod-to-serverless migration supports up to 50 million records
+
+  [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#limitations) now supports indexes with up to 50 million records, up from 25 million.
+
+  If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
 </Update>
 
 <Update label="2026-08-01">

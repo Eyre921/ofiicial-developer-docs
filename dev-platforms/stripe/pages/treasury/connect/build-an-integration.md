@@ -34,7 +34,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     "contact_email": "test@example.com",
     "display_name": "John Smith",
     "identity": {
-        "country": "gb",
+        "country": "US",
         "entity_type": "individual"
     },
     "configuration": {
@@ -58,12 +58,12 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
                 },
                 "business_storage": {
                     "inbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     },
                     "outbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     }
@@ -99,7 +99,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     },
     "dashboard": "none",
     "defaults": {
-        "currency": "gbp",
+        "currency": "usd",
         "responsibilities": {
             "fees_collector": "application",
             "losses_collector": "application"
@@ -138,7 +138,7 @@ The response includes the connected account ID.
         },
         "business_storage": {
           "inbound": {
-            "gbp": {
+            "usd": {
               "requested": true,
               "status": "restricted",
               "status_details": [
@@ -150,7 +150,7 @@ The response includes the connected account ID.
             }
           },
           "outbound": {
-            "gbp": {
+            "usd": {
               "requested": true,
               "status": "restricted",
               "status_details": [
@@ -268,7 +268,7 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
     "type": "storage",
     "storage": {
         "holds_currencies": [
-            "gbp"
+            "usd"
         ]
     },
     "metadata": {
@@ -286,25 +286,25 @@ The response includes the ID of the financial account.
   // The available balance shows money that can be used.
   "balance": {
     "available": {
-      "gbp": {
+      "usd": {
         "value": 7800,
-        "currency": "gbp"
+        "currency": "usd"
       }
     },
     "inbound_pending": {
-      "gbp": {
+      "usd": {
         "value": 0,
-        "currency": "gbp"
+        "currency": "usd"
       }
     },
     "outbound_pending": {
-      "gbp": {
+      "usd": {
         "value": 0,
-        "currency": "gbp"
+        "currency": "usd"
       }
     }
   },
-  "country": "GB",
+  "country": "US",
   "created": "2025-06-18T11:05:27.930Z",
   "metadata": null,
   "other": null,
@@ -313,7 +313,7 @@ The response includes the ID of the financial account.
   "status_details": null,
   "storage": {
     "holds_currencies": [
-      "gbp"
+      "usd"
     ]
   },
   "metadata": {
@@ -324,9 +324,7 @@ The response includes the ID of the financial account.
 }
 ```
 
-Create a [Financial Address](https://docs.stripe.com/api/v2/money-management/financial-addresses.md?api-version=preview) to assign bank details to your financial account you can share with customers or partners so they can send funds directly to the financial account. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number or a British sort code).
-
-After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
+Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
@@ -335,18 +333,51 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-    "type": "gb_bank_account"
+    "type": "us_bank_account"
   }'
 ```
 
-If successful, the response provides the ID for the financial address you’re creating:
+If successful, the response provides the ID for the financial address, along with the relevant credentials for the jurisdiction.
+
+#### US
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "credentials": {
+    "type": "us_bank_account",
+    "us_bank_account": {
+      "account_number": "123456890",
+      "routing_number": "110000000",
+      "bic": "TSTEZ122",
+      "bank_name": "STRIPE TEST BANK",
+      "last4": "6890"
+    }
+  },
+  "status": "active",
+  "financial_account": "fa_6504m3x1JLdhVIIIT1A16O0lef0dSQgZ0EhGyZsQCXQ28m",
+  "created": "2023-03-30T17:32:06.665Z",
+  "currency": "usd"
+}
+```
+
+#### UK
 
 ```json
 {
   "id": "{{FINANCIAL_ADDRESS_ID}}",
   "object": "v2.money_management.financial_address",
   "created": "2025-06-19T19:17:54.607Z",
-  "credentials": null,
+  "credentials": {
+    "type": "gb_bank_account",
+    "gb_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "account_number": "123456890",
+      "last4": "6890",
+      "sort_code": "12-34-56"
+    }
+  },
   "currency": "gbp",
   "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "settlement_currency": "gbp",
@@ -354,6 +385,34 @@ If successful, the response provides the ID for the financial address you’re c
   "livemode": false
 }
 ```
+
+#### EU
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "created": "2025-06-19T19:17:54.607Z",
+  "credentials": {
+    "type": "sepa_bank_account",
+    "sepa_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "bank_name": "SEPA Test Bank",
+      "bic": "TSTEZ122",
+      "country": "IE",
+      "iban": "IE29AIBK93115212345678",
+      "last4": "6890"
+    }
+  },
+  "currency": "eur",
+  "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
+  "settlement_currency": "eur",
+  "status": "pending",
+  "livemode": false
+}
+```
+
+After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
 
 ## Fund the financial account
 
@@ -367,9 +426,9 @@ curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANC
   --json '{
     "amount": {
         "value": 25000,
-        "currency": "gbp"
+        "currency": "usd"
     },
-    "network": "fps"
+    "network": "ach"
   }'
 ```
 
@@ -392,31 +451,33 @@ curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALAC
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
+The response includes different types of [balances](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md#balances). The available balance shows the 250 USD you added to the 78 USD that was in the account previously.
+
 ```json
 {
   "id": "{{FINANCIAL_ACCOUNT_ID}}",
   "object": "v2.money_management.financial_account",
   "balance": {
     "available": {
-      "gbp": {
+      "usd": {
         "value": 32800,
-        "currency": "gbp"
+        "currency": "usd"
       }
     },
     "inbound_pending": {
-      "gbp": {
+      "usd": {
         "value": 0,
-        "currency": "gbp"
+        "currency": "usd"
       }
     },
     "outbound_pending": {
-      "gbp": {
+      "usd": {
         "value": 0,
-        "currency": "gbp"
+        "currency": "usd"
       }
     }
   },
-  "country": "GB",
+  "country": "US",
   "created": "2025-06-11T13:01:21.289Z",
   "metadata": null,
   "other": null,
@@ -424,7 +485,7 @@ curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALAC
   "status_details": null,
   "storage": {
     "holds_currencies": [
-      "gbp"
+      "usd"
     ]
   },
   "type": "storage",
@@ -445,7 +506,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     "contact_email": "jenny.rosen@stripe.com",
     "display_name": "Jenny Rosen",
     "identity": {
-        "country": "GB",
+        "country": "US",
         "entity_type": "individual",
         "individual": {
             "given_name": "Jenny",
@@ -519,8 +580,9 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
     "payout_method_data": {
         "type": "bank_account",
         "bank_account": {
-            "country": "GB",
-            "account_number": "NO9386011117947"
+            "country": "US",
+            "account_number": "123456890",
+            "routing_number": "110000000"
         }
     },
     "usage_intent": "payment"
@@ -567,16 +629,16 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   --json '{
     "from": {
         "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "to": {
         "recipient": "{{RECIPIENTACCOUNTID_ID}}",
         "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "amount": {
         "value": 1000,
-        "currency": "gbp"
+        "currency": "usd"
     },
     "description": "Payout from a platform financial account to connected account financial account"
   }'
@@ -590,7 +652,7 @@ The response includes the outbound payment ID and transaction details.
   "object": "v2.money_management.outbound_payment",
   "amount": {
     "value": 1000,
-    "currency": "gbp"
+    "currency": "usd"
   },
   "cancelable": false,
   "created": "2025-06-19T17:52:34.829Z",
@@ -600,7 +662,7 @@ The response includes the outbound payment ID and transaction details.
   "from": {
     "debited": {
       "value": 1000,
-      "currency": "gbp"
+      "currency": "usd"
     },
     "financial_account": "{{FINANCIAL_ACCOUNT_ID}}"
   },
@@ -621,7 +683,7 @@ The response includes the outbound payment ID and transaction details.
   "to": {
     "credited": {
       "value": 780,
-      "currency": "gbp"
+      "currency": "usd"
     },
     "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
     "recipient": "{{RECIPIENT_ACCOUNT_ID}}"

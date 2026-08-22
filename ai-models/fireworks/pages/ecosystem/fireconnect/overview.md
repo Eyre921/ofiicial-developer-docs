@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/ecosystem/fireconnect/overview
 path: ecosystem/fireconnect/overview
 ---
 
-Route Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, and Deep Agents through Fireworks AI or Microsoft Foundry models
+Route coding harnesses through Fireworks AI, with Microsoft Foundry support for compatible tools
 
 [FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
 
@@ -90,8 +90,8 @@ After install and sign-in, open the guide for the tool you use. Each page covers
     GitHub Copilot Chat custom endpoint
   </Card>
 
-  <Card title="Deep Agents" icon="robot" href="/ecosystem/fireconnect/deepagents">
-    LangChain Deep Agents Code (`dcode`)
+  <Card title="DeepSeek Harness" icon="robot" href="/ecosystem/fireconnect/deepseek">
+    DeepSeek's coding agent (`dsh`)
   </Card>
 </CardGroup>
 
@@ -103,25 +103,25 @@ fireconnect <harness> on --model glm-fast-latest
 # Cursor / VS Code: quit before on; others: restart after
 ```
 
-`<harness>` is one of: `claude`, `opencode`, `codex`, `pi`, `cursor`, `vscode`, `deepagents`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
+`<harness>` is one of: `claude`, `opencode`, `codex`, `pi`, `cursor`, `vscode`, `deepseek`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
 
 ## Harness support
 
-| Harness     | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                             |
-| ----------- | :---------------: | :-------: | :---------------: | :------------------------------------------: | ------------------------------------------------- |
-| Claude Code |        Yes        |    Yes    |         No        |                      Yes                     | [Claude Code](/ecosystem/fireconnect/claude-code) |
-| OpenCode    |        Yes        |    Yes    |        Yes        |                      Yes                     | [OpenCode](/ecosystem/fireconnect/opencode)       |
-| Codex       |        Yes        |     No    |        Yes        |                      Yes                     | [Codex](/ecosystem/fireconnect/codex)             |
-| Pi          |        Yes        |    Yes    |        Yes        |                      Yes                     | [Pi](/ecosystem/fireconnect/pi)                   |
-| Cursor      |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Cursor](/ecosystem/fireconnect/cursor)           |
-| VS Code     |        Yes        |    Yes    |        Yes        |                      Yes                     | [VS Code](/ecosystem/fireconnect/vscode)          |
-| Deep Agents |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Deep Agents](/ecosystem/fireconnect/deepagents)  |
+| Harness          | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                               |
+| ---------------- | :---------------: | :-------: | :---------------: | :------------------------------------------: | --------------------------------------------------- |
+| Claude Code      |        Yes        |    Yes    |         No        |                      Yes                     | [Claude Code](/ecosystem/fireconnect/claude-code)   |
+| OpenCode         |        Yes        |    Yes    |        Yes        |                      Yes                     | [OpenCode](/ecosystem/fireconnect/opencode)         |
+| Codex            |        Yes        |     No    |        Yes        |                      Yes                     | [Codex](/ecosystem/fireconnect/codex)               |
+| Pi               |        Yes        |    Yes    |        Yes        |                      Yes                     | [Pi](/ecosystem/fireconnect/pi)                     |
+| Cursor           |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Cursor](/ecosystem/fireconnect/cursor)             |
+| VS Code          |        Yes        |    Yes    |        Yes        |                      Yes                     | [VS Code](/ecosystem/fireconnect/vscode)            |
+| DeepSeek Harness |        Yes        |    Yes    |         No        |                Workspace BYOK                | [DeepSeek Harness](/ecosystem/fireconnect/deepseek) |
 
 **Notes**
 
-* **Foundry**: not on Claude Code yet.
+* **Foundry**: not on Claude Code or DeepSeek Harness.
 * **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
-* **FireRouter**: Cursor and Deep Agents need workspace BYOK.
+* **FireRouter**: Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through.
 * **Web search MCP**: Claude Code auto-install only; any harness can add the HTTP MCP manually. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
 * **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
 
@@ -133,7 +133,7 @@ fireconnect <harness> on --model glm-fast-latest
 fireconnect <harness> on --model firerouter
 ```
 
-Requires a standard Fireworks key (`fw_...`), not Fire Pass. Cursor and Deep Agents also need workspace BYOK. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) and [Harness support](#harness-support).
+Requires a standard Fireworks key (`fw_...`), not Fire Pass. Cursor and DeepSeek Harness also need workspace BYOK for Anthropic pass-through. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) and [Harness support](#harness-support).
 
 ## Source
 

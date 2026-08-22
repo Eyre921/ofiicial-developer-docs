@@ -8,12 +8,12 @@ path: treasury/connect/examples/multi-financial-accounts
 
 Learn how to create two financial accounts and move funds between them.
 
-This example use case shows an integration using a SaaS platform that provides financial services to restaurants using *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) and [Treasury for platforms](https://docs.stripe.com/treasury/connect.md). One of its UK restaurants wants two financial accounts (Operations and Tips) so card revenues can flow to operations while evenly paying tips out to employees. The restaurant also wants a GBP bank account number and sort code to add money for a dining room renovation.
+This example use case shows an integration using a SaaS platform that provides financial services to restaurants using *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) and [Treasury for platforms](https://docs.stripe.com/treasury/connect.md). One restaurant wants two financial accounts (operations and tips) so that card revenue flows to the operations account, then evenly distributes tips to employees. The restaurant also wants to set up US bank account credentials to add funds to the operational account for a dining room renovation.
 
 The example integration requires the following steps:
 
 - Create and onboard a [connected account](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md) for Treasury for platforms.
-- Create two [financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md) (Operations and Tips).
+- Create two [financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md) (operations and tips).
 - Create a financial address so the restaurant can bank-transfer funds into a financial account.
 - Move funds between the two financial accounts.
 
@@ -36,7 +36,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     "contact_email": "restaurant@example.com",
     "display_name": "Donut Shop",
     "identity": {
-        "country": "gb",
+        "country": "US",
         "entity_type": "company"
     },
     "configuration": {
@@ -60,12 +60,12 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
                 },
                 "business_storage": {
                     "inbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     },
                     "outbound": {
-                        "gbp": {
+                        "usd": {
                             "requested": true
                         }
                     }
@@ -85,7 +85,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
     },
     "dashboard": "none",
     "defaults": {
-        "currency": "gbp",
+        "currency": "usd",
         "responsibilities": {
             "fees_collector": "application",
             "losses_collector": "application"
@@ -104,15 +104,14 @@ curl -X POST https://api.stripe.com/v2/core/accounts \
       "capabilities": {
         "business_storage": {
           "inbound": {
-            "gbp": {
+            "usd": {
               "requested": true,
               "status": "restricted"
             }
           },
           "outbound": {
-            "gbp": {
-              "requested": true,
-              "status": "restricted"
+            "usd": {
+              "requested": true
             }
           }
         }
@@ -137,9 +136,9 @@ Alternatively, the platform might create an [account link](https://docs.stripe.c
 
 The platform listens for the `v2.core.account[configuration.money_manager].capability_status_updated` [webhook](https://docs.stripe.com/webhooks.md) to confirm the capabilities are active for its connected account.
 
-## Create the Operations financial account
+## Create the operations financial account
 
-The platform creates a [GBP storage financial account](https://docs.stripe.com/api/v2/money-management/financial-accounts/create.md?api-version=preview) for day-to-day operations, specifying the restaurant’s account ID in the `Stripe-Context` header to associate the financial account with the restaurant.
+The platform creates a [US storage financial account](https://docs.stripe.com/api/v2/money-management/financial-accounts/create.md?api-version=preview) for day-to-day operations, specifying the restaurant’s account ID in the `Stripe-Context` header to associate the financial account with the restaurant.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
@@ -150,7 +149,7 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
     "type": "storage",
     "storage": {
         "holds_currencies": [
-            "gbp"
+            "usd"
         ]
     },
     "metadata": {
@@ -159,31 +158,31 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   }'
 ```
 
-The response includes the Operations financial account ID:
+The response includes the operations financial account ID:
 
 ```json
 {
   "id": "fa_12345",
   "object": "v2.money_management.financial_account",
   "balance": {
-    "available": { "gbp": { "value": 0, "currency": "gbp" } },
-    "inbound_pending": { "gbp": { "value": 0, "currency": "gbp" } },
-    "outbound_pending": { "gbp": { "value": 0, "currency": "gbp" } }
+    "available": { "usd": { "value": 0, "currency": "usd" } },
+    "inbound_pending": { "usd": { "value": 0, "currency": "usd" } },
+    "outbound_pending": { "usd": { "value": 0, "currency": "usd" } }
   },
-  "country": "GB",
+  "country": "US",
   "created": "2025-06-18T11:05:27.930Z",
   "metadata": { "name": "operations" },
   "status": "pending",
   "status_details": null,
-  "storage": { "holds_currencies": ["gbp"] },
+  "storage": { "holds_currencies": ["usd"] },
   "type": "storage",
   "livemode": false
 }
 ```
 
-## Create the Tips financial account
+## Create the tips financial account
 
-The platform creates a second GBP storage financial account dedicated to tips.
+The platform creates a second US storage financial account dedicated to tips.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
@@ -194,7 +193,7 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
     "type": "storage",
     "storage": {
         "holds_currencies": [
-            "gbp"
+            "usd"
         ]
     },
     "metadata": {
@@ -203,31 +202,31 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   }'
 ```
 
-The response includes the Tips financial account ID:
+The response includes the tips financial account ID:
 
 ```json
 {
   "id": "fa_67890",
   "object": "v2.money_management.financial_account",
   "balance": {
-    "available": { "gbp": { "value": 0, "currency": "gbp" } },
-    "inbound_pending": { "gbp": { "value": 0, "currency": "gbp" } },
-    "outbound_pending": { "gbp": { "value": 0, "currency": "gbp" } }
+    "available": { "usd": { "value": 0, "currency": "usd" } },
+    "inbound_pending": { "usd": { "value": 0, "currency": "usd" } },
+    "outbound_pending": { "usd": { "value": 0, "currency": "usd" } }
   },
-  "country": "GB",
+  "country": "US",
   "created": "2025-06-18T11:06:10.000Z",
   "metadata": { "name": "tips" },
   "status": "pending",
   "status_details": null,
-  "storage": { "holds_currencies": ["gbp"] },
+  "storage": { "holds_currencies": ["usd"] },
   "type": "storage",
   "livemode": false
 }
 ```
 
-## Create a financial address for the Operations account
+## Create a financial address for the operations account
 
-To allow the restaurant to add funds through bank transfers, the platform [creates a GBP financial address](https://docs.stripe.com/api/v2/money-management/financial-addresses/create.md?api-version=preview) for the Operations financial account.
+To allow the restaurant to add funds through bank transfers, the platform [creates a US bank financial address](https://docs.stripe.com/api/v2/money-management/financial-addresses/create.md?api-version=preview) for the operations financial account.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
@@ -236,23 +235,30 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "financial_account": "{{OPERATIONSFINANCIALACCOUNTID_ID}}",
-    "type": "gb_bank_account"
+    "type": "us_bank_account"
   }'
 ```
 
-The response includes the ID of the financial address:
+The response includes the ID of the financial address and the US bank credentials:
 
 ```json
 {
   "id": "{{FINANCIAL_ADDRESS_ID}}",
   "object": "v2.money_management.financial_address",
-  "created": "2025-06-19T19:17:54.607Z",
-  "credentials": null,
-  "currency": "gbp",
-  "financial_account": "fa_12345",
-  "settlement_currency": "gbp",
-  "status": "pending",
-  "livemode": false
+  "credentials": {
+    "type": "us_bank_account",
+    "us_bank_account": {
+      "account_number": "123456890",
+      "routing_number": "110000000",
+      "bic": "TSTEZ122",
+      "bank_name": "STRIPE TEST BANK",
+      "last4": "6890"
+    }
+  },
+  "status": "active",
+  "financial_account": identifier("financialAccountId"),
+  "created": "2023-03-30T17:32:06.665Z",
+  "currency": "usd"
 }
 ```
 
@@ -266,9 +272,9 @@ curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANC
   --json '{
     "amount": {
         "value": 5000,
-        "currency": "gbp"
+        "currency": "usd"
     },
-    "network": "fps"
+    "network": "ach"
   }'
 ```
 
@@ -282,7 +288,7 @@ The response indicates the outcome.
 }
 ```
 
-## Move funds from Operations to Tips
+## Move funds from operations to tips
 
 The platform [creates an outbound transfer](https://docs.stripe.com/api/v2/money-management/outbound-transfers/create.md?api-version=preview) to move funds between two financial accounts that both belong to the restaurant.
 
@@ -294,17 +300,17 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   --json '{
     "from": {
         "financial_account": "{{OPERATIONSFINANCIALACCOUNTID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "to": {
         "payout_method": "{{TIPSFINANCIALACCOUNTID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "amount": {
         "value": 1000,
-        "currency": "gbp"
+        "currency": "usd"
     },
-    "description": "Move tips to Tips FA"
+    "description": "Move tips to tips FA"
   }'
 ```
 
@@ -314,15 +320,15 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   "object": "v2.money_management.outbound_transfer",
   "from": {
     "financial_account": "fa_12345",
-    "debited": { "value": 1000, "currency": "gbp" }
+    "debited": { "value": 1000, "currency": "usd" }
   },
   "to": {
     "payout_method": "fa_67890",
-    "credited": { "value": 1000, "currency": "gbp" }
+    "credited": { "value": 1000, "currency": "usd" }
   },
-  "amount": { "value": 1000, "currency": "gbp" },
+  "amount": { "value": 1000, "currency": "usd" },
   "cancelable": true,
-  "description": "Move tips to Tips FA",
+  "description": "Move tips to tips FA",
   "status": "processing",
   "status_transitions": {
     "canceled_at": null,
@@ -353,13 +359,13 @@ curl https://api.stripe.com/v2/money_management/financial_accounts \
       "id": "{% identifier type=\"operationsFinancialAccountId\" /%}",
       "object": "v2.money_management.financial_account",
       "balance": {
-        "available": { "gbp": { "value": 4000, "currency": "gbp" } },
-        "inbound_pending": { "gbp": { "value": 0, "currency": "gbp" } },
-        "outbound_pending": { "gbp": { "value": 0, "currency": "gbp" } }
+        "available": { "usd": { "value": 4000, "currency": "usd" } },
+        "inbound_pending": { "usd": { "value": 0, "currency": "usd" } },
+        "outbound_pending": { "usd": { "value": 0, "currency": "usd" } }
       },
-      "country": "GB",
+      "country": "US",
       "status": "open",
-      "storage": { "holds_currencies": ["gbp"] },
+      "storage": { "holds_currencies": ["usd"] },
       "type": "storage",
       "livemode": false
     },
@@ -367,13 +373,13 @@ curl https://api.stripe.com/v2/money_management/financial_accounts \
       "id": "{% identifier type=\"tipsFinancialAccountId\" /%}",
       "object": "v2.money_management.financial_account",
       "balance": {
-        "available": { "gbp": { "value": 1000, "currency": "gbp" } },
-        "inbound_pending": { "gbp": { "value": 0, "currency": "gbp" } },
-        "outbound_pending": { "gbp": { "value": 0, "currency": "gbp" } }
+        "available": { "usd": { "value": 1000, "currency": "usd" } },
+        "inbound_pending": { "usd": { "value": 0, "currency": "usd" } },
+        "outbound_pending": { "usd": { "value": 0, "currency": "usd" } }
       },
-      "country": "GB",
+      "country": "US",
       "status": "open",
-      "storage": { "holds_currencies": ["gbp"] },
+      "storage": { "holds_currencies": ["usd"] },
       "type": "storage",
       "livemode": false
     }
@@ -383,5 +389,5 @@ curl https://api.stripe.com/v2/money_management/financial_accounts \
 }
 ```
 
-With two financial accounts in place and a way to move funds between them, the platform can route revenue from card payments to the Operations account and use the Tips account to fund periodic employee payouts.
+With two financial accounts in place and a way to move funds between them, the platform can route revenue from card payments to the operations account and use the tips account to fund periodic employee payouts.
 

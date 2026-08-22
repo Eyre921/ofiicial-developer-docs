@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 211 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 227 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -54,6 +54,9 @@
 - `guides/mcp/mcp-security-best-practices` — [Security best practices](pages/guides/mcp/mcp-security-best-practices.md) · [原文](https://developers.notion.com/guides/mcp/mcp-security-best-practices)
 - `guides/mcp/mcp-supported-tools` — [Supported tools](pages/guides/mcp/mcp-supported-tools.md) · [原文](https://developers.notion.com/guides/mcp/mcp-supported-tools)
 - `guides/mcp/overview` — [Notion MCP](pages/guides/mcp/overview.md) · [原文](https://developers.notion.com/guides/mcp/overview)
+- `guides/notion-agent-apis/overview` — [Overview](pages/guides/notion-agent-apis/overview.md) · [原文](https://developers.notion.com/guides/notion-agent-apis/overview)
+- `guides/notion-agent-apis/quickstart` — [Quickstart](pages/guides/notion-agent-apis/quickstart.md) · [原文](https://developers.notion.com/guides/notion-agent-apis/quickstart)
+- `guides/notion-agent-apis/upgrading-to-public-beta` — [Upgrading to public beta](pages/guides/notion-agent-apis/upgrading-to-public-beta.md) · [原文](https://developers.notion.com/guides/notion-agent-apis/upgrading-to-public-beta)
 - `guides/resources/examples` — [Example code](pages/guides/resources/examples.md) · [原文](https://developers.notion.com/guides/resources/examples)
 - `guides/resources/historical-changelog` — [Historical changelog](pages/guides/resources/historical-changelog.md) · [原文](https://developers.notion.com/guides/resources/historical-changelog)
 - `guides/resources/notion-s-api-workspace` — [Postman workspace](pages/guides/resources/notion-s-api-workspace.md) · [原文](https://developers.notion.com/guides/resources/notion-s-api-workspace)
@@ -138,6 +141,18 @@
 - `reference/list-file-uploads` — [List file uploads](pages/reference/list-file-uploads.md) · [原文](https://developers.notion.com/reference/list-file-uploads)
 - `reference/list-views` — [List views](pages/reference/list-views.md) · [原文](https://developers.notion.com/reference/list-views)
 - `reference/move-page` — [Move a page](pages/reference/move-page.md) · [原文](https://developers.notion.com/reference/move-page)
+- `reference/notion-agent-apis/batch-manage-agent` — [Batch manage agent](pages/reference/notion-agent-apis/batch-manage-agent.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/batch-manage-agent)
+- `reference/notion-agent-apis/cancel-session` — [Cancel a session](pages/reference/notion-agent-apis/cancel-session.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/cancel-session)
+- `reference/notion-agent-apis/delete-agent` — [Delete an agent](pages/reference/notion-agent-apis/delete-agent.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/delete-agent)
+- `reference/notion-agent-apis/query-agents` — [Query agents](pages/reference/notion-agent-apis/query-agents.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/query-agents)
+- `reference/notion-agent-apis/query-session-events` — [Query session events](pages/reference/notion-agent-apis/query-session-events.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/query-session-events)
+- `reference/notion-agent-apis/query-sessions` — [Query sessions](pages/reference/notion-agent-apis/query-sessions.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/query-sessions)
+- `reference/notion-agent-apis/retrieve-agent` — [Retrieve an agent](pages/reference/notion-agent-apis/retrieve-agent.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/retrieve-agent)
+- `reference/notion-agent-apis/retrieve-agent-insights` — [Retrieve agent insights](pages/reference/notion-agent-apis/retrieve-agent-insights.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/retrieve-agent-insights)
+- `reference/notion-agent-apis/retrieve-session` — [Retrieve a session](pages/reference/notion-agent-apis/retrieve-session.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/retrieve-session)
+- `reference/notion-agent-apis/update-agent-credit-limit` — [Update an agent credit limit](pages/reference/notion-agent-apis/update-agent-credit-limit.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-agent-credit-limit)
+- `reference/notion-agent-apis/update-agent-status` — [Update agent status](pages/reference/notion-agent-apis/update-agent-status.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-agent-status)
+- `reference/notion-agent-apis/update-session` — [Create or update a session](pages/reference/notion-agent-apis/update-session.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-session)
 - `reference/page` — [Page](pages/reference/page.md) · [原文](https://developers.notion.com/reference/page)
 - `reference/page-property-values` — [Page properties](pages/reference/page-property-values.md) · [原文](https://developers.notion.com/reference/page-property-values)
 - `reference/parent-object` — [Parent](pages/reference/parent-object.md) · [原文](https://developers.notion.com/reference/parent-object)
@@ -226,6 +241,7 @@
 - `workers/guides/api-client` — [Using Notion API from a worker](pages/workers/guides/api-client.md) · [原文](https://developers.notion.com/workers/guides/api-client)
 - `workers/guides/oauth` — [OAuth](pages/workers/guides/oauth.md) · [原文](https://developers.notion.com/workers/guides/oauth)
 - `workers/guides/secrets` — [How to manage secrets](pages/workers/guides/secrets.md) · [原文](https://developers.notion.com/workers/guides/secrets)
+- `workers/guides/sharing-workers` — [Sharing Workers](pages/workers/guides/sharing-workers.md) · [原文](https://developers.notion.com/workers/guides/sharing-workers)
 - `workers/guides/syncs` — [Syncs](pages/workers/guides/syncs.md) · [原文](https://developers.notion.com/workers/guides/syncs)
 - `workers/guides/tools` — [How to write an agent tool](pages/workers/guides/tools.md) · [原文](https://developers.notion.com/workers/guides/tools)
 - `workers/guides/webhooks` — [Webhooks](pages/workers/guides/webhooks.md) · [原文](https://developers.notion.com/workers/guides/webhooks)

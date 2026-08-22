@@ -36,7 +36,7 @@ Use these workflows as a starting place to build your custom workflow or use the
 
 This guide assumes that:
 
-* You have at least a basic knowledge of how to use GitHub. If you don't, you'll find it helpful to read some of the articles in the documentation for repositories and pull requests first. For example, see [Quickstart for repositories](/en/repositories/creating-and-managing-repositories/quickstart-for-repositories), [Branches](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches), and [Pull requests](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+* You have at least a basic knowledge of how to use GitHub. If you don't, you'll find it helpful to read some of the articles in the documentation for repositories and pull requests first. For example, see [Quickstart for repositories](/en/repositories/creating-and-managing-repositories/quickstart-for-repositories), [Branches](/en/pull-requests/reference/branches), and [Pull requests](/en/pull-requests/reference/pull-requests).
 * You have a repository on GitHub where you can add files.
 * You have access to GitHub Actions.
 

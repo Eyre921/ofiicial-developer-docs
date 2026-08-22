@@ -24,15 +24,21 @@ Use Flash models (`eleven_flash_v2_5` or `eleven_flash_v2`)
 
 Optimised for real-time applications with \~75ms latency.
 
+#### Expressive realtime
+
+Use `eleven_v3_conversational`
+
+Our most expressive model for realtime speech synthesis, with \~280ms latency and audio tags for fine-grained control.
+
 #### Multilingual
 
-Use `eleven_v3` or `eleven_flash_v2_5`
+Use `eleven_v3` or `eleven_v3_conversational`
 
-Both support a wide range of languages.
+Both support 70+ languages.
 
 #### Balanced
 
-Use `eleven_flash_v2_5`
+Use `eleven_flash_v2_5` or `eleven_v3_conversational`
 
 High-quality output with low latency — the best all-round choice.
 
@@ -46,7 +52,7 @@ Ideal for professional content, audiobooks, and video narration.
 
 #### Conversational agents
 
-Use `eleven_flash_v2_5` or `eleven_flash_v2`
+Use `eleven_v3_conversational` for the most expressive delivery, or `eleven_flash_v2_5` and `eleven_flash_v2` for the lowest latency.
 
 Use the 2.5 model for language support outside of English.
 

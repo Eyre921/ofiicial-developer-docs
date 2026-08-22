@@ -4,10 +4,35 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="August 21, 2026">
+  ## Model deprecations
+
+  The following model has been deprecated and is no longer available on serverless:
+
+  * `deepcogito/cogito-v2-1-671b`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="August 18, 2026">
+  ## Fully automatic confirmation policy for node auto repair
+
+  [Auto node repair](/docs/node-repair#auto-node-repair) can now close the loop end to end. Under the new **Fully automatic** confirmation policy, health checks detect the fault, the system generates a repair recommendation, and auto repair executes it without waiting for approval. Clusters continue to use **Approve before repair** by default.
+
+  **What's new:**
+
+  * **Confirmation policy toggle:** Choose between **Approve before repair** and **Fully automatic** under **Auto-remediation policy** on the **Repairs** tab.
+  * **Per-fault scoping:** Under **Fully automatic**, use **Repair actions** to check which fault groups (**Migrate to new host**, **Reprovision**, **VM reboot**) run unattended. Destructive repairs can stay gated on approval while transient ones clear on their own.
+  * **Job interruption controls:** **Wait for idle**, **Grace period**, **Maximum wait**, and **Do not interrupt running jobs** let the wait policy protect in-flight training and inference work in place of a review step.
+  * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
+
+  See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
 <Update label="August 17, 2026">
   ## Project visibility
 
-  Projects now support three visibility levels. **Open** projects let any organization member discover and join them. **Closed** projects are discoverable, but joining requires an admin to grant access. **Private** projects are visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
+  Projects now support three visibility levels. An **open** project lets any organization member discover and join it. A **closed** project is discoverable, but joining requires an admin to grant access. A **private** project is visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
 
   See [Project visibility](/docs/projects#project-visibility).
 
@@ -666,7 +691,7 @@ path: docs/changelog
 <Update label="July 7, 2026">
   ## Project slug editing
 
-  Project Admins can now change a Project's slug from Project Settings. The new slug takes effect immediately. You can also copy any Project's slug from the Projects list in Organization Settings.
+  Project admins can now change a project's slug from Project Settings. The new slug takes effect immediately. You can also copy any project's slug from the projects list in Organization Settings.
 
   Changing a slug can break API requests, scripts, and integrations that reference resources by their slug-qualified path. Update any references that rely on the old slug.
 
@@ -776,7 +801,7 @@ path: docs/changelog
 <Update label="June 23, 2026">
   ## Whoami API endpoint
 
-  Use `GET /whoami` to confirm which API key, Project, and Organization are authenticating a request. The response includes the Project slug used in dedicated endpoint model names.
+  Use `GET /whoami` to confirm which API key, project, and organization are authenticating a request. The response includes the project slug used in dedicated endpoint model names.
 
   See [Whoami](/reference/whoami) for details.
 
@@ -826,9 +851,9 @@ path: docs/changelog
 
   * `zai-org/GLM-5.2`: 262K context length, FP4 quantization. Pricing: \$1.40 input / \$4.40 output / \$0.26 cached input (per 1M tokens). Supports function calling and structured outputs.
 
-  ## Organization and Project role labels
+  ## Organization and project role labels
 
-  Organization members now use the Admin and Developer labels, and Project collaborators now use Admin and Editor labels. Permissions are unchanged, but the labels make Organization-wide access and Project-scoped editing clearer.
+  Organization members now use the Admin and Developer labels, and project collaborators now use the Admin and Editor labels. Permissions are unchanged, but the labels make organization-wide access and project-scoped editing clearer.
 
   See [Roles & permissions](/docs/roles-permissions) for details.
 </Update>

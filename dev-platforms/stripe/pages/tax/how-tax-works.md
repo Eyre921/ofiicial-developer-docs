@@ -8,7 +8,7 @@ path: tax/how-tax-works
 
 Learn how Stripe helps you automate tax compliance.
 
-To be tax compliant, you need to:
+To be tax compliant, you must complete the following steps.
 
 1. Understand which locations require you to collect tax.
 2. Register for tax in those locations.

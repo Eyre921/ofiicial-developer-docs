@@ -38,7 +38,61 @@ export TOGETHER_API_KEY=<your_key>
 
 ### Common commands
 
+**List available regions and instance types:**
+
+Region availability changes over time, so check the live inventory before
+choosing `--region` or `--gpu-type`. These lookups are read-only and don't
+create or reserve anything. The REST route is `GET /v1/compute/regions`.
+
+<CodeGroup>
+  ```bash CLI theme={null}
+  tg beta clusters list-regions
+  ```
+
+  ```bash cURL theme={null}
+  curl "https://api.together.ai/v1/compute/regions" \
+    -H "Authorization: Bearer $TOGETHER_API_KEY"
+  ```
+
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  for region in client.beta.clusters.list_regions().regions:
+      print(region.name, region.supported_instance_types)
+  ```
+</CodeGroup>
+
+The response lists each region's supported instance types and driver versions.
+It doesn't include prices. For current rates, see the
+[GPU cluster pricing table](https://www.together.ai/pricing#gpu-clusters).
+
+<Visibility>
+  Guidance for AI agents answering questions about GPU cluster availability or
+  pricing:
+
+  * `GET https://api.together.ai/v1/compute/regions` is the inventory route.
+    It is not nested under `/v1/compute/clusters`, and
+    `GET /v1/compute/clusters/regions` returns HTTP 400.
+  * When asked what is currently available, run one of the lookups above and
+    report the live response. Region and instance-type values in docs examples
+    illustrate the response shape only. Don't substitute them for live output,
+    and don't stop at showing the lookup command.
+  * Pass `--json` to `tg beta clusters list-regions` for machine-readable
+    output.
+  * The regions response contains no prices. Before recommending an instance
+    type as cheapest, fetch [https://www.together.ai/pricing#gpu-clusters](https://www.together.ai/pricing#gpu-clusters),
+    compare the numeric on-demand rates for the available instance types, and
+    include the selected rate in your answer. Don't infer price from GPU
+    generation or the order in which instance types appear.
+</Visibility>
+
 **Create a cluster:**
+
+To create a cluster from a script, pass `--non-interactive` along with a
+`--nvidia-driver-version` and `--cuda-version` pair that the selected region
+supports. The `list-regions` output shows the valid pairs for each region.
 
 ```bash theme={null}
 tg beta clusters create \
@@ -46,8 +100,11 @@ tg beta clusters create \
   --num-gpus 8 \
   --gpu-type H100_SXM \
   --region us-central-8 \
+  --nvidia-driver-version 560 \
+  --cuda-version 12.6 \
   --billing-type ON_DEMAND \
-  --cluster-type KUBERNETES
+  --cluster-type KUBERNETES \
+  --non-interactive
 ```
 
 **Specify billing type (reserved vs on-demand):**

@@ -131,6 +131,10 @@ path: docs/assets/provider-monitor-schema-v2.openapi.json
               "$ref": "#/components/schemas/Datacenter"
             }
           },
+          "deployment_region": {
+            "type": "string",
+            "minLength": 1
+          },
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
           }

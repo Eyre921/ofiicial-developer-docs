@@ -9516,6 +9516,16 @@ If you're using Kimi Code, install the Neon plugin for skills and MCP integratio
 
 Plugin changes apply to new sessions, so run `/new` afterward.
 
+### Pi
+
+If you're using [Pi](https://pi.dev), install the skills straight from the repository:
+
+```bash
+pi install git:github.com/neondatabase/agent-skills
+```
+
+Pi reads the `skills/` directory directly, so there's no separate sync step. This installs the skills only; Pi doesn't bundle the Neon MCP Server.
+
 ### neon init
 
 The `neon init` command sets up your project to use Neon with your AI coding assistant. It authenticates via OAuth, creates an API key, configures the MCP server, installs the Neon extension for Cursor and VS Code where applicable, and installs agent skills at the project level:
@@ -11247,7 +11257,7 @@ Be sure to test different index tuning parameter settings to find the right bala
 
 --- [Document source](https://neon.com/docs/ai/connect-mcp-clients-to-neon.md) ---
 
-> Summary: Connection guide for wiring MCP clients (Cursor, Claude Code, VS Code with GitHub Copilot, ChatGPT, Cline, Windsurf, Zed, Claude Desktop, and more via the add-mcp CLI) to the Neon MCP Server so AI assistants can query and manage Lakebase Postgres databases on Neon using natural language. Use this page when you need per-client setup instructions for `npx neon@latest init`, OAuth, or local API key authentication with `@neondatabase/mcp-server-neon`. Also covers troubleshooting OAuth errors (invalid redirect URI, stale ~/.mcp-auth cache) and the deprecated SSE endpoint for clients that don't support Streamable HTTP.
+> Summary: Connection guide for wiring MCP clients (Cursor, Claude Code, VS Code with GitHub Copilot, ChatGPT, Cline, Windsurf, Zed, Claude Desktop, and more via the add-mcp CLI) to the Neon MCP Server so AI assistants can query and manage Lakebase Postgres databases on Neon using natural language. Use this page when you need per-client setup instructions for `npx neon@latest init`, OAuth, or API key authentication against `https://mcp.neon.tech/mcp`. Also covers troubleshooting OAuth errors (invalid redirect URI, stale ~/.mcp-auth cache).
 
 # Connect MCP clients to Neon
 
@@ -11330,7 +11340,7 @@ npx add-mcp https://mcp.neon.tech/mcp -a cursor
 
 Restart Cursor (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
 1. Open Cursor. Create a `.cursor` directory in your project root if needed.
 
@@ -11342,8 +11352,11 @@ Restart Cursor (or enable the MCP server in settings). When the OAuth window ope
    {
      "mcpServers": {
        "neon": {
-         "command": "npx",
-         "args": ["-y", "@neondatabase/mcp-server-neon", "start", "<YOUR_NEON_API_KEY>"]
+         "type": "http",
+         "url": "https://mcp.neon.tech/mcp",
+         "headers": {
+           "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+         }
        }
      }
    }
@@ -11377,10 +11390,11 @@ npx add-mcp https://mcp.neon.tech/mcp -a claude-code
 
 Restart Claude Code (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
 ```bash
-claude mcp add neon -- npx -y @neondatabase/mcp-server-neon start "<YOUR_NEON_API_KEY>"
+claude mcp add --transport http neon https://mcp.neon.tech/mcp \
+  --header "Authorization: Bearer <YOUR_NEON_API_KEY>"
 ```
 
 Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys).
@@ -11409,7 +11423,7 @@ npx add-mcp https://mcp.neon.tech/mcp -a vscode
 
 Restart VS Code (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection. Then open GitHub Copilot Chat and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode).
 
-**Local**
+**API key**
 
 Add the Neon MCP server to your [User Settings (JSON)](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_add-an-mcp-server-to-your-user-settings):
 
@@ -11418,8 +11432,11 @@ Add the Neon MCP server to your [User Settings (JSON)](https://code.visualstudio
   "mcp": {
     "servers": {
       "neon": {
-        "command": "npx",
-        "args": ["-y", "@neondatabase/mcp-server-neon", "start", "<YOUR_NEON_API_KEY>"]
+        "type": "http",
+        "url": "https://mcp.neon.tech/mcp",
+        "headers": {
+          "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+        }
       }
     }
   }
@@ -11462,19 +11479,44 @@ Connect ChatGPT to Neon using custom MCP connectors. Enable Developer mode, add 
 
 **OAuth**
 
-```bash
-npx add-mcp https://mcp.neon.tech/mcp -a claude-desktop
+Add this to `claude_desktop_config.json` (Claude Desktop → **Settings** → **Developer** → **Edit Config**), then restart Claude Desktop:
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.neon.tech/mcp"]
+    }
+  }
+}
 ```
 
-Restart Claude Desktop. When the OAuth window opens, click **Authorize** to complete the connection.
+When the OAuth window opens, click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
-```bash
-npx @neondatabase/mcp-server-neon init <YOUR_NEON_API_KEY>
+Add this to `claude_desktop_config.json`. Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys), then restart Claude Desktop:
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://mcp.neon.tech/mcp",
+        "--header",
+        "Authorization:${NEON_AUTH_HEADER}"
+      ],
+      "env": {
+        "NEON_AUTH_HEADER": "Bearer <YOUR_NEON_API_KEY>"
+      }
+    }
+  }
+}
 ```
-
-Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys), then restart Claude Desktop.
 
 For more, see [Get started with Neon MCP server with Claude Desktop](https://neon.com/guides/neon-mcp-server).
 
@@ -11503,26 +11545,27 @@ For more, see [Get started with Neon MCP server with Claude Desktop](https://neo
 
 5. When the OAuth window opens in your browser, review the requested permissions and click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
 1. Open Cline in VS Code (Sidebar -> Cline icon).
 
 2. Click **MCP Servers** Icon -> **Installed** -> **Configure MCP Servers** to open the configuration file.
 
-3. Add the "Neon" server entry within the `mcpServers` object:
+3. Add the "Neon" server entry within the `mcpServers` object. Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys):
 
    ```json
    {
      "mcpServers": {
        "neon": {
-         "command": "npx",
-         "args": ["-y", "@neondatabase/mcp-server-neon", "start", "<YOUR_NEON_API_KEY>"]
+         "type": "streamableHttp",
+         "url": "https://mcp.neon.tech/mcp",
+         "headers": {
+           "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+         }
        }
      }
    }
    ```
-
-   > Replace `<YOUR_NEON_API_KEY>` with your Neon API key.
 
 4. Save the file. Cline should reload the configuration automatically.
 
@@ -11557,7 +11600,7 @@ For more, see [Get started with Cline and Neon MCP Server](https://neon.com/guid
 
 7. When the OAuth window opens in your browser, review the requested permissions and click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
 1. Open Windsurf and navigate to the Cascade assistant sidebar.
 
@@ -11565,20 +11608,20 @@ For more, see [Get started with Cline and Neon MCP Server](https://neon.com/guid
 
 3. Click on "View raw config" to open the raw configuration file in Windsurf.
 
-4. Add the "Neon" server entry within the `mcpServers` object:
+4. Add the "Neon" server entry within the `mcpServers` object. Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys):
 
    ```json
    {
      "mcpServers": {
        "neon": {
-         "command": "npx",
-         "args": ["-y", "@neondatabase/mcp-server-neon", "start", "<YOUR_NEON_API_KEY>"]
+         "serverUrl": "https://mcp.neon.tech/mcp",
+         "headers": {
+           "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+         }
        }
      }
    }
    ```
-
-   > Replace `<YOUR_NEON_API_KEY>` with your Neon API key.
 
 5. Save the file.
 
@@ -11598,19 +11641,22 @@ npx add-mcp https://mcp.neon.tech/mcp -a zed
 
 Restart Zed (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
 
-**Local**
+**API key**
 
-1. Open the Zed Preview application.
+Add this to `~/.config/zed/settings.json`. Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys):
 
-2. Click the Assistant (✨) icon, then **Settings** > **Context Servers** > **+ Add Context Server**.
-
-3. Enter **neon** as the name and this command:
-
-   ```bash
-   npx -y @neondatabase/mcp-server-neon start <YOUR_NEON_API_KEY>
-   ```
-
-4. Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys) and click **Add Server**.
+```json
+"context_servers": {
+  "Neon": {
+    "source": "custom",
+    "type": "http",
+    "url": "https://mcp.neon.tech/mcp",
+    "headers": {
+      "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+    }
+  }
+}
+```
 
 For more details, including workflow examples and troubleshooting, see [Get started with Zed and Neon MCP Server](https://neon.com/guides/zed-mcp-neon).
 
@@ -11646,7 +11692,7 @@ Prefer **`npx neon@latest init`** for the full flow (see [Quick setup](https://n
 npx add-mcp https://mcp.neon.tech/mcp
 ```
 
-This tool auto-detects supported clients and configures them. Use `-a <agent>` to target a specific agent (for example, `-a cursor`). Add `-g` for global (user-level) setup instead of project-level. For more options (including global vs project-level), see the [add-mcp repository](https://github.com/neondatabase/add-mcp). For manual configuration, add one of these to your client's `mcpServers` section:
+This tool auto-detects supported clients and configures them. Use `-a <agent>` to target a specific agent (for example, `-a cursor`). Add `-g` for global (user-level) setup instead of project-level. For more options (including global vs project-level), see the [add-mcp repository](https://github.com/neondatabase/add-mcp). For manual configuration, add this to your client's `mcpServers` section:
 
 **OAuth (remote server):**
 
@@ -11657,14 +11703,25 @@ This tool auto-detects supported clients and configures them. Use `-a <agent>` t
 }
 ```
 
-**Local setup:**
+**API key:**
 
 ```json
 "neon": {
   "command": "npx",
-  "args": ["-y", "@neondatabase/mcp-server-neon", "start", "<YOUR_NEON_API_KEY>"]
+  "args": [
+    "-y",
+    "mcp-remote@latest",
+    "https://mcp.neon.tech/mcp",
+    "--header",
+    "Authorization:${NEON_AUTH_HEADER}"
+  ],
+  "env": {
+    "NEON_AUTH_HEADER": "Bearer <YOUR_NEON_API_KEY>"
+  }
 }
 ```
+
+The local stdio package (`@neondatabase/mcp-server-neon`) is deprecated. If your client only supports stdio, use one of the `mcp-remote` configs above. See [Deprecated local stdio](https://neon.com/docs/ai/neon-mcp-server#deprecated-stdio).
 
 For Windows-specific configurations, see [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients).
 
@@ -11672,17 +11729,14 @@ For Windows-specific configurations, see [Other MCP clients](https://neon.com/do
 
 ### Configuration Issues
 
-If your client doesn't support JSON config (such as older Cursor versions), run:
+**Important:** The HTTP+SSE endpoint (`https://mcp.neon.tech/sse`) is deprecated and will stop working on or after October 1, 2026. When it is retired it returns `410 Gone`. Point your client at `https://mcp.neon.tech/mcp` instead. SSE is not supported with API key authentication.
+
+If your client doesn't support JSON config (such as older Cursor versions), use the stdio bridge. See [Deprecated local stdio](https://neon.com/docs/ai/neon-mcp-server#deprecated-stdio).
 
 ```bash
-# For OAuth (remote server)
-npx -y mcp-remote https://mcp.neon.tech/mcp
-
-# For Local setup
-npx -y @neondatabase/mcp-server-neon start <YOUR_NEON_API_KEY>
+npx -y mcp-remote@latest https://mcp.neon.tech/mcp \
+  --header "Authorization: Bearer <YOUR_NEON_API_KEY>"
 ```
-
-**Note:** For clients that don't support Streamable HTTP, you can use the deprecated SSE endpoint: `https://mcp.neon.tech/sse`. SSE is not supported with API key authentication.
 
 ### OAuth Authentication Errors
 
@@ -12301,6 +12355,17 @@ The Neon MCP Server implements the Model Context Protocol (MCP), letting AI assi
 
 The Neon MCP Server grants broad database management capabilities. **Always review and authorize actions requested by the LLM before execution.** Restrict access to trusted users only. See [MCP security guidance](https://neon.com/docs/ai/neon-mcp-server#mcp-security-guidance).
 
+## Claude connector
+
+The Neon MCP server is an official Claude connector, so you don't need a custom connector URL. To add it in [Claude.ai](https://claude.ai) or Claude Desktop:
+
+1. Open **Settings** from your profile menu (bottom-left of the sidebar).
+2. Select **Connectors** (sometimes shown under **Customize > Connectors**).
+3. Click **Browse connectors** (top-right of that page), find **Neon**, and add it.
+4. Authorize access to your Neon account.
+
+For other clients, use Quick setup or the config generator below.
+
 ## Quick setup
 
 ```bash
@@ -12311,7 +12376,7 @@ Runs `neon init` via npx to configure MCP and other integrations for your editor
 
 ## Config generator
 
-Use the generator to build an MCP config for your editor, auth method, and transport, including the `Authorization` header for API key or remote agent setups.
+Use the generator to build an MCP config for your editor and auth method, including the `Authorization` header for API key or remote agent setups.
 
 ## Access control
 
@@ -12403,15 +12468,56 @@ The `querying` category includes `inspect_database`, which runs the same 14 read
 
 ## Troubleshooting
 
-If your client doesn't support JSON for MCP server configuration (such as older versions of Cursor), use this command when prompted:
-
-```bash
-npx -y @neondatabase/mcp-server-neon start <YOUR_NEON_API_KEY>
-```
-
 For per-client setup instructions, see [Connect MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 
-**Note:** For clients that don't support Streamable HTTP, you can use the deprecated SSE endpoint: `https://mcp.neon.tech/sse`. SSE is not supported with API key authentication.
+### Deprecated local stdio
+
+**Important:**
+
+The local stdio package (`@neondatabase/mcp-server-neon`) is deprecated. Use the hosted server at `https://mcp.neon.tech/mcp`.
+
+If your client only supports local stdio servers, put one of these in the client config so [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridges to Streamable HTTP.
+
+**OAuth:**
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.neon.tech/mcp"]
+    }
+  }
+}
+```
+
+**API key:**
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://mcp.neon.tech/mcp",
+        "--header",
+        "Authorization:${NEON_AUTH_HEADER}"
+      ],
+      "env": {
+        "NEON_AUTH_HEADER": "Bearer <YOUR_NEON_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+### Deprecated HTTP+SSE transport
+
+**Important:** The hosted Neon MCP Server uses Streamable HTTP at `https://mcp.neon.tech/mcp`. The older HTTP+SSE endpoint (`https://mcp.neon.tech/sse`) is deprecated and will stop working on or after October 1, 2026. When it is retired it returns `410 Gone`. SSE is not supported with API key authentication.
+
+If your client still points at `/sse`, change the URL to `https://mcp.neon.tech/mcp`.
 
 ## Resources
 
@@ -22513,7 +22619,7 @@ npx neon@latest init
 
 After running the command, restart your editor and ask your AI assistant to "Get started with Neon" to launch an interactive onboarding guide. The installed agent skills help you get started, including configuring a database connection. For Cursor and VS Code, the Neon Local Connect extension also provides database schema browsing, SQL editing, and table data management directly in your IDE.
 
-Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill neon-postgres --agent <name>` for each selected editor. You can also run this command directly to install skills without the rest of the init flow, or use `npx skills add ... -g` to install globally. See [neon-postgres on skills.sh](https://skills.sh/neondatabase/agent-skills/neon-postgres) for more about the skill.
+Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill neon --skill neon-postgres --agent <name>` for each selected editor. You can also run this command directly to install skills without the rest of the init flow, or use `npx skills add ... -g` to install globally. See [neon-postgres on skills.sh](https://skills.sh/neondatabase/agent-skills/neon-postgres) for more about the skills.
 
 **Warning:** Skills are installed at the project level in the current working directory. Run `init` from your project root, otherwise skills will end up in the wrong location. You may want to commit project-level files so teammates get the same skills, or add them to `.gitignore` for per-developer setup.
 
@@ -22542,8 +22648,8 @@ Use `--agent` to configure a specific editor, skipping the interactive selection
 | MCP config (VS Code)                                                                                              | VS Code global `mcp.json` (written by extension) | Global  |
 | MCP config (Claude Code)                                                                                          | `~/.claude.json` (written by init)               | Global  |
 | [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect) | Cursor / VS Code                                 | Global  |
-| Agent skills                                                                                                      | `.agents/skills/`                                | Project |
-| Skills symlink (Claude Code only)                                                                                 | `.claude/skills/neon-postgres`                   | Project |
+| Agent skills (Cursor, VS Code)                                                                                    | `.agents/skills/`                                | Project |
+| Agent skills (Claude Code)                                                                                        | `.claude/skills/`                                | Project |
 | `skills-lock.json`                                                                                                | Project root                                     | Project |
 
 ## Credentials and API keys
@@ -22651,6 +22757,8 @@ neon inspect db <sub-command> [options]
 
 By default the command resolves the project, branch, database, and role from your [context](https://neon.com/docs/cli/set-context) and connects through the Neon API. Pass `--db-url` to inspect any Postgres directly from a connection string, which bypasses API resolution and lets you point `inspect` at a database outside Neon.
 
+When you omit `--database-name`, `inspect` covers every database on the branch and adds a `database` column so you can tell the rows apart. Pass `--database-name` to inspect a single database, which also scopes `locks` and `long-running-queries` to that database so lock and relation names resolve correctly. Database-scoped checks such as `table-sizes`, `locks`, and `outliers` run against each database, while compute-wide checks (`lfc-hit-rate`, `working-set`, and `replication-slots`) run once. If any database fails, the whole run fails, so pass `--database-name` to narrow to one when that happens. `--db-url` always inspects the single database in the connection string and never adds the `database` column.
+
 Some queries read from Postgres statistics extensions. `outliers` and `calls` need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements), and `lfc-hit-rate` and `working-set` need the [`neon`](https://neon.com/docs/extensions/neon) extension. If a required extension is not installed, the command reports it instead of returning rows.
 
 From an AI assistant, the same checks are available through the Neon MCP server's `inspect_database` tool. See [Database diagnostics](https://neon.com/docs/ai/neon-mcp-server#database-diagnostics).
@@ -22724,7 +22832,7 @@ neon inspect db long-running-queries
 ```
 
 ```text
-No long-running queries.
+No long-running queries in any database.
 ```
 
 ### neon inspect db locks
@@ -22736,7 +22844,7 @@ neon inspect db locks
 ```
 
 ```text
-No locks held.
+No locks held in any database.
 ```
 
 ### neon inspect db outliers
@@ -29772,6 +29880,19 @@ Neon sends `SIGINT`/`SIGTERM` before evicting an idle isolate, so flush buffered
 
 ```ts
 process.on('SIGINT', () => void Sentry.flush(2000));
+```
+
+To send unexpected database pool errors to your monitoring SDK, pass `onUnexpectedError` when you call [`attachDatabasePool`](https://neon.com/docs/compute/functions/get-started#connect-to-postgres). Expected idle disconnects are still swallowed; only unexpected errors reach the handler:
+
+```ts
+import { attachDatabasePool } from '@neon/functions';
+import { Pool } from 'pg';
+import { Sentry } from './instrument';
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool, {
+  onUnexpectedError: (err) => Sentry.captureException(err),
+});
 ```
 
 `neon deploy` bundles your code with esbuild, which defeats auto-instrumentation that patches modules at import time. If a library's spans are missing from a deployed function, that's the first thing to check.
@@ -60962,7 +61083,7 @@ Sign up with your email, GitHub, Google, or other partner account.
 For information about what's included with the Free and paid plans, see
 [Neon plans](https://neon.com/docs/introduction/plans).
 
-![sign\_up](https://neon.com/docs/get-started/sign_up_reduced.png "no-border")
+![sign\_up](https://neon.com/docs/get-started/sign_up_reduced.png)
 
 ## Onboarding in the Neon Console
 
@@ -61090,7 +61211,7 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
    neon auth
    ```
 
-   ![neon auth](https://neon.com/docs/get-started/neonctl_auth.png "no-border")
+   ![neon auth](https://neon.com/docs/get-started/neonctl_auth.png)
 
 4. **View your branches**
 
@@ -111494,7 +111615,7 @@ In 2025, Neon joined Databricks. The serverless Postgres architecture that Neon 
 
 ## What is a lakebase?
 
-![Standard database compared to lakebase. On the left, compute and storage live together on one machine and each replica keeps a full copy of the data. On the right, stateless Postgres compute runs in a layer separate from shared, durable object storage](https://neon.com/docs/introduction/database-vs-lakebase.svg "no-border")
+![Standard database compared to lakebase. On the left, compute and storage live together on one machine and each replica keeps a full copy of the data. On the right, stateless Postgres compute runs in a layer separate from shared, durable object storage](https://neon.com/docs/introduction/database-vs-lakebase.svg)
 
 At the broadest level, a lakebase is a type of OLTP database where storage and compute are separated and the source of truth for storage is cheap, durable object storage. That architectural choice has consequences that traditional Postgres deployments can't match:
 
@@ -118303,7 +118424,7 @@ Access works in two layers: an organization role sets a member's baseline across
 
 There are four organization roles: **Admin**, **Editor**, **Viewer**, and **Collaborator**. To change someone's role, open the more options menu (⋮) next to their name on the **People** page and choose **Edit member**.
 
-![organization members](https://neon.com/docs/manage/orgs_members_kebab.png "no-border")
+![organization members](https://neon.com/docs/manage/orgs_members_kebab.png)
 
 A few things to keep in mind:
 
@@ -118345,7 +118466,7 @@ To manage an existing project-sharing collaborator, open the more options menu (
 - **Convert to member**: Admins can turn an external collaborator into a full organization member. Their sharing-based access is removed, and their organization role then determines what they can reach. Set that role on the **People** page.
 - **Remove from project**: Revoke the collaborator's access to the shared project.
 
-![collaborators more options menu](https://neon.com/docs/manage/orgs_collaborators_kebab.png "no-border")
+![collaborators more options menu](https://neon.com/docs/manage/orgs_collaborators_kebab.png)
 
 Project sharing is being deprecated and will be removed in a future release. For new access, use the **Collaborator** role plus per-project permissions instead. For details on sharing itself, see the [Project collaboration guide](https://neon.com/docs/guides/project-collaboration-guide).
 
@@ -118393,7 +118514,7 @@ Complete any necessary steps. Once cleared, you can go ahead and delete. This ac
 
 Only Admins can rename an organization. Go to the **Settings** page under **General information**. Changing the organization name applies globally; the new name will appear for everyone in the organization.
 
-![organization settings](https://neon.com/docs/manage/orgs_id.png "no-border")
+![organization settings](https://neon.com/docs/manage/orgs_id.png)
 
 --- [Document source](https://neon.com/docs/manage/orgs-project-transfer.md) ---
 
@@ -118736,7 +118857,7 @@ To change someone already in the organization, open the more options menu (⋮) 
 
 Invited people get an email, and the organization appears in their organization switcher once they accept. For what each role allows, see [Organization roles](https://neon.com/docs/manage/user-permissions#organization-roles).
 
-![Invite members dialog with a role dropdown for each invitee](https://neon.com/docs/manage/project-permissions-get-started/invite-members.png "no-border")
+![Invite members dialog with a role dropdown for each invitee](https://neon.com/docs/manage/project-permissions-get-started/invite-members.png)
 
 **Tip: Adding a whole team at once**
 
@@ -118748,7 +118869,7 @@ Dana is a Viewer, which is right for most of the organization but too restrictiv
 
 Open `acme-staging`, go to **Settings** → **Project permissions**, and select **Grant permission**. Choose **Editor**, pick Dana, and confirm.
 
-![Grant project permission dialog with Editor selected and Dana chosen, showing her inherited Viewer access](https://neon.com/docs/manage/project-permissions-get-started/grant-permission.png "no-border")
+![Grant project permission dialog with Editor selected and Dana chosen, showing her inherited Viewer access](https://neon.com/docs/manage/project-permissions-get-started/grant-permission.png)
 
 Dana can now get connection strings and run SQL on staging, while staying read-only on production and analytics.
 
@@ -122618,6 +122739,7 @@ Interface-specific indexes:
 - [Update OAuth provider](https://neon.com/docs/reference/api/auth/update-branch-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
 - [Delete OAuth provider](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-oauth-provider.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
 - [Send test email](https://neon.com/docs/reference/api/auth/send-neon-auth-test-email.md) `POST /projects/{project_id}/branches/{branch_id}/auth/send_test_email`
+- [Send test email using the saved email provider](https://neon.com/docs/reference/api/auth/send-neon-auth-email-provider-test.md) `POST /projects/{project_id}/branches/{branch_id}/auth/email_provider/test`
 - [Retrieve email and password configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-and-password-config.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
 - [Update email and password configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-and-password-config.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
 - [Retrieve email provider configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-provider.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_provider`
@@ -129731,7 +129853,7 @@ aws s3 cp ./photo.jpg s3://my-bucket/images/photo.jpg \
 
 ## Multipart upload
 
-For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control.
+During beta, the maximum object size is 5 GiB, whether you upload it in a single request or as a multipart upload. This is a beta limit, not a permanent cap; [contact support](https://neon.com/docs/introduction/support) if you need to store larger objects. For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control. Multipart upload makes large uploads more reliable because each part is retried independently, though it doesn't raise the per-object limit during beta.
 
 **TypeScript**
 
@@ -130379,6 +130501,12 @@ See [S3 compatibility](https://neon.com/docs/storage/s3-compatibility#not-suppor
 `PutBucketLifecycle` succeeds and the configuration is stored, but expiration and transition rules do not execute.
 
 **Status:** Lifecycle enforcement isn't available in beta. The API accepts and echoes the configuration so tools that read lifecycle rules will work, but the rules have no effect.
+
+### `EntityTooLarge`
+
+The object exceeds the maximum size. During beta, Neon Object Storage allows objects up to 5 GiB. A single-request `PutObject` fails immediately; a multipart upload fails at `CompleteMultipartUpload` once the assembled object would exceed the limit.
+
+**Fix:** Split the data across multiple objects, or confirm the upload isn't unexpectedly large. Multipart upload makes large uploads more reliable but doesn't raise the per-object limit. The 5 GiB limit is a beta limit, not a permanent cap; [contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
 
 ## Connection and performance errors
 

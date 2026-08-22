@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1142 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -188,7 +188,7 @@
 - `langsmith/deploy-self-hosted-full-platform` — [Enable additional LangSmith features](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
-- `langsmith/deploy-to-cloud` — [Deploy on Cloud](pages/langsmith/deploy-to-cloud.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud)
+- `langsmith/deploy-to-cloud` — [Create a deployment](pages/langsmith/deploy-to-cloud.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud)
 - `langsmith/deploy-to-cloud-overview` — [Deploy to Cloud](pages/langsmith/deploy-to-cloud-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud-overview)
 - `langsmith/deploy-to-self-hosted-overview` — [Deploy to self-hosted](pages/langsmith/deploy-to-self-hosted-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-self-hosted-overview)
 - `langsmith/deploy-vite-langsmith` — [Deploy with LangSmith and Vite](pages/langsmith/deploy-vite-langsmith.md) · [原文](https://docs.langchain.com/langsmith/deploy-vite-langsmith)
@@ -196,6 +196,7 @@
 - `langsmith/deployment` — [LangSmith Deployment](pages/langsmith/deployment.md) · [原文](https://docs.langchain.com/langsmith/deployment)
 - `langsmith/deployment-quickstart` — [Deploy your app to cloud](pages/langsmith/deployment-quickstart.md) · [原文](https://docs.langchain.com/langsmith/deployment-quickstart)
 - `langsmith/deployment-quickstart-da` — [Deploy Managed Deep Agents](pages/langsmith/deployment-quickstart-da.md) · [原文](https://docs.langchain.com/langsmith/deployment-quickstart-da)
+- `langsmith/deployment-revisions` — [Revisions](pages/langsmith/deployment-revisions.md) · [原文](https://docs.langchain.com/langsmith/deployment-revisions)
 - `langsmith/diagnostics-self-hosted` — [Troubleshooting for self-hosted deployments](pages/langsmith/diagnostics-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/diagnostics-self-hosted)
 - `langsmith/distributed-tracing` — [Implement distributed tracing](pages/langsmith/distributed-tracing.md) · [原文](https://docs.langchain.com/langsmith/distributed-tracing)
 - `langsmith/double-texting` — [Double texting](pages/langsmith/double-texting.md) · [原文](https://docs.langchain.com/langsmith/double-texting)
@@ -343,6 +344,7 @@
 - `langsmith/manage-datasets` — [Manage datasets](pages/langsmith/manage-datasets.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets)
 - `langsmith/manage-datasets-in-application` — [Create and manage datasets in the UI](pages/langsmith/manage-datasets-in-application.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets-in-application)
 - `langsmith/manage-datasets-programmatically` — [How to create and manage datasets programmatically](pages/langsmith/manage-datasets-programmatically.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets-programmatically)
+- `langsmith/manage-deployment` — [Manage a deployment](pages/langsmith/manage-deployment.md) · [原文](https://docs.langchain.com/langsmith/manage-deployment)
 - `langsmith/manage-evaluators-sdk` — [Manage evaluators with the SDK](pages/langsmith/manage-evaluators-sdk.md) · [原文](https://docs.langchain.com/langsmith/manage-evaluators-sdk)
 - `langsmith/manage-organization-by-api` — [Manage your organization using the API](pages/langsmith/manage-organization-by-api.md) · [原文](https://docs.langchain.com/langsmith/manage-organization-by-api)
 - `langsmith/manage-prompts` — [Manage prompts](pages/langsmith/manage-prompts.md) · [原文](https://docs.langchain.com/langsmith/manage-prompts)
@@ -354,6 +356,7 @@
 - `langsmith/messages-view-integrations` — [Messages view integrations](pages/langsmith/messages-view-integrations.md) · [原文](https://docs.langchain.com/langsmith/messages-view-integrations)
 - `langsmith/metric-type` — [How to return categorical vs numerical metrics](pages/langsmith/metric-type.md) · [原文](https://docs.langchain.com/langsmith/metric-type)
 - `langsmith/model-configurations` — [Manage model configurations](pages/langsmith/model-configurations.md) · [原文](https://docs.langchain.com/langsmith/model-configurations)
+- `langsmith/monitor-deployment` — [Monitor a deployment](pages/langsmith/monitor-deployment.md) · [原文](https://docs.langchain.com/langsmith/monitor-deployment)
 - `langsmith/monorepo-support` — [Monorepo support](pages/langsmith/monorepo-support.md) · [原文](https://docs.langchain.com/langsmith/monorepo-support)
 - `langsmith/multi-turn-simulation` — [How to simulate multi-turn interactions](pages/langsmith/multi-turn-simulation.md) · [原文](https://docs.langchain.com/langsmith/multi-turn-simulation)
 - `langsmith/multimodal-content` — [Include multimodal content in a prompt](pages/langsmith/multimodal-content.md) · [原文](https://docs.langchain.com/langsmith/multimodal-content)
@@ -379,6 +382,7 @@
 - `langsmith/playground-link` — [Run an evaluation with the UI](pages/langsmith/playground-link.md) · [原文](https://docs.langchain.com/langsmith/playground-link)
 - `langsmith/playground-model-providers` — [Model providers](pages/langsmith/playground-model-providers.md) · [原文](https://docs.langchain.com/langsmith/playground-model-providers)
 - `langsmith/presigned-feedback-tokens` — [Collect feedback with presigned URLs](pages/langsmith/presigned-feedback-tokens.md) · [原文](https://docs.langchain.com/langsmith/presigned-feedback-tokens)
+- `langsmith/preview-builds` — [Preview builds](pages/langsmith/preview-builds.md) · [原文](https://docs.langchain.com/langsmith/preview-builds)
 - `langsmith/pricing-plans` — [Pricing plans](pages/langsmith/pricing-plans.md) · [原文](https://docs.langchain.com/langsmith/pricing-plans)
 - `langsmith/profile-configuration` — [Profile configuration](pages/langsmith/profile-configuration.md) · [原文](https://docs.langchain.com/langsmith/profile-configuration)
 - `langsmith/prompt-commit` — [How to sync prompts with GitHub](pages/langsmith/prompt-commit.md) · [原文](https://docs.langchain.com/langsmith/prompt-commit)

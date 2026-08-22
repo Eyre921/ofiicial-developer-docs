@@ -29,15 +29,15 @@ Each project contains its own set of resources. Collaborators of project A canno
 
 Every project is assigned a level of visibility:
 
-* **Open:** Members of the organization can discover and join the project.
-* **Closed:** Members can discover the project, but can't join. Access is managed by project and organization admins.
-* **Private:** Only existing project collaborators and organization admins can see it. Access is managed by project and organization admins.
+* **open:** Members of the organization can discover and join the project.
+* **closed:** Members can discover the project, but can't join. Access is managed by project and organization admins.
+* **private:** Only existing project collaborators and organization admins can see it. Access is managed by project and organization admins.
 
-When you create a project, you explicitly choose its visibility, with Open as the default. A project admin or organization admin can change a project's visibility between the three states at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current), and switching a project from Open to Closed or Private keeps its existing collaborators.
+When you create a project, you explicitly choose its visibility, with open as the default. A project admin or organization admin can change a project's visibility between the three states at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current), and switching a project from open to closed or private keeps its existing collaborators.
 
-Access to Closed and Private projects is managed by admins. A project admin adds you through the same [add-collaborator flow](#adding-collaborators) used for any project, and you become a collaborator immediately. When a project is Closed, organization members who aren't collaborators can see it in their project list but can't join it.
+Access to closed and private projects is managed by admins. A project admin adds you through the same [add-collaborator flow](#adding-collaborators) used for any project, and you become a collaborator immediately. When a project is closed, organization members who aren't collaborators can see it in their project list but can't join it.
 
-Organization admins are exempt from these limits. They can see every project in the organization, including Closed and Private projects they haven't joined, and they can join any project without an invitation. To reach a Closed or Private project's resources or settings, an organization admin has to join it first.
+Organization admins are exempt from these limits. They can see every project in the organization, including closed and private projects they haven't joined, and they can join any project without an invitation. To reach a closed or private project's resources or settings, an organization admin has to join it first.
 
 ## Default project
 
@@ -75,7 +75,7 @@ You can manage project collaborators from [**Settings > Project > Collaborators*
 3. Enter the user's email address.
 4. Select **Confirm**.
 
-New collaborators are added with the **Editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
+New collaborators are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
 
 <Info>
   The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators).

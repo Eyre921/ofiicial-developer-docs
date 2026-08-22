@@ -27,13 +27,13 @@ Receiving ACH or Bacs direct debits requires the `money_manager.capabilities.rec
 
 ## Manage mandates
 Available in: GB
-When a third party initiates a debit from a financial account for the first time, Stripe creates a [ReceivedDebitMandate](https://docs.stripe.com/api/v2/money-management/received-debit-mandates/object.md?api-version=preview). The mandate authorizes the third party to initiate debits. Stripe also sends the `v2.money_management.received_debit_mandate.created` webhook event.
+When a third party establishes authorization to debit a financial account, Stripe creates a [ReceivedDebitMandate](https://docs.stripe.com/api/v2/money-management/received-debit-mandates/object.md?api-version=preview) and sends the `v2.money_management.received_debit_mandate.created` webhook event. The third party can then initiate a [ReceivedDebit](https://docs.stripe.com/api/v2/money-management/received-debits/object.md?api-version=preview), unless the financial account owner cancels the mandate.
 
 When you make API calls to manage mandates on behalf of a connected account, specify the connected account’s ID in the `Stripe-Account` header.
 
 ### Retrieve a mandate
 
-You can retrieve the mandate using the ID from the webhook event to review the details of the debit request and validate its legitimacy.
+You can retrieve the mandate using the ID from the webhook event to review the authorization details and validate its legitimacy.
 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIVED_DEBIT_MANDATE_ID}} \
@@ -42,7 +42,7 @@ curl https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIV
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
-The response includes information about the initiating party. If you don’t cancel the mandate within one day of its creation, Stripe schedules the associated debit and sends the `v2.money_management.received_debit.scheduled` webhook event.
+The response includes information about the initiating party. If the third party initiates a debit associated with the mandate, you have one day to cancel the mandate before Stripe schedules the debit and sends the `v2.money_management.received_debit.scheduled` webhook event.
 
 ```json
 {
@@ -273,7 +273,7 @@ Listen for the following `v2.money_management` events to track and handle status
 
 | Event | Description |
 | --- | --- |
-| `received_debit_mandate.created` | A third party initiated a first debit and triggered creation of a mandate. |
+| `received_debit_mandate.created` | Stripe creates a mandate after a third party establishes authorization to debit a financial account. |
 | `received_debit_mandate.canceled` | A received debit mandate is canceled, preventing further debits authorized by that mandate. |
 | `received_debit.scheduled` | A received debit is scheduled, but hasn’t debited the financial account yet. |
 | `received_debit.pending` | A received debit related to Issuing card spend is pending, but hasn’t debited the financial account yet. |

@@ -1,5 +1,5 @@
 ---
-title: "Stripe Capital for platforms"
+title: "How Stripe Capital for platforms works"
 source: https://docs.stripe.com/capital/how-capital-for-platforms-works.md
 path: capital/how-capital-for-platforms-works
 ---
@@ -258,7 +258,7 @@ Some financing types require a minimum payment each period. If withholdings fall
 
 ## Additional financing 
 
-Refills are additional offers available after a connected account is roughly 80% through repaying an existing balance. Stripe then sends a refill marketing email. Refill behavior varies by country. See Country-specific offer types (#country-specific-details).
+Refills are additional offers available after a connected account is approximately 80% through repaying an existing balance. Stripe then sends a refill marketing email. Refill behavior varies by country. See [Country-specific offer types](https://docs.stripe.com/capital/how-capital-for-platforms-works.md#country-specific-details).
 
 Stripe automatically re-evaluates connected accounts for new offers as they pay down their financing. Paying off early doesn’t guarantee a new offer. When an account becomes eligible, the offer appears automatically in their Dashboard.
 

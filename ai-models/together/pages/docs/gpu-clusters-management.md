@@ -408,8 +408,8 @@ Then in VS Code's Remote SSH extension, connect to `slurm-cluster`. The connecti
 
 Cluster access is controlled through Together's [project-based permissions](/docs/projects). Users with access to a project can access all clusters and volumes within it. There are two roles:
 
-* **Admin** -- Can create/delete clusters, modify configurations, manage users, and use clusters
-* **Editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
+* **admin** -- Can create/delete clusters, modify configurations, manage users, and use clusters
+* **editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
 
 For the full permission matrix, see [Roles & Permissions](/docs/roles-permissions).
 
@@ -421,7 +421,7 @@ For step-by-step instructions on adding and removing project members, see [Manag
   **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
 </Info>
 
-New members are added with the **Editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
+New members are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
 
 ### Removing Users
 
@@ -437,7 +437,7 @@ See [Removing Members](/docs/projects#removing-members) for the full steps.
   </Card>
 
   <Card title="Roles & Permissions" icon="shield" href="/docs/roles-permissions">
-    Full Admin vs Member permission matrix
+    Full admin vs editor permission matrix
   </Card>
 </CardGroup>
 

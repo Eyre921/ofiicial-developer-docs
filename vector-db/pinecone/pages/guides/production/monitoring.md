@@ -66,40 +66,43 @@ For more configuration details, see the [Prometheus docs](https://prometheus.io/
 The following metrics are available when you integrate Pinecone with Prometheus:
 
 <div>
-  | Name                                         | Type    | Description                                                                                                                    |
-  | :------------------------------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------- |
-  | `pinecone_db_record_total`                   | gauge   | The total number of records in the index.                                                                                      |
-  | `pinecone_db_storage_size_bytes`             | gauge   | The total size of the index in bytes.                                                                                          |
-  | `pinecone_db_op_upsert_count`                | counter | The number of [upsert](/guides/index-data/upsert-data) requests.                                                               |
-  | `pinecone_db_op_upsert_duration_sum`         | counter | The total time taken processing [upsert](/guides/index-data/upsert-data) requests in milliseconds.                             |
-  | `pinecone_db_op_query_count`                 | counter | The number of [query](/guides/search/search-overview) requests.                                                                |
-  | `pinecone_db_op_query_duration_sum`          | counter | The total time taken processing [query](/guides/search/search-overview) requests in milliseconds.                              |
-  | `pinecone_db_op_fetch_count`                 | counter | The number of [fetch](/guides/manage-data/fetch-data) requests.                                                                |
-  | `pinecone_db_op_fetch_duration_sum`          | counter | The total time taken processing [fetch](/guides/manage-data/fetch-data) requests in milliseconds.                              |
-  | `pinecone_db_op_update_count`                | counter | The number of [update](/guides/manage-data/update-data) requests.                                                              |
-  | `pinecone_db_op_update_duration_sum`         | counter | The total time taken processing [update](/guides/manage-data/update-data) requests in milliseconds.                            |
-  | `pinecone_db_op_delete_count`                | counter | The number of [delete](/guides/manage-data/delete-data) requests.                                                              |
-  | `pinecone_db_op_delete_duration_sum`         | counter | The total time taken processing [delete](/guides/manage-data/delete-data) requests in milliseconds.                            |
-  | `pinecone_db_op_list_count`                  | counter | The number of [list](/guides/manage-data/list-record-ids) requests.                                                            |
-  | `pinecone_db_op_list_duration_sum`           | counter | The total time taken processing [list](/guides/manage-data/list-record-ids) requests in milliseconds.                          |
-  | `pinecone_db_write_unit_count`               | counter | The total number of [write units](/guides/manage-cost/understanding-cost#write-units) consumed by an index.                    |
-  | `pinecone_db_read_unit_count`                | counter | The total number of [read units](/guides/manage-cost/understanding-cost#read-units) consumed by an index.                      |
-  | `pinecone_db_scheduled_backup_failure_total` | counter | The number of terminal failures for [scheduled backup](/guides/manage-data/back-up-an-index) create operations.                |
-  | `pinecone_db_drn_cpu_usage_percent`          | gauge   | The CPU usage percentage for a [dedicated read node](/guides/index-data/dedicated-read-nodes) shard, averaged across replicas. |
+  | Name                                         | Type    | Description                                                                                                                                                 |
+  | :------------------------------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `pinecone_db_record_total`                   | gauge   | The total number of records in the index.                                                                                                                   |
+  | `pinecone_db_storage_size_bytes`             | gauge   | The total size of the index in bytes.                                                                                                                       |
+  | `pinecone_db_op_upsert_count`                | counter | The number of [upsert](/guides/index-data/upsert-data) requests.                                                                                            |
+  | `pinecone_db_op_upsert_duration_sum`         | counter | The total time taken processing [upsert](/guides/index-data/upsert-data) requests in milliseconds.                                                          |
+  | `pinecone_db_op_query_count`                 | counter | The number of [query](/guides/search/search-overview) requests.                                                                                             |
+  | `pinecone_db_op_query_duration_sum`          | counter | The total time taken processing [query](/guides/search/search-overview) requests in milliseconds.                                                           |
+  | `pinecone_db_op_fetch_count`                 | counter | The number of [fetch](/guides/manage-data/fetch-data) requests.                                                                                             |
+  | `pinecone_db_op_fetch_duration_sum`          | counter | The total time taken processing [fetch](/guides/manage-data/fetch-data) requests in milliseconds.                                                           |
+  | `pinecone_db_op_update_count`                | counter | The number of [update](/guides/manage-data/update-data) requests.                                                                                           |
+  | `pinecone_db_op_update_duration_sum`         | counter | The total time taken processing [update](/guides/manage-data/update-data) requests in milliseconds.                                                         |
+  | `pinecone_db_op_delete_count`                | counter | The number of [delete](/guides/manage-data/delete-data) requests.                                                                                           |
+  | `pinecone_db_op_delete_duration_sum`         | counter | The total time taken processing [delete](/guides/manage-data/delete-data) requests in milliseconds.                                                         |
+  | `pinecone_db_op_list_count`                  | counter | The number of [list](/guides/manage-data/list-record-ids) requests.                                                                                         |
+  | `pinecone_db_op_list_duration_sum`           | counter | The total time taken processing [list](/guides/manage-data/list-record-ids) requests in milliseconds.                                                       |
+  | `pinecone_db_write_unit_count`               | counter | The total number of [write units](/guides/manage-cost/understanding-cost#write-units) consumed by an index.                                                 |
+  | `pinecone_db_read_unit_count`                | counter | The total number of [read units](/guides/manage-cost/understanding-cost#read-units) consumed by an index.                                                   |
+  | `pinecone_db_scheduled_backup_failure_total` | counter | The number of terminal failures for [scheduled backup](/guides/manage-data/back-up-an-index) create operations.                                             |
+  | `pinecone_db_drn_cpu_usage_percent`          | gauge   | The CPU usage percentage for a [dedicated read node](/guides/index-data/dedicated-read-nodes) shard, averaged across replicas.                              |
+  | `pinecone_db_index_fullness`                 | gauge   | The greater of storage and memory fullness for a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index, on a scale of 0 to 1.               |
+  | `pinecone_db_index_memory_fullness`          | gauge   | The memory used by a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index as a ratio of its total memory capacity, on a scale of 0 to 1.   |
+  | `pinecone_db_index_storage_fullness`         | gauge   | The storage used by a [dedicated read nodes](/guides/index-data/dedicated-read-nodes) index as a ratio of its total storage capacity, on a scale of 0 to 1. |
 </div>
 
 ### Metric labels
 
 Each metric contains the following labels:
 
-| Label           | Description                                                        |
-| :-------------- | :----------------------------------------------------------------- |
-| `index_name`    | Name of the index to which the metric applies.                     |
-| `cloud`         | Cloud where the index is deployed: `aws`, `gcp`, or `azure`.       |
-| `region`        | Region where the index is deployed.                                |
-| `capacity_mode` | Type of index: `serverless` or `byoc`.                             |
-| `instance`      | Server instance (only available for counter metrics).              |
-| `shard_id`      | Shard identifier (only available for dedicated read node metrics). |
+| Label           | Description                                                                  |
+| :-------------- | :--------------------------------------------------------------------------- |
+| `index_name`    | Name of the index to which the metric applies.                               |
+| `cloud`         | Cloud where the index is deployed: `aws`, `gcp`, or `azure`.                 |
+| `region`        | Region where the index is deployed.                                          |
+| `capacity_mode` | Type of index: `serverless` or `byoc`.                                       |
+| `instance`      | Server instance (only available for counter metrics).                        |
+| `shard_id`      | Shard identifier (only available for per-shard dedicated read node metrics). |
 
 ### Example queries
 
@@ -139,8 +142,26 @@ Return the total write units consumed per second for the Pinecone index `docs-ex
 sum (rate(pinecone_db_write_unit_count{index_name="docs-example"}[5m]))
 ```
 
-Return the CPU usage percentage per shard for Pinecone index `docs-example`:
+Return the highest CPU usage percentage across all shards of Pinecone index `docs-example`:
 
 ```shell theme={null}
-avg by (shard_id) (pinecone_db_drn_cpu_usage_percent{index_name="docs-example"})
+max(pinecone_db_drn_cpu_usage_percent{index_name="docs-example"})
+```
+
+For each dedicated read nodes index, return the highest CPU usage percentage across its shards:
+
+```shell theme={null}
+max by (index_name) (pinecone_db_drn_cpu_usage_percent)
+```
+
+Return the fullness of Pinecone index `docs-example`:
+
+```shell theme={null}
+pinecone_db_index_fullness{index_name="docs-example"}
+```
+
+Return the indexes that are at least 80% full:
+
+```shell theme={null}
+pinecone_db_index_fullness >= 0.8
 ```

@@ -32,8 +32,8 @@ You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` 
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-fast-latest[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-latest",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest",
     "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
   }
 }
@@ -51,8 +51,8 @@ Add `ANTHROPIC_API_KEY` for pass-through. You still need `ANTHROPIC_CUSTOM_HEADE
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "glm-fast-latest[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-latest",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest",
     "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY",
     "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY"
   }

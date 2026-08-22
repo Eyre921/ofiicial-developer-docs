@@ -22,6 +22,8 @@ Retrieve a single received email.
   By default (or when set to `data_uri`), inline images appear in `html` as base64 `data:` URIs. Set `html_format=cid` to keep the original `<img src="cid:..." />` references instead. Each `cid:` matches the `content_id` of an attachment, so you can correlate inline images with entries in the `attachments` array and fetch them via the attachment download endpoint.
 </ParamField>
 
+## Response Fields
+
 <ParamField type="array">
   The recipient addresses the email was forwarded for, taken from the `for`
   clause of the message's `Received` headers.

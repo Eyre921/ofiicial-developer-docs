@@ -21,6 +21,26 @@ You can create the following types of `OutboundTransfer`:
 | Another financial account belonging to the same account | — | — | Immediate |
 | External UK bank account belonging to the same account | Faster Payments (FPS) | `bank_accounts.local` | Immediate |
 
+#### Source currency - EUR [Private preview]
+Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+You can create the following types of `OutboundTransfer`:
+
+| From the connected account’s financial account to: | Payout method | Recipient capability | Expected arrival time |
+| --- | --- | --- | --- |
+| Another financial account belonging to the same account | — | — | Immediate |
+| External Eurozone bank account belonging to the same account | SEPA | `bank_accounts.local` | Typically 1 business day |
+
+#### Source currency - USD [Private preview]
+Available in: US
+You can create the following types of `OutboundTransfer`:
+
+| From a financial account to: | Payout method | Recipient capability | Expected arrival time |
+| --- | --- | --- | --- |
+| Another financial account belonging to the same account | — | — | Immediate |
+| External US bank account belonging to the same connected account user | Automated Clearing House (ACH) | `bank_accounts.local` | Typically 2-3 business days |
+| Wire | `bank_accounts.wire` | Typically 1 business day |
+| Instant | `card` | Immediate |
+
 ## Move money from one financial account to another financial account
 
 Using an outbound transfer, you can move money between two financial accounts owned by the same connected account. For two financial accounts owned by the platform, exclude the `Stripe-Context` header specifying the connected account ID.
@@ -33,15 +53,15 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   --json '{
     "from": {
         "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "to": {
         "payout_method": "{{SECOND_FINANCIAL_ACCOUNT_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "amount": {
         "value": 30000,
-        "currency": "gbp"
+        "currency": "usd"
     },
     "description": "Payout to own bank account"
   }'
@@ -51,9 +71,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
 
 To create an outbound transfer to a bank account your connected account owns, first create a [FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview) for the financial account:
 
-Create a [Financial Address](https://docs.stripe.com/api/v2/money-management/financial-addresses.md?api-version=preview) to assign bank details to your financial account you can share with customers or partners so they can send funds directly to the financial account. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number or a British sort code).
-
-After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
+Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
@@ -62,18 +80,51 @@ curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-    "type": "gb_bank_account"
+    "type": "us_bank_account"
   }'
 ```
 
-If successful, the response provides the ID for the financial address you’re creating:
+If successful, the response provides the ID for the financial address, along with the relevant credentials for the jurisdiction.
+
+#### US
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "credentials": {
+    "type": "us_bank_account",
+    "us_bank_account": {
+      "account_number": "123456890",
+      "routing_number": "110000000",
+      "bic": "TSTEZ122",
+      "bank_name": "STRIPE TEST BANK",
+      "last4": "6890"
+    }
+  },
+  "status": "active",
+  "financial_account": "fa_6504m3x1JLdhVIIIT1A16O0lef0dSQgZ0EhGyZsQCXQ28m",
+  "created": "2023-03-30T17:32:06.665Z",
+  "currency": "usd"
+}
+```
+
+#### UK
 
 ```json
 {
   "id": "{{FINANCIAL_ADDRESS_ID}}",
   "object": "v2.money_management.financial_address",
   "created": "2025-06-19T19:17:54.607Z",
-  "credentials": null,
+  "credentials": {
+    "type": "gb_bank_account",
+    "gb_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "account_number": "123456890",
+      "last4": "6890",
+      "sort_code": "12-34-56"
+    }
+  },
   "currency": "gbp",
   "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "settlement_currency": "gbp",
@@ -81,6 +132,34 @@ If successful, the response provides the ID for the financial address you’re c
   "livemode": false
 }
 ```
+
+#### EU
+
+```json
+{
+  "id": "{{FINANCIAL_ADDRESS_ID}}",
+  "object": "v2.money_management.financial_address",
+  "created": "2025-06-19T19:17:54.607Z",
+  "credentials": {
+    "type": "sepa_bank_account",
+    "sepa_bank_account": {
+      "account_holder_name": "Jenny Rosen",
+      "bank_name": "SEPA Test Bank",
+      "bic": "TSTEZ122",
+      "country": "IE",
+      "iban": "IE29AIBK93115212345678",
+      "last4": "6890"
+    }
+  },
+  "currency": "eur",
+  "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
+  "settlement_currency": "eur",
+  "status": "pending",
+  "livemode": false
+}
+```
+
+After you create a financial address, it starts in a `pending` status while Stripe provisions the bank details. When the status becomes `active`, you can retrieve the credentials (bank details) and share them to receive funds. You can monitor incoming funds using [received credits](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits).
 
 Outbound transfers require a financial address.
 
@@ -243,19 +322,147 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   --json '{
     "from": {
         "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "to": {
         "payout_method": "{{PAYOUT_METHOD_ID}}",
-        "currency": "gbp"
+        "currency": "usd"
     },
     "amount": {
         "value": 30000,
-        "currency": "gbp"
+        "currency": "usd"
     },
     "description": "Transfer to a connected account'\''s bank account"
   }'
 ```
+
+#### Intra-EU [Private preview]
+Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+If the account is in the EU, we need to use [Recipient Verifications](https://docs.stripe.com/api/v2/recipient-verifications.md?api-version=preview) to perform a Verification of Payee. This verification ensures that the account credentials match the bank account beneficiary before making the payment.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "payout_method": "{{PAYOUT_METHOD_ID}}"
+  }'
+```
+
+The response includes the recipient verification ID, expiration, and verification details.
+
+```json
+{
+  "id": "{{RECIPIENT_VERIFICATION_ID}}",
+  "object": "v2.money_management.recipient_verification",
+  "match_result": "match",
+  "match_result_details": {
+    "matched_name": "…",
+    "message": "The provided name matches the name the bank has on file for this account.",
+    "provided_name": "…"
+  },
+  "expires_at": "2025-11-17T16:30:47.256824340Z",
+  "status": "verified",
+  "status_transitions": null,
+  ...
+}
+```
+
+In case of a partial match or mismatch, you must acknowledge the recipient verification:
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENTVERIFICATIONID_ID}}/acknowledge \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+At this point, you have all the necessary pieces to transfer funds from the connected account’s financial account using the [Create an OutboundTransfer](https://docs.stripe.com/api/v2/money-management/outbound-transfers/create.md?api-version=preview) endpoint.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "eur"
+    },
+    "to": {
+        "payout_method": "{{PAYOUT_METHOD_ID}}",
+        "currency": "eur"
+    },
+    "amount": {
+        "value": 30000,
+        "currency": "eur"
+    },
+    "recipient_verification": "{{RECIPIENTVERIFICATIONID_ID}}",
+    "description": "Transfer to a connected account'\''s bank account"
+  }'
+```
+
+#### USD [Private preview]
+Available in: US
+Add the US bank account as a payout method in a [recipient OutboundSetupIntent](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#recipient-payout-methods), then create the outbound transfer.
+
+#### ACH
+
+Typically takes 2-3 business days
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "payout_method": "{{PAYOUT_METHOD_ID}}",
+        "currency": "usd"
+    },
+    "amount": {
+        "value": 30000,
+        "currency": "usd"
+    },
+    "description": "Transfer to connected account'\''s US bank account"
+  }'
+```
+
+#### Wire
+
+Typically completes the same business day
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "payout_method": "{{PAYOUT_METHOD_ID}}",
+        "currency": "usd"
+    },
+    "amount": {
+        "value": 30000,
+        "currency": "usd"
+    },
+    "delivery_options": {
+        "bank_account": "wire"
+    },
+    "description": "Wire transfer to connected account'\''s US bank account"
+  }'
+```
+
+Stripe supports both FedWire and CHIPS, and automatically routes to the most cost-effective and efficient network.
 
 ## Webhooks
 

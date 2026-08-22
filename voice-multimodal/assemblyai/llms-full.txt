@@ -236,6 +236,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Summarization](#summarization-docs-speech-understanding-summarization-mdx)
 - [Topic Detection](#topic-detection-docs-speech-understanding-topic-detection-mdx)
 - [Translation](#translation-docs-speech-understanding-translation-mdx)
+- [Migration guide: Auto Chapters](#migration-guide-auto-chapters-docs-speech-understanding-migration-guides-auto-chapters-mdx)
+- [Migration guide: Summarization](#migration-guide-summarization-docs-speech-understanding-migration-guides-summarization-mdx)
 - [Guardrails](#guardrails-docs-guardrails-getting-started-mdx)
 - [PII Redaction](#pii-redaction-docs-guardrails-redact-pii-from-transcripts-mdx)
 - [Content Moderation](#content-moderation-docs-guardrails-detect-sensitive-content-mdx)
@@ -62674,7 +62676,7 @@ data = {
     "speech_understanding": {
         "request": {
             "summarization": {
-                "summary_type": "bullets"
+                "summary_type": "bullets",
                 "effort": "medium"
             }
         }
@@ -63793,6 +63795,561 @@ The Translation API returns your original transcript response with an additional
 | `speech_understanding` | Not present            | Object containing the translation request and response details    |
 
 All other fields from the original transcript (`text`, `words`, `utterances`, `confidence`, etc.) remain unchanged.
+
+---
+
+<a id="migration-guide-auto-chapters-docs-speech-understanding-migration-guides-auto-chapters-mdx"></a>
+
+# Migration guide: Auto Chapters
+
+URL: https://www.assemblyai.com/docs/speech-understanding/migration-guides/auto-chapters
+Source: docs/speech-understanding/migration-guides/auto-chapters.mdx
+Navigation: Speech Understanding > Guides > Migration guides
+Description: Migration guide: Auto Chapters documentation.
+
+This guide walks through the process of upgrading from the deprecated `auto_chapters` parameter to [Summarization](/speech-understanding/summarization) under Speech Understanding.
+
+  **This guide is for existing accounts using the deprecated `auto_chapters`
+  parameter.** If you're adding chapters for the first time, go straight to the
+  [Summarization documentation](/speech-understanding/summarization) — it
+  returns topic summaries with headlines and timestamps in one call, which is
+  what chapters are.
+
+We replaced Auto Chapters with Summarization. Both return the transcript split into topic sections with a headline and timestamps per section, so the response shapes line up closely. The changes are to the request shape, the response location, and the fields on each section.
+
+- **Topic sections replace chapters.** You still get the transcript broken into ordered sections with `start`, `end`, and a headline per section.
+- **One `text` field per topic.** The deprecated parameter returned three overlapping text fields (`summary`, `gist`, `headline`) per chapter; Summarization returns `text` and `headline`.
+- **Quality you control.** The new `effort` parameter lets you spend more processing on harder content — useful for meetings, multilingual audio, or files longer than about 1.5 hours.
+
+Your existing API key and endpoint stay the same.
+
+## Quick upgrade
+
+Replace `auto_chapters: true` with a `speech_understanding.request.summarization` object:
+
+```json
+// Before (deprecated)
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "auto_chapters": true
+}
+
+// After
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": { "summary_type": "paragraph" }
+    }
+  }
+}
+```
+
+  **That's it for the request.** But the response moves too — read the sections
+  from `speech_understanding.response.summarization.summary` instead of the
+  top-level `chapters` field. Read on for the full migration details.
+
+## What changes
+
+This table covers the key parameter and response field differences. Use it as a migration checklist.
+
+| What                 | Deprecated Auto Chapters                          | Speech Understanding Summarization                                | Action required                                                             |
+| -------------------- | ------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Where it's set**   | Top-level `auto_chapters: true`                    | `speech_understanding.request.summarization`                       | Replace `auto_chapters` with a `summarization` object under `speech_understanding.request` |
+| **Request shape**    | Boolean flag                                       | Object holding the summary options                                 | Pass an object; `{}` uses the defaults                                       |
+| **`summary_type`**   | Not a parameter                                    | `bullets` or `paragraph` (defaults to `paragraph`)                 | Optional — pick `paragraph` for chapter-style prose or `bullets` for short bullets |
+| **`effort`**         | Not supported                                      | `low` (default) or `medium`                                        | New capability (optional) — set `medium` for harder content                  |
+| **Response field**   | Top-level `chapters`                               | `speech_understanding.response.summarization.summary`              | Update your response parsing to read from the new path                       |
+| **Per-section fields** | `headline`, `gist`, `summary`, `start`, `end`   | `headline`, `text`, `start`, `end`                                 | Read `text` in place of `summary`; drop `gist` (or fall back to `headline`)  |
+| **Pricing**          | Bundled with the deprecated model                  | $0.03 per hour of audio                                            | Review your cost model                                                       |
+
+### Mapping the per-chapter fields
+
+| Deprecated field | Use instead | Notes                                                        |
+| ---------------- | ----------- | ------------------------------------------------------------ |
+| `headline`       | `headline`  | Same field, same purpose                                     |
+| `summary`        | `text`      | The longer summary body for the section                      |
+| `gist`           | `headline`  | No direct equivalent — use `headline` for the short overview |
+| `start` / `end`  | `start` / `end` | Same field, milliseconds                                 |
+
+## Side-by-side code comparison
+
+Below is a side-by-side comparison of generating chapters with the deprecated parameter and with Speech Understanding Summarization:
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+audio_url = "https://assembly.ai/wildfires.mp3"
+
+data = {
+    "audio_url": audio_url,
+    "auto_chapters": True
+}
+
+response = requests.post(base_url + "/v2/transcript", json=data, headers=headers)
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+    transcription_result = requests.get(polling_endpoint, headers=headers).json()
+    if transcription_result['status'] == 'completed':
+        break
+    elif transcription_result['status'] == 'error':
+        raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+    else:
+        time.sleep(3)
+
+for chapter in transcription_result['chapters']:
+    print(f"{chapter['start']} - {chapter['end']}: {chapter['headline']}")
+    print(chapter['summary'])
+```
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+audio_url = "https://assembly.ai/wildfires.mp3"
+
+data = {
+    "audio_url": audio_url,
+    "speech_understanding": {
+        "request": {
+            "summarization": {
+                "summary_type": "paragraph"
+            }
+        }
+    }
+}
+
+response = requests.post(base_url + "/v2/transcript", json=data, headers=headers)
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+    transcription_result = requests.get(polling_endpoint, headers=headers).json()
+    if transcription_result['status'] == 'completed':
+        break
+    elif transcription_result['status'] == 'error':
+        raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+    else:
+        time.sleep(3)
+
+summarization = transcription_result["speech_understanding"]["response"]["summarization"]
+
+for topic in summarization["summary"]:
+    print(f"{topic['start']} - {topic['end']}: {topic['headline']}")
+    print(topic["text"])
+```
+
+The same change in JavaScript:
+
+```javascript
+const data = {
+  audio_url: audioUrl,
+  auto_chapters: true,
+};
+
+// ... submit and poll until status is "completed"
+
+for (const chapter of transcriptionResult.chapters) {
+  console.log(`${chapter.start} - ${chapter.end}: ${chapter.headline}`);
+  console.log(chapter.summary);
+}
+```
+
+```javascript
+const data = {
+  audio_url: audioUrl,
+  speech_understanding: {
+    request: {
+      summarization: {
+        summary_type: "paragraph",
+      },
+    },
+  },
+};
+
+// ... submit and poll until status is "completed"
+
+const { summary } = transcriptionResult.speech_understanding.response.summarization;
+
+for (const topic of summary) {
+  console.log(`${topic.start} - ${topic.end}: ${topic.headline}`);
+  console.log(topic.text);
+}
+```
+
+## Reading the response
+
+The deprecated parameter returned an array on the top-level `chapters` field. Speech Understanding returns an object on `speech_understanding.response.summarization`, with the sections themselves in the `summary` array:
+
+```plain
+{
+    "status": "success",
+    "summary": [
+      {
+        "start": 240,
+        "end": 37100,
+        "text": "Smoke from hundreds of Canadian wildfires is causing air quality alerts across the US, turning skylines gray and prompting warnings to stay inside.",
+        "headline": "Smoke from Canadian Wildfires Affects US Air Quality"
+      },
+      {
+        "start": 39100,
+        "end": 60670,
+        "text": "Professor Peter DeCarlo explains that dry conditions and specific weather systems are channeling smoke from Canadian wildfires into the Mid-Atlantic and Northeast regions of the US.",
+        "headline": "Weather Systems Channeling Smoke"
+      }
+    ],
+    "summary_type": "paragraph",
+    "effort": "low"
+}
+```
+
+Things to know when updating your response handling:
+
+- `summary` is the array of sections — one per topic, in order. Treat each element as a chapter.
+- `start` and `end` are timestamps in milliseconds, so you can link each section back to the audio.
+- `text` replaces the deprecated `summary` field on each chapter. There is no separate `gist` — use `headline` for a short overview.
+- Check `status` for `success` before reading the summaries.
+
+## Choosing `summary_type`
+
+Summarization takes a `summary_type` of `bullets` or `paragraph`:
+
+- **`paragraph`** produces prose summaries per section. This is closest to what Auto Chapters returned in its `summary` field.
+- **`bullets`** produces short bullet-style summaries per section. Reach for this if you're rendering chapter markers in a compact UI.
+
+Either way, every section still carries its own `headline`, `start`, and `end`.
+
+## Controlling quality with `effort`
+
+The new `effort` parameter has no equivalent in the deprecated parameter. It controls how much processing power goes into the summary:
+
+```json
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": {
+        "summary_type": "paragraph",
+        "effort": "medium"
+      }
+    }
+  }
+}
+```
+
+`low` is the default and is the right choice for most use cases. Reach for `medium` when missed details matter — important meetings, multilingual audio, or long files (roughly 1.5 hours and up).
+
+## Pricing
+
+Summarization is **$0.03 per hour of audio**. See [Billing and pricing](/billing-and-pricing) for full rates.
+
+## If you also need action items
+
+Alongside Summarization we shipped [Action Items](/speech-understanding/action-items). Add an `action_items` object to the same `speech_understanding` request to get structured follow-ups from meetings and calls — pass `{}` to use the defaults:
+
+```json
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": { "summary_type": "paragraph" },
+      "action_items": {}
+    }
+  }
+}
+```
+
+Read the results from `speech_understanding.response.action_items`. Action Items takes the same `effort` parameter as Summarization, plus `include_decisions` to count decisions made in the audio as action items. Action Items is **$0.02 per hour of audio**.
+
+## Next steps
+
+- Read the full [Summarization documentation](/speech-understanding/summarization) for all parameters and options.
+- Explore the other [Speech Understanding](/speech-understanding/getting-started) models you can request in the same call.
+- Review the [AssemblyAI API Reference](/pre-recorded-audio/api-reference/transcripts/submit) for the complete request and response schema.
+
+---
+
+<a id="migration-guide-summarization-docs-speech-understanding-migration-guides-summarization-mdx"></a>
+
+# Migration guide: Summarization
+
+URL: https://www.assemblyai.com/docs/speech-understanding/migration-guides/summarization
+Source: docs/speech-understanding/migration-guides/summarization.mdx
+Navigation: Speech Understanding > Guides > Migration guides
+Description: Migration guide: Summarization documentation.
+
+This guide walks through the process of upgrading from the deprecated top-level `summarization` parameter to Summarization under Speech Understanding.
+
+  **This guide is for existing accounts using the deprecated `summarization`
+  parameter.** If you're adding summaries for the first time, go straight to the
+  [Summarization documentation](/speech-understanding/summarization) — none of
+  the legacy parameters below apply to you.
+
+We upgraded Summarization rather than replacing it. It now runs on large language models through our [LLM Gateway](/llm-gateway/quickstart), which brings three improvements over the deprecated version:
+
+- **Topic-based summaries instead of one block of text.** You get a set of summaries, each covering a distinct topic, rather than a single string for the whole file.
+- **Headlines and timestamps on every summary.** Each topic carries its own headline and `start`/`end` times, so you can link summaries back to the audio — which also replaces the old `headline` and `gist` summary types.
+- **Quality you control.** The new `effort` parameter lets you spend more processing on harder content, in place of the fixed `summary_model` choice.
+
+Your existing API key and endpoint stay the same. The changes are to the request shape, the response location, and the response structure.
+
+## Quick upgrade
+
+Move `summarization` into `speech_understanding.request`, drop `summary_model`, and keep `summary_type`:
+
+```json
+// Before (deprecated)
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "summarization": true,
+  "summary_model": "informative",
+  "summary_type": "bullets"
+}
+
+// After
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": { "summary_type": "bullets" }
+    }
+  }
+}
+```
+
+  **That's it for the request.** But the response moves too — read the summary
+  from `speech_understanding.response.summarization` instead of the top-level
+  `summary` field, and expect an array of topic summaries rather than a single
+  string. Read on for the full migration details.
+
+## What changes
+
+This table covers the key parameter and response field differences. Use it as a migration checklist.
+
+| What                 | Deprecated Summarization                               | Speech Understanding Summarization                                        | Action required                                                             |
+| -------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Where it's set**   | Top-level `summarization: true`                         | `speech_understanding.request.summarization`                               | Nest the parameter under `speech_understanding.request`                      |
+| **`summarization`**  | Boolean flag                                            | Object holding the summary options                                         | Replace `true` with an object (`{}` for defaults)                            |
+| **`summary_model`**  | `informative`, `conversational`, `catchy`               | Not a parameter — summaries run on LLMs through the LLM Gateway            | Remove `summary_model` from your request                                     |
+| **`summary_type`**   | `bullets`, `bullets_verbose`, `gist`, `headline`, `paragraph` | `bullets` or `paragraph`                                              | Map your existing value to `bullets` or `paragraph` (see the table below)    |
+| **`effort`**         | Not supported                                           | `low` (default) or `medium`                                                | New capability (optional) — set `medium` for harder content                  |
+| **Response field**   | Top-level `summary`                                     | `speech_understanding.response.summarization`                              | Update your response parsing to read from the new path                       |
+| **Response shape**   | A single string                                         | An object with `status`, `summary`, `summary_type`, and `effort`           | Iterate over `summary`, an array of topic summaries                          |
+| **Per-summary data** | None — one summary for the whole file                   | `headline`, `text`, `start`, and `end` per topic                           | New capability — use headlines and timestamps to link summaries back to audio |
+| **Pricing**          | Bundled with the deprecated model                       | $0.03 per hour of audio                                                    | Review your cost model                                                       |
+
+### Mapping `summary_type`
+
+| Deprecated value  | Use instead | Notes                                                        |
+| ----------------- | ----------- | ------------------------------------------------------------ |
+| `bullets`         | `bullets`   | Short, concise bullet-point summaries per topic               |
+| `bullets_verbose` | `paragraph` | `paragraph` gives the longer, more detailed output            |
+| `paragraph`       | `paragraph` | Now returned per topic rather than as one block               |
+| `gist`            | `bullets`   | Use the per-topic `headline` fields for the shortest overview |
+| `headline`        | `bullets`   | Every topic summary now includes its own `headline`           |
+
+## Side-by-side code comparison
+
+Below is a side-by-side comparison of summarizing a pre-recorded audio file with the deprecated parameter and with Speech Understanding:
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+audio_url = "https://assembly.ai/wildfires.mp3"
+
+data = {
+    "audio_url": audio_url,
+    "summarization": True,
+    "summary_model": "informative",
+    "summary_type": "bullets"
+}
+
+response = requests.post(base_url + "/v2/transcript", json=data, headers=headers)
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+    transcription_result = requests.get(polling_endpoint, headers=headers).json()
+    if transcription_result['status'] == 'completed':
+        break
+    elif transcription_result['status'] == 'error':
+        raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+    else:
+        time.sleep(3)
+
+print(transcription_result["summary"])
+```
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+audio_url = "https://assembly.ai/wildfires.mp3"
+
+data = {
+    "audio_url": audio_url,
+    "speech_understanding": {
+        "request": {
+            "summarization": {
+                "summary_type": "bullets"
+            }
+        }
+    }
+}
+
+response = requests.post(base_url + "/v2/transcript", json=data, headers=headers)
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+    transcription_result = requests.get(polling_endpoint, headers=headers).json()
+    if transcription_result['status'] == 'completed':
+        break
+    elif transcription_result['status'] == 'error':
+        raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+    else:
+        time.sleep(3)
+
+summarization = transcription_result["speech_understanding"]["response"]["summarization"]
+
+for topic in summarization["summary"]:
+    print(f"{topic['start']} - {topic['end']}: {topic['headline']}")
+    print(topic["text"])
+```
+
+The same change in JavaScript:
+
+```javascript
+const data = {
+  audio_url: audioUrl,
+  summarization: true,
+  summary_model: "informative",
+  summary_type: "bullets",
+};
+
+// ... submit and poll until status is "completed"
+
+console.log(transcriptionResult.summary);
+```
+
+```javascript
+const data = {
+  audio_url: audioUrl,
+  speech_understanding: {
+    request: {
+      summarization: {
+        summary_type: "bullets",
+      },
+    },
+  },
+};
+
+// ... submit and poll until status is "completed"
+
+const { summary } = transcriptionResult.speech_understanding.response.summarization;
+
+for (const topic of summary) {
+  console.log(`${topic.start} - ${topic.end}: ${topic.headline}`);
+  console.log(topic.text);
+}
+```
+
+## Reading the response
+
+The deprecated parameter returned one string on the top-level `summary` field. Speech Understanding returns an object on `speech_understanding.response.summarization`, with the summaries themselves in the `summary` array:
+
+```plain
+{
+    "status": "success",
+    "summary": [
+      {
+        "start": 240,
+        "end": 37100,
+        "text": "Smoke from hundreds of Canadian wildfires is causing air quality alerts across the US, turning skylines gray and prompting warnings to stay inside.",
+        "headline": "Smoke from Canadian Wildfires Affects US Air Quality"
+      },
+      {
+        "start": 39100,
+        "end": 60670,
+        "text": "Professor Peter DeCarlo explains that dry conditions and specific weather systems are channeling smoke from Canadian wildfires into the Mid-Atlantic and Northeast regions of the US.",
+        "headline": "Weather Systems Channeling Smoke"
+      }
+    ],
+    "summary_type": "bullets",
+    "effort": "low"
+}
+```
+
+Things to know when updating your response handling:
+
+- `summary` is an array of topic-based summaries, not a single string. If you need one block of text, join the `text` fields.
+- `start` and `end` are timestamps in milliseconds, so you can link each summary back to the audio.
+- Each topic carries its own `headline`, which replaces the deprecated `headline` and `gist` summary types.
+- Check `status` for `success` before reading the summaries.
+
+## Controlling quality with `effort`
+
+The new `effort` parameter has no equivalent in the deprecated parameter. It controls how much processing power goes into the summary:
+
+```json
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": {
+        "summary_type": "bullets",
+        "effort": "medium"
+      }
+    }
+  }
+}
+```
+
+`low` is the default and is the right choice for most use cases. Reach for `medium` when missed details matter — important meetings, multilingual audio, or long files (roughly 1.5 hours and up).
+
+## Pricing
+
+The upgraded Summarization is **$0.03 per hour of audio**. See [Billing and pricing](/billing-and-pricing) for full rates.
+
+## If you also need action items
+
+Alongside the upgraded Summarization we shipped [Action Items](/speech-understanding/action-items). Add an `action_items` object to the same `speech_understanding` request to get structured follow-ups from meetings and calls — pass `{}` to use the defaults:
+
+```json
+{
+  "audio_url": "https://example.com/audio.mp3",
+  "speech_understanding": {
+    "request": {
+      "summarization": { "summary_type": "bullets" },
+      "action_items": {}
+    }
+  }
+}
+```
+
+Read the results from `speech_understanding.response.action_items`. Action Items takes the same `effort` parameter as Summarization, plus `include_decisions` to count decisions made in the audio as action items. Action Items is **$0.02 per hour of audio**.
+
+## Next steps
+
+- Read the full [Summarization documentation](/speech-understanding/summarization) for all parameters and options.
+- Explore the other [Speech Understanding](/speech-understanding/getting-started) models you can request in the same call.
+- Review the [AssemblyAI API Reference](/pre-recorded-audio/api-reference/transcripts/submit) for the complete request and response schema.
 
 ---
 
@@ -65576,6 +66133,7 @@ Description: Available models on LLM Gateway
 | **Gemini 3.5 Flash** | `gemini-3.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
 | **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
 | **Gemini 3.6 Flash** | `gemini-3.6-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
+| **Gemini 3.7 Flash** | `gemini-3.7-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `1048575` |  |
 | **GPT OSS 120B** | `gpt-oss-120b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice` | `131072` |  |
 | **GPT OSS 20B** | `gpt-oss-20b` | `max_tokens`, `temperature`, `tools`, `tool_choice` | `131072` |  |
 | **GPT-4.1** | `gpt-4.1` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream` | `1047576` |  |
@@ -65610,6 +66168,7 @@ Description: Available models on LLM Gateway
 | **Gemini 3.5 Flash** | `gemini-3.5-flash` | $1.25 | $9 | $0.125 |  |  | +10% |
 | **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | $0.3 | $2.5 | $0.03 |  |  | +10% |
 | **Gemini 3.6 Flash** | `gemini-3.6-flash` | $1.5 | $7.5 | $0.15 |  |  | +10% |
+| **Gemini 3.7 Flash** | `gemini-3.7-flash` | $0.75 | $3.75 | $0.075 |  |  | +10% |
 | **GPT OSS 120B** | `gpt-oss-120b` | $0.15 | $0.6 |  |  |  |  |
 | **GPT OSS 20B** | `gpt-oss-20b` | $0.07 | $0.3 |  |  |  |  |
 | **GPT-4.1** | `gpt-4.1` | $2 | $8 | $0.5 |  |  | +10% |
@@ -65623,7 +66182,7 @@ Description: Available models on LLM Gateway
 | **GPT-5.6 Terra** | `gpt-5.6-terra` | $2.5 | $15 | $0.25 | $3.125 |  | +10% |
 | **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
 | **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0 | $0 |  |  |  |  |
+| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
 
   For information on data retention and model training policies for each
   provider, see [Data Retention and Model Training](/data-retention-and-model-training#llm-gateway-production-environment).

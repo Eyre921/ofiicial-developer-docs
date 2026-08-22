@@ -72,7 +72,7 @@ All paginated endpoints support the following query parameters:
   You can only use either `after` or `before`, not both simultaneously.
 </Warning>
 
-## Response Format
+## Response Fields
 
 Paginated endpoints return responses in the following format:
 

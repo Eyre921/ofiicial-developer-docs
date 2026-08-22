@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 336 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 338 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -34,6 +34,7 @@
 - `docs/conditional-workflows` — [Conditional workflow](pages/docs/conditional-workflows.md) · [原文](https://docs.together.ai/docs/conditional-workflows)
 - `docs/containers-quickstart` — [Quickstart](pages/docs/containers-quickstart.md) · [原文](https://docs.together.ai/docs/containers-quickstart)
 - `docs/crewai` — [CrewAI](pages/docs/crewai.md) · [原文](https://docs.together.ai/docs/crewai)
+- `docs/csv-data-analysis-with-code-interpreter` — [Build a CSV data analysis app with the code interpreter](pages/docs/csv-data-analysis-with-code-interpreter.md) · [原文](https://docs.together.ai/docs/csv-data-analysis-with-code-interpreter)
 - `docs/data-analyst-agent` — [Build an AI data analyst](pages/docs/data-analyst-agent.md) · [原文](https://docs.together.ai/docs/data-analyst-agent)
 - `docs/dedicated-container-inference` — [Overview](pages/docs/dedicated-container-inference.md) · [原文](https://docs.together.ai/docs/dedicated-container-inference)
 - `docs/dedicated-endpoints/ab-tests` — [Run an A/B test](pages/docs/dedicated-endpoints/ab-tests.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/ab-tests)
@@ -155,6 +156,7 @@
 - `docs/open-notebooklm-pdf-to-podcast` — [Build an open source NotebookLM](pages/docs/open-notebooklm-pdf-to-podcast.md) · [原文](https://docs.together.ai/docs/open-notebooklm-pdf-to-podcast)
 - `docs/organizations` — [Organizations](pages/docs/organizations.md) · [原文](https://docs.together.ai/docs/organizations)
 - `docs/parallel-workflows` — [Parallel workflow](pages/docs/parallel-workflows.md) · [原文](https://docs.together.ai/docs/parallel-workflows)
+- `docs/pdf-to-website-with-structured-outputs` — [Build a resume-to-website app with structured outputs](pages/docs/pdf-to-website-with-structured-outputs.md) · [原文](https://docs.together.ai/docs/pdf-to-website-with-structured-outputs)
 - `docs/privacy-and-security` — [Privacy and security](pages/docs/privacy-and-security.md) · [原文](https://docs.together.ai/docs/privacy-and-security)
 - `docs/projects` — [Projects](pages/docs/projects.md) · [原文](https://docs.together.ai/docs/projects)
 - `docs/pydanticai` — [PydanticAI](pages/docs/pydanticai.md) · [原文](https://docs.together.ai/docs/pydanticai)

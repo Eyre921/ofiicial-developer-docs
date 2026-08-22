@@ -287,6 +287,8 @@ components:
     SpeakV1Speed:
       type: number
       format: double
+      minimum: 0.7
+      maximum: 1.5
       default: 1
       description: >-
         Speaking rate multiplier that adjusts the pace of generated speech while

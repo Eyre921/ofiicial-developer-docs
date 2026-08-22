@@ -72,18 +72,7 @@ By default it issues a **public** client that authenticates at the token endpoin
 
 ### Confidential clients
 
-Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields:
-
-<ResponseField name="client_secret" type="string">
-  The generated client secret. Returned **only once**, in this response. Resend
-  stores a hash and can't show it again, so persist it securely at registration
-  time. If it's lost, register a new client.
-</ResponseField>
-
-<ResponseField name="client_secret_expires_at" type="number">
-  Unix time at which the secret expires. Always `0`, meaning the secret does not
-  expire.
-</ResponseField>
+Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields, documented in [Response Fields](#response-fields) below.
 
 Only register a confidential client when it has a backend that can keep the secret private, such as a server-side web app. Native, CLI, and other clients that can't protect a secret should stay public (`none`) and rely on PKCE. See [Building an OAuth client](/docs/guides/building-a-resend-oauth-client) for how each client type authenticates.
 
@@ -96,6 +85,21 @@ Only register a confidential client when it has a backend that can keep the secr
   OS routes them only to the registered native app.
 * `file`, `ftp`, `data`, `javascript`, `blob`, `about`, and `vbscript` schemes
   are rejected, and none of the URIs may include a fragment.
+
+## Response Fields
+
+The response echoes back the registered client metadata along with the issued `client_id`. Registering a [confidential client](#confidential-clients) returns two extra fields:
+
+<ResponseField name="client_secret" type="string">
+  The generated client secret. Returned **only once**, in this response. Resend
+  stores a hash and can't show it again, so persist it securely at registration
+  time. If it's lost, register a new client.
+</ResponseField>
+
+<ResponseField name="client_secret_expires_at" type="number">
+  Unix time at which the secret expires. Always `0`, meaning the secret does not
+  expire.
+</ResponseField>
 
 <RequestExample>
   ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}

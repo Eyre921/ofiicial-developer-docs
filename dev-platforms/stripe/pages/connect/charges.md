@@ -42,7 +42,9 @@ Create a charge directly on a connected account. The account’s customers are o
 
 > Your connected accounts must have the [card_payments capability](https://docs.stripe.com/connect/account-capabilities.md) active in order to use direct charges.
 
-This charge type is best suited for platforms providing Software as a Service (SaaS). For example, Shopify provides tools for building online storefronts, and Thinkific enables educators to sell online courses.
+> Direct charges aren’t recommended for [legacy v1 Express and Custom accounts](https://docs.stripe.com/connect/accounts.md). Switch to [v2 accounts](https://docs.stripe.com/connect/accounts-v2.md), or use [destination charges](https://docs.stripe.com/connect/destination-charges.md) with these accounts instead.
+
+This charge type works best for platforms that provide software as a service. For example, Shopify provides tools for building online storefronts, and Thinkific enables educators to sell online courses.
 
 With this charge type:
 

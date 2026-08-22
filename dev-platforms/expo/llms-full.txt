@@ -201,7 +201,7 @@ Install the CLI and start a project:
 - [Authentication in Expo Router using redirects](https://docs.expo.dev/router/advanced/authentication-rewrites.md)
 - [Nesting navigators](https://docs.expo.dev/router/advanced/nesting-navigators.md)
 - [Modals](https://docs.expo.dev/router/advanced/modals.md)
-- [Web modals](https://docs.expo.dev/router/advanced/web-modals.md)
+- [Build custom web modals](https://docs.expo.dev/router/advanced/web-modals.md)
 - [Shared routes](https://docs.expo.dev/router/advanced/shared-routes.md)
 - [Protected routes](https://docs.expo.dev/router/advanced/protected.md)
 
@@ -292,6 +292,8 @@ Install the CLI and start a project:
 - [Using Sentry](https://docs.expo.dev/guides/using-sentry.md)
 - [Using BugSnag](https://docs.expo.dev/guides/using-bugsnag.md)
 - [Using LogRocket](https://docs.expo.dev/guides/using-logrocket.md)
+- [Using PostHog](https://docs.expo.dev/guides/using-posthog.md)
+- [PostHog recipes for EAS Workflows](https://docs.expo.dev/guides/using-posthog/recipes.md)
 
 ### Authentication
 - [Using authentication SDKs and libraries](https://docs.expo.dev/guides/using-authentication.md)
@@ -599,6 +601,7 @@ Install the CLI and start a project:
 - [Querying with EAS CLI](https://docs.expo.dev/eas/observe/eas-cli.md)
 - [EAS Update download performance](https://docs.expo.dev/eas/observe/eas-update.md)
 - [User-defined events](https://docs.expo.dev/eas/observe/events.md)
+- [Error reporting](https://docs.expo.dev/eas/observe/errors.md)
 - [Configure EAS Observe](https://docs.expo.dev/eas/observe/configuration.md)
 
 ### Integrations

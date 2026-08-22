@@ -104,7 +104,9 @@ The overall risk level combines the [fraudulent dispute](https://docs.stripe.com
 
 ### Fraudulent payment score 
 
-Stripe Radar assigns each card payment a fraudulent payment score between 0 and 99. The score represents the likelihood that a payment is fraudulent, where 0 is the lowest likelihood and 99 is the highest. Radar determines the score based on attributes Stripe has identified as indicators of high fraud risk across the Stripe network.
+Stripe Radar assigns each card payment a fraudulent payment score between 0 and 99. The score represents the likelihood that a payment is fraudulent, whether or not that fraud results in a dispute or early fraud warning. Unlike the fraudulent dispute score, which predicts fraudulent chargebacks, the fraudulent payment score captures a broader range of fraud. This includes stolen cards used by issuers that resolve fraud internally and don’t report it to the card network.
+
+Radar determines the score based on attributes Stripe has identified as indicators of high fraud risk across the Stripe network.
 
 > Fraudulent payment scores apply to card payments only.
 

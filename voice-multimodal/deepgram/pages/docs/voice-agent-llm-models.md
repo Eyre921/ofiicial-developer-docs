@@ -42,6 +42,8 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 
 | Provider  | Model                 | Pricing Tier |
 | --------- | --------------------- | ------------ |
+| `open_ai` | `gpt-5.6-terra`       | `Advanced`   |
+| `open_ai` | `gpt-5.6-luna`        | `Standard`   |
 | `open_ai` | `gpt-5.5`             | `Advanced`   |
 | `open_ai` | `gpt-5.4-nano`        | `Standard`   |
 | `open_ai` | `gpt-5.4-mini`        | `Standard`   |

@@ -1103,6 +1103,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: OpenAI temperature (0-2)
         reasoning_mode:
           $ref: '#/components/schemas/OpenAiThinkProviderReasoningMode'
@@ -1158,6 +1160,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: AWS Bedrock temperature (0-2)
         credentials:
           $ref: '#/components/schemas/AwsBedrockThinkProviderCredentials'
@@ -1195,6 +1199,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 1
           description: Anthropic temperature (0-1)
       required:
         - type
@@ -1241,6 +1247,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: Google temperature (0-2)
       required:
         - type
@@ -1288,6 +1296,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: Groq temperature (0-2)
         reasoning_mode:
           $ref: '#/components/schemas/GroqThinkProviderReasoningMode'
@@ -1370,6 +1380,7 @@ components:
         - $ref: '#/components/schemas/ThinkSettingsV1ContextLength0'
         - type: number
           format: double
+          minimum: 2
       description: >
         Specifies the number of characters retained in context between user
         messages, agent responses, and function calls. This setting is only
@@ -1518,6 +1529,24 @@ components:
         TTS (version v2) uses the flux-{voice}-{language} voices (e.g.
         flux-alexis-en). Defaults to flux-kit-en when agent.speak is omitted.
       title: DeepgramSpeakProviderModel
+    DeepgramSpeakProviderExpressivity:
+      type: string
+      enum:
+        - '-2'
+        - '-1'
+        - '0'
+        - '1'
+        - '2'
+      description: >-
+        Delivery register of the generated speech, on a calm-to-animated axis.
+        Flux TTS (version v2) only, on every Flux voice. Accepts the whole
+        numbers -2 to 2, where 0 (the default) is the voice's tuned delivery and
+        the only value validated for production, -2 the calm end of the range
+        and 2 the animated end. Fixed for the session. Beta: behavior may change
+        in future model versions, and non-default values increase the risk of
+        hallucinations and pronunciation errors. See
+        [Expressivity](/docs/tts-expressivity).
+      title: DeepgramSpeakProviderExpressivity
     DeepgramSpeakProvider:
       type: object
       properties:
@@ -1542,6 +1571,8 @@ components:
         speed:
           type: number
           format: double
+          minimum: 0.7
+          maximum: 1.5
           default: 1
           description: >-
             Speaking rate multiplier that adjusts the pace of generated speech
@@ -1550,6 +1581,18 @@ components:
             only 0.85, 0.9, 0.95, 1.0, 1.05, 1.1 and 1.15; another value ends
             the session with FAILED_TO_SPEAK. Not yet supported in all
             languages.
+        expressivity:
+          $ref: '#/components/schemas/DeepgramSpeakProviderExpressivity'
+          default: 0
+          description: >-
+            Delivery register of the generated speech, on a calm-to-animated
+            axis. Flux TTS (version v2) only, on every Flux voice. Accepts the
+            whole numbers -2 to 2, where 0 (the default) is the voice's tuned
+            delivery and the only value validated for production, -2 the calm
+            end of the range and 2 the animated end. Fixed for the session.
+            Beta: behavior may change in future model versions, and non-default
+            values increase the risk of hallucinations and pronunciation errors.
+            See [Expressivity](/docs/tts-expressivity).
       required:
         - type
         - model
@@ -1593,6 +1636,7 @@ components:
         language_code:
           type: string
           description: Use the `language` field instead.
+          deprecated: true
       required:
         - type
         - model_id
@@ -1644,6 +1688,8 @@ components:
         volume:
           type: number
           format: double
+          minimum: 0.5
+          maximum: 2
           description: >
             Volume level for Cartesia TTS output. Valid range: 0.5 to 2.0. See
             [Cartesia
@@ -1763,6 +1809,7 @@ components:
         language_code:
           type: string
           description: Use the `language` field instead.
+          deprecated: true
         engine:
           $ref: '#/components/schemas/AwsPollySpeakProviderEngine'
         credentials:
@@ -1837,6 +1884,7 @@ components:
           description: >-
             Deprecated. Use `listen.provider.language` and
             `speak.provider.language` fields instead.
+          deprecated: true
         context:
           $ref: >-
             #/components/schemas/ChannelsAgentV1MessagesAgentV1SettingsAgentOneOf0Context

@@ -976,6 +976,45 @@ Retrieve a list of API keys for the authenticated user.
 </ResponseExample>
 
 
+# Update API key
+Source: https://resend.com/docs/api-reference/api-keys/update-api-key
+
+PATCH /api-keys/:api_key_id
+Update an existing API key.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The API key ID.
+</ResendParamField>
+
+## Body Parameters
+
+<ParamField type="string">
+  The API key name. Maximum 50 characters.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X PATCH 'https://api.resend.com/api-keys/b6d24b8e-af0b-4c3c-be0c-359bbd97381e' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "name": "Production"
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "api_key",
+    "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
+  }
+  ```
+</ResponseExample>
+
+
 # Cancel Broadcast
 Source: https://resend.com/docs/api-reference/broadcasts/cancel-broadcast
 
@@ -8133,6 +8172,8 @@ Retrieve a single received email.
   By default (or when set to `data_uri`), inline images appear in `html` as base64 `data:` URIs. Set `html_format=cid` to keep the original `<img src="cid:..." />` references instead. Each `cid:` matches the `content_id` of an attachment, so you can correlate inline images with entries in the `attachments` array and fetch them via the attachment download endpoint.
 </ParamField>
 
+## Response Fields
+
 <ParamField type="array">
   The recipient addresses the email was forwarded for, taken from the `for`
   clause of the message's `Received` headers.
@@ -9236,6 +9277,47 @@ Start sending emails through the Resend Email API.
 </ResponseExample>
 
 
+# Share Email
+Source: https://resend.com/docs/api-reference/emails/share-email
+
+POST /emails/:email_id/share
+Create a shareable link to view a sent or received email.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The Email ID.
+</ResendParamField>
+
+## Body Parameters
+
+<ResendParamField type="string">
+  How long the link stays valid for, as a duration like `10m`, `2 hours`, or `1
+      day`. Defaults to `48h` and cannot exceed 48 hours.
+</ResendParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/emails/49a3999c-0ce1-4ea6-ab68-afcd6dc2e794/share' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "expires_in": "2 hours"
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "email",
+    "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    "url": "https://resend.com/shared?token=eyJhbGciOiJIUzI1NiJ9..."
+  }
+  ```
+</ResponseExample>
+
+
 # Update Email
 Source: https://resend.com/docs/api-reference/emails/update-email
 
@@ -10194,18 +10276,7 @@ By default it issues a **public** client that authenticates at the token endpoin
 
 ### Confidential clients
 
-Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields:
-
-<ResponseField name="client_secret" type="string">
-  The generated client secret. Returned **only once**, in this response. Resend
-  stores a hash and can't show it again, so persist it securely at registration
-  time. If it's lost, register a new client.
-</ResponseField>
-
-<ResponseField name="client_secret_expires_at" type="number">
-  Unix time at which the secret expires. Always `0`, meaning the secret does not
-  expire.
-</ResponseField>
+Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields, documented in [Response Fields](#response-fields) below.
 
 Only register a confidential client when it has a backend that can keep the secret private, such as a server-side web app. Native, CLI, and other clients that can't protect a secret should stay public (`none`) and rely on PKCE. See [Building an OAuth client](/docs/guides/building-a-resend-oauth-client) for how each client type authenticates.
 
@@ -10218,6 +10289,21 @@ Only register a confidential client when it has a backend that can keep the secr
   OS routes them only to the registered native app.
 * `file`, `ftp`, `data`, `javascript`, `blob`, `about`, and `vbscript` schemes
   are rejected, and none of the URIs may include a fragment.
+
+## Response Fields
+
+The response echoes back the registered client metadata along with the issued `client_id`. Registering a [confidential client](#confidential-clients) returns two extra fields:
+
+<ResponseField name="client_secret" type="string">
+  The generated client secret. Returned **only once**, in this response. Resend
+  stores a hash and can't show it again, so persist it securely at registration
+  time. If it's lost, register a new client.
+</ResponseField>
+
+<ResponseField name="client_secret_expires_at" type="number">
+  Unix time at which the secret expires. Always `0`, meaning the secret does not
+  expire.
+</ResponseField>
 
 <RequestExample>
   ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -10661,7 +10747,7 @@ All paginated endpoints support the following query parameters:
   You can only use either `after` or `before`, not both simultaneously.
 </Warning>
 
-## Response Format
+## Response Fields
 
 Paginated endpoints return responses in the following format:
 
@@ -17039,6 +17125,7 @@ resend automations create --file ./automation.json
 resend automations list              # List all automations
 resend automations get <id>          # Retrieve an automation with steps and connections
 resend automations update <id>       # Update an automation's status (enable or disable)
+resend automations duplicate <id>    # Duplicate an automation
 resend automations stop <id>         # Stop an enabled automation
 resend automations delete <id>       # Delete an automation
 resend automations open [id]         # Open an automation in the dashboard
@@ -21122,8 +21209,9 @@ To start executing an Automation, you need to:
 
         <Note>
           While an Automation is enabled, its steps cannot be edited. To make changes,
-          duplicate the Automation, edit the copy, and switch over by stopping new runs
-          on the original. In-flight runs will finish on the version they started with.
+          [duplicate the Automation](/docs/api-reference/automations/duplicate-automation),
+          edit the copy, and switch over by stopping new runs on the original. In-flight
+          runs will finish on the version they started with.
         </Note>
       </Step>
 
@@ -39614,6 +39702,34 @@ If your domain is not successfully verified, these are some common troubleshooti
 </AccordionGroup>
 
 
+# How to add multi-factor authentication to your Resend account
+Source: https://resend.com/docs/knowledge-base/how-can-i-add-mfa
+
+How to enable and disable multi-factor authentication (MFA) or two-factor authentication (2FA) on your Resend account.
+
+Multi-factor authentication (MFA), also called two-factor authentication (2FA), adds an extra layer of security by requiring a second verification factor when you sign in.
+
+## Enable MFA
+
+To enable MFA to your Resend account:
+
+1. Navigate to your [**Profile**](https://resend.com/profile) page.
+2. Click **Enable MFA**.
+3. Scan the QR code with your preferred authenticator app.
+4. Enter the code provided by the authenticator app.
+
+Once MFA is enabled, you'll be asked for a code from your authenticator app whenever you sign in.
+
+## Disable MFA
+
+To turn off MFA on your Resend account:
+
+1. Navigate to your [**Profile**](https://resend.com/profile) page.
+2. Click **Revoke Access**.
+
+After revoking access, you can sign in with your email and password without an authenticator code.
+
+
 # How to change your Resend email address
 Source: https://resend.com/docs/knowledge-base/how-can-i-change-my-email-address
 
@@ -41266,6 +41382,11 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 
   <Card title="How to Handle API Keys" href="/knowledge-base/how-to-handle-api-keys">
     Best practices for managing and securing your Resend API keys.
+  </Card>
+
+  <Card title="How to add multi-factor authentication to your Resend account" href="/knowledge-base/how-can-i-add-mfa">
+    Enable or disable multi-factor authentication (MFA) or two-factor
+    authentication (2FA) on your Resend account.
   </Card>
 </CardGroup>
 
@@ -44642,7 +44763,7 @@ Resend's MCP server gives your AI agent native access to the full Resend platfor
 * **Templates**: Create, list, get, update, publish, duplicate, and remove email templates. Supports composing template content and `{{{VARIABLE}}}` placeholders.
 * **Contacts**: Create, list, get, update, and remove contacts. Manage segment memberships, topic subscriptions, and CSV contact imports. Supports custom contact properties.
 * **Broadcasts**: Create, send, list, get, update, and remove broadcast campaigns. Supports scheduling, personalization placeholders, and preview text.
-* **Automations**: Create, list, get, update, and remove automations. Review the runs of an automation.
+* **Automations**: Create, list, get, update, duplicate, and remove automations. Review the runs of an automation.
 * **Events**: Send events to trigger automations for a contact. Create, update, and remove event definitions.
 * **Domains**: Create, list, get, update, remove, and verify sender domains. Configure tracking, TLS, and sending/receiving capabilities. Create and verify domain claims.
 * **Segments**: Create, list, get, and remove audience segments.
@@ -51609,6 +51730,280 @@ Source: https://resend.com/docs/send-with-python
 
 Learn how to send your first email using the Resend Python SDK.
 
+<Prompt description="Use this pre-built prompt to get started faster." icon="microchip">
+  # Send Email with Resend Python SDK
+
+  **Purpose:** Enforce only the **current** and **correct** instructions for sending emails using the [Resend](https://resend.com/) Python SDK.
+  **Scope:** All AI-generated advice or code related to sending email with Resend must follow these guardrails.
+
+  ***
+
+  ## **1. Official Resend Python Setup**
+
+  ### **Prerequisites**
+
+  Human must first create an API key and verify their domain at [https://resend.com/domains](https://resend.com/domains).
+
+  The API key must be stored in an environment variable called `RESEND_API_KEY`.
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend.api_key = os.environ["RESEND_API_KEY"]
+  ```
+
+  The domain should be verified at [https://resend.com/domains](https://resend.com/domains) and added to the `from` address.
+
+  ### **Install the SDK**
+
+  ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+  pip install resend
+  ```
+
+  ### **Send an Email**
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import os
+  import resend
+  from resend.exceptions import ResendError
+
+  resend.api_key = os.environ["RESEND_API_KEY"]
+
+  params: resend.Emails.SendParams = {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["delivered@resend.dev"],
+      "subject": "Hello World",
+      "html": "<strong>It works!</strong>",
+  }
+
+  try:
+      email = resend.Emails.send(params)
+      print(email)  # {'id': '49a3999c-...'}
+  except ResendError as error:
+      print(error)
+  ```
+
+  ### Error Handling
+
+  `resend.Emails.send()` **raises** an exception on failure — it does not return an error object. Catch `resend.exceptions.ResendError` (or a specific subclass) rather than checking a return value:
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  from resend.exceptions import (
+      ResendError,
+      ValidationError,
+      RateLimitError,
+      InvalidApiKeyError,
+  )
+
+  try:
+      email = resend.Emails.send(params)
+  except RateLimitError as error:
+      ...  # back off and retry
+  except ValidationError as error:
+      ...  # fix the request params
+  except ResendError as error:
+      ...  # catch-all: error.code, error.message, error.error_type
+  ```
+
+  A missing required argument (e.g. no `to` field) raises a plain `ValueError`, not a `ResendError`.
+
+  ### Rate Limiting
+
+  The default rate limit is 10 requests per second per team. Exceeding it raises `resend.exceptions.RateLimitError`. If needed, you can request a rate increase by [contacting support](https://resend.com/contact).
+
+  ### Idempotency
+
+  Best practice: pass an idempotency key to prevent duplicated emails, which is useful for retrying failed emails safely.
+
+  * Should be **unique per API request**
+  * Idempotency keys expire after **24 hours**
+  * Have a maximum length of **256 characters**
+  * Pattern: `<event-type>/<entity-id>`
+  * Example: `welcome-user/123456789`
+
+  Unlike Node's single-object `idempotencyKey` field, Python's `send()` takes idempotency as a **second, separate argument**:
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  options: resend.Emails.SendOptions = {"idempotency_key": "welcome-user/123456789"}
+
+  email = resend.Emails.send(params, options)
+  ```
+
+  ***
+
+  ## **2. Complete `Emails.send()` Parameter Reference**
+
+  ### **Required Parameters**
+
+  | Parameter | Type               | Description                                                                      |
+  | --------- | ------------------ | -------------------------------------------------------------------------------- |
+  | `from`    | `str`              | Sender email address. Supports friendly name format: `"Name <email@domain.com>"` |
+  | `to`      | `str \| List[str]` | Recipient email address(es). Maximum 50 addresses.                               |
+  | `subject` | `str`              | Email subject line.                                                              |
+
+  ### **Content Parameters (at least one required)**
+
+  | Parameter | Type  | Description                                                |
+  | --------- | ----- | ---------------------------------------------------------- |
+  | `html`    | `str` | HTML version of the email body.                            |
+  | `text`    | `str` | Plain text version. Auto-generated from `html` if omitted. |
+
+  ### **Optional Parameters**
+
+  | Parameter      | Type                                   | Description                                                         |
+  | -------------- | -------------------------------------- | ------------------------------------------------------------------- |
+  | `cc`           | `str \| List[str]`                     | Carbon copy recipients.                                             |
+  | `bcc`          | `str \| List[str]`                     | Blind carbon copy recipients.                                       |
+  | `reply_to`     | `str \| List[str]`                     | Reply-to address(es).                                               |
+  | `scheduled_at` | `str`                                  | Schedule delivery time. ISO 8601 (e.g. `2024-08-05T11:52:01.858Z`). |
+  | `headers`      | `Dict[str, str]`                       | Custom email headers as key-value pairs.                            |
+  | `tags`         | `List[Tag]`                            | Custom metadata. Name and value: max 256 chars, ASCII only.         |
+  | `attachments`  | `List[Attachment \| RemoteAttachment]` | File attachments. Max 40MB total per email after encoding.          |
+
+  ### **Template Parameters**
+
+  | Parameter               | Type                    | Description                                                      |
+  | ----------------------- | ----------------------- | ---------------------------------------------------------------- |
+  | `template["id"]`        | `str`                   | Published template identifier.                                   |
+  | `template["variables"]` | `Dict[str, str \| int]` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
+
+  If `template` is provided, do not include `html` or `text`.
+
+  ### **Response**
+
+  A successful call returns a `resend.Emails.SendResponse`:
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {"id": "49a3999c-..."}
+  ```
+
+  A failed call raises a `resend.exceptions.ResendError` subclass — it does not return a value.
+
+  ***
+
+  ## **3. Async Support**
+
+  Every resource has both a sync and an async method. Use `send_async` (built on `httpx`) inside `async def` code such as FastAPI route handlers:
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+  from resend.exceptions import ResendError
+
+  resend.api_key = os.environ["RESEND_API_KEY"]
+
+  async def send_welcome_email():
+      try:
+          email = await resend.Emails.send_async(params)
+          return email
+      except ResendError as error:
+          raise
+  ```
+
+  `send_async` requires `httpx` to be installed (`pip install resend[async]`, or just have `httpx` present).
+
+  ***
+
+  ## **4. CRITICAL INSTRUCTIONS FOR AI MODELS**
+
+  ### **4.1 - ALWAYS DO THE FOLLOWING**
+
+  1. **Store the API key in an environment variable** (`RESEND_API_KEY`). Never hardcode API keys.
+  2. **Set `resend.api_key`** before calling any SDK method.
+  3. **Wrap `resend.Emails.send()` in `try`/`except`** and catch `resend.exceptions.ResendError` (or a specific subclass) — the SDK raises on failure, it does not return `{data, error}`.
+  4. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
+  5. **Check the project for an existing package/dependency manager** (pip, poetry, uv) and use that to install the SDK.
+  6. **Use snake\_case** for SDK parameters (`reply_to`, `scheduled_at`), not camelCase.
+  7. **Use `send_async`** instead of `send` inside async code (e.g. FastAPI handlers).
+
+  ### **4.2 - NEVER DO THE FOLLOWING**
+
+  1. **Do not** hardcode API keys in source code. Always use environment variables.
+  2. **Do not** assume `resend.Emails.send()` returns an error object — it raises an exception. A bare, unhandled call will crash on failure.
+  3. **Do not** use camelCase parameter names (`replyTo`, `scheduledAt`) — the Python SDK uses snake\_case (`reply_to`, `scheduled_at`).
+  4. **Do not** send `html` or `text` alongside `template` — these are mutually exclusive.
+  5. **Do not** pass an idempotency key inside `params` — it belongs in the separate `options` argument: `send(params, options)`.
+  6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
+  7. **Do not** set up testing flows with fake email addresses. Resend provides the following test addresses to help you simulate different email events without damaging your domain reputation:
+     * `delivered@resend.dev`
+     * `bounced@resend.dev`
+     * `complained@resend.dev`
+     * `suppressed@resend.dev`
+
+  ***
+
+  ## **5. COMMON PATTERNS**
+
+  ### **Attachments**
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  params: resend.Emails.SendParams = {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["delivered@resend.dev"],
+      "subject": "Invoice attached",
+      "html": "<p>See attached invoice.</p>",
+      "attachments": [
+          {
+              "filename": "invoice.pdf",
+              "content": list(invoice_bytes),
+          }
+      ],
+  }
+  ```
+
+  ### **Scheduled Emails**
+
+  Send up to 30 days in advance using the `scheduled_at` parameter. Accepts ISO 8601.
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  params: resend.Emails.SendParams = {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["delivered@resend.dev"],
+      "subject": "Reminder",
+      "html": "<p>This is your reminder.</p>",
+      "scheduled_at": "2026-12-25T09:00:00Z",
+  }
+  ```
+
+  ### **Tags for Tracking**
+
+  ```python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  params: resend.Emails.SendParams = {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["delivered@resend.dev"],
+      "subject": "Welcome",
+      "html": "<p>Welcome aboard!</p>",
+      "tags": [
+          {"name": "category", "value": "welcome"},
+          {"name": "user_id", "value": "12345"},
+      ],
+  }
+  ```
+
+  ***
+
+  ## **6. AI MODEL VERIFICATION STEPS**
+
+  Before returning any Resend-related solution, you **must** verify:
+
+  1. **Import**: Is `resend` imported, and is `resend.api_key` set from an environment variable?
+  2. **Error Handling**: Is `resend.Emails.send()` wrapped in `try`/`except` catching `resend.exceptions.ResendError`?
+  3. **Async**: Is `send_async` used instead of `send` inside `async def` code?
+  4. **Parameters**: Are all parameter names in snake\_case?
+  5. **Idempotency**: If used, is the idempotency key passed as a separate `options` argument, not inside `params`?
+  6. **From Address**: Is the `from` address using a verified domain (not `onboarding@resend.dev` in production)?
+
+  If any check **fails**, **stop** and revise until compliance is achieved.
+
+  For additional help, suggest installing the resend-skills skill and the email-best-practices skill.
+
+  ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+  npx skills add resend/resend-skills
+  npx skills add resend/email-best-practices
+  ```
+
+  You can locate framework-specific guides at [https://resend.com/docs/llms.txt](https://resend.com/docs/llms.txt)
+
+  For the entire docs for Resend, see [https://resend.com/docs/llms-full.txt](https://resend.com/docs/llms-full.txt)
+</Prompt>
+
 ## Prerequisites
 
 Before you start, you'll need:
@@ -51629,12 +52024,25 @@ Before you start, you'll need:
     </CodeGroup>
   </Step>
 
+  <Step title="Set your API key">
+    Store your API key in an environment variable in your `.env` file.
+
+    <CodeGroup>
+      ```sh .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+      RESEND_API_KEY=re_xxxxxxxxx
+      ```
+    </CodeGroup>
+
+    Access it with `os.environ["RESEND_API_KEY"]`. See [Create an API key](/docs/create-an-api-key) for the full setup.
+  </Step>
+
   <Step title="Send email using HTML">
     The easiest way to send an email is by using the `html` parameter.
 
     ```py index.py theme={"theme":{"light":"github-light","dark":"vesper"}}
     import os
     import resend
+    from resend.exceptions import ResendError
 
     resend.api_key = os.environ["RESEND_API_KEY"]
 
@@ -51645,8 +52053,11 @@ Before you start, you'll need:
         "html": "<strong>it works!</strong>",
     }
 
-    email = resend.Emails.send(params)
-    print(email)
+    try:
+        email = resend.Emails.send(params)
+        print(email)
+    except ResendError as error:
+        print(error)
     ```
   </Step>
 </Steps>

@@ -100,6 +100,6 @@ You can also add a theme to customize your site’s look and feel. For more info
 
 * [About GitHub Pages and Jekyll](/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll).
 * [Troubleshooting Jekyll build errors for GitHub Pages sites](/en/pages/setting-up-a-github-pages-site-with-jekyll/troubleshooting-jekyll-build-errors-for-github-pages-sites)
-* [Managing branches within your repository](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository)
+* [Managing branches within your repository](/en/pull-requests/how-tos/commit-changes/managing-branches-within-your-repository)
 * [Creating new files](/en/repositories/working-with-files/managing-files/creating-new-files)
 * [Troubleshooting 404 errors for GitHub Pages sites](/en/pages/getting-started-with-github-pages/troubleshooting-404-errors-for-github-pages-sites)

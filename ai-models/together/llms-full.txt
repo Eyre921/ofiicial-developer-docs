@@ -4603,7 +4603,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
 | Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |
-| Kimi K2.6 Fp4                      | `moonshotai/Kimi-K2.6`                    |
+| Kimi-K2.6                          | `moonshotai/Kimi-K2.6`                    |
 | OpenAI GPT-OSS 120B                | `openai/gpt-oss-120b`                     |
 | OpenAI GPT-OSS 20B                 | `openai/gpt-oss-20b`                      |
 | GLM-5                              | `zai-org/GLM-5`                           |
@@ -7239,7 +7239,61 @@ export TOGETHER_API_KEY=<your_key>
 
 ### Common commands
 
+**List available regions and instance types:**
+
+Region availability changes over time, so check the live inventory before
+choosing `--region` or `--gpu-type`. These lookups are read-only and don't
+create or reserve anything. The REST route is `GET /v1/compute/regions`.
+
+<CodeGroup>
+  ```bash CLI theme={null}
+  tg beta clusters list-regions
+  ```
+
+  ```bash cURL theme={null}
+  curl "https://api.together.ai/v1/compute/regions" \
+    -H "Authorization: Bearer $TOGETHER_API_KEY"
+  ```
+
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  for region in client.beta.clusters.list_regions().regions:
+      print(region.name, region.supported_instance_types)
+  ```
+</CodeGroup>
+
+The response lists each region's supported instance types and driver versions.
+It doesn't include prices. For current rates, see the
+[GPU cluster pricing table](https://www.together.ai/pricing#gpu-clusters).
+
+<Visibility>
+  Guidance for AI agents answering questions about GPU cluster availability or
+  pricing:
+
+  * `GET https://api.together.ai/v1/compute/regions` is the inventory route.
+    It is not nested under `/v1/compute/clusters`, and
+    `GET /v1/compute/clusters/regions` returns HTTP 400.
+  * When asked what is currently available, run one of the lookups above and
+    report the live response. Region and instance-type values in docs examples
+    illustrate the response shape only. Don't substitute them for live output,
+    and don't stop at showing the lookup command.
+  * Pass `--json` to `tg beta clusters list-regions` for machine-readable
+    output.
+  * The regions response contains no prices. Before recommending an instance
+    type as cheapest, fetch [https://www.together.ai/pricing#gpu-clusters](https://www.together.ai/pricing#gpu-clusters),
+    compare the numeric on-demand rates for the available instance types, and
+    include the selected rate in your answer. Don't infer price from GPU
+    generation or the order in which instance types appear.
+</Visibility>
+
 **Create a cluster:**
+
+To create a cluster from a script, pass `--non-interactive` along with a
+`--nvidia-driver-version` and `--cuda-version` pair that the selected region
+supports. The `list-regions` output shows the valid pairs for each region.
 
 ```bash theme={null}
 tg beta clusters create \
@@ -7247,8 +7301,11 @@ tg beta clusters create \
   --num-gpus 8 \
   --gpu-type H100_SXM \
   --region us-central-8 \
+  --nvidia-driver-version 560 \
+  --cuda-version 12.6 \
   --billing-type ON_DEMAND \
-  --cluster-type KUBERNETES
+  --cluster-type KUBERNETES \
+  --non-interactive
 ```
 
 **Specify billing type (reserved vs on-demand):**
@@ -8151,8 +8208,8 @@ Then in VS Code's Remote SSH extension, connect to `slurm-cluster`. The connecti
 
 Cluster access is controlled through Together's [project-based permissions](/docs/projects). Users with access to a project can access all clusters and volumes within it. There are two roles:
 
-* **Admin** -- Can create/delete clusters, modify configurations, manage users, and use clusters
-* **Editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
+* **admin** -- Can create/delete clusters, modify configurations, manage users, and use clusters
+* **editor** -- Can use clusters (SSH, kubectl, Slurm) but can't create, delete, or modify infrastructure
 
 For the full permission matrix, see [Roles & Permissions](/docs/roles-permissions).
 
@@ -8164,7 +8221,7 @@ For step-by-step instructions on adding and removing project members, see [Manag
   **Quick version:** Go to **Settings > Collaborators**, find the project that contains your cluster, click **View Project**, then **Add collaborator**. If you don't see Collaborators yet, use the **GPU Cluster Projects** tab instead (this tab is being replaced by the unified Collaborators page).
 </Info>
 
-New members are added with the **Editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
+New members are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). The user must already belong to your [organization](/docs/organizations).
 
 ### Removing Users
 
@@ -8180,7 +8237,7 @@ See [Removing Members](/docs/projects#removing-members) for the full steps.
   </Card>
 
   <Card title="Roles & Permissions" icon="shield" href="/docs/roles-permissions">
-    Full Admin vs Member permission matrix
+    Full admin vs editor permission matrix
   </Card>
 </CardGroup>
 
@@ -20128,22 +20185,23 @@ Source: https://docs.together.ai/docs/node-repair
 
 Restore unhealthy GPU nodes through automated recommendations or manual repair actions.
 
-Node repair restores GPU nodes that [health checks](/docs/health-checks) have flagged as unhealthy. You can repair nodes through two paths: [auto repair](#auto-node-repair), where the system generates a recommendation based on detected issues, and [manual repair](#manual-node-repair), where you trigger a repair action directly from the UI.
+Node repair restores GPU nodes that [health checks](/docs/health-checks) have flagged as unhealthy. You can repair nodes through two paths: [auto repair](#auto-node-repair), where health checks detect the fault and the system remediates it (after your approval or on its own, depending on the cluster's [confirmation policy](#confirmation-policy)), and [manual repair](#manual-node-repair), where you trigger a repair action directly from the UI.
 
 ## Auto node repair
 
-When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/health-checks#active-health-checks) health checks detect a node-level issue, the system generates a repair recommendation and surfaces it for your review. This is a human-in-the-loop process: Together handles detection and recommends a remediation, but you decide when to proceed.
+When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/health-checks#active-health-checks) health checks detect a node-level issue, the system generates a repair recommendation and remediates the node. Together handles detection and selects the remediation in every case. The cluster's [confirmation policy](#confirmation-policy) decides whether that recommendation waits for your approval or executes on its own.
 
 ### How auto repair works
 
 1. Health checks detect an issue on a node and create an alert with supporting evidence.
 2. The system evaluates the alert and generates a repair recommendation with a suggested mode (for example, migrate to new host).
 3. The recommendation appears in the **Repairs** tab of your cluster.
-4. You review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead.
-5. Once approved, Together executes the repair with the action you chose: cordon, graceful drain, remediation action, and node rejoin.
+4. Under **Approve before repair**, you review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead. Under **Fully automatic**, the system auto-approves an in-scope recommendation with no review and runs the recommended action.
+5. The system cordons the node so no new work lands on it, then applies the cluster's [wait policy](#control-job-interruption).
+6. Together drains the node, executes the remediation action, and rejoins the node to the cluster.
 
 <Note>
-  Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Review recommendations before accepting to confirm your workloads are ready for the disruption.
+  Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Use the [job interruption controls](#control-job-interruption) to give that work time to finish, and under **Approve before repair**, confirm your workloads are ready for the disruption before accepting.
 </Note>
 
 ### Recommended repair actions
@@ -20175,12 +20233,87 @@ The detected issues come from [passive health check signals](/docs/health-checks
 | Slurm node unavailable            | `SlurmNodeUnavailable`           | Warning                              |
 
 <Note>
-  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
+  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today. Some raise an internal alert that Together's team reviews first. A recommendation waits for your approval unless the cluster's [confirmation policy](#confirmation-policy) is set to **Fully automatic** and the fault is in scope for automatic execution.
 </Note>
+
+### Confirmation policy
+
+The confirmation policy controls whether auto repair pauses for a human. Open your cluster in the [cloud console](https://api.together.ai/clusters), select the **Repairs** tab, and find **Auto-remediation policy**.
+
+| **Confirmation policy** | **Behavior**                                                                                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Approve before repair   | Each fault produces a recommendation that waits in the **Repairs** tab. The repair runs after you approve it.                                                                                          |
+| Fully automatic         | Faults you have [scoped for automatic execution](#select-which-faults-and-alerts-repair-automatically) are repaired with no approval. Fastest recovery, at the cost of potentially interrupting a job. |
+
+Clusters use **Approve before repair** by default. Detection, recommendation, and execution are identical under both policies. Only the approval step differs.
+
+#### Fully automatic
+
+When you choose **Fully automatic**, the repair loop is handled for you end to end: passive health checks detect the fault, the system generates a repair recommendation, and auto repair executes it with no human approval. Job protection is handled by the wait policy instead of by a review step.
+
+Automatically approved repairs produce the same audit trail as manually approved ones. In the repair details, **Reviewed by** shows Auto-Approved, alongside the alert evidence that triggered the recommendation.
+
+**Fully automatic** is not all-or-nothing. Use **Repair actions** to choose which faults run unattended and which should wait for human approval, and [turn off auto repair for individual nodes](#turn-off-auto-repair-for-individual-nodes) you want to exclude entirely.
+
+The [behavioral details](#behavioral-details) below apply under both policies.
+
+#### Select which faults and alerts repair automatically
+
+Under **Repair actions**, faults are grouped by the repair they trigger: **Migrate to new host**, **Reprovision**, and **VM reboot**. Expand a group to see the individual faults it covers and check them one at a time. **VM reboot** and **Reprovision** correspond to the reboot and quick reprovision actions in [Available repair actions](#available-repair-actions).
+
+Checked faults repair automatically. Unchecked faults wait for approval in the **Repairs** tab. A group with both shows as mixed.
+
+The **Repair actions** list appears under both confirmation policies, so it also works in the other direction: under **Approve before repair**, check specific faults to let them repair automatically while everything else waits for review.
+
+<Warning>
+  **Reprovision** and **Migrate to new host** destroy all local VM data. When those groups are checked, they run with no review. Store data on PersistentVolumes, or leave those groups unchecked so they stay gated on approval.
+</Warning>
+
+**Remove** is not listed under **Repair actions**. Permanent removal for RMA is always human-initiated and never runs automatically.
+
+#### Turn off auto repair for individual nodes
+
+You can also opt a single node out of auto repair, independent of the cluster's confirmation policy. In the **Nodes** tab, each node has an **Auto Repair** control. Set it to **Disabled** to exclude that node from auto repair while the rest of the cluster keeps the cluster-wide behavior.
+
+Use this to hold a specific node for inspection, for example while debugging a recurring fault you want preserved, without giving up auto repair everywhere else. [Manual repair](#manual-node-repair) remains available for a node that has opted out, and you can re-enable **Auto Repair** on the node at any time.
+
+#### Control job interruption
+
+**Wait for idle** determines whether an approved repair waits for running work to finish. The field below the toggle changes with it.
+
+* **Wait for idle off:** The node is cordoned immediately, the system waits out the **Grace period**, then drains and interrupts whatever is still running, busy or not.
+
+* **Wait for idle on:** The repair holds until the node becomes idle, or until **Maximum wait** expires, whichever comes first. Check **Do not interrupt running jobs** to remove the upper bound and wait indefinitely for the node to go idle.
+
+**Wait for idle** starts on with a two-hour **Maximum wait** when you first configure the policy, and both fields cap at 24 hours. The console shows these controls when **Fully automatic** is selected, but the saved values govern approved repairs under both policies. A cluster that has never saved wait settings waits 30 minutes after approval under **Approve before repair**, and does not wait under **Fully automatic**.
+
+<Note>
+  Both fields are in hours and accept fractional values: `0.5` is 30 minutes. Cordoning happens at the start of the wait either way, so no new work lands on a node that is queued for repair.
+</Note>
+
+Set the wait to at least your checkpoint interval so a training job can write a checkpoint before the node drains. Enabling **Do not interrupt running jobs** on a cluster running long jobs means a faulty node can stay in service indefinitely. The node is not repaired until the job ends on its own.
+
+#### Choosing a policy
+
+Choose **Fully automatic** when:
+
+* Workloads checkpoint frequently, or are replicated inference deployments that tolerate losing a replica.
+* The cluster is large enough that manual review is the bottleneck in mean time to recovery.
+* Spare capacity means a node leaving the pool does not block scheduling.
+
+Choose **Approve before repair** when:
+
+* Long-running training jobs checkpoint infrequently.
+* The cluster runs at full capacity, so losing a node stalls a job.
+* You are debugging a recurring fault and want the node preserved for inspection.
+
+If you want most of the benefit with less exposure, set **Fully automatic** and check only **VM reboot**. Transient faults, the majority by volume, clear without you, and anything that destroys local data still waits for review.
 
 ### Override the recommended action
 
 When you review a recommendation, the system marks its suggested action as recommended. You can approve that action, or override it and approve a different action instead. Overriding lets you escalate or de-escalate the repair when you have more context than the automated policy. For example, you can choose migrate to new host instead of a recommended reboot when you suspect a hardware fault.
+
+Overriding applies only to recommendations that wait for review, so a recommendation that runs automatically under **Fully automatic** executes its recommended action with no opportunity for override.
 
 The review shows the health check failures that triggered the recommendation alongside the four repair actions:
 
@@ -20203,7 +20336,7 @@ See [Available repair actions](#available-repair-actions) for guidance on when t
 
 To view repair recommendations and history:
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the [cloud console](https://api.together.ai/clusters).
 2. Select the **Repairs** tab.
 
 The Repairs table shows all repair events with the following columns:
@@ -20211,7 +20344,7 @@ The Repairs table shows all repair events with the following columns:
 * **Node:** The affected node name.
 * **State:** The current status of the repair. Values include Auto Resolved (issue resolved before action was taken), Succeeded (repair completed), and in-progress states.
 * **Mode:** The remediation action (for example, Migrate to new host).
-* **Trigger:** How the repair was initiated. Automated (generated by health checks) or Manual (triggered by a user).
+* **Trigger:** How the repair was initiated. Automated (generated by health checks) or Manual (triggered by a user). Automatically approved repairs show Auto-Approved in the repair's **Reviewed by** field.
 * **Created:** When the repair recommendation was generated.
 
 ### Repair details
@@ -20279,7 +20412,7 @@ When you encounter node problems or want to trigger a repair without waiting for
 
 ### How to trigger manual repair
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the [cloud console](https://api.together.ai/clusters).
 2. Go to the **Worker Nodes** section.
 3. Find the problematic node.
 4. Select the **⋮** (three dots) menu in the **State** column.
@@ -21497,7 +21630,6 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
 | Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1048576        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
-| Moonshot          | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 512000         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
 | OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
 | OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
@@ -21509,10 +21641,8 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
 | Google            | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
 | Pearl AI          | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
-| Deepcogito        | Cogito v2.1 671B             | deepcogito/cogito-v2-1-671b             | 163840         | \$1.25                        | -                                    | \$1.25                         | -            | -                | -                  |
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
-| LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
 | Thinking Machines | Inkling Small                | thinkingmachines/Inkling-Small          | 524288         | \$0.50                        | -                                    | \$1.20                         | -            | -                | -                  |
 | Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | Free                          | -                                    | Free                           | -            | -                | -                  |
 | Meta              | Muse Glimmer 30B             | meta-models/Muse-Glimmer-30B            | 131072         | \$0.35                        | \$0.04                               | \$1.50                         | FP8          | -                | -                  |
@@ -21614,7 +21744,6 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 | Minimax      | Minimax M3     | MiniMaxAI/MiniMax-M3      | 524288         | \$0.30                        | \$1.20                         |
 | Moonshot     | Kimi K3        | moonshotai/Kimi-K3        | 1048576        | \$3.00                        | \$15.00                        |
 | Moonshot     | Kimi K2.7 Code | moonshotai/Kimi-K2.7-Code | 262144         | \$0.95                        | \$4.00                         |
-| Moonshot     | Kimi K2.6      | moonshotai/Kimi-K2.6      | 262144         | \$1.20                        | \$4.50                         |
 
 ### **Vision model examples**
 
@@ -26092,6 +26221,217 @@ Set your Together AI API key:
 ```
 
 
+# Build a CSV data analysis app with the code interpreter
+Source: https://docs.together.ai/docs/csv-data-analysis-with-code-interpreter
+
+Build a full-stack Next.js app that answers questions about CSV data with AI-generated Python code.
+
+[CSVToChat](https://csvtochat.com) is an open-source app that turns static CSV files into a conversation. You upload a CSV, ask questions in natural language, and get back answers and charts produced by Python code that a Together AI model writes and the [code interpreter](/docs/together-code-interpreter) executes.
+
+<Frame>
+  <img alt="The CSVToChat interface showing a chat about an uploaded CSV file" />
+</Frame>
+
+This guide walks through the AI core of CSVToChat as it exists in the [open-source repository](https://github.com/nutlope/csvtochat): how the app describes the CSV to the model without flooding its context, how it generates analysis code, and how it runs that code in a sandbox. Each section names the source file it covers and links to it on GitHub, so you can read the guide alongside the real code.
+
+<Note>
+  The TypeScript examples use [Vercel's AI SDK](/docs/using-together-with-vercels-ai-sdk) v6 and the `together-ai` Node SDK. They are adapted from the CSVToChat source and updated to current SDK and model versions, so they can differ in small ways from the linked files.
+</Note>
+
+## Provide CSV context without flooding the model
+
+Sending an entire CSV file to the model doesn't scale, as large files will overflow the context window, and even mid-sized ones can crowd out the conversation. Instead, the app's system prompt gives the model a compact description of the data:
+
+1. **S3 URL:** The generated code downloads the full dataset at execution time, so the model never needs the raw rows in context.
+2. **Column names:** The model needs the schema to write correct code.
+3. **Sample rows:** A few representative rows guide the analysis.
+4. **Instructions:** Constraints on code structure and output format.
+
+<Frame>
+  <img alt="Generated Python code that downloads the CSV and analyzes it" />
+</Frame>
+
+The `generateCodePrompt` function in [`src/lib/prompts.ts`](https://github.com/nutlope/csvtochat/blob/main/src/lib/prompts.ts) assembles these pieces into a system prompt that the model will use to generate the analysis code:
+
+```typescript theme={null}
+const generateCodePrompt = ({
+  csvFileUrl,
+  csvHeaders,
+  csvRows,
+}: {
+  csvFileUrl?: string;
+  csvHeaders?: string[];
+  csvRows?: { [key: string]: string }[];
+}) => {
+  // Prepare sample rows as a markdown table if available
+  let sampleRowsSection = "";
+  if (csvRows && csvRows.length > 0 && csvHeaders && csvHeaders.length > 0) {
+    const sampleRows = csvRows.slice(0, 3);
+    const headerRow = `| ${csvHeaders.join(" | ")} |`;
+    const separatorRow = `|${csvHeaders.map(() => "---").join("|")}|`;
+    const dataRows = sampleRows
+      .map((row) => `| ${csvHeaders.map((h) => row[h] ?? "").join(" | ")} |`)
+      .join("\n");
+    sampleRowsSection = `\n\nHere are a few sample rows from the dataset:\n\n${headerRow}\n${separatorRow}\n${dataRows}`;
+  }
+
+  return `
+You are an expert data scientist assistant that writes python code to answer questions about a dataset.
+
+You are given a dataset and a question.
+
+The dataset is available at the following S3 URL: ${
+    csvFileUrl || "[NO FILE URL PROVIDED]"
+  }
+The dataset has the following columns: ${
+    csvHeaders?.join(", ") || "[NO HEADERS PROVIDED]"
+  }
+${sampleRowsSection}
+
+You must always write python code that:
+- Downloads the CSV from the provided S3 URL (using requests or pandas.read_csv).
+- Uses the provided columns for analysis.
+- Never outputs more than one graph per code response.
+- Limits graph complexity to maintain readability.
+- Never generates HTML output. Only use Python print statements or graphs/plots for output.
+
+Always return the python code in a single unique code block.
+
+Python sessions come pre-installed with pandas, matplotlib, seaborn, numpy, and other essential data science libraries.
+`;
+};
+```
+
+## Generate analysis code
+
+When a user asks a question, the model receives their query, the CSV metadata via the system prompt, and the conversation history. It responds with Python code that:
+
+* Downloads the CSV from the provided S3 URL using `pandas.read_csv()`.
+* Performs the requested analysis using data science libraries.
+* Produces either text results or a single visualization.
+
+The chat route handler in [`src/app/api/chat/route.ts`](https://github.com/nutlope/csvtochat/blob/main/src/app/api/chat/route.ts) calls `streamText` and streams the response to the client so the user sees the code as the model writes it:
+
+```typescript theme={null}
+import { streamText } from "ai";
+import { createTogetherAI } from "@ai-sdk/togetherai";
+
+const togetherai = createTogetherAI({
+  apiKey: process.env.TOGETHER_API_KEY ?? "",
+});
+
+export const generateAnalysisCode = (
+  userQuestion: string,
+  csvFileUrl: string,
+  csvHeaders: string[],
+  csvRows: { [key: string]: string }[],
+  model: string = "moonshotai/Kimi-K2.7-Code",
+) => {
+  const result = streamText({
+    model: togetherai(model),
+    system: generateCodePrompt({ csvFileUrl, csvHeaders, csvRows }),
+    messages: [{ role: "user", content: userQuestion }],
+  });
+
+  // Stream the response to the client as UI messages
+  return result.toUIMessageStreamResponse({ sendReasoning: true });
+};
+```
+
+## Execute code in the sandbox
+
+Model-generated code can contain mistakes, and in an app that accepts arbitrary user data you have to assume it might include malicious content. CSVToChat never runs generated code on its own servers. Instead, the `runPython` helper in [`src/lib/coding.ts`](https://github.com/nutlope/csvtochat/blob/main/src/lib/coding.ts) sends the code to the Together [code interpreter](/docs/together-code-interpreter), which executes it in an isolated sandbox and returns the outputs:
+
+```typescript theme={null}
+import Together from "together-ai";
+
+const together = new Together({
+  apiKey: process.env.TOGETHER_API_KEY,
+});
+
+/**
+ * Executes Python code with the Together code interpreter.
+ */
+export async function runPython(code: string, sessionId?: string) {
+  const response = await together.codeInterpreter.execute({
+    code,
+    language: "python",
+    ...(sessionId ? { session_id: sessionId } : {}),
+  });
+
+  if (response.errors) {
+    return { status: "error" as const, errors: response.errors };
+  }
+
+  return {
+    status: "success" as const,
+    // Pass this back as sessionId on the next call to reuse the same
+    // sandbox, so variables and installed packages persist across questions
+    sessionId: response.data.session_id,
+    // stdout/stderr text plus rich outputs such as image/png for charts
+    outputs: response.data.outputs,
+  };
+}
+```
+
+The `outputs` array contains `stdout` and `stderr` text entries along with rich display outputs. When the generated code renders a chart, the sandbox returns it as a base64-encoded `image/png` entry that the frontend displays inline.
+
+## End-to-end flow
+
+A full interaction runs through these steps:
+
+1. **Upload:** The app parses the column names and sample rows, then uploads the file to S3.
+2. **Question:** The user asks a question, and the app builds the system prompt from the CSV context.
+3. **Generation:** The model writes Python code, which streams to the frontend in real time.
+4. **Execution:** The app extracts the code block from the finished response and runs it in the sandbox.
+5. **Display:** The frontend renders the printed results or chart.
+
+In the app, the client extracts the code block from the streamed message with `extractCodeFromText` in [`src/lib/utils.ts`](https://github.com/nutlope/csvtochat/blob/main/src/lib/utils.ts), then posts it to the execution route in [`src/app/api/coding/route.ts`](https://github.com/nutlope/csvtochat/blob/main/src/app/api/coding/route.ts). The same flow condensed into one server-side function looks like this:
+
+````typescript theme={null}
+const extractPythonCode = (text: string) => {
+  const match = text.match(/```python\s*([\s\S]*?)```/);
+  return match ? match[1].trim() : null;
+};
+
+export const analyzeCsv = async (
+  question: string,
+  csvFileUrl: string,
+  csvHeaders: string[],
+  csvRows: { [key: string]: string }[],
+) => {
+  // 1. Generate analysis code
+  const result = streamText({
+    model: togetherai("moonshotai/Kimi-K2.7-Code"),
+    system: generateCodePrompt({ csvFileUrl, csvHeaders, csvRows }),
+    messages: [{ role: "user", content: question }],
+  });
+
+  // 2. Wait for the full response and pull out the code block
+  const code = extractPythonCode(await result.text);
+  if (!code) return null;
+
+  // 3. Run the code in the sandbox
+  return runPython(code);
+};
+````
+
+## Choose a model
+
+CSVToChat lets users pick from several Together AI models depending on the complexity of the analysis:
+
+* [**Kimi K2.7 Code**](https://api.together.ai/models/moonshotai/Kimi-K2.7-Code) (default): Fast, reliable code generation.
+* [**DeepSeek-V4-Pro**](https://api.together.ai/models/deepseek-ai/DeepSeek-V4-Pro): Complex analysis tasks that benefit from more reasoning.
+* [**GPT-OSS 120B**](https://api.together.ai/models/openai/gpt-oss-120b): Low-cost code generation for shorter questions.
+* [**Llama 3.3 70B Instruct Turbo**](https://api.together.ai/models/meta-llama/Llama-3.3-70B-Instruct-Turbo): Balanced performance and cost.
+
+See [recommended models](/docs/inference/recommended-models) for current picks, and the [serverless model catalog](/docs/serverless/models) for the full list.
+
+## Explore the full app
+
+The production app adds chat history persistence, per-question execution timeouts, and rate limiting on top of the core flow covered here. CSVToChat is open source, so you can read the complete implementation on [GitHub](https://github.com/nutlope/csvtochat) or try it at [csvtochat.com](https://csvtochat.com).
+
+
 # Build an AI data analyst
 Source: https://docs.together.ai/docs/data-analyst-agent
 
@@ -29817,80 +30157,84 @@ Source: https://docs.together.ai/docs/guides
 
 Quickstarts and step-by-step guides for building with Together AI.
 
-<SubHeading description={"Design agent loops, tools, and planners"} />
+<SubHeading description={"Design agent loops, tools, and planners."} />
 
 <GridGuides>
-  <GuideCard title="Agent Workflows" description="Orchestrating multiple language model calls to solve complex tasks." href="/docs/workflows" />
+  <GuideCard title="Agent workflows" description="Orchestrate multiple model calls to solve complex tasks." href="/docs/workflows" />
 
-  <GuideCard title="Sequential Agent Workflow" description="Tasks execute one after another when later steps depend on earlier ones." href="/docs/sequential-agent-workflow" />
+  <GuideCard title="Sequential workflows" description="Chain tasks so each step builds on the last." href="/docs/sequential-agent-workflow" />
 
-  <GuideCard title="Parallel Workflows" description="Multiple tasks execute simultaneously for improved performance." href="/docs/parallel-workflows" />
+  <GuideCard title="Parallel workflows" description="Run tasks simultaneously for faster results." href="/docs/parallel-workflows" />
 
-  <GuideCard title="Conditional Workflows" description="The workflow branches based on evaluation results." href="/docs/conditional-workflows" />
+  <GuideCard title="Conditional workflows" description="Branch the workflow based on evaluation results." href="/docs/conditional-workflows" />
 
-  <GuideCard title="Iterative Workflow" description="A task repeats until a condition is met for optimization." href="/docs/iterative-workflow" />
+  <GuideCard title="Iterative workflows" description="Repeat a task until a condition is met." href="/docs/iterative-workflow" />
 
-  <GuideCard title="Agent Integrations" description="Using OSS agent frameworks with Together AI" href="/docs/integrations-2" />
+  <GuideCard title="Agent framework integrations" description="Use frameworks like LangGraph and CrewAI with Together AI." href="/docs/integrations-2" />
 </GridGuides>
 
-<SubHeading description={"Full-stack patterns you can copy"} />
+<SubHeading description={"Full-stack patterns you can copy."} />
 
 <GridGuides>
-  <GuideCard title="How to Build Coding Agents" description="How to build your own simple code editing agent from scratch in 400 lines of code!" href="/docs/how-to-build-coding-agents" />
+  <GuideCard title="Build a coding agent" description="Write a code-editing agent from scratch in 400 lines." href="/docs/how-to-build-coding-agents" />
 
-  <GuideCard title="How to Build a Lovable Clone with Kimi K2" description="Learn how to build a full-stack Next.js app that can generate React apps with a single prompt." href="/docs/how-to-build-a-lovable-clone-with-kimi-k2" />
+  <GuideCard title="Build a Lovable clone" description="Generate React apps from a single prompt with Kimi K2." href="/docs/how-to-build-a-lovable-clone-with-kimi-k2" />
 
-  <GuideCard title="How to Build Real-time Audio Transcription App" description="Build real-time audio transcription using Together AI models." href="/docs/how-to-build-real-time-audio-transcription-app" />
+  <GuideCard title="Build a CSV data analysis app" description="Answer questions about CSV data with AI-generated Python code." href="/docs/csv-data-analysis-with-code-interpreter" />
 
-  <GuideCard title="Data Analyst Agent" description="Build an AI agent that can analyze data and provide insights." href="/docs/data-analyst-agent" />
+  <GuideCard title="Build a resume-to-website app" description="Turn PDF resumes into personal websites with structured outputs." href="/docs/pdf-to-website-with-structured-outputs" />
 
-  <GuideCard title="Open NotebookLM PDF to Podcast" description="Convert PDF documents into podcast episodes using AI." href="/docs/open-notebooklm-pdf-to-podcast" />
+  <GuideCard title="Real-time audio transcription" description="Transcribe live audio in a full-stack app." href="/docs/how-to-build-real-time-audio-transcription-app" />
 
-  <GuideCard title="AI Tutor" description="Build an intelligent tutoring system with Together AI." href="/docs/ai-tutor" />
+  <GuideCard title="Data analyst agent" description="Build an agent that analyzes data and surfaces insights." href="/docs/data-analyst-agent" />
 
-  <GuideCard title="Build a Chat API on Render" description="Deploy an authenticated single-turn chat API backed by Together AI to a Render web service." href="/docs/render-chat-api" />
+  <GuideCard title="PDF to podcast" description="Convert PDF documents into podcast episodes with Open NotebookLM." href="/docs/open-notebooklm-pdf-to-podcast" />
+
+  <GuideCard title="AI tutor" description="Build an intelligent tutoring system." href="/docs/ai-tutor" />
+
+  <GuideCard title="Chat API on Render" description="Deploy an authenticated chat API to a Render web service." href="/docs/render-chat-api" />
 </GridGuides>
 
-<SubHeading description={"Build intelligent search and retrieval systems"} />
+<SubHeading description={"Build search and retrieval systems grounded in your data."} />
 
 <GridGuides>
-  <GuideCard title="How to Improve Search With Rerankers" description="Learn how you can improve semantic search quality with reranker models!" href="/docs/how-to-improve-search-with-rerankers" />
+  <GuideCard title="RAG quickstart" description="Get started with retrieval-augmented generation." href="/docs/quickstart-retrieval-augmented-generation-rag" />
 
-  <GuideCard title="AI Search Engine" description="Build a simplified Perplexity-style search using Together models." href="/docs/ai-search-engine" />
+  <GuideCard title="RAG workflow" description="Combine retrieval and generation for grounded answers." href="/docs/building-a-rag-workflow" />
 
-  <GuideCard title="Building a RAG Workflow" description="Combine retrieval and generation to build grounded RAG apps." href="/docs/building-a-rag-workflow" />
+  <GuideCard title="Contextual RAG" description="Implement Anthropic's contextual retrieval technique." href="/docs/how-to-implement-contextual-rag-from-anthropic" />
 
-  <GuideCard title="How to Implement Contextual RAG from Anthropic" description="Implement advanced RAG techniques with contextual understanding." href="/docs/how-to-implement-contextual-rag-from-anthropic" />
+  <GuideCard title="Improve search with rerankers" description="Improve semantic search quality with reranker models." href="/docs/how-to-improve-search-with-rerankers" />
 
-  <GuideCard title="Quickstart Retrieval Augmented Generation RAG" description="Get started with RAG using Together AI's powerful models." href="/docs/quickstart-retrieval-augmented-generation-rag" />
+  <GuideCard title="AI search engine" description="Build a simplified Perplexity-style search engine." href="/docs/ai-search-engine" />
 </GridGuides>
 
-<SubHeading description={"Essential guides and tutorials"} />
+<SubHeading description={"Coding tools, integrations, and capability guides."} />
 
 <GridGuides>
-  <GuideCard title="How to Use OpenClaw with Together AI" description="Learn how to pair OpenClaw, a powerful autonomous agent, with Together AI's cutting-edge open-source models like GLM 4.7, Kimi K2, DeepSeek, and Llama 4 to save on costs and boost productivity." href="/docs/how-to-use-openclaw" />
+  <GuideCard title="OpenClaw" description="Run the OpenClaw autonomous agent on open-source models." href="/docs/how-to-use-openclaw" />
 
-  <GuideCard title="How to run nanochat on GPU Clusters⚡️" description="Learn how to train Andrej Karpathy's end-to-end ChatGPT clone on Together's on-demand GPU clusters" href="/docs/nanochat-on-instant-clusters" />
+  <GuideCard title="Cline" description="Use Cline for AI-powered development in your editor." href="/docs/how-to-use-cline" />
 
-  <GuideCard title="Quickstart Using Hugging Face Inference" description="Use Together AI with Hugging Face models and workflows." href="/docs/quickstart-using-hugging-face-inference" />
+  <GuideCard title="TogetherLink" description="Run Claude Code, Codex, and other coding agents on Together AI models." href="/docs/how-to-use-togetherlink" />
 
-  <GuideCard title="Using Together with Vercel's AI SDK" description="Build powerful apps with Vercel's AI SDK and Together AI." href="/docs/using-together-with-vercels-ai-sdk" />
+  <GuideCard title="Run nanochat on GPU clusters" description="Train Karpathy's end-to-end ChatGPT clone on on-demand clusters." href="/docs/nanochat-on-instant-clusters" />
 
-  <GuideCard title="Using Together with Mastra" description="Integrate Together AI models with the Mastra framework for building AI-powered features." href="/docs/using-together-with-mastra" />
+  <GuideCard title="Hugging Face inference" description="Use Together AI with Hugging Face models and workflows." href="/docs/quickstart-using-hugging-face-inference" />
 
-  <GuideCard title="Logprobs" description="Understanding and using log probabilities in language models." href="/docs/inference/chat/logprobs" />
+  <GuideCard title="Vercel AI SDK" description="Build apps with Vercel's AI SDK and Together AI." href="/docs/using-together-with-vercels-ai-sdk" />
 
-  <GuideCard title="Next.js Chat Quickstart" description="Spin up a production-ready chatbot using Together + Next.js." href="/docs/nextjs-chat-quickstart" />
+  <GuideCard title="Mastra" description="Integrate Together AI models with the Mastra framework." href="/docs/using-together-with-mastra" />
 
-  <GuideCard title="Quickstart How to Do OCR" description="Build optical character recognition applications with AI." href="/docs/quickstart-how-to-do-ocr" />
+  <GuideCard title="Next.js chat quickstart" description="Spin up a production-ready chatbot with Next.js." href="/docs/nextjs-chat-quickstart" />
 
-  <GuideCard title="How to Use Cline" description="Get started with Cline for AI-powered development." href="/docs/how-to-use-cline" />
+  <GuideCard title="OCR quickstart" description="Extract text from images with vision models." href="/docs/quickstart-how-to-do-ocr" />
 
-  <GuideCard title="How to Use TogetherLink" description="Run Claude Code, Codex, Pi Code, OpenCode, and ChatGPT Desktop with Together AI models." href="/docs/how-to-use-togetherlink" />
+  <GuideCard title="Logprobs" description="Use log probabilities to inspect model confidence." href="/docs/inference/chat/logprobs" />
 
-  <GuideCard title="Videos" description="Generate high-quality videos from text and image prompts." href="/docs/inference/videos/overview" />
+  <GuideCard title="Videos" description="Generate videos from text and image prompts." href="/docs/inference/videos/overview" />
 
-  <GuideCard title="Mixture of Agents" description="Combine multiple agents for enhanced problem-solving capabilities." href="/docs/mixture-of-agents" />
+  <GuideCard title="Mixture of agents" description="Combine multiple models for better answers." href="/docs/mixture-of-agents" />
 </GridGuides>
 
 
@@ -34471,11 +34815,11 @@ Together's IAM is built around five concepts that work together:
 | Concept                                                         | What it is                                                                                                     |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | [Organization](/docs/organizations)                             | Your company's account on Together. One org = one bill.                                                        |
-| [Project](/docs/projects)                                       | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
+| [Project](/docs/projects)                                       | An isolated workspace within your organization. Resources, collaborators, and API keys are scoped to projects. |
 | [Resource](#resources)                                          | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
 | [Member](#organization-members-and-project-collaborators)       | A user with access to your organization.                                                                       |
-| [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
-| [API key](/docs/api-keys-authentication)                        | A Project-scoped credential for authenticating API requests.                                                   |
+| [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific project (organization member or external user).                               |
+| [API key](/docs/api-keys-authentication)                        | A project-scoped credential for authenticating API requests.                                                   |
 
 ## How it all fits together
 
@@ -34501,28 +34845,28 @@ flowchart TD
     class U,EU,O,P,K,R,A,R1,R2,R3,R4,R5 box;
 ```
 
-**The key principle:** Projects are the collaboration boundary. Collaborators get access to a Project, and that gives them access to everything inside it (Clusters, Models, Endpoints, etc.). Access decisions happen at the Project level, not on individual resources.
+**The key principle:** Projects are the collaboration boundary. Collaborators get access to a project, and that gives them access to everything inside it (clusters, models, endpoints, etc.). Access decisions happen at the project level, not on individual resources.
 
 ## Resources
 
 A resource is anything you create or provision on Together:
 
-* **GPU Clusters**: Clusters for training and inference
-* **Fine-tuned Models**: Models you've customized with your data
-* **Dedicated model inference**: Always-on inference endpoints
-* **Evaluations**: Model evaluation runs
-* **Files**: Training data, datasets, and other uploads
+* **GPU clusters:** Clusters for training and inference.
+* **Fine-tuned models:** Models you've customized with your data.
+* **Dedicated model inference:** Always-on inference endpoints.
+* **Evaluations:** Model evaluation runs.
+* **Files:** Training data, datasets, and other uploads.
 
-Resources belong to a Project. Everyone with access to that Project can see and use those resources, subject to their [role permissions](/docs/roles-permissions).
+Resources belong to a project. Everyone with access to that project can see and use those resources, subject to their [role permissions](/docs/roles-permissions).
 
 ## Organization members and project collaborators
 
 Together uses different terminology at each level:
 
-* **Organization Members** are users who belong to your Organization. They are [invited via email](https://api.together.ai/settings/organization/~current/members) or provisioned through SSO. Each Member is assigned an Admin or Developer role at the Organization level.
-* **Project Collaborators** are users who have been granted access to [a specific Project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be Organization Members or [External Collaborators](/docs/roles-permissions#external-collaborators) who participate in a Project without belonging to the parent Organization.
+* **Organization members** are users who belong to your organization. They are [invited via email](https://api.together.ai/settings/organization/~current/members) or provisioned through SSO. Each member is assigned an admin or developer role at the organization level.
+* **Project collaborators** are users who have been granted access to [a specific project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be organization members or [external collaborators](/docs/roles-permissions#external-collaborators) who participate in a project without belonging to the parent organization.
 
-Each Collaborator is assigned an Admin or Editor role at the Project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
+Each collaborator is assigned an admin or editor role at the project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
 
 ## Product-specific access guides
 
@@ -34530,7 +34874,7 @@ Together's IAM model applies consistently across all products. These guides cove
 
 <CardGroup>
   <Card title="GPU Clusters" icon="server" href="/docs/gpu-clusters-management#managing-cluster-access">
-    Add and remove Collaborators from GPU Cluster Projects, understand in-cluster Kubernetes permissions
+    Add and remove collaborators from GPU cluster projects, understand in-cluster Kubernetes permissions
   </Card>
 </CardGroup>
 
@@ -34538,7 +34882,7 @@ Together's IAM model applies consistently across all products. These guides cove
 
 <CardGroup>
   <Card title="Organizations" icon="building" href="/docs/organizations">
-    Set up your Organization and manage membership
+    Set up your organization and manage membership
   </Card>
 
   <Card title="Projects" icon="folder" href="/docs/projects">
@@ -34550,7 +34894,7 @@ Together's IAM model applies consistently across all products. These guides cove
   </Card>
 
   <Card title="API Keys" icon="key" href="/docs/api-keys-authentication">
-    Create and manage Project-scoped credentials
+    Create and manage project-scoped credentials
   </Card>
 
   <Card title="Single Sign-On" icon="lock" href="/docs/sso">
@@ -37673,65 +38017,65 @@ If you're ready to create your own PDF to podcast app like above [sign up for To
 # Organizations
 Source: https://docs.together.ai/docs/organizations
 
-Create and manage your Together Organization, invite Members, and configure billing
+Create and manage your Together organization, invite members, and configure billing
 
-An Organization is your company's account on Together. It's the top-level container for everything: Projects, Members, resources, and billing. Every Together account belongs to one Organization.
+An organization is your company's account on Together. It's the top-level container for everything: projects, members, resources, and billing. Every Together account belongs to one organization.
 
-Manage your Organization from [**Organization Settings**](https://api.together.ai/settings/organization/~current) in the Together dashboard.
+Manage your organization from [**Organization Settings**](https://api.together.ai/settings/organization/~current) in the Together dashboard.
 
 ## Organization membership
 
-Members join your Organization using either Single Sign-On (SSO) or Invitation-Based (OAuth) authentication. These methods are mutually exclusive -- you must choose one or the other.
+Members join your organization using either single sign-on (SSO) or invitation-based (OAuth) authentication. These methods are mutually exclusive -- you must choose one or the other.
 
 ### Single sign-on (SSO)
 
-If your company uses an Identity Provider (Okta, Google Workspace, Microsoft Entra, JumpCloud) with SSO configured, Members authenticate through your IdP and are automatically provisioned into your Organization.
+If your company uses an Identity Provider (Okta, Google Workspace, Microsoft Entra, JumpCloud) with SSO configured, members authenticate through your IdP and are automatically provisioned into your organization.
 
 See [Single Sign-On (SSO)](/docs/sso) for setup instructions.
 
 ### Invitation-based (OAuth)
 
-Admins in paid tier Organizations can invite Members by email. Here is how:
+Admins in paid tier organizations can invite members by email. Here is how:
 
-1. Go to [**Organization > Member Settings**](https://api.together.ai/settings/organization/~current/members)
-2. Select **Invite Member**
-3. Enter the user's email address
-4. Select **Send Invitation**
+1. Go to [**Organization > Member Settings**](https://api.together.ai/settings/organization/~current/members).
+2. Select **Invite Member**.
+3. Enter the user's email address.
+4. Select **Send Invitation**.
 
-Invitations expire after **7 days**. The recipient will receive an email with a link to accept. A Together account will be created when they accept. If the user already has an existing Together account, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) for assistance migrating it to your Organization.
+Invitations expire after **7 days**. The recipient will receive an email with a link to accept. A Together account will be created when they accept. If the user already has an existing Together account, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) for assistance migrating it to your organization.
 
 ### Removing members
 
-Admins can remove Members at any time:
+Admins can remove members at any time:
 
-1. Go to [**Organization > Member Settings**](https://api.together.ai/settings/organization/~current/members)
-2. Find the Member you want to remove
-3. Select the three-dot menu next to their name
-4. Select **Remove Member**
+1. Go to [**Organization > Member Settings**](https://api.together.ai/settings/organization/~current/members).
+2. Find the member you want to remove.
+3. Select the three-dot menu next to their name.
+4. Select **Remove Member**.
 
 <Warning>
-  Removing a Member revokes their access to all Projects and resources in the Organization. Resources they created (models, endpoints, files) remain in the Project.
+  Removing a member revokes their access to all projects and resources in the organization. Resources they created (models, endpoints, files) remain in the project.
 </Warning>
 
 <Info>
-  If your Organization uses SSO, a removed Member may be re-provisioned automatically the next time they authenticate through your IdP. To fully revoke access, remove or deactivate the user in your Identity Provider.
+  If your organization uses SSO, a removed member may be re-provisioned automatically the next time they authenticate through your IdP. To fully revoke access, remove or deactivate the user in your Identity Provider.
 </Info>
 
 ## Roles
 
-Organizations support two roles: **Admin** and **Developer**. For a full breakdown of what each role can do across the platform, see [Roles & Permissions](/docs/roles-permissions).
+Organizations support two roles: **admin** and **developer**. For a full breakdown of what each role can do across the platform, see [Roles & Permissions](/docs/roles-permissions).
 
 <Note>
-  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that Admins can manage infrastructure and team membership, while Developers can use resources but not modify them. See [Roles & Permissions](/docs/roles-permissions) for details.
+  Roles and permissions are being progressively rolled out across products and services. Today, the primary distinction is that admins can manage infrastructure and team membership, while developers can use resources but not modify them. See [Roles & Permissions](/docs/roles-permissions) for details.
 </Note>
 
 ## Projects
 
-Projects are isolated workspaces within your Organization. They scope resources, API keys, and membership so teams can work independently.
+Projects are isolated workspaces within your organization. They scope resources, API keys, and membership so teams can work independently.
 
-Every Organization starts with a [**Default Project**](/docs/projects#default-project). All Members are automatically added to it when they join. Create additional Projects to separate resources by team, environment, or workload.
+Every organization starts with a [default project](/docs/projects#default-project). All members are automatically added to it when they join. Create additional projects to separate resources by team, environment, or workload.
 
-For full details on creating and managing Projects, see [Projects](/docs/projects).
+For full details on creating and managing projects, see [Projects](/docs/projects).
 
 ## Privacy
 
@@ -37739,7 +38083,7 @@ Privacy toggles for prompt history, training opt-in, and passthrough models are 
 
 ## Billing
 
-[Billing](https://api.together.ai/settings/organization/~current/billing) is consolidated at the Organization level. All usage across all Projects and Members rolls up to a single bill. Individual Members are not billed separately.
+[Billing](https://api.together.ai/settings/organization/~current/billing) is consolidated at the organization level. All usage across all projects and members rolls up to a single bill. Individual members are not billed separately.
 
 Members can jointly purchase and spend credits. For details, see [Credits & Billing](/docs/billing-credits).
 
@@ -38416,6 +38760,237 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
 * Dividing a data analysis task into subtasks like cleaning the data, identifying trends, and generating visualizations. Each step is handled by separate worker LLMs, and the orchestrator integrates their findings into a complete analytical report.
 
 
+# Build a resume-to-website app with structured outputs
+Source: https://docs.together.ai/docs/pdf-to-website-with-structured-outputs
+
+Build an AI-powered site builder that turns PDF resumes into personal websites with structured outputs.
+
+[Self.so](https://www.self.so) is an open-source personal site builder that turns a PDF resume into a live website. You upload a resume, and a Together AI model extracts its content into a typed JSON object that the app renders as a site.
+
+<Frame>
+  <img alt="The Self.so home page with a resume upload prompt" />
+</Frame>
+
+Building a personal website normally requires a lot of manual data entry, plus some design work. Self.so automates the whole process, and this guide walks through the AI pipeline that makes it work as it exists in the [open-source repository](https://github.com/nutlope/self.so): extracting text from the PDF, checking the content for safety, and generating structured data with a schema. Each step uses Together AI models through [Vercel's AI SDK](/docs/using-together-with-vercels-ai-sdk), and each section names the source file it covers and links to it on GitHub.
+
+<Note>
+  The TypeScript examples use [Vercel's AI SDK](/docs/using-together-with-vercels-ai-sdk) v6 and Zod v4. They are adapted from the Self.so source and updated to current SDK and model versions, so they can differ in small ways from the linked files.
+</Note>
+
+## Model selection
+
+Self.so uses two models, each chosen to perform a specific job:
+
+* [**Llama Guard 4 12B**](https://api.together.ai/models/meta-llama/Llama-Guard-4-12B): Content safety classification.
+* [**Kimi K2.6**](https://api.together.ai/models/moonshotai/Kimi-K2.6): Structured data extraction.
+
+Llama Guard is purpose-built for safety classification, and Kimi K2.6 follows schema instructions reliably for structured output generation. See [recommended models](/docs/inference/recommended-models) for our current picks.
+
+## Data flow
+
+To keep each model call focused and avoid passing raw files around, the app separates concerns into four steps:
+
+1. **Upload and storage:** PDFs are uploaded to S3 with temporary URLs.
+2. **Text extraction:** PDF content is extracted to plain text, and the raw file is never sent to a model.
+3. **Safety validation:** The extracted text is checked for safety before further processing.
+4. **Structured generation:** Clean text goes to the extraction model with specific instructions to generate the structured data.
+
+### Extract text from the PDF
+
+The `scrapePdfContent` function in [`lib/server/scrapePdfContent.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/scrapePdfContent.ts) extracts text with `pdfjs-dist`, with guards against fetching arbitrary URLs, oversized files, and JavaScript embedded in the PDF. It returns the text as a string:
+
+```typescript theme={null}
+// PDF text extraction using pdfjs-dist
+import * as pdfjs from "pdfjs-dist";
+
+const MAX_PDF_SIZE = 15 * 1024 * 1024; // 15 MB
+
+export async function scrapePdfContent(pdfUrl: string) {
+  // Only fetch from your own storage bucket, never an arbitrary URL
+  if (!isAllowedPdfUrl(pdfUrl)) {
+    throw new Error("Invalid PDF URL: only approved storage hostnames are allowed");
+  }
+
+  const response = await fetch(pdfUrl, { headers: { Accept: "application/pdf" } });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch PDF: ${response.status}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  if (arrayBuffer.byteLength > MAX_PDF_SIZE) {
+    throw new Error("PDF exceeds maximum allowed size of 15 MB");
+  }
+
+  const pdf = await pdfjs.getDocument({
+    data: new Uint8Array(arrayBuffer),
+    useSystemFonts: true,
+    isEvalSupported: false, // Disable JavaScript execution inside the PDF
+  }).promise;
+
+  let text = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    text +=
+      textContent.items.map((item: any) => ("str" in item ? item.str : "")).join(" ") +
+      "\n";
+  }
+
+  await pdf.destroy();
+  return text;
+}
+```
+
+### Check content safety
+
+Before generating anything from user-supplied content, the app classifies it with Llama Guard in [`lib/server/ai/isFileContentBad.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/isFileContentBad.ts). The model returns a response that starts with `safe` or `unsafe`, which the app uses to determine whether to proceed:
+
+```typescript theme={null}
+import { generateText } from "ai";
+import { createTogetherAI } from "@ai-sdk/togetherai";
+
+const togetherai = createTogetherAI({
+  apiKey: process.env.TOGETHER_API_KEY ?? "",
+});
+
+export const isFileContentBad = async (fileContent: string) => {
+  const generationResult = await generateText({
+    model: togetherai("meta-llama/Llama-Guard-4-12B"),
+    prompt: `You are given the following file content, evaluate if content is harmful or spammy.
+    ${fileContent}
+    `,
+  });
+
+  if (generationResult.text.startsWith("unsafe")) {
+    return true;
+  } else {
+    return false;
+  }
+};
+```
+
+## Generate structured data
+
+The core of Self.so is turning unstructured resume text into structured JSON. The `generateResumeObject` function in [`lib/server/ai/generateResumeObject.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/generateResumeObject.ts) uses Kimi K2.6 with [structured outputs](/docs/inference/chat/structured-outputs) so the response always matches the schema the site renderer expects:
+
+```typescript theme={null}
+import { generateText, Output } from "ai";
+import { createTogetherAI } from "@ai-sdk/togetherai";
+import { ResumeDataSchema } from "@/lib/resume";
+import dedent from "dedent";
+
+const togetherai = createTogetherAI({
+  apiKey: process.env.TOGETHER_API_KEY ?? "",
+});
+
+export const generateResumeObject = async (resumeText: string) => {
+  const { output } = await generateText({
+    model: togetherai("moonshotai/Kimi-K2.6"),
+    maxRetries: 1,
+    timeout: 15_000,
+    maxOutputTokens: 4096,
+    providerOptions: {
+      togetherai: {
+        reasoning: { enabled: false },
+      },
+    },
+    output: Output.object({
+      schema: ResumeDataSchema,
+    }),
+    prompt:
+      dedent(`You are an expert resume writer. Generate a resume object from the following resume text with this EXACT structure:
+    // ... detailed JSON schema and instructions
+    ## Resume text:
+    ${resumeText}
+    `),
+  });
+
+  return output;
+};
+```
+
+Two details in this call are worth calling out:
+
+* Kimi K2.6 is a hybrid reasoning model with reasoning on by default. Passing `reasoning: { enabled: false }` through `providerOptions` keeps extraction fast, because the schema does the work that reasoning tokens would otherwise pay for.
+* `Output.object` accepts the Zod schema directly and validates the result against it.
+
+### Define the schema with Zod
+
+The Zod schema in [`lib/resume.ts`](https://github.com/nutlope/self.so/blob/main/lib/resume.ts) is the contract between the AI extraction and the site renderer:
+
+```typescript theme={null}
+import { z } from "zod";
+
+export const ResumeDataSchema = z.object({
+  header: z.object({
+    name: z.string(),
+    shortAbout: z.string(),
+    location: z.string().optional(),
+    contacts: z.object({
+      website: z.string().optional(),
+      email: z.string().optional(),
+      phone: z.string().optional(),
+      twitter: z.string().optional(),
+      linkedin: z.string().optional(),
+      github: z.string().optional(),
+    }),
+    skills: z.array(z.string()),
+  }),
+  summary: z.string(),
+  workExperience: z.array(
+    z.object({
+      company: z.string(),
+      link: z.string(),
+      location: z.string(),
+      contract: z.string(),
+      title: z.string(),
+      start: z.string(),
+      end: z.string().optional().nullable(),
+      description: z.string(),
+    }),
+  ),
+  education: z.array(
+    z.object({
+      school: z.string(),
+      degree: z.string(),
+      start: z.string(),
+      end: z.string(),
+    }),
+  ),
+});
+```
+
+## Observability
+
+Self.so wraps each extraction call in a Braintrust span that records the model, token usage, finish reason, and duration. The tracing helpers live in [`lib/server/ai/braintrust.ts`](https://github.com/nutlope/self.so/blob/main/lib/server/ai/braintrust.ts). This makes it possible to monitor extraction quality and compare models over time.
+
+## The complete pipeline
+
+The full server-side pipeline runs when a user uploads a resume:
+
+1. **Upload:** The PDF is uploaded to S3.
+2. **Extraction:** `pdfjs-dist` converts the PDF to plain text.
+3. **Safety check:** Llama Guard validates the content.
+4. **Generation:** Kimi K2.6 extracts the text into the `ResumeDataSchema` shape.
+5. **Storage:** The structured data is stored in Upstash Redis.
+6. **Rendering:** The site renders from the structured data.
+
+<Frame>
+  <img alt="The Self.so resume upload pipeline" />
+</Frame>
+
+## Best practices for extraction pipelines
+
+Building Self.so surfaced a few principles that apply to most extraction pipelines:
+
+* **Match the model to the task:** A safety classifier and an instruction-following extractor are different jobs, and picking a specialized model for each beats using one model for both.
+* **Schemas make outputs reliable:** Validating against a Zod schema turns free-form model output into data the rest of the app can trust.
+* **Keep the data flow clean:** Passing extracted text between steps, instead of raw files, keeps each model call small and auditable.
+* **Instrument from the start:** Recording token usage and durations per call makes model comparisons and regressions visible.
+
+Self.so is open source, so you can try it at [self.so](https://www.self.so) and explore the code on [GitHub](https://github.com/nutlope/self.so).
+
+
 # Privacy and security
 Source: https://docs.together.ai/docs/privacy-and-security
 
@@ -38493,15 +39068,15 @@ Each project contains its own set of resources. Collaborators of project A canno
 
 Every project is assigned a level of visibility:
 
-* **Open:** Members of the organization can discover and join the project.
-* **Closed:** Members can discover the project, but can't join. Access is managed by project and organization admins.
-* **Private:** Only existing project collaborators and organization admins can see it. Access is managed by project and organization admins.
+* **open:** Members of the organization can discover and join the project.
+* **closed:** Members can discover the project, but can't join. Access is managed by project and organization admins.
+* **private:** Only existing project collaborators and organization admins can see it. Access is managed by project and organization admins.
 
-When you create a project, you explicitly choose its visibility, with Open as the default. A project admin or organization admin can change a project's visibility between the three states at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current), and switching a project from Open to Closed or Private keeps its existing collaborators.
+When you create a project, you explicitly choose its visibility, with open as the default. A project admin or organization admin can change a project's visibility between the three states at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current), and switching a project from open to closed or private keeps its existing collaborators.
 
-Access to Closed and Private projects is managed by admins. A project admin adds you through the same [add-collaborator flow](#adding-collaborators) used for any project, and you become a collaborator immediately. When a project is Closed, organization members who aren't collaborators can see it in their project list but can't join it.
+Access to closed and private projects is managed by admins. A project admin adds you through the same [add-collaborator flow](#adding-collaborators) used for any project, and you become a collaborator immediately. When a project is closed, organization members who aren't collaborators can see it in their project list but can't join it.
 
-Organization admins are exempt from these limits. They can see every project in the organization, including Closed and Private projects they haven't joined, and they can join any project without an invitation. To reach a Closed or Private project's resources or settings, an organization admin has to join it first.
+Organization admins are exempt from these limits. They can see every project in the organization, including closed and private projects they haven't joined, and they can join any project without an invitation. To reach a closed or private project's resources or settings, an organization admin has to join it first.
 
 ## Default project
 
@@ -38539,7 +39114,7 @@ You can manage project collaborators from [**Settings > Project > Collaborators*
 3. Enter the user's email address.
 4. Select **Confirm**.
 
-New collaborators are added with the **Editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
+New collaborators are added with the **editor** role by default, unless they are an organization admin (who are admins for every project by default). An admin can change their role after they have been added.
 
 <Info>
   The user must already belong to your [organization](/docs/organizations), unless they are being added as an [external collaborator](/docs/roles-permissions#external-collaborators).
@@ -41769,9 +42344,9 @@ This guide sends one user message and waits for one complete response. These fea
 # Roles & permissions (RBAC)
 Source: https://docs.together.ai/docs/roles-permissions
 
-Understand Organization and Project role-based access control (RBAC), including Admin, Developer, and Editor roles, and what each can do across Together
+Understand organization and project role-based access control (RBAC), including the admin, developer, and editor roles, and what each can do across Together
 
-Together uses role-based access control (RBAC) at both the [Organization](/docs/organizations) and [Project](/docs/projects) level. Every Member of an Organization is assigned an Organization role, and every Collaborator of a Project is assigned a Project role.
+Together uses role-based access control (RBAC) at both the [organization](/docs/organizations) and [project](/docs/projects) level. Every member of an organization is assigned an organization role, and every collaborator of a project is assigned a project role.
 
 <Note>
   Roles and permissions are being progressively rolled out across Together's products and services. This page will be updated as more granular controls become available.
@@ -41779,15 +42354,15 @@ Together uses role-based access control (RBAC) at both the [Organization](/docs/
 
 ## Organization roles
 
-Organizations have two roles: **Admin** and **Developer**.
+Organizations have two roles: **admin** and **developer**.
 
-| Role          | Scope           | Description                                                                                                                                                                   |
-| ------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Admin**     | Org-wide        | Full access to all Organization settings, billing, Members, and Projects. Can see and join any Project, regardless of its visibility.                                         |
-| **Developer** | Org (read-only) | Can see Organization-level info and the Open and Closed Projects list. Joins Open Projects as an Editor by default; must be added to Closed and Private Projects by an Admin. |
+| Role          | Scope           | Description                                                                                                                                                                      |
+| ------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **admin**     | Org-wide        | Full access to all organization settings, billing, members, and projects. Can see and join any project, regardless of its visibility.                                            |
+| **developer** | Org (read-only) | Can see organization-level info and the list of open and closed projects. Joins open projects as an editor by default. Must be added to closed and private projects by an admin. |
 
 <Info>
-  The creator ("Owner") of an Organization is a special Admin. They cannot be removed from the Organization, their role cannot be changed from Admin, and they cannot delete their own account.
+  The creator ("owner") of an organization is a special admin. They cannot be removed from the organization, their role cannot be changed from admin, and they cannot delete their own account.
 </Info>
 
 ### Organization permissions
@@ -41807,19 +42382,19 @@ Organizations have two roles: **Admin** and **Developer**.
 
 ### Roles and project visibility
 
-A Project's [visibility](/docs/projects#project-visibility) (Open, Closed, or Private) controls which Members can discover and join it. Your Organization role affects what you can see:
+A project's [visibility](/docs/projects#project-visibility) (open, closed, or private) controls which members can discover and join it. Your organization role affects what you can see:
 
-* Organization Admins can see and join any Project, but must join a Closed or Private Project before accessing its resources or settings.
-* Organization Developers must be added to a Closed or Private Project by an Admin.
+* Organization admins can see and join any project, but must join a closed or private project before accessing its resources or settings.
+* Organization developers must be added to a closed or private project by an admin.
 
 ## Project roles
 
-Projects have two roles: **Admin** and **Editor**.
+Projects have two roles: **admin** and **editor**.
 
 | Role       | Description                                                                                                                                                                                                                                                  |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Admin**  | Can access and update Project settings, including the Project's visibility and Collaborators. Organization Admins are granted Project Admin in any Project they join. Organization Developers can be promoted to Project Admin by an existing Project Admin. |
-| **Editor** | Can use the Project's resources but cannot update Project settings, change its visibility, or manage Collaborators. Organization Developers are added to Projects as Editors by default.                                                                     |
+| **admin**  | Can access and update project settings, including the project's visibility and collaborators. Organization admins are granted project admin in any project they join. Organization developers can be promoted to project admin by an existing project admin. |
+| **editor** | Can use the project's resources but cannot update project settings, change its visibility, or manage collaborators. Organization developers are added to projects as editors by default.                                                                     |
 
 ### Project permissions
 
@@ -41838,7 +42413,7 @@ Projects have two roles: **Admin** and **Editor**.
 | Collaborators: Remove        | Yes   | No     |
 | Collaborators: Manage roles  | Yes   | No     |
 
-Changing a Project's visibility between Open, Closed, and Private takes effect immediately and keeps the Project's existing Collaborators.
+Changing a project's visibility between open, closed, and private takes effect immediately and keeps the project's existing collaborators.
 
 ## External collaborators (beta)
 
@@ -41846,18 +42421,18 @@ Changing a Project's visibility between Open, Closed, and Private takes effect i
   This feature is in beta. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
 </Info>
 
-An External Collaborator is someone who participates in a Project without being a Member of the Project's parent Organization. They can be assigned any Project role but have no Organization-level permissions beyond seeing the Organization's name.
+An external collaborator is someone who participates in a project without being a member of the project's parent organization. They can be assigned any project role but have no organization-level permissions beyond seeing the organization's name.
 
-What External Collaborators can do:
+What external collaborators can do:
 
-* Full access to any Project they have been explicitly added to (based on their Project role)
-* View their own profile settings
+* Full access to any project they have been explicitly added to (based on their project role).
+* View their own profile settings.
 
 What they cannot do:
 
-* Access billing settings
-* View the Organization Members list
-* See Organization-level settings
+* Access billing settings.
+* View the organization members list.
+* See organization-level settings.
 
 ## Product-specific permissions
 
@@ -41893,7 +42468,7 @@ The data plane covers using clusters for actual work: running jobs, accessing no
 
 ### Fine-tuning, endpoints, serverless inference & other products
 
-Role-based access control for fine-tuning, endpoints, serverless inference, and other Together products is still being rolled out. Today, all Project Collaborators (both Admin and Editor) have full access to these services.
+Role-based access control for fine-tuning, endpoints, serverless inference, and other Together products is still being rolled out. Today, all project collaborators (both admins and editors) have full access to these services.
 
 ## What's coming
 
@@ -42625,7 +43200,7 @@ Together manages its own session timeouts independently from your IdP's default 
   </Card>
 
   <Card title="Roles & Permissions" icon="shield" href="/docs/roles-permissions">
-    What Admins, Developers, and Editors can do
+    What admins, developers, and editors can do
   </Card>
 </CardGroup>
 
@@ -46039,6 +46614,22 @@ Generate audio from input text
 
 
 
+# Create chat completion
+Source: https://docs.together.ai/reference/chat-completions
+
+openapi.yaml POST /chat/completions
+Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
+
+
+
+# Create image
+Source: https://docs.together.ai/reference/post-images-generations
+
+openapi.yaml POST /images/generations
+Use an image model to generate an image for a given prompt.
+
+
+
 # Create realtime text-to-speech
 Source: https://docs.together.ai/reference/audio-speech-websocket
 
@@ -46188,22 +46779,6 @@ Source: https://docs.together.ai/reference/audio-transcriptions
 
 openapi.yaml POST /audio/transcriptions
 Transcribes audio into text
-
-
-
-# Create chat completion
-Source: https://docs.together.ai/reference/chat-completions
-
-openapi.yaml POST /chat/completions
-Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
-
-
-
-# Create image
-Source: https://docs.together.ai/reference/post-images-generations
-
-openapi.yaml POST /images/generations
-Use an image model to generate an image for a given prompt.
 
 
 
@@ -46654,22 +47229,6 @@ Source: https://docs.together.ai/reference/deployments-update
 
 openapi.yaml PATCH /deployments/{id}
 Update an existing deployment configuration
-
-
-
-# Create an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-create
-
-openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
-Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
-
-
-
-# Get an A/B experiment
-Source: https://docs.together.ai/reference/dmi/ab-experiments-get
-
-openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
-Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 
@@ -47182,10 +47741,35 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="August 21, 2026">
+  ## Model deprecations
+
+  The following model has been deprecated and is no longer available on serverless:
+
+  * `deepcogito/cogito-v2-1-671b`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
+<Update label="August 18, 2026">
+  ## Fully automatic confirmation policy for node auto repair
+
+  [Auto node repair](/docs/node-repair#auto-node-repair) can now close the loop end to end. Under the new **Fully automatic** confirmation policy, health checks detect the fault, the system generates a repair recommendation, and auto repair executes it without waiting for approval. Clusters continue to use **Approve before repair** by default.
+
+  **What's new:**
+
+  * **Confirmation policy toggle:** Choose between **Approve before repair** and **Fully automatic** under **Auto-remediation policy** on the **Repairs** tab.
+  * **Per-fault scoping:** Under **Fully automatic**, use **Repair actions** to check which fault groups (**Migrate to new host**, **Reprovision**, **VM reboot**) run unattended. Destructive repairs can stay gated on approval while transient ones clear on their own.
+  * **Job interruption controls:** **Wait for idle**, **Grace period**, **Maximum wait**, and **Do not interrupt running jobs** let the wait policy protect in-flight training and inference work in place of a review step.
+  * **Audit trail:** Automatically approved repairs record **Auto-Approved** in the repair's **Reviewed by** field, alongside the alert evidence that triggered them.
+
+  See [Confirmation policy](/docs/node-repair#confirmation-policy) for details.
+</Update>
+
 <Update label="August 17, 2026">
   ## Project visibility
 
-  Projects now support three visibility levels. **Open** projects let any organization member discover and join them. **Closed** projects are discoverable, but joining requires an admin to grant access. **Private** projects are visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
+  Projects now support three visibility levels. An **open** project lets any organization member discover and join it. A **closed** project is discoverable, but joining requires an admin to grant access. A **private** project is visible only to existing collaborators and organization admins. Choose a level when you create a project, or change it at any time from [**Project Settings**](https://api.together.ai/settings/projects/~current).
 
   See [Project visibility](/docs/projects#project-visibility).
 
@@ -47844,7 +48428,7 @@ Source: https://docs.together.ai/docs/changelog
 <Update label="July 7, 2026">
   ## Project slug editing
 
-  Project Admins can now change a Project's slug from Project Settings. The new slug takes effect immediately. You can also copy any Project's slug from the Projects list in Organization Settings.
+  Project admins can now change a project's slug from Project Settings. The new slug takes effect immediately. You can also copy any project's slug from the projects list in Organization Settings.
 
   Changing a slug can break API requests, scripts, and integrations that reference resources by their slug-qualified path. Update any references that rely on the old slug.
 
@@ -47954,7 +48538,7 @@ Source: https://docs.together.ai/docs/changelog
 <Update label="June 23, 2026">
   ## Whoami API endpoint
 
-  Use `GET /whoami` to confirm which API key, Project, and Organization are authenticating a request. The response includes the Project slug used in dedicated endpoint model names.
+  Use `GET /whoami` to confirm which API key, project, and organization are authenticating a request. The response includes the project slug used in dedicated endpoint model names.
 
   See [Whoami](/reference/whoami) for details.
 
@@ -48004,9 +48588,9 @@ Source: https://docs.together.ai/docs/changelog
 
   * `zai-org/GLM-5.2`: 262K context length, FP4 quantization. Pricing: \$1.40 input / \$4.40 output / \$0.26 cached input (per 1M tokens). Supports function calling and structured outputs.
 
-  ## Organization and Project role labels
+  ## Organization and project role labels
 
-  Organization members now use the Admin and Developer labels, and Project collaborators now use Admin and Editor labels. Permissions are unchanged, but the labels make Organization-wide access and Project-scoped editing clearer.
+  Organization members now use the Admin and Developer labels, and project collaborators now use the Admin and Editor labels. Permissions are unchanged, but the labels make organization-wide access and project-scoped editing clearer.
 
   See [Roles & permissions](/docs/roles-permissions) for details.
 </Update>
@@ -49052,6 +49636,7 @@ The table below lists all models removed from serverless inference, most recent 
 
 | Removal date                | Model                                               | Supported by on-demand dedicated endpoints |
 | :-------------------------- | :-------------------------------------------------- | :----------------------------------------- |
+| 2026-08-21                  | `deepcogito/cogito-v2-1-671b`                       | No                                         |
 | 2026-08-04                  | `google/gemma-3n-E4B-it`                            | No                                         |
 | 2026-07-10                  | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                        |
 | 2026-07-10                  | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | No                                         |
@@ -51958,11 +52543,27 @@ The `project_slug` is the DNS-friendly project identifier used when constructing
 `user_id` is present when the API key is tied to an authenticated user account. It is omitted for service or organization-default keys.
 
 
+# Create an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-create
+
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
+Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
+
+
+
 # Delete an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-delete
 
 openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Deletes an A/B experiment and removes its managed traffic split. The deployments themselves are not deleted.
+
+
+
+# Get an A/B experiment
+Source: https://docs.together.ai/reference/dmi/ab-experiments-get
+
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
 

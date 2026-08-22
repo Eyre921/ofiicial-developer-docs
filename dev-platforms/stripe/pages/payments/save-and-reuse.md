@@ -1,5 +1,5 @@
 ---
-title: "Save a customer's payment method without making a payment"
+title: "Save a customer’s payment method without making a payment"
 source: https://docs.stripe.com/payments/save-and-reuse.md
 path: payments/save-and-reuse
 ---

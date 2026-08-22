@@ -56,7 +56,7 @@ For an `Account` to have the `card_payments` capability, you must request both `
 
 When a connected account has this capability, its customers’ bank statements display the connected account’s statement descriptor, not the platform’s.
 
-The `card_payments` capability applies to [all charge types](https://docs.stripe.com/connect/charges.md).
+The `card_payments` capability applies to [all charge types](https://docs.stripe.com/connect/charges.md) where the connected account is the [merchant of record](https://docs.stripe.com/connect/merchant-of-record.md) for the payment.
 
 ### US tax reporting
 

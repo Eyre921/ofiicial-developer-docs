@@ -50,7 +50,7 @@ Direct Fireworks routing uses the **chat-completions** API. Kimi models support 
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect vscode on --model deepseek-v4-flash
+fireconnect vscode on --model deepseek-flash-latest
 fireconnect vscode on --model firerouter
 ```
 

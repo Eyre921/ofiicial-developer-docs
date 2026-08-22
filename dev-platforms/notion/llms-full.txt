@@ -1475,6 +1475,10 @@ For page events, the page audience describes the visibility level of the target 
 * **External**: The page is shared with one or more guests outside of the workspace and/or with an integration bot.
 * **Public**: The page is shared to the web.
 
+## Teamspace attribution
+
+When available, applicable events include a top-level `team_ids` array containing the IDs of the teamspaces associated with the event. Most attributed events contain one ID; events such as moves and teamspace exports can contain multiple IDs. The field is omitted for events that are not associated with a teamspace or when attribution is unavailable.
+
 ***
 
 ## SIEM event glossary
@@ -12267,6 +12271,581 @@ Workspace owners can manage MCP client access in **Settings** → **Connections*
 See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) in the Notion Help Center for workspace settings and allowlists.
 
 
+# Overview
+Source: https://developers.notion.com/guides/notion-agent-apis/overview
+
+Power apps and integrations with Custom Agents.
+
+Build apps and integrations that bring Custom Agents into the tools and workflows your team already uses. With the Notion Agent APIs, you can power chat experiences outside Notion and manage Custom Agents programmatically.
+
+<Note>
+  This API is in public beta
+</Note>
+
+## Chat with Custom Agents
+
+Use sessions to start a chat, stream the Agent's reply, submit an action when needed, and read its event history. These endpoints let you bring Custom Agents into a Slack bot, internal tool, or mobile client.
+
+<CardGroup>
+  <Card title="Create or update a session" icon="comments" href="/reference/notion-agent-apis/update-session">
+    Start a session, send a message, submit an action, or stream a turn.
+  </Card>
+
+  <Card title="Retrieve a session" icon="message" href="/reference/notion-agent-apis/retrieve-session">
+    Read the current state of a session.
+  </Card>
+
+  <Card title="Query sessions" icon="magnifying-glass" href="/reference/notion-agent-apis/query-sessions">
+    Find accessible sessions.
+  </Card>
+
+  <Card title="Query session events" icon="clock-rotate-left" href="/reference/notion-agent-apis/query-session-events">
+    Page through a session's event history.
+  </Card>
+
+  <Card title="Cancel a session" icon="circle-stop" href="/reference/notion-agent-apis/cancel-session">
+    Stop an in-progress session.
+  </Card>
+</CardGroup>
+
+## Manage Custom Agents
+
+Find the Custom Agents your token can access, track their usage, and manage their status and credit limits. Use these endpoints to build a usage dashboard or an administrative console for Custom Agents.
+
+<CardGroup>
+  <Card title="Query agents" icon="magnifying-glass" href="/reference/notion-agent-apis/query-agents">
+    Find Custom Agents the integration can access.
+  </Card>
+
+  <Card title="Retrieve an agent" icon="robot" href="/reference/notion-agent-apis/retrieve-agent">
+    Get one Custom Agent's metadata.
+  </Card>
+
+  <Card title="Retrieve agent insights" icon="chart-line" href="/reference/notion-agent-apis/retrieve-agent-insights">
+    Read a Custom Agent's credits used and runs completed.
+  </Card>
+
+  <Card title="Update agent status" icon="toggle-on" href="/reference/notion-agent-apis/update-agent-status">
+    Enable or disable a Custom Agent.
+  </Card>
+
+  <Card title="Update an agent credit limit" icon="coins" href="/reference/notion-agent-apis/update-agent-credit-limit">
+    Set or clear a Custom Agent's credit limit.
+  </Card>
+
+  <Card title="Batch manage agent" icon="list-check" href="/reference/notion-agent-apis/batch-manage-agent">
+    Apply several agent management operations asynchronously.
+  </Card>
+
+  <Card title="Delete an agent" icon="trash" href="/reference/notion-agent-apis/delete-agent">
+    Soft-delete a Custom Agent you no longer need.
+  </Card>
+</CardGroup>
+
+## Authentication and access
+
+You can authenticate API requests with either a personal access token or a [connection token](/guides/get-started/authorization):
+
+* A **[personal access token](/guides/get-started/personal-access-tokens)** acts as you and uses your existing access to Custom Agents.
+* A **connection token** needs the **Interact with agents** capability and can access Custom Agents shared with its connection.
+
+**Access requirements**
+
+Access is evaluated per Custom Agent, using the same permissions that apply in Notion:
+
+* **Read access** lets you read a Custom Agent and its sessions.
+* **Edit access** lets you change a Custom Agent's status or delete it.
+* **Full access** lets you read or change a Custom Agent's credit limit. Otherwise, the limit is `hidden`.
+
+
+# Quickstart
+Source: https://developers.notion.com/guides/notion-agent-apis/quickstart
+
+Pick a Custom Agent, start a chat, and read its reply through the API.
+
+<Note>
+  This API is in public beta
+</Note>
+
+## Prerequisites
+
+**A Custom Agent to chat with**
+
+You need an existing Custom Agent because it's the Agent you'll chat with in this quickstart. In step 1, you'll use the API to choose the Agent, then use its ID to start a chat in step 2. The API works with Custom Agents that already exist in the Notion app; it does not create them.
+
+To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/help/custom-agents#build-a-custom-agent).
+
+**A personal access token to authenticate requests**
+
+This quickstart sends API requests on your behalf, so each request needs a [personal access token](/guides/get-started/personal-access-tokens) (PAT). It lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion.
+
+<Steps>
+  <Step>
+    Open <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal.
+  </Step>
+
+  <Step>
+    Select **New token**.
+  </Step>
+
+  <Step>
+    Enter a name, select the **Notion API** capability, and then select **Create token**. That capability covers the Agents API — there is nothing else to enable.
+  </Step>
+
+  <Step>
+    Copy the token and save it somewhere secure. You won't be able to see it again.
+  </Step>
+</Steps>
+
+Set the token as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
+
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export NOTION_API_KEY=ntn_***
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:NOTION_API_KEY = "ntn_***"
+  ```
+</CodeGroup>
+
+## Step 1: Pick a Custom Agent
+
+Pick the Custom Agent you want to chat with. It can be the Custom Agent you created for this quickstart or an existing Custom Agent in your workspace that you can access. Use [Query agents](/reference/notion-agent-apis/query-agents) to find it.
+
+The example below narrows results to Custom Agents you created. Remove the `created_by` filter to choose another Custom Agent you can access.
+
+```bash curl theme={null}
+curl -X POST https://api.notion.com/v1/agents/query \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filter": {
+      "property": "created_by",
+      "people": { "contains": "me" }
+    },
+    "sorts": [{ "property": "created_time", "direction": "descending" }],
+    "page_size": 10
+  }'
+```
+
+You get back a list of your Custom Agents, most recently created first:
+
+```json Response theme={null}
+{
+  "object": "list",
+  "type": "agent",
+  "results": [
+    {
+      "object": "agent",
+      "id": "1f0c7c06-781b-4987-9986-5c8dd3028013",
+      "agent_type": "custom_agent",
+      "name": "Quickstart agent",
+      "description": "Answers questions concisely.",
+      "instructions_page_id": "1f0c7c06-781b-4987-9986-5c8dd3028020",
+      "icon": { "type": "emoji", "emoji": "🤖" },
+      "model": { "mode": "pinned", "id": "claude-sonnet-5" },
+      "connections": [],
+      "status": "active",
+      "pause_reason": null,
+      "created_by": {
+        "type": "user",
+        "id": "9f7dd486-3431-4f8b-b8bf-491287953a01"
+      },
+      "agent_version": {
+        "id": "1f0c7c06-781b-4987-9986-5c8dd3028021",
+        "number": 1,
+        "published_at": "2026-08-14T12:04:11.000Z"
+      },
+      "created_time": "2026-08-14T12:00:00.000Z",
+      "last_edited_time": "2026-08-14T12:04:11.000Z",
+      "last_run_at": null,
+      "credit_limit": null,
+      "triggers": []
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}
+```
+
+Copy the `id` of the Custom Agent you chose — that's what you'll chat with. Save it as an environment variable too:
+
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export AGENT_ID=1f0c7c06-781b-4987-9986-5c8dd3028013
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:AGENT_ID = "1f0c7c06-781b-4987-9986-5c8dd3028013"
+  ```
+</CodeGroup>
+
+## Step 2: Start a new Agent chat
+
+Send your agent a message by creating a session with [Create or update a session](/reference/notion-agent-apis/update-session). A session is one conversation: you create it with the first message, then keep sending to the same `session_id` to continue.
+
+```bash curl theme={null}
+curl -X POST https://api.notion.com/v1/sessions \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"agent_id\": \"$AGENT_ID\",
+    \"message\": \"What can you help me with?\"
+  }"
+```
+
+The response is the new session:
+
+```json Response theme={null}
+{
+  "object": "session",
+  "id": "2a1c7c06-781b-4987-9986-5c8dd3028014",
+  "agent_id": "1f0c7c06-781b-4987-9986-5c8dd3028013",
+  "title": "Capabilities question",
+  "status": "queued",
+  "created_at": "2026-08-14T12:10:00.000Z",
+  "updated_at": "2026-08-14T12:10:00.000Z"
+}
+```
+
+Save the session ID so the follow-up requests can use it:
+
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export SESSION_ID=2a1c7c06-781b-4987-9986-5c8dd3028014
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:SESSION_ID = "2a1c7c06-781b-4987-9986-5c8dd3028014"
+  ```
+</CodeGroup>
+
+## Step 3: Read the Agent reply
+
+The agent works asynchronously, so the session comes back as `queued`. Poll [Retrieve a session](/reference/notion-agent-apis/retrieve-session) until the status leaves `queued` and `in_progress`:
+
+```bash curl theme={null}
+curl https://api.notion.com/v1/sessions/$SESSION_ID \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11"
+```
+
+**Stream the response instead.**
+
+To watch the turn as it happens instead of polling, send the same create request with `Accept: text/event-stream`. See [Create or update a session](/reference/notion-agent-apis/update-session).
+
+Once the status is `completed`, read the Agent reply from the session's event history with [Query session events](/reference/notion-agent-apis/query-session-events):
+
+```bash curl theme={null}
+curl -X POST https://api.notion.com/v1/sessions/$SESSION_ID/events/query \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d '{ "filter": { "property": "type", "event_type": { "equals": "agent.message" } } }'
+```
+
+The agent's answer comes back as an `agent.message` event:
+
+```json Response theme={null}
+{
+  "object": "list",
+  "type": "session_event",
+  "session_event": {},
+  "results": [
+    {
+      "object": "session_event",
+      "id": "3b2c7c06-781b-4987-9986-5c8dd3028015",
+      "session_id": "2a1c7c06-781b-4987-9986-5c8dd3028014",
+      "sequence": 102,
+      "created_at": "2026-08-14T12:10:04.000Z",
+      "type": "agent.message",
+      "content": [
+        { "type": "text", "text": "I can help you draft and summarize documents." }
+      ],
+      "created_by": {
+        "id": "1f0c7c06-781b-4987-9986-5c8dd3028013",
+        "type": "bot"
+      },
+      "metadata": { "model": "claude-sonnet-5" }
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}
+```
+
+That's a full round trip: you sent a message to a Custom Agent and read its response from the session events.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="I don't see Agents in the sidebar">
+    Custom Agents are available on Business and Enterprise plans. Ask a workspace owner whether your workspace is on an eligible plan.
+  </Accordion>
+
+  <Accordion title="I don't see the option to create a token">
+    On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
+
+    See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
+  </Accordion>
+
+  <Accordion title="How do I use the examples in PowerShell?">
+    The `curl` examples are written for a Unix shell. In PowerShell, refer to the variables as `$env:NOTION_API_KEY`, `$env:AGENT_ID`, and `$env:SESSION_ID`.
+  </Accordion>
+
+  <Accordion title="How else can I find a Custom Agent?">
+    [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type`, `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+You've found a Custom Agent through the API and started a chat. From here you can:
+
+* **Keep the conversation going.** Send another message to the same `session_id` for a follow-up, or [submit an action](/reference/notion-agent-apis/update-session) the agent is waiting on.
+* **Track what your agents cost.** Read [agent insights](/reference/notion-agent-apis/retrieve-agent-insights) for credits used and runs completed per agent to build a usage dashboard.
+* **Set guardrails.** Give an agent a [credit limit](/reference/notion-agent-apis/update-agent-credit-limit), or [disable it](/reference/notion-agent-apis/update-agent-status) when something looks wrong.
+* **Batch manage agent.** Apply status, credit-limit, and delete operations in a single [asynchronous batch](/reference/notion-agent-apis/batch-manage-agent).
+
+See the [Overview](/guides/notion-agent-apis/overview) for the full set of endpoints.
+
+
+# Upgrading to public beta
+Source: https://developers.notion.com/guides/notion-agent-apis/upgrading-to-public-beta
+
+Migrate your private alpha integration to the public beta.
+
+This guide is only for customers who had early access to the private alpha of the Notion Agent APIs. If you're new to the APIs, start with the [Quickstart](/guides/notion-agent-apis/quickstart).
+
+The public beta renames the alpha's threads-and-messages routes to sessions and events, and adds routes for agent insights and controls.
+
+<Warning>
+  **Move off alpha routes by September 30, 2026**
+
+  If you use the alpha routes for listing agents, threads, messages, or chat, migrate to their public-beta replacements by that date. The new routes use JSON request bodies instead of query parameters and return sessions and events instead of threads and messages.
+</Warning>
+
+## What's changing
+
+| Route description          | Alpha route                            | Public beta route                                                                                   |
+| :------------------------- | :------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| Get agents                 | `GET /v1/agents`                       | [`POST /v1/agents/query`](/reference/notion-agent-apis/query-agents)                                |
+| Get sessions               | `GET /v1/agents/:agent_id/threads`     | [`POST /v1/sessions/query`](/reference/notion-agent-apis/query-sessions)                            |
+| Get session events         | `GET /v1/threads/:thread_id/messages`  | [`POST /v1/sessions/:session_id/events/query`](/reference/notion-agent-apis/query-session-events)   |
+| Create or update a session | `POST /v1/agents/:agent_id/chat`       | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session)                                  |
+| Stream a session turn      | `POST /v1/agents/:agent_id/chatStream` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) with `Accept: text/event-stream` |
+
+You only need to migrate the routes listed above. The public beta also adds optional endpoints to retrieve or cancel sessions, view Custom Agent metadata and insights, set credit limits, enable, disable, or delete Custom Agents, and make those changes in bulk. See the [Overview](/guides/notion-agent-apis/overview) for the full set.
+
+## Upgrade checklist
+
+<Steps>
+  <Step>
+    Replace `GET /v1/agents` with `POST /v1/agents/query`, moving your query parameters into a `filter` object.
+  </Step>
+
+  <Step>
+    Replace `GET /v1/agents/:agent_id/threads` with `POST /v1/sessions/query`, filtering on `agent_id`.
+  </Step>
+
+  <Step>
+    Replace `GET /v1/threads/:thread_id/messages` with `POST /v1/sessions/:session_id/events/query`, and read agent replies from `agent.message` events.
+  </Step>
+
+  <Step>
+    Replace `POST /v1/agents/:agent_id/chat` with `POST /v1/sessions`, moving `agent_id` into the request body.
+  </Step>
+
+  <Step>
+    Replace `POST /v1/agents/:agent_id/chatStream` with `POST /v1/sessions` and `Accept: text/event-stream`, and parse server-sent events instead of NDJSON lines.
+  </Step>
+
+  <Step>
+    Rename `thread_id` to `session_id` throughout your code, and handle the session statuses the alpha didn't return: `queued`, `in_progress`, `canceled`, and `terminated`.
+  </Step>
+</Steps>
+
+## Step-by-step guide
+
+### Step 1: Query agents instead of listing them
+
+[Query agents](/reference/notion-agent-apis/query-agents) is a `POST` that takes a JSON body. The alpha's query parameters become filters, each naming a `property` and pairing it with a condition object, and `name` becomes the free-text `query` field. Combine several filters with `and` or `or`.
+
+<CodeGroup>
+  ```bash Public beta theme={null}
+  curl -X POST https://api.notion.com/v1/agents/query \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "query": "research",
+      "filter": { "property": "agent_type", "string": { "equals": "custom_agent" } },
+      "page_size": 25
+    }'
+  ```
+
+  ```bash Alpha (deprecated) theme={null}
+  curl "https://api.notion.com/v1/agents?name=research&agent_type=custom_agent&page_size=25" \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11"
+  ```
+</CodeGroup>
+
+The response envelope is unchanged — `results`, `has_more`, and `next_cursor` — so your pagination loop keeps working.
+
+One thing to watch for in the results: fields you aren't entitled to read come back as the string `"hidden"` rather than being omitted. `credit_limit` needs full access to the agent, and `last_run_at` needs edit access.
+
+See [Query agents](/reference/notion-agent-apis/query-agents) for the full filter, sort, and option list.
+
+### Step 2: Query sessions instead of threads
+
+A thread is now a session. [Query sessions](/reference/notion-agent-apis/query-sessions) is workspace-wide rather than nested under an agent, so the agent moves from the path into a filter.
+
+<CodeGroup>
+  ```bash Public beta theme={null}
+  curl -X POST https://api.notion.com/v1/sessions/query \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"filter\": {
+        \"and\": [
+          { \"property\": \"agent_id\", \"string\": { \"equals\": \"$AGENT_ID\" } },
+          { \"property\": \"status\", \"status\": { \"equals\": \"completed\" } }
+        ]
+      },
+      \"sorts\": [{ \"property\": \"updated_at\", \"direction\": \"descending\" }]
+    }"
+  ```
+
+  ```bash Alpha (deprecated) theme={null}
+  curl "https://api.notion.com/v1/agents/$AGENT_ID/threads?status=completed&sort_by=last_edited_time&sort_direction=descending" \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11"
+  ```
+</CodeGroup>
+
+The objects changed shape along with the name:
+
+| Thread (alpha)                                                | Session (Public beta)                                                                                 |
+| :------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------- |
+| `object: "thread"`                                            | `object: "session"`                                                                                   |
+| `created_time`, `last_edited_time`                            | `created_at`, `updated_at`                                                                            |
+| `status`: `pending`, `requires_action`, `completed`, `failed` | `status`: `queued`, `in_progress`, `requires_action`, `completed`, `failed`, `canceled`, `terminated` |
+| `error` string on failure                                     | `error` object with `code`, `message`, and `retryable`                                                |
+| `sort_by` and `sort_direction` query parameters               | `sorts` array over `created_at` and `updated_at`                                                      |
+
+A thread's single `pending` status is now split into `queued` and `in_progress`, and cancellation and termination are reported separately from failure. Treat any status you don't recognize as non-terminal rather than as an error.
+
+### Step 3: Read events instead of messages
+
+Message history is now an event stream. [Query session events](/reference/notion-agent-apis/query-session-events) returns one entry per thing that happened in the session — user input, agent output, thinking, tool calls, tool results, and status transitions — each with a monotonically increasing `sequence`.
+
+<CodeGroup>
+  ```bash Public beta theme={null}
+  curl -X POST https://api.notion.com/v1/sessions/$SESSION_ID/events/query \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "filter": { "property": "type", "event_type": { "equals": "agent.message" } },
+      "sorts": [{ "property": "sequence", "direction": "ascending" }]
+    }'
+  ```
+
+  ```bash Alpha (deprecated) theme={null}
+  curl "https://api.notion.com/v1/threads/$THREAD_ID/messages?role=agent" \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11"
+  ```
+</CodeGroup>
+
+| Thread message (alpha)                                   | Session event (Public beta)                                                                                           |
+| :------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `object: "thread_message"`                               | `object: "session_event"`                                                                                             |
+| `role`: `user` or `agent`                                | `type`: `user.message`, `agent.message`, `agent.thinking`, `agent.tool_use`, `agent.tool_result`, or `session.status` |
+| `content` string                                         | `content` array of parts, each `text` or `file`                                                                       |
+| `parent` object pointing at the thread                   | `session_id`                                                                                                          |
+| `created_time`                                           | `created_at`, plus `sequence`                                                                                         |
+| `verbose` query parameter for thinking and tool activity | Filter on `type` for the event kinds you want                                                                         |
+| `attachments` array                                      | `file` parts inside `content`                                                                                         |
+
+Two consequences worth handling explicitly:
+
+* **Agent replies are `agent.message` events**, and their text lives in `content` parts rather than in a single string. Concatenate the `text` parts to reconstruct the reply.
+* **Errors are no longer agent messages.** The alpha surfaced inference and tool failures as `role: "agent"` messages whose `content` described the error; read the session's `error` object and its `session.status` events instead.
+
+### Step 4: Create sessions instead of chatting
+
+[Create or update a session](/reference/notion-agent-apis/update-session) replaces the chat route. `agent_id` moves from the path into the body, and one route now covers all three things you do to a session: start it, add a message, and answer a required action.
+
+<CodeGroup>
+  ```bash Public beta theme={null}
+  curl -X POST https://api.notion.com/v1/sessions \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"agent_id\": \"$AGENT_ID\",
+      \"message\": \"Summarize this week's work.\"
+    }"
+  ```
+
+  ```bash Alpha (deprecated) theme={null}
+  curl -X POST https://api.notion.com/v1/agents/$AGENT_ID/chat \
+    -H "Authorization: Bearer $NOTION_API_KEY" \
+    -H "Notion-Version: 2026-03-11" \
+    -H "Content-Type: application/json" \
+    -d '{ "message": "Summarize this week'\''s work." }'
+  ```
+</CodeGroup>
+
+Send `session_id` to continue an existing session, and send `session_id` with `actions` to approve or reject something the agent is waiting on.
+
+The response is a session object rather than a `chat.invocation`:
+
+| Chat invocation (alpha)     | Session (Public beta)                     |
+| :-------------------------- | :---------------------------------------- |
+| `object: "chat.invocation"` | `object: "session"`                       |
+| `thread_id`                 | `id`                                      |
+| `invocation_id`             | No equivalent — track the session by `id` |
+| `status`: always `pending`  | `status`: the full session status set     |
+
+Poll [Retrieve a session](/reference/notion-agent-apis/retrieve-session) for the result, which the alpha had no route for — you no longer have to re-list threads to find the one you just created.
+
+### Step 5: Switch streaming from NDJSON to server-sent events
+
+`POST /v1/agents/:agent_id/chatStream` is replaced by the same `POST /v1/sessions` request with `Accept: text/event-stream`. The transport changes twice over: the alpha emitted newline-delimited JSON chunks that were session objects themselves, while the Public beta emits server-sent events whose `data` is an envelope naming what arrived.
+
+```bash Public beta theme={null}
+curl -X POST https://api.notion.com/v1/sessions \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Accept: text/event-stream" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"agent_id\": \"$AGENT_ID\",
+    \"message\": \"Summarize this week's work.\"
+  }"
+```
+
+Switch on each envelope's `type` rather than decoding `data` as a session event directly:
+
+| `type`              | Payload                 | What to do with it                                                                                                                                                                      |
+| :------------------ | :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `session.snapshot`  | `session`               | The session's state at the start of the stream.                                                                                                                                         |
+| `event.provisional` | `event`                 | Output the agent is still producing. Expect it to be superseded; don't persist it.                                                                                                      |
+| `event.committed`   | `event`                 | A durable session event, the same shape [Query session events](/reference/notion-agent-apis/query-session-events) returns. Unwrap `event.committed.event`.                              |
+| `stream.timeout`    | `session_id`, `message` | The stream ended early while the turn is still running. Reconnect.                                                                                                                      |
+| `stream.end`        | `session_id`, `status`  | The current turn is over. A `status` of `requires_action` means the session is waiting on you — submit the action to the same `session_id` to continue. Any other `status` is terminal. |
+| `stream.error`      | `error`, `session_id`   | The turn failed. `error` carries `code`, `message`, and `retryable`.                                                                                                                    |
+
+A dropped connection no longer costs you the turn. Persist the `id` of the last `event.committed.event` you received, then reconnect with that exact ID as `continue_from` — along with the `session_id` — and the stream replays from there. `continue_from` takes a committed event's ID, not its `sequence` and not a provisional or stream-control record, so anything else fails to resolve. See [Create or update a session](/reference/notion-agent-apis/update-session).
+
+
 # Example code
 Source: https://developers.notion.com/guides/resources/examples
 
@@ -16441,6 +17020,16 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="August 20, 2026">
+  ### Notion Agent APIs in public beta
+
+  The [Notion Agent APIs](/guides/notion-agent-apis/overview) are now in public beta. Use sessions to start a chat with a Custom Agent, stream its reply, submit an action, and page through a session's event history, so you can bring Custom Agents into a Slack bot, an internal tool, or a mobile client. The [quickstart](/guides/notion-agent-apis/quickstart) walks through a first request end to end with a personal access token.
+
+  The beta also covers managing Custom Agents programmatically: find the agents a token can reach with [Query agents](/reference/notion-agent-apis/query-agents), read per-agent usage with [Retrieve agent insights](/reference/notion-agent-apis/retrieve-agent-insights), and set credit limits, enable, disable, or delete agents — individually or in an [asynchronous batch](/reference/notion-agent-apis/batch-manage-agent).
+
+  If you built against the private alpha routes for agents, threads, messages, or chat, see [Upgrading to public beta](/guides/notion-agent-apis/upgrading-to-public-beta). The replacements take JSON request bodies instead of query parameters and return sessions and events instead of threads and messages. Migrate off the alpha routes by September 30, 2026.
+</Update>
+
 <Update label="August 13, 2026">
   ### More filters in Notion MCP view tools
 
@@ -16653,7 +17242,7 @@ Source: https://developers.notion.com/page/changelog
 <Update label="June 10, 2026">
   ### Bots in people properties and user mentions
 
-  Bots that appear as [user objects](/reference/user) in API responses can now be assigned to `people` [page property values](/reference/page-property-values#people) and referenced in `user` [rich text mentions](/reference/rich-text#user-mention-type-object). You can set a `people` property when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). Previously these writes returned a `validation_error`, even though the same bots were already returned when reading those fields. Some bots never appear as user objects, including integrations Notion uses internally to power features like database automations and custom agents. Assigning one of those still returns a `validation_error`.
+  Bots that appear as [user objects](/reference/user) in API responses can now be assigned to `people` [page property values](/reference/page-property-values#people) and referenced in `user` [rich text mentions](/reference/rich-text#user-mention-type-object). You can set a `people` property when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). Previously these writes returned a `validation_error`, even though the same bots were already returned when reading those fields. Some bots never appear as user objects, including integrations Notion uses internally to power features like database automations and Custom Agents. Assigning one of those still returns a `validation_error`.
 </Update>
 
 <Update label="June 8, 2026">
@@ -17205,7 +17794,7 @@ The organization bot token must have the following scopes:
 Source: https://developers.notion.com/reference/admin/get-agent-permissions
 
 openapi-adminApi.json GET /v1/spaces/{space_id}/agents/{agent_id}/permissions
-Get a custom agent's sharing permissions.
+Get a Custom Agent's sharing permissions.
 
 The organization bot token must have the following scopes:
 
@@ -17527,7 +18116,7 @@ The organization bot token must have the following scopes:
 Source: https://developers.notion.com/reference/admin/update-agent-permissions
 
 openapi-adminApi.json PATCH /v1/spaces/{space_id}/agents/{agent_id}/permissions
-Update a custom agent's sharing permissions.
+Update a Custom Agent's sharing permissions.
 
 The organization bot token must have the following scopes:
 
@@ -17643,7 +18232,7 @@ The request makes no change and is idempotent.
 
 **Disabling won't replace another pause reason.** If an agent is already paused for a platform or usage reason (for example, a credit limit), an admin disable will not overwrite that reason. Resolve the underlying condition first.
 
-**Workspace policy takes precedence.** If your workspace policy currently disallows custom agents, you cannot re-enable and run an agent — even one that was only admin-disabled.
+**Workspace policy takes precedence.** If your workspace policy currently disallows Custom Agents, you cannot re-enable and run an agent — even one that was only admin-disabled.
 
 
 # Update a legal hold
@@ -21678,6 +22267,138 @@ curl -X POST https://api.notion.com/v1/pages/195de9221179449fab8075a27c979105/mo
       "data_source_id": "1c7b35e6-e67f-8096-bf3f-000ba938459e"
     }
   }'
+```
+
+
+# Batch manage agent
+Source: https://developers.notion.com/reference/notion-agent-apis/batch-manage-agent
+
+post /v1/agents/batch
+Asynchronously apply multiple agent management operations.
+
+Each operation is authorized and applied independently. Poll the returned `status_url` to retrieve the completed batch result.
+
+### Completed batch result
+
+When the task succeeds, `result` is an `agent_batch_result` with a `results` array. Each entry includes `index`, `action`, `agent_id`, and `outcome`; use `index` to match it to the request because an agent can appear more than once.
+
+| Outcome                       | Additional fields                                |
+| :---------------------------- | :----------------------------------------------- |
+| `update_status` success       | `status`, `pause_reason`, and `last_edited_time` |
+| `update_credit_limit` success | `credit_limit` and `last_edited_time`            |
+| `delete` success              | `status` (`deleted`) and `deleted_at`            |
+| Error                         | `error`, a standard API error object             |
+
+
+# Cancel a session
+Source: https://developers.notion.com/reference/notion-agent-apis/cancel-session
+
+post /v1/sessions/{session_id}/cancel
+Cancel an in-progress session.
+
+
+
+# Delete an agent
+Source: https://developers.notion.com/reference/notion-agent-apis/delete-agent
+
+delete /v1/agents/{agent_id}
+Soft-delete a Custom Agent that the integration can manage.
+
+
+
+# Query agents
+Source: https://developers.notion.com/reference/notion-agent-apis/query-agents
+
+post /v1/agents/query
+Find Custom Agents that an integration can access.
+
+Use filters, sorting, and cursor pagination to find accessible Custom Agents.
+
+<Info>
+  **Access**
+
+  A personal access token returns the agents its user can read. A connection returns only agents explicitly shared with it. No matching agents returns an empty `results` array.
+</Info>
+
+
+# Query session events
+Source: https://developers.notion.com/reference/notion-agent-apis/query-session-events
+
+post /v1/sessions/{session_id}/events/query
+Retrieve a page of events from an accessible session.
+
+Tool calls identify their tool and lifecycle status, without tool inputs or outputs.
+
+
+# Query sessions
+Source: https://developers.notion.com/reference/notion-agent-apis/query-sessions
+
+post /v1/sessions/query
+Find agent sessions that an integration can access.
+
+Use `filter`, `sorts`, and `query` to narrow the list. Follow `next_cursor` until `has_more` is `false`.
+
+
+# Retrieve an agent
+Source: https://developers.notion.com/reference/notion-agent-apis/retrieve-agent
+
+get /v1/agents/{agent_id}
+Retrieve metadata for one accessible Custom Agent.
+
+
+
+# Retrieve agent insights
+Source: https://developers.notion.com/reference/notion-agent-apis/retrieve-agent-insights
+
+get /v1/agents/{agent_id}/insights
+Retrieve configuration and usage insights for a Custom Agent.
+
+
+
+# Retrieve a session
+Source: https://developers.notion.com/reference/notion-agent-apis/retrieve-session
+
+get /v1/sessions/{session_id}
+Retrieve the status, metadata, and required actions for a session.
+
+The response carries the session's status and metadata, including any actions waiting on you. To read a session's messages and agent thinking, use [Query session events](/reference/notion-agent-apis/query-session-events).
+
+
+# Update an agent credit limit
+Source: https://developers.notion.com/reference/notion-agent-apis/update-agent-credit-limit
+
+patch /v1/agents/{agent_id}/credit_limit
+Set or clear the credit limit for a Custom Agent.
+
+
+
+# Update agent status
+Source: https://developers.notion.com/reference/notion-agent-apis/update-agent-status
+
+patch /v1/agents/{agent_id}/status
+Enable or disable a Custom Agent.
+
+
+
+# Create or update a session
+Source: https://developers.notion.com/reference/notion-agent-apis/update-session
+
+post /v1/sessions
+Start a session, send a message, submit an action, or stream a session turn.
+
+Omit `session_id` to start a session, or provide one to add a message or submit a required action to an existing session.
+
+### Stream a session turn
+
+Send the same request with `Accept: text/event-stream` to receive server-sent events instead of a JSON session response. Streaming supports replaying an event with `continue_from`; that field is only valid with the SSE response.
+
+```bash theme={null}
+curl --request POST "https://api.notion.com/v1/sessions" \
+  --header "Authorization: Bearer $NOTION_TOKEN" \
+  --header "Notion-Version: 2026-03-11" \
+  --header "Accept: text/event-stream" \
+  --header "Content-Type: application/json" \
+  --data '{"agent_id":"<agent-id>","message":"Summarize this week’s work."}'
 ```
 
 
@@ -30961,7 +31682,7 @@ worker.webhook("onGithubPush", { /* ... */ });
 Once deployed, Notion takes over:
 
 * **Syncs** run on a schedule (default every 30 minutes) and write results to Notion databases.
-* **Tools** appear in Notion Custom Agents and are called by agents on demand.
+* **Tools** appear in Notion Custom Agents and are called by Custom Agents on demand.
 * **Webhooks** receive HTTP events from external services and run your handler asynchronously.
 
 Your code runs in a sandboxed Node.js environment. You can make HTTP requests to external APIs, [use secrets](/workers/guides/secrets) stored via the CLI, and authenticate with third-party services through [OAuth](/workers/guides/oauth).
@@ -31062,6 +31783,10 @@ Get up and running with Workers in a few steps.
     ```
 
     Follow the prompts to authenticate with your Notion workspace.
+  </Step>
+
+  <Step title="Share the worker (optional)">
+    To let other workspace members use this worker, share it from the <a href={developerWorkersUrl}>Developer portal</a>. **Can connect** lets members connect the worker to agents, and **Full access** lets them manage, edit, and deploy it. See [sharing workers](/workers/guides/sharing-workers) for more details.
   </Step>
 
   <Step title="Run the sample tool">
@@ -31375,7 +32100,7 @@ Setting up OAuth requires multiple steps in a specific order. The worker must be
     ntn workers oauth start githubAuth
     ```
 
-    This opens a browser window where you authorize the connection. Once complete, the worker runtime stores the token securely.
+    This opens a browser window where you authorize the connection. Once complete, the Workers runtime stores the token securely.
   </Step>
 </Steps>
 
@@ -31699,6 +32424,35 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers en
 </CardGroup>
 
 
+# Sharing Workers
+Source: https://developers.notion.com/workers/guides/sharing-workers
+
+Share access to a Notion Worker with workspace members and choose what they can do.
+
+Share a Worker with workspace members from the <a href={developerWorkersUrl}>Developer portal</a>. Sharing a Worker gives members access to its capabilities without giving them access to your source code.
+
+## Share a Worker
+
+<Steps>
+  <Step title="Open the Developer portal">
+    Open the <a href={developerWorkersUrl}>Workers page</a> in the Developer portal.
+  </Step>
+
+  <Step title="Choose a Worker">
+    Select the Worker you want to share, then select **Share**.
+  </Step>
+
+  <Step title="Choose members and access">
+    Search for workspace members, choose an access level, and select **Share**.
+  </Step>
+</Steps>
+
+## Access levels
+
+* **Can connect:** View and connect this Worker to agents.
+* **Full access:** Manage, edit, and deploy the Worker, and connect it to agents.
+
+
 # Syncs
 Source: https://developers.notion.com/workers/guides/syncs
 
@@ -31778,6 +32532,16 @@ worker.sync("tasksSync", {
   }),
 });
 ```
+
+## Synced database semantics
+
+Once a database is under sync control, the sync is the only writer to the data it owns. This applies equally to `managed` and `attached` databases:
+
+* **Synced columns are read-only.** You cannot manually edit any property declared in the sync's `schema.properties`. Columns outside the schema are not synced and remain editable.
+* **Row titles and icons are read-only.** To change them, set them explicitly from the sync: the title via the title property's value in each upsert, and the icon and cover via the upsert's `icon` and `cover` fields — see [Set page icons and covers](#set-page-icons-and-covers).
+* **Rows cannot be added or deleted manually.** Only the sync creates rows (via upserts) or deletes them (via `type: "delete"` changes, or replace-mode mark-and-sweep).
+
+[Detaching a database](#detach-a-database) releases it from sync control and removes these locks without touching its data.
 
 ## Choose a sync mode
 
@@ -33049,9 +33813,7 @@ Creates a reference schema with `$ref` set to `path`.
 j.ref("#/$defs/user")
 ```
 
-<h2>
-  Database schema helpers
-</h2>
+## Database schema helpers
 
 Use `Schema` helpers to define the properties of managed databases declared with `worker.database()`.
 
@@ -33991,9 +34753,7 @@ that add databases, pacers, and capabilities to the worker manifest.
 | [`worker.webhook()`](#worker-webhook)   | Capability | Defines an HTTP webhook handler.                                 |
 | [`worker.oauth()`](#worker-oauth)       | Capability | Defines OAuth configuration for external service authentication. |
 
-<h2>
-  worker.database()
-</h2>
+## worker.database()
 
 Declares a managed Notion database for sync output.
 
@@ -34041,9 +34801,7 @@ editable in Notion.
 
 `worker.database()` returns an opaque database handle. Pass that handle to `worker.sync()`.
 
-<h2>
-  worker.pacer()
-</h2>
+## worker.pacer()
 
 Declares a rate limit budget for calls to an external API.
 
@@ -34073,9 +34831,7 @@ progress throughout the pacer window. When multiple capabilities use the same
 pacer, the server calculates the number of concurrently executing capabilities
 and divides the pace across them.
 
-<h2>
-  worker.sync()
-</h2>
+## worker.sync()
 
 Registers a sync capability that writes changes into a [database](#worker-database). See the [Syncs guide](/workers/guides/syncs) for usage patterns, pagination, and scheduling.
 
@@ -34312,13 +35068,11 @@ Both syncs must use unique sync keys. When multiple syncs share a pacer, the
 server apportions the request budget across them. Use `upstreamUpdatedAt` on
 upsert changes when multiple syncs can update the same record.
 
-<h2>
-  worker.tool()
-</h2>
+## worker.tool()
 
 Registers a tool that can be called by Notion Custom Agents. See the [Agent tools guide](/workers/guides/tools) for a walkthrough of defining inputs, testing locally, and deploying.
 
-Tools extend custom agent functionality. A worker is attached to a custom agent,
+Tools extend Custom Agent functionality. A worker is attached to a Custom Agent,
 and each tool declared by that worker can be enabled or disabled on that
 connection.
 
@@ -34363,9 +35117,7 @@ Tool hints describe how the tool behaves. `readOnlyHint: true` marks a tool as
 read-only and safe to auto-execute. Tools without `readOnlyHint: true` are
 treated as write tools and prompt for confirmation.
 
-<h2>
-  worker.webhook()
-</h2>
+## worker.webhook()
 
 Registers an HTTP webhook endpoint for external services. See the [Webhooks guide](/workers/guides/webhooks) for request verification, retries, and using the Notion API from a webhook handler.
 
@@ -34396,9 +35148,7 @@ worker.webhook("onGithubPush", {
 
 Throw `WebhookVerificationError` from `execute` to signal signature verification failure. After five consecutive verification failures, the platform rejects incoming requests for the webhook without executing the handler.
 
-<h2>
-  worker.oauth()
-</h2>
+## worker.oauth()
 
 Registers a user-managed OAuth provider and returns an OAuth capability handle. See the [OAuth guide](/workers/guides/oauth) for the full setup flow, including provider configuration and testing locally.
 

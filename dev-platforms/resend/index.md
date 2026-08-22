@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 330 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 333 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -12,6 +12,7 @@
 - `docs/api-reference/api-keys/create-api-key` — [Create API key](pages/docs/api-reference/api-keys/create-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/create-api-key)
 - `docs/api-reference/api-keys/delete-api-key` — [Delete API key](pages/docs/api-reference/api-keys/delete-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/delete-api-key)
 - `docs/api-reference/api-keys/list-api-keys` — [List API keys](pages/docs/api-reference/api-keys/list-api-keys.md) · [原文](https://resend.com/docs/api-reference/api-keys/list-api-keys)
+- `docs/api-reference/api-keys/update-api-key` — [Update API key](pages/docs/api-reference/api-keys/update-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/update-api-key)
 - `docs/api-reference/broadcasts/cancel-broadcast` — [Cancel Broadcast](pages/docs/api-reference/broadcasts/cancel-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/cancel-broadcast)
 - `docs/api-reference/broadcasts/create-broadcast` — [Create Broadcast](pages/docs/api-reference/broadcasts/create-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/create-broadcast)
 - `docs/api-reference/broadcasts/delete-broadcast` — [Delete Broadcast](pages/docs/api-reference/broadcasts/delete-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/delete-broadcast)
@@ -58,6 +59,7 @@
 - `docs/api-reference/emails/retrieve-received-email-attachment` — [Retrieve Attachment](pages/docs/api-reference/emails/retrieve-received-email-attachment.md) · [原文](https://resend.com/docs/api-reference/emails/retrieve-received-email-attachment)
 - `docs/api-reference/emails/send-batch-emails` — [Send Batch Emails](pages/docs/api-reference/emails/send-batch-emails.md) · [原文](https://resend.com/docs/api-reference/emails/send-batch-emails)
 - `docs/api-reference/emails/send-email` — [Send Email](pages/docs/api-reference/emails/send-email.md) · [原文](https://resend.com/docs/api-reference/emails/send-email)
+- `docs/api-reference/emails/share-email` — [Share Email](pages/docs/api-reference/emails/share-email.md) · [原文](https://resend.com/docs/api-reference/emails/share-email)
 - `docs/api-reference/emails/update-email` — [Update Email](pages/docs/api-reference/emails/update-email.md) · [原文](https://resend.com/docs/api-reference/emails/update-email)
 - `docs/api-reference/errors` — [Errors](pages/docs/api-reference/errors.md) · [原文](https://resend.com/docs/api-reference/errors)
 - `docs/api-reference/introduction` — [Introduction](pages/docs/api-reference/introduction.md) · [原文](https://resend.com/docs/api-reference/introduction)
@@ -205,6 +207,7 @@
 - `docs/knowledge-base/godaddy` — [GoDaddy](pages/docs/knowledge-base/godaddy.md) · [原文](https://resend.com/docs/knowledge-base/godaddy)
 - `docs/knowledge-base/hetzner` — [Hetzner](pages/docs/knowledge-base/hetzner.md) · [原文](https://resend.com/docs/knowledge-base/hetzner)
 - `docs/knowledge-base/hostinger` — [Hostinger](pages/docs/knowledge-base/hostinger.md) · [原文](https://resend.com/docs/knowledge-base/hostinger)
+- `docs/knowledge-base/how-can-i-add-mfa` — [How to add multi-factor authentication to your Resend account](pages/docs/knowledge-base/how-can-i-add-mfa.md) · [原文](https://resend.com/docs/knowledge-base/how-can-i-add-mfa)
 - `docs/knowledge-base/how-can-i-change-my-email-address` — [How to change your Resend email address](pages/docs/knowledge-base/how-can-i-change-my-email-address.md) · [原文](https://resend.com/docs/knowledge-base/how-can-i-change-my-email-address)
 - `docs/knowledge-base/how-can-i-delete-my-resend-account` — [How to delete your Resend account](pages/docs/knowledge-base/how-can-i-delete-my-resend-account.md) · [原文](https://resend.com/docs/knowledge-base/how-can-i-delete-my-resend-account)
 - `docs/knowledge-base/how-can-i-delete-my-team` — [How to delete your Resend team](pages/docs/knowledge-base/how-can-i-delete-my-team.md) · [原文](https://resend.com/docs/knowledge-base/how-can-i-delete-my-team)

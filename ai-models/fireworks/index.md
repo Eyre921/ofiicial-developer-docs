@@ -146,7 +146,7 @@
 - `ecosystem/fireconnect/cli-reference` — [CLI reference](pages/ecosystem/fireconnect/cli-reference.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cli-reference)
 - `ecosystem/fireconnect/codex` — [Codex](pages/ecosystem/fireconnect/codex.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/codex)
 - `ecosystem/fireconnect/cursor` — [Cursor](pages/ecosystem/fireconnect/cursor.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cursor)
-- `ecosystem/fireconnect/deepagents` — [Deep Agents](pages/ecosystem/fireconnect/deepagents.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/deepagents)
+- `ecosystem/fireconnect/deepseek` — [DeepSeek Harness](pages/ecosystem/fireconnect/deepseek.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/deepseek)
 - `ecosystem/fireconnect/demo` — [Side-by-side demo](pages/ecosystem/fireconnect/demo.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/demo)
 - `ecosystem/fireconnect/microsoft-foundry` — [Microsoft Foundry](pages/ecosystem/fireconnect/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/microsoft-foundry)
 - `ecosystem/fireconnect/models` — [Models](pages/ecosystem/fireconnect/models.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/models)

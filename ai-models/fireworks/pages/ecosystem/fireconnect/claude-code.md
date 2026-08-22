@@ -16,7 +16,7 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI v0.9.2+ (see [Install](/ecosystem/fireconnect/overview#install))
+* The FireConnect CLI v0.9.3+ (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -48,7 +48,7 @@ After `fireconnect claude on`, start a new Claude Code session or run `/model` t
 ```bash theme={null}
 fireconnect model list --search glm
 fireconnect claude on --model firerouter               # main only
-fireconnect claude on --interactive                    # wizard for all six slots
+fireconnect claude on --interactive                    # model mapping wizard
 fireconnect claude on --opus glm-fast-latest --sonnet glm-fast-latest
 fireconnect claude status
 ```
@@ -69,14 +69,14 @@ FireConnect detects Fire Pass keys and routes all model aliases to `kimi-fast-la
 
 When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive model picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
 
-| Alias    | Standard key (`fw_...`)                                                                                                                   | Fire Pass key (`fpk_...`) |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| main     | `firerouter` on first connect when Claude already has Anthropic auth (OAuth / `sk-ant-…`) or workspace BYOK; otherwise `kimi-fast-latest` | `kimi-fast-latest`        |
-| opus     | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
-| sonnet   | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
-| haiku    | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
-| fable    | `kimi-fast-latest`                                                                                                                        | `kimi-fast-latest`        |
-| subagent | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
+| Alias    | Standard key (`fw_...`)                                                                        | Fire Pass key (`fpk_...`) |
+| -------- | ---------------------------------------------------------------------------------------------- | ------------------------- |
+| main     | Claude default (unpinned)                                                                      | `kimi-fast-latest`        |
+| opus     | `firerouter` on first connect; otherwise `deepseek-pro-latest` when FireRouter is not selected | `kimi-fast-latest`        |
+| sonnet   | Claude default (unpinned)                                                                      | `kimi-fast-latest`        |
+| haiku    | `deepseek-flash-latest`                                                                        | `kimi-fast-latest`        |
+| fable    | `kimi-fast-latest`                                                                             | `kimi-fast-latest`        |
+| subagent | `deepseek-flash-latest`                                                                        | `kimi-fast-latest`        |
 
 Short model IDs expand automatically. Claude Code adds `[1m]` on 1M-context models (not `subagent`).
 
@@ -86,28 +86,28 @@ FireConnect saves your chosen mapping per key type. Reopen the wizard anytime:
 fireconnect claude on --interactive
 ```
 
-Use `--non-interactive` to skip the wizard and apply saved preferences or the example mapping above. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
+Use `--non-interactive` to skip the wizard and apply saved preferences or defaults. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
 
 In the wizard, toggle between **fast models** (routers on the high-speed path) and **non-fast models** (pinned model IDs that stay stable across catalog updates).
 
 ## What gets written
 
-FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`:
+FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`. On a first connect with a standard key, main and Sonnet are unpinned and Opus uses FireRouter:
 
 ```json theme={null}
 {
-  "model": "kimi-fast-latest",
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-fast-latest",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "firerouter[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash-latest[1m]",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-fast-latest[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash-latest",
     "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: YOUR_FIREWORKS_API_KEY"
   }
 }
 ```
+
+FireRouter is eligible for any standard Fireworks key; provider pass-through depends on the credentials available to FireRouter. Explicit slot flags always win. FireConnect v0.9.3+ also migrates an old `deepseek-v4-flash` Claude default to `deepseek-flash-latest` the next time you run `fireconnect claude on`.
 
 FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
 
@@ -179,7 +179,7 @@ Requires `tmux`. Neither command changes harness settings.
 
 ### Text-only models and images
 
-Claude Code cannot mark a model as non-vision. Pasting an image on a **text-only** slot (for example `glm-fast-latest` or `deepseek-v4-flash`) can break the session.
+Claude Code cannot mark a model as non-vision. Pasting an image on a **text-only** slot (for example `glm-fast-latest` or `deepseek-flash-latest`) can break the session.
 
 **Recover with `/rewind`**, then avoid images on that slot or map it to a vision model (for example `kimi-fast-latest`):
 

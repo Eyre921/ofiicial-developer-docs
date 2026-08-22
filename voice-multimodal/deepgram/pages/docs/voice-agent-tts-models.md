@@ -37,12 +37,13 @@ Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak
 
 [Flux TTS](/docs/flux-tts/overview) is Deepgram's streaming-first, voice-agent-first text-to-speech model family. It brings a turn-based lifecycle and cross-turn voice consistency built for the realities of a voice agent pipeline. For details, see the [Flux TTS Feature Overview](/docs/flux-tts/feature-overview).
 
-| Parameter                      | Type   | Description                                                                                                                                                         |
-| ------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agent.speak.provider.type`    | String | Must be `deepgram`                                                                                                                                                  |
-| `agent.speak.provider.version` | String | Must be `v2`                                                                                                                                                        |
-| `agent.speak.provider.model`   | String | Flux TTS model id in the format `flux-{voice}-{language}`, for example `flux-alexis-en`. See the [Flux TTS voice catalog](/docs/flux-tts/voices) for the full list. |
-| `agent.speak.provider.speed`   | Float  | Speaking rate multiplier. Accepts `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, or `1.15`. Defaults to `1.0`.                                                        |
+| Parameter                           | Type    | Description                                                                                                                                                                                                        |
+| ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `agent.speak.provider.type`         | String  | Must be `deepgram`                                                                                                                                                                                                 |
+| `agent.speak.provider.version`      | String  | Must be `v2`                                                                                                                                                                                                       |
+| `agent.speak.provider.model`        | String  | Flux TTS model id in the format `flux-{voice}-{language}`, for example `flux-alexis-en`. See the [Flux TTS voice catalog](/docs/flux-tts/voices) for the full list.                                                |
+| `agent.speak.provider.speed`        | Float   | Speaking rate multiplier. Accepts `0.85`, `0.9`, `0.95`, `1.0`, `1.05`, `1.1`, or `1.15`. Defaults to `1.0`.                                                                                                       |
+| `agent.speak.provider.expressivity` | Integer | Delivery register on a calm to animated axis, available on every Flux voice. Accepts `-2`, `-1`, `0`, `1`, or `2`. Defaults to `0`, the voice's tuned delivery. Beta — see [Expressivity](/docs/tts-expressivity). |
 
 Flux TTS voices are served only on `agent.speak.provider.version`: `v2`, and Aura voices only on `agent.speak.provider.version`: `v1`. Switch families by changing `agent.speak.provider.version` and `model` together.
 

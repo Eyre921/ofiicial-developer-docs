@@ -174,7 +174,11 @@ components:
             anyOf:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
-                  - properties: {}
+                  - properties:
+                      defer_loading:
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        example: true
+                        type: 'boolean'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -220,6 +224,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ToolSearchServerTool'
               - additionalProperties: {}
                 properties:
                   type:
@@ -3989,7 +3994,11 @@ components:
             oneOf:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
-                  - properties: {}
+                  - properties:
+                      defer_loading:
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        example: true
+                        type: 'boolean'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -4535,6 +4544,7 @@ components:
         - 'ionstream'
         - 'krea'
         - 'liquid'
+        - 'makora'
         - 'mancer'
         - 'mara'
         - 'meta'
@@ -6914,6 +6924,18 @@ components:
         name: 'Production OpenAI Key'
         provider: 'openai'
       properties:
+        allowed_api_key_hashes:
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.'
+          example:
+            - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
+          items:
+            pattern: '^[a-f0-9]{64}$'
+            type: 'string'
+          maxItems: 100
+          minItems: 1
+          type:
+            - 'array'
+            - 'null'
         allowed_models:
           description: 'Optional allowlist of model slugs this credential may be used for. `null` means no restriction.'
           example: null
@@ -7195,7 +7217,7 @@ components:
         reset_interval:
           $ref: '#/components/schemas/GuardrailInterval'
         workspace_id:
-          description: 'The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.'
+          description: 'The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace''s traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace''s default guardrail instead.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -10068,7 +10090,7 @@ components:
             - 'string'
             - 'null'
         workspace_id:
-          description: 'The workspace this guardrail is scoped to, or `null` for an unscoped legacy guardrail predating workspaces. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.'
+          description: 'The workspace this guardrail belongs to, or `null` for an unscoped legacy guardrail predating workspaces. Workspace membership organizes the guardrail; it does not apply the guardrail to the workspace''s traffic. A `null` value does not mean the default workspace, and does not apply the guardrail across every workspace.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           type:
             - 'string'
@@ -13422,6 +13444,7 @@ components:
               - $ref: '#/components/schemas/AnthropicToolSearchToolBm25'
               - $ref: '#/components/schemas/AnthropicToolSearchToolRegex'
               - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ToolSearchServerTool'
           type: 'array'
         top_k:
           type: 'integer'
@@ -13684,6 +13707,7 @@ components:
                 - 'Inferact vLLM'
                 - 'Inflection'
                 - 'Liquid'
+                - 'Makora'
                 - 'Mara'
                 - 'Mancer 2'
                 - 'Meta'
@@ -20373,6 +20397,7 @@ components:
         - 'Inferact vLLM'
         - 'Inflection'
         - 'Liquid'
+        - 'Makora'
         - 'Mara'
         - 'Mancer 2'
         - 'Meta'
@@ -20646,6 +20671,9 @@ components:
           additionalProperties: {}
           type: 'object'
         lynn-private:
+          additionalProperties: {}
+          type: 'object'
+        makora:
           additionalProperties: {}
           type: 'object'
         mancer:
@@ -21107,6 +21135,7 @@ components:
             - 'Inferact vLLM'
             - 'Inflection'
             - 'Liquid'
+            - 'Makora'
             - 'Mara'
             - 'Mancer 2'
             - 'Meta'
@@ -21775,6 +21804,7 @@ components:
         - 'openai-responses-v1'
         - 'azure-openai-responses-v1'
         - 'bedrock-openai-responses-v1'
+        - 'bedrock-xai-responses-v1'
         - 'xai-responses-v1'
         - 'meta-responses-v1'
         - 'anthropic-claude-v1'
@@ -22287,7 +22317,11 @@ components:
             anyOf:
               - allOf:
                   - $ref: '#/components/schemas/FunctionTool'
-                  - properties: {}
+                  - properties:
+                      defer_loading:
+                        description: 'Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.'
+                        example: true
+                        type: 'boolean'
                     type: 'object'
                 description: 'Function tool definition'
                 example:
@@ -22333,6 +22367,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
+              - $ref: '#/components/schemas/ToolSearchServerTool'
           type: 'array'
         top_k:
           type: 'integer'
@@ -24148,6 +24183,32 @@ components:
         - 'mode'
         - 'tools'
       type: 'object'
+    ToolSearchServerTool:
+      description: 'OpenRouter built-in server tool: finds tools marked `defer_loading` and makes them callable'
+      example:
+        parameters:
+          max_results: 5
+        type: 'openrouter:tool_search'
+      properties:
+        parameters:
+          $ref: '#/components/schemas/ToolSearchServerToolConfig'
+        type:
+          enum:
+            - 'openrouter:tool_search'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    ToolSearchServerToolConfig:
+      description: 'Configuration for the openrouter:tool_search server tool'
+      example:
+        max_results: 5
+      properties:
+        max_results:
+          description: 'Maximum tools returned by one search. Defaults to 5.'
+          example: 5
+          type: 'integer'
+      type: 'object'
     TooManyRequestsResponse:
       description: 'Too Many Requests - Rate limit exceeded'
       example:
@@ -24790,6 +24851,18 @@ components:
         disabled: false
         name: 'Updated OpenAI Key'
       properties:
+        allowed_api_key_hashes:
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.'
+          example:
+            - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
+          items:
+            pattern: '^[a-f0-9]{64}$'
+            type: 'string'
+          maxItems: 100
+          minItems: 1
+          type:
+            - 'array'
+            - 'null'
         allowed_models:
           description: 'Optional allowlist of model slugs this credential may be used for. `null` means no restriction.'
           example: null
@@ -26753,7 +26826,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Get available analytics metrics and dimensions'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
   /analytics/query:
     post:
       description: 'Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -27031,7 +27104,7 @@ paths:
           description: 'Internal Server Error - Unexpected server error'
       summary: 'Query analytics data'
       tags:
-        - 'beta.Analytics'
+        - 'Analytics'
   /audio/speech:
     post:
       description: 'Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).'
@@ -27889,6 +27962,7 @@ paths:
               - 'ionstream'
               - 'krea'
               - 'liquid'
+              - 'makora'
               - 'mancer'
               - 'mara'
               - 'meta'
@@ -28009,7 +28083,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. When `workspace_id` is omitted, the credential is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. Treat the raw key as write-only; it is never returned after creation. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new bring-your-own-key (BYOK) provider credential. The raw key is encrypted at rest and never returned in API responses. When `workspace_id` is omitted, the credential is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. Treat the raw key as write-only; it is never returned after creation. Use `allowed_api_key_hashes` to restrict the credential to specific OpenRouter API keys. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createBYOKKey'
       requestBody:
         content:
@@ -28212,7 +28286,7 @@ paths:
         - 'BYOK'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Update an existing bring-your-own-key (BYOK) provider credential by its `id`. Include the `key` field to rotate the raw provider API key in-place (the previous key material is overwritten). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update an existing bring-your-own-key (BYOK) provider credential by its `id`. Include the `key` field to rotate the raw provider API key in-place (the previous key material is overwritten). Use `allowed_api_key_hashes` to restrict the credential to specific OpenRouter API keys (`null` clears the restriction). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updateBYOKKey'
       parameters:
         - description: 'The BYOK credential ID (UUID).'
@@ -29485,6 +29559,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: 'Not Found - Resource does not exist'
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: 'Operation timed out. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: 'Request Timeout - Operation exceeded time limit'
+        '413':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 413
+                  message: 'Request payload too large'
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+          description: 'Payload Too Large - Request payload exceeds size limits'
         '429':
           content:
             application/json:
@@ -30875,7 +30969,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace''s traffic. To restrict all traffic in a workspace, update the workspace''s default guardrail instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createGuardrail'
       requestBody:
         content:
@@ -38988,8 +39082,6 @@ tags:
     name: 'Video Generation'
   - description: 'Workspaces endpoints'
     name: 'Workspaces'
-  - description: 'beta.Analytics endpoints'
-    name: 'beta.Analytics'
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3

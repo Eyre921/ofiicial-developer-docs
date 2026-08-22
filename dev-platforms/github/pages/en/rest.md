@@ -16,7 +16,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Getting started with the REST API](/en/rest/using-the-rest-api/getting-started-with-the-rest-api)
 
-  Learn how to use the GitHub REST API.
+  <p>Learn how to use the GitHub REST API.</p>
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
@@ -24,7 +24,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  <p>Follow these best practices when using GitHub's API.</p>
+  Follow these best practices when using GitHub's API.
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 

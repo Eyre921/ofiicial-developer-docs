@@ -6,22 +6,23 @@ path: docs/node-repair
 
 Restore unhealthy GPU nodes through automated recommendations or manual repair actions.
 
-Node repair restores GPU nodes that [health checks](/docs/health-checks) have flagged as unhealthy. You can repair nodes through two paths: [auto repair](#auto-node-repair), where the system generates a recommendation based on detected issues, and [manual repair](#manual-node-repair), where you trigger a repair action directly from the UI.
+Node repair restores GPU nodes that [health checks](/docs/health-checks) have flagged as unhealthy. You can repair nodes through two paths: [auto repair](#auto-node-repair), where health checks detect the fault and the system remediates it (after your approval or on its own, depending on the cluster's [confirmation policy](#confirmation-policy)), and [manual repair](#manual-node-repair), where you trigger a repair action directly from the UI.
 
 ## Auto node repair
 
-When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/health-checks#active-health-checks) health checks detect a node-level issue, the system generates a repair recommendation and surfaces it for your review. This is a human-in-the-loop process: Together handles detection and recommends a remediation, but you decide when to proceed.
+When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/health-checks#active-health-checks) health checks detect a node-level issue, the system generates a repair recommendation and remediates the node. Together handles detection and selects the remediation in every case. The cluster's [confirmation policy](#confirmation-policy) decides whether that recommendation waits for your approval or executes on its own.
 
 ### How auto repair works
 
 1. Health checks detect an issue on a node and create an alert with supporting evidence.
 2. The system evaluates the alert and generates a repair recommendation with a suggested mode (for example, migrate to new host).
 3. The recommendation appears in the **Repairs** tab of your cluster.
-4. You review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead.
-5. Once approved, Together executes the repair with the action you chose: cordon, graceful drain, remediation action, and node rejoin.
+4. Under **Approve before repair**, you review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead. Under **Fully automatic**, the system auto-approves an in-scope recommendation with no review and runs the recommended action.
+5. The system cordons the node so no new work lands on it, then applies the cluster's [wait policy](#control-job-interruption).
+6. Together drains the node, executes the remediation action, and rejoins the node to the cluster.
 
 <Note>
-  Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Review recommendations before accepting to confirm your workloads are ready for the disruption.
+  Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Use the [job interruption controls](#control-job-interruption) to give that work time to finish, and under **Approve before repair**, confirm your workloads are ready for the disruption before accepting.
 </Note>
 
 ### Recommended repair actions
@@ -53,12 +54,87 @@ The detected issues come from [passive health check signals](/docs/health-checks
 | Slurm node unavailable            | `SlurmNodeUnavailable`           | Warning                              |
 
 <Note>
-  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
+  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today. Some raise an internal alert that Together's team reviews first. A recommendation waits for your approval unless the cluster's [confirmation policy](#confirmation-policy) is set to **Fully automatic** and the fault is in scope for automatic execution.
 </Note>
+
+### Confirmation policy
+
+The confirmation policy controls whether auto repair pauses for a human. Open your cluster in the [cloud console](https://api.together.ai/clusters), select the **Repairs** tab, and find **Auto-remediation policy**.
+
+| **Confirmation policy** | **Behavior**                                                                                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Approve before repair   | Each fault produces a recommendation that waits in the **Repairs** tab. The repair runs after you approve it.                                                                                          |
+| Fully automatic         | Faults you have [scoped for automatic execution](#select-which-faults-and-alerts-repair-automatically) are repaired with no approval. Fastest recovery, at the cost of potentially interrupting a job. |
+
+Clusters use **Approve before repair** by default. Detection, recommendation, and execution are identical under both policies. Only the approval step differs.
+
+#### Fully automatic
+
+When you choose **Fully automatic**, the repair loop is handled for you end to end: passive health checks detect the fault, the system generates a repair recommendation, and auto repair executes it with no human approval. Job protection is handled by the wait policy instead of by a review step.
+
+Automatically approved repairs produce the same audit trail as manually approved ones. In the repair details, **Reviewed by** shows Auto-Approved, alongside the alert evidence that triggered the recommendation.
+
+**Fully automatic** is not all-or-nothing. Use **Repair actions** to choose which faults run unattended and which should wait for human approval, and [turn off auto repair for individual nodes](#turn-off-auto-repair-for-individual-nodes) you want to exclude entirely.
+
+The [behavioral details](#behavioral-details) below apply under both policies.
+
+#### Select which faults and alerts repair automatically
+
+Under **Repair actions**, faults are grouped by the repair they trigger: **Migrate to new host**, **Reprovision**, and **VM reboot**. Expand a group to see the individual faults it covers and check them one at a time. **VM reboot** and **Reprovision** correspond to the reboot and quick reprovision actions in [Available repair actions](#available-repair-actions).
+
+Checked faults repair automatically. Unchecked faults wait for approval in the **Repairs** tab. A group with both shows as mixed.
+
+The **Repair actions** list appears under both confirmation policies, so it also works in the other direction: under **Approve before repair**, check specific faults to let them repair automatically while everything else waits for review.
+
+<Warning>
+  **Reprovision** and **Migrate to new host** destroy all local VM data. When those groups are checked, they run with no review. Store data on PersistentVolumes, or leave those groups unchecked so they stay gated on approval.
+</Warning>
+
+**Remove** is not listed under **Repair actions**. Permanent removal for RMA is always human-initiated and never runs automatically.
+
+#### Turn off auto repair for individual nodes
+
+You can also opt a single node out of auto repair, independent of the cluster's confirmation policy. In the **Nodes** tab, each node has an **Auto Repair** control. Set it to **Disabled** to exclude that node from auto repair while the rest of the cluster keeps the cluster-wide behavior.
+
+Use this to hold a specific node for inspection, for example while debugging a recurring fault you want preserved, without giving up auto repair everywhere else. [Manual repair](#manual-node-repair) remains available for a node that has opted out, and you can re-enable **Auto Repair** on the node at any time.
+
+#### Control job interruption
+
+**Wait for idle** determines whether an approved repair waits for running work to finish. The field below the toggle changes with it.
+
+* **Wait for idle off:** The node is cordoned immediately, the system waits out the **Grace period**, then drains and interrupts whatever is still running, busy or not.
+
+* **Wait for idle on:** The repair holds until the node becomes idle, or until **Maximum wait** expires, whichever comes first. Check **Do not interrupt running jobs** to remove the upper bound and wait indefinitely for the node to go idle.
+
+**Wait for idle** starts on with a two-hour **Maximum wait** when you first configure the policy, and both fields cap at 24 hours. The console shows these controls when **Fully automatic** is selected, but the saved values govern approved repairs under both policies. A cluster that has never saved wait settings waits 30 minutes after approval under **Approve before repair**, and does not wait under **Fully automatic**.
+
+<Note>
+  Both fields are in hours and accept fractional values: `0.5` is 30 minutes. Cordoning happens at the start of the wait either way, so no new work lands on a node that is queued for repair.
+</Note>
+
+Set the wait to at least your checkpoint interval so a training job can write a checkpoint before the node drains. Enabling **Do not interrupt running jobs** on a cluster running long jobs means a faulty node can stay in service indefinitely. The node is not repaired until the job ends on its own.
+
+#### Choosing a policy
+
+Choose **Fully automatic** when:
+
+* Workloads checkpoint frequently, or are replicated inference deployments that tolerate losing a replica.
+* The cluster is large enough that manual review is the bottleneck in mean time to recovery.
+* Spare capacity means a node leaving the pool does not block scheduling.
+
+Choose **Approve before repair** when:
+
+* Long-running training jobs checkpoint infrequently.
+* The cluster runs at full capacity, so losing a node stalls a job.
+* You are debugging a recurring fault and want the node preserved for inspection.
+
+If you want most of the benefit with less exposure, set **Fully automatic** and check only **VM reboot**. Transient faults, the majority by volume, clear without you, and anything that destroys local data still waits for review.
 
 ### Override the recommended action
 
 When you review a recommendation, the system marks its suggested action as recommended. You can approve that action, or override it and approve a different action instead. Overriding lets you escalate or de-escalate the repair when you have more context than the automated policy. For example, you can choose migrate to new host instead of a recommended reboot when you suspect a hardware fault.
+
+Overriding applies only to recommendations that wait for review, so a recommendation that runs automatically under **Fully automatic** executes its recommended action with no opportunity for override.
 
 The review shows the health check failures that triggered the recommendation alongside the four repair actions:
 
@@ -81,7 +157,7 @@ See [Available repair actions](#available-repair-actions) for guidance on when t
 
 To view repair recommendations and history:
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the [cloud console](https://api.together.ai/clusters).
 2. Select the **Repairs** tab.
 
 The Repairs table shows all repair events with the following columns:
@@ -89,7 +165,7 @@ The Repairs table shows all repair events with the following columns:
 * **Node:** The affected node name.
 * **State:** The current status of the repair. Values include Auto Resolved (issue resolved before action was taken), Succeeded (repair completed), and in-progress states.
 * **Mode:** The remediation action (for example, Migrate to new host).
-* **Trigger:** How the repair was initiated. Automated (generated by health checks) or Manual (triggered by a user).
+* **Trigger:** How the repair was initiated. Automated (generated by health checks) or Manual (triggered by a user). Automatically approved repairs show Auto-Approved in the repair's **Reviewed by** field.
 * **Created:** When the repair recommendation was generated.
 
 ### Repair details
@@ -157,7 +233,7 @@ When you encounter node problems or want to trigger a repair without waiting for
 
 ### How to trigger manual repair
 
-1. Navigate to your cluster in the Together Cloud UI.
+1. Navigate to your cluster in the [cloud console](https://api.together.ai/clusters).
 2. Go to the **Worker Nodes** section.
 3. Find the problematic node.
 4. Select the **⋮** (three dots) menu in the **State** column.

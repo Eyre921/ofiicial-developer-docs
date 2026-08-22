@@ -15,11 +15,11 @@ Together's IAM is built around five concepts that work together:
 | Concept                                                         | What it is                                                                                                     |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | [Organization](/docs/organizations)                             | Your company's account on Together. One org = one bill.                                                        |
-| [Project](/docs/projects)                                       | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
+| [Project](/docs/projects)                                       | An isolated workspace within your organization. Resources, collaborators, and API keys are scoped to projects. |
 | [Resource](#resources)                                          | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
 | [Member](#organization-members-and-project-collaborators)       | A user with access to your organization.                                                                       |
-| [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
-| [API key](/docs/api-keys-authentication)                        | A Project-scoped credential for authenticating API requests.                                                   |
+| [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific project (organization member or external user).                               |
+| [API key](/docs/api-keys-authentication)                        | A project-scoped credential for authenticating API requests.                                                   |
 
 ## How it all fits together
 
@@ -45,28 +45,28 @@ flowchart TD
     class U,EU,O,P,K,R,A,R1,R2,R3,R4,R5 box;
 ```
 
-**The key principle:** Projects are the collaboration boundary. Collaborators get access to a Project, and that gives them access to everything inside it (Clusters, Models, Endpoints, etc.). Access decisions happen at the Project level, not on individual resources.
+**The key principle:** Projects are the collaboration boundary. Collaborators get access to a project, and that gives them access to everything inside it (clusters, models, endpoints, etc.). Access decisions happen at the project level, not on individual resources.
 
 ## Resources
 
 A resource is anything you create or provision on Together:
 
-* **GPU Clusters**: Clusters for training and inference
-* **Fine-tuned Models**: Models you've customized with your data
-* **Dedicated model inference**: Always-on inference endpoints
-* **Evaluations**: Model evaluation runs
-* **Files**: Training data, datasets, and other uploads
+* **GPU clusters:** Clusters for training and inference.
+* **Fine-tuned models:** Models you've customized with your data.
+* **Dedicated model inference:** Always-on inference endpoints.
+* **Evaluations:** Model evaluation runs.
+* **Files:** Training data, datasets, and other uploads.
 
-Resources belong to a Project. Everyone with access to that Project can see and use those resources, subject to their [role permissions](/docs/roles-permissions).
+Resources belong to a project. Everyone with access to that project can see and use those resources, subject to their [role permissions](/docs/roles-permissions).
 
 ## Organization members and project collaborators
 
 Together uses different terminology at each level:
 
-* **Organization Members** are users who belong to your Organization. They are [invited via email](https://api.together.ai/settings/organization/~current/members) or provisioned through SSO. Each Member is assigned an Admin or Developer role at the Organization level.
-* **Project Collaborators** are users who have been granted access to [a specific Project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be Organization Members or [External Collaborators](/docs/roles-permissions#external-collaborators) who participate in a Project without belonging to the parent Organization.
+* **Organization members** are users who belong to your organization. They are [invited via email](https://api.together.ai/settings/organization/~current/members) or provisioned through SSO. Each member is assigned an admin or developer role at the organization level.
+* **Project collaborators** are users who have been granted access to [a specific project](https://api.together.ai/settings/projects/~current/collaborators). Collaborators can be organization members or [external collaborators](/docs/roles-permissions#external-collaborators) who participate in a project without belonging to the parent organization.
 
-Each Collaborator is assigned an Admin or Editor role at the Project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
+Each collaborator is assigned an admin or editor role at the project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
 
 ## Product-specific access guides
 
@@ -74,7 +74,7 @@ Together's IAM model applies consistently across all products. These guides cove
 
 <CardGroup>
   <Card title="GPU Clusters" icon="server" href="/docs/gpu-clusters-management#managing-cluster-access">
-    Add and remove Collaborators from GPU Cluster Projects, understand in-cluster Kubernetes permissions
+    Add and remove collaborators from GPU cluster projects, understand in-cluster Kubernetes permissions
   </Card>
 </CardGroup>
 
@@ -82,7 +82,7 @@ Together's IAM model applies consistently across all products. These guides cove
 
 <CardGroup>
   <Card title="Organizations" icon="building" href="/docs/organizations">
-    Set up your Organization and manage membership
+    Set up your organization and manage membership
   </Card>
 
   <Card title="Projects" icon="folder" href="/docs/projects">
@@ -94,7 +94,7 @@ Together's IAM model applies consistently across all products. These guides cove
   </Card>
 
   <Card title="API Keys" icon="key" href="/docs/api-keys-authentication">
-    Create and manage Project-scoped credentials
+    Create and manage project-scoped credentials
   </Card>
 
   <Card title="Single Sign-On" icon="lock" href="/docs/sso">

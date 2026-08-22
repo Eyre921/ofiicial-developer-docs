@@ -1524,6 +1524,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: OpenAI temperature (0-2)
         reasoning_mode:
           $ref: '#/components/schemas/OpenAiThinkProviderReasoningMode'
@@ -1579,6 +1581,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: AWS Bedrock temperature (0-2)
         credentials:
           $ref: '#/components/schemas/AwsBedrockThinkProviderCredentials'
@@ -1616,6 +1620,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 1
           description: Anthropic temperature (0-1)
       required:
         - type
@@ -1659,6 +1665,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: Google temperature (0-2)
       required:
         - type
@@ -1702,6 +1710,8 @@ components:
         temperature:
           type: number
           format: double
+          minimum: 0
+          maximum: 2
           description: Groq temperature (0-2)
         reasoning_mode:
           $ref: '#/components/schemas/GroqThinkProviderReasoningMode'
@@ -1779,6 +1789,7 @@ components:
         - $ref: '#/components/schemas/ThinkSettingsV1ContextLength0'
         - type: number
           format: double
+          minimum: 2
       description: >
         Specifies the number of characters retained in context between user messages, agent responses, and function
         calls. This setting is only configurable when a custom think endpoint is used
@@ -1922,6 +1933,21 @@ components:
         Deepgram TTS model. Aura models (version v1) use the aura-* voices; Flux TTS (version v2) uses the
         flux-{voice}-{language} voices (e.g. flux-alexis-en). Defaults to flux-kit-en when agent.speak is omitted.
       title: DeepgramSpeakProviderModel
+    DeepgramSpeakProviderExpressivity:
+      type: string
+      enum:
+        - '-2'
+        - '-1'
+        - '0'
+        - '1'
+        - '2'
+      description: >-
+        Delivery register of the generated speech, on a calm-to-animated axis. Flux TTS (version v2) only, on every Flux
+        voice. Accepts the whole numbers -2 to 2, where 0 (the default) is the voice's tuned delivery and the only value
+        validated for production, -2 the calm end of the range and 2 the animated end. Fixed for the session. Beta:
+        behavior may change in future model versions, and non-default values increase the risk of hallucinations and
+        pronunciation errors. See [Expressivity](/docs/tts-expressivity).
+      title: DeepgramSpeakProviderExpressivity
     DeepgramSpeakProvider:
       type: object
       properties:
@@ -1943,12 +1969,23 @@ components:
         speed:
           type: number
           format: double
+          minimum: 0.7
+          maximum: 1.5
           default: 1
           description: >-
             Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and
             voice quality. Aura (version v1) accepts any value from 0.7 to 1.5. Flux TTS (version v2) accepts only 0.85,
             0.9, 0.95, 1.0, 1.05, 1.1 and 1.15; another value ends the session with FAILED_TO_SPEAK. Not yet supported
             in all languages.
+        expressivity:
+          $ref: '#/components/schemas/DeepgramSpeakProviderExpressivity'
+          default: 0
+          description: >-
+            Delivery register of the generated speech, on a calm-to-animated axis. Flux TTS (version v2) only, on every
+            Flux voice. Accepts the whole numbers -2 to 2, where 0 (the default) is the voice's tuned delivery and the
+            only value validated for production, -2 the calm end of the range and 2 the animated end. Fixed for the
+            session. Beta: behavior may change in future model versions, and non-default values increase the risk of
+            hallucinations and pronunciation errors. See [Expressivity](/docs/tts-expressivity).
       required:
         - type
         - model
@@ -1989,6 +2026,7 @@ components:
         language_code:
           type: string
           description: Use the `language` field instead.
+          deprecated: true
       required:
         - type
         - model_id
@@ -2040,6 +2078,8 @@ components:
         volume:
           type: number
           format: double
+          minimum: 0.5
+          maximum: 2
           description: >
             Volume level for Cartesia TTS output. Valid range: 0.5 to 2.0. See [Cartesia
             documentation](https://docs.cartesia.ai/build-with-cartesia/sonic-3/volume-speed-emotion#volume-speed-and-emotion).
@@ -2156,6 +2196,7 @@ components:
         language_code:
           type: string
           description: Use the `language` field instead.
+          deprecated: true
         engine:
           $ref: '#/components/schemas/AwsPollySpeakProviderEngine'
         credentials:
@@ -2225,6 +2266,7 @@ components:
           type: string
           default: en
           description: Deprecated. Use `listen.provider.language` and `speak.provider.language` fields instead.
+          deprecated: true
         context:
           $ref: '#/components/schemas/ChannelsAgentV1MessagesAgentV1SettingsAgentOneOf0Context'
           description: Conversation context including the history of messages and function calls
@@ -2532,6 +2574,7 @@ components:
         Deprecated. Use `diarize_model` instead. Defaults to `false`. Recognize speaker changes. Each word in the
         transcript will be assigned a speaker number starting at 0
       title: ListenV1Diarize
+      deprecated: true
     ListenV1_diarize_model:
       type: string
       enum:
@@ -2904,6 +2947,7 @@ components:
         transaction_key:
           type: string
           description: The transaction key
+          deprecated: true
         request_id:
           type: string
           format: uuid
@@ -3152,6 +3196,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -3198,10 +3243,12 @@ components:
         start:
           type: number
           format: double
+          minimum: 0
           description: The start time of the word
         end:
           type: number
           format: double
+          minimum: 0
           description: The end time of the word
       required:
         - word
@@ -3220,6 +3267,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: >
             Starts at `0` and increments for each message the server sends to the client.  This includes messages of
             other types, like `Connected` messages.
@@ -3242,6 +3290,7 @@ components:
             - **EndOfTurn** - The user has finished speaking for the turn
         turn_index:
           type: integer
+          minimum: 0
           description: The index of the current turn
         audio_window_start:
           type: string
@@ -3333,6 +3382,7 @@ components:
             The currently active language hints. Only applicable to the flux-general-multi model.
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -3358,6 +3408,7 @@ components:
           description: The unique identifier of the request
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -3381,6 +3432,7 @@ components:
           description: Message type identifier
         sequence_id:
           type: integer
+          minimum: 0
           description: |
             Starts at `0` and increments for each message the server sends
             to the client.  This includes messages of other types, like
@@ -3596,6 +3648,8 @@ components:
     SpeakV1Speed:
       type: number
       format: double
+      minimum: 0.7
+      maximum: 1.5
       default: 1
       description: >-
         Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice
@@ -4091,6 +4145,9 @@ components:
     SpeakV2SpeedValue:
       type: number
       format: double
+      minimum: 0.85
+      maximum: 1.15
+      multipleOf: 0.05
       default: 1
       description: >-
         Speech-rate multiplier. `1.0` is the model's nominal rate; lower is slower. Accepted values run `0.85` to `1.15`

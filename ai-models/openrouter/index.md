@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 317 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -68,7 +68,6 @@
 - `docs/client-sdks/go/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/go/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/analytics/README.md)
 - `docs/client-sdks/go/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/go/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/apikeys/README.md)
 - `docs/client-sdks/go/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/go/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/benchmarks/README.md)
-- `docs/client-sdks/go/sdks/betaanalytics/readme` — [Beta.Analytics](pages/docs/client-sdks/go/sdks/betaanalytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/betaanalytics/README.md)
 - `docs/client-sdks/go/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/go/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/betaresponses/README.md)
 - `docs/client-sdks/go/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/go/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/byok/README.md)
 - `docs/client-sdks/go/sdks/chat/readme` — [Chat](pages/docs/client-sdks/go/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/chat/README.md)
@@ -99,7 +98,6 @@
 - `docs/client-sdks/python/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/python/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/analytics/README.md)
 - `docs/client-sdks/python/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/python/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/apikeys/README.md)
 - `docs/client-sdks/python/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/python/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/benchmarks/README.md)
-- `docs/client-sdks/python/sdks/betaanalytics/readme` — [Beta.Analytics](pages/docs/client-sdks/python/sdks/betaanalytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/betaanalytics/README.md)
 - `docs/client-sdks/python/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/python/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/betaresponses/README.md)
 - `docs/client-sdks/python/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/python/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/byok/README.md)
 - `docs/client-sdks/python/sdks/chat/readme` — [Chat](pages/docs/client-sdks/python/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/chat/README.md)
@@ -129,7 +127,6 @@
 - `docs/client-sdks/typescript/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/typescript/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/analytics/README.md)
 - `docs/client-sdks/typescript/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/typescript/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/apikeys/README.md)
 - `docs/client-sdks/typescript/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/typescript/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/benchmarks/README.md)
-- `docs/client-sdks/typescript/sdks/betaanalytics/readme` — [Beta.Analytics](pages/docs/client-sdks/typescript/sdks/betaanalytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/betaanalytics/README.md)
 - `docs/client-sdks/typescript/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/typescript/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/betaresponses/README.md)
 - `docs/client-sdks/typescript/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/typescript/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/byok/README.md)
 - `docs/client-sdks/typescript/sdks/chat/readme` — [Chat](pages/docs/client-sdks/typescript/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/chat/README.md)
@@ -252,6 +249,7 @@
 - `docs/guides/features/guardrails/sensitive-info` — [Sensitive Info Guardrail](pages/docs/guides/features/guardrails/sensitive-info.md) · [原文](https://openrouter.ai/docs/guides/features/guardrails/sensitive-info.md)
 - `docs/guides/features/input-output-logging` — [Input & Output Logging](pages/docs/guides/features/input-output-logging.md) · [原文](https://openrouter.ai/docs/guides/features/input-output-logging.md)
 - `docs/guides/features/message-transforms` — [Message Transforms](pages/docs/guides/features/message-transforms.md) · [原文](https://openrouter.ai/docs/guides/features/message-transforms.md)
+- `docs/guides/features/notifications` — [Notifications](pages/docs/guides/features/notifications.md) · [原文](https://openrouter.ai/docs/guides/features/notifications.md)
 - `docs/guides/features/plugins` — [Plugins](pages/docs/guides/features/plugins.md) · [原文](https://openrouter.ai/docs/guides/features/plugins.md)
 - `docs/guides/features/plugins/fusion` — [Fusion](pages/docs/guides/features/plugins/fusion.md) · [原文](https://openrouter.ai/docs/guides/features/plugins/fusion.md)
 - `docs/guides/features/plugins/response-healing` — [Response Healing](pages/docs/guides/features/plugins/response-healing.md) · [原文](https://openrouter.ai/docs/guides/features/plugins/response-healing.md)
@@ -269,6 +267,7 @@
 - `docs/guides/features/server-tools/search-models` — [Search Models](pages/docs/guides/features/server-tools/search-models.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/search-models.md)
 - `docs/guides/features/server-tools/shell` — [Shell](pages/docs/guides/features/server-tools/shell.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/shell.md)
 - `docs/guides/features/server-tools/subagent` — [Subagent](pages/docs/guides/features/server-tools/subagent.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/subagent.md)
+- `docs/guides/features/server-tools/tool-search` — [Tool Search](pages/docs/guides/features/server-tools/tool-search.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/tool-search.md)
 - `docs/guides/features/server-tools/web-fetch` — [Web Fetch](pages/docs/guides/features/server-tools/web-fetch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/web-fetch.md)
 - `docs/guides/features/server-tools/web-search` — [Web Search](pages/docs/guides/features/server-tools/web-search.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/web-search.md)
 - `docs/guides/features/service-tiers` — [Service Tiers](pages/docs/guides/features/service-tiers.md) · [原文](https://openrouter.ai/docs/guides/features/service-tiers.md)

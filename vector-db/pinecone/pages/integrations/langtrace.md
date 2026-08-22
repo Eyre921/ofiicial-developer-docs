@@ -6,10 +6,10 @@ path: integrations/langtrace
 
 Trace Pinecone API calls with Langtrace's OpenTelemetry SDK to debug RAG pipelines, monitor vector DB latency, and ship LLM observability.
 
-Scale3 Labs recently launched Langtrace AI, an open-source monitoring and evaluation platform for LLM-powered applications. Langtrace is built based on Open Telemetry(OTEL) standards and supports native tracing for the most popular LLM vendors, VectorDBs, and frameworks(like Langchain and LlamaIndex).
+[Langtrace AI](https://docs.langtrace.ai/) from Scale3 Labs is an open-source monitoring and evaluation platform for LLM-powered applications. It's built on [OpenTelemetry](https://opentelemetry.io/) (OTel) standards and supports native tracing for the most popular LLM vendors, vector databases, and frameworks, including LangChain and LlamaIndex.
 
-Langtrace AI supports tracing Pinecone natively, which means the Langtrace SDK can generate OTEL standard traces with automatic instrumentation in just 2 lines of code. These traces can be ingested by an observability tool that supports OTEL, such as Datadog, Grafana/Prometheus, SigNoz, Sentry, etc. Langtrace also has a visualization client that is optimized for visualizing the traces generated in an LLM stack.
+Langtrace traces Pinecone natively, so its SDK generates OTel-standard traces with automatic instrumentation in two lines of code. You can send those traces to any observability tool that supports OTel, such as Datadog, Grafana Tempo, New Relic, or SigNoz. You can also view them in Langtrace's own client, which is optimized for LLM stacks.
 
-By having a Pinecone integration, Pinecone users can get access to rich and high cardinal tracing for the Pinecone API calls using Langtrace, which they can ingest into their observability tool of choice. This helps customers gain insights into the DB calls and help with debugging and troubleshooting applications in case of incidents.
+Either way, you get high-cardinality tracing of your Pinecone API calls. That makes it easier to see what your database calls are doing and to troubleshoot your application during an incident.
 
 <PrimarySecondaryCTA />

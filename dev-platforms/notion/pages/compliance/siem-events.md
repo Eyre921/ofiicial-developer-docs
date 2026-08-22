@@ -28,6 +28,10 @@ For page events, the page audience describes the visibility level of the target 
 * **External**: The page is shared with one or more guests outside of the workspace and/or with an integration bot.
 * **Public**: The page is shared to the web.
 
+## Teamspace attribution
+
+When available, applicable events include a top-level `team_ids` array containing the IDs of the teamspaces associated with the event. Most attributed events contain one ID; events such as moves and teamspace exports can contain multiple IDs. The field is omitted for events that are not associated with a teamspace or when attribution is unavailable.
+
 ***
 
 ## SIEM event glossary

@@ -558,6 +558,7 @@ paths:
           schema:
             type: boolean
             default: false
+          deprecated: true
         - name: diarize_model
           in: query
           description: >-
@@ -846,6 +847,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 0.7
+            maximum: 1.5
             default: 1
         - name: Authorization
           in: header
@@ -1046,6 +1049,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 1
+            maximum: 1000
             default: 10
         - name: page
           in: query
@@ -1816,6 +1821,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 1
+            maximum: 1000
             default: 10
         - name: page
           in: query
@@ -2225,6 +2232,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      deprecated: true
   /v1/projects/{project_id}/usage/fields:
     get:
       operationId: list
@@ -2815,6 +2823,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 1
+            maximum: 1000
             default: 10
         - name: Authorization
           in: header
@@ -3777,6 +3787,7 @@ components:
         transaction_key:
           type: string
           default: deprecated
+          deprecated: true
         request_id:
           type: string
           format: uuid
@@ -4262,8 +4273,12 @@ components:
         - $ref: '#/components/schemas/V1SpeakPostParametersBitRate0'
         - type: number
           format: double
+          minimum: 4000
+          maximum: 650000
         - type: number
           format: double
+          minimum: 4000
+          maximum: 192000
       title: V1SpeakPostParametersBitRate
     V1SpeakPostParametersContainer0:
       type: string
@@ -5911,6 +5926,8 @@ components:
         ttl_seconds:
           type: number
           format: double
+          minimum: 1
+          maximum: 3600
           description: Time to live in seconds for the token. Defaults to 30 seconds.
       title: GrantV1Request
     GrantV1Response:
@@ -5955,7 +5972,11 @@ components:
       oneOf:
         - $ref: '#/components/schemas/V2SpeakPostParametersBitRate0'
         - type: integer
+          minimum: 4000
+          maximum: 650000
         - type: integer
+          minimum: 4000
+          maximum: 192000
       title: V2SpeakPostParametersBitRate
     V2SpeakPostParametersContainer0:
       type: string

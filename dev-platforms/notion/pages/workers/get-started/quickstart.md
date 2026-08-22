@@ -48,6 +48,10 @@ Get up and running with Workers in a few steps.
     Follow the prompts to authenticate with your Notion workspace.
   </Step>
 
+  <Step title="Share the worker (optional)">
+    To let other workspace members use this worker, share it from the <a href={developerWorkersUrl}>Developer portal</a>. **Can connect** lets members connect the worker to agents, and **Full access** lets them manage, edit, and deploy it. See [sharing workers](/workers/guides/sharing-workers) for more details.
+  </Step>
+
   <Step title="Run the sample tool">
     Execute the included sample tool:
 

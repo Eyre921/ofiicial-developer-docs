@@ -12,7 +12,7 @@ Stripe pays eligible Connect platforms an administrative facilitation fee (AFF) 
 
 > #### Eligibility
 > 
-> AFF is available to eligible EFS platforms in the US only. To add AFF to your Stripe contract, [contact Stripe](https://stripe.com/contact/sales).
+> AFF is available to eligible platforms in the US only. To add AFF to your Stripe contract, [contact Stripe](https://stripe.com/contact/sales).
 
 ## AFF Calculation
 
@@ -30,9 +30,9 @@ The following example illustrates three days of AFF calculations for one financi
 
 | Day | EOD balance | EFFR midpoint rate % | AFF rate in contract | Calculation | Daily AFF |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 20,000 USD | 4.33 | EFFR - 275 bps | 20000 × (0.0433 - 0.0275) / 360 | 0.88 USD |
-| 2 | 22,000 USD | 3.80 | EFFR - 275 bps | 22000 × (0.038 - 0.0275) / 360 | 0.64 USD |
-| 3 | 15,000 USD | 3.80 | EFFR - 275 bps | 15000 × (0.038 - 0.0275) / 360 | 0.44 USD |
+| 1 | 20,000 USD | 4.33 | EFFR - 275 bps | 20000 x (0.0433 - 0.0275) / 360 | 0.88 USD |
+| 2 | 22,000 USD | 3.80 | EFFR - 275 bps | 22000 x (0.038 - 0.0275) / 360 | 0.64 USD |
+| 3 | 15,000 USD | 3.80 | EFFR - 275 bps | 15000 x (0.038 - 0.0275) / 360 | 0.44 USD |
 
 Total AFF for the 3 days: 0.88 + 0.64 + 0.44 = **1.96 USD**.
 

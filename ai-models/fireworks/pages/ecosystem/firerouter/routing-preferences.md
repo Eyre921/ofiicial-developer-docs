@@ -54,7 +54,7 @@ fireconnect opencode on --model firerouter --routing-preference 2
 fireconnect pi on --model firerouter --routing-preference 5
 ```
 
-Supported on Claude Code, OpenCode, Pi, and VS Code. Values are `1`–`5` or the level names (`max-intelligence`, `balanced`, `max-savings`, etc.). The flag applies when at least one configured slot uses `firerouter`. Codex, Cursor, and Deep Agents do not support `--routing-preference`.
+Supported on Claude Code, OpenCode, Pi, and VS Code. Values are `1`–`5` or the level names (`max-intelligence`, `balanced`, `max-savings`, etc.). The flag applies when at least one configured slot uses `firerouter`. Codex, Cursor, and DeepSeek Harness do not support `--routing-preference`.
 
 You can also store a global Anthropic BYOK key once:
 

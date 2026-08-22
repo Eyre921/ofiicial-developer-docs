@@ -1108,6 +1108,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-files
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-languages
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-library-path
+/en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-library-paths
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-metadata
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-ml-models
 /en/code-security/reference/code-scanning/codeql/codeql-cli-manual/resolve-packs
@@ -1701,6 +1702,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/anthropic-claude
 /en/copilot/concepts/agents/about-agent-skills
 /en/copilot/concepts/agents/enterprise-management
+/en/copilot/concepts/agents/opentelemetry
 /en/copilot/concepts/about-cloud-and-local-sandboxes
 /en/copilot/concepts/spark
 /en/copilot/concepts/copilot-usage-metrics
@@ -1855,7 +1857,9 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-sdk/auth/server-to-server-tokens
 /en/copilot/how-tos/copilot-sdk/features
 /en/copilot/how-tos/copilot-sdk/features/agent-loop
+/en/copilot/how-tos/copilot-sdk/features/citations
 /en/copilot/how-tos/copilot-sdk/features/cloud-sessions
+/en/copilot/how-tos/copilot-sdk/features/context-management
 /en/copilot/how-tos/copilot-sdk/features/custom-agents
 /en/copilot/how-tos/copilot-sdk/features/fleet-mode
 /en/copilot/how-tos/copilot-sdk/features/hooks
@@ -1876,6 +1880,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-sdk/hooks/pre-tool-use
 /en/copilot/how-tos/copilot-sdk/hooks/session-lifecycle
 /en/copilot/how-tos/copilot-sdk/hooks/user-prompt-submitted
+/en/copilot/how-tos/copilot-sdk/hooks/user-prompt-transformed
 /en/copilot/how-tos/copilot-sdk/integrations
 /en/copilot/how-tos/copilot-sdk/integrations/microsoft-agent-framework
 /en/copilot/how-tos/copilot-sdk/observability

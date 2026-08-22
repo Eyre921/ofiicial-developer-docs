@@ -16,14 +16,16 @@ This page shows you how to migrate a pod-based index to [serverless](/guides/get
 
 ## Limitations
 
-Migration is supported for pod-based indexes with less than 25 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure).
+Migration is supported for pod-based indexes with up to 50 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 50 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate. The record limit can often be raised for your project.
 
-Also, serverless indexes do not support the following features. If you were using these features for your pod-based index, you will need to adapt your code. If you are blocked by these limitations, [contact Pinecone Support](/troubleshooting/contact-support).
+After you migrate, note that serverless indexes don't support the following features:
 
 * [Selective metadata indexing](/guides/indexes/pods/manage-pod-based-indexes#selective-metadata-indexing)
 
-  * Because high-cardinality metadata in serverless indexes does not cause high memory utilization, this operation is not relevant.
+  * Because high-cardinality metadata in serverless indexes doesn't cause high memory utilization, this operation isn't relevant.
 * [Filtering index statistics by metadata](/reference/api/latest/data-plane/describeindexstats)
+
+If you were using either feature with your pod-based index, you'll need to adapt your code. If you're blocked by these limitations, [contact Pinecone Support](/troubleshooting/contact-support).
 
 ## How it works
 

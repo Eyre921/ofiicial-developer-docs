@@ -51,7 +51,7 @@ worker.webhook("onGithubPush", { /* ... */ });
 Once deployed, Notion takes over:
 
 * **Syncs** run on a schedule (default every 30 minutes) and write results to Notion databases.
-* **Tools** appear in Notion Custom Agents and are called by agents on demand.
+* **Tools** appear in Notion Custom Agents and are called by Custom Agents on demand.
 * **Webhooks** receive HTTP events from external services and run your handler asynchronously.
 
 Your code runs in a sandboxed Node.js environment. You can make HTTP requests to external APIs, [use secrets](/workers/guides/secrets) stored via the CLI, and authenticate with third-party services through [OAuth](/workers/guides/oauth).

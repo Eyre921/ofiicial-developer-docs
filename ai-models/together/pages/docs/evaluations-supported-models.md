@@ -33,7 +33,7 @@ The evaluations service keeps its own allowlist of serverless models, separate f
 | Gemma 4 31B-it FP8                 | `google/gemma-4-31B-it`                   |
 | Meta Llama 3.3 70B Instruct Turbo  | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | Kimi-K2.5                          | `moonshotai/Kimi-K2.5`                    |
-| Kimi K2.6 Fp4                      | `moonshotai/Kimi-K2.6`                    |
+| Kimi-K2.6                          | `moonshotai/Kimi-K2.6`                    |
 | OpenAI GPT-OSS 120B                | `openai/gpt-oss-120b`                     |
 | OpenAI GPT-OSS 20B                 | `openai/gpt-oss-20b`                      |
 | GLM-5                              | `zai-org/GLM-5`                           |

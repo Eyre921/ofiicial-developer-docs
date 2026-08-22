@@ -8,7 +8,7 @@ path: payments/link/mobile-payment-element-link
 
 Add Link to your native iOS, Android, and React Native apps.
 
-Let your customer check out faster by using [Link](https://docs.stripe.com/payments/link.md) in the [Mobile Payment Element](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios). You can autofill information for any customer already using Link, regardless of whether they initially saved their information in Link with another business. The default Mobile Payment Element integration includes a Link prompt in the card form.
+Let your customer check out faster by using [Link](https://docs.stripe.com/payments/link.md) in the [Mobile Payment Element](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile). You can autofill information for any customer already using Link, regardless of whether they initially saved their information in Link with another business. The default Mobile Payment Element integration includes a Link prompt in the card form.
 ![Link in iOS](https://b.stripecdn.com/docs-statics-srv/assets/link-in-ios.de526c6199ff89fbaa7b1beb5e8bc3da.png)
 
 Add Link to your iOS integration
@@ -17,7 +17,7 @@ Add Link to your iOS integration
 
 To offer Link in your mobile app:
 
-1. [Integrate the Mobile Payment Element](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile&platform=ios) using the latest version of the Stripe Mobile SDK.
+1. [Integrate the Mobile Payment Element](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=mobile) using the latest version of the Stripe Mobile SDK.
 2. Enable Link in your [Payment Method settings](https://dashboard.stripe.com/settings/payment_methods).
 3. Enable [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md) by using the [latest version of the API](https://docs.stripe.com/upgrades.md) or by adding the [automatic_payment_methods](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-automatic_payment_methods) parameter when creating your PaymentIntent.
 4. (Optional) [Pass in your customer’s email address and phone number](https://docs.stripe.com/payments/link/mobile-payment-element-link.md#pass-email).

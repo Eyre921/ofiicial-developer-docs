@@ -1,15 +1,13 @@
 # dev-platforms/stripe 文档索引
 
-> 共 459 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 452 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
 - `acceptable-verification-documents` — [Acceptable verification documents by country](pages/acceptable-verification-documents.md) · [原文](https://docs.stripe.com/acceptable-verification-documents.md)
-- `api` — [API Reference](pages/api.md) · [原文](https://docs.stripe.com/api.md)
 - `billing` — [features](pages/billing.md) · [原文](https://docs.stripe.com/billing.md)
 - `changelog` — [Changelog](pages/changelog.md) · [原文](https://docs.stripe.com/changelog.md)
-- `connect` — [Platforms and marketplaces with Stripe Connect](pages/connect.md) · [原文](https://docs.stripe.com/connect.md)
 - `currencies` — [Supported currencies](pages/currencies.md) · [原文](https://docs.stripe.com/currencies.md)
 - `declines` — [Declines](pages/declines.md) · [原文](https://docs.stripe.com/declines.md)
 - `event-destinations` — [Integrate with events](pages/event-destinations.md) · [原文](https://docs.stripe.com/event-destinations.md)
@@ -24,7 +22,6 @@
 - `stripe-reports` — [reports](pages/stripe-reports.md) · [原文](https://docs.stripe.com/stripe-reports.md)
 - `tax` — [Stripe Tax](pages/tax.md) · [原文](https://docs.stripe.com/tax.md)
 - `terminal` — [features](pages/terminal.md) · [原文](https://docs.stripe.com/terminal.md)
-- `testing` — [Testing](pages/testing.md) · [原文](https://docs.stripe.com/testing.md)
 - `upgrades` — [API upgrades](pages/upgrades.md) · [原文](https://docs.stripe.com/upgrades.md)
 - `webhooks` — [Receive Stripe events in your webhook endpoint](pages/webhooks.md) · [原文](https://docs.stripe.com/webhooks.md)
 
@@ -48,7 +45,6 @@
 - `api/payment-link/object` — [The Payment Link object](pages/api/payment-link/object.md) · [原文](https://docs.stripe.com/api/payment-link/object.md)
 - `api/payment_intents` — [Payment Intents](pages/api/payment_intents.md) · [原文](https://docs.stripe.com/api/payment_intents.md)
 - `api/payment_intents/create` — [Create a PaymentIntent](pages/api/payment_intents/create.md) · [原文](https://docs.stripe.com/api/payment_intents/create.md)
-- `api/payment_intents/create` — [payment_method_types](pages/api/payment_intents/create-2.md) · [原文](https://docs.stripe.com/api/payment_intents/create.md)
 - `api/payment_intents/object` — [The PaymentIntent object](pages/api/payment_intents/object.md) · [原文](https://docs.stripe.com/api/payment_intents/object.md)
 - `api/payment_methods` — [Payment Methods](pages/api/payment_methods.md) · [原文](https://docs.stripe.com/api/payment_methods.md)
 - `api/payment_methods/create` — [Create a PaymentMethod](pages/api/payment_methods/create.md) · [原文](https://docs.stripe.com/api/payment_methods/create.md)
@@ -77,15 +73,13 @@
 - `billing/customer` — [Customers](pages/billing/customer.md) · [原文](https://docs.stripe.com/billing/customer.md)
 - `billing/customer/tax-ids` — [Customer Tax IDs](pages/billing/customer/tax-ids.md) · [原文](https://docs.stripe.com/billing/customer/tax-ids.md)
 - `billing/entitlements` — [Entitlements](pages/billing/entitlements.md) · [原文](https://docs.stripe.com/billing/entitlements.md)
-- `billing/quickstart` — [Build a pre-built subscription page with Stripe Checkout](pages/billing/quickstart.md) · [原文](https://docs.stripe.com/billing/quickstart.md)
 - `billing/revenue-recovery` — [Revenue recovery](pages/billing/revenue-recovery.md) · [原文](https://docs.stripe.com/billing/revenue-recovery.md)
 - `billing/subscriptions/billing-cycle` — [Set the subscription billing renewal date](pages/billing/subscriptions/billing-cycle.md) · [原文](https://docs.stripe.com/billing/subscriptions/billing-cycle.md)
 - `billing/subscriptions/cancel` — [Cancel subscriptions](pages/billing/subscriptions/cancel.md) · [原文](https://docs.stripe.com/billing/subscriptions/cancel.md)
 - `billing/subscriptions/change` — [Modify subscriptions](pages/billing/subscriptions/change.md) · [原文](https://docs.stripe.com/billing/subscriptions/change.md)
 - `billing/subscriptions/change-price` — [Change the price of existing subscriptions](pages/billing/subscriptions/change-price.md) · [原文](https://docs.stripe.com/billing/subscriptions/change-price.md)
 - `billing/subscriptions/coupons` — [Coupons and promotion codes](pages/billing/subscriptions/coupons.md) · [原文](https://docs.stripe.com/billing/subscriptions/coupons.md)
-- `billing/subscriptions/design-an-integration` — [Design a subscriptions integration](pages/billing/subscriptions/design-an-integration.md) · [原文](https://docs.stripe.com/billing/subscriptions/design-an-integration.md)
-- `billing/subscriptions/designing-integration` — [plan your integration](pages/billing/subscriptions/designing-integration.md) · [原文](https://docs.stripe.com/billing/subscriptions/designing-integration.md)
+- `billing/subscriptions/design-an-integration` — [plan your integration](pages/billing/subscriptions/design-an-integration.md) · [原文](https://docs.stripe.com/billing/subscriptions/design-an-integration.md)
 - `billing/subscriptions/import-subscriptions-toolkit` — [Migrate subscriptions to Stripe Billing using toolkit](pages/billing/subscriptions/import-subscriptions-toolkit.md) · [原文](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md)
 - `billing/subscriptions/migrate-subscriptions` — [Migrate subscriptions to Stripe Billing](pages/billing/subscriptions/migrate-subscriptions.md) · [原文](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions.md)
 - `billing/subscriptions/pause-payment` — [Pause payment collection](pages/billing/subscriptions/pause-payment.md) · [原文](https://docs.stripe.com/billing/subscriptions/pause-payment.md)
@@ -100,7 +94,7 @@
 
 - `capital/api-integration` — [Build a custom Capital program](pages/capital/api-integration.md) · [原文](https://docs.stripe.com/capital/api-integration.md)
 - `capital/getting-started` — [Set up Capital](pages/capital/getting-started.md) · [原文](https://docs.stripe.com/capital/getting-started.md)
-- `capital/how-capital-for-platforms-works` — [Stripe Capital for platforms](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
+- `capital/how-capital-for-platforms-works` — [How Stripe Capital for platforms works](pages/capital/how-capital-for-platforms-works.md) · [原文](https://docs.stripe.com/capital/how-capital-for-platforms-works.md)
 - `capital/how-stripe-capital-works` — [How Stripe Capital works](pages/capital/how-stripe-capital-works.md) · [原文](https://docs.stripe.com/capital/how-stripe-capital-works.md)
 - `capital/marketing` — [Marketing your Capital program](pages/capital/marketing.md) · [原文](https://docs.stripe.com/capital/marketing.md)
 - `capital/refills` — [Refills](pages/capital/refills.md) · [原文](https://docs.stripe.com/capital/refills.md)
@@ -213,6 +207,7 @@
 
 - `elements/address-element` — [Address Element](pages/elements/address-element.md) · [原文](https://docs.stripe.com/elements/address-element.md)
 - `elements/appearance-api/mobile` — [Customize appearance](pages/elements/appearance-api/mobile.md) · [原文](https://docs.stripe.com/elements/appearance-api/mobile.md)
+- `elements/express-checkout-element` — [Express Checkout Element](pages/elements/express-checkout-element.md) · [原文](https://docs.stripe.com/elements/express-checkout-element.md)
 
 ## financial-connections
 
@@ -341,7 +336,6 @@
 - `payments/checkout/after-the-payment` — [After the payment](pages/payments/checkout/after-the-payment.md) · [原文](https://docs.stripe.com/payments/checkout/after-the-payment.md)
 - `payments/checkout/analyze-conversion-funnel` — [Analyze your conversion funnel](pages/payments/checkout/analyze-conversion-funnel.md) · [原文](https://docs.stripe.com/payments/checkout/analyze-conversion-funnel.md)
 - `payments/checkout/billing-cycle` — [Set the billing cycle date](pages/payments/checkout/billing-cycle.md) · [原文](https://docs.stripe.com/payments/checkout/billing-cycle.md)
-- `payments/checkout/build-integration` — [build a checkout page](pages/payments/checkout/build-integration.md) · [原文](https://docs.stripe.com/payments/checkout/build-integration.md)
 - `payments/checkout/client` — [One-time payments with Checkout](pages/payments/checkout/client.md) · [原文](https://docs.stripe.com/payments/checkout/client.md)
 - `payments/checkout/cross-sells` — [Cross-sells](pages/payments/checkout/cross-sells.md) · [原文](https://docs.stripe.com/payments/checkout/cross-sells.md)
 - `payments/checkout/custom-components` — [Extend checkout with custom components](pages/payments/checkout/custom-components.md) · [原文](https://docs.stripe.com/payments/checkout/custom-components.md)
@@ -366,6 +360,7 @@
 - `payments/checkout/taxes` — [Collect taxes](pages/payments/checkout/taxes.md) · [原文](https://docs.stripe.com/payments/checkout/taxes.md)
 - `payments/checkout/upsells` — [Subscription upsells](pages/payments/checkout/upsells.md) · [原文](https://docs.stripe.com/payments/checkout/upsells.md)
 - `payments/collect-addresses` — [Collect physical addresses](pages/payments/collect-addresses.md) · [原文](https://docs.stripe.com/payments/collect-addresses.md)
+- `payments/currencies/localize-prices/adaptive-pricing` — [Adaptive Pricing](pages/payments/currencies/localize-prices/adaptive-pricing.md) · [原文](https://docs.stripe.com/payments/currencies/localize-prices/adaptive-pricing.md)
 - `payments/during-payment/charge-shipping` — [Charge for shipping](pages/payments/during-payment/charge-shipping.md) · [原文](https://docs.stripe.com/payments/during-payment/charge-shipping.md)
 - `payments/eftpos-australia` — [eftpos Australia](pages/payments/eftpos-australia.md) · [原文](https://docs.stripe.com/payments/eftpos-australia.md)
 - `payments/elements/contact-details-element` — [Contact Details Element](pages/payments/elements/contact-details-element.md) · [原文](https://docs.stripe.com/payments/elements/contact-details-element.md)
@@ -401,10 +396,9 @@
 - `payments/payment-methods/payment-method-support` — [more than 20 payment methods](pages/payments/payment-methods/payment-method-support.md) · [原文](https://docs.stripe.com/payments/payment-methods/payment-method-support.md)
 - `payments/place-a-hold-on-a-payment-method` — [Place a hold on a payment method](pages/payments/place-a-hold-on-a-payment-method.md) · [原文](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md)
 - `payments/quickstart` — [Build a custom checkout page](pages/payments/quickstart.md) · [原文](https://docs.stripe.com/payments/quickstart.md)
-- `payments/quickstart-checkout-sessions` — [quickstart](pages/payments/quickstart-checkout-sessions.md) · [原文](https://docs.stripe.com/payments/quickstart-checkout-sessions.md)
 - `payments/real-time` — [Real-time payments](pages/payments/real-time.md) · [原文](https://docs.stripe.com/payments/real-time.md)
-- `payments/save-and-reuse` — [Save a customer's payment method without making a payment](pages/payments/save-and-reuse.md) · [原文](https://docs.stripe.com/payments/save-and-reuse.md)
-- `payments/save-during-payment` — [Save a customer's payment method when they use it for a payment](pages/payments/save-during-payment.md) · [原文](https://docs.stripe.com/payments/save-during-payment.md)
+- `payments/save-and-reuse` — [Save a customer’s payment method without making a payment](pages/payments/save-and-reuse.md) · [原文](https://docs.stripe.com/payments/save-and-reuse.md)
+- `payments/save-during-payment` — [Save a customer’s payment method when they use it for a payment](pages/payments/save-during-payment.md) · [原文](https://docs.stripe.com/payments/save-during-payment.md)
 - `payments/setup-intents` — [The Setup Intents API](pages/payments/setup-intents.md) · [原文](https://docs.stripe.com/payments/setup-intents.md)
 - `payments/stablecoin-payments` — [Stablecoin payments](pages/payments/stablecoin-payments.md) · [原文](https://docs.stripe.com/payments/stablecoin-payments.md)
 - `payments/subscriptions` — [Subscriptions with Checkout Sessions](pages/payments/subscriptions.md) · [原文](https://docs.stripe.com/payments/subscriptions.md)
@@ -543,12 +537,11 @@
 - `treasury/connect/fraud-guide` — [Manage fraud](pages/treasury/connect/fraud-guide.md) · [原文](https://docs.stripe.com/treasury/connect/fraud-guide.md)
 - `treasury/connect/handle-complaints` — [Handle complaints](pages/treasury/connect/handle-complaints.md) · [原文](https://docs.stripe.com/treasury/connect/handle-complaints.md)
 - `treasury/connect/how-treasury-for-platforms-works` — [How Treasury for platforms works](pages/treasury/connect/how-treasury-for-platforms-works.md) · [原文](https://docs.stripe.com/treasury/connect/how-treasury-for-platforms-works.md)
-- `treasury/connect/legacy/v1` — [Treasury for platforms v1](pages/treasury/connect/legacy/v1.md) · [原文](https://docs.stripe.com/treasury/connect/legacy/v1.md)
 - `treasury/connect/legacy/v1/examples/sample-app` — [Issuing and Treasury for platforms sample app](pages/treasury/connect/legacy/v1/examples/sample-app.md) · [原文](https://docs.stripe.com/treasury/connect/legacy/v1/examples/sample-app.md)
 - `treasury/connect/marketing` — [Treasury for platforms messaging](pages/treasury/connect/marketing.md) · [原文](https://docs.stripe.com/treasury/connect/marketing.md)
 - `treasury/connect/money-movement/timelines` — [Money movement timelines](pages/treasury/connect/money-movement/timelines.md) · [原文](https://docs.stripe.com/treasury/connect/money-movement/timelines.md)
 - `treasury/connect/moving-money/fund-a-financial-account` — [Fund a financial account](pages/treasury/connect/moving-money/fund-a-financial-account.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md)
-- `treasury/connect/moving-money/out-of/outbound-payments` — [Send money to recipients and financial accounts you don't own](pages/treasury/connect/moving-money/out-of/outbound-payments.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md)
+- `treasury/connect/moving-money/out-of/outbound-payments` — [Send money to recipients and financial accounts you don’t own](pages/treasury/connect/moving-money/out-of/outbound-payments.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md)
 - `treasury/connect/moving-money/out-of/outbound-transfers` — [Transfer money between same-owner accounts](pages/treasury/connect/moving-money/out-of/outbound-transfers.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md)
 - `treasury/connect/moving-money/received-debits` — [Received debits](pages/treasury/connect/moving-money/received-debits.md) · [原文](https://docs.stripe.com/treasury/connect/moving-money/received-debits.md)
 - `treasury/connect/prebuilt-embedded-finance` — [Prebuilt embedded finance](pages/treasury/connect/prebuilt-embedded-finance.md) · [原文](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md)

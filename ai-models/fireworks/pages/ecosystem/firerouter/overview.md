@@ -54,7 +54,7 @@ Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade
 
 Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. The default `firerouter` requires an Anthropic key because Claude Opus 5 is its primary model; FireRouter fails closed instead of silently restricting the route to GLM. See [Authentication](/ecosystem/firerouter/authentication).
 
-Cursor and Deep Agents need workspace BYOK for FireRouter (no local Anthropic key).
+Cursor and DeepSeek Harness need workspace BYOK for Anthropic pass-through because they cannot attach a local Anthropic key.
 
 ## Endpoint
 

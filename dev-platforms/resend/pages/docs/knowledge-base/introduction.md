@@ -361,6 +361,11 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <Card title="How to Handle API Keys" href="/knowledge-base/how-to-handle-api-keys">
     Best practices for managing and securing your Resend API keys.
   </Card>
+
+  <Card title="How to add multi-factor authentication to your Resend account" href="/knowledge-base/how-can-i-add-mfa">
+    Enable or disable multi-factor authentication (MFA) or two-factor
+    authentication (2FA) on your Resend account.
+  </Card>
 </CardGroup>
 
 ## Testing
