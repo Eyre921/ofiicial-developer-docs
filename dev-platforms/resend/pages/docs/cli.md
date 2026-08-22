@@ -684,7 +684,7 @@ steps:
 | Credentials       | System secure storage | macOS Keychain, Windows Credential Manager, or Linux secret service |
 | Install directory | `~/.resend/bin/`      | Respects `$RESEND_INSTALL`                                          |
 
-<Card title="Using the CLI with AI Agents" icon="microchip-ai" href="/cli-agents">
+<Card title="Using the CLI with AI Agents" icon="microchip-ai" href="/docs/cli-agents">
   Learn about Agent Skills, non-interactive mode, and local webhook development
   for AI agents.
 </Card>

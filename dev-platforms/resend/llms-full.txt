@@ -75,11 +75,11 @@ To add a new domain from the Resend Dashboard:
 ## Learn more
 
 <CardGroup>
-  <Card title="Manage domains" icon="tools" href="/dashboard/domains/introduction">
+  <Card title="Manage domains" icon="tools" href="/docs/dashboard/domains/introduction">
     View, create, edit, delete, and manage your domains.
   </Card>
 
-  <Card title="Multi-tenant domain setup" icon="people-group" href="/knowledge-base/setting-up-resend-for-multi-tenants">
+  <Card title="Multi-tenant domain setup" icon="people-group" href="/docs/knowledge-base/setting-up-resend-for-multi-tenants">
     Learn how to configure Resend for SaaS platforms where tenants send emails
     from their own domains.
   </Card>
@@ -88,12 +88,12 @@ To add a new domain from the Resend Dashboard:
 ## Next steps
 
 <CardGroup>
-  <Card title="Add a DMARC record" icon="globe" href="/dashboard/domains/dmarc">
+  <Card title="Add a DMARC record" icon="globe" href="/docs/dashboard/domains/dmarc">
     Implement DMARC to build trust in your domain and protect against email
     spoofing.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>
@@ -195,7 +195,7 @@ async function handler(req) {
 ## Learn More
 
 <CardGroup>
-  <Card title="OpenClaw Setup Guide" icon="robot" href="/openclaw-guide">
+  <Card title="OpenClaw Setup Guide" icon="robot" href="/docs/openclaw-guide">
     Step-by-step guide for giving an OpenClaw agent a fully functional email
     inbox.
   </Card>
@@ -248,7 +248,7 @@ Claude and Codex also offer one-click installs that bundle the MCP server and ev
 * [Resend connector for Claude](https://claude.ai/directory/connectors/resend)
 * [Resend plugin for Codex](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex)
 
-<Card title="MCP Server" icon="microchip-ai" href="/mcp-server">
+<Card title="MCP Server" icon="microchip-ai" href="/docs/mcp-server">
   View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf,
   Antigravity, and more.
 </Card>
@@ -271,7 +271,7 @@ resend emails send \
 
 The CLI also includes a full local webhook setup for developing with inbound email events without deploying anything.
 
-<Card title="Resend CLI" icon="terminal" href="/cli">
+<Card title="Resend CLI" icon="terminal" href="/docs/cli">
   Install the CLI and set up a local webhook development environment.
 </Card>
 
@@ -315,8 +315,8 @@ npx skills add resend/resend-skills
 
 Or install individually:
 
-| Skill                                               | Install                                      | What it does                                                                                                       |
-| --------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Skill                                                    | Install                                      | What it does                                                                                                       |
+| -------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | [Resend](/docs/resend-skill)                             | `npx skills add resend/resend-skills`        | Send and receive emails, handle errors, and prevent duplicate sends. Get code examples from various SDKs.          |
 | [React Email](/docs/react-email-skill)                   | `npx skills add resend/react-email`          | Build emails in React, Tailwind, and TypeScript. Audit existing React emails for style and cross-client rendering. |
 | [Email Best Practices](/docs/email-best-practices-skill) | `npx skills add resend/email-best-practices` | Audit SPF/DKIM/DMARC setup, compliance (CAN-SPAM, GDPR), webhook handling                                          |
@@ -498,7 +498,7 @@ The documentation includes quick start guides for common tasks with Resend. They
 
 Equipping your agent with its own email inbox can be a powerful tool to unlock new workflows. Alternatively, give it access to your Resend account to support agentic flows for sending and receiving emails.
 
-<Card title="Email Automation for OpenClaw using Resend" icon="lobster" href="/openclaw-guide">
+<Card title="Email Automation for OpenClaw using Resend" icon="lobster" href="/docs/openclaw-guide">
   View the OpenClaw guide.
 </Card>
 
@@ -506,7 +506,7 @@ Equipping your agent with its own email inbox can be a powerful tool to unlock n
 
 The `@resend/chat-sdk-adapter` package is a Vercel Chat SDK adapter that turns email into a two-way communication channel. Receive inbound emails through webhooks, reply through the Resend API, and let the adapter handle threading automatically. It also supports card emails, attachments, and proactive outreach.
 
-<Card title="Chat SDK" icon="comments" href="/chat-sdk">
+<Card title="Chat SDK" icon="comments" href="/docs/chat-sdk">
   Build conversational email experiences with the Chat SDK adapter.
 </Card>
 
@@ -1010,6 +1010,1414 @@ Update an existing API key.
   {
     "object": "api_key",
     "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
+  }
+  ```
+</ResponseExample>
+
+
+# Create Automation
+Source: https://resend.com/docs/api-reference/automations/create-automation
+
+POST /automations
+Create a new automation to automate email sequences.
+
+## Body Parameters
+
+<ParamField type="string">
+  The name of the automation.
+</ParamField>
+
+<ParamField type="string">
+  The status of the automation. Possible values are `enabled` or `disabled`.
+  Defaults to `disabled`.
+</ParamField>
+
+<ParamField type="Step[]">
+  The steps that compose the automation graph. Must be provided together with
+  `connections`. See [Step
+  Properties](/docs/dashboard/automations/steps#step-properties) for full object
+  definition.
+</ParamField>
+
+<ParamField type="Connection[]">
+  The connections between steps in the automation graph. Must be provided
+  together with `steps`. See [Connection
+  Properties](/docs/dashboard/automations/connections#connection-properties) for full
+  object definition.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.create({
+    name: 'Welcome series',
+    status: 'disabled',
+    steps: [
+      {
+        key: 'start',
+        type: 'trigger',
+        config: { eventName: 'user.created' },
+      },
+      {
+        key: 'welcome',
+        type: 'send_email',
+        config: {
+          template: { id: '34a080c9-b17d-4187-ad80-5af20266e535' },
+        },
+      },
+    ],
+    connections: [{ from: 'start', to: 'welcome' }],
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->create([
+    'name' => 'Welcome series',
+    'status' => 'disabled',
+    'steps' => [
+      [
+        'key' => 'start',
+        'type' => 'trigger',
+        'config' => ['event_name' => 'user.created'],
+      ],
+      [
+        'key' => 'welcome',
+        'type' => 'send_email',
+        'config' => [
+          'template' => ['id' => '34a080c9-b17d-4187-ad80-5af20266e535'],
+        ],
+      ],
+    ],
+    'connections' => [['from' => 'start', 'to' => 'welcome']],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Automations.CreateParams = {
+    "name": "Welcome series",
+    "status": "disabled",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": {"event_name": "user.created"},
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": {"id": "34a080c9-b17d-4187-ad80-5af20266e535"},
+        },
+      },
+    ],
+    "connections": [{"from": "start", "to": "welcome"}],
+  }
+
+  resend.Automations.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    name: "Welcome series",
+    status: "disabled",
+    steps: [
+      {
+        key: "start",
+        type: "trigger",
+        config: { event_name: "user.created" },
+      },
+      {
+        key: "welcome",
+        type: "send_email",
+        config: {
+          template: { id: "34a080c9-b17d-4187-ad80-5af20266e535" },
+        },
+      },
+    ],
+    connections: [{ from: "start", to: "welcome" }],
+  }
+
+  Resend::Automations.create(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateAutomationRequest{
+  		Name:   "Welcome series",
+  		Status: resend.AutomationStatusDisabled,
+  		Steps: []resend.AutomationStep{
+  			{
+  				Key:  "start",
+  				Type: resend.AutomationStepTypeTrigger,
+  				Config: map[string]any{
+  					"event_name": "user.created",
+  				},
+  			},
+  			{
+  				Key:  "welcome",
+  				Type: resend.AutomationStepTypeSendEmail,
+  				Config: map[string]any{
+  					"template": map[string]any{
+  						"id": "34a080c9-b17d-4187-ad80-5af20266e535",
+  					},
+  				},
+  			},
+  		},
+  		Connections: []resend.AutomationConnection{
+  			{From: "start", To: "welcome"},
+  		},
+  	}
+
+  	client.Automations.Create(params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{
+    types::{
+      AutomationStatus, AutomationTemplate, Connection, CreateAutomationOptions, SendEmailStepConfig,
+      Step, TriggerStepConfig,
+    },
+    Resend, Result,
+  };
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = CreateAutomationOptions {
+      name: "Welcome series".to_owned(),
+      status: AutomationStatus::Disabled,
+      steps: vec![
+        Step::Trigger {
+          key: "start".to_owned(),
+          config: TriggerStepConfig {
+            event_name: "user.created".to_owned(),
+          },
+        },
+        Step::SendEmail {
+          key: "welcome".to_owned(),
+          config: SendEmailStepConfig::new(AutomationTemplate::new(
+            "34a080c9-b17d-4187-ad80-5af20266e535",
+          )),
+        },
+      ],
+      connections: vec![Connection::new("start", "welcome")],
+    };
+    let _automation = resend.automations.create(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateAutomationOptions options = CreateAutomationOptions.builder()
+                  .name("Welcome series")
+                  .status(AutomationStatus.DISABLED)
+                  .steps(
+                      AutomationStep.trigger("start")
+                          .eventName("user.created")
+                          .build(),
+                      AutomationStep.sendEmail("welcome")
+                          .template("34a080c9-b17d-4187-ad80-5af20266e535")
+                          .build()
+                  )
+                  .connections(
+                      AutomationConnection.builder()
+                          .from("start")
+                          .to("welcome")
+                          .build()
+                  )
+                  .build();
+
+          CreateAutomationResponseSuccess response = resend.automations().create(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+  using System.Text.Json;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var startConfig = JsonSerializer.SerializeToElement( new { event_name = "user.created" } );
+  var welcomeConfig = JsonSerializer.SerializeToElement( new { template = new { id = "34a080c9-b17d-4187-ad80-5af20266e535" } } );
+
+  var resp = await resend.AutomationCreateAsync( new AutomationCreateData()
+  {
+      Name = "Welcome series",
+      Status = "disabled",
+      Steps = new List<AutomationStepData>
+      {
+          new AutomationStepData { Ref = "start", Type = "trigger", Config = startConfig },
+          new AutomationStepData { Ref = "welcome", Type = "send_email", Config = welcomeConfig },
+      },
+      Connections = new List<AutomationEdge>
+      {
+          new AutomationEdge { From = "start", To = "welcome" },
+      },
+  } );
+  Console.WriteLine( "AutomationId={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/automations' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "name": "Welcome series",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": { "event_name": "user.created" }
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": { "id": "34a080c9-b17d-4187-ad80-5af20266e535" }
+        }
+      }
+    ],
+    "connections": [
+      { "from": "start", "to": "welcome" }
+    ]
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations create --name "Welcome series" --file ./automation.json
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd"
+  }
+  ```
+</ResponseExample>
+
+
+# Delete Automation
+Source: https://resend.com/docs/api-reference/automations/delete-automation
+
+DELETE /automations/:automation_id
+Remove an existing automation.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.remove(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->remove('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.remove("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations.remove("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.Remove("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .delete("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          RemoveAutomationResponseSuccess data = resend.automations().remove("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationDeleteAsync( new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ) );
+  Console.WriteLine( "Deleted={0}", resp.Content.Deleted );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X DELETE 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations delete c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "deleted": true
+  }
+  ```
+</ResponseExample>
+
+
+# Duplicate Automation
+Source: https://resend.com/docs/api-reference/automations/duplicate-automation
+
+POST /automations/:automation_id/duplicate
+Duplicate an existing automation.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.duplicate(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->duplicate('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.duplicate("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations.duplicate("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.Duplicate("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .duplicate("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          DuplicateAutomationResponseSuccess data = resend.automations().duplicate("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationDuplicateAsync( new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ) );
+  Console.WriteLine( "AutomationId={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/duplicate' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations duplicate c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3"
+  }
+  ```
+</ResponseExample>
+
+
+# Retrieve Automation
+Source: https://resend.com/docs/api-reference/automations/get-automation
+
+GET /automations/:automation_id
+Retrieve a single automation.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.get(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->get('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.get("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations.get("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.Get("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .get("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          Automation data = resend.automations().get("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationRetrieveAsync( new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ) );
+  Console.WriteLine( "Name={0}", resp.Content.Name );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations get c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "name": "Welcome series",
+    "status": "disabled",
+    "created_at": "2026-10-01 12:00:00.000000+00",
+    "updated_at": "2026-10-01 12:00:00.000000+00",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": { "event_name": "user.created" }
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": { "id": "34a080c9-b17d-4187-ad80-5af20266e535" }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": "start",
+        "to": "welcome",
+        "type": "default"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Retrieve Automation Run
+Source: https://resend.com/docs/api-reference/automations/get-automation-run
+
+GET /automations/:automation_id/runs/:run_id
+Retrieve a single automation run.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The automation run ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.runs.get({
+    automationId: 'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+    runId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->runs->get(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+    'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.Runs.get(
+    "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations::Runs.get(
+    "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.GetRun(
+  		"c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+  		"a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  	)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .get_run(
+        "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+        "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          AutomationRun data = resend.automations().getRun(
+                  GetAutomationRunOptions.builder()
+                          .automationId("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+                          .runId("a1b2c3d4-e5f6-7890-abcd-ef1234567890")
+                          .build()
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationRunRetrieveAsync(
+      new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ),
+      new Guid( "a1b2c3d4-e5f6-7890-abcd-ef1234567890" )
+  );
+  Console.WriteLine( "Status={0}", resp.Content.Status );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/runs/a1b2c3d4-e5f6-7890-abcd-ef1234567890' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations runs get --automation-id c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd --run-id a1b2c3d4-e5f6-7890-abcd-ef1234567890
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation_run",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "status": "completed",
+    "started_at": "2026-10-01 12:00:00.000000+00",
+    "completed_at": "2026-10-01 12:05:00.000000+00",
+    "created_at": "2026-10-01 12:00:00.000000+00",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "status": "completed",
+        "started_at": "2026-10-01 12:00:00.000000+00",
+        "completed_at": "2026-10-01 12:00:01.000000+00",
+        "output": null,
+        "error": null,
+        "created_at": "2026-10-01 12:00:00.000000+00"
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "status": "completed",
+        "started_at": "2026-10-01 12:00:01.000000+00",
+        "completed_at": "2026-10-01 12:00:02.000000+00",
+        "output": null,
+        "error": null,
+        "created_at": "2026-10-01 12:00:01.000000+00"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List Automation Runs
+Source: https://resend.com/docs/api-reference/automations/list-automation-runs
+
+GET /automations/:automation_id/runs
+Retrieve a list of automation runs.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<QueryParams type="automation-runs" />
+
+<ResendParamField type="string">
+  Filter runs by status. Comma-separated list: `running`, `completed`, `failed`,
+  `cancelled`.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.runs.list({
+    automationId: 'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+    status: 'completed',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->runs->list('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.Runs.list("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations::Runs.list("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.ListRuns("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{list_opts::ListOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .list_runs(
+        "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+        None,
+        ListOptions::default(),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListAutomationRunsResponseSuccess data = resend.automations().listRuns("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationRunListAsync( new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ) );
+  Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/runs?status=completed' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations runs list c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "status": "completed",
+        "started_at": "2026-10-01 12:00:00.000000+00",
+        "completed_at": "2026-10-01 12:05:00.000000+00",
+        "created_at": "2026-10-01 12:00:00.000000+00"
+      },
+      {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "status": "running",
+        "started_at": "2026-10-02 08:30:00.000000+00",
+        "completed_at": null,
+        "created_at": "2026-10-02 08:30:00.000000+00"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List Automations
+Source: https://resend.com/docs/api-reference/automations/list-automations
+
+GET /automations
+Retrieve a list of automations.
+
+<QueryParams type="automations" />
+
+<ResendParamField type="string">
+  Filter automations by status. Possible values: `enabled`, `disabled`.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.list();
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->list();
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.list()
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations.list
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.List()
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{list_opts::ListOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automations = resend.automations.list(ListOptions::default()).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListAutomationsResponseSuccess data = resend.automations().list();
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationListAsync();
+  Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/automations' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations list
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+        "name": "Welcome series",
+        "status": "enabled",
+        "created_at": "2026-10-01 12:00:00.000000+00",
+        "updated_at": "2026-10-01 12:00:00.000000+00"
+      },
+      {
+        "id": "662892b2-4270-4130-a186-33a19752319d",
+        "name": "Re-engagement",
+        "status": "disabled",
+        "created_at": "2026-09-15 08:30:00.000000+00",
+        "updated_at": "2026-09-20 14:00:00.000000+00"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Stop Automation
+Source: https://resend.com/docs/api-reference/automations/stop-automation
+
+POST /automations/:automation_id/stop
+Stop a running automation.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.stop(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->stop('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Automations.stop("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Automations.stop("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Automations.Stop("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _automation = resend
+      .automations
+      .stop("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          StopAutomationResponseSuccess data = resend.automations().stop("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationStopAsync( new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ) );
+  Console.WriteLine( "Status={0}", resp.Content.Status );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/stop' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations stop c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "status": "disabled"
+  }
+  ```
+</ResponseExample>
+
+
+# Update Automation
+Source: https://resend.com/docs/api-reference/automations/update-automation
+
+PATCH /automations/:automation_id
+Update an existing automation.
+
+<Note>
+  Provide at least one of `name`, `status`, or both `steps` and `connections`.
+  When updating the workflow graph, `steps` and `connections` must be sent
+  together.
+</Note>
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The automation ID.
+</ResendParamField>
+
+## Body Parameters
+
+<ParamField type="string">
+  The name of the automation.
+</ParamField>
+
+<ParamField type="string">
+  The status of the automation. Possible values are `enabled` or `disabled`.
+</ParamField>
+
+<ParamField type="Step[]">
+  The steps that compose the automation graph. Must be provided together with
+  `connections`. The graph of an `enabled` automation cannot be updated: disable
+  the automation first, or duplicate it and edit the copy. See [Step
+  Properties](/docs/dashboard/automations/steps#step-properties) for full object
+  definition.
+</ParamField>
+
+<ParamField type="Connection[]">
+  The connections between steps in the automation graph. Must be provided
+  together with `steps`. See [Connection
+  Properties](/docs/dashboard/automations/connections#connection-properties) for full
+  object definition.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.update(
+    'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+    { status: 'enabled' },
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->update('c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd', [
+    'status' => 'enabled',
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Automations.UpdateParams = {
+    "automation_id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "status": "enabled",
+  }
+
+  resend.Automations.update(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    automation_id: "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    status: "enabled",
+  }
+
+  Resend::Automations.update(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.UpdateAutomationRequest{
+  		Status: resend.AutomationStatusEnabled,
+  	}
+
+  	client.Automations.Update("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd", params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{
+    types::{AutomationStatus, UpdateAutomationOptions},
+    Resend, Result,
+  };
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = UpdateAutomationOptions::new().with_status(AutomationStatus::Enabled);
+    let _automation = resend
+      .automations
+      .update("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd", opts)
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          UpdateAutomationOptions options = UpdateAutomationOptions.builder()
+                  .id("c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd")
+                  .status(AutomationStatus.ENABLED)
+                  .build();
+
+          UpdateAutomationResponseSuccess response = resend.automations().update(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.AutomationUpdateAsync(
+      new Guid( "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd" ),
+      new AutomationUpdateData { Status = "enabled" }
+  );
+  Console.WriteLine( "AutomationId={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X PATCH 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "status": "enabled"
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations update c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd --status enabled
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd"
   }
   ```
 </ResponseExample>
@@ -1850,11 +3258,12 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 
 ## Query Parameters
 
+<ListParamFormatNote />
+
 <ParamField type="string">
   The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
   (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
-  before `end_date`, unless `broadcast_id` is set, in which case it defaults to
-  `2023-01-01` instead, since no broadcast could exist before Resend launched.
+  before `end_date`.
 </ParamField>
 
 <ParamField type="string">
@@ -1873,8 +3282,8 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of metrics to include in the response. Defaults to all
-  of the following:
+  List of metrics to include in the response. Defaults to all of the
+  following:
 
   `delivered`, `complained`, `suppressed`, `bounced`, `bounced_transient`,
   `bounced_permanent`, `bounced_undetermined`, `opened`, `clicked`,
@@ -1884,7 +3293,7 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of dimensions to break the response down by. Combine
+  List of dimensions to break the response down by. Combine
   `period` with `broadcast` for a joint breakdown (one row per unique `period`
 
   * `broadcast` pair). Defaults to `[]`, returning a single `totals` row for
@@ -1898,7 +3307,7 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of broadcast IDs to restrict the response to, up to 100.
+  List of broadcast IDs to restrict the response to, up to 100.
 </ParamField>
 
 <RequestExample>
@@ -3877,6 +5286,371 @@ Create a contact.
 </ResponseExample>
 
 
+# Create Contact Import
+Source: https://resend.com/docs/api-reference/contacts/create-contact-import
+
+POST /contacts/imports
+Create a contact import.
+
+## Body Parameters
+
+This endpoint accepts `multipart/form-data`. Object and array fields
+(`column_map`, `segments`, `topics`) must be sent as JSON-encoded strings.
+
+<ParamField type="file">
+  The CSV file to import. The file must be sent as a form field named `file`.
+  Maximum file size is 200MB.
+</ParamField>
+
+<ParamField type="object">
+  Maps CSV columns to contact fields.
+
+  <Expandable title="column_map">
+    <ParamField type="string">
+      The CSV column that contains contact email addresses.
+    </ParamField>
+
+    <ParamField type="string">
+      The CSV column that contains contact first names.
+    </ParamField>
+
+    <ParamField type="string">
+      The CSV column that contains contact last names.
+    </ParamField>
+
+    <ParamField type="string">
+      The CSV column that contains the contact's global subscription status.
+    </ParamField>
+
+    <ParamField type="object">
+      A map of custom property keys to CSV columns.
+
+      <Expandable title="properties">
+        <ParamField type="object">
+          The custom property key.
+
+          <Expandable title="property mapping">
+            <ParamField type="string">
+              The CSV column that contains the custom property value.
+            </ParamField>
+
+            <ParamField type="'string' | 'number' | 'boolean'">
+              The custom property value type. Defaults to `string`.
+            </ParamField>
+          </Expandable>
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField type="'upsert' | 'skip'">
+  How to handle contacts that already exist. Defaults to `upsert`.
+</ParamField>
+
+<ParamField type="array">
+  Array of objects. Each object must contain the ID of the segment that you'd
+  like to add the imported contacts to.
+
+  <Expandable title="segments">
+    <ParamField type="string">
+      The segment UUID.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField type="array">
+  Array of topic subscriptions for imported contacts.
+
+  <Expandable title="topics">
+    <ParamField type="string">
+      The Topic UUID.
+    </ParamField>
+
+    <ParamField type="'opt_in' | 'opt_out'">
+      The subscription status for this topic.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { readFile } from 'node:fs/promises';
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const file = new Blob([await readFile('contacts.csv')], {
+    type: 'text/csv',
+  });
+
+  const { data, error } = await resend.contacts.imports.create({
+    file,
+    columnMap: {
+      email: 'Email',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      properties: {
+        plan: {
+          column: 'Plan',
+          type: 'string',
+        },
+      },
+    },
+    onConflict: 'upsert',
+    segments: [{ id: '78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6' }],
+    topics: [
+      {
+        id: '059ac693-2fc8-4c13-8b27-01350d638a17',
+        subscription: 'opt_in',
+      },
+    ],
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $file = fopen('contacts.csv', 'r');
+
+  $resend->contacts->imports->create([
+    'file' => $file,
+    'column_map' => [
+      'email' => 'Email',
+      'first_name' => 'First Name',
+      'last_name' => 'Last Name',
+      'properties' => [
+        'plan' => [
+          'column' => 'Plan',
+          'type' => 'string',
+        ],
+      ],
+    ],
+    'on_conflict' => 'upsert',
+    'segments' => [['id' => '78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6']],
+    'topics' => [
+      [
+        'id' => '059ac693-2fc8-4c13-8b27-01350d638a17',
+        'subscription' => 'opt_in',
+      ],
+    ],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  with open("contacts.csv", "rb") as f:
+      file_content = f.read()
+
+  params: resend.Contacts.Imports.CreateParams = {
+      "file": file_content,
+      "column_map": {
+          "email": "Email",
+          "first_name": "First Name",
+          "last_name": "Last Name",
+          "properties": {
+              "plan": {
+                  "column": "Plan",
+                  "type": "string",
+              },
+          },
+      },
+      "on_conflict": "upsert",
+      "segments": [{"id": "78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6"}],
+      "topics": [
+          {
+              "id": "059ac693-2fc8-4c13-8b27-01350d638a17",
+              "subscription": "opt_in",
+          },
+      ],
+  }
+
+  resend.Contacts.Imports.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    file: File.read("contacts.csv"),
+    column_map: {
+      "email" => "Email",
+      "first_name" => "First Name",
+      "last_name" => "Last Name",
+      "properties" => {
+        "plan" => {
+          "column" => "Plan",
+          "type" => "string"
+        }
+      }
+    },
+    on_conflict: "upsert",
+    segments: [{ id: "78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6" }],
+    topics: [
+      { id: "059ac693-2fc8-4c13-8b27-01350d638a17", subscription: "opt_in" }
+    ]
+  }
+
+  Resend::Contacts::Imports.create(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"os"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	file, err := os.ReadFile("contacts.csv")
+  	if err != nil {
+  		panic(err)
+  	}
+
+  	params := &resend.CreateContactImportRequest{
+  		File:       file,
+  		Filename:   "contacts.csv",
+  		OnConflict: "upsert",
+  		ColumnMap: map[string]any{
+  			"email":      "Email",
+  			"first_name": "First Name",
+  			"last_name":  "Last Name",
+  			"properties": map[string]any{
+  				"plan": map[string]any{
+  					"column": "Plan",
+  					"type":   "string",
+  				},
+  			},
+  		},
+  		Segments: []resend.ContactImportSegment{{Id: "78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6"}},
+  		Topics: []resend.TopicSubscriptionUpdate{
+  			{Id: "059ac693-2fc8-4c13-8b27-01350d638a17", Subscription: "opt_in"},
+  		},
+  	}
+
+  	client.Contacts.Imports.Create(params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use std::fs::File;
+
+  use resend_rs::{
+    Resend, Result,
+    types::{
+      ContactImportColumnMap, ContactImportOnConflict, ContactImportPropertyMapping,
+      ContactImportPropertyType, ContactImportTopic, ContactImportTopicSubscription,
+      CreateContactImportOptions,
+    },
+  };
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let file = File::open("contacts.csv").unwrap();
+
+    let contact_import = CreateContactImportOptions::new()
+      .with_column_map(
+        ContactImportColumnMap::new()
+          .with_email("Email")
+          .with_first_name("First Name")
+          .with_last_name("Last Name")
+          .with_property(
+            "plan",
+            ContactImportPropertyMapping {
+              column: "Plan".to_owned(),
+              r#type: ContactImportPropertyType::String,
+            },
+          ),
+      )
+      .with_on_conflict(ContactImportOnConflict::Upsert)
+      .with_segment("78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6")
+      .with_topic(ContactImportTopic {
+        id: "059ac693-2fc8-4c13-8b27-01350d638a17".to_owned(),
+        subscription: ContactImportTopicSubscription::OptIn,
+      });
+
+    let _data = resend.contacts.create_import(file, contact_import).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.contacts.model.*;
+  import java.io.File;
+
+  public class Main {
+      public static void main(String[] args) throws Exception {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ContactImportColumnMap columnMap = ContactImportColumnMap.builder()
+                  .email("Email")
+                  .firstName("First Name")
+                  .lastName("Last Name")
+                  .property("plan", ContactImportPropertyMapping.builder()
+                          .column("Plan")
+                          .type("string")
+                          .build())
+                  .build();
+
+          CreateContactImportOptions params = CreateContactImportOptions.builder()
+                  .file(new File("contacts.csv"))
+                  .columnMap(columnMap)
+                  .onConflict("upsert")
+                  .segments(new ContactImportSegmentReference("78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6"))
+                  .topics(ContactImportTopicSubscription.builder()
+                          .id("059ac693-2fc8-4c13-8b27-01350d638a17")
+                          .subscription("opt_in")
+                          .build())
+                  .build();
+
+          CreateContactImportResponseSuccess data = resend.contacts().imports().create(params);
+      }
+  }
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/contacts/imports' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -F 'file=@contacts.csv;type=text/csv' \
+       -F 'column_map={"email":"Email","first_name":"First Name","last_name":"Last Name","properties":{"plan":{"column":"Plan","type":"string"}}}' \
+       -F 'on_conflict=upsert' \
+       -F 'segments=[{"id":"78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6"}]' \
+       -F 'topics=[{"id":"059ac693-2fc8-4c13-8b27-01350d638a17","subscription":"opt_in"}]'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend contacts imports create \
+    --file contacts.csv \
+    --column-map '{"email":"Email","firstName":"First Name","lastName":"Last Name","properties":{"plan":{"column":"Plan","type":"string"}}}' \
+    --on-conflict upsert \
+    --segment-id 78e7a5c6-9a91-4c63-9d1f-3b9c0b5b9ab6 \
+    --topics '[{"id":"059ac693-2fc8-4c13-8b27-01350d638a17","subscription":"opt_in"}]'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "contact_import",
+    "id": "479e3145-dd38-476b-932c-529ceb705947"
+  }
+  ```
+</ResponseExample>
+
+
 # Delete Contact
 Source: https://resend.com/docs/api-reference/contacts/delete-contact
 
@@ -4498,6 +6272,125 @@ Either `id` or `email` must be provided.
 </ResponseExample>
 
 
+# Retrieve Contact Import
+Source: https://resend.com/docs/api-reference/contacts/get-contact-import
+
+GET /contacts/imports/:id
+Retrieve a single contact import.
+
+## Path Parameters
+
+<ParamField type="string">
+  The Contact Import ID.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.contacts.imports.get(
+    '479e3145-dd38-476b-932c-529ceb705947',
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->contacts->imports->get('479e3145-dd38-476b-932c-529ceb705947');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Contacts.Imports.get("479e3145-dd38-476b-932c-529ceb705947")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Contacts::Imports.get("479e3145-dd38-476b-932c-529ceb705947")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Contacts.Imports.Get("479e3145-dd38-476b-932c-529ceb705947")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .contacts
+      .get_import("479e3145-dd38-476b-932c-529ceb705947")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.contacts.model.GetContactImportResponseSuccess;
+
+  public class Main {
+      public static void main(String[] args) throws Exception {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          GetContactImportResponseSuccess data = resend
+                  .contacts()
+                  .imports()
+                  .get("479e3145-dd38-476b-932c-529ceb705947");
+      }
+  }
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/contacts/imports/479e3145-dd38-476b-932c-529ceb705947' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend contacts imports get 479e3145-dd38-476b-932c-529ceb705947
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "contact_import",
+    "id": "479e3145-dd38-476b-932c-529ceb705947",
+    "status": "completed",
+    "created_at": "2026-05-15 18:32:37.823+00",
+    "completed_at": "2026-05-15 18:33:42.916+00",
+    "counts": {
+      "total": 1200,
+      "created": 800,
+      "updated": 300,
+      "skipped": 75,
+      "failed": 25
+    }
+  }
+  ```
+</ResponseExample>
+
+
 # Retrieve Contact Topics
 Source: https://resend.com/docs/api-reference/contacts/get-contact-topics
 
@@ -4677,6 +6570,187 @@ Either `id` or `email` must be provided.
         "name": "Product Updates",
         "description": "New features, and latest announcements.",
         "subscription": "opt_in"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List Contact Imports
+Source: https://resend.com/docs/api-reference/contacts/list-contact-imports
+
+GET /contacts/imports
+Retrieve a list of contact imports.
+
+## Query Parameters
+
+<ParamField type="number">
+  Number of contact imports to retrieve.
+
+  <ul>
+    <li>
+      Default value: <code>10</code>
+    </li>
+
+    <li>
+      Maximum value: <code>100</code>
+    </li>
+
+    <li>
+      Minimum value: <code>1</code>
+    </li>
+  </ul>
+</ParamField>
+
+<ParamField type="string">
+  The contact import ID <em>after</em> which we'll retrieve more contact
+  imports. This ID will <em>not</em> be included in the returned list. Cannot be
+  used with the <code>before</code> parameter.
+</ParamField>
+
+<ParamField type="string">
+  The contact import ID <em>before</em> which we'll retrieve more contact
+  imports. This ID will <em>not</em> be included in the returned list. Cannot be
+  used with the <code>after</code> parameter.
+</ParamField>
+
+<ParamField type="'queued' | 'in_progress' | 'completed' | 'failed'">
+  Filter contact imports by status.
+</ParamField>
+
+<Info>
+  You can only use either <code>after</code> or <code>before</code> parameter,
+  not both. See our <a href="/docs/api-reference/pagination">pagination guide</a> for
+  more information.
+</Info>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.contacts.imports.list({
+    limit: 10,
+    status: 'completed',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->contacts->imports->list([
+    'limit' => 10,
+    'status' => 'completed',
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Contacts.Imports.ListParams = {
+      "limit": 10,
+      "status": "completed",
+  }
+
+  resend.Contacts.Imports.list(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Contacts::Imports.list(limit: 10, status: "completed")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	limit := 10
+  	client.Contacts.Imports.List(&resend.ListContactImportsOptions{
+  		Limit:  &limit,
+  		Status: string(resend.ContactImportStatusCompleted),
+  	})
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, Value, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .contacts
+      .list_imports(
+        ListOptions::default()
+          .with_limit(10)
+          .with_other("status", Value::String("completed".to_owned())),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.Resend;
+  import com.resend.services.contacts.model.ListContactImportsParams;
+  import com.resend.services.contacts.model.ListContactImportsResponseSuccess;
+
+  public class Main {
+      public static void main(String[] args) throws Exception {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListContactImportsParams params = ListContactImportsParams.builder()
+                  .limit(10)
+                  .status("completed")
+                  .build();
+
+          ListContactImportsResponseSuccess data = resend.contacts().imports().list(params);
+      }
+  }
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/contacts/imports?limit=10&status=completed' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend contacts imports list --limit 10 --status completed
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "object": "contact_import",
+        "id": "479e3145-dd38-476b-932c-529ceb705947",
+        "status": "completed",
+        "created_at": "2026-05-15 18:32:37.823+00",
+        "completed_at": "2026-05-15 18:33:42.916+00",
+        "counts": {
+          "total": 1200,
+          "created": 800,
+          "updated": 300,
+          "skipped": 75,
+          "failed": 25
+        }
       }
     ]
   }
@@ -6298,7 +8372,7 @@ Retrieve a single domain for the authenticated user.
 </ResponseExample>
 
 
-# Get Domain Claim
+# Retrieve Domain Claim
 Source: https://resend.com/docs/api-reference/domains/get-domain-claim
 
 GET /domains/:domain_id/claim
@@ -6791,7 +8865,7 @@ Verify an existing domain.
   **Claimed a domain?** A [domain claim](/docs/dashboard/domains/claim) transfers the
   domain into your account as a brand-new domain with its own DKIM keys, so the
   previous account's DNS records can't be reused. After the claim is
-  `completed`, fetch the domain with [Get
+  `completed`, fetch the domain with [Retrieve
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s) it returns, then call this endpoint to verify it before sending or
   receiving email. See [DKIM
@@ -6913,14 +8987,14 @@ Trigger DNS verification for a domain claim.
   checks the claim's TXT record and runs ownership-safety checks before
   transferring the domain to your team. Add the TXT record returned by [Claim
   Domain](/docs/api-reference/domains/claim-domain) before calling this, then poll
-  [Get Domain Claim](/docs/api-reference/domains/get-domain-claim) to follow the
+  [Retrieve Domain Claim](/docs/api-reference/domains/get-domain-claim) to follow the
   `status`.
 </Note>
 
 <Note>
   **After the claim completes:** the domain is transferred to your account as a
   brand-new domain with its own DKIM keys, so the previous account's DNS records
-  can't be reused. Fetch it with [Get
+  can't be reused. Fetch it with [Retrieve
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s), then run [Verify Domain](/docs/api-reference/domains/verify-domain) to
   finish setup before sending or receiving email. See [DKIM
@@ -7185,7 +9259,8 @@ Retrieve account-level email metrics.
 <Note>
   Metrics are retained according to your plan's data retention window.
   Requesting a `start_date` older than your retention window returns data
-  clamped to the oldest date your plan retains.
+  clamped to the oldest date your plan retains. This doesn't apply when
+  `broadcast_id` is set.
 </Note>
 
 <Note>
@@ -7194,6 +9269,8 @@ Retrieve account-level email metrics.
 </Note>
 
 ## Query Parameters
+
+<ListParamFormatNote />
 
 <ParamField type="string">
   The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
@@ -7218,8 +9295,8 @@ Retrieve account-level email metrics.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of metrics to include in the response. Defaults to all
-  of the following:
+  List of metrics to include in the response. Defaults to all of the
+  following:
 
   `received`, `delivered`, `complained`, `suppressed`, `bounced`,
   `bounced_transient`, `bounced_permanent`, `bounced_undetermined`, `opened`,
@@ -7229,30 +9306,166 @@ Retrieve account-level email metrics.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of dimensions to break the response down by. Combine
-  `period` with `domain` or `email` for a joint breakdown (one row per unique
-  `period` + `domain`/`email` pair). Defaults to `[]`, returning a single
-  `totals` row for the whole range, with no `data`.
+  List of dimensions to break the response down by. Combine
+  any of `period`, `domain`, `email`, or `broadcast` to group the data by
+  more than one at once, except `email` cannot be combined with `broadcast`.
+  Defaults to `[]`, returning a single `totals` row for the whole range, with
+  no `data`.
 
   Possible values:
 
-  * `period`: one row per `granularity` period, in chronological order.
-  * `domain`: one row per sending domain. Cannot be combined with `email`.
-  * `email`: one row per email. Cannot be combined with `domain`.
+  * `period`: groups the data by `granularity` period, in chronological order.
+  * `domain`: groups the data by sending domain.
+  * `email`: groups the data by email. Cannot be combined with `broadcast`.
+  * `broadcast`: groups the data by broadcast. Cannot be combined with `email`.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of sending domain IDs to restrict the response to.
-  Unrecognized query params are ignored rather than rejected.
+  List of sending domain IDs to restrict the response to, up to 100.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of email IDs to restrict the response to. Cannot be
-  combined with the `domain` dimension. Unrecognized query params are ignored
-  rather than rejected.
+  List of email IDs to restrict the response to, up to 100. Cannot be combined
+  with the `broadcast` dimension or `broadcast_id`.
+</ParamField>
+
+<ParamField type="string[]">
+  List of broadcast IDs to restrict the response to, up to 100. Cannot be
+  combined with the `email` dimension or `email_id`.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  const { data } = await resend.emails.metrics({
+    startDate: '2026-07-01',
+    endDate: '2026-07-08',
+    dimensions: ['period', 'broadcast'],
+    filter: { broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'] },
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend->emails->metrics([
+    'start_date' => '2026-07-01',
+    'end_date' => '2026-07-08',
+    'dimensions' => ['period', 'broadcast'],
+    'broadcast_id' => ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  params: resend.Emails.MetricsParams = {
+    "start_date": "2026-07-01",
+    "end_date": "2026-07-08",
+    "dimensions": ["period", "broadcast"],
+    "broadcast_id": ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"],
+  }
+
+  metrics = resend.Emails.metrics(params)
+  print(metrics)
+  ```
+
+  ```rb Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  params = {
+    start_date: "2026-07-01",
+    end_date: "2026-07-08",
+    dimensions: ["period", "broadcast"],
+    broadcast_id: ["5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"]
+  }
+
+  metrics = Resend::Emails.metrics(params)
+  puts metrics
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"context"
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+    ctx := context.TODO()
+    client := resend.NewClient("re_xxxxxxxxx")
+
+    startDate := "2026-07-01"
+    endDate := "2026-07-08"
+
+    metrics, err := client.Emails.MetricsWithOptions(ctx, &resend.MetricsOptions{
+      StartDate: &startDate,
+      EndDate:   &endDate,
+      Dimensions: []resend.MetricsDimension{
+        resend.MetricsDimensionPeriod,
+        resend.MetricsDimensionBroadcast,
+      },
+      BroadcastId: []string{"5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a"},
+    })
+
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(metrics.Totals)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::{Dimension, GetEmailMetricsOptions};
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let options = GetEmailMetricsOptions::new()
+      .with_start_date("2026-07-01")
+      .with_end_date("2026-07-08")
+      .with_dimensions([Dimension::Period, Dimension::Broadcast])
+      .with_broadcast_id("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a");
+
+    let metrics = resend.emails.metrics(options).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.emails.model.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          GetEmailsMetricsOptions options = GetEmailsMetricsOptions.builder()
+                  .startDate("2026-07-01")
+                  .endDate("2026-07-08")
+                  .dimensions(MetricsDimension.PERIOD, MetricsDimension.BROADCAST)
+                  .broadcastIds("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a")
+                  .build();
+
+          EmailsMetricsResponse metrics = resend.emails().metrics(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.EmailMetricsAsync( new EmailMetricsQuery()
+  {
+      StartDate = new DateTime( 2026, 7, 1 ),
+      EndDate = new DateTime( 2026, 7, 8 ),
+      Dimensions = new List<MetricDimension> { MetricDimension.Period, MetricDimension.Broadcast },
+      BroadcastId = new List<Guid> { Guid.Parse( "5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a" ) },
+  } );
+  Console.WriteLine( "Totals={0}", resp.Content?.Totals );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/emails/metrics?start_date=2026-07-01&end_date=2026-07-08&metrics=sent,delivered,open_rate&dimensions=period,domain' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -9297,6 +11510,123 @@ Create a shareable link to view a sent or received email.
 </ResendParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.emails.share(
+    '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
+    { expiresIn: '2 hours' },
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->emails->share('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', [
+    'expires_in' => '2 hours'
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  share_params: resend.Emails.ShareParams = {
+    "expires_in": "2 hours"
+  }
+
+  resend.Emails.share(
+    email_id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    params=share_params
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Emails.share(
+    "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    expires_in: "2 hours"
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	shareParams := &resend.ShareEmailRequest{
+  		ExpiresIn: "2 hours",
+  	}
+
+  	shared, err := client.Emails.Share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", shareParams)
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Println(shared.Url)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::ShareEmailOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let share = ShareEmailOptions::new()
+      .with_expires_in("2 hours");
+
+    let _shared = resend
+      .emails
+      .share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", share)
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ShareEmailOptions shareParams = ShareEmailOptions.builder()
+                  .expiresIn("2 hours")
+                  .build();
+
+          ShareEmailResponse data = resend
+            .emails()
+            .share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", shareParams);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  await resend.EmailShareAsync(
+      new Guid( "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" ),
+      "2 hours" );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/emails/49a3999c-0ce1-4ea6-ab68-afcd6dc2e794/share' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
@@ -9304,6 +11634,11 @@ Create a shareable link to view a sent or received email.
        -d $'{
     "expires_in": "2 hours"
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails share 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 \
+    --expires-in "2 hours"
   ```
 </RequestExample>
 
@@ -9510,7 +11845,7 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 ### `invalid_idempotency_key`
 
 * **Status:** 400
-* **Message:** The key must be between 1–256 chars.
+* **Message:** Idempotency keys, if present, must have between 1 and 256 characters.
 * **Suggested action:** Retry with a valid idempotency key.
 
 ### `validation_error`
@@ -9531,11 +11866,29 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** This API key is restricted to only send emails.
 * **Suggested action:** Make sure the API key has `Full access` to perform actions other than sending emails.
 
-### `invalid_api_key`
+### `email_above_quota`
 
 * **Status:** 403
-* **Message:** API key is invalid.
-* **Suggested action:** Make sure the API key is correct or generate a new [API key in the dashboard](https://resend.com/api-keys).
+* **Message:** You can't retrieve this email's content because it was above quota when received.
+* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase your quota.
+
+### `invalid_permission`
+
+* **Status:** 403
+* **Message:** Access token is missing required scopes.
+* **Suggested action:** Request an access token that includes the scopes required by this endpoint.
+
+### `restricted_api_key`
+
+* **Status:** 403
+* **Message:** API key is not active
+* **Suggested action:** Check the API key on the [API Keys page](https://resend.com/api-keys) and create a new one if needed.
+
+### `suspended_api_key`
+
+* **Status:** 403
+* **Message:** This API key is suspended
+* **Suggested action:** [Contact support](https://resend.com/contact) if you believe this is a mistake.
 
 ### `validation_error`
 
@@ -9567,17 +11920,23 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** Method is not allowed for the requested path.
 * **Suggested action:** Change your API endpoint to use a valid method.
 
-### `invalid_idempotent_request`
-
-* **Status:** 409
-* **Message:** Same idempotency key used with a different request payload.
-* **Suggested action:** Change your idempotency key or payload.
-
 ### `concurrent_idempotent_requests`
 
 * **Status:** 409
-* **Message:** Same idempotency key used while original request is still in progress.
+* **Message:** There is another request in progress with the same idempotency key.
 * **Suggested action:** Try the request again later.
+
+### `invalid_idempotent_request`
+
+* **Status:** 409
+* **Message:** This idempotency key has been used with this HTTP method and endpoint within the last 24 hours, but the request body was modified and doesn't match the original request.
+* **Suggested action:** Change your idempotency key or payload.
+
+### `resource_locked`
+
+* **Status:** 409
+* **Message:** Another request is already updating this resource.
+* **Suggested action:** Retry the request after a short delay.
 
 ### `invalid_attachment`
 
@@ -9585,29 +11944,11 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** Attachment must have either a `content` or `path`.
 * **Suggested action:** Attachments must either have a `content` (strings, Buffer, or Stream contents) or `path` to a remote resource (better for larger attachments).
 
-### `invalid_from_address`
-
-* **Status:** 422
-* **Message:** Invalid `from` field.
-* **Suggested action:** Make sure the `from` field is valid. The email address needs to follow the `email@example.com` or `Name <email@example.com>` format.
-
-### `invalid_access`
-
-* **Status:** 422
-* **Message:** Access must be "full\_access" | "sending\_access".
-* **Suggested action:** Make sure the API key has necessary permissions.
-
 ### `invalid_parameter`
 
 * **Status:** 422
 * **Message:** The `parameter` must be a valid UUID.
 * **Suggested action:** Check the value and make sure it's valid.
-
-### `invalid_region`
-
-* **Status:** 422
-* **Message:** Region must be "us-east-1" | "eu-west-1" | "sa-east-1".
-* **Suggested action:** Make sure the correct region is selected.
 
 ### `missing_required_field`
 
@@ -9615,29 +11956,29 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** The request body is missing one or more required fields.
 * **Suggested action:** Check the error message to see the list of missing fields.
 
-### `monthly_quota_exceeded`
+### `missing_required_parameter`
 
-* **Status:** 429
-* **Message:** You have reached your monthly email quota.
-* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota. Both sent and received emails count towards this quota.
+* **Status:** 422
+* **Message:** The request is missing one or more required parameters.
+* **Suggested action:** Check the error message to see the list of missing parameters.
 
 ### `daily_quota_exceeded`
 
 * **Status:** 429
-* **Message:** You have reached your daily email quota.
+* **Message:** You have exceeded your daily email sending quota.
 * **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait until 24 hours have passed. Both sent and received emails count towards this quota.
+
+### `monthly_quota_exceeded`
+
+* **Status:** 429
+* **Message:** You have exceeded your monthly email sending quota.
+* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota. Both sent and received emails count towards this quota.
 
 ### `rate_limit_exceeded`
 
 * **Status:** 429
 * **Message:** Too many requests. Please limit the number of requests per second. Or [contact support](https://resend.com/contact) to increase rate limit.
-* **Suggested action:** Read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
-
-### `security_error`
-
-* **Status:** 451
-* **Message:** A possible security issue was found with the request.
-* **Suggested action:** The message will contain more details. [Contact support](https://resend.com/contact) for more information.
+* **Suggested action:** Read the [response headers](/docs/api-reference/introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
 
 ### `application_error`
 
@@ -9645,11 +11986,1027 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** An unexpected error occurred.
 * **Suggested action:** Try the request again later. If the error does not resolve, check our [status page](https://resend-status.com) for service updates.
 
-### `internal_server_error`
+### `service_unavailable`
 
-* **Status:** 500
-* **Message:** An unexpected error occurred.
-* **Suggested action:** Try the request again later. If the error does not resolve, check our [status page](https://resend-status.com) for service updates.
+* **Status:** 503
+* **Message:** API is temporarily unavailable
+* **Suggested action:** Try the request again later. Check our [status page](https://resend-status.com) for service updates.
+
+
+# Create Event
+Source: https://resend.com/docs/api-reference/events/create-event
+
+POST /events
+Create a new event that can be used to trigger automations.
+
+## Body Parameters
+
+<ParamField type="string">
+  The name of the event. Used to match events to automation triggers.
+
+  <Note>
+    The event name can be any string (e.g., `user.created`, `welcome`,
+    `my-custom-event`). Dot notation is a recommended convention but is not
+    required. If multiple enabled automations use the same event name, all of them
+    will be triggered. Use unique event names if you want to target a specific
+    automation.
+  </Note>
+
+  <Warning>
+    Event names cannot start with the `resend:` prefix, which is reserved for system events.
+  </Warning>
+</ParamField>
+
+<ParamField type="object">
+  An optional schema definition for the event payload. Must be an object with
+  flat key/type pairs. Supported types: `string`, `number`, `boolean`, `date`.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.events.create({
+    name: 'user.created',
+    schema: {
+      plan: 'string',
+    },
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->events->create([
+    'name' => 'user.created',
+    'schema' => ['plan' => 'string'],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Events.CreateParams = {
+    "name": "user.created",
+    "schema": {
+      "plan": "string",
+    },
+  }
+
+  resend.Events.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    name: "user.created",
+    schema: {
+      plan: "string",
+    },
+  }
+
+  Resend::Events.create(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateEventRequest{
+  		Name: "user.created",
+  		Schema: map[string]string{
+  			"plan": resend.EventSchemaTypeString,
+  		},
+  	}
+
+  	client.Events.Create(params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{json, types::CreateEventOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = CreateEventOptions {
+      name: "user.created".to_owned(),
+      schema: json!({
+        "plan": "string",
+      }),
+    };
+
+    let _event = resend.events.create(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateEventOptions params = CreateEventOptions.builder()
+                  .name("user.created")
+                  .addSchema("plan", "string")
+                  .build();
+
+          CreateEventResponseSuccess data = resend.events().create(params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+  using System.Text.Json;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var schema = JsonSerializer.SerializeToElement( new { plan = "string" } );
+
+  var resp = await resend.EventCreateAsync( new EventCreateData()
+  {
+      Name = "user.created",
+      Schema = schema,
+  } );
+  Console.WriteLine( "EventId={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/events' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "name": "user.created",
+    "schema": {
+      "plan": "string"
+    }
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend events create --name user.created --schema '{"plan":"string"}'
+  ```
+</RequestExample>
+
+<Note>
+  Successful creation returns **201 Created** with the JSON body below.
+</Note>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "event",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+  ```
+</ResponseExample>
+
+
+# Delete Event
+Source: https://resend.com/docs/api-reference/events/delete-event
+
+DELETE /events/:id
+Remove an existing event.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The event ID or name.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.events.remove('user.created');
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->events->remove('user.created');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Events.remove("user.created")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Events.remove("user.created")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Events.Remove("user.created")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _event = resend.events.delete("user.created").await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          RemoveEventResponseSuccess data = resend.events().remove("user.created");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.EventDeleteAsync( "user.created" );
+  Console.WriteLine( "Deleted={0}", resp.Content.Deleted );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X DELETE 'https://api.resend.com/events/user.created' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend events delete user.created
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "event",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "deleted": true
+  }
+  ```
+</ResponseExample>
+
+
+# Retrieve Event
+Source: https://resend.com/docs/api-reference/events/get-event
+
+GET /events/:id
+Retrieve a single event by ID or name.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The event ID or name.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.events.get('user.created');
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->events->get('user.created');
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Events.get("user.created")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Events.get("user.created")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Events.Get("user.created")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _event = resend.events.get("user.created").await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          Event event = resend.events().get("user.created");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.EventRetrieveAsync( "user.created" );
+  Console.WriteLine( "Name={0}", resp.Content.Name );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/events/user.created' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend events get user.created
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "event",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "user.created",
+    "schema": {
+      "plan": "string"
+    },
+    "created_at": "2026-10-01 12:00:00.000000+00",
+    "updated_at": "2026-10-01 12:00:00.000000+00"
+  }
+  ```
+</ResponseExample>
+
+
+# List Events
+Source: https://resend.com/docs/api-reference/events/list-events
+
+GET /events
+Retrieve a list of events.
+
+<QueryParams type="events" />
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.events.list();
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->events->list();
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Events.list()
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Events.list
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Events.List()
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _events = resend.events.list(ListOptions::default()).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ListEventsResponseSuccess data = resend.events().list();
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.EventListAsync();
+  Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/events' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend events list
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "user.created",
+        "schema": {
+          "plan": "string"
+        },
+        "created_at": "2026-10-01 12:00:00.000000+00",
+        "updated_at": "2026-10-01 12:00:00.000000+00"
+      },
+      {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "name": "user.upgraded",
+        "schema": null,
+        "created_at": "2026-09-15 08:30:00.000000+00",
+        "updated_at": "2026-09-20 14:00:00.000000+00"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Send Event
+Source: https://resend.com/docs/api-reference/events/send-event
+
+POST /events/send
+Send a named event to trigger matching automations.
+
+## Body Parameters
+
+<ParamField type="string">
+  The name of the event to trigger. Must match the event name configured in an
+  automation trigger step.
+</ParamField>
+
+Either `contact_id` or `email` must be provided, but not both.
+
+<ResendParamField type="string">
+  The contact ID (UUID) to associate with this event. Exactly one of
+  `contact_id` or `email` must be provided.
+</ResendParamField>
+
+<ParamField type="string">
+  The email address to associate with this event. Exactly one of `contact_id` or
+  `email` must be provided. If no contact with this email exists in your
+  Audience, one will be created automatically when the automation runs.
+</ParamField>
+
+<ParamField type="object">
+  An optional object containing custom data to pass to the automation. This data
+  can be used in template variables and conditions. If the event has a schema
+  defined, the payload values will be validated and coerced to match the schema
+  types.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  // Trigger with a contact ID
+  const { data, error } = await resend.events.send({
+    event: 'user.created',
+    contactId: '7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b',
+    payload: {
+      plan: 'pro',
+    },
+  });
+
+  // Trigger with an email address
+  const { data, error } = await resend.events.send({
+    event: 'user.created',
+    email: 'steve.wozniak@gmail.com',
+    payload: {
+      plan: 'pro',
+    },
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Trigger with a contact ID
+  $resend->events->send([
+    'event' => 'user.created',
+    'contact_id' => '7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b',
+    'payload' => ['plan' => 'pro'],
+  ]);
+
+  // Trigger with an email address
+  $resend->events->send([
+    'event' => 'user.created',
+    'email' => 'steve.wozniak@gmail.com',
+    'payload' => ['plan' => 'pro'],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  # Trigger with a contact ID
+  params: resend.Events.SendParams = {
+    "event": "user.created",
+    "contact_id": "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b",
+    "payload": {
+      "plan": "pro",
+    },
+  }
+
+  resend.Events.send(params)
+
+  # Trigger with an email address
+  params: resend.Events.SendParams = {
+    "event": "user.created",
+    "email": "steve.wozniak@gmail.com",
+    "payload": {
+      "plan": "pro",
+    },
+  }
+
+  resend.Events.send(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  # Trigger with a contact ID
+  params = {
+    event: "user.created",
+    contact_id: "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b",
+    payload: {
+      plan: "pro",
+    },
+  }
+
+  Resend::Events.send(params)
+
+  # Trigger with an email address
+  params = {
+    event: "user.created",
+    email: "steve.wozniak@gmail.com",
+    payload: {
+      plan: "pro",
+    },
+  }
+
+  Resend::Events.send(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	// Trigger with a contact ID
+  	params := &resend.SendEventRequest{
+  		Event:     "user.created",
+  		ContactId: "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b",
+  		Payload: map[string]any{
+  			"plan": "pro",
+  		},
+  	}
+
+  	client.Events.Send(params)
+
+  	// Trigger with an email address
+  	params = &resend.SendEventRequest{
+  		Event: "user.created",
+  		Email: "steve.wozniak@gmail.com",
+  		Payload: map[string]any{
+  			"plan": "pro",
+  		},
+  	}
+
+  	client.Events.Send(params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{
+    json,
+    types::{ContactIdOrEmail, SendEventOptions},
+    Resend, Result,
+  };
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = SendEventOptions {
+      event: "user.created".to_owned(),
+      contact_id_or_email: ContactIdOrEmail::ContactId(
+        "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b".to_owned(),
+      ),
+      payload: json!({
+        "plan": "pro"
+      }),
+    };
+
+    let opts = SendEventOptions {
+      event: "user.created".to_owned(),
+      contact_id_or_email: ContactIdOrEmail::Email("steve.wozniak@gmail.com".to_owned()),
+      payload: json!({
+        "plan": "pro"
+      }),
+    };
+
+    let _event = resend.events.send(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          // Trigger with a contact ID
+          SendEventOptions params = SendEventOptions.builder()
+                  .event("user.created")
+                  .contactId("7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b")
+                  .addPayload("plan", "pro")
+                  .build();
+
+          SendEventResponseSuccess data = resend.events().send(params);
+
+          // Trigger with an email address
+          SendEventOptions params = SendEventOptions.builder()
+                  .event("user.created")
+                  .email("steve.wozniak@gmail.com")
+                  .addPayload("plan", "pro")
+                  .build();
+
+          SendEventResponseSuccess data = resend.events().send(params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+  using System.Text.Json;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var payload = JsonSerializer.SerializeToElement( new { plan = "pro" } );
+
+  // Trigger with a contact ID
+  var resp = await resend.EventSendAsync( new EventSendData()
+  {
+      Event = "user.created",
+      ContactId = new Guid( "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b" ),
+      Payload = payload,
+  } );
+  Console.WriteLine( "Event={0}", resp.Content.Event );
+
+  // Trigger with an email address
+  await resend.EventSendAsync( new EventSendData()
+  {
+      Event = "user.created",
+      Email = "steve.wozniak@gmail.com",
+      Payload = payload,
+  } );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Trigger with a contact ID
+  curl -X POST 'https://api.resend.com/events/send' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "event": "user.created",
+    "contact_id": "7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b",
+    "payload": {
+      "plan": "pro"
+    }
+  }'
+
+  # Trigger with an email address
+  curl -X POST 'https://api.resend.com/events/send' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "event": "user.created",
+    "email": "steve.wozniak@gmail.com",
+    "payload": {
+      "plan": "pro"
+    }
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Trigger with a contact ID
+  resend events send \
+    --event user.created \
+    --contact-id 7f2e4a3b-dfbc-4e9a-8b2c-5f3a1d6e7c8b \
+    --payload '{"plan":"pro"}'
+
+  # Trigger with an email address
+  resend events send \
+    --event user.created \
+    --email steve.wozniak@gmail.com \
+    --payload '{"plan":"pro"}'
+  ```
+</RequestExample>
+
+<Note>
+  Successful requests return **202 Accepted** with the JSON body below.
+</Note>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "event",
+    "event": "user.created"
+  }
+  ```
+</ResponseExample>
+
+
+# Update Event
+Source: https://resend.com/docs/api-reference/events/update-event
+
+PATCH /events/:id
+Update an existing event schema.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The event ID or name.
+</ResendParamField>
+
+## Body Parameters
+
+<ParamField type="object">
+  The updated schema definition for the event payload. Must be an object with
+  flat key/type pairs, or `null` to clear the schema. Supported types: `string`,
+  `number`, `boolean`, `date`.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.events.update('user.created', {
+    schema: {
+      plan: 'string',
+      trial: 'boolean',
+    },
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->events->update('user.created', [
+    'schema' => [
+      'plan' => 'string',
+      'trial' => 'boolean',
+    ],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Events.UpdateParams = {
+    "identifier": "user.created",
+    "schema": {
+      "plan": "string",
+      "trial": "boolean",
+    },
+  }
+
+  resend.Events.update(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    identifier: "user.created",
+    schema: {
+      plan: "string",
+      trial: "boolean",
+    },
+  }
+
+  Resend::Events.update(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.UpdateEventRequest{
+  		Schema: map[string]string{
+  			"plan":  resend.EventSchemaTypeString,
+  			"trial": resend.EventSchemaTypeBoolean,
+  		},
+  	}
+
+  	client.Events.Update("user.created", params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{json, types::UpdateEventOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = UpdateEventOptions {
+      schema: json!({
+        "plan": "string",
+        "trial": "boolean",
+      }),
+    };
+
+    let _event = resend.events.update("user.created", opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          UpdateEventOptions params = UpdateEventOptions.builder()
+                  .identifier("user.created")
+                  .addSchema("plan", "string")
+                  .addSchema("trial", "boolean")
+                  .build();
+
+          UpdateEventResponseSuccess data = resend.events().update(params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+  using System.Text.Json;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var schema = JsonSerializer.SerializeToElement( new { plan = "string", trial = "boolean" } );
+
+  var resp = await resend.EventUpdateAsync( "user.created", new EventUpdateData { Schema = schema } );
+  Console.WriteLine( "EventId={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X PATCH 'https://api.resend.com/events/user.created' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "schema": {
+      "plan": "string",
+      "trial": "boolean"
+    }
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend events update user.created --schema '{"plan":"string","trial":"boolean"}'
+  ```
+</RequestExample>
+
+<Note>Successful updates return **200 OK** with the JSON body below.</Note>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "event",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+  ```
+</ResponseExample>
 
 
 # Introduction
@@ -11613,14 +14970,9 @@ Retrieve segment metrics.
   </CodeGroup>
 </Warning>
 
-Live contact counts for your account, optionally broken down by segment.
-Works across your whole account by default, or scoped to specific segments
-via `segment_id`.
-
-<Info>
-  `totals` is always the live, current count for your account, or for the
-  segments in `segment_id`, if provided.
-</Info>
+Contact counts for your account, optionally broken down by segment. Works
+across your whole account by default, or scoped to specific segments via
+`segment_id`.
 
 <Info>
   Responses are cached for up to 15 minutes, so requesting the same range again
@@ -11629,14 +14981,16 @@ via `segment_id`.
 
 ## Query Parameters
 
+<ListParamFormatNote />
+
 <ResendParamField type="string[]">
-  Comma-separated list of metrics to include in `totals` and `data`. Defaults to
-  all of the following: `all_contacts`, `subscribers`, `unsubscribers`.
+  List of metrics to include in `totals` and `data`. Defaults to all of the
+  following: `all_contacts`, `subscribers`, `unsubscribers`.
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  Comma-separated list of dimensions to break `data` down by. Defaults to
-  `[]`, returning only `totals` with no `data`.
+  List of dimensions to break `data` down by. Defaults to `[]`, returning
+  only `totals` with no `data`.
 
   Possible values:
 
@@ -11644,9 +14998,8 @@ via `segment_id`.
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  Comma-separated list of segment IDs. Narrows `totals` (and `data`, when
-  requested) to just these segments, without double-counting contacts that
-  belong to more than one.
+  List of segment IDs. Narrows `totals` (and `data`, when requested) to just
+  these segments, without double-counting contacts that belong to more than one.
 </ResendParamField>
 
 <Info>
@@ -13440,16 +16793,16 @@ Duplicate a template.
 </ResponseExample>
 
 
-# Get Template
+# Retrieve Template
 Source: https://resend.com/docs/api-reference/templates/get-template
 
 GET /templates/:template_id
-Get a template by ID.
+Retrieve a template by ID.
 
 ## Path Parameters
 
 <ParamField type="string">
-  The ID or alias of the template to get.
+  The ID or alias of the template to retrieve.
 </ParamField>
 
 <RequestExample>
@@ -15904,19 +19257,19 @@ If you do call the API directly, remember to set the required
 ## Next steps
 
 <CardGroup>
-  <Card title="Official SDKs" icon="cube" href="/sdks">
+  <Card title="Official SDKs" icon="cube" href="/docs/sdks">
     Install the SDK for your language.
   </Card>
 
-  <Card title="Quickstart" icon="rocket" href="/introduction">
+  <Card title="Quickstart" icon="rocket" href="/docs/introduction">
     Send your first email in minutes.
   </Card>
 
-  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+  <Card title="API Reference" icon="code" href="/docs/api-reference/introduction">
     Full HTTP API documentation.
   </Card>
 
-  <Card title="MCP Server" icon="robot" href="/mcp-server">
+  <Card title="MCP Server" icon="robot" href="/docs/mcp-server">
     Give your AI agent access to Resend.
   </Card>
 </CardGroup>
@@ -15951,13 +19304,13 @@ In the Appwrite Console, navigate to **Messaging** > **Providers** > **Add provi
 
 In the **Configure** step, you will need to provide details from your Resend dashboard to connect your Appwrite project:
 
-| Field          | Description                                                                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Field          | Description                                                                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | API key        | Head to API Keys > Create API Key. You can also follow [Resend's instructions](/docs/dashboard/api-keys/introduction) to create an API key.                        |
 | Sender email   | The provider sends emails from this sender email. The sender email needs to be an email under a [verified domain](/docs/dashboard/domains/introduction) in Resend. |
-| Sender name    | The sender name that appears in the emails sent from this provider.                                                                                           |
-| Reply-to email | The reply-to email that appears in the emails sent from this provider.                                                                                        |
-| Reply-to name  | The reply-to name that appears in the emails sent from this provider.                                                                                         |
+| Sender name    | The sender name that appears in the emails sent from this provider.                                                                                                |
+| Reply-to email | The reply-to email that appears in the emails sent from this provider.                                                                                             |
+| Reply-to name  | The reply-to name that appears in the emails sent from this provider.                                                                                              |
 
 After adding these details, click **Save and continue** to enable the provider.
 
@@ -16377,15 +19730,15 @@ The adapter resolves threads using standard `Message-ID`, `In-Reply-To`, and `Re
 ## Features
 
 <CardGroup>
-  <Card title="Card Emails" icon="palette" href="/chat-sdk-card-emails">
+  <Card title="Card Emails" icon="palette" href="/docs/chat-sdk-card-emails">
     Send rich HTML emails with structured card elements.
   </Card>
 
-  <Card title="Attachments" icon="paperclip" href="/chat-sdk-attachments">
+  <Card title="Attachments" icon="paperclip" href="/docs/chat-sdk-attachments">
     Handle inbound email attachments.
   </Card>
 
-  <Card title="Proactive Outreach" icon="paper-plane" href="/chat-sdk-proactive-outreach">
+  <Card title="Proactive Outreach" icon="paper-plane" href="/docs/chat-sdk-proactive-outreach">
     Start new email threads without waiting for inbound.
   </Card>
 </CardGroup>
@@ -17301,7 +20654,7 @@ steps:
 | Credentials       | System secure storage | macOS Keychain, Windows Credential Manager, or Linux secret service |
 | Install directory | `~/.resend/bin/`      | Respects `$RESEND_INSTALL`                                          |
 
-<Card title="Using the CLI with AI Agents" icon="microchip-ai" href="/cli-agents">
+<Card title="Using the CLI with AI Agents" icon="microchip-ai" href="/docs/cli-agents">
   Learn about Agent Skills, non-interactive mode, and local webhook development
   for AI agents.
 </Card>
@@ -17494,7 +20847,7 @@ Before you start, you'll need:
 
 ## Next steps
 
-<Card title="CLI Reference" icon="terminal" href="/cli">
+<Card title="CLI Reference" icon="terminal" href="/docs/cli">
   Explore the full command reference, authentication options, and CI/CD
   examples.
 </Card>
@@ -17594,11 +20947,11 @@ You can check the [quickstart guides](/docs/introduction) or [AI builder guides]
 ## Learn more
 
 <CardGroup>
-  <Card title="Manage API keys" icon="tools" href="/dashboard/api-keys/introduction">
+  <Card title="Manage API keys" icon="tools" href="/docs/dashboard/api-keys/introduction">
     View, create, edit, delete, and manage your API keys.
   </Card>
 
-  <Card title="API key best practices" icon="thumbs-up" href="/knowledge-base/how-to-handle-api-keys">
+  <Card title="API key best practices" icon="thumbs-up" href="/docs/knowledge-base/how-to-handle-api-keys">
     Learn about best practices for managing your API keys.
   </Card>
 </CardGroup>
@@ -17606,11 +20959,11 @@ You can check the [quickstart guides](/docs/introduction) or [AI builder guides]
 ## Next steps
 
 <CardGroup>
-  <Card title="Add a domain" icon="globe" href="/add-a-domain">
+  <Card title="Add a domain" icon="globe" href="/docs/add-a-domain">
     Add and verify a domain you own to start sending emails.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>
@@ -19911,6 +23264,363 @@ Use `and` or `or` to combine multiple rules into a single branch:
 ```
 
 
+# Connections
+Source: https://resend.com/docs/dashboard/automations/connections
+
+Connections between steps in Automation workflows.
+
+## How it works
+
+Connections are the code definitions for the links between steps in the Automation graph and are defined and retrieved using the API.
+
+If creating an Automation via the API, define connections as an array of objects.
+
+<CodeGroup>
+  ```ts Node.js {10, 15, 22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.automations.create({
+    name: 'Welcome series',
+    status: 'disabled',
+    steps: [
+      {
+        key: 'start',
+        type: 'trigger',
+        config: { eventName: 'user.created' },
+      },
+      {
+        key: 'welcome',
+        type: 'send_email',
+        config: {
+          template: { id: '34a080c9-b17d-4187-ad80-5af20266e535' },
+        },
+      },
+    ],
+    connections: [{ from: 'start', to: 'welcome' }],
+  });
+  ```
+
+  ```php PHP {8,13,20} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->automations->create([
+    'name' => 'Welcome series',
+    'status' => 'disabled',
+    'steps' => [
+      [
+        'key' => 'start',
+        'type' => 'trigger',
+        'config' => ['event_name' => 'user.created'],
+      ],
+      [
+        'key' => 'welcome',
+        'type' => 'send_email',
+        'config' => [
+          'template' => ['id' => '34a080c9-b17d-4187-ad80-5af20266e535'],
+        ],
+      ],
+    ],
+    'connections' => [['from' => 'start', 'to' => 'welcome']],
+  ]);
+  ```
+
+  ```python Python {10, 15, 22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Automations.CreateParams = {
+    "name": "Welcome series",
+    "status": "disabled",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": {"event_name": "user.created"},
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": {"id": "34a080c9-b17d-4187-ad80-5af20266e535"},
+        },
+      },
+    ],
+    "connections": [{"from": "start", "to": "welcome"}],
+  }
+
+  resend.Automations.create(params)
+  ```
+
+  ```ruby Ruby {10, 15, 22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    name: "Welcome series",
+    status: "disabled",
+    steps: [
+      {
+        key: "start",
+        type: "trigger",
+        config: { event_name: "user.created" },
+      },
+      {
+        key: "welcome",
+        type: "send_email",
+        config: {
+          template: { id: "34a080c9-b17d-4187-ad80-5af20266e535" },
+        },
+      },
+    ],
+    connections: [{ from: "start", to: "welcome" }],
+  }
+
+  Resend::Automations.create(params)
+  ```
+
+  ```go Go {13, 20, 30} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateAutomationRequest{
+  		Name:   "Welcome series",
+  		Status: resend.AutomationStatusDisabled,
+  		Steps: []resend.AutomationStep{
+  			{
+  				Key:  "start",
+  				Type: resend.AutomationStepTypeTrigger,
+  				Config: map[string]any{
+  					"event_name": "user.created",
+  				},
+  			},
+  			{
+  				Key:  "welcome",
+  				Type: resend.AutomationStepTypeSendEmail,
+  				Config: map[string]any{
+  					"template": map[string]any{
+  						"id": "34a080c9-b17d-4187-ad80-5af20266e535",
+  					},
+  				},
+  			},
+  		},
+  		Connections: []resend.AutomationConnection{
+  			{From: "start", To: "welcome"},
+  		},
+  	}
+
+  	client.Automations.Create(params)
+  }
+  ```
+
+  ```rust Rust {18, 24, 30} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{
+    types::{
+      AutomationStatus, AutomationTemplate, Connection, CreateAutomationOptions, SendEmailStepConfig,
+      Step, TriggerStepConfig,
+    },
+    Resend, Result,
+  };
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = CreateAutomationOptions {
+      name: "Welcome series".to_owned(),
+      status: AutomationStatus::Disabled,
+      steps: vec![
+        Step::Trigger {
+          key: "start".to_owned(),
+          config: TriggerStepConfig {
+            event_name: "user.created".to_owned(),
+          },
+        },
+        Step::SendEmail {
+          key: "welcome".to_owned(),
+          config: SendEmailStepConfig::new(AutomationTemplate::new(
+            "34a080c9-b17d-4187-ad80-5af20266e535",
+          )),
+        },
+      ],
+      connections: vec![Connection::new("start", "welcome")],
+    };
+    let _automation = resend.automations.create(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java {11,16,20-23} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateAutomationOptions options = CreateAutomationOptions.builder()
+                  .name("Welcome series")
+                  .status(AutomationStatus.DISABLED)
+                  .steps(
+                      AutomationStep.trigger("start")
+                          .eventName("user.created")
+                          .build(),
+                      AutomationStep.sendEmail("welcome")
+                          .template("34a080c9-b17d-4187-ad80-5af20266e535")
+                          .build()
+                  )
+                  .connections(
+                      AutomationConnection.builder()
+                          .from("start")
+                          .to("welcome")
+                          .build()
+                  )
+                  .build();
+
+          CreateAutomationResponseSuccess data = resend.automations().create(options);
+      }
+  }
+  ```
+
+  ```csharp .NET {15,16,20} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+  using System.Text.Json;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var startConfig = JsonSerializer.SerializeToElement( new { event_name = "user.created" } );
+  var welcomeConfig = JsonSerializer.SerializeToElement( new { template = new { id = "34a080c9-b17d-4187-ad80-5af20266e535" } } );
+
+  var resp = await resend.AutomationCreateAsync( new AutomationCreateData()
+  {
+      Name = "Welcome series",
+      Status = "disabled",
+      Steps = new List<AutomationStepData>
+      {
+          new AutomationStepData { Ref = "start", Type = "trigger", Config = startConfig },
+          new AutomationStepData { Ref = "welcome", Type = "send_email", Config = welcomeConfig },
+      },
+      Connections = new List<AutomationEdge>
+      {
+          new AutomationEdge { From = "start", To = "welcome" },
+      },
+  } );
+  ```
+
+  ```bash cURL {8,13,20-22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/automations' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d '{
+    "name": "Welcome series",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": { "event_name": "user.created" }
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": { "id": "34a080c9-b17d-4187-ad80-5af20266e535" }
+        }
+      }
+    ],
+    "connections": [
+      { "from": "start", "to": "welcome" }
+    ]
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend automations create --name "Welcome series" --file ./automation.json
+  ```
+</CodeGroup>
+
+When retrieving Automations, the API returns the connections as an array.
+
+<CodeGroup>
+  ```json Response {10,15,22-28} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "automation",
+    "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+    "name": "Welcome series",
+    "status": "disabled",
+    "created_at": "2026-10-01 12:00:00.000000+00",
+    "updated_at": "2026-10-01 12:00:00.000000+00",
+    "steps": [
+      {
+        "key": "start",
+        "type": "trigger",
+        "config": { "event_name": "user.created" }
+      },
+      {
+        "key": "welcome",
+        "type": "send_email",
+        "config": {
+          "template": { "id": "34a080c9-b17d-4187-ad80-5af20266e535" }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": "start",
+        "to": "welcome",
+        "type": "default"
+      }
+    ]
+  }
+  ```
+</CodeGroup>
+
+## Connection properties
+
+Connections define the links between steps in the automation graph.
+
+<ParamField type="string">
+  This is the `key` of the origin step.
+</ParamField>
+
+<ParamField type="string">
+  This is the `key` of the destination step.
+</ParamField>
+
+<ParamField type="string">
+  The type of connection between the origin and destination steps. Most
+  automations use the default connection type.
+
+  Use a non-default `type` only when the origin step can branch to multiple
+  destinations:
+
+  * For `wait_for_event`, use `event_received` or `timeout`.
+  * For `condition`, use `condition_met` or `condition_not_met`.
+
+  Possible values:
+
+  * `default`
+  * `condition_met`
+  * `condition_not_met`
+  * `timeout`
+  * `event_received`
+</ParamField>
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "from": "start",
+  "to": "welcome",
+  "type": "default"
+}
+```
+
+
 # Contact Delete
 Source: https://resend.com/docs/dashboard/automations/contact-delete
 
@@ -21179,8 +24889,8 @@ To start executing an Automation, you need to:
 
         There are several step types you can add to your Automation:
 
-        | Step type                                               | Description                                         |
-        | ------------------------------------------------------- | --------------------------------------------------- |
+        | Step type                                                    | Description                                         |
+        | ------------------------------------------------------------ | --------------------------------------------------- |
         | [Condition](/docs/dashboard/automations/condition)           | Branches the workflow based on rules                |
         | [Delay](/docs/dashboard/automations/delay)                   | Pauses execution for a specified duration           |
         | [Wait for Event](/docs/dashboard/automations/wait-for-event) | Pauses execution until a specific event is received |
@@ -23162,12 +26872,12 @@ This automation step triggers a [Template](/docs/dashboard/templates/introductio
 
 Use the `variables` field to pass data into your template. Each variable value can be a dynamic reference or a static string.
 
-| Type              | Format                                          | Description                                                                                               |
-| ----------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Event data        | `{ "var": "event.<field>" }`                    | Resolves a field from the triggering event's payload.                                                     |
-| Contact data      | `{ "var": "contact.<field>" }`                  | Resolves a field from the contact record.                                                                 |
+| Type              | Format                                          | Description                                                                                                    |
+| ----------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Event data        | `{ "var": "event.<field>" }`                    | Resolves a field from the triggering event's payload.                                                          |
+| Contact data      | `{ "var": "contact.<field>" }`                  | Resolves a field from the contact record.                                                                      |
 | Waited event data | `{ "var": "wait_events.<event_name>.<field>" }` | Resolves a field from a preceding [wait for event](/docs/dashboard/automations/wait-for-event) step's payload. |
-| Static value      | `"<string>"`                                    | Passed as-is to the template.                                                                             |
+| Static value      | `"<string>"`                                    | Passed as-is to the template.                                                                                  |
 
 ```json {7-14} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
@@ -23257,6 +26967,331 @@ See [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsub
     "from": "hello@example.com",
     "subject": "Welcome!",
     "reply_to": "support@example.com"
+  }
+}
+```
+
+
+# Steps
+Source: https://resend.com/docs/dashboard/automations/steps
+
+Steps and their properties in Automation workflows.
+
+## How it works
+
+Steps are the building blocks of Automation workflows. They define the actions that will be executed when the Automation runs.
+
+The following steps are available:
+
+* [Trigger](/docs/dashboard/automations/trigger)
+* [Condition](/docs/dashboard/automations/condition)
+* [Delay](/docs/dashboard/automations/delay)
+* [Wait for Event](/docs/dashboard/automations/wait-for-event)
+* [Send Email](/docs/dashboard/automations/send-email)
+* [Add to Segment](/docs/dashboard/automations/add-to-segment)
+* [Contact Update](/docs/dashboard/automations/contact-update)
+* [Contact Delete](/docs/dashboard/automations/contact-delete)
+
+## Step properties
+
+Every step in an automation has the following base properties:
+
+<ParamField type="string">
+  A unique identifier for the step. Used in connection definitions to connect
+  steps.
+</ParamField>
+
+<ParamField type="string">
+  The type of step. Possible values:
+
+  * `trigger`
+  * `send_email`
+  * `delay`
+  * `wait_for_event`
+  * `condition`
+  * `contact_update`
+  * `contact_delete`
+  * `add_to_segment`
+</ParamField>
+
+<ParamField type="object">
+  The configuration object for the step. The shape depends on the step `type`.
+</ParamField>
+
+Below is a list of all the possible step types and their configurations.
+
+### `trigger`
+
+The trigger step starts the automation when a matching event is received.
+
+<ParamField type="string">
+  The name of the event that triggers the automation.
+</ParamField>
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "start",
+  "type": "trigger",
+  "config": {
+    "event_name": "user.created"
+  }
+}
+```
+
+### `send_email`
+
+Sends an email using a template.
+
+<ParamField type="object">
+  The published template to send. Provide `id` and optionally `variables`.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID or alias of the template to send.
+    </ParamField>
+
+    <ParamField type="object">
+      A key-value map of template variables. Each value can be a static string or a variable reference object (`{ "var": "event.fieldName" }`) that resolves dynamically from the `event.*`, `contact.*`, or `wait_events.*` namespaces.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField type="string">
+  The sender email address.
+
+  If provided, this value will override the template's default value.
+</ParamField>
+
+<ParamField type="string">
+  The email subject line.
+
+  If provided, this value will override the template's default value.
+</ParamField>
+
+<ParamField type="string">
+  Reply-to email address.
+
+  If provided, this value will override the template's default value.
+</ParamField>
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "welcome",
+  "type": "send_email",
+  "config": {
+    "template": {
+      "id": "062f8ef4-fbfa-44f1-b5e0-ff8e1e8ffa96",
+      "variables": {
+        "name": { "var": "event.firstName" }
+      }
+    },
+    "from": "hello@example.com",
+    "subject": "Welcome!",
+    "reply_to": "support@example.com"
+  }
+}
+```
+
+### `delay`
+
+Pauses execution for a specified duration.
+
+<ParamField type="string">
+  The delay duration in natural language (e.g. `"1 hour"`, `"3 days"`). Maximum:
+  30 days.
+</ParamField>
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "wait_1_hour",
+  "type": "delay",
+  "config": {
+    "duration": "1 hour"
+  }
+}
+```
+
+### `wait_for_event`
+
+Pauses execution until a specific event is received or a timeout is reached.
+
+<ParamField type="string">
+  The name of the event to wait for.
+</ParamField>
+
+<ParamField type="string">
+  The maximum time to wait before timing out (e.g. `"3 days"`, `"1 hour"`).
+  Maximum: 30 days.
+</ParamField>
+
+<ParamField type="object">
+  An optional rule object to filter incoming events.
+</ParamField>
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "wait_for_purchase",
+  "type": "wait_for_event",
+  "config": {
+    "event_name": "purchase.completed",
+    "timeout": "3 days"
+  }
+}
+```
+
+### `condition`
+
+Branches the workflow based on rules. Condition configs can be a single rule or a logical group (`and`/`or`) of rules.
+
+<ParamField type="string">
+  The type of condition node. Possible values:
+
+  * `rule`
+  * `and`
+  * `or`
+</ParamField>
+
+For `rule` type:
+
+<ParamField type="string">
+  The field to evaluate. Must use the `event.` or `contact.` namespace prefix
+  (e.g., `event.amount`, `contact.email`).
+</ParamField>
+
+<ParamField type="string">
+  The comparison operator. Possible values:
+
+  * `eq`: equals
+  * `neq`: not equals
+  * `gt`: greater than
+  * `gte`: greater than or equal to
+  * `lt`: less than
+  * `lte`: less than or equal to
+  * `contains`: contains a given value
+  * `starts_with`: starts with a given value
+  * `ends_with`: ends with a given value
+  * `exists`: field exists
+  * `is_empty`: field is empty
+</ParamField>
+
+<ParamField type="string | number | boolean | null">
+  The value to compare against. Not required for `exists` and `is_empty`
+  operators.
+</ParamField>
+
+For `and` / `or` types:
+
+<ParamField type="object[]">
+  An array of nested condition config objects. Must contain at least one item.
+</ParamField>
+
+Single rule example:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "check_plan",
+  "type": "condition",
+  "config": {
+    "type": "rule",
+    "field": "event.plan",
+    "operator": "eq",
+    "value": "pro"
+  }
+}
+```
+
+Use `and` or `or` to combine multiple rules into a single branch:
+
+```json {5-19} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "check_plan_and_amount",
+  "type": "condition",
+  "config": {
+    "type": "and",
+    "rules": [
+      {
+        "type": "rule",
+        "field": "event.plan",
+        "operator": "eq",
+        "value": "pro"
+      },
+      {
+        "type": "rule",
+        "field": "event.amount",
+        "operator": "gte",
+        "value": 100
+      }
+    ]
+  }
+}
+```
+
+### `contact_update`
+
+Updates a contact's fields. Each field value can be either a hardcoded value or a dynamic variable reference using the `{ var: '...' }` syntax.
+
+Variable references use dot-notation with one of these scopes:
+
+* `event.*`: references a field from the triggering event payload (e.g., `event.firstName`).
+* `contact.*`: references a field from the current contact (e.g., `contact.last_name`, `contact.properties.company`).
+
+<ParamField type="string | object">
+  The contact's first name. Accepts a hardcoded string or a variable reference.
+</ParamField>
+
+<ParamField type="string | object">
+  The contact's last name. Accepts a hardcoded string or a variable reference.
+</ParamField>
+
+<ParamField type="boolean | object">
+  The contact's unsubscribed status. Accepts a boolean or a variable reference.
+</ParamField>
+
+<ParamField type="object">
+  A map of custom contact properties to update. Keys correspond to your [Contact
+  Custom Properties](/docs/dashboard/audiences/properties). Each value can be a
+  hardcoded value (string, number, boolean) or a variable reference.
+</ParamField>
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "update_contact",
+  "type": "contact_update",
+  "config": {
+    "properties": {
+      "company": { "var": "event.company" },
+      "vip": true
+    }
+  }
+}
+```
+
+### `contact_delete`
+
+Deletes the contact from the audience. This step does not require any configuration fields. Pass an empty object `{}` as the config.
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "remove_contact",
+  "type": "contact_delete",
+  "config": {}
+}
+```
+
+### `add_to_segment`
+
+Adds the contact to a segment.
+
+<ParamField type="string">
+  The ID of the segment to add the contact to.
+</ParamField>
+
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "add_to_vip",
+  "type": "add_to_segment",
+  "config": {
+    "segment_id": "83a1e324-26dc-47eb-9b28-ba8b6d1fe808"
   }
 }
 ```
@@ -24654,21 +28689,21 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 See how to use Resend's Broadcast features.
 
 <CardGroup>
-  <Card title="No-code editor" icon="pen-line" href="/dashboard/broadcasts/editor" />
+  <Card title="No-code editor" icon="pen-line" href="/docs/dashboard/broadcasts/editor" />
 
-  <Card title="Send with API" icon="paper-plane-top" href="/dashboard/broadcasts/send-broadcast-with-api" />
+  <Card title="Send with API" icon="paper-plane-top" href="/docs/dashboard/broadcasts/send-broadcast-with-api" />
 
-  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/dashboard/broadcasts/manage-broadcasts" />
+  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/docs/dashboard/broadcasts/manage-broadcasts" />
 
-  <Card title="Contacts" icon="id-card" href="/dashboard/audiences/contacts" />
+  <Card title="Contacts" icon="id-card" href="/docs/dashboard/audiences/contacts" />
 
-  <Card title="Segments" icon="chart-pie" href="/dashboard/segments/introduction" />
+  <Card title="Segments" icon="chart-pie" href="/docs/dashboard/segments/introduction" />
 
-  <Card title="Topics" icon="hashtag" href="/dashboard/topics/introduction" />
+  <Card title="Topics" icon="hashtag" href="/docs/dashboard/topics/introduction" />
 
-  <Card title="Track performance" icon="chart-column" href="/dashboard/broadcasts/performance-tracking" />
+  <Card title="Track performance" icon="chart-column" href="/docs/dashboard/broadcasts/performance-tracking" />
 
-  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/dashboard/audiences/managing-unsubscribe-list" />
+  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/docs/dashboard/audiences/managing-unsubscribe-list" />
 </CardGroup>
 
 
@@ -25449,8 +29484,8 @@ Resend verifies the domain ownership, releases the domain from the previous team
   </Step>
 
   <Step title="Track the status">
-    Poll [Get Domain Claim](/docs/api-reference/domains/get-domain-claim) until the
-    claim reaches `completed`.
+    Poll [Retrieve Domain Claim](/docs/api-reference/domains/get-domain-claim) until
+    the claim reaches `completed`.
   </Step>
 </Steps>
 
@@ -25793,21 +29828,21 @@ Learn more about [managing your domains](/docs/dashboard/domains/manage-domains)
 See how to use Resend's verified domain features.
 
 <CardGroup>
-  <Card title="Manage domains" icon="gear" href="/dashboard/domains/manage-domains" />
+  <Card title="Manage domains" icon="gear" href="/docs/dashboard/domains/manage-domains" />
 
-  <Card title="Implement DMARC" icon="key" href="/dashboard/domains/dmarc" />
+  <Card title="Implement DMARC" icon="key" href="/docs/dashboard/domains/dmarc" />
 
-  <Card title="Enable Tracking" icon="chart-line-up-down" href="/dashboard/domains/tracking" />
+  <Card title="Enable Tracking" icon="chart-line-up-down" href="/docs/dashboard/domains/tracking" />
 
-  <Card title="Enforced TLS" icon="binary-lock" href="/dashboard/domains/tls" />
+  <Card title="Enforced TLS" icon="binary-lock" href="/docs/dashboard/domains/tls" />
 
-  <Card title="Custom return path" icon="code-simple" href="/dashboard/domains/custom-return-path" />
+  <Card title="Custom return path" icon="code-simple" href="/docs/dashboard/domains/custom-return-path" />
 
-  <Card title="Choose region" icon="globe" href="/dashboard/domains/regions" />
+  <Card title="Choose region" icon="globe" href="/docs/dashboard/domains/regions" />
 
-  <Card title="Claim a domain" icon="bell-concierge" href="/dashboard/domains/claim" />
+  <Card title="Claim a domain" icon="bell-concierge" href="/docs/dashboard/domains/claim" />
 
-  <Card title="DNS provider guides" icon="book-atlas" href="/knowledge-base/cloudflare" />
+  <Card title="DNS provider guides" icon="book-atlas" href="/docs/knowledge-base/cloudflare" />
 </CardGroup>
 
 
@@ -29088,25 +33123,25 @@ Learn more about [managing your sent emails](/docs/dashboard/emails/manage-email
 See how to use Resend's sending features.
 
 <CardGroup>
-  <Card title="View and manage sent emails" icon="envelope" href="/dashboard/emails/manage-emails" />
+  <Card title="View and manage sent emails" icon="envelope" href="/docs/dashboard/emails/manage-emails" />
 
-  <Card title="Send test emails" icon="flask-gear" href="/dashboard/emails/send-test-emails" />
+  <Card title="Send test emails" icon="flask-gear" href="/docs/dashboard/emails/send-test-emails" />
 
-  <Card title="Include attachments" icon="file-plus" href="/dashboard/emails/attachments" />
+  <Card title="Include attachments" icon="file-plus" href="/docs/dashboard/emails/attachments" />
 
-  <Card title="Embed inline images" icon="image" href="/dashboard/emails/embed-inline-images" />
+  <Card title="Embed inline images" icon="image" href="/docs/dashboard/emails/embed-inline-images" />
 
-  <Card title="Schedule emails" icon="clock" href="/dashboard/emails/schedule-email" />
+  <Card title="Schedule emails" icon="clock" href="/docs/dashboard/emails/schedule-email" />
 
-  <Card title="Batch sending" icon="envelopes" href="/dashboard/emails/batch-sending" />
+  <Card title="Batch sending" icon="envelopes" href="/docs/dashboard/emails/batch-sending" />
 
-  <Card title="Customize headers" icon="rectangle-history-circle-user" href="/dashboard/emails/custom-headers" />
+  <Card title="Customize headers" icon="rectangle-history-circle-user" href="/docs/dashboard/emails/custom-headers" />
 
-  <Card title="Prevent duplicate emails" icon="key" href="/dashboard/emails/idempotency-keys" />
+  <Card title="Prevent duplicate emails" icon="key" href="/docs/dashboard/emails/idempotency-keys" />
 
-  <Card title="Add an unsubscribe link" icon="person-from-portal" href="/dashboard/emails/add-unsubscribe-to-transactional-emails" />
+  <Card title="Add an unsubscribe link" icon="person-from-portal" href="/docs/dashboard/emails/add-unsubscribe-to-transactional-emails" />
 
-  <Card title="Add identifier tags" icon="tags" href="/dashboard/emails/tags" />
+  <Card title="Add identifier tags" icon="tags" href="/docs/dashboard/emails/tags" />
 </CardGroup>
 
 
@@ -29161,6 +33196,8 @@ Copy the URL and share it with your team members.
 Anyone with the link can view the email without authenticating for 48 hours.
 
 <img alt="Email - Share Link Item" />
+
+You can also create share links programmatically using the [Share Email API](/docs/api-reference/emails/share-email).
 
 ## See associated logs
 
@@ -34643,7 +38680,7 @@ You can get started quickly with the [Resend Webhook Ingester](/docs/webhooks/in
 * **Idempotent storage** that handles duplicate deliveries
 * **8 database connectors** including PostgreSQL, MySQL, MongoDB, and data warehouses
 
-<Card title="Webhook Ingester" icon="database" href="/webhooks/ingester">
+<Card title="Webhook Ingester" icon="database" href="/docs/webhooks/ingester">
   Deploy a production-ready webhook storage solution in minutes
 </Card>
 
@@ -34754,19 +38791,19 @@ High-volume senders can generate significant data. Plan for:
 ## Learn More
 
 <CardGroup>
-  <Card title="Webhook Ingester" icon="database" href="/webhooks/ingester">
+  <Card title="Webhook Ingester" icon="database" href="/docs/webhooks/ingester">
     Deploy a production-ready webhook storage solution
   </Card>
 
-  <Card title="Webhook Event Types" icon="list" href="/webhooks/event-types">
+  <Card title="Webhook Event Types" icon="list" href="/docs/webhooks/event-types">
     See all available event types and their payloads
   </Card>
 
-  <Card title="Verify Webhooks" icon="shield-check" href="/webhooks/verify-webhooks-requests">
+  <Card title="Verify Webhooks" icon="shield-check" href="/docs/webhooks/verify-webhooks-requests">
     Learn about webhook signature verification
   </Card>
 
-  <Card title="Webhook Introduction" icon="webhook" href="/webhooks/introduction">
+  <Card title="Webhook Introduction" icon="webhook" href="/docs/webhooks/introduction">
     Get started with webhooks in your application
   </Card>
 </CardGroup>
@@ -34982,12 +39019,12 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
 ## Learn more
 
 <CardGroup>
-  <Card title="Send Email API" icon="tools" href="/api-reference/emails/send-email">
+  <Card title="Send Email API" icon="tools" href="/docs/api-reference/emails/send-email">
     Send, list, retrieve, update, and cancel transactional emails with the Send
     Email API.
   </Card>
 
-  <Card title="Broadcasts" icon="megaphone" href="/dashboard/broadcasts/introduction">
+  <Card title="Broadcasts" icon="megaphone" href="/docs/dashboard/broadcasts/introduction">
     Create and send marketing emails with Resend's no-code editor or the
     Broadcasts API.
   </Card>
@@ -34996,12 +39033,12 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
 ## Next steps
 
 <CardGroup>
-  <Card title="Import or add email contacts" icon="globe" href="/dashboard/audiences/contacts">
+  <Card title="Import or add email contacts" icon="globe" href="/docs/dashboard/audiences/contacts">
     Add existing subscribers to your Resend contact list programmatically,
     manually, or by uploading a `.csv` file.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>
@@ -37185,9 +41222,9 @@ Then, you'll be ready to send [both types of emails](/docs/explore-sending-featu
 Learn how to get Resend set up in your project.
 
 <CardGroup>
-  <Card title="Node.js Quickstart" icon={<NodejsIcon />} href="/send-with-nodejs" />
+  <Card title="Node.js Quickstart" icon={<NodejsIcon />} href="/docs/send-with-nodejs" />
 
-  <Card title="Next.js Quickstart" icon={<NextjsIcon />} href="/send-with-nextjs" />
+  <Card title="Next.js Quickstart" icon={<NextjsIcon />} href="/docs/send-with-nextjs" />
 
   <Card title="Express Quickstart" icon={<ExpressIcon />} href="send-with-express/" />
 
@@ -37195,23 +41232,23 @@ Learn how to get Resend set up in your project.
 
   <Card title="Laravel Quickstart" icon={<LaravelIcon />} href="send-with-laravel/" />
 
-  <Card title="Python Quickstart" icon={<PythonIcon />} href="/send-with-python" />
+  <Card title="Python Quickstart" icon={<PythonIcon />} href="/docs/send-with-python" />
 
-  <Card title="Ruby Quickstart" icon={<RubyIcon />} href="/send-with-ruby" />
+  <Card title="Ruby Quickstart" icon={<RubyIcon />} href="/docs/send-with-ruby" />
 
-  <Card title="Rails Quickstart" icon={<RailsIcon />} href="/send-with-rails" />
+  <Card title="Rails Quickstart" icon={<RailsIcon />} href="/docs/send-with-rails" />
 
-  <Card title="Go Quickstart" icon={<GoIcon />} href="/send-with-go" />
+  <Card title="Go Quickstart" icon={<GoIcon />} href="/docs/send-with-go" />
 
-  <Card title="Rust Quickstart" icon={<RustIcon />} href="/send-with-rust" />
+  <Card title="Rust Quickstart" icon={<RustIcon />} href="/docs/send-with-rust" />
 
-  <Card title="Elixir Quickstart" icon={<ElixirIcon />} href="/send-with-elixir" />
+  <Card title="Elixir Quickstart" icon={<ElixirIcon />} href="/docs/send-with-elixir" />
 
-  <Card title="Java Quickstart" icon={<JavaIcon />} href="/send-with-java" />
+  <Card title="Java Quickstart" icon={<JavaIcon />} href="/docs/send-with-java" />
 
-  <Card title=".NET Quickstart" icon={<DotnetIcon />} href="/send-with-dotnet" />
+  <Card title=".NET Quickstart" icon={<DotnetIcon />} href="/docs/send-with-dotnet" />
 
-  <Card title="CLI Quickstart" icon={<TerminalIcon />} href="/cli-quickstart" />
+  <Card title="CLI Quickstart" icon={<TerminalIcon />} href="/docs/cli-quickstart" />
 </CardGroup>
 
 ## Explore
@@ -37227,7 +41264,7 @@ Discover the full range of features and capabilities.
     Ensure deliverability of your emails.
   </Card>
 
-  <Card title="Webhooks" href="/webhooks/introduction">
+  <Card title="Webhooks" href="/docs/webhooks/introduction">
     Notify your application about email events.
   </Card>
 </CardGroup>
@@ -38321,7 +42358,7 @@ This guide walks through embedding the editor in a React app, styling it to matc
     Wrap existing TipTap extensions or build new email-safe nodes and marks.
   </Card>
 
-  <Card title="Template emails with React Email" icon="pen-to-square" href="/knowledge-base/template-emails-with-react-email">
+  <Card title="Template emails with React Email" icon="pen-to-square" href="/docs/knowledge-base/template-emails-with-react-email">
     Author templates as `.tsx` files and upload them to Resend with the CLI.
   </Card>
 </CardGroup>
@@ -40198,10 +44235,10 @@ Learn how to improve inbox placement in Gmail.
 
 All communication is built on trust, and email is no different. When you send an email, you want to be sure that the recipient (and Gmail) knows who you are and that you are a legitimate sender. Email authentication is a way to prove that an email is from you. It also helps to prevent your email from being spoofed or forged.
 
-| Authentication                    | Requires Setup | Purpose                                                      |
-| --------------------------------- | -------------- | ------------------------------------------------------------ |
-| **SPF**                           | No             | Proves you are allowed to send from this domain              |
-| **DKIM**                          | No             | Proves your email originated from you                        |
+| Authentication                         | Requires Setup | Purpose                                                      |
+| -------------------------------------- | -------------- | ------------------------------------------------------------ |
+| **SPF**                                | No             | Proves you are allowed to send from this domain              |
+| **DKIM**                               | No             | Proves your email originated from you                        |
 | [DMARC](/docs/dashboard/domains/dmarc) | Yes            | Proves you own the domain and instructs how to handle spoofs |
 | [BIMI](/docs/dashboard/domains/bimi)   | Yes            | Proves you are the brand you say you are                     |
 
@@ -40321,10 +44358,10 @@ Apple does not offer allowlists or feedback loops for iCloud Mail. Your reputati
 
 Like every major mailbox provider, iCloud uses email authentication to confirm that you are who you say you are. Apple requires that bulk senders authenticate with SPF, DKIM, and DMARC.
 
-| Authentication                    | Requires Setup | Purpose                                                      |
-| --------------------------------- | -------------- | ------------------------------------------------------------ |
-| **SPF**                           | No             | Proves you are allowed to send from this domain              |
-| **DKIM**                          | No             | Proves your email originated from you                        |
+| Authentication                         | Requires Setup | Purpose                                                      |
+| -------------------------------------- | -------------- | ------------------------------------------------------------ |
+| **SPF**                                | No             | Proves you are allowed to send from this domain              |
+| **DKIM**                               | No             | Proves your email originated from you                        |
 | [DMARC](/docs/dashboard/domains/dmarc) | Yes            | Proves you own the domain and instructs how to handle spoofs |
 
 When you verify your domain with Resend, **SPF** and **DKIM** are configured and validated for you automatically, so your email meets Apple's authentication requirements out of the box. Resend also signs every message with DKIM and handles SPF alignment on your behalf, so you don't have to manage these records yourself. Apple additionally requires that your sending domain publish a [DMARC](/docs/dashboard/domains/dmarc) policy.
@@ -40468,10 +44505,10 @@ Yahoo splits its rules into requirements for **all senders** and additional requ
 
 Authentication is the foundation of every other requirement on this page. Yahoo requires all senders to authenticate with SPF or DKIM at a minimum, and bulk senders to implement both alongside a valid DMARC policy.
 
-| Authentication                    | Requires Setup | Yahoo's Requirement                                                             |
-| --------------------------------- | -------------- | ------------------------------------------------------------------------------- |
-| **SPF**                           | No             | Required for all senders (with DKIM, or on its own)                             |
-| **DKIM**                          | No             | Required for all senders (with SPF, or on its own). Minimum 1024-bit key length |
+| Authentication                         | Requires Setup | Yahoo's Requirement                                                             |
+| -------------------------------------- | -------------- | ------------------------------------------------------------------------------- |
+| **SPF**                                | No             | Required for all senders (with DKIM, or on its own)                             |
+| **DKIM**                               | No             | Required for all senders (with SPF, or on its own). Minimum 1024-bit key length |
 | [DMARC](/docs/dashboard/domains/dmarc) | Yes            | Required for bulk senders. At least `p=none`, and DMARC must pass               |
 
 A few Yahoo-specific details worth knowing:
@@ -41031,11 +45068,11 @@ A collection of answers to frequently asked questions.
 ## Domains & Verification
 
 <CardGroup>
-  <Card title="How do I avoid conflicts with my MX records?" href="/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records">
+  <Card title="How do I avoid conflicts with my MX records?" href="/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records">
     Add DNS records without conflicting with existing MX records.
   </Card>
 
-  <Card title="What if my domain is not verifying?" href="/knowledge-base/what-if-my-domain-is-not-verifying">
+  <Card title="What if my domain is not verifying?" href="/docs/knowledge-base/what-if-my-domain-is-not-verifying">
     What to do when your domain isn't verifying.
   </Card>
 </CardGroup>
@@ -41057,7 +45094,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727" />
 </svg>
 }
-    href="/knowledge-base/cloudflare"
+    href="/docs/knowledge-base/cloudflare"
   />
 
   <Card
@@ -41072,7 +45109,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M16.72 5.908a1.496 1.496 0 1 1 2.442 1.729c-.871 1.23-1.906 2.176-3.082 2.82-.661.436-1.414.844-2.209 1.274-.689.373-1.401.758-2.065 1.171-1.565.974-2.46 1.87-2.814 2.82-.473 1.266-.26 2.322.002 2.985a3.8 3.8 0 0 0 1.79 2.006c.808.413 1.931.39 2.93-.06.924-.415 1.542-1.11 1.612-1.813.07-.71-.24-1.114-.553-1.255-.368-.165-.788.006-1.152.467a1.495 1.495 0 1 1-2.349-1.854c1.227-1.554 3.082-2.08 4.726-1.342 1.588.713 2.493 2.392 2.305 4.28-.179 1.792-1.435 3.38-3.36 4.246-1.836.826-3.899.824-5.52-.005a6.8 6.8 0 0 1-3.212-3.572c-.642-1.625-.65-3.446-.022-5.13.605-1.62 1.869-2.803 3.037-3.647a8 8 0 0 1-.828-.33c-1.376-.638-2.573-1.668-3.56-3.061A1.496 1.496 0 0 1 7.28 5.908c.69.976 1.467 1.654 2.376 2.075.69.319 1.457.487 2.344.514.888-.027 1.656-.195 2.345-.514q.098-.045.194-.096.106-.053.208-.112c.738-.424 1.387-1.038 1.972-1.867M11.2 4.17c.191.192.447.297.717.297.271 0 .526-.105.718-.297s.297-.446.297-.717a1 1 0 0 0-.298-.718 1 1 0 0 0-.717-.297c-.27 0-.526.105-.717.297a1 1 0 0 0-.297.718c0 .27.105.525.297.717M9.476 1.011A3.43 3.43 0 0 1 11.917 0c.922 0 1.79.359 2.442 1.01a3.43 3.43 0 0 1 1.01 2.443c0 .922-.358 1.789-1.01 2.44a3.43 3.43 0 0 1-2.442 1.012 3.43 3.43 0 0 1-2.44-1.011 3.43 3.43 0 0 1-1.013-2.441c0-.923.36-1.79 1.012-2.442" />
 </svg>
 }
-    href="/knowledge-base/gandi"
+    href="/docs/knowledge-base/gandi"
   />
 
   <Card
@@ -41087,7 +45124,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M20.702 2.29c-2.494-1.554-5.778-1.187-8.706.654C9.076 1.104 5.79.736 3.3 2.29c-3.941 2.463-4.42 8.806-1.07 14.167 2.47 3.954 6.333 6.269 9.77 6.226 3.439.043 7.301-2.273 9.771-6.226 3.347-5.361 2.872-11.704-1.069-14.167zM4.042 15.328a12.838 12.838 0 01-1.546-3.541 10.12 10.12 0 01-.336-3.338c.15-1.98.956-3.524 2.27-4.345 1.315-.822 3.052-.87 4.903-.137.281.113.556.24.825.382A15.11 15.11 0 007.5 7.54c-2.035 3.255-2.655 6.878-1.945 9.765a13.247 13.247 0 01-1.514-1.98zm17.465-3.541a12.866 12.866 0 01-1.547 3.54 13.25 13.25 0 01-1.513 1.984c.635-2.589.203-5.76-1.353-8.734a.39.39 0 00-.563-.153l-4.852 3.032a.397.397 0 00-.126.546l.712 1.139a.395.395 0 00.547.126l3.145-1.965c.101.306.203.606.28.916.296 1.086.41 2.214.335 3.337-.15 1.982-.956 3.525-2.27 4.347a4.437 4.437 0 01-2.25.65h-.101a4.432 4.432 0 01-2.25-.65c-1.314-.822-2.121-2.365-2.27-4.347-.074-1.123.039-2.251.335-3.337a13.212 13.212 0 014.05-6.482 10.148 10.148 0 012.849-1.765c1.845-.733 3.586-.685 4.9.137 1.316.822 2.122 2.365 2.271 4.345a10.146 10.146 0 01-.33 3.334z" />
 </svg>
 }
-    href="/knowledge-base/godaddy"
+    href="/docs/knowledge-base/godaddy"
   />
 
   <Card
@@ -41107,7 +45144,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   </g>
 </svg>
 }
-    href="/knowledge-base/dreamhost"
+    href="/docs/knowledge-base/dreamhost"
   />
 
   <Card
@@ -41122,7 +45159,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M0 0v24h24V0H0zm4.602 4.025h2.244c.509 0 .716.215.716.717v5.64h8.883v-5.64c0-.509.215-.717.717-.717h2.229c.5 0 .71.23.724.717v14.516c0 .509-.215.717-.717.717h-2.23c-.51 0-.717-.215-.717-.717v-5.735H7.562v5.735c0 .516-.215.717-.716.717H4.602c-.51 0-.717-.208-.717-.717V4.742c0-.509.207-.717.717-.717z" />
 </svg>
 }
-    href="/knowledge-base/hetzner"
+    href="/docs/knowledge-base/hetzner"
   />
 
   <Card
@@ -41137,7 +45174,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M16.415 0v7.16l5.785 3.384V2.949L16.415 0ZM1.8 0v11.237h18.815L14.89 8.09l-7.457-.003V3.024L1.8 0Zm14.615 20.894v-5.019l-7.514-.005c.007.033-5.82-3.197-5.82-3.197l19.119.091V24l-5.785-3.106ZM1.8 13.551v7.343l5.633 2.949v-6.988L1.8 13.551Z" />
 </svg>
 }
-    href="/knowledge-base/hostinger"
+    href="/docs/knowledge-base/hostinger"
   />
 
   <Card
@@ -41152,7 +45189,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M22.182 15.499a1.7634 1.7634 0 0 1-.3536-.0358 1.8319 1.8319 0 0 1-1.2086-.8632l-.0066-.012c-.1308-.2616-.0448-.5693.2-.7162a.5236.5236 0 0 1 .2689-.0743.5327.5327 0 0 1 .4632.272.558.558 0 0 0 .018.0299l.0564.0766.0757.0765a.7385.7385 0 0 0 .3453.167.7596.7596 0 0 0 .5954-.136.7206.7206 0 0 0 .299-.5386.7441.7441 0 0 0-.207-.578s-1.5994-1.6612-1.6712-1.7382a1.9604 1.9604 0 0 1-.1929-.229c-.2256-.3198-.2962-.697-.2614-1.0702a1.7361 1.7361 0 0 1 .2253-.7397s.0732-.124.0948-.1554c.0847-.1236.2515-.2834.3658-.3726a1.8813 1.8813 0 0 1 .3069-.1844 1.7494 1.7494 0 0 1 2.2815.7041.5186.5186 0 0 1 .0553.402.5298.5298 0 0 1-.2528.3263.5082.5082 0 0 1-.2593.0705.5283.5283 0 0 1-.46-.2706.6953.6953 0 0 0-.4656-.329.721.721 0 0 0-.5645.1269.688.688 0 0 0-.267.498.6998.6998 0 0 0 .1905.5398l1.6351 1.6862a1.8284 1.8284 0 0 1 .5071 1.3931c-.0465.5243-.3071.9994-.7152 1.3053a1.8425 1.8425 0 0 1-1.0984.369m-5.175-.0006a1.7608 1.7608 0 0 0 1.7585-1.7589v-3.4787a1.7587 1.7587 0 0 0-3.5173 0v3.4786a1.7608 1.7608 0 0 0 1.7587 1.7589m0-5.9342c.3777 0 .6968.319.6968.6967v3.4786a.6977.6977 0 0 1-.6968.6968.6894.6894 0 0 1-.6968-.6968v-3.4786a.6976.6976 0 0 1 .697-.6967m-7.8986.3224v5.0804a.5309.5309 0 0 0 1.0618 0V12.09Zm2.8802 2.0255V9.0328a.531.531 0 0 1 1.0619 0v5.0828zm1.053 2.9406v.1134a.533.533 0 0 1-1.0067.2408L9.1153 9.154v-.1212a.5261.5261 0 0 1 .3028-.4772.5253.5253 0 0 1 .7088.2475Zm-7.9067.6457a1.761 1.761 0 0 0 1.7586-1.7589v-3.4786a1.7587 1.7587 0 0 0-3.5173 0v3.4786a1.7609 1.7609 0 0 0 1.7587 1.7589m0-5.9342a.707.707 0 0 1 .6968.6967v3.4786a.6968.6968 0 1 1-1.3936 0v-3.4786a.6976.6976 0 0 1 .6968-.6967M0 14.9111a.5791.5791 0 1 0 1.1581 0V9.0803a.5791.5791 0 0 0-1.1582 0z" />
 </svg>
 }
-    href="/knowledge-base/ionos"
+    href="/docs/knowledge-base/ionos"
   />
 
   <Card
@@ -41167,7 +45204,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M17.295 17.484c.227.403.57.728.985.931-.309.15-.647.229-.99.232h-3.068a2.26 2.26 0 0 1-1.957-1.143L6.705 6.511a2.27 2.27 0 0 0-.974-.922c.309-.153.652-.233.997-.232h3.05c.81.003 1.558.438 1.959 1.143l5.558 10.984zm-9.329-7.392L6.269 6.755c-.209-.392-.582-.657-.984-.829-.204.165-.391.35-.522.581-.184.349-4.391 8.648-4.569 8.987a2.245 2.245 0 0 0 4.016 1.999l3.756-7.401zm15.846-1.593a2.245 2.245 0 0 0-1.162-2.955v-.001a2.243 2.243 0 0 0-.892-.187l-.003-.011c-.816 0-1.569.443-1.965 1.157l-3.749 7.414 1.689 3.323c.213.399.59.664.998.839.252-.2.473-.444.605-.742l4.479-8.837z" />
 </svg>
 }
-    href="/knowledge-base/namecheap"
+    href="/docs/knowledge-base/namecheap"
   />
 
   <Card
@@ -41182,7 +45219,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M12 0C5.3708 0 .0176 5.3532.0176 11.9824.0176 18.6117 5.3708 24 12 24s11.9824-5.3532 11.9824-11.9824C23.9824 5.3883 18.6292 0 12 0ZM5.832 5.8848c1.0635.2481 2.092.6384 3.0137 1.1347-1.099.5318-1.9866 1.3824-2.6602 2.375-.4254-.5672-.6738-1.2767-.6738-2.0566 0-.5318.1076-.9923.3203-1.4531zm12.336 0c.2127.4254.3203.9213.3203 1.453 0 .78-.2484 1.4895-.6738 2.0567-.6736-.9926-1.5967-1.8432-2.6602-2.375a9.9821 9.9821 0 0 1 3.0137-1.1347zm-6.0723.8105c3.5286.0471 6.3547 2.9198 6.3203 6.457v3.8282c0 .638-.5318 1.1699-1.17 1.1699-.638 0-1.1698-.5318-1.1698-1.17v-.957H7.8516v.957c0 .6382-.5319 1.17-1.17 1.17-.638 0-1.1699-.5318-1.1699-1.17v-3.6503c0-3.5096 2.7307-6.489 6.2403-6.6309.1152-.0044.2299-.0054.3437-.0039zm1.5 3.7988c-.4963 0-.9219.4256-.9219.922 0 .248.0711.4242.213.6015.1417.2127.3536.3546.5663.461-.1418.0708-.3188.1425-.496.1425-.2128 0-.3907.176-.3907.3887s.178.3906.3906.3906h.1778c.6026 0 1.1346-.3553 1.3828-.8516.39-.1418.7092-.3896.9219-.7441.0709-.1064.0337-.2484-.0372-.2129-.1063-.0355-.2123-.034-.2832.0723-.1063.1418-.2485.2826-.4257.3535v-.1426c0-.39-.1409-.7086-.3536-.9922-.1772-.2481-.425-.3887-.7441-.3887zm0 .5313c.2127 0 .3532.1408.3887.3535v.1777c0 .1773-.0346.3543-.1055.4961-.2481-.0709-.4617-.213-.6035-.4257-.0355-.071-.0703-.14-.0703-.211 0-.2392.2063-.3906.3906-.3906z" />
 </svg>
 }
-    href="/knowledge-base/porkbun"
+    href="/docs/knowledge-base/porkbun"
   />
 
   <Card
@@ -41197,7 +45234,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.03-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm-3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.263.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm6.41.862c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55a1.398 1.398 0 0 1-.072-.32c0-.128.064-.2.191-.2h.783c.151 0 .255.025.31.08.065.048.113.16.16.312l1.342 5.284 1.245-5.284c.04-.16.088-.264.151-.312a.549.549 0 0 1 .32-.08h.638c.152 0 .256.025.32.08.063.048.12.16.151.312l1.261 5.348 1.381-5.348c.048-.16.104-.264.16-.312a.52.52 0 0 1 .311-.08h.743c.127 0 .2.065.2.2 0 .04-.009.08-.017.128a1.137 1.137 0 0 1-.056.2l-1.923 6.17c-.048.16-.104.263-.168.311a.51.51 0 0 1-.303.08h-.687c-.151 0-.255-.024-.32-.08-.063-.056-.119-.16-.15-.32l-1.238-5.148-1.23 5.14c-.04.16-.087.264-.15.32-.065.056-.177.08-.32.08zm10.256.215c-.415 0-.83-.048-1.229-.143-.399-.096-.71-.2-.918-.32-.128-.071-.215-.151-.247-.223a.563.563 0 0 1-.048-.224v-.407c0-.167.064-.247.183-.247.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.566.215.878.279.319.064.63.096.95.096.502 0 .894-.088 1.165-.264a.86.86 0 0 0 .415-.758.777.777 0 0 0-.215-.559c-.144-.151-.416-.287-.807-.415l-1.157-.36c-.583-.183-1.014-.454-1.277-.813a1.902 1.902 0 0 1-.4-1.158c0-.335.073-.63.216-.886.144-.255.335-.479.575-.654.24-.184.51-.32.83-.415.32-.096.655-.136 1.006-.136.175 0 .359.008.535.032.183.024.35.056.518.088.16.04.312.08.455.127.144.048.256.096.336.144a.69.69 0 0 1 .24.2.43.43 0 0 1 .071.263v.375c0 .168-.064.256-.184.256a.83.83 0 0 1-.303-.096 3.652 3.652 0 0 0-1.532-.311c-.455 0-.815.071-1.062.223-.248.152-.375.383-.375.71 0 .224.08.416.24.567.159.152.454.304.877.44l1.134.358c.574.184.99.44 1.237.767.247.327.367.702.367 1.117 0 .343-.072.655-.207.926-.144.272-.336.511-.583.703-.248.2-.543.343-.886.447-.36.111-.734.167-1.142.167zM21.698 16.207c-2.626 1.94-6.442 2.969-9.722 2.969-4.598 0-8.74-1.7-11.87-4.526-.247-.223-.024-.527.272-.351 3.384 1.963 7.559 3.153 11.877 3.153 2.914 0 6.114-.607 9.06-1.852.439-.2.814.287.383.607zM22.792 14.961c-.336-.43-2.22-.207-3.074-.103-.255.032-.295-.192-.063-.36 1.5-1.053 3.967-.75 4.254-.399.287.36-.08 2.826-1.485 4.007-.215.184-.423.088-.327-.151.32-.79 1.03-2.57.695-2.994z" />
 </svg>
 }
-    href="/knowledge-base/route53"
+    href="/docs/knowledge-base/route53"
   />
 
   <Card
@@ -41212,7 +45249,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="M22.655 8.719c-1.802-1.801-4.726-1.801-6.564 0l-7.351 7.35c-.45.45-.45 1.2 0 1.65.45.449 1.2.449 1.65 0l7.351-7.351c.899-.899 2.362-.899 3.264 0 .9.9.9 2.364 0 3.264l-7.239 7.239c.9.899 2.362.899 3.263 0l5.589-5.589c1.836-1.838 1.836-4.763.037-6.563zm-2.475 2.437c-.451-.45-1.201-.45-1.65 0l-7.354 7.389c-.9.899-2.361.899-3.262 0-.45-.45-1.2-.45-1.65 0s-.45 1.2 0 1.649c1.801 1.801 4.726 1.801 6.564 0l7.351-7.35c.449-.487.449-1.239.001-1.688zm-2.439-7.35c-1.801-1.801-4.726-1.801-6.564 0l-7.351 7.351c-.45.449-.45 1.199 0 1.649s1.2.45 1.65 0l7.395-7.351c.9-.899 2.371-.899 3.27 0 .451.45 1.201.45 1.65 0 .421-.487.421-1.199-.029-1.649h-.021zm-2.475 2.437c-.45-.45-1.2-.45-1.65 0l-7.351 7.389c-.899.9-2.363.9-3.265 0-.9-.899-.9-2.363 0-3.264l7.239-7.239c-.9-.9-2.362-.9-3.263 0L1.35 8.719c-1.8 1.8-1.8 4.725 0 6.563 1.801 1.801 4.725 1.801 6.564 0l7.35-7.351c.451-.488.451-1.238 0-1.688h.002z" />
 </svg>
 }
-    href="/knowledge-base/squarespace"
+    href="/docs/knowledge-base/squarespace"
   />
 
   <Card
@@ -41230,7 +45267,7 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   />
 </svg>
 }
-    href="/knowledge-base/strato"
+    href="/docs/knowledge-base/strato"
   />
 
   <Card
@@ -41245,31 +45282,31 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
   <path d="m12 1.608 12 20.784H0Z" />
 </svg>
 }
-    href="/knowledge-base/vercel"
+    href="/docs/knowledge-base/vercel"
   />
 </CardGroup>
 
 ## Deliverability
 
 <CardGroup>
-  <Card title="How do I avoid Gmail's spam folder?" href="/knowledge-base/how-do-i-avoid-gmails-spam-folder">
+  <Card title="How do I avoid Gmail's spam folder?" href="/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder">
     Learn how to improve inbox placement in Gmail.
   </Card>
 
-  <Card title="Why Are My Emails Going to Spam?" href="/knowledge-base/why-are-my-emails-going-to-spam">
+  <Card title="Why Are My Emails Going to Spam?" href="/docs/knowledge-base/why-are-my-emails-going-to-spam">
     Troubleshoot emails landing in spam or getting quarantined.
   </Card>
 
-  <Card title="Is it better to send from a subdomain or root domain?" href="/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain">
+  <Card title="Is it better to send from a subdomain or root domain?" href="/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain">
     Discover why sending emails from a subdomain can be better than using a root
     domain.
   </Card>
 
-  <Card title="Why are my emails landing on the suppression list?" href="/knowledge-base/why-are-my-emails-landing-on-the-suppression-list">
+  <Card title="Why are my emails landing on the suppression list?" href="/docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list">
     Learn why your emails land on the suppression list, and how to remove them.
   </Card>
 
-  <Card title="Domain and IP Warm-up Guide" href="/knowledge-base/warming-up">
+  <Card title="Domain and IP Warm-up Guide" href="/docs/knowledge-base/warming-up">
     Learn how to warm up your domain and dedicated IP for optimal deliverability.
   </Card>
 </CardGroup>
@@ -41277,19 +45314,19 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## Sending
 
 <CardGroup>
-  <Card title="Account Quotas and Limits" href="/knowledge-base/account-quotas-and-limits">
+  <Card title="Account Quotas and Limits" href="/docs/knowledge-base/account-quotas-and-limits">
     Understand the sending quotas and rate limits for your Resend account.
   </Card>
 
-  <Card title="How do Dedicated IPs Work?" href="/knowledge-base/how-do-dedicated-ips-work">
+  <Card title="How do Dedicated IPs Work?" href="/docs/knowledge-base/how-do-dedicated-ips-work">
     Learn how Dedicated IPs work and how to request them.
   </Card>
 
-  <Card title="What sending feature should I use?" href="/knowledge-base/what-sending-feature-to-use">
+  <Card title="What sending feature should I use?" href="/docs/knowledge-base/what-sending-feature-to-use">
     Find the right Resend feature for your email sending use case.
   </Card>
 
-  <Card title="Should I add an unsubscribe link?" href="/knowledge-base/should-i-add-an-unsubscribe-link">
+  <Card title="Should I add an unsubscribe link?" href="/docs/knowledge-base/should-i-add-an-unsubscribe-link">
     Learn when to add unsubscribe links to your transactional and marketing
     emails.
   </Card>
@@ -41298,29 +45335,29 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## Tutorials
 
 <CardGroup>
-  <Card title="Maximize deliverability for Supabase Auth emails" href="/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails">
+  <Card title="Maximize deliverability for Supabase Auth emails" href="/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails">
     Everything you should do before sending authentication emails with Resend and
     Supabase.
   </Card>
 
-  <Card title="How do I set up Apple Branded Mail?" href="/knowledge-base/how-do-i-set-up-apple-branded-mail">
+  <Card title="How do I set up Apple Branded Mail?" href="/docs/knowledge-base/how-do-i-set-up-apple-branded-mail">
     Display your brand logo in the Apple Mail inbox.
   </Card>
 
-  <Card title="How do I send with an avatar?" href="/knowledge-base/how-do-i-send-with-an-avatar">
+  <Card title="How do I send with an avatar?" href="/docs/knowledge-base/how-do-i-send-with-an-avatar">
     Learn how to show your avatar in the inbox of your recipients.
   </Card>
 
-  <Card title="Forward emails with Resend Inbound" href="/knowledge-base/forward-emails-with-resend-inbound">
+  <Card title="Forward emails with Resend Inbound" href="/docs/knowledge-base/forward-emails-with-resend-inbound">
     Set up email forwarding using Resend's inbound email processing.
   </Card>
 
-  <Card title="Template emails with React Email" href="/knowledge-base/template-emails-with-react-email">
+  <Card title="Template emails with React Email" href="/docs/knowledge-base/template-emails-with-react-email">
     Author email templates as React components and upload them to Resend with the
     CLI.
   </Card>
 
-  <Card title="Embed the React Email editor" href="/knowledge-base/embed-react-email-editor">
+  <Card title="Embed the React Email editor" href="/docs/knowledge-base/embed-react-email-editor">
     Add the open-source visual email editor to your own application.
   </Card>
 </CardGroup>
@@ -41328,19 +45365,19 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## Troubleshooting
 
 <CardGroup>
-  <Card title="How do I fix CORS issues?" href="/knowledge-base/how-do-i-fix-cors-issues">
+  <Card title="How do I fix CORS issues?" href="/docs/knowledge-base/how-do-i-fix-cors-issues">
     Recommended options to avoid CORS errors when sending emails.
   </Card>
 
-  <Card title="403 Error: Domain Mismatch" href="/knowledge-base/403-error-domain-mismatch">
+  <Card title="403 Error: Domain Mismatch" href="/docs/knowledge-base/403-error-domain-mismatch">
     Resolve 403 errors when the sending domain doesn't match your verified domain.
   </Card>
 
-  <Card title="Domain Already Registered by Another Account" href="/knowledge-base/domain-already-registered">
+  <Card title="Domain Already Registered by Another Account" href="/docs/knowledge-base/domain-already-registered">
     Resolve domain ownership conflicts when a domain is already registered.
   </Card>
 
-  <Card title="Email says delivered but not received?" href="/knowledge-base/what-if-an-email-says-delivered-but-the-recipient-has-not-received-it">
+  <Card title="Email says delivered but not received?" href="/docs/knowledge-base/what-if-an-email-says-delivered-but-the-recipient-has-not-received-it">
     Steps to take when an email is delivered but the recipient hasn't received it.
   </Card>
 </CardGroup>
@@ -41348,23 +45385,23 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## AI Tools
 
 <CardGroup>
-  <Card title="AI Onboarding" href="/ai-onboarding">
+  <Card title="AI Onboarding" href="/docs/ai-onboarding">
     Everything you need to onboard your AI agent to Resend.
   </Card>
 
-  <Card title="MCP Server" href="/mcp-server">
+  <Card title="MCP Server" href="/docs/mcp-server">
     Use Resend's Model Context Protocol server to send emails from AI tools.
   </Card>
 
-  <Card title="Email Best Practices Skills" href="/email-best-practices-skill">
+  <Card title="Email Best Practices Skills" href="/docs/email-best-practices-skill">
     Skills for AI agents to build production-ready email systems with Resend.
   </Card>
 
-  <Card title="React Email Skill" href="/react-email-skill">
+  <Card title="React Email Skill" href="/docs/react-email-skill">
     Skills for AI agents to build HTML emails using React components with Resend.
   </Card>
 
-  <Card title="Resend Skill" href="/resend-skill">
+  <Card title="Resend Skill" href="/docs/resend-skill">
     Skills for AI agents to send emails with Resend.
   </Card>
 </CardGroup>
@@ -41372,19 +45409,19 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## Account Management
 
 <CardGroup>
-  <Card title="What is Resend Pricing?" href="/knowledge-base/what-is-resend-pricing">
+  <Card title="What is Resend Pricing?" href="/docs/knowledge-base/what-is-resend-pricing">
     Learn more about Resend's pricing plans.
   </Card>
 
-  <Card title="How can I delete my Resend account?" href="/knowledge-base/how-can-i-delete-my-resend-account">
+  <Card title="How can I delete my Resend account?" href="/docs/knowledge-base/how-can-i-delete-my-resend-account">
     Learn how to permanently delete your Resend account and data.
   </Card>
 
-  <Card title="How to Handle API Keys" href="/knowledge-base/how-to-handle-api-keys">
+  <Card title="How to Handle API Keys" href="/docs/knowledge-base/how-to-handle-api-keys">
     Best practices for managing and securing your Resend API keys.
   </Card>
 
-  <Card title="How to add multi-factor authentication to your Resend account" href="/knowledge-base/how-can-i-add-mfa">
+  <Card title="How to add multi-factor authentication to your Resend account" href="/docs/knowledge-base/how-can-i-add-mfa">
     Enable or disable multi-factor authentication (MFA) or two-factor
     authentication (2FA) on your Resend account.
   </Card>
@@ -41393,11 +45430,11 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 ## Testing
 
 <CardGroup>
-  <Card title="E2E Testing with Playwright" href="/knowledge-base/end-to-end-testing-with-playwright">
+  <Card title="E2E Testing with Playwright" href="/docs/knowledge-base/end-to-end-testing-with-playwright">
     Set up end-to-end email testing with Playwright and Resend.
   </Card>
 
-  <Card title="What email addresses to use for testing?" href="/knowledge-base/what-email-addresses-to-use-for-testing">
+  <Card title="What email addresses to use for testing?" href="/docs/knowledge-base/what-email-addresses-to-use-for-testing">
     Use Resend's test email addresses to simulate different delivery scenarios.
   </Card>
 </CardGroup>
@@ -42527,19 +46564,19 @@ Please share any feedback on your experience using Resend for your multi-tenant 
 ## Related resources
 
 <CardGroup>
-  <Card title="Create Domain API" href="/api-reference/domains/create-domain">
+  <Card title="Create Domain API" href="/docs/api-reference/domains/create-domain">
     Add and verify tenant domains programmatically.
   </Card>
 
-  <Card title="Create API Key API" href="/api-reference/api-keys/create-api-key">
+  <Card title="Create API Key API" href="/docs/api-reference/api-keys/create-api-key">
     Create domain-scoped API keys for tenant isolation.
   </Card>
 
-  <Card title="Webhooks" href="/webhooks/introduction">
+  <Card title="Webhooks" href="/docs/webhooks/introduction">
     Set up webhooks to receive real-time email event notifications.
   </Card>
 
-  <Card title="Managing Tags" href="/dashboard/emails/tags">
+  <Card title="Managing Tags" href="/docs/dashboard/emails/tags">
     Use tags to organize emails and route webhook events by tenant.
   </Card>
 </CardGroup>
@@ -43127,16 +47164,16 @@ This guide walks through setting up a React Email project, writing a template, a
     Browse every available component — Button, Container, Tailwind, and more.
   </Card>
 
-  <Card title="Resend CLI reference" icon="terminal" href="/cli">
+  <Card title="Resend CLI reference" icon="terminal" href="/docs/cli">
     See every CLI command and flag, including templates, automations, and
     webhooks.
   </Card>
 
-  <Card title="Templates introduction" icon="file-lines" href="/dashboard/templates/introduction">
+  <Card title="Templates introduction" icon="file-lines" href="/docs/dashboard/templates/introduction">
     Learn how Templates, variables, and version history work in Resend.
   </Card>
 
-  <Card title="Embed the React Email editor" icon="pen-to-square" href="/knowledge-base/embed-react-email-editor">
+  <Card title="Embed the React Email editor" icon="pen-to-square" href="/docs/knowledge-base/embed-react-email-editor">
     Add the open-source visual editor to your own app.
   </Card>
 </CardGroup>
@@ -45131,7 +49168,7 @@ Build with our official recommendations for sending emails with Resend.
 ## Learn More
 
 <CardGroup>
-  <Card title="Agent Email Inbox" icon="inbox" href="/agent-email-inbox-skill">
+  <Card title="Agent Email Inbox" icon="inbox" href="/docs/agent-email-inbox-skill">
     Give your agent a secure inbox to receive and act on inbound emails.
   </Card>
 
@@ -57351,19 +61388,19 @@ WHERE event_created_at < NOW() - INTERVAL '90 days';
 ## Learn More
 
 <CardGroup>
-  <Card title="Webhook Event Types" icon="list" href="/webhooks/event-types">
+  <Card title="Webhook Event Types" icon="list" href="/docs/webhooks/event-types">
     View all available webhook event types and their payloads
   </Card>
 
-  <Card title="Verify Webhooks" icon="shield-check" href="/webhooks/verify-webhooks-requests">
+  <Card title="Verify Webhooks" icon="shield-check" href="/docs/webhooks/verify-webhooks-requests">
     Learn how webhook signature verification works
   </Card>
 
-  <Card title="Retries and Replays" icon="rotate" href="/webhooks/retries-and-replays">
+  <Card title="Retries and Replays" icon="rotate" href="/docs/webhooks/retries-and-replays">
     Understand webhook retry behavior
   </Card>
 
-  <Card title="Storing Webhooks Data" icon="database" href="/dashboard/webhooks/how-to-store-webhooks-data">
+  <Card title="Storing Webhooks Data" icon="database" href="/docs/dashboard/webhooks/how-to-store-webhooks-data">
     Learn why and how to store your webhook data
   </Card>
 </CardGroup>

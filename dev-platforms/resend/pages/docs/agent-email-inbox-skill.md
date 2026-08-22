@@ -96,7 +96,7 @@ async function handler(req) {
 ## Learn More
 
 <CardGroup>
-  <Card title="OpenClaw Setup Guide" icon="robot" href="/openclaw-guide">
+  <Card title="OpenClaw Setup Guide" icon="robot" href="/docs/openclaw-guide">
     Step-by-step guide for giving an OpenClaw agent a fully functional email
     inbox.
   </Card>

@@ -196,19 +196,19 @@ Please share any feedback on your experience using Resend for your multi-tenant 
 ## Related resources
 
 <CardGroup>
-  <Card title="Create Domain API" href="/api-reference/domains/create-domain">
+  <Card title="Create Domain API" href="/docs/api-reference/domains/create-domain">
     Add and verify tenant domains programmatically.
   </Card>
 
-  <Card title="Create API Key API" href="/api-reference/api-keys/create-api-key">
+  <Card title="Create API Key API" href="/docs/api-reference/api-keys/create-api-key">
     Create domain-scoped API keys for tenant isolation.
   </Card>
 
-  <Card title="Webhooks" href="/webhooks/introduction">
+  <Card title="Webhooks" href="/docs/webhooks/introduction">
     Set up webhooks to receive real-time email event notifications.
   </Card>
 
-  <Card title="Managing Tags" href="/dashboard/emails/tags">
+  <Card title="Managing Tags" href="/docs/dashboard/emails/tags">
     Use tags to organize emails and route webhook events by tenant.
   </Card>
 </CardGroup>

@@ -317,12 +317,12 @@ This automation step triggers a [Template](/docs/dashboard/templates/introductio
 
 Use the `variables` field to pass data into your template. Each variable value can be a dynamic reference or a static string.
 
-| Type              | Format                                          | Description                                                                                               |
-| ----------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Event data        | `{ "var": "event.<field>" }`                    | Resolves a field from the triggering event's payload.                                                     |
-| Contact data      | `{ "var": "contact.<field>" }`                  | Resolves a field from the contact record.                                                                 |
+| Type              | Format                                          | Description                                                                                                    |
+| ----------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Event data        | `{ "var": "event.<field>" }`                    | Resolves a field from the triggering event's payload.                                                          |
+| Contact data      | `{ "var": "contact.<field>" }`                  | Resolves a field from the contact record.                                                                      |
 | Waited event data | `{ "var": "wait_events.<event_name>.<field>" }` | Resolves a field from a preceding [wait for event](/docs/dashboard/automations/wait-for-event) step's payload. |
-| Static value      | `"<string>"`                                    | Passed as-is to the template.                                                                             |
+| Static value      | `"<string>"`                                    | Passed as-is to the template.                                                                                  |
 
 ```json {7-14} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {

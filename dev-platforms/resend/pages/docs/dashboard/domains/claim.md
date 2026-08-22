@@ -54,8 +54,8 @@ Resend verifies the domain ownership, releases the domain from the previous team
   </Step>
 
   <Step title="Track the status">
-    Poll [Get Domain Claim](/docs/api-reference/domains/get-domain-claim) until the
-    claim reaches `completed`.
+    Poll [Retrieve Domain Claim](/docs/api-reference/domains/get-domain-claim) until
+    the claim reaches `completed`.
   </Step>
 </Steps>
 

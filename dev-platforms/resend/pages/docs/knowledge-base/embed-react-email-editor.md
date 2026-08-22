@@ -221,7 +221,7 @@ This guide walks through embedding the editor in a React app, styling it to matc
     Wrap existing TipTap extensions or build new email-safe nodes and marks.
   </Card>
 
-  <Card title="Template emails with React Email" icon="pen-to-square" href="/knowledge-base/template-emails-with-react-email">
+  <Card title="Template emails with React Email" icon="pen-to-square" href="/docs/knowledge-base/template-emails-with-react-email">
     Author templates as `.tsx` files and upload them to Resend with the CLI.
   </Card>
 </CardGroup>

@@ -25,14 +25,9 @@ Retrieve segment metrics.
   </CodeGroup>
 </Warning>
 
-Live contact counts for your account, optionally broken down by segment.
-Works across your whole account by default, or scoped to specific segments
-via `segment_id`.
-
-<Info>
-  `totals` is always the live, current count for your account, or for the
-  segments in `segment_id`, if provided.
-</Info>
+Contact counts for your account, optionally broken down by segment. Works
+across your whole account by default, or scoped to specific segments via
+`segment_id`.
 
 <Info>
   Responses are cached for up to 15 minutes, so requesting the same range again
@@ -41,14 +36,16 @@ via `segment_id`.
 
 ## Query Parameters
 
+<ListParamFormatNote />
+
 <ResendParamField type="string[]">
-  Comma-separated list of metrics to include in `totals` and `data`. Defaults to
-  all of the following: `all_contacts`, `subscribers`, `unsubscribers`.
+  List of metrics to include in `totals` and `data`. Defaults to all of the
+  following: `all_contacts`, `subscribers`, `unsubscribers`.
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  Comma-separated list of dimensions to break `data` down by. Defaults to
-  `[]`, returning only `totals` with no `data`.
+  List of dimensions to break `data` down by. Defaults to `[]`, returning
+  only `totals` with no `data`.
 
   Possible values:
 
@@ -56,9 +53,8 @@ via `segment_id`.
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  Comma-separated list of segment IDs. Narrows `totals` (and `data`, when
-  requested) to just these segments, without double-counting contacts that
-  belong to more than one.
+  List of segment IDs. Narrows `totals` (and `data`, when requested) to just
+  these segments, without double-counting contacts that belong to more than one.
 </ResendParamField>
 
 <Info>

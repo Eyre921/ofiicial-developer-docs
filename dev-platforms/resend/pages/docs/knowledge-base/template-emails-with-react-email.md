@@ -217,16 +217,16 @@ This guide walks through setting up a React Email project, writing a template, a
     Browse every available component — Button, Container, Tailwind, and more.
   </Card>
 
-  <Card title="Resend CLI reference" icon="terminal" href="/cli">
+  <Card title="Resend CLI reference" icon="terminal" href="/docs/cli">
     See every CLI command and flag, including templates, automations, and
     webhooks.
   </Card>
 
-  <Card title="Templates introduction" icon="file-lines" href="/dashboard/templates/introduction">
+  <Card title="Templates introduction" icon="file-lines" href="/docs/dashboard/templates/introduction">
     Learn how Templates, variables, and version history work in Resend.
   </Card>
 
-  <Card title="Embed the React Email editor" icon="pen-to-square" href="/knowledge-base/embed-react-email-editor">
+  <Card title="Embed the React Email editor" icon="pen-to-square" href="/docs/knowledge-base/embed-react-email-editor">
     Add the open-source visual editor to your own app.
   </Card>
 </CardGroup>

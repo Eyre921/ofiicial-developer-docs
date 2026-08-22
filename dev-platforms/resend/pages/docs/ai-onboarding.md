@@ -43,7 +43,7 @@ Claude and Codex also offer one-click installs that bundle the MCP server and ev
 * [Resend connector for Claude](https://claude.ai/directory/connectors/resend)
 * [Resend plugin for Codex](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex)
 
-<Card title="MCP Server" icon="microchip-ai" href="/mcp-server">
+<Card title="MCP Server" icon="microchip-ai" href="/docs/mcp-server">
   View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf,
   Antigravity, and more.
 </Card>
@@ -66,7 +66,7 @@ resend emails send \
 
 The CLI also includes a full local webhook setup for developing with inbound email events without deploying anything.
 
-<Card title="Resend CLI" icon="terminal" href="/cli">
+<Card title="Resend CLI" icon="terminal" href="/docs/cli">
   Install the CLI and set up a local webhook development environment.
 </Card>
 
@@ -110,8 +110,8 @@ npx skills add resend/resend-skills
 
 Or install individually:
 
-| Skill                                               | Install                                      | What it does                                                                                                       |
-| --------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Skill                                                    | Install                                      | What it does                                                                                                       |
+| -------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | [Resend](/docs/resend-skill)                             | `npx skills add resend/resend-skills`        | Send and receive emails, handle errors, and prevent duplicate sends. Get code examples from various SDKs.          |
 | [React Email](/docs/react-email-skill)                   | `npx skills add resend/react-email`          | Build emails in React, Tailwind, and TypeScript. Audit existing React emails for style and cross-client rendering. |
 | [Email Best Practices](/docs/email-best-practices-skill) | `npx skills add resend/email-best-practices` | Audit SPF/DKIM/DMARC setup, compliance (CAN-SPAM, GDPR), webhook handling                                          |
@@ -293,7 +293,7 @@ The documentation includes quick start guides for common tasks with Resend. They
 
 Equipping your agent with its own email inbox can be a powerful tool to unlock new workflows. Alternatively, give it access to your Resend account to support agentic flows for sending and receiving emails.
 
-<Card title="Email Automation for OpenClaw using Resend" icon="lobster" href="/openclaw-guide">
+<Card title="Email Automation for OpenClaw using Resend" icon="lobster" href="/docs/openclaw-guide">
   View the OpenClaw guide.
 </Card>
 
@@ -301,7 +301,7 @@ Equipping your agent with its own email inbox can be a powerful tool to unlock n
 
 The `@resend/chat-sdk-adapter` package is a Vercel Chat SDK adapter that turns email into a two-way communication channel. Receive inbound emails through webhooks, reply through the Resend API, and let the adapter handle threading automatically. It also supports card emails, attachments, and proactive outreach.
 
-<Card title="Chat SDK" icon="comments" href="/chat-sdk">
+<Card title="Chat SDK" icon="comments" href="/docs/chat-sdk">
   Build conversational email experiences with the Chat SDK adapter.
 </Card>
 

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1272 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1273 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -704,6 +704,7 @@
 - `docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript` — [Bring your own transcript](pages/docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/bring-your-own-transcript.md)
 - `docs/eleven-api/guides/how-to/dubbing/manage-projects` — [Manage dubbing projects](pages/docs/eleven-api/guides/how-to/dubbing/manage-projects.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/manage-projects.md)
 - `docs/eleven-api/guides/how-to/dubbing/multiple-languages` — [Dub into multiple languages](pages/docs/eleven-api/guides/how-to/dubbing/multiple-languages.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/multiple-languages.md)
+- `docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate` — [Refine and regenerate a dub](pages/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate.md)
 - `docs/eleven-api/guides/how-to/image-and-video/references` — [References and assets](pages/docs/eleven-api/guides/how-to/image-and-video/references.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/image-and-video/references.md)
 - `docs/eleven-api/guides/how-to/image-and-video/webhooks` — [Image & Video webhooks](pages/docs/eleven-api/guides/how-to/image-and-video/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/image-and-video/webhooks.md)
 - `docs/eleven-api/guides/how-to/music/composition-plans` — [Composition plans](pages/docs/eleven-api/guides/how-to/music/composition-plans.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/music/composition-plans.md)

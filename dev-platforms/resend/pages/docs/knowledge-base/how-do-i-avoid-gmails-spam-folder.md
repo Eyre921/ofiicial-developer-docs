@@ -16,10 +16,10 @@ Learn how to improve inbox placement in Gmail.
 
 All communication is built on trust, and email is no different. When you send an email, you want to be sure that the recipient (and Gmail) knows who you are and that you are a legitimate sender. Email authentication is a way to prove that an email is from you. It also helps to prevent your email from being spoofed or forged.
 
-| Authentication                    | Requires Setup | Purpose                                                      |
-| --------------------------------- | -------------- | ------------------------------------------------------------ |
-| **SPF**                           | No             | Proves you are allowed to send from this domain              |
-| **DKIM**                          | No             | Proves your email originated from you                        |
+| Authentication                         | Requires Setup | Purpose                                                      |
+| -------------------------------------- | -------------- | ------------------------------------------------------------ |
+| **SPF**                                | No             | Proves you are allowed to send from this domain              |
+| **DKIM**                               | No             | Proves your email originated from you                        |
 | [DMARC](/docs/dashboard/domains/dmarc) | Yes            | Proves you own the domain and instructs how to handle spoofs |
 | [BIMI](/docs/dashboard/domains/bimi)   | Yes            | Proves you are the brand you say you are                     |
 

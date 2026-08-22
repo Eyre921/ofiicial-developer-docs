@@ -286,15 +286,15 @@ The adapter resolves threads using standard `Message-ID`, `In-Reply-To`, and `Re
 ## Features
 
 <CardGroup>
-  <Card title="Card Emails" icon="palette" href="/chat-sdk-card-emails">
+  <Card title="Card Emails" icon="palette" href="/docs/chat-sdk-card-emails">
     Send rich HTML emails with structured card elements.
   </Card>
 
-  <Card title="Attachments" icon="paperclip" href="/chat-sdk-attachments">
+  <Card title="Attachments" icon="paperclip" href="/docs/chat-sdk-attachments">
     Handle inbound email attachments.
   </Card>
 
-  <Card title="Proactive Outreach" icon="paper-plane" href="/chat-sdk-proactive-outreach">
+  <Card title="Proactive Outreach" icon="paper-plane" href="/docs/chat-sdk-proactive-outreach">
     Start new email threads without waiting for inbound.
   </Card>
 </CardGroup>

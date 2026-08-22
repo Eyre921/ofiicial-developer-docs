@@ -95,11 +95,11 @@ You can check the [quickstart guides](/docs/introduction) or [AI builder guides]
 ## Learn more
 
 <CardGroup>
-  <Card title="Manage API keys" icon="tools" href="/dashboard/api-keys/introduction">
+  <Card title="Manage API keys" icon="tools" href="/docs/dashboard/api-keys/introduction">
     View, create, edit, delete, and manage your API keys.
   </Card>
 
-  <Card title="API key best practices" icon="thumbs-up" href="/knowledge-base/how-to-handle-api-keys">
+  <Card title="API key best practices" icon="thumbs-up" href="/docs/knowledge-base/how-to-handle-api-keys">
     Learn about best practices for managing your API keys.
   </Card>
 </CardGroup>
@@ -107,11 +107,11 @@ You can check the [quickstart guides](/docs/introduction) or [AI builder guides]
 ## Next steps
 
 <CardGroup>
-  <Card title="Add a domain" icon="globe" href="/add-a-domain">
+  <Card title="Add a domain" icon="globe" href="/docs/add-a-domain">
     Add and verify a domain you own to start sending emails.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>

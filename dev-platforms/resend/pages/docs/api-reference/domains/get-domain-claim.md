@@ -1,5 +1,5 @@
 ---
-title: "Get Domain Claim"
+title: "Retrieve Domain Claim"
 source: https://resend.com/docs/api-reference/domains/get-domain-claim
 path: docs/api-reference/domains/get-domain-claim
 ---

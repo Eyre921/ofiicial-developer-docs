@@ -1,16 +1,16 @@
 ---
-title: "Get Template"
+title: "Retrieve Template"
 source: https://resend.com/docs/api-reference/templates/get-template
 path: docs/api-reference/templates/get-template
 ---
 
 GET /templates/:template_id
-Get a template by ID.
+Retrieve a template by ID.
 
 ## Path Parameters
 
 <ParamField type="string">
-  The ID or alias of the template to get.
+  The ID or alias of the template to retrieve.
 </ParamField>
 
 <RequestExample>

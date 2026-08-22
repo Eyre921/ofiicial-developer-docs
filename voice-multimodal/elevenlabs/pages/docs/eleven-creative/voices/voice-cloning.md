@@ -15,7 +15,7 @@ When cloning a voice, there are two main options: Instant Voice Cloning and Prof
 ## Instant Voice Cloning
 
 ![Instant voice
-cloning](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f7bbacc7f5bae472e8fd61503496c5137675c1c0ab00b785829d1049ca1fe28/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113420Z&X-Amz-Expires=604800&X-Amz-Signature=19a075569fe9eb6d53af120f73ada1081e7c365842e8dc1891c5726a5539b1e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+cloning](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f7bbacc7f5bae472e8fd61503496c5137675c1c0ab00b785829d1049ca1fe28/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233203Z&X-Amz-Expires=604800&X-Amz-Signature=693dc2b3845f45b922604c533b826e3425a543431dfd07f71b0a147003a93f75&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Instant Voice Cloning allows you to create voice clones from shorter samples near instantaneously. Creating an Instant Voice Clone (IVC) does not train or create a custom AI model. Instead, it relies on prior knowledge from training data to make an educated guess rather than training on the exact voice.
 
@@ -24,7 +24,7 @@ This works extremely well for a lot of voices. However, the biggest limitation w
 ## Professional Voice Cloning
 
 ![Professional voice
-cloning](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113420Z&X-Amz-Expires=604800&X-Amz-Signature=85cf46ad8b92a740fb0d857a3ba5410a1851d05069d93e14ebf15536770ab79b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+cloning](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2/assets/images/product-guides/voices/voice-cloning/voice-pvc-creation.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233203Z&X-Amz-Expires=604800&X-Amz-Signature=e816c0c0a0414eed9b86cf49dc7eaab6dc50cf7c656685416043e8e5da0e601e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Professional Voice Cloning is a feature that's available on our Creator plan or above. Professional Voice Cloning allows you to train a more realistic model of your voice by training a dedicated model on a larger set of voice data, producing a model that's virtually indistinguishable from the original voice.
 

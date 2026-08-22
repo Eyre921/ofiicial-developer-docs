@@ -63,7 +63,7 @@ Before you start, you'll need:
 
 ## Next steps
 
-<Card title="CLI Reference" icon="terminal" href="/cli">
+<Card title="CLI Reference" icon="terminal" href="/docs/cli">
   Explore the full command reference, authentication options, and CI/CD
   examples.
 </Card>

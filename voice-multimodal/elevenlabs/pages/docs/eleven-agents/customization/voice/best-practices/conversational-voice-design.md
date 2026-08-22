@@ -34,7 +34,7 @@ These voices offer a range of styles and characteristics that work well for diff
 
 ## Voice settings
 
-![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/007b0ec153f9210ce48a6e6ed3184c4d004476222a2be2b5bf6ab6afdecf4804/assets/images/conversational-ai/voice-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T100015Z&X-Amz-Expires=604800&X-Amz-Signature=aa3378cc2fab542b60d3b92eed5a46ac2430686ea09791b4eb207025f12c02d1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/007b0ec153f9210ce48a6e6ed3184c4d004476222a2be2b5bf6ab6afdecf4804/assets/images/conversational-ai/voice-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233219Z&X-Amz-Expires=604800&X-Amz-Signature=cb30ade853744f0ec53daf7d3a416f1450a96f9142fae7575a0fba206a2b0aea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Voice settings dramatically affect how your agent is perceived:
 

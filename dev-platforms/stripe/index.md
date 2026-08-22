@@ -1,13 +1,15 @@
 # dev-platforms/stripe 文档索引
 
-> 共 452 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 456 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
 - `acceptable-verification-documents` — [Acceptable verification documents by country](pages/acceptable-verification-documents.md) · [原文](https://docs.stripe.com/acceptable-verification-documents.md)
+- `api` — [API Reference](pages/api.md) · [原文](https://docs.stripe.com/api.md)
 - `billing` — [features](pages/billing.md) · [原文](https://docs.stripe.com/billing.md)
 - `changelog` — [Changelog](pages/changelog.md) · [原文](https://docs.stripe.com/changelog.md)
+- `connect` — [Platforms and marketplaces with Stripe Connect](pages/connect.md) · [原文](https://docs.stripe.com/connect.md)
 - `currencies` — [Supported currencies](pages/currencies.md) · [原文](https://docs.stripe.com/currencies.md)
 - `declines` — [Declines](pages/declines.md) · [原文](https://docs.stripe.com/declines.md)
 - `event-destinations` — [Integrate with events](pages/event-destinations.md) · [原文](https://docs.stripe.com/event-destinations.md)
@@ -22,6 +24,7 @@
 - `stripe-reports` — [reports](pages/stripe-reports.md) · [原文](https://docs.stripe.com/stripe-reports.md)
 - `tax` — [Stripe Tax](pages/tax.md) · [原文](https://docs.stripe.com/tax.md)
 - `terminal` — [features](pages/terminal.md) · [原文](https://docs.stripe.com/terminal.md)
+- `testing` — [Testing](pages/testing.md) · [原文](https://docs.stripe.com/testing.md)
 - `upgrades` — [API upgrades](pages/upgrades.md) · [原文](https://docs.stripe.com/upgrades.md)
 - `webhooks` — [Receive Stripe events in your webhook endpoint](pages/webhooks.md) · [原文](https://docs.stripe.com/webhooks.md)
 
@@ -73,6 +76,7 @@
 - `billing/customer` — [Customers](pages/billing/customer.md) · [原文](https://docs.stripe.com/billing/customer.md)
 - `billing/customer/tax-ids` — [Customer Tax IDs](pages/billing/customer/tax-ids.md) · [原文](https://docs.stripe.com/billing/customer/tax-ids.md)
 - `billing/entitlements` — [Entitlements](pages/billing/entitlements.md) · [原文](https://docs.stripe.com/billing/entitlements.md)
+- `billing/quickstart` — [Build a pre-built subscription page with Stripe Checkout](pages/billing/quickstart.md) · [原文](https://docs.stripe.com/billing/quickstart.md)
 - `billing/revenue-recovery` — [Revenue recovery](pages/billing/revenue-recovery.md) · [原文](https://docs.stripe.com/billing/revenue-recovery.md)
 - `billing/subscriptions/billing-cycle` — [Set the subscription billing renewal date](pages/billing/subscriptions/billing-cycle.md) · [原文](https://docs.stripe.com/billing/subscriptions/billing-cycle.md)
 - `billing/subscriptions/cancel` — [Cancel subscriptions](pages/billing/subscriptions/cancel.md) · [原文](https://docs.stripe.com/billing/subscriptions/cancel.md)

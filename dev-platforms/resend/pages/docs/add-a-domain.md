@@ -78,11 +78,11 @@ To add a new domain from the Resend Dashboard:
 ## Learn more
 
 <CardGroup>
-  <Card title="Manage domains" icon="tools" href="/dashboard/domains/introduction">
+  <Card title="Manage domains" icon="tools" href="/docs/dashboard/domains/introduction">
     View, create, edit, delete, and manage your domains.
   </Card>
 
-  <Card title="Multi-tenant domain setup" icon="people-group" href="/knowledge-base/setting-up-resend-for-multi-tenants">
+  <Card title="Multi-tenant domain setup" icon="people-group" href="/docs/knowledge-base/setting-up-resend-for-multi-tenants">
     Learn how to configure Resend for SaaS platforms where tenants send emails
     from their own domains.
   </Card>
@@ -91,12 +91,12 @@ To add a new domain from the Resend Dashboard:
 ## Next steps
 
 <CardGroup>
-  <Card title="Add a DMARC record" icon="globe" href="/dashboard/domains/dmarc">
+  <Card title="Add a DMARC record" icon="globe" href="/docs/dashboard/domains/dmarc">
     Implement DMARC to build trust in your domain and protect against email
     spoofing.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>

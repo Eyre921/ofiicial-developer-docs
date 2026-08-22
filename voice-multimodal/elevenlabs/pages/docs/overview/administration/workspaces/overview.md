@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/overview
 
 # Workspaces
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T100013Z&X-Amz-Expires=604800&X-Amz-Signature=cbb07924a26b12883c0fd7f1368f92c78ae2b31b49b7f9a80b3ff73f13aa9681&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspaces" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae/assets/images/product-guides/administration/workspaces.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T223939Z&X-Amz-Expires=604800&X-Amz-Signature=7ce5301d4953ef239271c17384b3c3352c6e3e588ecb1127573754450520033a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspaces" />
 
 ## Overview
 
@@ -48,7 +48,7 @@ Users can now accept invitations to multiple workspaces, allowing you to collabo
 
 * **Switch between workspaces** - Use the workspace switcher in your account menu to quickly navigate between your workspaces.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T100013Z&X-Amz-Expires=604800&X-Amz-Signature=9936a11a9903019d2b9311720b329f697f6c1f65fa55de9adfae87fed34861aa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Switching between workspaces" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f/assets/images/product-guides/administration/workspaces-switch.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T223939Z&X-Amz-Expires=604800&X-Amz-Signature=8c2a4f19f4159521880480eaf8c2ac06a0f71090e24a1c33d727855e111b320c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Switching between workspaces" />
 
 ### Workspace limits
 
@@ -69,7 +69,7 @@ Multi seat workspaces are automatically enabled on all accounts with Scale, Busi
 
 Only administrators can add and remove team members.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T100013Z&X-Amz-Expires=604800&X-Amz-Signature=afeb20320b5ab775ec923867a67e26a16911a5fbf5ee9f0b467b4966b2537d4a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspace domain verification" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b/assets/images/product-guides/workspaces/workspace-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T223939Z&X-Amz-Expires=604800&X-Amz-Signature=15ed5572ebcfd2fcf6108ae3fb64ac806897b8e3ceec5d673e65c9c9de72f604&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Workspace domain verification" />
 
 Once you are logged in, select your profile icon in the top right corner of the dashboard, choose **Workspace settings**, then navigate to the **Members** tab. From there you'll be able to add team members, assign roles and remove members from the workspace.
 

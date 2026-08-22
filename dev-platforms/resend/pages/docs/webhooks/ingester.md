@@ -310,19 +310,19 @@ WHERE event_created_at < NOW() - INTERVAL '90 days';
 ## Learn More
 
 <CardGroup>
-  <Card title="Webhook Event Types" icon="list" href="/webhooks/event-types">
+  <Card title="Webhook Event Types" icon="list" href="/docs/webhooks/event-types">
     View all available webhook event types and their payloads
   </Card>
 
-  <Card title="Verify Webhooks" icon="shield-check" href="/webhooks/verify-webhooks-requests">
+  <Card title="Verify Webhooks" icon="shield-check" href="/docs/webhooks/verify-webhooks-requests">
     Learn how webhook signature verification works
   </Card>
 
-  <Card title="Retries and Replays" icon="rotate" href="/webhooks/retries-and-replays">
+  <Card title="Retries and Replays" icon="rotate" href="/docs/webhooks/retries-and-replays">
     Understand webhook retry behavior
   </Card>
 
-  <Card title="Storing Webhooks Data" icon="database" href="/dashboard/webhooks/how-to-store-webhooks-data">
+  <Card title="Storing Webhooks Data" icon="database" href="/docs/dashboard/webhooks/how-to-store-webhooks-data">
     Learn why and how to store your webhook data
   </Card>
 </CardGroup>

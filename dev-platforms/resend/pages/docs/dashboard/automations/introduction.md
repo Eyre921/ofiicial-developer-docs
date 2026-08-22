@@ -72,8 +72,8 @@ To start executing an Automation, you need to:
 
         There are several step types you can add to your Automation:
 
-        | Step type                                               | Description                                         |
-        | ------------------------------------------------------- | --------------------------------------------------- |
+        | Step type                                                    | Description                                         |
+        | ------------------------------------------------------------ | --------------------------------------------------- |
         | [Condition](/docs/dashboard/automations/condition)           | Branches the workflow based on rules                |
         | [Delay](/docs/dashboard/automations/delay)                   | Pauses execution for a specified duration           |
         | [Wait for Event](/docs/dashboard/automations/wait-for-event) | Pauses execution until a specific event is received |

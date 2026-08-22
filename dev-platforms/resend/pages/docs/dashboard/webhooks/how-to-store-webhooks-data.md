@@ -55,7 +55,7 @@ You can get started quickly with the [Resend Webhook Ingester](/docs/webhooks/in
 * **Idempotent storage** that handles duplicate deliveries
 * **8 database connectors** including PostgreSQL, MySQL, MongoDB, and data warehouses
 
-<Card title="Webhook Ingester" icon="database" href="/webhooks/ingester">
+<Card title="Webhook Ingester" icon="database" href="/docs/webhooks/ingester">
   Deploy a production-ready webhook storage solution in minutes
 </Card>
 
@@ -166,19 +166,19 @@ High-volume senders can generate significant data. Plan for:
 ## Learn More
 
 <CardGroup>
-  <Card title="Webhook Ingester" icon="database" href="/webhooks/ingester">
+  <Card title="Webhook Ingester" icon="database" href="/docs/webhooks/ingester">
     Deploy a production-ready webhook storage solution
   </Card>
 
-  <Card title="Webhook Event Types" icon="list" href="/webhooks/event-types">
+  <Card title="Webhook Event Types" icon="list" href="/docs/webhooks/event-types">
     See all available event types and their payloads
   </Card>
 
-  <Card title="Verify Webhooks" icon="shield-check" href="/webhooks/verify-webhooks-requests">
+  <Card title="Verify Webhooks" icon="shield-check" href="/docs/webhooks/verify-webhooks-requests">
     Learn about webhook signature verification
   </Card>
 
-  <Card title="Webhook Introduction" icon="webhook" href="/webhooks/introduction">
+  <Card title="Webhook Introduction" icon="webhook" href="/docs/webhooks/introduction">
     Get started with webhooks in your application
   </Card>
 </CardGroup>

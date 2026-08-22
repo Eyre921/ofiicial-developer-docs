@@ -65,12 +65,12 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
 ## Learn more
 
 <CardGroup>
-  <Card title="Send Email API" icon="tools" href="/api-reference/emails/send-email">
+  <Card title="Send Email API" icon="tools" href="/docs/api-reference/emails/send-email">
     Send, list, retrieve, update, and cancel transactional emails with the Send
     Email API.
   </Card>
 
-  <Card title="Broadcasts" icon="megaphone" href="/dashboard/broadcasts/introduction">
+  <Card title="Broadcasts" icon="megaphone" href="/docs/dashboard/broadcasts/introduction">
     Create and send marketing emails with Resend's no-code editor or the
     Broadcasts API.
   </Card>
@@ -79,12 +79,12 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
 ## Next steps
 
 <CardGroup>
-  <Card title="Import or add email contacts" icon="globe" href="/dashboard/audiences/contacts">
+  <Card title="Import or add email contacts" icon="globe" href="/docs/dashboard/audiences/contacts">
     Add existing subscribers to your Resend contact list programmatically,
     manually, or by uploading a `.csv` file.
   </Card>
 
-  <Card title="Quickstart tutorials" icon="stopwatch" href="/introduction">
+  <Card title="Quickstart tutorials" icon="stopwatch" href="/docs/introduction">
     Send your first transactional email with a quick tutorial for your language
     or framework.
   </Card>

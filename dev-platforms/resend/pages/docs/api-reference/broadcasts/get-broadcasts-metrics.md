@@ -39,11 +39,12 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 
 ## Query Parameters
 
+<ListParamFormatNote />
+
 <ParamField type="string">
   The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
   (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
-  before `end_date`, unless `broadcast_id` is set, in which case it defaults to
-  `2023-01-01` instead, since no broadcast could exist before Resend launched.
+  before `end_date`.
 </ParamField>
 
 <ParamField type="string">
@@ -62,8 +63,8 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of metrics to include in the response. Defaults to all
-  of the following:
+  List of metrics to include in the response. Defaults to all of the
+  following:
 
   `delivered`, `complained`, `suppressed`, `bounced`, `bounced_transient`,
   `bounced_permanent`, `bounced_undetermined`, `opened`, `clicked`,
@@ -73,7 +74,7 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of dimensions to break the response down by. Combine
+  List of dimensions to break the response down by. Combine
   `period` with `broadcast` for a joint breakdown (one row per unique `period`
 
   * `broadcast` pair). Defaults to `[]`, returning a single `totals` row for
@@ -87,7 +88,7 @@ Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
 </ParamField>
 
 <ParamField type="string[]">
-  Comma-separated list of broadcast IDs to restrict the response to, up to 100.
+  List of broadcast IDs to restrict the response to, up to 100.
 </ParamField>
 
 <RequestExample>

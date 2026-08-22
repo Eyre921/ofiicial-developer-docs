@@ -15,7 +15,7 @@ This tutorial will guide you through adding your ElevenLabs agent to your Framer
 * An ElevenLabs Agents agent created following [this guide](/docs/eleven-agents/quickstart)
 * A Framer account & website, create one [here](https://framer.com)
 
-<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a0681bdfc73398af1391e381bc11f8d450a4eea0788991bc418f83ac6490c34f/assets/images/conversational-ai/framer.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113502Z&X-Amz-Expires=604800&X-Amz-Signature=252b8b3e52af444e1d84abd278f5bd22c1fa750dc744fd60df4183f4ecd6e1eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
+<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a0681bdfc73398af1391e381bc11f8d450a4eea0788991bc418f83ac6490c34f/assets/images/conversational-ai/framer.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233301Z&X-Amz-Expires=604800&X-Amz-Signature=99604b79f53ade1d44fe135c5fb2be1bfd7c963ca02d03753330f78cdff96353&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
 
 ## Guide
 
@@ -40,9 +40,9 @@ You can find the agent ID in the [ElevenLabs dashboard](https://elevenlabs.io/ap
 
 Having trouble? Make sure the ElevenAgents component is placed below the desktop component in the layers panel.
 
-<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17f4e7b2bbc3ebafadb1b705e6c963c6900ae162236b39feff2c6839654cf4f9/assets/images/conversational-ai/layers.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113502Z&X-Amz-Expires=604800&X-Amz-Signature=d02e77033de27db8e00de9fb777a774723eec433861a68953116cbd12b82b996&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
+<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/17f4e7b2bbc3ebafadb1b705e6c963c6900ae162236b39feff2c6839654cf4f9/assets/images/conversational-ai/layers.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233301Z&X-Amz-Expires=604800&X-Amz-Signature=c32ce585af7f8c7170446cc1d3430691bb0bbd87da6b9ce0d2457d8fef789750&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
 
-<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fcb5867e142022ca7ebc3aba3904fffc7ce0f4ddca716e2c7bac38012e2e1641/assets/images/conversational-ai/agent-id.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113502Z&X-Amz-Expires=604800&X-Amz-Signature=8232919bd5923b3d4bcb011c86b7dbc9133c85c8d7a41f6796a1045d2b2fa75e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
+<img alt="Convai Framer Example Project" src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fcb5867e142022ca7ebc3aba3904fffc7ce0f4ddca716e2c7bac38012e2e1641/assets/images/conversational-ai/agent-id.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233301Z&X-Amz-Expires=604800&X-Amz-Signature=2d3afb41a2bf54731018bf5361d3958d381558c14e66337ccfe2ded339c218da&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" />
 
 ## Next steps
 

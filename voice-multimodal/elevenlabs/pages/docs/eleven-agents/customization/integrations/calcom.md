@@ -126,7 +126,7 @@ Store the key in the agent's secret storage to keep it secure and accessible whe
 
 To match the expected authentication structure of Cal.com, remember to prepend the API key with `Bearer ` when creating the secret.
 
-![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113418Z&X-Amz-Expires=604800&X-Amz-Signature=c8563dd197bfdeb09eb91f120bb29b32571a2a02763662ea5ed90a1fed2a1b7c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool secrets](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233227Z&X-Amz-Expires=604800&X-Amz-Signature=d70f8c63ccc94073d94cf292c3d98e839c7e57d5540d8676a9224c5d6f6168a6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add tools to the agent
 

@@ -8274,7 +8274,7 @@ or in case of local development:
 npx supabase gen types typescript --local > database.types.ts
 ```
 
-or in case of a self-hosted instance (see [Accessing Postgres](https://supabase.com/docs/guides/self-hosting/docker#accessing-postgres) for more information):
+or in case of a self-hosted instance (see [Accessing Postgres](https://supabase.com/docs/guides/self-hosting/accessing-postgres#connect-through-supavisor) for more information):
 
 ```bash
 npx supabase gen types typescript --db-url postgres://postgres.[POOLER_TENANT_ID]:[POSTGRES_PASSWORD]@[your-domain-or-ip]:5432/postgres --schema public > database.types.ts
@@ -8727,28 +8727,26 @@ Data API error unspecified
 
 ## Viewing errors in the logs
 
-One can filter for API errors in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer). Below are useful queries for filtering and analyzing API errors:
+One can filter for API errors in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs) with the query source set to **Logs**. Below are useful queries for filtering and analyzing API errors:
 
 ### Find all API errors that occurred at the database level
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type
+from logs
 where
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-  and parsed.user_name = 'authenticator' -- the authenticator role represents the database API
+  source = 'postgres_logs'
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
+  and log_attributes['parsed.user_name'] = 'authenticator' -- the authenticator role represents the database API
 order by timestamp desc
 limit 100;
 ```
@@ -8757,100 +8755,86 @@ limit 100;
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
-where parsed.sql_state_code like '42501' and parsed.user_name = 'authenticator' -- the authenticator role represents the database API
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type
+from logs
+where
+  source = 'postgres_logs'
+  and log_attributes['parsed.sql_state_code'] = '42501'
+  and log_attributes['parsed.user_name'] = 'authenticator' -- the authenticator role represents the database API
 order by timestamp desc
 limit 100;
 ```
 
-Note: PostgREST error codes are only captured in the logs for projects running V14+. You can check your PostgREST version and upgrade your project in the [General Settings](https://supabase.com/dashboard/project/_/settings/general)
+Note: The codes in the table above are returned in the response body, not recorded in the logs. Use the queries below to find the failing requests, then read the `code` from the response your client received.
 
-### Find specific API error
+### Find API errors at the gateway
+
+`sb_error_code` is the error code the API gateway recorded for a request, such as `UNAUTHORIZED_MISSING_API_KEY`. It is empty when the request reached PostgREST and failed there.
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
-  status_code,
-  event_message,
-  coalesce(proxy_status, 'not_recorded') as error_codes,
-  path
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(response) as response
-  cross join unnest(request) as request
+  timestamp,
+  log_attributes['response.status_code'] as status_code,
+  log_attributes['response.headers.sb_error_code'] as gateway_error_code,
+  log_attributes['request.path'] as path,
+  event_message
+from logs
 where
-  status_code >= 300
-  and regexp_contains(path, '^/rest/v1/')
-  and regexp_contains(proxy_status, '(?i)THE_RELEVANT_STATUS_CODE');
+  source = 'edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) >= 300
+  and match(log_attributes['request.path'], '^/rest/v1/')
+order by timestamp desc
+limit 100;
 ```
 
 ### Count errors per path by hour:
 
 ```sql
 select
-  format_timestamp(
-    "%c",
-    timestamp_trunc(cast(edge_logs.timestamp as timestamp), hour),
-    "UTC"
-  ) as hour,
-  count(proxy_status) as error_count,
-  path,
-  coalesce(proxy_status, 'not_recorded') as error_codes
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(response) as response
-  cross join unnest(response.headers) as headers
-  cross join unnest(request) as request
-where status_code >= 300 and regexp_contains(path, '^/rest/v1/')
-group by hour, proxy_status, path;
+  toStartOfHour(timestamp) as hour,
+  count() as error_count,
+  log_attributes['request.path'] as path
+from logs
+where
+  source = 'edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) >= 300
+  and match(log_attributes['request.path'], '^/rest/v1/')
+group by hour, path
+order by hour desc
+limit 100;
 ```
 
 ### Find data API request from specific authenticated user
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  cf_connecting_ip as requesters_ip,
-  url as request_url,
-  request.method as request_method,
-  sb.auth_user as user_id,
-  apikey_payload.role as apikey_role,
-  authorization_payload.role as authorization_token_role,
-  user_agent,
-  city,
-  country,
-  continent,
-  postalCode
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(request) as request
-  cross join unnest(sb) as sb
-  cross join unnest(jwt) as jwt
-  cross join unnest(jwt.apikey) as jwt_apikey
-  cross join unnest(jwt_apikey.payload) as apikey_payload
-  cross join unnest(authorization) as authorization_key
-  cross join unnest(authorization_key.payload) as authorization_payload
-  cross join unnest(headers) as headers
-  cross join unnest(cf) as cf
-  cross join unnest(response) as response
-where regexp_contains(path, '^/rest/v1/') and sb.auth_user = 'SOME_USER_ID' -- <---ADD USER_ID from auth.users table
-order by timestamp desc;
+  log_attributes['request.headers.cf_connecting_ip'] as requesters_ip,
+  log_attributes['request.url'] as request_url,
+  log_attributes['request.method'] as request_method,
+  log_attributes['request.sb.jwt.authorization.payload.subject'] as user_id,
+  log_attributes['request.sb.jwt.apikey.payload.role'] as apikey_role,
+  log_attributes['request.sb.jwt.authorization.payload.role'] as authorization_token_role,
+  log_attributes['request.headers.user_agent'] as user_agent,
+  log_attributes['request.cf.city'] as city,
+  log_attributes['request.cf.country'] as country,
+  log_attributes['request.cf.postalCode'] as postalCode
+from logs
+where
+  source = 'edge_logs'
+  and match(log_attributes['request.path'], '^/rest/v1/')
+  and log_attributes['request.sb.jwt.authorization.payload.subject'] = 'SOME_USER_ID' -- <---ADD USER_ID from auth.users table
+order by timestamp desc
+limit 100;
 ```
 
 
@@ -41047,17 +41031,14 @@ Generates the following log in the [Dashboard's Postgres Logs](https://supabase.
 
 ## Finding and filtering audit logs
 
-Logs generated by PGAudit can be found in [Postgres Logs](https://supabase.com/dashboard/project/_/logs/postgres-logs?s=AUDIT). To find a specific log, you can use the log explorer. Below is a basic example to extract logs referencing `CREATE TABLE` events
+Logs generated by PGAudit can be found in [Postgres Logs](https://supabase.com/dashboard/project/_/logs/postgres-logs?s=AUDIT). To find a specific log, you can use the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs) with the query source set to **Logs**. Below is a basic example to extract logs referencing `CREATE TABLE` events
 
 ```sql
 select
-  cast(t.timestamp as datetime) as timestamp,
+  timestamp,
   event_message
-from
-  postgres_logs as t
-  cross join unnest(metadata) as m
-  cross join unnest(m.parsed) as p
-where event_message like 'AUDIT%CREATE TABLE%'
+from logs
+where source = 'postgres_logs' and event_message like 'AUDIT%CREATE TABLE%'
 order by timestamp desc
 limit 100;
 ```
@@ -65096,36 +65077,34 @@ language sql;
 
 The Supabase Dashboard contains tools to help you identify timed-out and long-running queries.
 
-### Using the Logs Explorer
+### Using the SQL Editor
 
-Go to the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer), and run the following query to identify timed-out events (`statement timeout`) and queries that successfully run for longer than 10 seconds (`duration`).
+Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs), set the query source to **Logs**, and run the following query to identify timed-out events (`statement timeout`) and queries that successfully run for longer than 10 seconds (`duration`).
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type
+from logs
 where
-  regexp_contains(event_message, 'duration|statement timeout')
+  source = 'postgres_logs'
+  and match(event_message, 'duration|statement timeout')
   -- (OPTIONAL) MODIFY OR REMOVE
-  and parsed.user_name = 'authenticator' -- <--------CHANGE
+  and log_attributes['parsed.user_name'] = 'authenticator' -- <--------CHANGE
 order by timestamp desc
 limit 100;
 ```
 
 ### Using the Query Performance page
 
-Go to the [Query Performance page](https://supabase.com/dashboard/project/_/advisors/query-performance?preset=slowest_execution) and filter by relevant role and query speeds. This only identifies slow-running but successful queries. Unlike the Log Explorer, it does not show you timed-out queries.
+Go to the [Query Performance page](https://supabase.com/dashboard/project/_/advisors/query-performance?preset=slowest_execution) and filter by relevant role and query speeds. This only identifies slow-running but successful queries. Unlike the logs, it does not show you timed-out queries.
 
 ### Understanding roles in logs
 
@@ -65148,7 +65127,7 @@ Filter by the `parsed.user_name` field to only retrieve logs made by specific us
 ... query
 where
   -- find events from the relevant role
-  parsed.user_name = '<ROLE>'
+  log_attributes['parsed.user_name'] = '<ROLE>'
 ```
 
 
@@ -67934,7 +67913,7 @@ Views can restrict the amount and type of data presented to a user. Instead of a
 
 ### Materialized views
 
-A [materialized view](https://www.postgresql.org/docs/12/rules-materializedviews.html) is a form of view but it also stores the results to disk. In subsequent reads of a materialized view, the time taken to return its results would be much faster than a conventional view. This is because the data is readily available for a materialized view while the conventional view executes the underlying query each time it is called.
+A [materialized view](https://www.postgresql.org/docs/current/rules-materializedviews.html) is a form of view but it also stores the results to disk. In subsequent reads of a materialized view, the time taken to return its results would be much faster than a conventional view. This is because the data is readily available for a materialized view while the conventional view executes the underlying query each time it is called.
 
 Using our example above, a materialized view can be created like this:
 
@@ -67977,7 +67956,7 @@ Creating a materialized view is not a solution to inefficient queries. You shoul
 ## Resources
 
 - [Official Docs: Create table](https://www.postgresql.org/docs/current/sql-createtable.html)
-- [Official Docs: Create view](https://www.postgresql.org/docs/12/sql-createview.html)
+- [Official Docs: Create view](https://www.postgresql.org/docs/current/sql-createview.html)
 - [Postgres Tutorial: Create tables](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-create-table/)
 - [Postgres Tutorial: Add column](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-add-column/)
 - [Postgres Tutorial: Views](https://www.postgresqltutorial.com/postgresql-views/)
@@ -96779,21 +96758,26 @@ We've created Platform Kit, a collection of UI components that interact with Man
 
 ## Debugging projects
 
-Management API endpoint: [`GET /v1/projects/{ref}/analytics/endpoints/logs.all`](https://api.supabase.com/api/v1#tag/analytics/get/v1/projects/\{ref}/analytics/endpoints/logs.all)
+Management API endpoint: [`GET /v1/projects/{ref}/analytics/endpoints/logs`](https://api.supabase.com/api/v1#tag/analytics/get/v1/projects/\{ref}/analytics/endpoints/logs)
 
 When you need to debug a project, you can query the project's logs to see if there are any errors and address them accordingly.
 
+Every log line from every service is a row in a single `logs` table, so filter by the `source` column to pick a service. Structured fields live in the `log_attributes` map, and the SQL is the ClickHouse dialect.
+
 ```sh
-curl 'https://api.supabase.com/v1/projects/{ref}/analytics/endpoints/logs.all' \
+curl 'https://api.supabase.com/v1/projects/{ref}/analytics/endpoints/logs' \
   --get \
   --header 'Authorization: Bearer YOUR_SECRET_TOKEN' \
-  --data-urlencode 'sql=SELECT datetime(timestamp), status_code, path, event_message
-    FROM edge_logs
-    CROSS JOIN UNNEST(metadata) AS metadata
-    CROSS JOIN UNNEST(response) AS response
-    WHERE status_code >= 400
-    ORDER BY timestamp DESC
-    LIMIT 100' \
+  --data-urlencode "sql=select
+    timestamp,
+    log_attributes['response.status_code'] as status_code,
+    log_attributes['request.path'] as path,
+    event_message
+  from logs
+  where source = 'edge_logs'
+    and toInt32OrZero(log_attributes['response.status_code']) >= 400
+  order by timestamp desc
+  limit 100" \
   --data-urlencode 'iso_timestamp_start=2025-03-23T00:00:00Z' \
   --data-urlencode 'iso_timestamp_end=2025-03-23T01:00:00Z'
 ```
@@ -110713,7 +110697,7 @@ Projects must meet these requirements to use Read Replicas:
 
 ## Creating a Read Replica
 
-To add a Read Replica, go to the [Database Replication page](https://supabase.com/dashboard/project/_/database/replication) in your project dashboard.
+To add a Read Replica, go to the [Infrastructure](https://supabase.com/dashboard/project/_/settings/infrastructure) settings page in your project dashboard.
 
 You can also manage Read Replicas using the Management API (beta functionality):
 
@@ -122479,15 +122463,85 @@ Caution: All changes made in this screen will disconnect all your connected clie
 
 ![Usage page navigation bar](https://supabase.com/docs/img/guides/platform/realtime/realtime-settings--dark.png)
 
-You can set the following settings using the Realtime Settings screen in your Dashboard:
+You can set the following settings using the Realtime Settings screen in your Dashboard. For the ceilings your plan allows, see [Realtime Limits](https://supabase.com/docs/guides/realtime/limits); the rate and payload limits are only editable while your organization's spend cap is disabled. For the errors below, see [Operational Error Codes](https://supabase.com/docs/guides/realtime/error_codes).
 
-- Enable Realtime service: Determines if the Realtime service is enabled or disabled for your project.
-- Channel Restrictions: You can toggle this settings to set Realtime to allow public channels or set it to use only private channels with [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization).
-- Database connection pool size: Determines the number of connections used for Realtime Authorization RLS checking
-- Max concurrent clients: Determines the maximum number of clients that can be connected
-- Max events per second: Determines the maximum number of events per second that can be sent
-- Max presence events per second: Determines the maximum number of presence events per second that can be sent
-- Max payload size in KB: Determines the maximum number of payload size in KB that can be sent
+### Enable Realtime service
+
+**Type:** Toggle · **Options:** Enabled, Disabled · **Default:** Enabled
+
+Determines if the Realtime service is enabled or disabled for your project.
+
+- **Enabled**: normal operation.
+- **Disabled**: connected clients are disconnected, new connections are rejected with `403` and `Realtime was disabled for this tenant`, joins receive `RealtimeDisabledForTenant`, and Broadcast REST requests are rejected with `403`. Realtime also releases the database connections and Postgres Changes replication slot it holds for your project, and reopens them on the first connection after you enable it again.
+
+### Allow public access to channels
+
+**Type:** Toggle · **Options:** Enabled, Disabled · **Default:** Enabled
+
+Determines whether Realtime allows public channels, or restricts your project to private channels with [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization).
+
+- **Enabled**: no policy check runs, but anyone holding your project's anon key can subscribe to and broadcast on any public channel.
+- **Disabled**: every join is checked against the Row Level Security policies on `realtime.messages`, so each join costs one authorization query. Clients that don't set `config.private` to `true` are rejected with `PrivateOnly`. With no policies, clients connect but receive no messages.
+
+### Database connection pool size
+
+**Type:** Number of connections · **Range:** 1 to your database's `max_connections` · **Default:** varies by compute size
+
+Determines the number of connections used for Realtime Authorization RLS checking. Results are cached per client, so the pool is used on each private channel join, each `access_token` refresh, and each private Broadcast REST request.
+
+- **Too low**: checks queue and time out. Clients receive `IncreaseConnectionPool`, broadcasts are dropped, and presence calls fail. Once timeouts in a 30-second window reach the pool size, later checks fail immediately without reaching the database.
+- **Too high**: the pool competes with your application for your database's `max_connections`. If Realtime's total requirement doesn't fit, it refuses to start with `DatabaseLackOfConnections`.
+
+See [Database connections](https://supabase.com/docs/guides/realtime/concepts#database-connections) for the defaults per compute size.
+
+### Postgres Changes connection pool size
+
+**Type:** Number of connections · **Range:** 1 to 20 · **Default:** 2
+
+Determines the number of connections used to create [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes) subscriptions when clients subscribe. It's only used while subscriptions are created; streaming the changes uses a separate connection.
+
+- **Too low**: subscription creation times out during bursts. Clients receive a `postgres_changes` system error with `Too many database timeouts` and retry after 5 to 10 seconds.
+- **Too high**: it counts toward the same connection budget as every other Realtime pool.
+
+Raise this value if many clients subscribe at the same time, such as after a deploy or a mass reconnect.
+
+### Max concurrent clients
+
+**Type:** Number of clients · **Range:** 1 to your plan's [concurrent connections](https://supabase.com/docs/guides/realtime/limits#limits-by-plan) limit · **Default:** your plan's limit
+
+Determines the maximum number of clients that can be connected. A client is one WebSocket connection, no matter how many channels it joins.
+
+- **Too low**: new connections are rejected with `429` and `Too many connected users`. Existing clients are unaffected.
+- **Too high**: each connection consumes memory on the Realtime nodes, so this setting acts as a capacity and cost control.
+
+### Max events per second
+
+**Type:** Number of events per second · **Range:** 1 to your plan's [messages per second](https://supabase.com/docs/guides/realtime/limits#limits-by-plan) limit · **Default:** your plan's limit
+
+Determines the maximum number of events per second that can be sent, measured as a rolling average over the previous minute. An event is a message sent by a client or delivered to one, so one broadcast to 100 subscribers counts as 100 events.
+
+- **Too low**: channels that exceed the average are closed with `Too many messages per second`, which `supabase-js` recovers from by rejoining. Broadcast REST requests are rejected with `429`; those responses carry `x-rate-limit` and `x-rate-limit-remaining` headers you can use to slow down first.
+- **Too high**: Realtime stops throttling broadcast fan-out, which removes the protection against a runaway loop or a mass reconnect, and raises the ceiling on your Realtime spend.
+
+### Max presence events per second
+
+**Type:** Number of events per second · **Range:** 1 to your plan's [presence messages per second](https://supabase.com/docs/guides/realtime/limits#limits-by-plan) limit · **Default:** your plan's limit
+
+Determines the maximum number of presence events per second that can be sent, using the same rolling average as [Max events per second](#max-events-per-second) but checked before the event is sent rather than after delivery.
+
+- **Too low**: presence tracking and syncing fail and the channel is closed with `Too many presence messages per second`.
+- **Too high**: rapid `track` and `untrack` cycles can generate presence storms, because each change is broadcast to every client on the channel and also counts toward [Max events per second](#max-events-per-second).
+
+Note: A separate per-client limit also applies to presence, independent of this project-wide setting. A client that exceeds it is closed with `Client presence rate limit exceeded`. See [Realtime Limits](https://supabase.com/docs/guides/realtime/limits) for the value on your plan.
+
+### Max payload size in KB
+
+**Type:** Size in KB · **Range:** 1 to your plan's [broadcast payload size](https://supabase.com/docs/guides/realtime/limits#limits-by-plan) limit · **Default:** your plan's limit
+
+Determines the maximum payload size in KB that can be sent.
+
+- **Too low**: oversized broadcasts are dropped, and the sender only learns about it if it set `ack_broadcast` to `true`. Broadcast REST requests are rejected with `422`, and an oversized presence `track` closes the channel with `Track message size exceeded`.
+- **Too high**: large messages increase memory and bandwidth usage on every subscriber, since each message is delivered to all clients on the channel. Postgres Changes payloads have a [separate limit](https://supabase.com/docs/guides/realtime/limits#postgres-changes-payload-limit).
 
 
 ---
@@ -123557,6 +123611,128 @@ If you're an enterprise using self-hosted Supabase, we'd love to hear from you. 
 
 ---
 
+# Accessing Postgres
+
+Connect to your self-hosted Postgres database through the Supavisor or PgBouncer pooler, or with a direct connection.
+
+This guide explains how to connect to Postgres in self-hosted Supabase, using the Supavisor pooler, the optional PgBouncer pooler, or a direct connection.
+
+Self-hosted Supabase uses [Supavisor](https://github.com/supabase/supavisor) as its default connection pooler. A pooler sits in front of Postgres and shares a small set of database connections across many clients, which avoids exhausting Postgres connection limits.
+
+## Choose a connection mode
+
+Self-hosted Supabase offers three ways to reach Postgres:
+
+- **Session mode** - Supavisor on port `5432`. Best for persistent clients that need per-session features such as `SET` statements, prepared statements, `LISTEN/NOTIFY`, or advisory locks. Each client holds a dedicated Postgres connection for the life of the session. Available by default.
+- **Transaction mode** - Supavisor or PgBouncer on port `6543`. Best for serverless or edge functions that open many short-lived connections. Does not support session-level features (`SET`, `LISTEN/NOTIFY`, temporary tables that span transactions, or advisory locks). Supavisor pooler does not support prepared statements; PgBouncer can be [configured to support them](#use-pgbouncer-instead-of-supavisor). Available by default.
+- **Direct connection** - Postgres bypassing the pooler. Not exposed by default - refer to [exposing Postgres](#expose-postgres-for-direct-connections). Best for migrations, `pg_dump`, and long-lived backends.
+
+## Connect through Supavisor \[#connect-through-supavisor]
+
+Use your domain name, your server IP, or `localhost`, depending on where the stack runs.
+
+For session-mode connections:
+
+```sh
+psql 'postgres://postgres.[POOLER_TENANT_ID]:[POSTGRES_PASSWORD]@[your-domain]:5432/postgres'
+```
+
+For transaction-mode connections:
+
+```sh
+psql 'postgres://postgres.[POOLER_TENANT_ID]:[POSTGRES_PASSWORD]@[your-domain]:6543/postgres'
+```
+
+Supavisor requires the "tenant ID" (`your-tenant-id`) for authentication, not only the role. When using `psql` with command-line parameters instead of a connection string, the `-U` parameter must also be `postgres.[POOLER_TENANT_ID]`.
+
+## Customize Supavisor
+
+Configure Supavisor settings through your `.env` file, then recreate the stack for changes to take effect:
+
+| Variable                        | Default          | Description                                                                                                                                    |
+| ------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POSTGRES_PORT`                 | `5432`           | Host port for session-mode connections.                                                                                                        |
+| `POOLER_PROXY_PORT_TRANSACTION` | `6543`           | Host port for transaction-mode connections.                                                                                                    |
+| `POOLER_DEFAULT_POOL_SIZE`      | `20`             | Postgres connections the pooler opens per pool. Keep this below your Postgres `max_connections` minus connections reserved for other services. |
+| `POOLER_MAX_CLIENT_CONN`        | `100`            | Client connections the pooler accepts.                                                                                                         |
+| `POOLER_TENANT_ID`              | `your-tenant-id` | Supavisor tenant identifier, used in the username.                                                                                             |
+| `POOLER_DB_POOL_SIZE`           | `5`              | Internal metadata pool used by Supavisor itself.                                                                                               |
+
+To check your current Postgres `max_connections` setting:
+
+```sh
+docker compose exec db psql -U postgres -c "SHOW max_connections;"
+```
+
+To change `max_connections` or other Postgres settings, refer to [custom Postgres configuration](https://supabase.com/docs/guides/self-hosting/postgres-upgrade-17#custom-postgres-configuration).
+
+For the full list of Supavisor's configurable environment variables, check the reference list in [docker/CONFIG.md](https://github.com/supabase/supabase/blob/master/docker/CONFIG.md#supavisor).
+
+## Use PgBouncer instead of Supavisor
+
+Self-hosted Supabase includes an optional [PgBouncer](https://www.pgbouncer.org/) override. It disables Supavisor and runs PgBouncer in transaction mode on `POOLER_PROXY_PORT_TRANSACTION`.
+
+Add it to your stack with `run.sh`:
+
+```sh
+sh run.sh config add pgbouncer
+sh run.sh start
+```
+
+If you prefer to run Docker Compose commands explicitly, use `docker compose -f docker-compose.yml -f docker-compose.pgbouncer.yml up -d`.
+
+To connect as `postgres`:
+
+```sh
+# tenant ID isn't required for PgBouncer
+psql 'postgres://postgres:[POSTGRES_PASSWORD]@[your-domain]:6543/postgres'
+```
+
+The PgBouncer override provides transaction mode only. For session-mode connections, or for features that transaction mode does not support (such as `SET` statements or `LISTEN/NOTIFY`), reconfigure PgBouncer manually by editing its environment variables in `docker-compose.pgbouncer.yml`, or use a [direct connection](#expose-postgres-for-direct-connections). PgBouncer reuses the `POOLER_DEFAULT_POOL_SIZE` and `POOLER_MAX_CLIENT_CONN` values from your `.env` configuration.
+
+## Expose Postgres for direct connections
+
+In the default configuration, Postgres is only reachable through the pooler. To bypass the pooler for migrations, `pg_dump`, or other direct-connection needs, expose the Postgres port.
+
+Danger: Exposing Postgres opens your database to the network. Configure firewall rules or network policies to restrict access to Postgres.
+
+If you use the default Supavisor stack, edit `docker-compose.yml`:
+
+1. Disable Supavisor by commenting out or removing the entire `supavisor` service section.
+2. Expose the Postgres port by adding the port mapping to the `db` service:
+
+```yaml name=docker-compose.yml
+db:
+  ports:
+    - ${POSTGRES_PORT}:${POSTGRES_PORT}
+  container_name: supabase-db
+```
+
+Note: If you want to keep Supavisor running alongside a direct connection, map Postgres to a different host port (for example, `5433:${POSTGRES_PORT}`) instead of disabling Supavisor.
+
+If you use the PgBouncer override, Supavisor is already disabled. Uncomment the `db` block in `docker-compose.pgbouncer.yml` instead:
+
+```yaml name=docker-compose.pgbouncer.yml
+db:
+  ports:
+    - ${POSTGRES_PORT}:${POSTGRES_PORT}
+```
+
+After restarting, connect directly with a standard Postgres connection string:
+
+```sh
+postgres://postgres:[POSTGRES_PASSWORD]@[your-server-ip]:5432/[POSTGRES_DB]
+```
+
+## Additional resources
+
+- [Supavisor documentation](https://supabase.github.io/supavisor/development/docs/)
+- [PgBouncer documentation](https://www.pgbouncer.org/config.html)
+- [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres)
+
+
+---
+
 # Copy Storage Objects from Platform
 
 Copy storage objects from a managed Supabase project to a self-hosted instance using rclone.
@@ -124378,27 +124554,7 @@ You will be prompted for a username and password. See the [Studio authentication
 
 ## Accessing Postgres
 
-The self-hosted Supabase stack provides the [Supavisor](https://supabase.github.io/supavisor/development/docs/) connection pooler for accessing Postgres and managing database connections.
-
-You can connect to the Postgres database via Supavisor using the methods described below. Use your domain name, your server IP, or `localhost` depending on whether you are running self-hosted Supabase on a VPS, or locally.
-
-The default `POOLER_TENANT_ID` is `your-tenant-id` (can be later changed in `.env`), and the password is the value of `POSTGRES_PASSWORD` from the `.env` file.
-
-For session-mode connections (equivalent to a direct Postgres connection):
-
-```sh
-psql 'postgres://postgres.[POOLER_TENANT_ID]:[POSTGRES_PASSWORD]@[your-domain]:5432/postgres'
-```
-
-For transaction-mode connections:
-
-```sh
-psql 'postgres://postgres.[POOLER_TENANT_ID]:[POSTGRES_PASSWORD]@[your-domain]:6543/postgres'
-```
-
-When using `psql` with command-line parameters instead of a connection string to connect to Supavisor, the `-U` parameter should also be `postgres.[POOLER_TENANT_ID]`.
-
-If you need to configure Postgres to be directly accessible from the Internet, read [Exposing your Postgres database](#exposing-your-postgres-database).
+Self-hosted Supabase pools Postgres connections through Supavisor by default, with an optional PgBouncer pooler and a direct-connection option. For connection strings, pooler configuration, switching poolers, and exposing Postgres directly, see [Accessing Postgres](https://supabase.com/docs/guides/self-hosting/accessing-postgres).
 
 To change the database password, read [Changing database password](#changing-database-password).
 
@@ -124634,39 +124790,6 @@ By default, the Storage backend uses local files via a bind mount. On macOS, Doc
 ### Configuring Supabase AI Assistant
 
 Configuring the Supabase AI Assistant is optional. By adding **your own** `OPENAI_API_KEY` to `.env` you can enable AI services, which help with writing SQL queries, statements, and policies.
-
-### Accessing Postgres through Supavisor
-
-By default, Postgres connections go through the Supavisor connection pooler for efficient connection management. Two ports are available:
-
-- `POSTGRES_PORT` (default: 5432) - Session mode, behaves like a direct Postgres connection
-- `POOLER_PROXY_PORT_TRANSACTION` (default: 6543) - Transaction mode, uses connection pooling
-
-For more information on configuring and using Supavisor, see the [Supavisor documentation](https://supabase.github.io/supavisor/).
-
-### Exposing your Postgres database
-
-By default, Postgres is only accessible through Supavisor. If you need direct access to the database (bypassing the connection pooler), you need to disable Supavisor and expose the Postgres port.
-
-Danger: Exposing Postgres directly bypasses connection pooling and exposes your database to the network. Configure firewall rules or network policies to restrict access to trusted IPs only.
-
-Edit `docker-compose.yml`:
-
-1. **Disable Supavisor** - Comment out or remove the entire `supavisor` service section
-2. **Expose Postgres port** - Add the port mapping to the `db` service, it should look like the example below:
-
-```yaml name=docker-compose.yml
-db:
-  ports:
-    - ${POSTGRES_PORT}:${POSTGRES_PORT}
-  container_name: supabase-db
-```
-
-After restarting, you can connect to the database directly using a standard Postgres connection string:
-
-```sh
-postgres://postgres:[POSTGRES_PASSWORD]@[your-server-ip]:5432/[POSTGRES_DB]
-```
 
 ### Setting log\_min\_messages in Postgres
 
@@ -125312,7 +125435,7 @@ Before restoring, check the following on your self-hosted instance:
 
 ## Step 4: Restore to your self-hosted database
 
-Connect to your self-hosted Postgres and restore the dump files. The [default](https://supabase.com/docs/guides/self-hosting/docker#accessing-postgres) connection string for self-hosted Supabase is:
+Connect to your self-hosted Postgres and restore the dump files. The [default](https://supabase.com/docs/guides/self-hosting/accessing-postgres#connect-through-supavisor) connection string for self-hosted Supabase is:
 
 ```
 postgres://postgres.your-tenant-id:[POSTGRES_PASSWORD]@[your-domain]:5432/postgres
@@ -125422,7 +125545,7 @@ select * from pg_available_extensions;
 
 ### Connection refused
 
-Make sure your self-hosted Postgres port is accessible. In the default [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting/docker#accessing-postgres) setup, the user is `postgres.your-tenant-id` with Supavisor on port `5432`.
+Make sure your self-hosted Postgres port is accessible. In the default [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting/accessing-postgres#connect-through-supavisor) setup, the user is `postgres.your-tenant-id` with Supavisor on port `5432`.
 
 ### Legacy Studio configuration
 
@@ -129059,49 +129182,42 @@ On the other hand, if two different users access the same object in a public buc
 
 Learn how Supabase Storage caches objects with a CDN.
 
-Cache hits can be determined via the `metadata.response.headers.cf_cache_status` key in our [Logs Explorer](https://supabase.com/docs/guides/monitoring-and-debugging/logs#logs-explorer). Any value that corresponds to either `HIT`, `STALE`, `REVALIDATED`, or `UPDATING` is categorized as a cache hit.
+Cache hits can be determined via the `log_attributes['response.headers.cf_cache_status']` key in the [logs](https://supabase.com/docs/guides/monitoring-and-debugging/logs). Any value that corresponds to either `HIT`, `STALE`, `REVALIDATED`, or `UPDATING` is categorized as a cache hit.
 The following example query will show the top cache misses from the `edge_logs`:
 
 ```sql
 select
-  r.path as path,
-  r.search as search,
-  count(id) as count
-from
-  edge_logs as f
-  cross join unnest(f.metadata) as m
-  cross join unnest(m.request) as r
-  cross join unnest(m.response) as res
-  cross join unnest(res.headers) as h
-where
-  starts_with(r.path, '/storage/v1/object')
-  and r.method = 'GET'
-  and h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
+  log_attributes['request.path'] as path,
+  log_attributes['request.search'] as search,
+  count() as count
+from logs
+where source = 'edge_logs'
+  and startsWith(log_attributes['request.path'], '/storage/v1/object')
+  and log_attributes['request.method'] = 'GET'
+  and log_attributes['response.headers.cf_cache_status'] in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
 group by path, search
 order by count desc
 limit 50;
 ```
 
-Try out [this query](https://supabase.com/dashboard/project/_/logs/explorer?q=%0Aselect%0A++r.path+as+path%2C%0A++r.search+as+search%2C%0A++count%28id%29+as+count%0Afrom%0A++edge_logs+as+f%0A++cross+join+unnest%28f.metadata%29+as+m%0A++cross+join+unnest%28m.request%29+as+r%0A++cross+join+unnest%28m.response%29+as+res%0A++cross+join+unnest%28res.headers%29+as+h%0Awhere%0A++starts_with%28r.path%2C+%27%2Fstorage%2Fv1%2Fobject%27%29%0A++and+r.method+%3D+%27GET%27%0A++and+h.cf_cache_status+in+%28%27MISS%27%2C+%27NONE%2FUNKNOWN%27%2C+%27EXPIRED%27%2C+%27BYPASS%27%2C+%27DYNAMIC%27%29%0Agroup+by+path%2C+search%0Aorder+by+count+desc%0Alimit+50%3B) in the Logs Explorer.
+Try out [this query](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20log_attributes%5B%27request.path%27%5D%20as%20path%2C%0A%20%20log_attributes%5B%27request.search%27%5D%20as%20search%2C%0A%20%20count%28%29%20as%20count%0Afrom%20logs%0Awhere%20source%20%3D%20%27edge_logs%27%0A%20%20and%20startsWith%28log_attributes%5B%27request.path%27%5D%2C%20%27/storage/v1/object%27%29%0A%20%20and%20log_attributes%5B%27request.method%27%5D%20%3D%20%27GET%27%0A%20%20and%20log_attributes%5B%27response.headers.cf_cache_status%27%5D%20in%20%28%27MISS%27%2C%20%27NONE/UNKNOWN%27%2C%20%27EXPIRED%27%2C%20%27BYPASS%27%2C%20%27DYNAMIC%27%29%0Agroup%20by%20path%2C%20search%0Aorder%20by%20count%20desc%0Alimit%2050%3B) in the SQL Editor.
 
 Your cache hit ratio over time can then be determined using the following query:
 
 ```sql
 select
-  timestamp_trunc(timestamp, hour) as timestamp,
-  countif(h.cf_cache_status in ('HIT', 'STALE', 'REVALIDATED', 'UPDATING')) / count(f.id) as ratio
-from
-  edge_logs as f
-  cross join unnest(f.metadata) as m
-  cross join unnest(m.request) as r
-  cross join unnest(m.response) as res
-  cross join unnest(res.headers) as h
-where starts_with(r.path, '/storage/v1/object') and r.method = 'GET'
+  toStartOfHour(timestamp) as timestamp,
+  countIf(log_attributes['response.headers.cf_cache_status'] in ('HIT', 'STALE', 'REVALIDATED', 'UPDATING')) / count() as ratio
+from logs
+where source = 'edge_logs'
+  and startsWith(log_attributes['request.path'], '/storage/v1/object')
+  and log_attributes['request.method'] = 'GET'
 group by timestamp
-order by timestamp desc;
+order by timestamp desc
+limit 100;
 ```
 
-Try out [this query](https://supabase.com/dashboard/project/_/logs/explorer?q=%0Aselect%0A++timestamp_trunc%28timestamp%2C+hour%29+as+timestamp%2C%0A++countif%28h.cf_cache_status+in+%28%27HIT%27%2C+%27STALE%27%2C+%27REVALIDATED%27%2C+%27UPDATING%27%29%29+%2F+count%28f.id%29+as+ratio%0Afrom%0A++edge_logs+as+f%0A++cross+join+unnest%28f.metadata%29+as+m%0A++cross+join+unnest%28m.request%29+as+r%0A++cross+join+unnest%28m.response%29+as+res%0A++cross+join+unnest%28res.headers%29+as+h%0Awhere+starts_with%28r.path%2C+%27%2Fstorage%2Fv1%2Fobject%27%29+and+r.method+%3D+%27GET%27%0Agroup+by+timestamp%0Aorder+by+timestamp+desc%3B) in the Logs Explorer.
+Try out [this query](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20toStartOfHour%28timestamp%29%20as%20timestamp%2C%0A%20%20countIf%28log_attributes%5B%27response.headers.cf_cache_status%27%5D%20in%20%28%27HIT%27%2C%20%27STALE%27%2C%20%27REVALIDATED%27%2C%20%27UPDATING%27%29%29%20/%20count%28%29%20as%20ratio%0Afrom%20logs%0Awhere%20source%20%3D%20%27edge_logs%27%0A%20%20and%20startsWith%28log_attributes%5B%27request.path%27%5D%2C%20%27/storage/v1/object%27%29%0A%20%20and%20log_attributes%5B%27request.method%27%5D%20%3D%20%27GET%27%0Agroup%20by%20timestamp%0Aorder%20by%20timestamp%20desc%0Alimit%20100%3B) in the SQL Editor.
 
 
 ---
@@ -129439,28 +129555,25 @@ Learn how to check Storage Logs
 
 The [Storage Logs](https://supabase.com/dashboard/project/_/logs/storage-logs) provide a convenient way to examine all incoming request logs to your Storage service. You can filter by time and keyword searches.
 
-For more advanced filtering needs, use the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer) to query the Storage logs dataset directly. The Logs Explorer is separate from the SQL Editor and uses a subset of the BigQuery SQL syntax rather than traditional SQL.
+For more advanced filtering needs, use the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs) with the query source set to **Logs** to query the Storage logs directly. A Logs query runs ClickHouse SQL rather than Postgres SQL. Every log line is a row in the `logs` table, tagged by a `source` column, with structured fields in a `log_attributes` map.
 
 Note: For more details on filtering the log tables, see [Advanced Log Filtering](https://supabase.com/docs/guides/monitoring-and-debugging/advanced-log-filtering)
 
-## Example Storage queries for the Logs Explorer
+## Example Storage queries
 
 ### Filter by status 5XX error
 
 ```sql
 select
   id,
-  storage_logs.timestamp,
+  timestamp,
   event_message,
-  r.statusCode,
-  e.message as errorMessage,
-  e.raw as rawError
-from
-  storage_logs
-  cross join unnest(metadata) as m
-  cross join unnest(m.res) as r
-  cross join unnest(m.error) as e
-where r.statusCode >= 500
+  toInt32OrZero(log_attributes['res.statusCode']) as statusCode,
+  log_attributes['error.message'] as errorMessage,
+  log_attributes['error.raw'] as rawError
+from logs
+where source = 'storage_logs'
+  and toInt32OrZero(log_attributes['res.statusCode']) >= 500
 order by timestamp desc
 limit 100;
 ```
@@ -129470,17 +129583,14 @@ limit 100;
 ```sql
 select
   id,
-  storage_logs.timestamp,
+  timestamp,
   event_message,
-  r.statusCode,
-  e.message as errorMessage,
-  e.raw as rawError
-from
-  storage_logs
-  cross join unnest(metadata) as m
-  cross join unnest(m.res) as r
-  cross join unnest(m.error) as e
-where r.statusCode >= 400 and r.statusCode < 500
+  toInt32OrZero(log_attributes['res.statusCode']) as statusCode,
+  log_attributes['error.message'] as errorMessage,
+  log_attributes['error.raw'] as rawError
+from logs
+where source = 'storage_logs'
+  and toInt32OrZero(log_attributes['res.statusCode']) between 400 and 499
 order by timestamp desc
 limit 100;
 ```
@@ -129488,12 +129598,10 @@ limit 100;
 ### Filter by method
 
 ```sql
-select id, storage_logs.timestamp, event_message, r.method
-from
-  storage_logs
-  cross join unnest(metadata) as m
-  cross join unnest(m.req) as r
-where r.method in ("POST")
+select id, timestamp, event_message, log_attributes['req.method'] as method
+from logs
+where source = 'storage_logs'
+  and log_attributes['req.method'] in ('POST')
 order by timestamp desc
 limit 100;
 ```
@@ -129501,12 +129609,10 @@ limit 100;
 ### Filter by IP address
 
 ```sql
-select id, storage_logs.timestamp, event_message, r.remoteAddress
-from
-  storage_logs
-  cross join unnest(metadata) as m
-  cross join unnest(m.req) as r
-where r.remoteAddress in ("IP_ADDRESS")
+select id, timestamp, event_message, log_attributes['req.remoteAddress'] as remoteAddress
+from logs
+where source = 'storage_logs'
+  and log_attributes['req.remoteAddress'] in ('IP_ADDRESS')
 order by timestamp desc
 limit 100;
 ```
@@ -130626,26 +130732,24 @@ How to calculate the Bandwidth and Storage Egress
 
 Free Plan Organizations in Supabase have a limit of 10 GB of bandwidth (5 GB cached + 5 GB uncached). This limit is calculated by the sum of all the data transferred from the Supabase servers to the client. This includes all the data transferred from the database, storage, and functions.
 
-### Checking Storage egress requests in Logs Explorer
+### Checking Storage egress requests in the SQL Editor
 
-We have a template query that you can use to get the number of requests for each object in [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer/templates).
+You can use the following query to get the number of requests for each object. Run it in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs) with the query source set to **Logs**.
 
 ```sql
 select
-  request.method as http_verb,
-  request.path as filepath,
-  (responseHeaders.cf_cache_status = 'HIT') as cached,
-  count(*) as num_requests
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.request) as request
-  cross join unnest(metadata.response) as response
-  cross join unnest(response.headers) as responseHeaders
-where
-  (path like '%storage/v1/object/%' or path like '%storage/v1/render/%')
-  and request.method = 'GET'
-group by 1, 2, 3
+  log_attributes['request.method'] as http_verb,
+  log_attributes['request.path'] as filepath,
+  (log_attributes['response.headers.cf_cache_status'] = 'HIT') as cached,
+  count() as num_requests
+from logs
+where source = 'edge_logs'
+  and (
+    log_attributes['request.path'] like '%storage/v1/object/%'
+    or log_attributes['request.path'] like '%storage/v1/render/%'
+  )
+  and log_attributes['request.method'] = 'GET'
+group by http_verb, filepath, cached
 order by num_requests desc
 limit 100;
 ```
@@ -130657,13 +130761,13 @@ Example of the output:
   {
     "filepath": "/storage/v1/object/sign/large%20bucket/20230902_200037.gif",
     "http_verb": "GET",
-    "cached": true,
+    "cached": 1,
     "num_requests": 100
   },
   {
     "filepath": "/storage/v1/object/public/demob/Sports/volleyball.png",
     "http_verb": "GET",
-    "cached": false,
+    "cached": 0,
     "num_requests": 168
   }
 ]
@@ -134953,24 +135057,22 @@ A security definer function retains the privileges of the database user that cre
 
 # Database API 42501 errors
 
-[Postgres 42501 errors](https://www.postgresql.org/docs/current/errcodes-appendix.html), often reported by clients as 401 or 403 errors, imply the request lacked adequate privileges. They can be viewed in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++++cast%28postgres_logs.timestamp+as+datetime%29+as+timestamp%2C%0A++++event_message%2C%0A++++parsed.error_severity%2C%0A++++parsed.user_name%2C%0A++++parsed.query%2C%0A++++parsed.detail%2C%0A++++parsed.hint%2C%0A++++parsed.sql_state_code%2C%0A++++parsed.backend_type%0Afrom%0A++++postgres_logs%0A++++cross+join+unnest%28metadata%29+as+metadata%0A++++cross+join+unnest%28metadata.parsed%29+as+parsed%0Awhere%0A++++parsed.sql_state_code+%3D+%2742501%27%0Aorder+by%0A++++timestamp+desc%0Alimit+100%3B%0A) by running:
+[Postgres 42501 errors](https://www.postgresql.org/docs/current/errcodes-appendix.html), often reported by clients as 401 or 403 errors, imply the request lacked adequate privileges. They can be viewed in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20timestamp%2C%0A%20%20event_message%2C%0A%20%20log_attributes%5B%27parsed.error_severity%27%5D%20as%20error_severity%2C%0A%20%20log_attributes%5B%27parsed.user_name%27%5D%20as%20user_name%2C%0A%20%20log_attributes%5B%27parsed.query%27%5D%20as%20query%2C%0A%20%20log_attributes%5B%27parsed.detail%27%5D%20as%20detail%2C%0A%20%20log_attributes%5B%27parsed.hint%27%5D%20as%20hint%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27postgres_logs%27%0A%20%20and%20log_attributes%5B%27parsed.error_severity%27%5D%20in%20%28%27ERROR%27%2C%20%27FATAL%27%2C%20%27PANIC%27%29%0A%20%20and%20log_attributes%5B%27parsed.sql_state_code%27%5D%20%3D%20%2742501%27%0Aorder%20by%20timestamp%20desc%0Alimit%20100%3B) by running:
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint
+from logs
 where
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-  and parsed.sql_state_code = '42501'
+  source = 'postgres_logs'
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
+  and log_attributes['parsed.sql_state_code'] = '42501'
 order by timestamp desc
 limit 100;
 ```
@@ -135223,40 +135325,36 @@ Follow the recommendation in the [asyncpg docs](https://magicstack.github.io/asy
 
 ## Navigating the API logs:
 
-The Database API is powered by a [ PostgREST web-server](https://postgrest.org/en/v12/), recording every request to the API Edge Network logs. To precisely navigate them, use the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer). These logs are managed through [Logflare](https://supabase.com/blog/supabase-logs-self-hosted) and can be queried with a subset of BigQuery SQL syntax.
+The Database API is powered by a [ PostgREST web-server](https://postgrest.org/en/v12/), recording every request to the API Edge Network logs. To precisely navigate them, use the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs) with the query source set to **Logs**. These logs run on ClickHouse. Every log line is a row in a single `logs` table, tagged by a `source` column.
 
-The log table that contains API requests is `edge_logs`.
+API requests are the rows where `source = 'edge_logs'`.
 
 Notably, it contains:
 
-| field             | description                      |
-| ----------------- | -------------------------------- |
-| event\_message    | the log's message                |
-| timestamp         | time event was recorded          |
-| request metadata  | metadata about the REST request  |
-| response metadata | metadata about the REST response |
+| field           | description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| event\_message  | the log's message                                            |
+| timestamp       | time event was recorded                                      |
+| log\_attributes | structured request and response fields, keyed by dotted path |
 
-The request and response columns are arrays in the metadata field and must be unnested. This is done with a `cross join`.
+Request and response details live in the `log_attributes` map. Read a field with bracket access, keeping the full dotted key. There are no unnesting joins.
 
-**Unnesting example**
+**Field access example**
 
 ```sql
 select
-  -- the event message does not require unnesting
+  -- event_message is a column, so it needs no lookup
   event_message,
-  -- unnested status_code column from metadata.response field
-  status_code
-from
-  edge_logs
-  -- Unpack data stored in the 'metadata' field
-  cross join unnest(metadata) as metadata
-  -- After unpacking the 'metadata' field, extract the 'response' field from it
-  cross join unnest(response) as response;
+  -- response.status_code is a log_attributes key
+  log_attributes['response.status_code'] as status_code
+from logs
+where source = 'edge_logs'
+limit 100;
 ```
 
 The most useful fields for debugging are:
 
-> NOTE: not every field is included below. For a full list, check the API Edge field reference in the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer)
+> NOTE: not every field is included below. For a full list, check the API Edge [field reference](https://supabase.com/docs/guides/monitoring-and-debugging/logs#logs-field-reference)
 
 ### Request object
 
@@ -135281,15 +135379,10 @@ The most useful fields for debugging are:
 
 ```sql
 select
-  city
-from
-  edge_logs
--- Unpack 'metadata' field
-cross join unnest(metadata) AS metadata
--- unpack 'request' from 'metadata'
-cross join unnest(request) AS request;
--- unpack 'cf' from 'request'
-cross join unnest(cf) AS cf;
+  log_attributes['request.cf.city'] as city
+from logs
+where source = 'edge_logs'
+limit 100;
 ```
 
 #### IP and browser/environment data:
@@ -135309,15 +135402,10 @@ cross join unnest(cf) AS cf;
 
 ```sql
 select
-  cf_connecting_ip
-from
-  edge_logs
--- Unpack 'metadata' field
-cross join unnest(metadata) AS metadata
--- unpack 'request' from 'metadata'
-cross join unnest(request) AS request;
--- unpack 'headers' from 'request'
-cross join unnest(headers) AS headers;
+  log_attributes['request.headers.cf_connecting_ip'] as cf_connecting_ip
+from logs
+where source = 'edge_logs'
+limit 100;
 ```
 
 #### Query type and formatting data:
@@ -135327,27 +135415,22 @@ cross join unnest(headers) AS headers;
 - identify problematic queries
 - identify unusual behavior by authenticated users
 
-| Column                 | Description                                               | Sample value                                                                                                                                                                                                                                               |
-| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| request.method         | Request Method (PATCH, GET, PUT...)                       | GET                                                                                                                                                                                                                                                        |
-| request.url            | Request URL, which contains the PostgREST formatted query | [https://yuhplfrsdxxxtldakizi.supabase.co/rest/v1/users?select=username\&id=eq.63b6190e-214f-4b8a-b72d-3af6e1921411\&limit=1](https://yuhplfrsdxxxtldakizi.supabase.co/rest/v1/users?select=username\&id=eq.63b6190e-214f-4b8a-b72d-3af6e1921411\&limit=1) |
-| request.sb.auth\_users | authenticated user's ID                                   | 63b6190e-214f-4b8a-b72d-3af6e1921411                                                                                                                                                                                                                       |
+| Column                                       | Description                                               | Sample value                                                                                                                                                                                                                                               |
+| -------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| request.method                               | Request Method (PATCH, GET, PUT...)                       | GET                                                                                                                                                                                                                                                        |
+| request.url                                  | Request URL, which contains the PostgREST formatted query | [https://yuhplfrsdxxxtldakizi.supabase.co/rest/v1/users?select=username\&id=eq.63b6190e-214f-4b8a-b72d-3af6e1921411\&limit=1](https://yuhplfrsdxxxtldakizi.supabase.co/rest/v1/users?select=username\&id=eq.63b6190e-214f-4b8a-b72d-3af6e1921411\&limit=1) |
+| request.sb.jwt.authorization.payload.subject | authenticated user's ID                                   | 63b6190e-214f-4b8a-b72d-3af6e1921411                                                                                                                                                                                                                       |
 
 **Unnesting example:**
 
 ```sql
 select
-  method,
-  url,
-  auth_users
-from
-  edge_logs
--- Unpack 'metadata' field
-cross join unnest(metadata) AS metadata
--- unpack 'request' from 'metadata'
-cross join unnest(request) AS request;
--- unpack 'sb' from 'request'
-cross join unnest(sb) AS sb;
+  log_attributes['request.method'] as method,
+  log_attributes['request.url'] as url,
+  log_attributes['request.sb.jwt.authorization.payload.subject'] as auth_user
+from logs
+where source = 'edge_logs'
+limit 100;
 ```
 
 ### Response object
@@ -135366,13 +135449,10 @@ cross join unnest(sb) AS sb;
 
 ```sql
 select
-  status_code
-from
-  edge_logs
-  -- Unpack 'metadata' field
-  cross join unnest(metadata) as metadata
-  -- unpack 'response' from 'metadata'
-  cross join unnest(response) as response;
+  log_attributes['response.status_code'] as status_code
+from logs
+where source = 'edge_logs'
+limit 100;
 ```
 
 ## Finding errors
@@ -135404,24 +135484,20 @@ Example:
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
-  status_code,
-  url,
+  timestamp,
+  log_attributes['response.status_code'] as status_code,
+  log_attributes['request.url'] as url,
   event_message
-from edge_logs
-cross join unnest(metadata) as metadata
-cross join unnest(response) AS request;
-cross join unnest(response) AS response;
+from logs
 where
+  source = 'edge_logs'
   -- find all errors
-  status_code >= 400
-    and
-  -- find queries featuring the a specific <table_name> and <column_name>
-  (
-    regexp_contains(url, '<table_name>')
-    and
-    regexp_contains(event_message, '<column_name1>|<column_name2>')
-  )
+  and toInt32OrZero(log_attributes['response.status_code']) >= 400
+  -- find queries featuring a specific <table_name> and <column_name>
+  and match(log_attributes['request.url'], '<table_name>')
+  and match(event_message, '<column_name1>|<column_name2>')
+order by timestamp desc
+limit 100;
 ```
 
 PostgREST has an [error reference table](https://postgrest.org/en/v12/references/errors.html) that you can use to interpret status codes.
@@ -135432,30 +135508,25 @@ However, some errors that are reported through the Database API occur at the Pos
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
-  error_severity,
-  user_name,
-  query,
-  detail,
-  sql_state_code,
+  timestamp,
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
   event_message
-from postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+from logs
 where
+  source = 'postgres_logs'
   -- filter only for error events
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-    and
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
   -- All DB API requests are registered as the authenticator role
-  parsed.user_name = 'authenticator'
-    and
+  and log_attributes['parsed.user_name'] = 'authenticator'
   -- find failed queries featuring the function <function_name>
-  regexp_contains(parsed.query, '<function_name>')
-    and
+  and match(log_attributes['parsed.query'], '<function_name>')
   -- limit the time of the search to be around the time of the failed API request
-postgres_logs.timestamp between '2024-04-15 10:50:00' AND '2024-04-15 10:50:27'
-order by
- timestamp desc
+  and timestamp between '2024-04-15 10:50:00' and '2024-04-15 10:50:27'
+order by timestamp desc
 limit 100;
 ```
 
@@ -135471,77 +135542,69 @@ In some cases, errors may emerge because of Cloudflare or PostgREST server error
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
-  status_code,
+  timestamp,
+  log_attributes['response.status_code'] as status_code,
   event_message,
-  path
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(response) as response
-  cross join unnest(request) as request
+  log_attributes['request.path'] as path
+from logs
 where
+  source = 'edge_logs'
   -- find all errors
-  status_code >= 400
-  and regexp_contains(path, '^/rest/v1/');
--- only look at DB API
+  and toInt32OrZero(log_attributes['response.status_code']) >= 400
+  -- only look at DB API
+  and match(log_attributes['request.path'], '^/rest/v1/')
+order by timestamp desc
+limit 100;
 ```
 
 **Group errors by path and code:**
 
 ```sql
 select
-  status_code,
-  path,
-  count(path) as reoccurrence_per_path
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(response) as response
-  cross join unnest(request) as request
+  log_attributes['response.status_code'] as status_code,
+  log_attributes['request.path'] as path,
+  count() as reoccurrence_per_path
+from logs
 where
+  source = 'edge_logs'
   -- find all errors
-  status_code >= 400
-  and regexp_contains(path, '^/rest/v1/') -- only look at DB API
+  and toInt32OrZero(log_attributes['response.status_code']) >= 400
+  and match(log_attributes['request.path'], '^/rest/v1/') -- only look at DB API
 group by path, status_code
-order by reoccurrence_per_path;
+order by reoccurrence_per_path desc
+limit 100;
 ```
 
 **Find requests by region:**
 
 ```sql
 select
-  path,
-  region,
-  count(region) as region_count
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(request) as request
-  cross join unnest(cf) as cf
+  log_attributes['request.path'] as path,
+  log_attributes['request.cf.region'] as region,
+  count() as region_count
+from logs
 where
+  source = 'edge_logs'
   -- only look at DB API
-  regexp_contains(path, '^/rest/v1/')
+  and match(log_attributes['request.path'], '^/rest/v1/')
 group by region, path
-order by requester_region_count;
+order by region_count desc
+limit 100;
 ```
 
 **Find total requests by IP:**
 
 ```sql
 select
-  cf_connecting_ip as ip,
-  count(cf_connecting_ip) as ip_count
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(request) as request
-  cross join unnest(headers) as headers
-  cross join unnest(cf) as cf
-  cross join unnest(response) as response
-where regexp_contains(path, '^/auth/v1/')
+  log_attributes['request.headers.cf_connecting_ip'] as ip,
+  count() as ip_count
+from logs
+where
+  source = 'edge_logs'
+  and match(log_attributes['request.path'], '^/auth/v1/')
 group by ip
-order by ip_count;
+order by ip_count desc
+limit 100;
 ```
 
 **Search frequented query paths by authenticated user:**
@@ -135549,18 +135612,17 @@ order by ip_count;
 ```sql
 select
   -- only available for front-end clients
-  auth_users,
-  path,
-  count(auth_users) as ip_count
-from
-  edge_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(request) as request
-  cross join unnest(sb) as sb
+  log_attributes['request.sb.jwt.authorization.payload.subject'] as auth_user,
+  log_attributes['request.path'] as path,
+  count() as request_count
+from logs
 where
+  source = 'edge_logs'
   -- only look at DB API
-  regexp_contains(path, '^/rest/v1/')
-group by auth_users, path;
+  and match(log_attributes['request.path'], '^/rest/v1/')
+group by auth_user, path
+order by request_count desc
+limit 100;
 ```
 
 
@@ -135635,42 +135697,36 @@ Go to: [Your function returned a 401](#your-function-returned-a-401)
 
 ### Case 3: Not sure
 
-Run this query in [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++++cast%28timestamp+AS+datetime%29++AS+timestamp%2C%0A++++req.pathname+++++++++++++++++AS+function_name%2C%0A%0A++++CASE%0A++++++++WHEN+metadata.execution_id+IS+NOT+NULL%0A++++++++++++THEN+%27your_code_returned_401%27%0A++++++++WHEN+metadata.execution_id+IS+NULL%0A+++++++++AND+%28new_auth.prefix+IS+NOT+NULL+OR+legacy_payload.algorithm+\<>+%27HS256%27%29%0A++++++++++++THEN+%27incompatible_keys%27%0A++++++++WHEN+metadata.execution_id+IS+NULL%0A++++++++AND+%0A++++++++++++%28%0A++++++++++++++++%28legacy_auth_data.invalid+IS+NOT+NULL+OR+new_auth.error+IS+NOT+NULL%29%0A++++++++++++++++++++OR%0A++++++++++++++++legacy_payload.algorithm+%3D+%27HS256%27%0A++++++++++++%29%0A++++++++++++THEN+%27invalid_key%27%0A++++++++WHEN+metadata.execution_id+IS+NULL%0A+++++++++AND+legacy_auth_data+++++++IS+NULL%0A+++++++++AND+new_auth.prefix+IS+NULL%0A++++++++++++THEN+%27missing_auth_header%27%0A++++END+AS+cause%0A%0AFROM+function_edge_logs%0A%0A++++--+unnesting+metadata%0A++++CROSS+JOIN+UNNEST%28metadata%29++++++++++AS+metadata%0A++++CROSS+JOIN+UNNEST%28metadata.request%29++AS+req%0A++++CROSS+JOIN+UNNEST%28metadata.response%29+AS+res%0A++++--+unnesting+auth+details%0A++++LEFT+JOIN+UNNEST%28req.sb%29++++++++++++++++++++AS+sb%0A++++LEFT+JOIN+UNNEST%28sb.apikey%29+++++++++++++++++AS+apikey%0A++++LEFT+JOIN+UNNEST%28apikey.authorization%29++++++AS+new_auth%0A++++LEFT+JOIN+UNNEST%28sb.jwt%29++++++++++++++++++++AS+legacy_jwt%0A++++LEFT+JOIN+UNNEST%28legacy_jwt.authorization%29++AS+legacy_auth_data%0A++++LEFT+JOIN+UNNEST%28legacy_auth_data.payload%29++AS+legacy_payload%0A%0AWHERE+res.status_code+%3D+401%0AORDER+BY+timestamp+DESC%0ALIMIT+200) to classify recent 401s:
+Run this query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20timestamp%2C%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20case%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%21%3D%20%27%27%20then%20%27your_code_returned_401%27%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20%28%0A%20%20%20%20%20%20log_attributes%5B%27request.sb.apikey.apikey.prefix%27%5D%20%21%3D%20%27%27%0A%20%20%20%20%20%20or%20%28%0A%20%20%20%20%20%20%20%20log_attributes%5B%27request.sb.jwt.authorization.payload.algorithm%27%5D%20%21%3D%20%27%27%0A%20%20%20%20%20%20%20%20and%20log_attributes%5B%27request.sb.jwt.authorization.payload.algorithm%27%5D%20%21%3D%20%27HS256%27%0A%20%20%20%20%20%20%29%0A%20%20%20%20%29%20then%20%27incompatible_keys%27%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20%28%0A%20%20%20%20%20%20log_attributes%5B%27request.sb.jwt.authorization.invalid%27%5D%20%21%3D%20%27%27%0A%20%20%20%20%20%20or%20log_attributes%5B%27request.sb.apikey.apikey.error%27%5D%20%21%3D%20%27%27%0A%20%20%20%20%20%20or%20log_attributes%5B%27request.sb.jwt.authorization.payload.algorithm%27%5D%20%3D%20%27HS256%27%0A%20%20%20%20%29%20then%20%27invalid_key%27%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20log_attributes%5B%27request.sb.jwt.authorization.payload.algorithm%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20log_attributes%5B%27request.sb.apikey.apikey.prefix%27%5D%20%3D%20%27%27%20then%20%27missing_auth_header%27%0A%20%20end%20as%20cause%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20401%0Aorder%20by%20timestamp%20desc%0Alimit%2050%3B) to classify recent 401s:
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
-  req.pathname as function_name,
+  timestamp,
+  log_attributes['request.pathname'] as function_name,
   case
-    when metadata.execution_id is not null then 'your_code_returned_401'
-    when metadata.execution_id is null
+    when log_attributes['execution_id'] != '' then 'your_code_returned_401'
+    when log_attributes['execution_id'] = ''
     and (
-      new_auth.prefix is not null
-      or legacy_payload.algorithm != 'HS256'
+      log_attributes['request.sb.apikey.apikey.prefix'] != ''
+      or (
+        log_attributes['request.sb.jwt.authorization.payload.algorithm'] != ''
+        and log_attributes['request.sb.jwt.authorization.payload.algorithm'] != 'HS256'
+      )
     ) then 'incompatible_keys'
-    when metadata.execution_id is null
+    when log_attributes['execution_id'] = ''
     and (
-      (legacy_auth_data.invalid is not null or new_auth.error is not null)
-      or legacy_payload.algorithm = 'HS256'
+      log_attributes['request.sb.jwt.authorization.invalid'] != ''
+      or log_attributes['request.sb.apikey.apikey.error'] != ''
+      or log_attributes['request.sb.jwt.authorization.payload.algorithm'] = 'HS256'
     ) then 'invalid_key'
-    when metadata.execution_id is null
-    and legacy_auth_data is null
-    and new_auth.prefix is null then 'missing_auth_header'
+    when log_attributes['execution_id'] = ''
+    and log_attributes['request.sb.jwt.authorization.payload.algorithm'] = ''
+    and log_attributes['request.sb.apikey.apikey.prefix'] = '' then 'missing_auth_header'
   end as cause
-from
-  function_edge_logs
-  -- unnesting metadata
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(metadata.response) as res
-  -- unnesting auth details
-  left join UNNEST(req.sb) as sb
-  left join UNNEST(sb.apikey) as apikey
-  left join UNNEST(apikey.authorization) as new_auth
-  left join UNNEST(sb.jwt) as legacy_jwt
-  left join UNNEST(legacy_jwt.authorization) as legacy_auth_data
-  left join UNNEST(legacy_auth_data.payload) as legacy_payload
-where res.status_code = 401
+from logs
+where
+  source = 'function_edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) = 401
 order by timestamp desc
 limit 50;
 ```
@@ -135852,26 +135908,24 @@ The difference between the two errors is:
 
 ### Inspecting the logs
 
-Note: Always configure an appropriate time frame when using the log explorer
+Note: Always configure an appropriate time frame when querying the logs
 
 ![image](/docs/img/troubleshooting/edge_function_404_set_timeframe.png)
 
-You cannot inspect the function dashboard to find platform 404 errors, instead, run the below query in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer?its=\&ite=\&s=select+distinct%0A++req.pathname+as+function_name,%0A++res.status_code,%0A++CASE+%0A++++WHEN+metadata.execution_id+is+null+THEN+%27FUNCTION_NOT_FOUND%27%0A++++ELSE+%27FUNCTION+RECOGNIZED:+custom+404+message+in+app+logic%27%0A++END+AS+type_of_404%0Afrom%0A++function_edge_logs%0A++cross+join+UNNEST\(metadata\)+as+metadata%0A++cross+join+UNNEST\(metadata.request\)+as+req%0A++cross+join+UNNEST\(metadata.response\)+as+res%0Awhere+status_code+=+404%0Alimit+10;). The results show all requests that reached Supabase but were rejected as unrecognizable.
+You cannot inspect the function dashboard to find platform 404 errors, instead, run the below query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%20distinct%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%2C%0A%20%20case%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%20then%20%27FUNCTION_NOT_FOUND%27%0A%20%20%20%20else%20%27FUNCTION%20RECOGNIZED%3A%20custom%20404%20message%20in%20app%20logic%27%0A%20%20end%20as%20type_of_404%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20404%0Alimit%2010%3B). The results show all requests that reached Supabase but were rejected as unrecognizable.
 
 ```sql
 select distinct
-  req.pathname as function_name,
-  res.status_code,
+  log_attributes['request.pathname'] as function_name,
+  log_attributes['response.status_code'] as status_code,
   case
-    when metadata.execution_id is null then 'FUNCTION_NOT_FOUND'
+    when log_attributes['execution_id'] = '' then 'FUNCTION_NOT_FOUND'
     else 'FUNCTION RECOGNIZED: custom 404 message in app logic'
   end as type_of_404
-from
-  function_edge_logs
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(metadata.response) as res
-where status_code = 404
+from logs
+where
+  source = 'function_edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) = 404
 limit 10;
 ```
 
@@ -135937,35 +135991,34 @@ If you received back the below message, then go to the [JavaScript failure](#jav
 Internal Server Error
 ```
 
-If the body contained a custom message, or nothing at all, run the below query in [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++fl.event_message,%0A++content.timestamp,%0A++fel.function_name,%0AFROM+function_logs+fl%0ALEFT+JOIN+UNNEST\(fl.metadata\)+AS+content+ON+TRUE%0ALEFT+JOIN+\(%0A++SELECT%0A++++em.execution_id,%0A++++res.status_code,%0A++++req.pathname+AS+function_name%0A++FROM+function_edge_logs%0A++LEFT+JOIN+UNNEST\(metadata\)+AS+em+ON+TRUE%0A++LEFT+JOIN+UNNEST\(em.request\)+AS+req+ON+TRUE%0A++LEFT+JOIN+UNNEST\(em.response\)+AS+res+ON+TRUE%0A\)+fel+ON+content.execution_id+=+fel.execution_id%0AWHERE+%0A++fel.status_code+=+500%0A++++AND+%0A++content.level+=+%27error%27%0A++++AND%0A++++\(%0A++++++content.event_type+=+%27Log%27%0A++++++++OR%0A++++++content.event_type+=+%27UncaughtException%27%0A++++\)%0A++++AND%0A++fl.event_message+LIKE+%27%25Error:%25file:///%25%27%0AORDER+BY+function_name,+timestamp%0ALIMIT+50;\&its=\&ite=) after setting the time range:
+If the body contained a custom message, or nothing at all, run the below query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20console_logs.event_message%2C%0A%20%20console_logs.timestamp%2C%0A%20%20invocation_events.function_name%0Afrom%0A%20%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20timestamp%2C%0A%20%20%20%20%20%20event_message%2C%0A%20%20%20%20%20%20log_attributes%5B%27execution_id%27%5D%20as%20execution_id%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_logs%27%0A%20%20%20%20%20%20and%20log_attributes%5B%27level%27%5D%20%3D%20%27error%27%0A%20%20%20%20%20%20and%20log_attributes%5B%27event_type%27%5D%20in%20%28%27Log%27%2C%20%27UncaughtException%27%29%0A%20%20%20%20%20%20and%20event_message%20like%20%27%25Error%3A%25file%3A///%25%27%0A%20%20%29%20as%20console_logs%0A%20%20inner%20join%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20log_attributes%5B%27execution_id%27%5D%20as%20execution_id%2C%0A%20%20%20%20%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_edge_logs%27%0A%20%20%20%20%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20500%0A%20%20%29%20as%20invocation_events%20on%20console_logs.execution_id%20%3D%20invocation_events.execution_id%0Aorder%20by%20invocation_events.function_name%2C%20console_logs.timestamp%0Alimit%2050%3B) after setting the time range:
 
 ```sql
 select
   console_logs.event_message,
-  cast(invocation_events.timestamp as datetime) as timestamp,
+  console_logs.timestamp,
   invocation_events.function_name
 from
-  function_logs as console_logs
-  left join UNNEST(console_logs.metadata) as metadata on true
-  left join (
+  (
     select
       timestamp,
-      em.execution_id,
-      res.status_code,
-      req.pathname as function_name
-    from
-      function_edge_logs
-      left join UNNEST(metadata) as em on true
-      left join UNNEST(em.request) as req on true
-      left join UNNEST(em.response) as res on true
-  ) as invocation_events
-    on metadata.execution_id = invocation_events.execution_id
-where
-  invocation_events.status_code = 500
-  and metadata.level = 'error'
-  and metadata.event_type in ('Log', 'UncaughtException')
-  and console_logs.event_message like '%Error:%file:///%'
-order by invocation_events.function_name, invocation_events.timestamp
+      event_message,
+      log_attributes['execution_id'] as execution_id
+    from logs
+    where source = 'function_logs'
+      and log_attributes['level'] = 'error'
+      and log_attributes['event_type'] in ('Log', 'UncaughtException')
+      and event_message like '%Error:%file:///%'
+  ) as console_logs
+  inner join (
+    select
+      log_attributes['execution_id'] as execution_id,
+      log_attributes['request.pathname'] as function_name
+    from logs
+    where source = 'function_edge_logs'
+      and toInt32OrZero(log_attributes['response.status_code']) = 500
+  ) as invocation_events on console_logs.execution_id = invocation_events.execution_id
+order by invocation_events.function_name, console_logs.timestamp
 limit 50;
 ```
 
@@ -136220,26 +136273,24 @@ If you received back a `BOOT_ERROR` message, like the one below, you can jump to
 }
 ```
 
-Otherwise, run the below query in your [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++++req.pathname+AS+function_name%2C%0A++++res.status_code%2C%0A++++CASE%0A++++++++WHEN+metadata.execution_id+IS+NOT+NULL+AND+metadata.function_id+IS+NOT+NULL+THEN+%27app_level%27%0A++++++++WHEN+metadata.execution_id+IS+NULL+++++AND+metadata.function_id+IS+NOT+NULL+THEN+%27boot_error%27%0A++++++++WHEN+metadata.execution_id+IS+NULL+++++AND+metadata.function_id+IS+NULL+++++THEN+%27internal_failure%27%0A++++END+AS+error_type%0AFROM+function_edge_logs%0ACROSS+JOIN+UNNEST%28metadata%29+AS+metadata+%0ACROSS+JOIN+UNNEST%28metadata.request%29+AS+req+%0ACROSS+JOIN+UNNEST%28metadata.response%29+AS+res+%0AWHERE+%0A++++status_code+%3D+503+%0ALIMIT+50%3B).
+Otherwise, run the below query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%2C%0A%20%20case%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%21%3D%20%27%27%0A%20%20%20%20and%20log_attributes%5B%27function_id%27%5D%20%21%3D%20%27%27%20then%20%27app_level%27%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20log_attributes%5B%27function_id%27%5D%20%21%3D%20%27%27%20then%20%27boot_error%27%0A%20%20%20%20when%20log_attributes%5B%27execution_id%27%5D%20%3D%20%27%27%0A%20%20%20%20and%20log_attributes%5B%27function_id%27%5D%20%3D%20%27%27%20then%20%27internal_failure%27%0A%20%20end%20as%20error_type%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20503%0Alimit%2050%3B).
 
 ```sql
 select
-  req.pathname as function_name,
-  res.status_code,
+  log_attributes['request.pathname'] as function_name,
+  log_attributes['response.status_code'] as status_code,
   case
-    when metadata.execution_id is not null
-    and metadata.function_id is not null then 'app_level'
-    when metadata.execution_id is null
-    and metadata.function_id is not null then 'boot_error'
-    when metadata.execution_id is null
-    and metadata.function_id is null then 'internal_failure'
+    when log_attributes['execution_id'] != ''
+    and log_attributes['function_id'] != '' then 'app_level'
+    when log_attributes['execution_id'] = ''
+    and log_attributes['function_id'] != '' then 'boot_error'
+    when log_attributes['execution_id'] = ''
+    and log_attributes['function_id'] = '' then 'internal_failure'
   end as error_type
-from
-  function_edge_logs
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(metadata.response) as res
-where status_code = 503
+from logs
+where
+  source = 'function_edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) = 503
 limit 50;
 ```
 
@@ -136286,32 +136337,35 @@ In the [Function Dashboard](https://supabase.com/dashboard/project/_/functions),
 
 ![image](/docs/img/troubleshooting/filter_503.png)
 
-Alternatively, instead of using the Function Dashboard, you can programmatically find boot failure error messages in the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++fl.event_message,%0A++content.timestamp,%0A++fel.function_name,%0A++fel.status_code%0AFROM+function_logs+fl%0ALEFT+JOIN+UNNEST\(fl.metadata\)+AS+content+ON+TRUE%0ALEFT+JOIN+\(%0A++SELECT%0A++++em.function_id,%0A++++em.version,%0A++++req.pathname+AS+function_name,%0A++++res.status_code%0A++FROM+function_edge_logs%0A++LEFT+JOIN+UNNEST\(metadata\)+AS+em+ON+TRUE%0A++LEFT+JOIN+UNNEST\(em.request\)+AS+req+ON+TRUE%0A++LEFT+JOIN+UNNEST\(em.response\)+AS+res+ON+TRUE%0A\)+fel+ON+content.function_id+=+fel.function_id%0A++AND+content.version+=+fel.version%0AWHERE+%0A++content.event_type+=+%27BootFailure%27%0AORDER+BY+timestamp,+function_name%0ALIMIT+20;\&its=\&ite=) with the below query:
+Alternatively, instead of using the Function Dashboard, you can programmatically find boot failure error messages in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20fl.event_message%2C%0A%20%20fl.timestamp%2C%0A%20%20fel.function_name%2C%0A%20%20fel.status_code%0Afrom%0A%20%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20timestamp%2C%0A%20%20%20%20%20%20event_message%2C%0A%20%20%20%20%20%20log_attributes%5B%27function_id%27%5D%20as%20function_id%2C%0A%20%20%20%20%20%20log_attributes%5B%27version%27%5D%20as%20version%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_logs%27%0A%20%20%20%20%20%20and%20log_attributes%5B%27event_type%27%5D%20%3D%20%27BootFailure%27%0A%20%20%29%20as%20fl%0A%20%20left%20join%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20log_attributes%5B%27function_id%27%5D%20as%20function_id%2C%0A%20%20%20%20%20%20log_attributes%5B%27version%27%5D%20as%20version%2C%0A%20%20%20%20%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20%20%20%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_edge_logs%27%0A%20%20%29%20as%20fel%20on%20fl.function_id%20%3D%20fel.function_id%20and%20fl.version%20%3D%20fel.version%0Aorder%20by%20fl.timestamp%2C%20fel.function_name%0Alimit%2020%3B) with the below query:
 
 ```sql
 select
   fl.event_message,
-  content.timestamp,
+  fl.timestamp,
   fel.function_name,
   fel.status_code
 from
-  function_logs as fl
-  left join UNNEST(fl.metadata) as content on true
+  (
+    select
+      timestamp,
+      event_message,
+      log_attributes['function_id'] as function_id,
+      log_attributes['version'] as version
+    from logs
+    where source = 'function_logs'
+      and log_attributes['event_type'] = 'BootFailure'
+  ) as fl
   left join (
     select
-      em.function_id,
-      em.version,
-      req.pathname as function_name,
-      res.status_code
-    from
-      function_edge_logs
-      left join UNNEST(metadata) as em on true
-      left join UNNEST(em.request) as req on true
-      left join UNNEST(em.response) as res on true
-  ) as fel
-    on content.function_id = fel.function_id and content.version = fel.version
-where content.event_type = 'BootFailure'
-order by timestamp, function_name
+      log_attributes['function_id'] as function_id,
+      log_attributes['version'] as version,
+      log_attributes['request.pathname'] as function_name,
+      log_attributes['response.status_code'] as status_code
+    from logs
+    where source = 'function_edge_logs'
+  ) as fel on fl.function_id = fel.function_id and fl.version = fel.version
+order by fl.timestamp, fel.function_name
 limit 20;
 ```
 
@@ -136357,7 +136411,6 @@ Imports can cause errors if they're not available within the edge function:
 ```js name=bad_imports
 // importing non-existent module
 import supabase from 'does_not_exist'
-
 // or accessing non-existent export
 import { doesNotExist } from 'jsr:@supabase/functions-js'
 
@@ -136405,41 +136458,36 @@ As of now, this limit cannot be increased. If your function always needs more ti
 
 ## Step 1: Identifying slow Functions
 
-You can filter for 504 events in the Log Explorer with the below [query](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++cast%28timestamp+as+datetime%29+as+timestamp%2C%0A++req.pathname%2C%0A++res.status_code%2C%0A++metadata.execution_time_ms%0Afrom%0A++function_edge_logs%0A++cross+join+UNNEST%28metadata%29+as+metadata%0A++cross+join+UNNEST%28metadata.request%29+as+req%0A++cross+join+UNNEST%28metadata.response%29+as+res%0Awhere+res.status_code+%3D+504%0Alimit+20%3B):
+You can filter for 504 events in the SQL Editor with the below [query](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20timestamp%2C%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20pathname%2C%0A%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%2C%0A%20%20toFloat64OrZero%28log_attributes%5B%27execution_time_ms%27%5D%29%20as%20execution_time_ms%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20504%0Aorder%20by%20timestamp%20desc%0Alimit%2020%3B):
 
 ```sql
 select
-  cast(timestamp as datetime) as timestamp,
-  req.pathname,
-  res.status_code,
-  metadata.execution_time_ms
-from
-  function_edge_logs
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(metadata.response) as res
-where res.status_code = 504
+  timestamp,
+  log_attributes['request.pathname'] as pathname,
+  log_attributes['response.status_code'] as status_code,
+  toFloat64OrZero(log_attributes['execution_time_ms']) as execution_time_ms
+from logs
+where
+  source = 'function_edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) = 504
+order by timestamp desc
 limit 20;
 ```
 
-You can further explore how much time a specific function takes on average by running the below [query](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++req.pathname%2C%0A++res.status_code%2C%0A++AVG%28metadata.execution_time_ms%29+AS+avg_runtime_ms%2C%0A++MIN%28metadata.execution_time_ms%29+AS+min_runtime_ms%2C%0A++MAX%28metadata.execution_time_ms%29+AS+max_runtime_ms%0Afrom%0A++function_edge_logs%0A++cross+join+UNNEST%28metadata%29+as+metadata%0A++cross+join+UNNEST%28metadata.request%29+as+req%0A++cross+join+UNNEST%28sb%29+as+sb%0A++cross+join+UNNEST%28req.headers%29+as+headers%0A++cross+join+UNNEST%28metadata.response%29+as+res%0Awhere+req.pathname+%3D+%27%2Ffunctions%2Fv1%2FYOUR_FUNCTION_NAME%27+--\<---add+your+function+name+or+remove+filter%0Agroup+by+req.pathname%2C+res.status_code%0Alimit+20%3B):
+You can further explore how much time a specific function takes on average by running the below [query](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20pathname%2C%0A%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%2C%0A%20%20avg%28toFloat64OrZero%28log_attributes%5B%27execution_time_ms%27%5D%29%29%20as%20avg_runtime_ms%2C%0A%20%20min%28toFloat64OrZero%28log_attributes%5B%27execution_time_ms%27%5D%29%29%20as%20min_runtime_ms%2C%0A%20%20max%28toFloat64OrZero%28log_attributes%5B%27execution_time_ms%27%5D%29%29%20as%20max_runtime_ms%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20log_attributes%5B%27request.pathname%27%5D%20%3D%20%27/functions/v1/YOUR_FUNCTION_NAME%27%20--%20%3C---add%20your%20function%20name%20or%20remove%20filter%0Agroup%20by%20pathname%2C%20status_code%0Alimit%2020%3B):
 
 ```sql
 select
-  req.pathname,
-  res.status_code,
-  AVG(metadata.execution_time_ms) as avg_runtime_ms,
-  MIN(metadata.execution_time_ms) as min_runtime_ms,
-  MAX(metadata.execution_time_ms) as max_runtime_ms
-from
-  function_edge_logs
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(sb) as sb
-  cross join UNNEST(req.headers) as headers
-  cross join UNNEST(metadata.response) as res
-where req.pathname = '/functions/v1/YOUR_FUNCTION_NAME' -- <---add your function name or remove filter
-group by req.pathname, res.status_code
+  log_attributes['request.pathname'] as pathname,
+  log_attributes['response.status_code'] as status_code,
+  avg(toFloat64OrZero(log_attributes['execution_time_ms'])) as avg_runtime_ms,
+  min(toFloat64OrZero(log_attributes['execution_time_ms'])) as min_runtime_ms,
+  max(toFloat64OrZero(log_attributes['execution_time_ms'])) as max_runtime_ms
+from logs
+where
+  source = 'function_edge_logs'
+  and log_attributes['request.pathname'] = '/functions/v1/YOUR_FUNCTION_NAME' -- <---add your function name or remove filter
+group by pathname, status_code
 limit 20;
 ```
 
@@ -136514,24 +136562,20 @@ If you are making requests to the same resource and the return values change irr
 
 ### Restrict request load
 
-If the function is used to evaluate user submissions, you can restrict load size to reduce computational time. You can use the below query in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++req.pathname+as+function_name%2C%0A++res.status_code%2C%0A++AVG%28COALESCE%28CAST%28headers.content_length+AS+INT%29%2C+0%29%29+AS+avg_content_size_in_bytes%2C%0A++MIN%28COALESCE%28CAST%28headers.content_length+AS+INT%29%2C+0%29%29+AS+min_content_size_in_bytes%2C%0A++MAX%28COALESCE%28CAST%28headers.content_length+AS+INT%29%2C+0%29%29+AS+max_content_size_in_bytes%0Afrom%0A++function_edge_logs%0A++cross+join+UNNEST%28metadata%29+as+metadata%0A++cross+join+UNNEST%28metadata.request%29+as+req%0A++cross+join+UNNEST%28sb%29+as+sb%0A++cross+join+UNNEST%28req.headers%29+as+headers%0A++cross+join+UNNEST%28metadata.response%29+as+res%0Awhere+%0A++++req.pathname+%3D+%27%2Ffunctions%2Fv1%2Finduce-504%27%0AGROUP+BY+req.pathname%2C+res.status_code+++++%0Alimit+10) to filter by the content size in bytes provided by the initial requester:
+If the function is used to evaluate user submissions, you can restrict load size to reduce computational time. You can use the below query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%2C%0A%20%20avg%28toInt64OrZero%28log_attributes%5B%27request.headers.content_length%27%5D%29%29%20as%20avg_content_size_in_bytes%2C%0A%20%20min%28toInt64OrZero%28log_attributes%5B%27request.headers.content_length%27%5D%29%29%20as%20min_content_size_in_bytes%2C%0A%20%20max%28toInt64OrZero%28log_attributes%5B%27request.headers.content_length%27%5D%29%29%20as%20max_content_size_in_bytes%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20log_attributes%5B%27request.pathname%27%5D%20%3D%20%27/functions/v1/induce-504%27%0Agroup%20by%20function_name%2C%20status_code%0Alimit%2010%3B) to filter by the content size in bytes provided by the initial requester:
 
 ```sql
 select
-  req.pathname as function_name,
-  res.status_code,
-  AVG(COALESCE(cast(headers.content_length as int), 0)) as avg_content_size_in_bytes,
-  MIN(COALESCE(cast(headers.content_length as int), 0)) as min_content_size_in_bytes,
-  MAX(COALESCE(cast(headers.content_length as int), 0)) as max_content_size_in_bytes
-from
-  function_edge_logs
-  cross join UNNEST(metadata) as metadata
-  cross join UNNEST(metadata.request) as req
-  cross join UNNEST(sb) as sb
-  cross join UNNEST(req.headers) as headers
-  cross join UNNEST(metadata.response) as res
-where req.pathname = '/functions/v1/induce-504'
-group by req.pathname, res.status_code
+  log_attributes['request.pathname'] as function_name,
+  log_attributes['response.status_code'] as status_code,
+  avg(toInt64OrZero(log_attributes['request.headers.content_length'])) as avg_content_size_in_bytes,
+  min(toInt64OrZero(log_attributes['request.headers.content_length'])) as min_content_size_in_bytes,
+  max(toInt64OrZero(log_attributes['request.headers.content_length'])) as max_content_size_in_bytes
+from logs
+where
+  source = 'function_edge_logs'
+  and log_attributes['request.pathname'] = '/functions/v1/induce-504'
+group by function_name, status_code
 limit 10;
 ```
 
@@ -136597,50 +136641,53 @@ In the [function dashboard's](https://supabase.com/dashboard/project/_/functions
 
 ![image](/docs/img/troubleshooting/limit_logs.png)
 
-Alternatively, you can filter for the specific errors from the function using the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++fl.event_message%2C%0A++content.timestamp%2C%0A++fel.function_name%2C%0A++fel.status_code%0AFROM+function_logs+fl%0ALEFT+JOIN+UNNEST%28fl.metadata%29+AS+content+ON+TRUE%0ALEFT+JOIN+%28%0A++SELECT%0A++++em.execution_id%2C%0A++++req.pathname+AS+function_name%2C%0A++++res.status_code%0A++FROM+function_edge_logs%0A++LEFT+JOIN+UNNEST%28metadata%29+AS+em+ON+TRUE%0A++LEFT+JOIN+UNNEST%28em.request%29+AS+req+ON+TRUE%0A++LEFT+JOIN+UNNEST%28em.response%29+AS+res+ON+TRUE%0A%29+fel+ON+content.execution_id+%3D+fel.execution_id%0AWHERE+%0A++content.level+%3D+%27error%27%0A++++AND%0A++fel.status_code+%3D+546%0AORDER+BY+function_name%2C+timestamp%0ALIMIT+5)
+Alternatively, you can filter for the specific errors from the function using the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20fl.event_message%2C%0A%20%20fl.timestamp%2C%0A%20%20fel.function_name%2C%0A%20%20fel.status_code%0Afrom%0A%20%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20timestamp%2C%0A%20%20%20%20%20%20event_message%2C%0A%20%20%20%20%20%20log_attributes%5B%27execution_id%27%5D%20as%20execution_id%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_logs%27%0A%20%20%20%20%20%20and%20log_attributes%5B%27level%27%5D%20%3D%20%27error%27%0A%20%20%29%20as%20fl%0A%20%20inner%20join%20%28%0A%20%20%20%20select%0A%20%20%20%20%20%20log_attributes%5B%27execution_id%27%5D%20as%20execution_id%2C%0A%20%20%20%20%20%20log_attributes%5B%27request.pathname%27%5D%20as%20function_name%2C%0A%20%20%20%20%20%20log_attributes%5B%27response.status_code%27%5D%20as%20status_code%0A%20%20%20%20from%20logs%0A%20%20%20%20where%20source%20%3D%20%27function_edge_logs%27%0A%20%20%20%20%20%20and%20toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20546%0A%20%20%29%20as%20fel%20on%20fl.execution_id%20%3D%20fel.execution_id%0Aorder%20by%20fl.timestamp%2C%20fel.function_name%0Alimit%2020%3B)
 
 ```sql
 select
   fl.event_message,
-  content.timestamp,
+  fl.timestamp,
   fel.function_name,
   fel.status_code
 from
-  function_logs as fl
-  left join UNNEST(fl.metadata) as content on true
-  left join (
+  (
     select
-      em.execution_id,
-      req.pathname as function_name,
-      res.status_code
-    from
-      function_edge_logs
-      left join UNNEST(metadata) as em on true
-      left join UNNEST(em.request) as req on true
-      left join UNNEST(em.response) as res on true
-  ) as fel
-    on content.execution_id = fel.execution_id
-where content.level = 'error' and fel.status_code = 546
-order by timestamp, function_name
+      timestamp,
+      event_message,
+      log_attributes['execution_id'] as execution_id
+    from logs
+    where source = 'function_logs'
+      and log_attributes['level'] = 'error'
+  ) as fl
+  inner join (
+    select
+      log_attributes['execution_id'] as execution_id,
+      log_attributes['request.pathname'] as function_name,
+      log_attributes['response.status_code'] as status_code
+    from logs
+    where source = 'function_edge_logs'
+      and toInt32OrZero(log_attributes['response.status_code']) = 546
+  ) as fel on fl.execution_id = fel.execution_id
+order by fl.timestamp, fel.function_name
 limit 20;
 ```
 
 ## Step 2: Check error frequency
 
-Before optimizing, run the below query in the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=SELECT%0A++COUNT%28id%29+AS+total_responses%2C%0A++COUNTIF%28response.status_code+%3D+546%29+AS+total_546%2C%0A++SAFE_DIVIDE%28COUNTIF%28response.status_code+%3D+546%29%2C+COUNT%28*%29%29+*+100+AS+pct_546%0AFROM+function_edge_logs%0ACROSS+JOIN+UNNEST%28function_edge_logs.metadata%29+AS+metadata%0ACROSS+JOIN+UNNEST%28metadata.response%29+AS+response%0ACROSS+JOIN+UNNEST%28metadata.request%29+AS+request%0AWHERE+pathname+%3D+%27%2Ffunctions%2Fv1%2FYOUR_FUNCTION_NAME%27+) to understand how often 546s are occurring relative to total requests:
+Before optimizing, run the below query in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20count%28%29%20as%20total_responses%2C%0A%20%20countIf%28toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20546%29%20as%20total_546%2C%0A%20%20countIf%28toInt32OrZero%28log_attributes%5B%27response.status_code%27%5D%29%20%3D%20546%29%20/%20count%28%29%20%2A%20100%20as%20pct_546%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27function_edge_logs%27%0A%20%20and%20log_attributes%5B%27request.method%27%5D%20%21%3D%20%27OPTIONS%27%0A%20%20--%20%3C--%20add%20your%20function%20name%20to%20inspect%20specific%20endpoints%0A%20%20and%20log_attributes%5B%27request.pathname%27%5D%20%3D%20%27/functions/v1/YOUR_FUNCTION_NAME%27%0Alimit%201%3B) to understand how often 546s are occurring relative to total requests:
 
 ```sql
 select
-  COUNT(id) as total_responses,
-  COUNTIF(response.status_code = 546) as total_546,
-  SAFE_DIVIDE(COUNTIF(response.status_code = 546), COUNT(*)) * 100 as pct_546
-from
-  function_edge_logs
-  cross join UNNEST(function_edge_logs.metadata) as metadata
-  cross join UNNEST(metadata.response) as response
-  cross join UNNEST(metadata.request) as request
-where method != 'OPTIONS' and pathname = '/functions/v1/YOUR_FUNCTION_NAME';
--- <-- add your function name to inspect specific endpoints
+  count() as total_responses,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) as total_546,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) / count() * 100 as pct_546
+from logs
+where
+  source = 'function_edge_logs'
+  and log_attributes['request.method'] != 'OPTIONS'
+  -- <-- add your function name to inspect specific endpoints
+  and log_attributes['request.pathname'] = '/functions/v1/YOUR_FUNCTION_NAME'
+limit 1;
 ```
 
 Depending on the results, you may be able to determine if the event is an edge case or affecting a function's overall behavior.
@@ -136683,19 +136730,19 @@ You can check error frequency by version with the below query:
 
 ```sql
 select
-  COUNT(id) as total_responses,
-  version,
-  COUNTIF(response.status_code = 546) as total_546,
-  SAFE_DIVIDE(COUNTIF(response.status_code = 546), COUNT(*)) * 100 as pct_546
-from
-  function_edge_logs
-  cross join UNNEST(function_edge_logs.metadata) as metadata
-  cross join UNNEST(metadata.response) as response
-  cross join UNNEST(metadata.request) as request
-where method != 'OPTIONS' and pathname = '/functions/v1/FUNCTION_NAME' -- <--OPTIONAL FILTER: add specific function name to target query
+  count() as total_responses,
+  log_attributes['version'] as version,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) as total_546,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) / count() * 100 as pct_546
+from logs
+where
+  source = 'function_edge_logs'
+  and log_attributes['request.method'] != 'OPTIONS'
+  and log_attributes['request.pathname'] = '/functions/v1/FUNCTION_NAME' -- <--OPTIONAL FILTER: add specific function name to target query
 group by version
 having pct_546 > 5 -- <--Failure percentage threshold. The query only shows versions with a 5% or above 546 error rate
-order by pct_546;
+order by pct_546
+limit 100;
 ```
 
 **Check error frequency by time**
@@ -136703,25 +136750,19 @@ order by pct_546;
 You can check to see how frequent 546 errors are per hour with the below query:
 
 ```sql
-
-SELECT
-FORMAT_TIMESTAMP("%Y-%m-%d %H:00", TIMESTAMP(timestamp), "UTC") AS hour,
-COUNT(id) AS total_responses,
-
-COUNTIF(response.status_code = 546) AS total_546,
-
-SAFE_DIVIDE(COUNTIF(response.status_code = 546), COUNT(id)) \* 100
-AS pct_546
-
-FROM function_edge_logs
-CROSS JOIN UNNEST(function_edge_logs.metadata) AS metadata
-CROSS JOIN UNNEST(metadata.response) AS response
-CROSS JOIN UNNEST(metadata.request) AS request
-WHERE pathname = '/functions/v1/FUNCTION_NAME'--<--OPTIONAL FILTER: add specific function name to target query
+select
+  formatDateTime(toStartOfHour(timestamp), '%Y-%m-%d %H:00', 'UTC') as hour,
+  count() as total_responses,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) as total_546,
+  countIf(toInt32OrZero(log_attributes['response.status_code']) = 546) / count() * 100 as pct_546
+from logs
+where
+  source = 'function_edge_logs'
+  -- <--OPTIONAL FILTER: add specific function name to target query
+  and log_attributes['request.pathname'] = '/functions/v1/FUNCTION_NAME'
 group by hour
-ORDER by hour DESC
-LIMIT 24;
-
+order by hour desc
+limit 24;
 ```
 
 The output may look like:
@@ -136734,29 +136775,29 @@ If the failures are concentrated to a specific time, you can check if you made a
 If your isolates are serving more than 2 requests before retiring, it suggests variability in how much processing each request needs. In that case, you may want to cross compare your successful requests with your failed ones. Maybe there's a query parameter or specific content-length header that makes failures more likely.
 
 ```sql
-
-SELECT
-COUNT(fel.id) AS requests_served,
-metadata.execution_id AS isolate_id
-FROM function_logs
-LEFT JOIN UNNEST(function_logs.metadata) AS metadata ON TRUE
-LEFT JOIN (
-SELECT
-em.execution_id,
-id,
-pathname,
-method
-FROM function_edge_logs
-LEFT JOIN UNNEST(function_edge_logs.metadata) AS em ON TRUE
-LEFT JOIN UNNEST(em.request) AS req ON TRUE
-) fel ON metadata.execution_id = fel.execution_id
-WHERE
-metadata.reason IN ('Memory', 'CPUTime')
-AND
-method <> 'OPTIONS' --ignore OPTION requests
-AND
-pathname = '/functions/v1/FUNCTION_NAME' --<-- add your function name to inspect specific endpoints
-GROUP BY metadata.execution_id
+select
+  count() as requests_served,
+  fl.execution_id as isolate_id
+from
+  (
+    select log_attributes['execution_id'] as execution_id
+    from logs
+    where source = 'function_logs'
+      and log_attributes['reason'] in ('Memory', 'CPUTime')
+  ) as fl
+  inner join (
+    select
+      log_attributes['execution_id'] as execution_id,
+      log_attributes['request.pathname'] as pathname,
+      log_attributes['request.method'] as method
+    from logs
+    where source = 'function_edge_logs'
+      and log_attributes['request.method'] != 'OPTIONS' --ignore OPTION requests
+      -- <-- add your function name to inspect specific endpoints
+      and log_attributes['request.pathname'] = '/functions/v1/FUNCTION_NAME'
+  ) as fel on fl.execution_id = fel.execution_id
+group by isolate_id
+limit 100;
 ```
 
 ## Step 3: Correcting the error
@@ -139270,42 +139311,39 @@ Logs provide insights into Postgres operations. They help meet compliance requir
 
 ### Querying logs
 
-The most practical way to explore and filter logs is through the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer).
+The most practical way to explore and filter logs is through the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs), with the query source set to **Logs**.
 
-It uses a subset of BigQuery SQL syntax and pre-parses queries for optimization. This imposes three primary limitations:
+It runs ClickHouse SQL and pre-parses queries for optimization. This imposes two primary limitations:
 
-- No subqueries or `WITH` statements
 - No `*` wildcards for column names
-- No `ILIKE` statements
+- A maximum of 1000 rows per run
 
-Although there are many strategies to filter logs, such as `like` and `in` statements, a helper function called [`regexp_contains`](https://github.com/orgs/supabase/discussions/22640) provides the most flexibility and control.
+Although there are many strategies to filter logs, such as `like` and `in` statements, the [`match`](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match) function provides the most flexibility and control.
 
-The `postgres_logs` table contains Postgres events.
+Postgres events are the rows in the `logs` table where `source = 'postgres_logs'`.
 
-#### `postgres_logs` table structure
+#### `logs` table structure
 
-The table contains 3 fundamental columns:
+Every log source shares one `logs` table. These are the columns you use most:
 
-| column          | description             |
-| --------------- | ----------------------- |
-| event\_message  | the log's message       |
-| timestamp       | time event was recorded |
-| parsed metadata | metadata about event    |
+| column          | description                                        |
+| --------------- | -------------------------------------------------- |
+| event\_message  | the log's message                                  |
+| timestamp       | time event was recorded                            |
+| source          | the service the log came from                      |
+| log\_attributes | structured per-source fields, keyed by dotted path |
 
-The parsed metadata column is an array that contains relevant information about events. To access the information, it must be unnested. This is done with a `cross join`.
+Postgres-specific details live in the `log_attributes` map. Read a field with bracket access, keeping the full dotted key. There are no unnesting joins.
 
-**Unnesting example**
+**Field access example**
 
 ```sql
 select
   event_message,
-  parsed.<column name>
-from
-  postgres_logs
--- Unpack data stored in the 'metadata' field
-cross join unnest(metadata) AS metadata
--- After unpacking the 'metadata' field, extract the 'parsed' field from it
-cross join unnest(parsed) AS parsed;
+  log_attributes['parsed.<column name>'] as <column name>
+from logs
+where source = 'postgres_logs'
+limit 100;
 ```
 
 #### Parsed metadata fields
@@ -139448,7 +139486,7 @@ Filter by the `parsed.user_name` role to only retrieve logs made by specific rol
 ... query
 where
   -- find events from the relevant role
-  parsed.user_name = '<ROLE>'
+  log_attributes['parsed.user_name'] = '<ROLE>'
 ...
 ```
 
@@ -139460,32 +139498,30 @@ Queries from the Supabase Dashboard are executed under the `postgres` role and i
 -- find queries executed by the Dashboard
 ...query
 where
-  regexp_contains(parsed.query, '-- source: dashboard')
+  match(log_attributes['parsed.query'], '-- source: dashboard')
 ```
 
 ### Full example for finding errors
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type
+from logs
 where
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-  and parsed.user_name = 'postgres'
-  and regexp_contains(event_message, 'duration|operator')
-  and not regexp_contains(parsed.query, '<key words>')
-  and postgres_logs.timestamp between '2024-04-15 10:50:00' and '2024-04-15 10:50:27'
+  source = 'postgres_logs'
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
+  and log_attributes['parsed.user_name'] = 'postgres'
+  and match(event_message, 'duration|operator')
+  and not match(log_attributes['parsed.query'], '<key words>')
+  and timestamp between '2024-04-15 10:50:00' and '2024-04-15 10:50:27'
 order by timestamp desc
 limit 100;
 ```
@@ -139508,10 +139544,10 @@ You should take care when using the extension to not log all database events, bu
 ... query
 where
  -- all pg_audit recorded events start with 'AUDIT'
- regexp_contains(event_message, '^AUDIT')
+ match(event_message, '^AUDIT')
   and
  -- Finding queries executed from the relevant role (e.g., 'API_role')
- parsed.user_name = 'API_role'
+ log_attributes['parsed.user_name'] = 'API_role'
 ```
 
 ### Filtering by IP
@@ -139526,17 +139562,15 @@ IP tracking is most effective when consistently relying on direct database conne
 -- filter by IP
 select
   event_message,
-  connection_from as ip,
-  count(connection_from) as ip_count
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(parsed) as parsed
+  log_attributes['parsed.connection_from'] as ip,
+  count() as ip_count
+from logs
 where
-  regexp_contains(user_name, '<ROLE>')
-  and regexp_contains(backend_type, 'client backend') -- only search for connections from outside the database (excludes cron jobs)
-  and regexp_contains(event_message, '^connection authenticated') -- only view successful authentication events
-group by connection_from, event_message
+  source = 'postgres_logs'
+  and log_attributes['parsed.user_name'] = '<ROLE>'
+  and log_attributes['parsed.backend_type'] = 'client backend' -- only search for connections from outside the database (excludes cron jobs)
+  and match(event_message, '^connection authenticated') -- only view successful authentication events
+group by ip, event_message
 order by ip_count desc
 limit 100;
 ```
@@ -141436,29 +141470,27 @@ It is important to make sure you are running the latest release of pg\_cron (1.6
 
 
 
-#### Check the log explorer for more information
+#### Check the logs for more information
 
-Although `pg_cron` records errors in the `cron.job_run_details` table, in rare cases, more information can be found in the general Postgres logs. You can check the [Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer) for failure events with the following query
+Although `pg_cron` records errors in the `cron.job_run_details` table, in rare cases, more information can be found in the general Postgres logs. You can check the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs), with the query source set to **Logs**, for failure events with the following query
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type,
-  parsed.application_name
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type,
+  log_attributes['parsed.application_name'] as application_name
+from logs
 where
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-  and regexp_contains(parsed.application_name, 'pg_cron')
+  source = 'postgres_logs'
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
+  and match(log_attributes['parsed.application_name'], 'pg_cron')
 order by timestamp desc
 limit 100;
 ```
@@ -143040,9 +143072,9 @@ A 500 error in Auth typically indicates an issue with an external dependency, su
 
 ### Prerequisites
 
-#### Open the log explorer
+#### Open the SQL Editor
 
-Ensure you have access to the [Dashboard's Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer) and set the time range appropriately:
+Ensure you have access to the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs), set the query source to **Logs**, and set the time range appropriately:
 
 ![image](/docs/img/troubleshooting/152d65ad-f0ed-47cf-8dcb-1e31c6221e71.png)
 
@@ -143060,22 +143092,20 @@ Use the following SQL query to check for any recent errors the Auth server encou
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message,
-  parsed.error_severity,
-  parsed.user_name,
-  parsed.query,
-  parsed.detail,
-  parsed.hint,
-  parsed.sql_state_code,
-  parsed.backend_type
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
+  log_attributes['parsed.error_severity'] as error_severity,
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.query'] as query,
+  log_attributes['parsed.detail'] as detail,
+  log_attributes['parsed.hint'] as hint,
+  log_attributes['parsed.sql_state_code'] as sql_state_code,
+  log_attributes['parsed.backend_type'] as backend_type
+from logs
 where
-  regexp_contains(parsed.error_severity, 'ERROR|FATAL|PANIC')
-  and regexp_contains(parsed.user_name, 'supabase_auth_admin')
+  source = 'postgres_logs'
+  and log_attributes['parsed.error_severity'] in ('ERROR', 'FATAL', 'PANIC')
+  and log_attributes['parsed.user_name'] = 'supabase_auth_admin'
 order by timestamp desc
 limit 100;
 ```
@@ -143167,24 +143197,26 @@ If you made any customizations to the auth schema, such as adding RLS, modifying
 
 #### Query for Auth errors
 
-Run this SQL query in the Log Explorer to find Auth-related errors:
+Run this SQL query in the SQL Editor to find Auth-related errors:
 
 ```sql
 select
-  cast(metadata.timestamp as datetime) as timestamp,
-  msg,
+  timestamp,
+  log_attributes['msg'] as msg,
   event_message,
-  status,
-  path,
-  level
-from auth_logs
-cross join unnest(metadata) as metadata
+  log_attributes['status'] as status,
+  log_attributes['path'] as path,
+  log_attributes['level'] as level
+from logs
 where
-   -- find all errors
-   status::INT = 500
-    OR
-  regexp_contains(level, 'error|fatal')
+  source = 'auth_logs'
+  -- find all errors
+  and (
+    toInt32OrZero(log_attributes['status']) = 500
+    or log_attributes['level'] in ('error', 'fatal')
+  )
 order by timestamp
+limit 100;
 ```
 
 #### Database migration errors
@@ -144004,19 +144036,19 @@ ALTER ROLE postgres SET auto_explain.log_min_duration = '.5s';
 
 After running your test, you should be able to find the plan in the [Postgres logs](https://supabase.com/dashboard/project/_/logs/postgres-logs?s=duration:). The auto\_explain module always starts logs with the term "duration:", which can be used as a filter keyword.
 
-You can also filter for the specific function in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++cast%28postgres_logs.timestamp+as+datetime%29+as+timestamp%2C%0A++event_message+AS+query_and_plan%2C%0A++parsed.user_name%2C%0A++parsed.context%0Afrom%0A++postgres_logs%0A++cross+join+unnest%28metadata%29+as+metadata%0A++cross+join+unnest%28metadata.parsed%29+as+parsed%0Awhere%0A++regexp_contains%28event_message%2C+%27duration%3A%27%29%0A++AND%0A++regexp_contains%28context%2C+%27example_func%27%29+--%3C----ADD+FUNCTION+NAME+HERE.+IS+CASE+SENSITIVE%0Aorder+by+timestamp+desc%0Alimit+100%3B) with the below query:
+You can also filter for the specific function in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs\&content=select%0A%20%20timestamp%2C%0A%20%20event_message%20as%20query_and_plan%2C%0A%20%20log_attributes%5B%27parsed.user_name%27%5D%20as%20user_name%2C%0A%20%20log_attributes%5B%27parsed.context%27%5D%20as%20context%0Afrom%20logs%0Awhere%0A%20%20source%20%3D%20%27postgres_logs%27%0A%20%20and%20match%28event_message%2C%20%27duration%3A%27%29%0A%20%20and%20match%28log_attributes%5B%27parsed.context%27%5D%2C%20%27%28%3Fi%29FUNCTION_NAME%27%29%0Aorder%20by%20timestamp%20desc%0Alimit%20100%3B) with the below query:
 
 ```sql
 select
-  cast(postgres_logs.timestamp as datetime) as timestamp,
+  timestamp,
   event_message as query_and_plan,
-  parsed.user_name,
-  parsed.context
-from
-  postgres_logs
-  cross join unnest(metadata) as metadata
-  cross join unnest(metadata.parsed) as parsed
-where regexp_contains(event_message, 'duration:') and regexp_contains(context, '(?i)FUNCTION_NAME')
+  log_attributes['parsed.user_name'] as user_name,
+  log_attributes['parsed.context'] as context
+from logs
+where
+  source = 'postgres_logs'
+  and match(event_message, 'duration:')
+  and match(log_attributes['parsed.context'], '(?i)FUNCTION_NAME')
 order by timestamp desc
 limit 100;
 ```
@@ -145105,33 +145137,31 @@ Now you can directly match `user_id` values from the Postgres logs to the corres
 
 ## **Querying logs for specific operations**
 
-Navigate to the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer) and query `postgres_logs`. Here's an example query that searches for data-modifying operations and maps user IDs to team members:
+Navigate to the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new?skip=true\&source=logs), set the query source to **Logs**, and query `postgres_logs`. Here's an example query that searches for data-modifying operations and maps user IDs to team members:
 
 ```sql
-SELECT
-  DATETIME(postgres_logs.timestamp) AS time,
-  parsed.session_id,
-  postgres_logs.identifier,
-  parsed.user_name AS db_role,
-  CASE
-    WHEN REGEXP_CONTAINS(postgres_logs.event_message, 'f8c2e1a9-3b4d-4f7e-8c9a-1d2e3f4a5b6c')
-      THEN 'john@example.com'
-    WHEN REGEXP_CONTAINS(postgres_logs.event_message, 'insert another-uuid-here')
-      THEN 'jane@example.io'
-    ELSE 'unknown'
-  END AS detected_user,
-  parsed.error_severity,
-  postgres_logs.event_message
-FROM postgres_logs
-CROSS JOIN UNNEST(metadata) AS metadata
-CROSS JOIN UNNEST(parsed) AS parsed
-WHERE postgres_logs.timestamp > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 DAY)
-  AND (
-    REGEXP_CONTAINS(postgres_logs.event_message, '(?i)DELETE|TRUNCATE|UPDATE|ALTER|DROP')
-    OR REGEXP_CONTAINS(parsed.query, '(?i)DELETE|TRUNCATE|UPDATE|ALTER|DROP')
+select
+  timestamp as time,
+  log_attributes['parsed.session_id'] as session_id,
+  log_attributes['identifier'] as identifier,
+  log_attributes['parsed.user_name'] as db_role,
+  case
+    when match(event_message, 'f8c2e1a9-3b4d-4f7e-8c9a-1d2e3f4a5b6c') then 'john@example.com'
+    when match(event_message, 'insert another-uuid-here') then 'jane@example.io'
+    else 'unknown'
+  end as detected_user,
+  log_attributes['parsed.error_severity'] as error_severity,
+  event_message
+from logs
+where
+  source = 'postgres_logs'
+  and timestamp > now() - interval 7 day
+  and (
+    match(event_message, '(?i)DELETE|TRUNCATE|UPDATE|ALTER|DROP')
+    or match(log_attributes['parsed.query'], '(?i)DELETE|TRUNCATE|UPDATE|ALTER|DROP')
   )
-ORDER BY postgres_logs.timestamp DESC
-LIMIT 500;
+order by timestamp desc
+limit 500;
 ```
 
 This query:

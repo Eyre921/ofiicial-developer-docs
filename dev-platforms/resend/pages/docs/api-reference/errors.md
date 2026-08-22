@@ -13,7 +13,7 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 ### `invalid_idempotency_key`
 
 * **Status:** 400
-* **Message:** The key must be between 1–256 chars.
+* **Message:** Idempotency keys, if present, must have between 1 and 256 characters.
 * **Suggested action:** Retry with a valid idempotency key.
 
 ### `validation_error`
@@ -34,11 +34,29 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** This API key is restricted to only send emails.
 * **Suggested action:** Make sure the API key has `Full access` to perform actions other than sending emails.
 
-### `invalid_api_key`
+### `email_above_quota`
 
 * **Status:** 403
-* **Message:** API key is invalid.
-* **Suggested action:** Make sure the API key is correct or generate a new [API key in the dashboard](https://resend.com/api-keys).
+* **Message:** You can't retrieve this email's content because it was above quota when received.
+* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase your quota.
+
+### `invalid_permission`
+
+* **Status:** 403
+* **Message:** Access token is missing required scopes.
+* **Suggested action:** Request an access token that includes the scopes required by this endpoint.
+
+### `restricted_api_key`
+
+* **Status:** 403
+* **Message:** API key is not active
+* **Suggested action:** Check the API key on the [API Keys page](https://resend.com/api-keys) and create a new one if needed.
+
+### `suspended_api_key`
+
+* **Status:** 403
+* **Message:** This API key is suspended
+* **Suggested action:** [Contact support](https://resend.com/contact) if you believe this is a mistake.
 
 ### `validation_error`
 
@@ -70,17 +88,23 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** Method is not allowed for the requested path.
 * **Suggested action:** Change your API endpoint to use a valid method.
 
-### `invalid_idempotent_request`
-
-* **Status:** 409
-* **Message:** Same idempotency key used with a different request payload.
-* **Suggested action:** Change your idempotency key or payload.
-
 ### `concurrent_idempotent_requests`
 
 * **Status:** 409
-* **Message:** Same idempotency key used while original request is still in progress.
+* **Message:** There is another request in progress with the same idempotency key.
 * **Suggested action:** Try the request again later.
+
+### `invalid_idempotent_request`
+
+* **Status:** 409
+* **Message:** This idempotency key has been used with this HTTP method and endpoint within the last 24 hours, but the request body was modified and doesn't match the original request.
+* **Suggested action:** Change your idempotency key or payload.
+
+### `resource_locked`
+
+* **Status:** 409
+* **Message:** Another request is already updating this resource.
+* **Suggested action:** Retry the request after a short delay.
 
 ### `invalid_attachment`
 
@@ -88,29 +112,11 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** Attachment must have either a `content` or `path`.
 * **Suggested action:** Attachments must either have a `content` (strings, Buffer, or Stream contents) or `path` to a remote resource (better for larger attachments).
 
-### `invalid_from_address`
-
-* **Status:** 422
-* **Message:** Invalid `from` field.
-* **Suggested action:** Make sure the `from` field is valid. The email address needs to follow the `email@example.com` or `Name <email@example.com>` format.
-
-### `invalid_access`
-
-* **Status:** 422
-* **Message:** Access must be "full\_access" | "sending\_access".
-* **Suggested action:** Make sure the API key has necessary permissions.
-
 ### `invalid_parameter`
 
 * **Status:** 422
 * **Message:** The `parameter` must be a valid UUID.
 * **Suggested action:** Check the value and make sure it's valid.
-
-### `invalid_region`
-
-* **Status:** 422
-* **Message:** Region must be "us-east-1" | "eu-west-1" | "sa-east-1".
-* **Suggested action:** Make sure the correct region is selected.
 
 ### `missing_required_field`
 
@@ -118,29 +124,29 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** The request body is missing one or more required fields.
 * **Suggested action:** Check the error message to see the list of missing fields.
 
-### `monthly_quota_exceeded`
+### `missing_required_parameter`
 
-* **Status:** 429
-* **Message:** You have reached your monthly email quota.
-* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota. Both sent and received emails count towards this quota.
+* **Status:** 422
+* **Message:** The request is missing one or more required parameters.
+* **Suggested action:** Check the error message to see the list of missing parameters.
 
 ### `daily_quota_exceeded`
 
 * **Status:** 429
-* **Message:** You have reached your daily email quota.
+* **Message:** You have exceeded your daily email sending quota.
 * **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to remove the daily quota limit or wait until 24 hours have passed. Both sent and received emails count towards this quota.
+
+### `monthly_quota_exceeded`
+
+* **Status:** 429
+* **Message:** You have exceeded your monthly email sending quota.
+* **Suggested action:** [Upgrade your plan](https://resend.com/settings/billing) to increase the monthly email quota. Both sent and received emails count towards this quota.
 
 ### `rate_limit_exceeded`
 
 * **Status:** 429
 * **Message:** Too many requests. Please limit the number of requests per second. Or [contact support](https://resend.com/contact) to increase rate limit.
-* **Suggested action:** Read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
-
-### `security_error`
-
-* **Status:** 451
-* **Message:** A possible security issue was found with the request.
-* **Suggested action:** The message will contain more details. [Contact support](https://resend.com/contact) for more information.
+* **Suggested action:** Read the [response headers](/docs/api-reference/introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
 
 ### `application_error`
 
@@ -148,8 +154,8 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** An unexpected error occurred.
 * **Suggested action:** Try the request again later. If the error does not resolve, check our [status page](https://resend-status.com) for service updates.
 
-### `internal_server_error`
+### `service_unavailable`
 
-* **Status:** 500
-* **Message:** An unexpected error occurred.
-* **Suggested action:** Try the request again later. If the error does not resolve, check our [status page](https://resend-status.com) for service updates.
+* **Status:** 503
+* **Message:** API is temporarily unavailable
+* **Suggested action:** Try the request again later. Check our [status page](https://resend-status.com) for service updates.

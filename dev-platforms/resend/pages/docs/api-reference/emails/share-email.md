@@ -21,6 +21,123 @@ Create a shareable link to view a sent or received email.
 </ResendParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.emails.share(
+    '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
+    { expiresIn: '2 hours' },
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->emails->share('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', [
+    'expires_in' => '2 hours'
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  share_params: resend.Emails.ShareParams = {
+    "expires_in": "2 hours"
+  }
+
+  resend.Emails.share(
+    email_id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    params=share_params
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Emails.share(
+    "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+    expires_in: "2 hours"
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	shareParams := &resend.ShareEmailRequest{
+  		ExpiresIn: "2 hours",
+  	}
+
+  	shared, err := client.Emails.Share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", shareParams)
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Println(shared.Url)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::ShareEmailOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let share = ShareEmailOptions::new()
+      .with_expires_in("2 hours");
+
+    let _shared = resend
+      .emails
+      .share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", share)
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ShareEmailOptions shareParams = ShareEmailOptions.builder()
+                  .expiresIn("2 hours")
+                  .build();
+
+          ShareEmailResponse data = resend
+            .emails()
+            .share("49a3999c-0ce1-4ea6-ab68-afcd6dc2e794", shareParams);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  await resend.EmailShareAsync(
+      new Guid( "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" ),
+      "2 hours" );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/emails/49a3999c-0ce1-4ea6-ab68-afcd6dc2e794/share' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
@@ -28,6 +145,11 @@ Create a shareable link to view a sent or received email.
        -d $'{
     "expires_in": "2 hours"
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails share 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 \
+    --expires-in "2 hours"
   ```
 </RequestExample>
 

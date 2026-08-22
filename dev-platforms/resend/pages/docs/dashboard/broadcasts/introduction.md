@@ -132,19 +132,19 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 See how to use Resend's Broadcast features.
 
 <CardGroup>
-  <Card title="No-code editor" icon="pen-line" href="/dashboard/broadcasts/editor" />
+  <Card title="No-code editor" icon="pen-line" href="/docs/dashboard/broadcasts/editor" />
 
-  <Card title="Send with API" icon="paper-plane-top" href="/dashboard/broadcasts/send-broadcast-with-api" />
+  <Card title="Send with API" icon="paper-plane-top" href="/docs/dashboard/broadcasts/send-broadcast-with-api" />
 
-  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/dashboard/broadcasts/manage-broadcasts" />
+  <Card title="Manage Broadcasts" icon="envelopes-bulk" href="/docs/dashboard/broadcasts/manage-broadcasts" />
 
-  <Card title="Contacts" icon="id-card" href="/dashboard/audiences/contacts" />
+  <Card title="Contacts" icon="id-card" href="/docs/dashboard/audiences/contacts" />
 
-  <Card title="Segments" icon="chart-pie" href="/dashboard/segments/introduction" />
+  <Card title="Segments" icon="chart-pie" href="/docs/dashboard/segments/introduction" />
 
-  <Card title="Topics" icon="hashtag" href="/dashboard/topics/introduction" />
+  <Card title="Topics" icon="hashtag" href="/docs/dashboard/topics/introduction" />
 
-  <Card title="Track performance" icon="chart-column" href="/dashboard/broadcasts/performance-tracking" />
+  <Card title="Track performance" icon="chart-column" href="/docs/dashboard/broadcasts/performance-tracking" />
 
-  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/dashboard/audiences/managing-unsubscribe-list" />
+  <Card title="Handle unsubscribes" icon="right-to-bracket" href="/docs/dashboard/audiences/managing-unsubscribe-list" />
 </CardGroup>

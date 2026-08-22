@@ -25,10 +25,10 @@ Yahoo splits its rules into requirements for **all senders** and additional requ
 
 Authentication is the foundation of every other requirement on this page. Yahoo requires all senders to authenticate with SPF or DKIM at a minimum, and bulk senders to implement both alongside a valid DMARC policy.
 
-| Authentication                    | Requires Setup | Yahoo's Requirement                                                             |
-| --------------------------------- | -------------- | ------------------------------------------------------------------------------- |
-| **SPF**                           | No             | Required for all senders (with DKIM, or on its own)                             |
-| **DKIM**                          | No             | Required for all senders (with SPF, or on its own). Minimum 1024-bit key length |
+| Authentication                         | Requires Setup | Yahoo's Requirement                                                             |
+| -------------------------------------- | -------------- | ------------------------------------------------------------------------------- |
+| **SPF**                                | No             | Required for all senders (with DKIM, or on its own)                             |
+| **DKIM**                               | No             | Required for all senders (with SPF, or on its own). Minimum 1024-bit key length |
 | [DMARC](/docs/dashboard/domains/dmarc) | Yes            | Required for bulk senders. At least `p=none`, and DMARC must pass               |
 
 A few Yahoo-specific details worth knowing:

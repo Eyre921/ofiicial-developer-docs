@@ -19,7 +19,7 @@ Navigate to your Wix site, sign in and open the settings page for the page you w
 
 Click the "+" symbol at the top of your content and select "HTML Code" from the menu.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f9626bac119a2647568eac68a7f47877c5590a0f9d40bb77d7d34288d82852c/assets/images/product-guides/audio-native/audio-native-wix-1.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113355Z&X-Amz-Expires=604800&X-Amz-Signature=a95aa72d7dfdcf41f2f0caabc96fc72cc16dcccc23e0f93e96db37a2926e2a9e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f9626bac119a2647568eac68a7f47877c5590a0f9d40bb77d7d34288d82852c/assets/images/product-guides/audio-native/audio-native-wix-1.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233210Z&X-Amz-Expires=604800&X-Amz-Signature=94b26cdb3d535a50934fbee4a08c56c959d20e4b5f3cbdcab3fce00968d0abcf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
 
 Paste the Audio Native embed code into the HTML box and click "Save".
 
@@ -39,7 +39,7 @@ Paste the Audio Native embed code into the HTML box and click "Save".
     <script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 ```
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/719f1f2d8f01aa94ea6550fc62666ec4c4dac024e3f26a8eed925de0f8c54e3d/assets/images/product-guides/audio-native/audio-native-wix-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113355Z&X-Amz-Expires=604800&X-Amz-Signature=60b06f7c32ff4d80cc2e8a3394ca9fc89da9ec8cb527428ddfc0c6b800a691e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/719f1f2d8f01aa94ea6550fc62666ec4c4dac024e3f26a8eed925de0f8c54e3d/assets/images/product-guides/audio-native/audio-native-wix-2.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233210Z&X-Amz-Expires=604800&X-Amz-Signature=7db174b395292181dcc27d71f85daa3ef529927a65c1bc7b1ab2276f40ff14dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
 
 #### Publish the page
 
@@ -49,4 +49,4 @@ Click the "Publish" button in the top right corner of the editor.
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4bf9e321cac2007f1cf570410dc2e6a610fe209acad0c0caca4a049484e7ff22/assets/images/product-guides/audio-native/audio-native-wix-3.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113355Z&X-Amz-Expires=604800&X-Amz-Signature=955318a4f899361f5ffa0f24e8761720c323f7ae9cf54ee53f4be1ca4b33ecbe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4bf9e321cac2007f1cf570410dc2e6a610fe209acad0c0caca4a049484e7ff22/assets/images/product-guides/audio-native/audio-native-wix-3.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T233210Z&X-Amz-Expires=604800&X-Amz-Signature=43726a6fbe155e3916ee0a0495ea01dbab8aaed4d6c90430b2965878c3993eab&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />

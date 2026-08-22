@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 116 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 122 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -106,11 +106,17 @@
 
 - `platforms/android` — [Android](pages/platforms/android.md) · [原文](https://docs.sentry.io/platforms/android.md)
 - `platforms/apple` — [Apple](pages/platforms/apple.md) · [原文](https://docs.sentry.io/platforms/apple.md)
+- `platforms/dart` — [Dart](pages/platforms/dart.md) · [原文](https://docs.sentry.io/platforms/dart.md)
 - `platforms/dotnet` — [.NET](pages/platforms/dotnet.md) · [原文](https://docs.sentry.io/platforms/dotnet.md)
 - `platforms/elixir` — [Elixir](pages/platforms/elixir.md) · [原文](https://docs.sentry.io/platforms/elixir.md)
+- `platforms/go` — [Go](pages/platforms/go.md) · [原文](https://docs.sentry.io/platforms/go.md)
+- `platforms/godot` — [Godot Engine](pages/platforms/godot.md) · [原文](https://docs.sentry.io/platforms/godot.md)
 - `platforms/java` — [Java](pages/platforms/java.md) · [原文](https://docs.sentry.io/platforms/java.md)
 - `platforms/javascript` — [JavaScript](pages/platforms/javascript.md) · [原文](https://docs.sentry.io/platforms/javascript.md)
+- `platforms/kotlin` — [Kotlin](pages/platforms/kotlin.md) · [原文](https://docs.sentry.io/platforms/kotlin.md)
+- `platforms/native` — [Native](pages/platforms/native.md) · [原文](https://docs.sentry.io/platforms/native.md)
 - `platforms/nintendo-switch` — [Nintendo Switch](pages/platforms/nintendo-switch.md) · [原文](https://docs.sentry.io/platforms/nintendo-switch.md)
+- `platforms/php` — [PHP](pages/platforms/php.md) · [原文](https://docs.sentry.io/platforms/php.md)
 - `platforms/playstation` — [PlayStation](pages/platforms/playstation.md) · [原文](https://docs.sentry.io/platforms/playstation.md)
 - `platforms/powershell` — [PowerShell](pages/platforms/powershell.md) · [原文](https://docs.sentry.io/platforms/powershell.md)
 - `platforms/python` — [Python](pages/platforms/python.md) · [原文](https://docs.sentry.io/platforms/python.md)

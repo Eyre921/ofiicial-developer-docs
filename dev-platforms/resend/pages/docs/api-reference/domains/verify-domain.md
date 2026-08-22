@@ -20,7 +20,7 @@ Verify an existing domain.
   **Claimed a domain?** A [domain claim](/docs/dashboard/domains/claim) transfers the
   domain into your account as a brand-new domain with its own DKIM keys, so the
   previous account's DNS records can't be reused. After the claim is
-  `completed`, fetch the domain with [Get
+  `completed`, fetch the domain with [Retrieve
   Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
   record(s) it returns, then call this endpoint to verify it before sending or
   receiving email. See [DKIM

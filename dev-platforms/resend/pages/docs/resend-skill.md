@@ -29,7 +29,7 @@ Build with our official recommendations for sending emails with Resend.
 ## Learn More
 
 <CardGroup>
-  <Card title="Agent Email Inbox" icon="inbox" href="/agent-email-inbox-skill">
+  <Card title="Agent Email Inbox" icon="inbox" href="/docs/agent-email-inbox-skill">
     Give your agent a secure inbox to receive and act on inbound emails.
   </Card>
 

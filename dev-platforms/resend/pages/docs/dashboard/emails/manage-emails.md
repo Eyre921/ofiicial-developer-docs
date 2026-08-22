@@ -53,6 +53,8 @@ Anyone with the link can view the email without authenticating for 48 hours.
 
 <img alt="Email - Share Link Item" />
 
+You can also create share links programmatically using the [Share Email API](/docs/api-reference/emails/share-email).
+
 ## See associated logs
 
 Check all the logs associated with an email to help you troubleshoot any issues with the request itself.

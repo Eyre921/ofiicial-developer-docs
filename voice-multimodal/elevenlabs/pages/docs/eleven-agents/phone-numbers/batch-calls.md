@@ -52,7 +52,7 @@ ElevenAgents dashboard
 
 Click on the "Create a batch call" button. This will open the "Create a batch call" page.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/defec00e1f267346775021283bdc6038cfabcd27427dffb7cd7e5cd9382b53e0/assets/images/conversational-ai/batch-call-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113442Z&X-Amz-Expires=604800&X-Amz-Signature=a91ec8ebe4968d03e7cbc34ae4f232cf7ad9d58b78842e5af6e7c3becd17de0c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Create a batch call page showing fields for batch name, phone number, agent selection, recipient upload, and timing options." />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/defec00e1f267346775021283bdc6038cfabcd27427dffb7cd7e5cd9382b53e0/assets/images/conversational-ai/batch-call-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T224605Z&X-Amz-Expires=604800&X-Amz-Signature=e530d0ec1892fa6d020e7562ed935abacefd02cee8769832d48dbe7f10fc5278&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Create a batch call page showing fields for batch name, phone number, agent selection, recipient upload, and timing options." />
 
 #### Configure batch details
 
@@ -99,13 +99,13 @@ Once a batch call is created, you can monitor its progress and view its details.
 
 The Batch Calling overview page displays a list of all your batch calls.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a371de67085f7c63765a90dacbe2ba50b6d5cb8544cb8554233d9a39567b0994/assets/images/conversational-ai/batch-call-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113442Z&X-Amz-Expires=604800&X-Amz-Signature=8ae9b91b4f6e0106dfa3e49d996c2c2d904229ace347e6cdcc35172a43adbf16&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Batch Calling overview page listing several batch calls with their status, recipient count, and progress." />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a371de67085f7c63765a90dacbe2ba50b6d5cb8544cb8554233d9a39567b0994/assets/images/conversational-ai/batch-call-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T224605Z&X-Amz-Expires=604800&X-Amz-Signature=48ca94a331725c3df07d5cd12169b99b9c63e1e8e618b54a34a393f04f8f5a75&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Batch Calling overview page listing several batch calls with their status, recipient count, and progress." />
 
 ### Viewing batch call details
 
 Clicking on a specific batch call from the overview page will take you to its detailed view, from where you can view individual conversations.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a9ef3ded53870849fea0c86bc9ddf9ae43ca86ba98199b988370a67d11a447ee/assets/images/conversational-ai/batch-call-completed-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T113442Z&X-Amz-Expires=604800&X-Amz-Signature=1a51053b6cda3ff2ad14ccee0e99e27951f6e55457444ce1a419a6be76a6a416&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Batch call details page showing a summary (status, total recipients, started, progress) and a list of call recipients with phone number, dynamic variables, and status." />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a9ef3ded53870849fea0c86bc9ddf9ae43ca86ba98199b988370a67d11a447ee/assets/images/conversational-ai/batch-call-completed-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260822%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260822T224605Z&X-Amz-Expires=604800&X-Amz-Signature=18b27612c3c24b0eba819636f442c4b8076a8a86e07390a94a9c4ed8af7b531e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Batch call details page showing a summary (status, total recipients, started, progress) and a list of call recipients with phone number, dynamic variables, and status." />
 
 ## API Usage
 

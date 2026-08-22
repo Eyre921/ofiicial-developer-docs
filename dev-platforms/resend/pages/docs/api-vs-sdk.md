@@ -44,19 +44,19 @@ If you do call the API directly, remember to set the required
 ## Next steps
 
 <CardGroup>
-  <Card title="Official SDKs" icon="cube" href="/sdks">
+  <Card title="Official SDKs" icon="cube" href="/docs/sdks">
     Install the SDK for your language.
   </Card>
 
-  <Card title="Quickstart" icon="rocket" href="/introduction">
+  <Card title="Quickstart" icon="rocket" href="/docs/introduction">
     Send your first email in minutes.
   </Card>
 
-  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+  <Card title="API Reference" icon="code" href="/docs/api-reference/introduction">
     Full HTTP API documentation.
   </Card>
 
-  <Card title="MCP Server" icon="robot" href="/mcp-server">
+  <Card title="MCP Server" icon="robot" href="/docs/mcp-server">
     Give your AI agent access to Resend.
   </Card>
 </CardGroup>
