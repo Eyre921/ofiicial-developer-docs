@@ -67860,69 +67860,313 @@ Description: Use keep-alive connections to minimize latency
 
 # Summary
 
-A common enhacement to minimize latency for http calls is to make use of a keep alive connection. This prevents a
+A common enhancement to minimize latency for http calls is to make use of a keep-alive connection. This prevents a
 lot of the back and forth chatter between the server and your client and reduces latency on subsequent calls.
-The further your distance to the server, the more significant the improvement. Read more about this topic by
-searching "keep alive connections".
+The further your distance to the server, the more significant the improvement.
+
+Keep-alive is a fundamental HTTP optimization, and it matters because of how connections are established. Every new
+HTTPS connection has to complete a TCP handshake and then a TLS handshake before your request can even be sent —
+several round trips to the server in total. That setup cost is pure added latency on every call that opens a fresh
+connection. With keep-alive, your HTTP client keeps the connection open after a response and reuses it for the next
+request, skipping the connection setup entirely. (Servers still close connections that sit idle too long, but for
+back-to-back requests you get the reuse for free.)
 
 ## How to do this
 
-We can't go over every possible library/language combination, so the high level recommendation is to lookup
-"set keep alive connection in insert lang/lib".
+The mechanism is similar across languages and libraries: create **one** HTTP client (or session) and reuse it for every request, so the underlying TCP/TLS connection is pooled and reused instead of being re-established on every call.
+Some libraries may require you to explicitly set a keep-alive connection. In most languages/libraries, creating a new
+client per request defeats keep-alive even if the client's default settings otherwise support it.
 
-The some common cases:
+Some notes on common defaults:
 
-* Python requests use `session = requests.Session()`
-* The OpenAI sdk does this by default
-* JavaScript fetch set `fetch(url, {keepalive: true})`
-* Golang net/http does this by default
+* **Python `requests`** — doesn't pool connections unless you create a `requests.Session()` and reuse the session object across calls.
+* **Python `httpx`** — pools connections by default, as long as you reuse the same `httpx.Client()`.
+* **OpenAI SDK** — built on `httpx`, so it pools connections by default when you reuse one client instance.
+* **Node.js `fetch`** (undici) — pools connections by default; create a custom `Agent` if you want to tune pool size or keep-alive timeouts.
+* **Go `net/http`** — keep-alives are on by default, but only help if you reuse the same `http.Client`/`Transport` — a fresh `http.Client{}` per request still pays the handshake every time.
+* **Java** — both `java.net.http.HttpClient` and OkHttp pool connections by default when the same client instance is reused across calls.
 
-```python {11}
-import requests
+When architecting your code, create the client once at startup and share that single instance everywhere — either as
+a singleton (one global instance the whole app uses) or via dependency injection (the shared client is passed in to
+the code that needs it). Both patterns guarantee you never accidentally create a new client per request. If you are
+using LLM agents to set up your code for LLM Gateway, you can use the following instructions:
 
-headers = {
-  "authorization": "<YOUR_API_KEY>"
-}
+```
+Write code that calls the AssemblyAI LLM Gateway using keep-alive connections.
 
-# sets the keep alive connection
-session = requests.Session()
+Requirements:
+- Create exactly one shared HTTP client (a singleton) and reuse it for every request. Never create a new client per request.
+- Base URL: https://llm-gateway.assemblyai.com/v1 — send chat requests to POST /chat/completions.
+- Set the "authorization" header to my AssemblyAI API key, read from the ASSEMBLYAI_API_KEY environment variable.
+- Include a small example function that sends a chat message and returns the response text.
 
-response = session.post(
-    "https://llm-gateway.assemblyai.com/v1/chat/completions",
-    headers = headers,
-    json = {
-        "model": "claude-sonnet-4-6",
-        "messages": [
-            {"role": "user", "content": "What is the capital of France?"}
-        ],
-        "max_tokens": 1000
-    }
-)
+Docs for reference: https://www.assemblyai.com/docs/llm-gateway/quickstart
 
-result = response.json()
-print(result["choices"][0]["message"]["content"])
+Write the code in Python using httpx.
 ```
 
-```javascript {10}
-const response = await fetch(
-  "https://llm-gateway.assemblyai.com/v1/chat/completions",
-  {
-    keepalive: true, // sets the keep alive connection
-    method: "POST",
-    headers: {
-      authorization: "<YOUR_API_KEY>",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      messages: [{ role: "user", content: "What is the capital of France?" }],
-      max_tokens: 1000,
-    }),
-  }
-);
+You can replace the last line's `Python` and `httpx` with your applicable language/library.
 
-const result = await response.json();
-console.log(result.choices[0].message.content);
+### Simple examples
+
+Below are concrete, copy-pasteable examples for common languages and libraries. Each one builds a single client and sends two requests through it — subsequent requests reuse pooled connections instead of opening new ones.
+
+```python title="requests"
+import requests
+
+# Create the Session once and reuse it for every request — this is
+# what pools and reuses the underlying TCP/TLS connection.
+session = requests.Session()
+session.headers.update({"authorization": "<YOUR_API_KEY>"})
+
+def ask(question):
+    response = session.post(
+        "https://llm-gateway.assemblyai.com/v1/chat/completions",
+        json={
+            "model": "claude-sonnet-4-6",
+            "messages": [{"role": "user", "content": question}],
+            "max_tokens": 1000,
+        },
+    )
+    return response.json()["choices"][0]["message"]["content"]
+
+# Both calls reuse `session` -> the second call reuses the pooled connection.
+print(ask("What is the capital of France?"))
+print(ask("What is the capital of Germany?"))
+```
+
+```python title="httpx"
+import httpx
+
+# httpx.Client pools connections by default. Tune `limits` if you're
+# making many concurrent or sequential requests.
+client = httpx.Client(
+    headers={"authorization": "<YOUR_API_KEY>"},
+    limits=httpx.Limits(max_keepalive_connections=20, max_connections=100),
+)
+
+def ask(question):
+    response = client.post(
+        "https://llm-gateway.assemblyai.com/v1/chat/completions",
+        json={
+            "model": "claude-sonnet-4-6",
+            "messages": [{"role": "user", "content": question}],
+            "max_tokens": 1000,
+        },
+    )
+    return response.json()["choices"][0]["message"]["content"]
+
+print(ask("What is the capital of France?"))
+print(ask("What is the capital of Germany?"))
+```
+
+```javascript title="fetch (undici)"
+import { Agent, fetch } from "undici";
+
+// A single Agent pools and reuses connections across every fetch call
+// that uses it. Node's global fetch already pools connections by
+// default -- create a custom Agent when you want to tune pool size or
+// keep-alive timeouts.
+const agent = new Agent({ keepAliveTimeout: 30_000, connections: 10 });
+
+async function ask(question) {
+  const response = await fetch(
+    "https://llm-gateway.assemblyai.com/v1/chat/completions",
+    {
+      method: "POST",
+      dispatcher: agent,
+      headers: {
+        authorization: "<YOUR_API_KEY>",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        messages: [{ role: "user", content: question }],
+        max_tokens: 1000,
+      }),
+    }
+  );
+  const result = await response.json();
+  return result.choices[0].message.content;
+}
+
+// Both calls share `agent`, so sockets are pooled and reused across subsequent calls.
+console.log(await ask("What is the capital of France?"));
+console.log(await ask("What is the capital of Germany?"));
+```
+
+```javascript title="axios"
+import axios from "axios";
+import { Agent as HttpsAgent } from "node:https";
+
+// Reusing one Axios instance (backed by one Agent) is what lets later
+// requests reuse the pooled connection instead of opening a new
+// socket per call.
+const client = axios.create({
+  baseURL: "https://llm-gateway.assemblyai.com/v1",
+  httpsAgent: new HttpsAgent({ keepAlive: true, maxSockets: 10 }),
+  headers: { authorization: "<YOUR_API_KEY>" },
+});
+
+async function ask(question) {
+  const { data } = await client.post("/chat/completions", {
+    model: "claude-sonnet-4-6",
+    messages: [{ role: "user", content: question }],
+    max_tokens: 1000,
+  });
+  return data.choices[0].message.content;
+}
+
+console.log(await ask("What is the capital of France?"));
+console.log(await ask("What is the capital of Germany?"));
+```
+
+  Both examples work as-is in TypeScript — add types for the response shape if you want them.
+
+```go title="Go"
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
+)
+
+// Build one http.Client (and Transport) and share it across every
+// request -- that's what lets connections be pooled and reused.
+// Keep-alives are on by default; MaxIdleConnsPerHost controls how
+// many idle connections per host stay open for reuse.
+var client = &http.Client{
+	Timeout: 30 * time.Second,
+	Transport: &http.Transport{
+		MaxIdleConnsPerHost: 10,
+		IdleConnTimeout:     90 * time.Second,
+	},
+}
+
+func ask(question string) (string, error) {
+	payload, _ := json.Marshal(map[string]any{
+		"model":      "claude-sonnet-4-6",
+		"messages":   []map[string]string{{"role": "user", "content": question}},
+		"max_tokens": 1000,
+	})
+
+	req, err := http.NewRequest(
+		"POST",
+		"https://llm-gateway.assemblyai.com/v1/chat/completions",
+		bytes.NewReader(payload),
+	)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("authorization", "<YOUR_API_KEY>")
+	req.Header.Set("content-type", "application/json")
+
+	resp, err := client.Do(req) // reuses the pooled connection
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	var result struct {
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return "", err
+	}
+	return result.Choices[0].Message.Content, nil
+}
+
+func main() {
+	// Both calls reuse `client` -> the second call reuses the pooled connection.
+	first, _ := ask("What is the capital of France?")
+	second, _ := ask("What is the capital of Germany?")
+	fmt.Println(first)
+	fmt.Println(second)
+}
+```
+
+```java title="java.net.http"
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class LlmGatewayClient {
+
+    // Build one HttpClient and share it -- it owns the connection
+    // pool, and reusing it (instead of calling HttpClient.newHttpClient()
+    // per request) is what keeps connections alive between requests.
+    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+
+    static String ask(String question) throws Exception {
+        String body = """
+            {"model":"claude-sonnet-4-6","messages":[{"role":"user","content":"%s"}],"max_tokens":1000}
+            """.formatted(question);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://llm-gateway.assemblyai.com/v1/chat/completions"))
+                .header("authorization", "<YOUR_API_KEY>")
+                .header("content-type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
+
+        // Reusing CLIENT keeps the underlying connection alive between requests.
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(ask("What is the capital of France?"));
+        System.out.println(ask("What is the capital of Germany?"));
+    }
+}
+```
+
+```java title="OkHttp"
+import okhttp3.*;
+
+import java.util.concurrent.TimeUnit;
+
+public class LlmGatewayClient {
+
+    private static final MediaType JSON = MediaType.get("application/json");
+
+    // OkHttpClient owns a ConnectionPool. Build one instance (e.g. as
+    // a static field) and share it across every call -- creating a
+    // new OkHttpClient per request opens a new pool and a new connection.
+    private static final OkHttpClient CLIENT = new OkHttpClient.Builder()
+            .connectionPool(new ConnectionPool(10, 5, TimeUnit.MINUTES))
+            .build();
+
+    static String ask(String question) throws Exception {
+        String json = "{\"model\":\"claude-sonnet-4-6\",\"messages\":[{\"role\":\"user\",\"content\":\""
+                + question + "\"}],\"max_tokens\":1000}";
+
+        Request request = new Request.Builder()
+                .url("https://llm-gateway.assemblyai.com/v1/chat/completions")
+                .addHeader("authorization", "<YOUR_API_KEY>")
+                .post(RequestBody.create(json, JSON))
+                .build();
+
+        // Reusing CLIENT is what lets OkHttp pull a pooled connection
+        // instead of opening a new one.
+        try (Response response = CLIENT.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(ask("What is the capital of France?"));
+        System.out.println(ask("What is the capital of Germany?"));
+    }
+}
 ```
 
 ---
