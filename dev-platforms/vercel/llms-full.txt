@@ -20812,16 +20812,24 @@ AI Gateway works with [AI SDK v5 and v6](/docs/ai-gateway/getting-started), [Ope
 
 --------------------------------------------------------------------------------
 title: "AI Gateway Discounts"
-description: "Volume discounts on AI Gateway token spend, with zero-fee ACH payments for volume customers."
+description: "Discounts on AI Gateway token spend: models already priced below list for every team, plus custom volume discounts with zero-fee ACH payments."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/ai-gateway/pricing/discounts"
 --------------------------------------------------------------------------------
 
 # AI Gateway Discounts
 
-Custom discounts on token spend are available on [AI Gateway](/docs/ai-gateway) for volume commitments starting at six figures. Discounts vary by model and spend. Volume customers can also pay by ACH, which has no payment processing fees.
+Discounts on [AI Gateway](/docs/ai-gateway) token spend come in two forms: models that are already priced below the provider's list price for every team, and [negotiated custom discounts](#volume-discounts).
 
-For more information, [contact our sales team](/contact/sales?content=I%27m%20interested%20in%20AI%20Gateway%20volume%20discounts) or [send us a DM on X](https://x.com/hp_arora).
+## Discounted models
+
+AI Gateway frequently offers models that cost less through AI Gateway than the provider's list price. These discounts apply automatically to all users when using the respective model-slug. [Browse the discounted models](/ai-gateway/models?discount=true) to see which models are discounted today.
+
+## Volume discounts
+
+Custom discounts on token spend are available on [AI Gateway](/docs/ai-gateway) for volume commitments. Discounts vary by model and spend. Volume customers can also pay by invoice, which has no payment processing fees.
+
+For more information, [contact our sales team](/contact/sales?content=I%27m%20interested%20in%20AI%20Gateway%20volume%20discounts) or email <ai-gateway@vercel.com>.
 
 For standard pay-as-you-go rates, see [AI Gateway pricing](/docs/ai-gateway/pricing).
 

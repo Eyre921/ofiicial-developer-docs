@@ -243,9 +243,7 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
 
-<h2>
-  Weight sync
-</h2>
+## Weight sync
 
 During RL training the inference deployment needs updated weights after each optimizer step. Cookbook recipes wire this through a shared bucket (trainer writes, deployment hot-loads).
 
@@ -253,9 +251,7 @@ For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference]
 
 See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
 
-<h2>
-  Checkpoints and resume
-</h2>
+## Checkpoints and resume
 
 Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. Rerun with the same `log_path` to resume.
 

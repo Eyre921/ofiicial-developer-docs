@@ -27,9 +27,7 @@ Use the Python SDK directly when you need full control over Training API behavio
 | **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
 | **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
 
-<h2>
-  Choose infrastructure
-</h2>
+## Choose infrastructure
 
 After choosing the Training API, decide how compute is provided:
 

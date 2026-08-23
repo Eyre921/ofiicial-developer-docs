@@ -6,8 +6,6 @@ path: guides/quotas_usage/account-quotas
 
 Account-wide request limits, spending tiers, spend limits, and on-demand GPU quotas
 
-<a />
-
 Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, monthly spend limits, on-demand GPU quotas, and account-wide request limits.
 
 For serverless TPM and adaptive limits, see [Serverless rate limits](/serverless/rate-limits).

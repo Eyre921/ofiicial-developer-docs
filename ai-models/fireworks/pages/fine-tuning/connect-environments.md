@@ -471,9 +471,7 @@ Learn by example:
   </Card>
 </CardGroup>
 
-<h2>
-  Agent tracing
-</h2>
+## Agent tracing
 
 Remote RFT needs **correlated traces** so the trainer can join rollouts, tool calls, and rewards. Your environment receives `model_base_url` (OpenAI-compatible, on `tracing.fireworks.ai`) and correlation IDs in `/init`.
 

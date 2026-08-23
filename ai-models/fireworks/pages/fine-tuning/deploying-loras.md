@@ -319,9 +319,7 @@ To reproduce this locally, merge in BF16 first, then quantize the merged weights
   **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
 </Warning>
 
-<h2>
-  LoRA performance
-</h2>
+## LoRA performance
 
 ### Why multi-LoRA can feel slower than the base model
 

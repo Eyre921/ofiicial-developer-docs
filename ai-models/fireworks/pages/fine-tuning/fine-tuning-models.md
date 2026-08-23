@@ -301,8 +301,6 @@ This creates a dedicated deployment with performance matching the base model.
   guide](/fine-tuning/deploying-loras).
 </Tip>
 
-<a />
-
 ## Additional managed fine-tuning job settings
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
@@ -518,9 +516,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 * `firectl` [references](/tools-sdks/firectl/firectl)
 * [Complete Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py) for a code-only implementation
 
-<h2>
-  Vision fine-tuning
-</h2>
+## Vision fine-tuning
 
 Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
 
@@ -557,9 +553,7 @@ Multiple images and multi-turn conversations use the same content-array shape. K
 
 For Training API VLM loops, use a VLM-compatible training shape and the model's processor rather than a text-only tokenizer. The same Training API primitives support multimodal SFT, DPO, and RL datums. Start from the relevant cookbook recipe and verify processor output and loss masks before launch. Shape details: [Training Shapes](/fine-tuning/models#vision-and-multimodal-support).
 
-<h2>
-  Debug SFT tokenization
-</h2>
+## Debug SFT tokenization
 
 If the model learns the wrong text or ignores assistant turns, the training renderer may not match inference tokenization.
 

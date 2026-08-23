@@ -74,9 +74,7 @@ The trainer and inference deployment are separate resources with separate billin
   </Card>
 </CardGroup>
 
-<h2>
-  Dedicated training quickstart
-</h2>
+## Dedicated training quickstart
 
 ### Step 1: Install the SDK and cookbook
 
@@ -114,9 +112,7 @@ Choose a shape from [Models](/fine-tuning/models). Pass the full shared shape ID
 
 Follow the forked recipe. Record trainer and deployment IDs, checkpoint cadence, and cleanup flags before launch.
 
-<h2>
-  Training and sampling lifecycle
-</h2>
+## Training and sampling lifecycle
 
 Dedicated recipes use two independently billed resources:
 
@@ -130,9 +126,7 @@ Keep stable trainer and deployment IDs so retries reconnect instead of provision
 
 Serverless and dedicated sampling use the same `DeploymentSampler` request contract. See [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for SDK-specific batching behavior, and use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical session-affinity reference.
 
-<h2>
-  Loss functions
-</h2>
+## Loss functions
 
 | Need                   | Start from                                                             |
 | ---------------------- | ---------------------------------------------------------------------- |
@@ -143,9 +137,7 @@ Serverless and dedicated sampling use the same `DeploymentSampler` request contr
 
 Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
-<h2>
-  Saving and loading
-</h2>
+## Saving and loading
 
 Dedicated training has three distinct checkpoint purposes:
 

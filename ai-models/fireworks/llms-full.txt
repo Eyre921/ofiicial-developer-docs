@@ -7893,9 +7893,7 @@ Learn by example:
   </Card>
 </CardGroup>
 
-<h2>
-  Agent tracing
-</h2>
+## Agent tracing
 
 Remote RFT needs **correlated traces** so the trainer can join rollouts, tool calls, and rewards. Your environment receives `model_base_url` (OpenAI-compatible, on `tracing.fireworks.ai`) and correlation IDs in `/init`.
 
@@ -8248,9 +8246,7 @@ To reproduce this locally, merge in BF16 first, then quantize the merged weights
   **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
 </Warning>
 
-<h2>
-  LoRA performance
-</h2>
+## LoRA performance
 
 ### Why multi-LoRA can feel slower than the base model
 
@@ -8922,8 +8918,6 @@ This creates a dedicated deployment with performance matching the base model.
   guide](/fine-tuning/deploying-loras).
 </Tip>
 
-<a />
-
 ## Additional managed fine-tuning job settings
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
@@ -9139,9 +9133,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 * `firectl` [references](/tools-sdks/firectl/firectl)
 * [Complete Python SDK workflow example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py) for a code-only implementation
 
-<h2>
-  Vision fine-tuning
-</h2>
+## Vision fine-tuning
 
 Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
 
@@ -9178,9 +9170,7 @@ Multiple images and multi-turn conversations use the same content-array shape. K
 
 For Training API VLM loops, use a VLM-compatible training shape and the model's processor rather than a text-only tokenizer. The same Training API primitives support multimodal SFT, DPO, and RL datums. Start from the relevant cookbook recipe and verify processor output and loss masks before launch. Shape details: [Training Shapes](/fine-tuning/models#vision-and-multimodal-support).
 
-<h2>
-  Debug SFT tokenization
-</h2>
+## Debug SFT tokenization
 
 If the model learns the wrong text or ignores assistant turns, the training renderer may not match inference tokenization.
 
@@ -9225,9 +9215,7 @@ Fine-tuning is worth it when you want:
   **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
 </Info>
 
-<h2>
-  Choose a method
-</h2>
+## Choose a method
 
 Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
@@ -9245,9 +9233,7 @@ Pick a method based on the data or signal you have. All three run as standard jo
 
 The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) for model support and pricing.
 
-<h2>
-  Choose a surface
-</h2>
+## Choose a surface
 
 Pick a **surface** (managed or Training API, serverless or dedicated). The surface decides how much of the model you update and which **interfaces** are available to you.
 
@@ -9338,9 +9324,7 @@ Model availability is decided per model and per surface — managed jobs by meth
   Browse the base model catalog with per-model surface, method, and training-shape support.
 </Card>
 
-<h2>
-  Training security
-</h2>
+## Training security
 
 Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. Step-by-step BYOB IAM, CMEK KMS setup, and secure RFT automation live in the [Fireworks training skill — secure training operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
 
@@ -9354,9 +9338,7 @@ Across every training surface, one principle holds: **your training data is neve
 
 Checkpoints and traces are retained \~30 days by default (deletable on request). Strictest governance: [BYOB](#dataset-storage-byob) (dataset never copied to Fireworks) or the [Training API](/fine-tuning/training-api/introduction) (no stored dataset file).
 
-<h3>
-  Bring your own bucket (BYOB)
-</h3>
+### Bring your own bucket (BYOB)
 
 Register an external URL so Fireworks reads your dataset during the job without persisting a copy, then revoke access after the job:
 
@@ -9366,9 +9348,7 @@ firectl dataset create my-dataset --external-url gs://your-bucket/path/train.jso
 
 Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in the [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
 
-<h3>
-  Customer-managed encryption keys (CMEK)
-</h3>
+### Customer-managed encryption keys (CMEK)
 
 CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. **Supported today:** AWS KMS + Managed SFT (DPO, RFT, Azure Key Vault, and GCP KMS coming soon). It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md) · [Data Security Overview](/guides/security_compliance/data_security).
 
@@ -10308,63 +10288,43 @@ Use the docs for path choice and quickstarts. Use the **[Fireworks training skil
 | Failures and stuck jobs                              | [error-reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/error-reference.md)                               |
 | Deploy and prove serving                             | [deploy-and-troubleshoot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/deploy-and-troubleshoot.md)               |
 
-<h3>
-  Prerequisites
-</h3>
+### Prerequisites
 
 Confirm account access and quota, an RFT-compatible base model, valid prompt JSONL, and a reviewed evaluator that produces non-flat scores on a small probe.
 
-<h3>
-  Evaluators
-</h3>
+### Evaluators
 
 Evaluators turn a rollout into a reward. Test full-credit, partial-credit, zero, malformed-output, and edge cases locally before registration. Keep evaluator and preference-data guidance in the [evaluator skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/preference-data-and-evaluators.md).
 
-<h3>
-  Parameter tuning
-</h3>
+### Parameter tuning
 
 Resolve the current defaults from `firectl rftj create --help` and the live RFT parameter reference. Start with a small run, change one optimization or rollout variable at a time, and compare reward and held-out quality.
 
-<h4>
-  Weighted training
-</h4>
+#### Weighted training
 
 Use per-example or per-token weighting only when the selected managed contract supports it. Inspect the rendered samples and effective loss mask before launch.
 
-<h3>
-  Launch from the CLI
-</h3>
+### Launch from the CLI
 
 Use `firectl rftj create` for a reproducible managed job. Prepare the full base-model, dataset, evaluator, and output-model resource names, run the documented preflight, and confirm the resolved plan before creation.
 
-<h3>
-  Launch from the dashboard
-</h3>
+### Launch from the dashboard
 
 Use the dashboard for a guided first run: choose the model, dataset, evaluator, rollout settings, and optional W\&B project, then review the summary before launch.
 
-<h3>
-  Warm start
-</h3>
+### Warm start
 
 Warm-start from a compatible promoted LoRA when continuing SFT into RFT. Do not also supply a conflicting base-model field; verify the current CLI contract before creation.
 
-<h3>
-  Evaluator secrets
-</h3>
+### Evaluator secrets
 
 Store credentials in the Fireworks secret-management surface and reference them by environment-variable name. Never embed secret values in evaluator code, datasets, or run reports.
 
-<h3>
-  Cost planning
-</h3>
+### Cost planning
 
 Estimate rollout inference, training runtime or tokens, candidate count, response length, and any deployment uptime. Use the live pricing page and [Price vs Tinker](/fine-tuning/multi-turn-cost-comparison); do not assume a free tier.
 
-<h3>
-  Monitor training
-</h3>
+### Monitor training
 
 Track state plus actual progress: optimizer steps, rollout throughput, reward distribution, validation results, logs, and W\&B metrics when enabled. Inspect representative rollouts for reward hacking and stop when quality regresses or the evaluator saturates.
 
@@ -10695,9 +10655,7 @@ A full (non-LoRA) snapshot is validated at POST time; it must contain all of:
 }
 ```
 
-<h4>
-  Incremental snapshots and ARC2
-</h4>
+#### Incremental snapshots and ARC2
 
 An [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
 
@@ -10734,9 +10692,7 @@ All hot-load requests use these headers:
 | Poll load status         | `GET`  | `https://api.fireworks.ai/hot_load/v1/models/hot_load`      |
 | Per-file hint (optional) | `POST` | `https://api.fireworks.ai/hot_load/v1/models/hot_load/hint` |
 
-<h3>
-  Per-file hints (optional)
-</h3>
+### Per-file hints (optional)
 
 For large full-parameter snapshots, notify the hint endpoint as each shard finishes uploading. Hints let replicas begin validating and staging available files before the final snapshot-ready signal. They do not replace the final signal or readiness poll.
 
@@ -10825,15 +10781,11 @@ ready = (
 )
 ```
 
-<h3>
-  Checkpoint swap behavior
-</h3>
+### Checkpoint swap behavior
 
 A swap changes which policy serves new rollout work. Wait for every replica to report the requested identity for strict on-policy collection. For bounded off-policy collection, record the policy version returned by inference and apply the reviewed admission rule before training on that rollout.
 
-<h4>
-  Async transition (recommended default for RL)
-</h4>
+#### Async transition (recommended default for RL)
 
 Async transition keeps rollout capacity available while replicas adopt the new snapshot. Existing generations may finish across the transition, so preserve policy-version metadata and validate trainer/inference numerics. Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
 
@@ -10944,9 +10896,7 @@ For best training–inference alignment:
 * Measure **logprob divergence** between trainer forward passes and rollout inference on the same tokens.
 * For MoE models, use **Router Replay (R3)** during rollouts—see [MoE Router Replay](/guides/rollout-inference#moe-router-replay).
 
-<h2>
-  Ledger and debugging
-</h2>
+## Ledger and debugging
 
 The control-plane checkpoint list is the source of truth for snapshot identity, type, creation time, and promotability. When a hot-load stalls:
 
@@ -11930,9 +11880,7 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
 
-<h2>
-  Weight sync
-</h2>
+## Weight sync
 
 During RL training the inference deployment needs updated weights after each optimizer step. Cookbook recipes wire this through a shared bucket (trainer writes, deployment hot-loads).
 
@@ -11940,9 +11888,7 @@ For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference]
 
 See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
 
-<h2>
-  Checkpoints and resume
-</h2>
+## Checkpoints and resume
 
 Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. Rerun with the same `log_path` to resume.
 
@@ -12286,9 +12232,7 @@ The trainer and inference deployment are separate resources with separate billin
   </Card>
 </CardGroup>
 
-<h2>
-  Dedicated training quickstart
-</h2>
+## Dedicated training quickstart
 
 ### Step 1: Install the SDK and cookbook
 
@@ -12326,9 +12270,7 @@ Choose a shape from [Models](/fine-tuning/models). Pass the full shared shape ID
 
 Follow the forked recipe. Record trainer and deployment IDs, checkpoint cadence, and cleanup flags before launch.
 
-<h2>
-  Training and sampling lifecycle
-</h2>
+## Training and sampling lifecycle
 
 Dedicated recipes use two independently billed resources:
 
@@ -12342,9 +12284,7 @@ Keep stable trainer and deployment IDs so retries reconnect instead of provision
 
 Serverless and dedicated sampling use the same `DeploymentSampler` request contract. See [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for SDK-specific batching behavior, and use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical session-affinity reference.
 
-<h2>
-  Loss functions
-</h2>
+## Loss functions
 
 | Need                   | Start from                                                             |
 | ---------------------- | ---------------------------------------------------------------------- |
@@ -12355,9 +12295,7 @@ Serverless and dedicated sampling use the same `DeploymentSampler` request contr
 
 Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
-<h2>
-  Saving and loading
-</h2>
+## Saving and loading
 
 Dedicated training has three distinct checkpoint purposes:
 
@@ -12432,9 +12370,7 @@ Use the Python SDK directly when you need full control over Training API behavio
 | **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
 | **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
 
-<h2>
-  Choose infrastructure
-</h2>
+## Choose infrastructure
 
 After choosing the Training API, decide how compute is provided:
 
@@ -13207,9 +13143,7 @@ sampler = sampling_client.deployment_sampler
 
 Keep `sampling_client` alive until all calls through `sampler` have finished, then close it to release the underlying HTTP clients.
 
-<h3>
-  RL rollout sampling
-</h3>
+### RL rollout sampling
 
 Use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical reference for session affinity, session-ID lifecycle, and KV-cache behavior. The example below only shows how to pass a rollout session value through `DeploymentSampler` and fan out independent samples.
 
@@ -20365,8 +20299,6 @@ Source: https://docs.fireworks.ai/guides/quotas_usage/account-quotas
 
 Account-wide request limits, spending tiers, spend limits, and on-demand GPU quotas
 
-<a />
-
 Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, monthly spend limits, on-demand GPU quotas, and account-wide request limits.
 
 For serverless TPM and adaptive limits, see [Serverless rate limits](/serverless/rate-limits).
@@ -23620,8 +23552,6 @@ Embeddings are billed per 1M input tokens.
 Source: https://docs.fireworks.ai/serverless/rate-limits
 
 Adaptive rate limits grow and shrink with your usage
-
-<a />
 
 When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serving-paths).
 

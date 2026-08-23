@@ -17,9 +17,7 @@ Fine-tuning is worth it when you want:
   **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
 </Info>
 
-<h2>
-  Choose a method
-</h2>
+## Choose a method
 
 Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
@@ -37,9 +35,7 @@ Pick a method based on the data or signal you have. All three run as standard jo
 
 The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) for model support and pricing.
 
-<h2>
-  Choose a surface
-</h2>
+## Choose a surface
 
 Pick a **surface** (managed or Training API, serverless or dedicated). The surface decides how much of the model you update and which **interfaces** are available to you.
 
@@ -130,9 +126,7 @@ Model availability is decided per model and per surface — managed jobs by meth
   Browse the base model catalog with per-model surface, method, and training-shape support.
 </Card>
 
-<h2>
-  Training security
-</h2>
+## Training security
 
 Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. Step-by-step BYOB IAM, CMEK KMS setup, and secure RFT automation live in the [Fireworks training skill — secure training operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
 
@@ -146,9 +140,7 @@ Across every training surface, one principle holds: **your training data is neve
 
 Checkpoints and traces are retained \~30 days by default (deletable on request). Strictest governance: [BYOB](#dataset-storage-byob) (dataset never copied to Fireworks) or the [Training API](/fine-tuning/training-api/introduction) (no stored dataset file).
 
-<h3>
-  Bring your own bucket (BYOB)
-</h3>
+### Bring your own bucket (BYOB)
 
 Register an external URL so Fireworks reads your dataset during the job without persisting a copy, then revoke access after the job:
 
@@ -158,9 +150,7 @@ firectl dataset create my-dataset --external-url gs://your-bucket/path/train.jso
 
 Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in the [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md).
 
-<h3>
-  Customer-managed encryption keys (CMEK)
-</h3>
+### Customer-managed encryption keys (CMEK)
 
 CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. **Supported today:** AWS KMS + Managed SFT (DPO, RFT, Azure Key Vault, and GCP KMS coming soon). It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [secure training operations skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/secure-training-operations.md) · [Data Security Overview](/guides/security_compliance/data_security).
 

@@ -228,9 +228,7 @@ A full (non-LoRA) snapshot is validated at POST time; it must contain all of:
 }
 ```
 
-<h4>
-  Incremental snapshots and ARC2
-</h4>
+#### Incremental snapshots and ARC2
 
 An [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
 
@@ -267,9 +265,7 @@ All hot-load requests use these headers:
 | Poll load status         | `GET`  | `https://api.fireworks.ai/hot_load/v1/models/hot_load`      |
 | Per-file hint (optional) | `POST` | `https://api.fireworks.ai/hot_load/v1/models/hot_load/hint` |
 
-<h3>
-  Per-file hints (optional)
-</h3>
+### Per-file hints (optional)
 
 For large full-parameter snapshots, notify the hint endpoint as each shard finishes uploading. Hints let replicas begin validating and staging available files before the final snapshot-ready signal. They do not replace the final signal or readiness poll.
 
@@ -358,15 +354,11 @@ ready = (
 )
 ```
 
-<h3>
-  Checkpoint swap behavior
-</h3>
+### Checkpoint swap behavior
 
 A swap changes which policy serves new rollout work. Wait for every replica to report the requested identity for strict on-policy collection. For bounded off-policy collection, record the policy version returned by inference and apply the reviewed admission rule before training on that rollout.
 
-<h4>
-  Async transition (recommended default for RL)
-</h4>
+#### Async transition (recommended default for RL)
 
 Async transition keeps rollout capacity available while replicas adopt the new snapshot. Existing generations may finish across the transition, so preserve policy-version metadata and validate trainer/inference numerics. Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
 
@@ -477,9 +469,7 @@ For best training–inference alignment:
 * Measure **logprob divergence** between trainer forward passes and rollout inference on the same tokens.
 * For MoE models, use **Router Replay (R3)** during rollouts—see [MoE Router Replay](/guides/rollout-inference#moe-router-replay).
 
-<h2>
-  Ledger and debugging
-</h2>
+## Ledger and debugging
 
 The control-plane checkpoint list is the source of truth for snapshot identity, type, creation time, and promotability. When a hot-load stalls:
 

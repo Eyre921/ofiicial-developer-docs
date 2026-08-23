@@ -57,7 +57,7 @@ The trigger step starts the automation when a matching event is received.
   The name of the event that triggers the automation.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "start",
   "type": "trigger",
@@ -103,7 +103,7 @@ Sends an email using a template.
   If provided, this value will override the template's default value.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
   "type": "send_email",
@@ -130,7 +130,7 @@ Pauses execution for a specified duration.
   30 days.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "wait_1_hour",
   "type": "delay",
@@ -157,7 +157,7 @@ Pauses execution until a specific event is received or a timeout is reached.
   An optional rule object to filter incoming events.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "wait_for_purchase",
   "type": "wait_for_event",
@@ -216,7 +216,7 @@ For `and` / `or` types:
 
 Single rule example:
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "check_plan",
   "type": "condition",
@@ -231,7 +231,7 @@ Single rule example:
 
 Use `and` or `or` to combine multiple rules into a single branch:
 
-```json {5-19} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json {5-19} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "check_plan_and_amount",
   "type": "condition",
@@ -282,7 +282,7 @@ Variable references use dot-notation with one of these scopes:
   hardcoded value (string, number, boolean) or a variable reference.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "update_contact",
   "type": "contact_update",
@@ -299,7 +299,7 @@ Variable references use dot-notation with one of these scopes:
 
 Deletes the contact from the audience. This step does not require any configuration fields. Pass an empty object `{}` as the config.
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "remove_contact",
   "type": "contact_delete",
@@ -315,7 +315,7 @@ Adds the contact to a segment.
   The ID of the segment to add the contact to.
 </ParamField>
 
-```json Example theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json Example theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "add_to_vip",
   "type": "add_to_segment",

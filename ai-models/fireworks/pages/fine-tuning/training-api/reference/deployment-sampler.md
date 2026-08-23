@@ -160,9 +160,7 @@ sampler = sampling_client.deployment_sampler
 
 Keep `sampling_client` alive until all calls through `sampler` have finished, then close it to release the underlying HTTP clients.
 
-<h3>
-  RL rollout sampling
-</h3>
+### RL rollout sampling
 
 Use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical reference for session affinity, session-ID lifecycle, and KV-cache behavior. The example below only shows how to pass a rollout session value through `DeploymentSampler` and fan out independent samples.
 

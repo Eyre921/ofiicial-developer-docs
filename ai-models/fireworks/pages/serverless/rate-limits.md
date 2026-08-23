@@ -6,8 +6,6 @@ path: serverless/rate-limits
 
 Adaptive rate limits grow and shrink with your usage
 
-<a />
-
 When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serving-paths).
 
 ## What are your rate limits?
