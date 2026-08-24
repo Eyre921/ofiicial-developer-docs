@@ -173,9 +173,7 @@ write = Task(
 
 `output_pydantic` takes the **class** itself. Passing `Article(title="", body="")` is a common mistake and fails with a confusing validation error.
 
-<h3>
-  Memory & embedder config
-</h3>
+### Memory & embedder config
 
 If `memory=True` and you're not using the default OpenAI `text-embedding-3-large` embeddings, you must pass an `embedder`:
 

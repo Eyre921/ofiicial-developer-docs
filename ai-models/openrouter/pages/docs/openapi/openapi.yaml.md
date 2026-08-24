@@ -6574,16 +6574,90 @@ components:
       required:
         - 'type'
       type: 'object'
+    ContainerFile:
+      properties:
+        bytes:
+          description: 'File size in bytes.'
+          example: 123
+          type: 'integer'
+        container_id:
+          description: 'The container the file belongs to — echoes the `container_id` path parameter (OpenAI field name).'
+          example: 'sess_abc123'
+          type: 'string'
+        created_at:
+          description: 'Unix timestamp (seconds) when the file was last synced.'
+          example: 1755640000
+          type: 'integer'
+        id:
+          description: 'Container file id: `cfile_` + base64url of the file path.'
+          example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+          type: 'string'
+        object:
+          enum:
+            - 'container.file'
+          example: 'container.file'
+          type: 'string'
+        path:
+          description: 'Container-relative file path.'
+          example: 'out/report.csv'
+          type: 'string'
+        source:
+          description: 'Container files are always produced by the assistant sandbox.'
+          enum:
+            - 'assistant'
+          example: 'assistant'
+          type: 'string'
+      required:
+        - 'id'
+        - 'object'
+        - 'container_id'
+        - 'bytes'
+        - 'created_at'
+        - 'path'
+        - 'source'
+      type: 'object'
+    ContainerFileListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ContainerFile'
+          type: 'array'
+        first_id:
+          example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+          type:
+            - 'string'
+            - 'null'
+        has_more:
+          description: 'True when another page can be fetched by passing `after=last_id`.'
+          example: false
+          type: 'boolean'
+        last_id:
+          example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+          type:
+            - 'string'
+            - 'null'
+        object:
+          enum:
+            - 'list'
+          example: 'list'
+          type: 'string'
+      required:
+        - 'object'
+        - 'data'
+        - 'first_id'
+        - 'last_id'
+        - 'has_more'
+      type: 'object'
     ContainerReferenceEnvironment:
-      description: 'Reference to a previously created container to reuse.'
+      description: 'Reference to a container by its canonical id — a previously returned container_id or a fresh name to create a persistent container.'
       example:
-        container_id: 'cntr_abc123'
+        container_id: 'sess_abc123'
         type: 'container_reference'
       properties:
         container_id:
-          description: 'Identifier of an existing container to reuse (max 20 characters).'
-          example: 'cntr_abc123'
-          maxLength: 20
+          description: 'Canonical container id to reuse (max 40 characters, letters/digits/underscores/hyphens). Any container_id previously returned by a bash or shell tool result works here and reattaches to the same container and files — including session-derived ids (sess_...) and generation-derived ids (gen_...). Note that a session-derived id is always sess_ + the sanitized session key, which is not necessarily the raw session id you sent. Using the same container_id from both the bash and shell tools shares the same files, with last-write-wins when both flush concurrently. A fresh name creates a new persistent container. Containers are always scoped to your account and workspace.'
+          example: 'sess_abc123'
+          maxLength: 40
           minLength: 1
           pattern: '^[\w-]+$'
           type: 'string'
@@ -12424,9 +12498,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_bash_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -13574,9 +13678,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_shell_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -17921,9 +18055,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_bash_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -18028,9 +18192,39 @@ components:
         tool_use_id: 'srvtoolu_01abc'
         type: 'openrouter_shell_tool_result'
       properties:
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         content:
           additionalProperties: {}
           type: 'object'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         tool_use_id:
           type: 'string'
         type:
@@ -18173,8 +18367,38 @@ components:
             - 'null'
         command:
           type: 'string'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
         exitCode:
           type: 'integer'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         status:
@@ -19363,6 +19587,36 @@ components:
       properties:
         call_id:
           type: 'string'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         max_output_length:
@@ -19432,6 +19686,36 @@ components:
           type:
             - 'string'
             - 'null'
+        container_id:
+          description: 'The canonical container id the command ran under — the `{container_id}` for the Container Files API, reusable as a `container_reference` in later requests. Present on every sandbox-executed call, even when no files changed.'
+          type: 'string'
+        files:
+          description: 'Citations for the files the sandbox command created or modified, most-recently-touched first (at most 10). Retrieve them via the Container Files API.'
+          items:
+            properties:
+              container_id:
+                type: 'string'
+              end_index:
+                type: 'integer'
+              file_id:
+                type: 'string'
+              filename:
+                type: 'string'
+              start_index:
+                type: 'integer'
+              type:
+                enum:
+                  - 'container_file_citation'
+                type: 'string'
+            required:
+              - 'type'
+              - 'container_id'
+              - 'file_id'
+              - 'filename'
+              - 'start_index'
+              - 'end_index'
+            type: 'object'
+          type: 'array'
         id:
           type: 'string'
         output:
@@ -28709,6 +28993,336 @@ paths:
       summary: 'Task classification market share'
       tags:
         - 'Classifications'
+  /containers/{container_id}/files:
+    get:
+      description: 'Lists the files in a container, in lexicographic path order. The container id is the canonical id returned in bash/shell tool results; a restarted session is a separate container with its own id. Paginate with `limit` and `after` (pass the previous page’s `last_id`); `has_more: true` always means the next page is fetchable that way.'
+      operationId: 'listContainerFiles'
+      parameters:
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+          in: 'path'
+          name: 'container_id'
+          required: true
+          schema:
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
+            type: 'string'
+        - description: 'Maximum number of files to return (1-1000). Defaults to 100 when absent.'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            default: 100
+            description: 'Maximum number of files to return (1-1000). Defaults to 100 when absent.'
+            example: 100
+            maximum: 1000
+            minimum: 1
+            type: 'integer'
+        - description: 'Forward cursor: a container file id from a previous page (typically `last_id`); listing resumes strictly after that file.'
+          in: 'query'
+          name: 'after'
+          required: false
+          schema:
+            description: 'Forward cursor: a container file id from a previous page (typically `last_id`); listing resumes strictly after that file.'
+            example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - bytes: 123
+                    container_id: 'sess_abc123'
+                    created_at: 1755640000
+                    id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+                    object: 'container.file'
+                    path: 'out/report.csv'
+                    source: 'assistant'
+                first_id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+                has_more: false
+                last_id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+                object: 'list'
+              schema:
+                $ref: '#/components/schemas/ContainerFileListResponse'
+          description: 'The files in the container.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      summary: 'List container files'
+      tags:
+        - 'Containers'
+      x-hidden: true
+  /containers/{container_id}/files/{file_id}:
+    get:
+      description: 'Returns the metadata of a single file in a container.'
+      operationId: 'getContainerFile'
+      parameters:
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+          in: 'path'
+          name: 'container_id'
+          required: true
+          schema:
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
+            type: 'string'
+        - description: 'Container file id (`cfile_` + base64url of the file path).'
+          in: 'path'
+          name: 'file_id'
+          required: true
+          schema:
+            description: 'Container file id (`cfile_` + base64url of the file path).'
+            example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                bytes: 123
+                container_id: 'sess_abc123'
+                created_at: 1755640000
+                id: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+                object: 'container.file'
+                path: 'out/report.csv'
+                source: 'assistant'
+              schema:
+                $ref: '#/components/schemas/ContainerFile'
+          description: 'The container file.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      summary: 'Retrieve a container file'
+      tags:
+        - 'Containers'
+      x-hidden: true
+  /containers/{container_id}/files/{file_id}/content:
+    get:
+      description: 'Streams the raw bytes of a file in a container.'
+      operationId: 'downloadContainerFileContent'
+      parameters:
+        - description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+          in: 'path'
+          name: 'container_id'
+          required: true
+          schema:
+            description: 'The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent.'
+            example: 'sess_abc123'
+            type: 'string'
+        - description: 'Container file id (`cfile_` + base64url of the file path).'
+          in: 'path'
+          name: 'file_id'
+          required: true
+          schema:
+            description: 'Container file id (`cfile_` + base64url of the file path).'
+            example: 'cfile_b3V0L3JlcG9ydC5jc3Y'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              example: 'binary file contents'
+              schema:
+                format: 'binary'
+                type: 'string'
+          description: 'The raw file content.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      summary: 'Download container file content'
+      tags:
+        - 'Containers'
+      x-hidden: true
   /credits:
     get:
       description: 'Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
@@ -32799,6 +33413,11 @@ paths:
                   type:
                     - 'string'
                     - 'null'
+                external_api_key:
+                  description: 'Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret.'
+                  maxLength: 512
+                  minLength: 1
+                  type: 'string'
                 include_byok_in_limit:
                   description: 'Whether to include BYOK usage in the limit'
                   example: true
@@ -39038,6 +39657,8 @@ tags:
     name: 'Chat'
   - description: 'Task classification market-share endpoints'
     name: 'Classifications'
+  - description: 'Containers endpoints'
+    name: 'Containers'
   - description: 'Credit management endpoints'
     name: 'Credits'
   - description: 'Public OpenRouter usage datasets. Data returned by these endpoints is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/): reuse and republish it, including commercially, with attribution to OpenRouter.'

@@ -36,7 +36,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
-  <p>Learn advanced formatting features by creating a README for your GitHub profile.</p>
+  Learn advanced formatting features by creating a README for your GitHub profile.
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 

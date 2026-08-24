@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 318 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -72,6 +72,7 @@
 - `docs/client-sdks/go/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/go/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/byok/README.md)
 - `docs/client-sdks/go/sdks/chat/readme` — [Chat](pages/docs/client-sdks/go/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/chat/README.md)
 - `docs/client-sdks/go/sdks/classifications/readme` — [Classifications](pages/docs/client-sdks/go/sdks/classifications/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/classifications/README.md)
+- `docs/client-sdks/go/sdks/containers/readme` — [Containers](pages/docs/client-sdks/go/sdks/containers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/containers/README.md)
 - `docs/client-sdks/go/sdks/credits/readme` — [Credits](pages/docs/client-sdks/go/sdks/credits/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/credits/README.md)
 - `docs/client-sdks/go/sdks/datasets/readme` — [Datasets](pages/docs/client-sdks/go/sdks/datasets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/datasets/README.md)
 - `docs/client-sdks/go/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/go/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/embeddings/README.md)
@@ -102,6 +103,7 @@
 - `docs/client-sdks/python/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/python/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/byok/README.md)
 - `docs/client-sdks/python/sdks/chat/readme` — [Chat](pages/docs/client-sdks/python/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/chat/README.md)
 - `docs/client-sdks/python/sdks/classifications/readme` — [Classifications](pages/docs/client-sdks/python/sdks/classifications/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/classifications/README.md)
+- `docs/client-sdks/python/sdks/containers/readme` — [Containers](pages/docs/client-sdks/python/sdks/containers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/containers/README.md)
 - `docs/client-sdks/python/sdks/credits/readme` — [Credits](pages/docs/client-sdks/python/sdks/credits/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/credits/README.md)
 - `docs/client-sdks/python/sdks/datasets/readme` — [Datasets](pages/docs/client-sdks/python/sdks/datasets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/datasets/README.md)
 - `docs/client-sdks/python/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/python/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/embeddings/README.md)
