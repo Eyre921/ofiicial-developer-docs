@@ -31,6 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
 - `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
+- `minimum_frequency_days` (integer, optional, nullable) — Minimum frequency (in days) at which the underlying eligible documents are refreshed. The actual interval may be shorter, never longer. Defaults to 7, tightened to the parent folder's frequency if that is stricter. Only applicable when auto-sync is enabled.
 
 ## Response
 
@@ -49,7 +50,7 @@ Successful Response
 
 ```json
 {
-  "name": "Project Documentation"
+  "name": "string"
 }
 ```
 
@@ -57,11 +58,11 @@ Successful Response
 
 ```json
 {
-  "id": "folder_9f8b7c6d5e4a3b2c1d0e",
-  "name": "Project Documentation",
+  "id": "string",
+  "name": "string",
   "folder_path": [
     {
-      "id": "root_folder_1234567890abcdef"
+      "id": "string"
     }
   ]
 }
@@ -75,7 +76,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.knowledgeBase.documents.createFolder({
-        name: "Project Documentation",
+        name: "string",
     });
 }
 main();
@@ -88,7 +89,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.documents.create_folder(
-    name="Project Documentation",
+    name="string",
 )
 
 ```
@@ -107,7 +108,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/folder"
 
-	payload := strings.NewReader("{\n  \"name\": \"Project Documentation\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -135,7 +136,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Project Documentation\"\n}"
+request.body = "{\n  \"name\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -147,7 +148,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/folder")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Project Documentation\"\n}")
+  .body("{\n  \"name\": \"string\"\n}")
   .asString();
 ```
 
@@ -159,7 +160,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/folder', [
   'body' => '{
-  "name": "Project Documentation"
+  "name": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -175,7 +176,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/folder");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Project Documentation\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -183,7 +184,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Project Documentation"] as [String : Any]
+let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

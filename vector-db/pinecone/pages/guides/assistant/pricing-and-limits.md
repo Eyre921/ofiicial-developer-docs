@@ -73,8 +73,6 @@ Multimodal ingestion applies to content processed through the [multimodal PDF](/
 
 Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
 
-<a />
-
 ### Tokens
 
 For paid plans, you are charged for the number of tokens used by each assistant. [Ingestion](#ingestion) is billed separately from chat and context retrieval tokens.

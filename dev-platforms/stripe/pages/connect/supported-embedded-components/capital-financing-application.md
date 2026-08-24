@@ -98,6 +98,8 @@ container.appendChild(capitalFinancingApplication);
 | --- | --- | --- | --- |
 | `setOnApplicationSubmitted` | `() => void` | The connected account has successfully submitted their application for financing. |  |
 | `setOnApplicationStepChange` | `({step: string}) => void` | The connected account has navigated through the application. |  |
+| `setOnApplicationInitiated` | `() => void` | The connected account clicked **Continue** on the offer selection screen and initiated the application. |  |
+| `setResumeInitiatedApplication` | `boolean` | If true, the component skips the offer selector and resumes an already-initiated application. | false |
 | `setPrivacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` |
 | `setHowCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-capital-for-platforms-works` |
 
@@ -107,6 +109,8 @@ container.appendChild(capitalFinancingApplication);
 | --- | --- | --- | --- | --- |
 | `onApplicationSubmitted` | `() => void` | The connected account has successfully submitted their application for financing. |  | required |
 | `onApplicationStepChange` | `({step: string}) => void` | The connected account has navigated through the application. |  | optional |
+| `onApplicationInitiated` | `() => void` | The connected account clicked **Continue** on the offer selection screen and initiated the application. |  | optional |
+| `resumeInitiatedApplication` | `boolean` | If true, the component skips the offer selector and resumes an already-initiated application. | false | optional |
 | `privacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` | optional |
 | `howCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-capital-for-platforms-works` | optional |
 
@@ -131,6 +135,41 @@ The application component displays content dynamically based on the connected ac
 - **Offer in review**: After an eligible connected account submits their financing application, the application component renders an empty screen while the application is under review. To display an application status tracker, use the [Capital financing component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md).
 
 - **Submitted offer**: If a connected account has already submitted their financing application, the Capital financing application component renders an empty screen. Listen to the `onApplicationSubmitted` event to display a confirmation screen instead.
+
+### Continue the application in a custom dialog 
+
+Use this configuration to move the full application from your landing page to a dedicated dialog after the connected account selects an offer. When they click **Continue**, open a second application component with `resumeInitiatedApplication` set to true. The second component skips the offer selector and resumes the application at the next step.
+
+```jsx
+import {useState} from 'react';
+import {
+  ConnectCapitalFinancingApplication,
+  ConnectComponentsProvider,
+} from '@stripe/react-connect-js';
+import {Dialog} from './components/Dialog';
+
+export default function CapitalApplication({onApplicationSubmitted}) {
+  const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
+
+  return (
+    <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+      <ConnectCapitalFinancingApplication
+        onApplicationInitiated={() => setApplicationDialogOpen(true)}
+        onApplicationSubmitted={onApplicationSubmitted}
+      />
+
+      {applicationDialogOpen && (
+        <Dialog onClose={() => setApplicationDialogOpen(false)}>
+          <ConnectCapitalFinancingApplication
+            onApplicationSubmitted={onApplicationSubmitted}
+            resumeInitiatedApplication={true}
+          />
+        </Dialog>
+      )}
+    </ConnectComponentsProvider>
+  );
+}
+```
 
 ### The onApplicationStepChange type
 

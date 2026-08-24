@@ -10,7 +10,7 @@ path: docs/eleven-agents/api-reference/agents/procedures/remove
 
 DELETE https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}
 
-Remove a procedure from the agent's draft working set.
+Remove a procedure from the agent's draft working set. Removing a folder cascades to its entire subtree, rejected if any procedure outside the subtree hands off into it.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/remove
 

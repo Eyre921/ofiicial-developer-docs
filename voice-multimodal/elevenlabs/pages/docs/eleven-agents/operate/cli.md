@@ -29,19 +29,26 @@ conversational management.
 
 ## Installation
 
-The CLI requires Node.js version 16.0.0 or higher.
+Homebrew (macOS) and Scoop (Windows) are the recommended install methods and ship a standalone binary.
 
-```bash title="npm"
-npm install -g @elevenlabs/cli
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
 ```
 
-```bash title="pnpm"
-pnpm add -g @elevenlabs/cli
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
 ```
 
-```bash title="yarn"
-yarn global add @elevenlabs/cli
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
 ```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
 
 After installation, the `elevenlabs` command will be available globally in your terminal.
 
@@ -61,7 +68,7 @@ This creates the project structure with configuration directories and registry f
 elevenlabs auth login
 ```
 
-Enter your ElevenLabs API key when prompted. The CLI will verify the key and store it securely.
+This will open up a browser window to authenticate via OAuth. The CLI will verify the credentials and store them securely.
 
 ### Create your first agent
 
@@ -101,10 +108,6 @@ The CLI stores API keys in `~/.agents/api_keys.json` file with restricted permis
 
 ```bash title="Login"
 elevenlabs auth login
-```
-
-```bash title="Check login status"
-elevenlabs auth whoami
 ```
 
 ```bash title="Logout"

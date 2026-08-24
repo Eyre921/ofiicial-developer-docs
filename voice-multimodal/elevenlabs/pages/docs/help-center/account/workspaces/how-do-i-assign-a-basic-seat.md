@@ -22,7 +22,7 @@ Find the user you want to update
 
 Select their seat type and choose Basic, Full, or Admin
 
-Note: the available seat types depends on your subscription plan. Additional Full and Admin seats are only available on Scale, Business and Enterprise plans. 
+The available seat types depends on your subscription plan. Additional Full and Admin seats are available on Pro, Scale, Business, and Enterprise plans. Self-serve workspaces can have up to 11 Full Seats in total. See [Members](/docs/overview/administration/workspaces/members#additional-full-seats) for how to buy and remove seats.
 
 You can also assign the seat type when inviting a new member to your workspace.
 

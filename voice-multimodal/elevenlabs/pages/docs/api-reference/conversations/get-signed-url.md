@@ -30,6 +30,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/get-signed-url
 - `include_conversation_id` (boolean, optional, default: false) — Whether to include a conversation_id with the response. If included, the conversation_signature cannot be used again.
 - `branch_id` (string, optional, nullable) — The ID of the branch to use
 - `environment` (string, optional, nullable) — The environment to use for resolving environment variables (e.g. 'production', 'staging'). Defaults to 'production'.
+- `debug_events_request` (boolean, optional, default: false) — Whether to enable debug events. Only available for users with editor access to the agent.
 
 ## Response
 

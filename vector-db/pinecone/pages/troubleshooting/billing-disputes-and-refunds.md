@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/billing-disputes-and-refunds
 path: troubleshooting/billing-disputes-and-refunds
 ---
 
-Troubleshoot “Billing disputes and refunds” in Pinecone: As a rule, Pinecone does not offer refunds for unused indexes. If you use a pod-based index, we.
+Understand Pinecone's policy of not refunding unused indexes, and why migrating a pod-based index to serverless can lower a bill you'd otherwise dispute.
 
 As a rule, Pinecone does not offer refunds for unused indexes. If you use a pod-based index, we charge only for the pods you use to create it, not per API call or query. Whether you have used your index or not does not factor into our billing.
 

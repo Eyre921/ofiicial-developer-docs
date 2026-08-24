@@ -61,7 +61,7 @@ Successful Response
       - Allowed values: `prompt`, `auto`
     - `url` (string, required)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -93,7 +93,7 @@ Successful Response
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -186,7 +186,7 @@ Successful Response
       - `started_at` (integer, optional)
       - `completed_at` (integer, optional)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -205,12 +205,6 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -218,36 +212,36 @@ Successful Response
   "type": "url",
   "access_info": {
     "is_creator": true,
-    "creator_name": "Alice Johnson",
-    "creator_email": "alice.johnson@elevenlabs.io",
+    "creator_name": "John Doe",
+    "creator_email": "john.doe@example.com",
     "role": "admin",
-    "anonymous_access_level_override": "viewer",
+    "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides all the necessary information to get started with our API.</p>",
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "extracted_inner_html": "extracted_inner_html",
+  "id": "id",
   "metadata": {
-    "created_at_unix_secs": 1685606400,
-    "last_updated_at_unix_secs": 1688294400,
-    "size_bytes": 45230
+    "created_at_unix_secs": 1,
+    "last_updated_at_unix_secs": 1,
+    "size_bytes": 1
   },
-  "name": "ElevenLabs API Overview",
+  "name": "name",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.elevenlabs.io/api-overview",
+  "url": "url",
   "auto_sync_info": {
-    "minimum_frequency_days": 7,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "next_refresh_by": 1688899200
+    "minimum_frequency_days": 1,
+    "auto_remove": true,
+    "consec_failures": 1,
+    "next_refresh_by": 1
   },
   "content_format": "html",
-  "folder_parent_id": "folder_9X8Y7Z6W5V",
+  "folder_parent_id": "folder_parent_id",
   "folder_path": [
     {
-      "id": "folder_1A2B3C4D5E",
-      "name": "API Documentation"
+      "id": "id",
+      "name": "name"
     }
   ]
 }
@@ -285,7 +279,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -294,11 +287,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -321,8 +310,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -333,8 +320,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -344,12 +329,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id');
 
 echo $response->getBody();
 ```
@@ -359,25 +339,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

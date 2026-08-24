@@ -79,7 +79,7 @@ Successful Response
         - `id` (string, required)
         - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -136,7 +136,7 @@ Successful Response
         - `id` (string, required)
         - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -216,7 +216,7 @@ Successful Response
         - `id` (string, required)
         - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)

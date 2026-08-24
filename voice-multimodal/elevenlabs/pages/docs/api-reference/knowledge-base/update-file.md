@@ -62,7 +62,7 @@ Successful Response
       - Allowed values: `prompt`, `auto`
     - `url` (string, required)
     - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -94,7 +94,7 @@ Successful Response
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -189,7 +189,7 @@ Successful Response
       - `started_at` (integer, optional, nullable)
       - `completed_at` (integer, optional, nullable)
     - `auto_sync_info` (object, optional, nullable)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional, nullable) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -213,7 +213,7 @@ Successful Response
 
 ```json
 {
-  "file": "<file: JVBERi0xLjQKJcfs...>"
+  "file": "<file: [object Object]>"
 }
 ```
 
@@ -221,40 +221,40 @@ Successful Response
 
 ```json
 {
-  "type": "file",
   "access_info": {
-    "is_creator": true,
-    "creator_name": "John Doe",
+    "access_source": "creator",
     "creator_email": "john.doe@example.com",
-    "role": "admin",
-    "access_source": "creator"
+    "creator_name": "John Doe",
+    "is_creator": true,
+    "role": "admin"
   },
-  "extracted_inner_html": "<p>This is the extracted content from the PDF document.</p>",
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "auto_sync_info": {
+    "auto_remove": false,
+    "consec_failures": 0,
+    "minimum_frequency_days": 7,
+    "next_refresh_by": 1
+  },
+  "content_format": "html",
+  "extracted_inner_html": "string",
+  "folder_parent_id": "string",
+  "folder_path": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ],
+  "id": "string",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 2457600
+    "created_at_unix_secs": 1,
+    "last_updated_at_unix_secs": 1,
+    "size_bytes": 1
   },
-  "name": "Product_Manual_2024.pdf",
+  "name": "string",
   "supported_usages": [
     "auto"
   ],
-  "auto_sync_info": {
-    "minimum_frequency_days": 7,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "next_refresh_by": 1688806400
-  },
-  "content_format": "html",
-  "folder_parent_id": "folder12345",
-  "folder_path": [
-    {
-      "id": "folder12345",
-      "name": "User Guides"
-    }
-  ],
-  "url": ""
+  "type": "string",
+  "url": "string"
 }
 ```
 
@@ -297,7 +297,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -325,7 +325,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -337,7 +337,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -351,7 +351,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'JVBERi0xLjQKJcfs...',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -365,7 +365,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -376,7 +376,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "JVBERi0xLjQKJcfs..."
+    "fileName": "[object Object]"
   ]
 ]
 

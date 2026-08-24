@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/query-tracing
 path: guides/nexus/query-tracing
 ---
 
-Trace any query to see the steps, retrieval code, tokens, and cost behind its answer.
+Inspect a Pinecone Nexus query trace to see reasoning steps, retrieval tool calls, token usage, latency, cost breakdown, and cache savings.
 
 Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
 

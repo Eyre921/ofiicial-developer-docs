@@ -248,14 +248,14 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
           - `text_only` (boolean, optional) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
           - `max_duration_seconds` (integer, optional) — The maximum duration of a conversation in seconds
           - `client_events` (list of enum, optional) — The events that will be sent to the client
-            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
           - `file_input` (object, optional) — Configuration for file input (image/PDF uploads) during conversations.
             - `enabled` (boolean, optional) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
             - `max_files_in_memory` (integer, optional) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
             - `max_files_per_conversation` (integer, optional) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
           - `monitoring_enabled` (boolean, optional) — Enable real-time monitoring of conversations via WebSocket
           - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
-            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
           - `background_sound` (object, optional) — Configuration for background sound during conversations.
             - `source_type` ("preset", optional) — The type of background sound source.
             - `source_id` (enum, optional) — Identifier for the sound source.
@@ -372,7 +372,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
         - `tool_id` (string, required)
         - `schema_overrides` (map from string to object, optional) — Per-node parameter overrides applied on top of the tool's own configuration. Keys are dotted parameter paths (webhook tools prefix keys with path_params./query_params./request_body.). These take precedence over any overrides already defined on the tool itself.
           - `source`: `constant`
-            - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+            - `constant_value` (string or integer or double or boolean or list of any or map from string to any, optional) — The constant value to use
           - `source`: `dynamic_variable`
             - `dynamic_variable` (string, required) — The name of the dynamic variable to use
           - `source`: `llm`

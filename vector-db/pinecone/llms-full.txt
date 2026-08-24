@@ -453,7 +453,7 @@ If you're new to Pinecone, sign up at [app.pinecone.io](https://app.pinecone.io)
 * [Standard plan trial](/guides/organizations/manage-billing/standard-trial): 21 days and \$300 in credits with access to Standard plan [features](https://www.pinecone.io/pricing/) and [higher limits](/reference/api/database-limits) that let you test Pinecone at scale.
 
 <Note>
-  If you're already on a Starter plan, you can [upgrade to Builder](/guides/organizations/manage-billing/upgrade-billing-plan) at any time, or activate a Standard plan trial (one trial per organization).
+  If you're already on a Starter or Builder plan, you can activate a Standard plan trial at any time (one trial per organization). From Starter, you can also [upgrade to Builder](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 After signing up, you'll receive an API key in the console. Save this key. You'll need it to authenticate your requests to Pinecone.
@@ -1351,7 +1351,7 @@ Benchmark Pinecone at production scale by importing 10M vectors and measuring se
 This guide walks you through testing Pinecone at production scale. You'll import 10 million vectors, run a benchmark, and analyze the results to verify Pinecone meets production requirements for semantic search applications.
 
 <Note>
-  This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/index-data/import-data), which is not available on the Starter or Builder plans. New users can sign up for the [Standard trial](/guides/organizations/manage-billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can [upgrade](/guides/organizations/manage-billing/upgrade-billing-plan).
+  This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/index-data/import-data), which is not available on the Starter or Builder plans. New users can sign up for the [Standard trial](/guides/organizations/manage-billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can activate the trial or [upgrade](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 ## About this test
@@ -4462,8 +4462,6 @@ There's no universal formula for choosing between on-demand and dedicated read n
 
     Similar requirements apply to other real-time use cases like semantic search at scale, personalization engines, and mission-critical services with strict performance SLOs.
   </Accordion>
-
-  <a />
 
   <Accordion title="Single namespace workload (multi-namespace coming soon)">
     Dedicated read nodes indexes support only a single namespace. If your application requires multiple namespaces, on-demand is a better fit.
@@ -20841,7 +20839,7 @@ Pinecone is eventually consistent, so there can be a slight delay before updates
 # Integrate with Amazon S3
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-amazon-s3
 
-Connect Pinecone to an Amazon S3 bucket using an IAM role to import data and export audit logs.
+Set up a Pinecone storage integration with an Amazon S3 bucket using an IAM role to bulk import data into indexes and export audit logs.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -20988,7 +20986,11 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
   This step is required for [importing data](/guides/index-data/import-data). It is not required for [storing audit logs](/guides/production/configure-audit-logs).
 </Note>
 
-In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Amazon S3..
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
+In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Amazon S3.
 
 1. Select your project.
 2. Go to [**Manage > Storage integrations**](https://app.pinecone.io/organizations/-/projects/-/storage).
@@ -20997,6 +20999,32 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 5. Select **Amazon S3**.
 6. Enter the **ARN** of the [IAM role you created](/guides/operations/integrations/integrate-with-amazon-s3#2-set-up-access-using-an-iam-role).
 7. Click **Add integration**.
+
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the ARN of your IAM role as the `aws_iam_role.role_arn` field:
+
+```bash curl theme={null}
+curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+    -H "Api-Key: ${PINECONE_API_KEY}" \
+    -H "X-Pinecone-API-Version: unstable" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "my-s3-integration",
+      "provider": "s3",
+      "aws_iam_role": {
+        "role_arn": "arn:aws:iam::123456789012:role/pinecone-s3-access"
+      }
+    }'
+```
+
+Replace the `role_arn` value with the ARN of the [IAM role you created](#2-set-up-access-using-an-iam-role), and `my-s3-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If Pinecone can't assume the role, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
 
 ## Next steps
 
@@ -21007,7 +21035,7 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 # Integrate with Azure Blob Storage
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-azure-blob-storage
 
-Connect Pinecone to Azure Blob Storage using a service principal to import data into your indexes.
+Set up a Pinecone storage integration with an Azure Blob Storage container using a service principal to bulk import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -21052,6 +21080,10 @@ Pinecone uses a service principal to access your Azure Blob Storage container.
 
 ## 3. In Pinecone, add a storage integration
 
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
 In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Azure Blob Storage:
 
 1. Select your project.
@@ -21062,6 +21094,34 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 6. For **Tenant ID**, **Client ID**, and **Client secret**, enter the values you copied from Azure.
 7. Click **Add integration**.
 
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the values you copied from Azure as the `azure_app_credentials` field:
+
+```bash curl theme={null}
+curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+    -H "Api-Key: ${PINECONE_API_KEY}" \
+    -H "X-Pinecone-API-Version: unstable" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "my-azure-integration",
+      "provider": "azure_blob",
+      "azure_app_credentials": {
+        "tenant_id": "TENANT_ID",
+        "client_id": "CLIENT_ID",
+        "client_secret": "CLIENT_SECRET"
+      }
+    }'
+```
+
+Replace `TENANT_ID`, `CLIENT_ID`, and `CLIENT_SECRET` with the values you copied from Azure, and `my-azure-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If the credentials are invalid, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
+
 ## Next steps
 
 [Import data](/guides/index-data/import-data) from your Azure Blob Storage container into your Pinecone index.
@@ -21070,7 +21130,7 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 # Integrate with Google Cloud Storage
 Source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-google-cloud-storage
 
-Connect Pinecone to a Google Cloud Storage bucket with a service account key to import data into your indexes.
+Set up a Pinecone storage integration with a Google Cloud Storage bucket using a service account key to bulk import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -21103,6 +21163,10 @@ Pinecone will use a service account to access your GCS bucket.
 
 ## 3. Add a storage integration
 
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
 In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Google Cloud Storage:
 
 1. Select your project.
@@ -21113,6 +21177,28 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 6. Open the JSON key file for your service account.
 7. Copy the contents of the key file and paste them into the **Index account key JSON** field.
 8. Click **Add integration**.
+
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the contents of your service account key file as the `gcp_service_account.key_json` field. The following example uses [`jq`](https://jqlang.github.io/jq/) to safely JSON-encode the key file before sending it:
+
+```bash curl theme={null}
+jq -n --arg key "$(cat service-account-key.json)" \
+    '{name: "my-gcs-integration", provider: "gcs", gcp_service_account: {key_json: $key}}' \
+  | curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+      -H "Api-Key: ${PINECONE_API_KEY}" \
+      -H "X-Pinecone-API-Version: unstable" \
+      -H "Content-Type: application/json" \
+      --data @-
+```
+
+Replace `service-account-key.json` with the path to the [JSON key file you created](#1-create-a-service-account-and-key), and `my-gcs-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If the service account key is invalid, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
 
 ## Next steps
 
@@ -23438,36 +23524,26 @@ Downgrade your Pinecone organization from a paid plan to the free Starter plan, 
   If you are on the Standard plan with credit/debit card billing and want to reduce spend without returning to the free Starter plan, consider [switching to the Builder plan](#switch-from-standard-to-builder) for a flat \$20/month.
 </Tip>
 
-## Requirements
+## Before you downgrade
 
-Before you can downgrade, your organization must be under the [Starter plan quotas](/reference/api/database-limits):
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
 
-* No more than 5 indexes, all serverless and in the `us-east-1` region of AWS
-  * If you have serverless indexes in a region other than `us-east-1`, [create a new serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data) into the new index, and [delete the old index](/guides/manage-data/manage-indexes#delete-an-index).
-  * If you have more than 5 serverless indexes, [delete indexes](/guides/manage-data/manage-indexes#delete-an-index) until you have 5 or fewer.
-  * If you have pod-based indexes, [delete them](/guides/manage-data/manage-indexes#delete-an-index).
-* No more than 1 project
-  * If you have more than 1 project, [delete all but 1 project](/guides/projects/manage-projects#delete-a-project).
-  * Before you can delete a project, you must [delete all indexes](/guides/manage-data/manage-indexes#delete-an-index) and [delete all collections](/guides/manage-data/back-up-an-index#delete-a-collection) in the project.
-* No more than 2 GB of data across all of your serverless indexes
-  * If you are storing more than 2 GB of data, [delete records](/guides/manage-data/delete-data) until you're storing less than 2 GB.
-* No more than 100 namespaces per serverless index
-  * If any serverless index has more than 100 namespaces, [delete namespaces](/guides/manage-data/delete-data#delete-all-records-from-a-namespace) until it has 100 or fewer remaining.
-* No more than 3 [assistants](/guides/assistant/overview)
-  * If you have more than 3 assistants, [delete assistants](/guides/assistant/manage-assistants#delete-an-assistant) until you have 3 or fewer.
-* Within the Starter plan's monthly [ingestion](/guides/assistant/pricing-and-limits#ingestion) and token limits
-  * Your usage must fit within the Starter plan limits for [ingestion units](/guides/assistant/pricing-and-limits#ingestion), chat tokens, context tokens, and storage. Reduce files or usage until you are within those limits.
-* No more than 1 GB of assistant storage
-  * If you have more than 1 GB of assistant storage, [delete files](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) until you're storing less than 1 GB.
-* No more than 2 users
-* No collections or backups (these are automatically deleted as part of the downgrade process)
+The downgrade doesn't reduce your data or change your configuration, so do this first:
+
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index **before** you start the downgrade: the migration saves your index as a collection, and the downgrade deletes all collections.
+* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
+* **Disconnect your organization's [SSO connection](/guides/organizations/understanding-organizations#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/guides/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Get under the Starter storage limits.** Do this last, after the migrations above, which can briefly leave a second copy of an index: no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 <Note>
-  You do not need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion, tokens, and so on) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
+  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder—such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO—must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
 
 ## Downgrade to the Starter plan
@@ -23475,7 +23551,7 @@ Before you can downgrade, your organization must be under the [Starter plan quot
 The downgrade process is different depending on how you are paying for Pinecone.
 
 <Warning>
-  It is important to start the downgrade process in the Pinecone console, as described below. When you do so, Pinecone checks that you are under the [Starter plan quotas](#requirements) before allowing you to downgrade. In contrast, if you start the downgrade process in one of the cloud marketplaces, Pinecone cannot check that you are under these quotas before allowing you to downgrade. If you are over the quotas, Pinecone will deactivate your account, and you will need to [contact support](https://www.pinecone.io/contact/support/).
+  Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Warning>
 
 <Tabs>
@@ -23625,10 +23701,10 @@ If you believe your account was deactivated in error, [contact Support](https://
 * [Billing disputes and refunds](/troubleshooting/billing-disputes-and-refunds)
 
 
-# Standard trial
+# Pinecone Standard plan trial
 Source: https://docs.pinecone.io/guides/organizations/manage-billing/standard-trial
 
-Get $300 in credits over 21 days with the Pinecone Standard plan trial, including RBAC, bulk import, backup and restore, and higher scale limits.
+Evaluate the Pinecone Standard plan with $300 in credits over 21 days, including bulk import, backup and restore, RBAC, and higher scale limits.
 
 The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits) that are suitable for testing Pinecone at scale.
 
@@ -23649,57 +23725,49 @@ The Standard trial lets you evaluate Pinecone without requiring any up-front pay
 
 ## Expiration
 
-At the end of a Standard trial, or when you've used all of your credits, you can take one of the following actions:
+When your Standard trial ends, or when you use all of your credits, your quotas are blocked and console access is limited to the billing page. You don't automatically return to your previous plan; to restore full access, take one of the following actions:
 
-* Add a payment method and continue on with the Standard plan.
+* Add a payment method and continue on the Standard plan.
 * Upgrade to the Enterprise plan.
-* [Downgrade to the Starter plan](#downgrading-to-the-starter-plan) (you can also do this before your trial expires, if you choose).
+* [Downgrade to the Starter plan](#downgrade-to-the-starter-plan) (you can also do this any time before the trial expires).
+
+If you started the trial from the Builder plan, you aren't charged the \$20/month Builder fee during the trial.
 
 <Note>
   Learn more about [pricing](https://www.pinecone.io/pricing/).
 </Note>
 
-## Downgrading to the Starter plan
+## Downgrade to the Starter plan
 
-To downgrade from a Standard trial to the Starter plan, you'll need to bring your usage within Starter plan limits.
+You can downgrade from a Standard trial to the Starter plan at any time.
 
-* No more than 5 indexes, all serverless and in the `us-east-1` region of AWS
-  * If you have serverless indexes in a region other than `us-east-1`, [create a new serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data) into the new index, and [delete the old index](/guides/manage-data/manage-indexes#delete-an-index).
-  * If you have more than 5 serverless indexes, [delete indexes](/guides/manage-data/manage-indexes#delete-an-index) until you have 5 or fewer.
-  * If you have pod-based indexes, [delete them](/guides/manage-data/manage-indexes#delete-an-index).
-* No more than 1 project
-  * If you have more than 1 project, [delete all but 1 project](/guides/projects/manage-projects#delete-a-project).
-  * Before you can delete a project, you must [delete all indexes](/guides/manage-data/manage-indexes#delete-an-index) and [delete all collections](/guides/manage-data/back-up-an-index#delete-a-collection) in the project.
-* No more than 2 GB of data across all of your serverless indexes
-  * If you are storing more than 2 GB of data, [delete records](/guides/manage-data/delete-data) until you're storing less than 2 GB.
-* No more than 100 namespaces per serverless index
-  * If any serverless index has more than 100 namespaces, [delete namespaces](/guides/manage-data/delete-data#delete-all-records-from-a-namespace) until it has 100 or fewer remaining.
-* No more than 3 [assistants](/guides/assistant/overview)
-  * If you have more than 3 assistants, [delete assistants](/guides/assistant/manage-assistants#delete-an-assistant) until you have 3 or fewer.
-* Within the Starter plan's monthly [ingestion](/guides/assistant/pricing-and-limits#ingestion) and token limits
-  * Your usage must fit within the Starter plan limits for [ingestion units](/guides/assistant/pricing-and-limits#ingestion), chat tokens, context tokens, and storage. Reduce files or usage until you are within those limits.
-* No more than 1 GB of assistant storage
-  * If you have more than 1 GB of assistant storage, [delete files](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) until you're storing less than 1 GB.
-* No more than 2 users
-* No collections or backups (these are automatically deleted as part of the downgrade process)
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
+
+The downgrade doesn't reduce your data or change your configuration, so do this first:
+
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index **before** you start the downgrade: the migration saves your index as a collection, and the downgrade deletes all collections.
+* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
+* **Disconnect your organization's [SSO connection](/guides/organizations/understanding-organizations#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/guides/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Get under the Starter storage limits.** Do this last, after the migrations above, which can briefly leave a second copy of an index: no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 <Note>
-  You do not need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion, tokens, and so on) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
+  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder—such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO—must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
-
-If you have questions, [contact Support](https://www.pinecone.io/contact/support/).
 
 ## Limits
 
 * Each organization is allowed only one trial.
-* Organizations already on a Builder, Standard, or Enterprise plan cannot activate a Standard plan trial.
-* Organizations that initially subscribed to Pinecone through marketplace partners cannot activate a Standard plan trial.
+* Organizations already on a Standard or Enterprise plan can't activate a Standard plan trial.
+* Organizations that initially subscribed to Pinecone through marketplace partners can't activate a Standard plan trial.
 
-If you have any questions, [contact Support](https://www.pinecone.io/contact/support/).
+If you have questions, [contact Support](https://www.pinecone.io/contact/support/).
 
 
 # Upgrade your plan
@@ -23707,11 +23775,15 @@ Source: https://docs.pinecone.io/guides/organizations/manage-billing/upgrade-bil
 
 Upgrade to a paid Pinecone plan for higher limits, backups, private endpoints, audit logs, and access to the Builder, Standard, or Enterprise tiers.
 
-This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
+This page describes how to upgrade to a paid [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), either from the free Starter plan or from Builder to Standard or Enterprise. You can pay with a credit/debit card, or through a supported cloud marketplace if your organization is on the Starter plan.
 
 <Note>
   To change your plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).
 </Note>
+
+<Tip>
+  To evaluate the Standard plan before you start paying, see the [Standard plan trial](/guides/organizations/manage-billing/standard-trial). You get 21 days and \$300 in credits. Each organization can activate one trial, and [some organizations aren't eligible](/guides/organizations/manage-billing/standard-trial#limits).
+</Tip>
 
 <Tip>
   To commit to annual spending, [contact Pinecone](https://www.pinecone.io/contact).
@@ -26108,8 +26180,6 @@ Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link 
 
 This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
 
-<a />
-
 ## Use Private Endpoints with Pinecone
 
 ### Before you begin
@@ -26151,8 +26221,6 @@ The following steps assume you have:
 <Note>
   Private Endpoints are configured at the project-level and you can add up to 10 endpoints per project. If you have multiple projects in your organization, Private Endpoints need to be set up separately for each.
 </Note>
-
-<a />
 
 ### 1. Create a private endpoint in your cloud provider
 
@@ -27877,8 +27945,6 @@ Pinecone uses standard protocols to encrypt user data in transit. Clients open H
 Traffic is also encrypted in transit between the Pinecone backend and cloud infrastructure services, such as S3 and GCS. For more information, see [Google Cloud Platform](https://cloud.google.com/docs/security/encryption-in-transit) and [AWS security documentation](https://docs.aws.amazon.com/AmazonS3/userguide/UsingEncryption.html).
 
 ## Network security
-
-<a />
 
 ### Private Endpoints
 
@@ -31182,8 +31248,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
 
 <Steps>
   <Step title="Create the index">
-    <a />
-
     To store both dense and sparse vectors in a single index, use the [`create_index`](/reference/api/latest/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
 
     ```python Python theme={null}
@@ -31209,8 +31273,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Generate vectors">
-    <a />
-
     Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-embeddings).
 
     ```python Python [expandable] theme={null}
@@ -31333,8 +31395,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Upsert records with dense and sparse vectors">
-    <a />
-
     Use the [`upsert`](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
 
     <Note>
@@ -31366,8 +31426,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index">
-    <a />
-
     Use the [`embed`](/reference/api/latest/inference/generate-embeddings) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
 
     ```Python Python theme={null}
@@ -31638,8 +31696,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index with explicit weighting">
-    <a />
-
     For a conceptual overview of why this normalization is needed, see [Normalize sparse and dense values](#normalize-sparse-and-dense-values).
 
     Because Pinecone views your sparse-dense vector as a single vector, it does not offer a built-in parameter to adjust the weight of a query's dense part against its sparse part; the index is agnostic to density or sparsity of coordinates in your vectors. You may, however, incorporate a linear weighting scheme by customizing your query vector, as demonstrated in the function below.
@@ -31693,8 +31749,6 @@ To perform hybrid search with separate indexes, follow these steps:
 
 <Steps>
   <Step title="Create the indexes">
-    <a />
-
     [Create one index for dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors) and [another for sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), either with integrated embedding or for vectors created with external models.
 
     For example, the following code creates indexes with integrated embedding models.
@@ -31732,8 +31786,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Upsert dense and sparse vectors">
-    <a />
-
     [Upsert dense vectors](/guides/index-data/upsert-data#upsert-dense-vectors) and [upsert sparse vectors](/guides/index-data/upsert-data#upsert-sparse-vectors) into their respective indexes.
 
     Make sure to establish a linkage between the dense and sparse vectors so you can merge and deduplicate search results later. For example, the following uses `_id` as the linkage, but you can use any other custom field as well. Because the indexes are integrated with embedding models, you provide the source texts and Pinecone converts them to vectors automatically.
@@ -31855,8 +31907,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Search by dense vectors">
-    <a />
-
     Perform a [semantic search](/guides/search/semantic-search) against the index that stores dense vectors.
 
     For example, the following code searches that index for 40 records most semantically related to the query "Q3 2024 us economic data". Because the index is integrated with an embedding model, you provide the query as text and Pinecone converts the text to a dense vector automatically.
@@ -32112,8 +32162,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Search by sparse vectors">
-    <a />
-
     Perform a [lexical search](/guides/search/lexical-search) against the index that stores sparse vectors.
 
     For example, the following code searches that index for 40 records that most exactly match the words in the query. Again, because the index is integrated with an embedding model, you provide the query as text and Pinecone converts the text to a sparse vector automatically.
@@ -32370,8 +32418,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Merge and deduplicate the results">
-    <a />
-
     Merge the 40 dense and 40 sparse results and deduplicated them based on the field you used to link sparse and dense vectors.
 
     For example, the following code merges and deduplicates the results based on the `_id` field, resulting in 52 unique results.
@@ -32451,8 +32497,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Rerank the results">
-    <a />
-
     Use one of Pinecone's [hosted reranking models](/guides/search/rerank-results#reranking-models) to rerank the merged and deduplicated results based on a unified relevance score and then return a smaller set of the most highly relevant results.
 
     For example, the following code sends the 52 unique results from the last step to the `bge-reranker-v2-m3` reranking model and returns the top 10 most relevant results.
@@ -36882,7 +36926,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -36926,7 +36970,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -37038,7 +37082,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -42294,7 +42338,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -42338,7 +42382,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -42450,7 +42494,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -45931,7 +45975,7 @@ pc index create -h
 # CLI target context
 Source: https://docs.pinecone.io/reference/cli/target-context
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 
@@ -52772,7 +52816,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -52816,7 +52860,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -52928,7 +52972,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -56409,7 +56453,7 @@ pc index create -h
 # CLI target context
 Source: https://docs.pinecone.io/reference/cli/target-context
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 
@@ -58963,7 +59007,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -59007,7 +59051,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -59119,7 +59163,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -62600,7 +62644,7 @@ pc index create -h
 # CLI target context
 Source: https://docs.pinecone.io/reference/cli/target-context
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 
@@ -65154,7 +65198,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -65198,7 +65242,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -65310,7 +65354,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -68791,7 +68835,7 @@ pc index create -h
 # CLI target context
 Source: https://docs.pinecone.io/reference/cli/target-context
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 
@@ -72864,7 +72908,7 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 # Errors
 Source: https://docs.pinecone.io/reference/api/errors
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -72908,7 +72952,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 
@@ -73020,7 +73064,7 @@ Serverless indexes do not support the following features:
 # API versioning
 Source: https://docs.pinecone.io/reference/api/versioning
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 
@@ -76501,7 +76545,7 @@ pc index create -h
 # CLI target context
 Source: https://docs.pinecone.io/reference/cli/target-context
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 
@@ -78813,36 +78857,26 @@ Downgrade your Pinecone subscription from a paid tier back to the free Starter p
   If you are on the Standard plan with credit/debit card billing and want to reduce spend without returning to the free Starter plan, consider [switching to the Builder plan](#switch-from-standard-to-builder) for a flat \$20/month.
 </Tip>
 
-## Requirements
+## Before you downgrade
 
-Before you can downgrade, your organization must be under the [Starter plan quotas](/reference/api/database-limits):
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
 
-* No more than 5 indexes, all serverless and in the `us-east-1` region of AWS
-  * If you have serverless indexes in a region other than `us-east-1`, [create a new serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data) into the new index, and [delete the old index](/guides/manage-data/manage-indexes#delete-an-index).
-  * If you have more than 5 serverless indexes, [delete indexes](/guides/manage-data/manage-indexes#delete-an-index) until you have 5 or fewer.
-  * If you have pod-based indexes, [delete them](/guides/manage-data/manage-indexes#delete-an-index).
-* No more than 1 project
-  * If you have more than 1 project, [delete all but 1 project](/guides/projects/manage-projects#delete-a-project).
-  * Before you can delete a project, you must [delete all indexes](/guides/manage-data/manage-indexes#delete-an-index) and [delete all collections](/guides/manage-data/back-up-an-index#delete-a-collection) in the project.
-* No more than 2 GB of data across all of your serverless indexes
-  * If you are storing more than 2 GB of data, [delete records](/guides/manage-data/delete-data) until you're storing less than 2 GB.
-* No more than 100 namespaces per serverless index
-  * If any serverless index has more than 100 namespaces, [delete namespaces](/guides/manage-data/delete-data#delete-all-records-from-a-namespace) until it has 100 or fewer remaining.
-* No more than 3 [assistants](/guides/assistant/overview)
-  * If you have more than 3 assistants, [delete assistants](/guides/assistant/manage-assistants#delete-an-assistant) until you have 3 or fewer.
-* Within the Starter plan's monthly [ingestion](/guides/assistant/pricing-and-limits#ingestion) and token limits
-  * Your usage must fit within the Starter plan limits for [ingestion units](/guides/assistant/pricing-and-limits#ingestion), chat tokens, context tokens, and storage. Reduce files or usage until you are within those limits.
-* No more than 1 GB of assistant storage
-  * If you have more than 1 GB of assistant storage, [delete files](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) until you're storing less than 1 GB.
-* No more than 2 users
-* No collections or backups (these are automatically deleted as part of the downgrade process)
+The downgrade doesn't reduce your data or change your configuration, so do this first:
+
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index **before** you start the downgrade: the migration saves your index as a collection, and the downgrade deletes all collections.
+* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
+* **Disconnect your organization's [SSO connection](/guides/organizations/understanding-organizations#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/guides/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Get under the Starter storage limits.** Do this last, after the migrations above, which can briefly leave a second copy of an index: no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 <Note>
-  You do not need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion, tokens, and so on) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
+  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder—such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO—must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
 
 ## Downgrade to the Starter plan
@@ -78850,7 +78884,7 @@ Before you can downgrade, your organization must be under the [Starter plan quot
 The downgrade process is different depending on how you are paying for Pinecone.
 
 <Warning>
-  It is important to start the downgrade process in the Pinecone console, as described below. When you do so, Pinecone checks that you are under the [Starter plan quotas](#requirements) before allowing you to downgrade. In contrast, if you start the downgrade process in one of the cloud marketplaces, Pinecone cannot check that you are under these quotas before allowing you to downgrade. If you are over the quotas, Pinecone will deactivate your account, and you will need to [contact support](https://www.pinecone.io/contact/support/).
+  Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Warning>
 
 <Tabs>
@@ -79460,11 +79494,15 @@ Source: https://docs.pinecone.io/guides/assistant/admin/upgrade-billing-plan
 
 Learn how Pinecone Assistant admins upgrade to a paid plan to unlock higher limits, more files, evaluations, and advanced access controls.
 
-This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
+This page describes how to upgrade to a paid [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), either from the free Starter plan or from Builder to Standard or Enterprise. You can pay with a credit/debit card, or through a supported cloud marketplace if your organization is on the Starter plan.
 
 <Note>
   To change your plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).
 </Note>
+
+<Tip>
+  To evaluate the Standard plan before you start paying, see the [Standard plan trial](/guides/organizations/manage-billing/standard-trial). You get 21 days and \$300 in credits. Each organization can activate one trial, and [some organizations aren't eligible](/guides/organizations/manage-billing/standard-trial#limits).
+</Tip>
 
 <Tip>
   To commit to annual spending, [contact Pinecone](https://www.pinecone.io/contact).
@@ -83147,8 +83185,6 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal) path. Standard ingestion applies to other supported file types.
 
 Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
-
-<a />
 
 ### Tokens
 
@@ -89955,7 +89991,7 @@ The availability phases are used to communicate the maturity and stability of a 
 # Billing disputes and refunds
 Source: https://docs.pinecone.io/troubleshooting/billing-disputes-and-refunds
 
-Troubleshoot “Billing disputes and refunds” in Pinecone: As a rule, Pinecone does not offer refunds for unused indexes. If you use a pod-based index, we.
+Understand Pinecone's policy of not refunding unused indexes, and why migrating a pod-based index to serverless can lower a bill you'd otherwise dispute.
 
 As a rule, Pinecone does not offer refunds for unused indexes. If you use a pod-based index, we charge only for the pods you use to create it, not per API call or query. Whether you have used your index or not does not factor into our billing.
 
@@ -89975,7 +90011,7 @@ We have several resources available to help you manage your bill:
 # Contact Support
 Source: https://docs.pinecone.io/troubleshooting/contact-support
 
-Troubleshoot “Contact Support” in Pinecone: Pinecone Support is available to customers on the Builder and Standard billing plans.
+Contact Pinecone Support from the console Help center, check which billing and support plans include it, and find business hours and Sev-1 coverage.
 
 Pinecone Support is available to customers on the **Builder**, **Standard**, and **Enterprise** billing plans.
 
@@ -90032,7 +90068,7 @@ If you need a data processing agreement (DPA) with Pinecone you can get started 
 # Debug model vs. Pinecone recall issues
 Source: https://docs.pinecone.io/troubleshooting/debug-model-vs-pinecone-recall-issues
 
-Troubleshoot “Debug model vs. Pinecone recall issues” in Pinecone: Before starting, establish an evaluation framework for your model and Pinecone recall.
+Distinguish an embedding model problem from a Pinecone recall problem using a six-step evaluation that compares brute-force search against your index.
 
 ## **Step 1: Establish the evaluation framework**
 
@@ -90062,7 +90098,7 @@ If the recall metric is too low for your use case, reach out to Pinecone product
 # Delete your account
 Source: https://docs.pinecone.io/troubleshooting/delete-your-account
 
-Troubleshoot “Delete your account” in Pinecone: To delete your Pinecone account, you need to remove your user from all organizations and delete any.
+Delete your Pinecone account by removing your user from every organization and deleting any organization where you are the sole member. This is permanent.
 
 To delete your Pinecone account, you need to remove your user from all organizations and delete any organizations in which you are the sole member.
 
@@ -90077,7 +90113,7 @@ Once you've removed yourself from or deleted all organizations associated with y
 # Delete your organization
 Source: https://docs.pinecone.io/troubleshooting/delete-your-organization
 
-Troubleshoot “Delete your organization” in Pinecone: If you want to delete your Pinecone organization entirely, you'll need to delete all projects, which.
+Delete a Pinecone organization by first deleting its indexes, collections, and projects, then downgrading to the Starter plan. This can't be undone.
 
 If you want to delete your Pinecone organization entirely, you'll need to delete all projects, which first requires deleting all indexes and collections, and downgrade to the Starter plan.
 
@@ -90115,7 +90151,7 @@ This behavior is common across every system in the world, and the general trend 
 # Error: Cannot import name 'Pinecone' from 'pinecone'
 Source: https://docs.pinecone.io/troubleshooting/error-cannot-import-name-pinecone
 
-Troubleshoot “Error: Cannot import name 'Pinecone' from 'pinecone'” in Pinecone: When using an older version of the Python SDK (earlier than 3.0.0), trying.
+Fix the Python ImportError 'cannot import name Pinecone from pinecone' by upgrading the Pinecone Python SDK to 3.0.0 or later, with or without gRPC.
 
 ## Problem
 
@@ -90143,7 +90179,7 @@ pip install "pinecone[grpc]" --upgrade
 # Error: Handshake read failed when connecting
 Source: https://docs.pinecone.io/troubleshooting/error-handshake-read-failed
 
-Troubleshoot “Error: Handshake read failed when connecting” in Pinecone: When trying to connect to Pinecone server, some users may receive an error message.
+Fix the Pinecone 'Handshake read failed' connection error by checking your firewall and network, then verifying your SDK setup and API key are correct.
 
 ## Problem
 
@@ -90167,7 +90203,7 @@ If you encounter the `Handshake read failed` error when trying to connect to Pin
 # How to work with Support
 Source: https://docs.pinecone.io/troubleshooting/how-to-work-with-support
 
-Troubleshoot “How to work with Support” in Pinecone: There are several best practices for working with Pinecone Support that can lead to faster resolutions.
+Get faster answers from Pinecone Support: try the AI support chatbot, use your account email, open tickets in the console, and pick an accurate severity.
 
 There are several best practices for working with Pinecone Support that can lead to faster resolutions and more relevant recommendations. Please note that Pinecone Support is reserved for users in organizations on the Standard or Enterprise plan. First-response SLAs only apply to tickets created by users in an organization subscribed to a [support plan](https://www.pinecone.io/pricing/?plans=support). To upgrade your support plan, go to [Manage your support plan](https://app.pinecone.io/organizations/-/settings/support/plans) in the console and select your desired plan.
 
@@ -90221,7 +90257,7 @@ Also consider using [namespaces](/guides/index-data/indexing-overview#namespaces
 # Index creation error - missing spec parameter
 Source: https://docs.pinecone.io/troubleshooting/index-creation-error-missing-spec
 
-Troubleshoot “Index creation error - missing spec parameter” in Pinecone: Using the new API, creating an index requires passing appropriate values into the.
+Fix the Pinecone create_index TypeError for a missing spec parameter by passing the spec argument that sets the index's deployment model, cloud, and region.
 
 ## Problem
 
@@ -90265,7 +90301,7 @@ A [metadata filter](/guides/index-data/indexing-overview#metadata) in an ANN sea
 # Login code issues
 Source: https://docs.pinecone.io/troubleshooting/login-code-issues
 
-Troubleshoot “Login code issues” in Pinecone: If the email token you received from Pinecone is not accepted when logging in there may be a few different.
+Fix a rejected Pinecone login code, which can expire after 10 hours or be invalidated by a shared inbox, a newer code request, or an offset system clock.
 
 If the email token you received from Pinecone is not accepted when logging in there may be a few different reasons why:
 
@@ -90297,7 +90333,7 @@ If your anti-spam filter followed the links in the email to check their validity
 # Python AttributeError: module pinecone has no attribute init
 Source: https://docs.pinecone.io/troubleshooting/module-pinecone-has-no-attribute-init
 
-Troubleshoot “Python AttributeError: module pinecone has no attribute init” in Pinecone: If you are using Pinecone serverless and getting the error , first.
+Fix the Python AttributeError 'module pinecone has no attribute init' by upgrading to Pinecone Python SDK 3.0 or later, which serverless indexes require.
 
 ## Problem
 
@@ -90417,7 +90453,7 @@ Depending on which version of LangChain you are upgrading from, you may need to 
 # Pinecone Support SLAs
 Source: https://docs.pinecone.io/troubleshooting/pinecone-support-slas
 
-Troubleshoot “Pinecone Support SLAs” in Pinecone: New first-response SLAs went into effect on September 16th, 2024. See the pricing page for more details.
+Look up Pinecone Support first-response SLAs by support plan and ticket severity, from 30 minutes on a Premium Sev-1 to business days at lower severities.
 
 <Note>
   New first-response SLAs went into effect on September 16th, 2024. See the [pricing page](https://www.pinecone.io/pricing/?plans=support) for more details.
@@ -90454,7 +90490,7 @@ Pinecone Support is reserved for customers on the Standard billing plan. However
 # Restrictions on index names
 Source: https://docs.pinecone.io/troubleshooting/restrictions-on-index-names
 
-Troubleshoot “Restrictions on index names” in Pinecone: There are two main restrictions on index names in Pinecone: character restrictions and a maximum.
+Learn the rules for Pinecone index names: lowercase alphanumeric Latin characters and dashes only, no dots, and 52 characters total with your project ID.
 
 There are two main restrictions on index names in Pinecone: **character restrictions** and a **maximum length**.
 
@@ -90470,17 +90506,17 @@ The maximum length of your index name is a factor of limits imposed by the infra
 # Return all vectors in an index
 Source: https://docs.pinecone.io/troubleshooting/return-all-vectors-in-an-index
 
-Troubleshoot “Return all vectors in an index” in Pinecone: Pinecone is designed to find vectors that are similar to a given set of conditions, either by.
+Learn why a single Pinecone query can't return every vector in an index, and how to page through record IDs with the list operation instead.
 
-Pinecone is designed to find vectors that are similar to a given set of conditions, either by comparing a new vector to the ones in the index or by comparing a vector in the index to all of the others using the [query by ID feature](/reference/api/2024-10/data-plane/query). Because the Pinecone query function relies on performing this similarity search, there isn't a way to return all of the vectors currently stored in the index with a single query.
+Pinecone is designed to find vectors that are similar to a given set of conditions, either by comparing a new vector to the ones in the index or by comparing a vector in the index to all of the others using the [query by ID feature](/reference/api/latest/data-plane/query). Because the Pinecone query function relies on performing this similarity search, there isn't a way to return all of the vectors currently stored in the index with a single query.
 
-There isn't a guaranteed workaround for this type of query today but providing the ability to query all or export the entire index is on our roadmap for the future.
+To work through every record in a serverless index instead, [list the record IDs](/guides/manage-data/list-record-ids) in a namespace and [fetch](/guides/manage-data/fetch-data) them in batches. For a static copy of a whole index rather than a query, [create a backup](/guides/manage-data/back-up-an-index).
 
 
 # Serverless index connection errors
 Source: https://docs.pinecone.io/troubleshooting/serverless-index-connection-errors
 
-Troubleshoot “Serverless index connection errors” in Pinecone: To connect to a serverless index, you must use an updated Pinecone client. Trying to connect.
+Fix Pinecone serverless connection errors that fail to resolve a controller hostname by upgrading to a current version of the Python or Node.js SDK.
 
 ## Problem
 
@@ -97413,7 +97449,7 @@ The most expensive part of an agent is not reasoning. It is knowledge acquisitio
 # Query tracing
 Source: https://docs.pinecone.io/guides/nexus/query-tracing
 
-Trace any query to see the steps, retrieval code, tokens, and cost behind its answer.
+Inspect a Pinecone Nexus query trace to see reasoning steps, retrieval tool calls, token usage, latency, cost breakdown, and cache savings.
 
 Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
 
@@ -97455,7 +97491,7 @@ The trace ends with the final answer produced for the query, the same grounded r
 # Nexus quickstart
 Source: https://docs.pinecone.io/guides/nexus/quickstart
 
-Deploy Pinecone Nexus in your own cloud with BYOC, build a context from your documents, and query it for grounded, cited answers.
+Deploy Pinecone Nexus with BYOC, curate a context from your own documents, and run KnowQL queries that return grounded, cited multi-document answers.
 
 Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with bring-your-own-cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
 

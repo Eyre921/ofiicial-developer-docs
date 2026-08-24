@@ -277,6 +277,7 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins):** Your coding agent for building ambitious software.
 - **[Devin Desktop](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
 - **[Factory](https://supabase.com/docs/guides/ai-tools/mcp):** A self-improving system for your SDLC.
+- **[fx](https://supabase.com/docs/guides/ai-tools/mcp):** Connect using the Supabase MCP server or plugin.
 - **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins):** Build, debug & deploy with AI.
 - **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins):** Your AI accelerator for every workflow, from the editor to the enterprise.
 - **[Goose](https://supabase.com/docs/guides/ai-tools/mcp):** Your native open source AI agent — desktop app, CLI, and API.
@@ -803,6 +804,33 @@ Alternatively, add this configuration to `~/.factory/mcp.json`:
 ```
 
 Restart Factory or type `/mcp` within droid to complete OAuth authentication flow.
+
+**fx**
+
+Add this configuration to `~/.fx/mcp.json`:
+
+```json
+{
+  "mcp": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+fx reads MCP servers only from this profile, so a file inside a repository cannot add one. If a session is already open, apply the change with `/mcp reload`.
+
+Then authenticate from the fx shell. This opens your browser to complete the OAuth flow:
+
+```bash
+/mcp auth supabase --open
+```
+
+Confirm the server is connected with `/mcp list`.
+
+For more details, see [MCP configuration](https://fx.sh/docs/capabilities/mcp) in fx.
 
 #### Web Clients
 
@@ -22210,8 +22238,6 @@ Create a new Astro app using the `npm create` command.
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
 
-Explore Components
-
 ```bash name=Terminal
 npm create astro@latest my-app
 cd my-app
@@ -22766,8 +22792,6 @@ Use the `create-next-app` command and the `with-supabase` template, to create a 
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
 
-Explore Components
-
 ```bash name=Terminal
 npx create-next-app -e with-supabase
 ```
@@ -22925,8 +22949,6 @@ Note: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/
 5. **Set up your login component**
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
 
 In `App.jsx`, create a Supabase client using your Project URL and key.
 
@@ -40450,6 +40472,18 @@ FROM "selected_table_rows";
 ```
 
 More examples can be seen on the [Extension's GitHub page](https://github.com/supabase/pg_net/)
+
+## Permissions
+
+By default, the `net` schema grants `USAGE` to `PUBLIC`. As a result, `anon` and `authenticated`
+inherit direct object-level access (for example, `SELECT`) on `net.http_request_queue`,
+`net._http_response`, and their associated sequences.
+
+This doesn't expose request data to unauthenticated or client-side users, for two reasons:
+
+- `net` isn't exposed through the [Data API](https://supabase.com/docs/guides/api), so anon/publishable keys can't
+  access or modify its objects through the API.
+- `anon` and `authenticated` are `NOLOGIN` roles, so they can't establish a direct database connection.
 
 ## Limitations
 
@@ -64382,7 +64416,7 @@ Danger: A table in an exposed schema without RLS is readable and writable by any
 Use the guide in three parts:
 
 - [Understand Row Level Security](#understand-row-level-security) explains how grants and policies combine to control access.
-- [Secure a table with RLS](#secure-a-table-with-rls) is the procedure to follow for every table in an exposed schema.
+- [Secure a table with RLS](#secure-a-table-with-rls) is the procedure to follow for every table in an exposed schema: grants, policies, and `supabase test db`.
 - [RLS reference](#rls-reference) documents the helper functions and patterns you use inside a policy expression.
 
 Read the first section when you're deciding how to model access. Go directly to the second section when you're ready to secure a table.
@@ -64429,7 +64463,7 @@ Adding policies doesn't take those grants back. A table protected only by polici
 
 Not every project grants these automatically. See [Default privileges](https://supabase.com/docs/guides/api/securing-your-api#default-privileges). Grant each role only the operations it needs.
 
-A missing grant raises a `42501` error before any policy runs. When a request fails that your policy should allow, check the grants before you change the policy. To set them, see [Lock down the table](#lock-down-the-table).
+A missing grant raises a `42501` error before any policy runs. When a request fails that your policy should allow, check the grants before you change the policy. To set them, see [Enable RLS and set the grants](#enable-rls-and-set-the-grants).
 
 ### Authenticated and unauthenticated roles
 
@@ -64464,9 +64498,16 @@ Views bypass RLS by default because they are usually created with the `postgres`
 
 ## Secure a table with RLS
 
-Follow these steps for every table in an exposed schema.
+Follow these steps for every table in an exposed schema:
 
-### Lock down the table
+1. [Enable RLS and set the grants](#enable-rls-and-set-the-grants) to match the app.
+2. [Write a policy per operation](#write-a-policy-for-each-operation).
+3. [Create a `.sql` file under `supabase/tests/`](#policy-tests) that asserts allow and deny for `select`, `insert`, `update`, and `delete`, for `anon` and `authenticated`.
+4. [Run `supabase test db`](#run-the-test-suite) and fix what it reports.
+
+Until the suite passes, you don't know whether the policies do what you intended.
+
+### Enable RLS and set the grants
 
 Run these statements in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) for a one-off change, or in a [migration](https://supabase.com/docs/guides/deployment/database-migrations) to keep the change reproducible across environments. Grants and RLS belong in the same migration.
 
@@ -64493,16 +64534,104 @@ Enable RLS, then set the grants to match what each role does in your app:
    grant select, insert, update, delete on table public.reports to authenticated;
    ```
 
-Data that clients read but never write, such as a feed a backend job populates, gets no write grant at all:
+4. Write the test file for the table, and run the suite.
+
+   ```bash
+   supabase test new reports_rls.test
+   supabase test db
+   ```
+
+   Give every table you secure one. The examples below show what goes in the file.
+
+Data that clients read but never write, such as a feed a backend job populates, gets select only. The policy and the test file are part of the same change:
 
 ```sql
-revoke all on table public.weather_readings from anon, authenticated;
-grant select on table public.weather_readings to anon, authenticated;
+alter table public.announcements enable row level security;
+revoke all on table public.announcements from anon, authenticated;
+grant select on table public.announcements to anon, authenticated;
+
+create policy "Anyone can read announcements"
+on public.announcements for select
+to anon, authenticated
+using ( true );
+```
+
+```sql supabase/tests/announcements_rls.test.sql
+-- File: supabase/tests/announcements_rls.test.sql
+-- Create: supabase test new announcements_rls.test
+-- Run:    supabase test db
+-- Repeat for every public-read table you secured.
+begin;
+select plan(10);
+
+insert into announcements (id, body)
+values ('33333333-3333-3333-3333-333333333333', 'published');
+
+-- A read has to return the row. lives_ok passes on an empty result.
+select ok(
+  not has_table_privilege('anon', 'public.announcements', 'insert,update,delete'),
+  'anon holds no write grant on the feed'
+);
+select ok(
+  not has_table_privilege('authenticated', 'public.announcements', 'insert,update,delete'),
+  'authenticated holds no write grant on the feed'
+);
+
+set local role anon;
+select results_eq(
+  $$select body from announcements where id = '33333333-3333-3333-3333-333333333333'$$,
+  array['published'],
+  'anon reads the feed'
+);
+select throws_ok(
+  $$insert into announcements select * from announcements$$,
+  '42501',
+  null,
+  'anon cannot insert into the feed'
+);
+select throws_ok(
+  $$update announcements set id = id$$,
+  '42501',
+  null,
+  'anon cannot update the feed'
+);
+select throws_ok(
+  $$delete from announcements$$,
+  '42501',
+  null,
+  'anon cannot delete from the feed'
+);
+
+set local role authenticated;
+select results_eq(
+  $$select body from announcements where id = '33333333-3333-3333-3333-333333333333'$$,
+  array['published'],
+  'authenticated reads the feed'
+);
+select throws_ok(
+  $$insert into announcements select * from announcements$$,
+  '42501',
+  null,
+  'authenticated cannot insert into the feed'
+);
+select throws_ok(
+  $$update announcements set id = id$$,
+  '42501',
+  null,
+  'authenticated cannot update the feed'
+);
+select throws_ok(
+  $$delete from announcements$$,
+  '42501',
+  null,
+  'authenticated cannot delete from the feed'
+);
+
+select * from finish();
+rollback;
 ```
 
 If new tables still receive automatic grants, see [Revoke default privileges](https://supabase.com/docs/guides/api/securing-your-api#revoke-default-privileges). To enable RLS automatically on every new table, see [Event triggers](https://supabase.com/docs/guides/database/postgres/event-triggers).
-
-Write the tests for this table in the same change. See [Test your policies](#test-your-policies).
 
 ### Write a policy for each operation
 
@@ -64574,6 +64703,153 @@ to authenticated
 using ( (select auth.uid()) = user_id );
 ```
 
+#### Policy tests
+
+When you adapt those four policies to a table, add this file for that table. The path is `supabase/tests/<table>_rls.test.sql`. For a table users share, also assert that a member who is not the owner can perform the operations its policies allow, and that a non-member cannot.
+
+```sql supabase/tests/profiles_rls.test.sql
+-- File: supabase/tests/profiles_rls.test.sql
+-- Create: supabase test new profiles_rls.test
+-- Run:    supabase test db
+-- One file per table you enabled RLS on. Name that table in the assertions.
+-- Do not create a table only the tests use.
+begin;
+select plan(14);
+
+insert into auth.users (id, email)
+values
+  ('11111111-1111-1111-1111-111111111111', 'owner@example.com'),
+  ('22222222-2222-2222-2222-222222222222', 'other@example.com');
+
+-- anon holds no grant, so the request stops before any policy runs.
+set local role anon;
+select throws_ok(
+  $$select * from profiles$$,
+  '42501',
+  null,
+  'anon cannot read profiles'
+);
+select throws_ok(
+  $$insert into profiles (id, user_id, avatar_url)
+    values (
+      gen_random_uuid(),
+      '11111111-1111-1111-1111-111111111111',
+      'anon.png'
+    )$$,
+  '42501',
+  null,
+  'anon cannot create a profile'
+);
+select throws_ok(
+  $$update profiles set avatar_url = 'anon.png'$$,
+  '42501',
+  null,
+  'anon cannot update profiles'
+);
+select throws_ok(
+  $$delete from profiles$$,
+  '42501',
+  null,
+  'anon cannot delete profiles'
+);
+
+-- The owner writes their own row. returning proves the row changed.
+set local role authenticated;
+set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+select results_eq(
+  $$insert into profiles (id, user_id, avatar_url)
+    values (
+      gen_random_uuid(),
+      '11111111-1111-1111-1111-111111111111',
+      'owner.png'
+    )
+    returning avatar_url$$,
+  array['owner.png'],
+  'the owner creates their own profile'
+);
+select results_eq(
+  $$select avatar_url from profiles where user_id = '11111111-1111-1111-1111-111111111111'$$,
+  array['owner.png'],
+  'the owner reads their own profile'
+);
+select results_eq(
+  $$update profiles set avatar_url = 'updated.png'
+    where user_id = '11111111-1111-1111-1111-111111111111'
+    returning avatar_url$$,
+  array['updated.png'],
+  'the owner updates their own profile'
+);
+
+-- A signed-in stranger holds the grant, so the policy is what stops them.
+set local request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
+select throws_ok(
+  $$insert into profiles (id, user_id, avatar_url)
+    values (
+      gen_random_uuid(),
+      '11111111-1111-1111-1111-111111111111',
+      'stolen.png'
+    )$$,
+  '42501',
+  null,
+  'another user cannot create a profile for the owner'
+);
+select is_empty(
+  $$select * from profiles$$,
+  'another user reads no profiles'
+);
+select is_empty(
+  $$update profiles set avatar_url = 'stolen.png' returning avatar_url$$,
+  'another user updates no profiles'
+);
+
+-- Matching no rows is not proof on its own. Pair every denied write with a
+-- check that the row it targeted is intact. Scope it to that row: a suite
+-- that asserts on everything a role can see breaks once the table holds more.
+set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+select results_eq(
+  $$select avatar_url from profiles where user_id = '11111111-1111-1111-1111-111111111111'$$,
+  array['updated.png'],
+  'the denied update left the owner row intact'
+);
+
+set local request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
+select is_empty(
+  $$delete from profiles returning avatar_url$$,
+  'another user deletes no profiles'
+);
+
+set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+select results_eq(
+  $$select avatar_url from profiles where user_id = '11111111-1111-1111-1111-111111111111'$$,
+  array['updated.png'],
+  'the denied delete left the owner row intact'
+);
+
+-- Owner delete last so earlier cases still have a row to assert against.
+set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+select results_eq(
+  $$delete from profiles where user_id = '11111111-1111-1111-1111-111111111111'
+    returning avatar_url$$,
+  array['updated.png'],
+  'the owner deletes their own profile'
+);
+
+select * from finish();
+rollback;
+```
+
+Match the assertion to how the request is denied. Only two of the three raise an error:
+
+| Denied by                              | Postgres                          | Assert with                                                                                  |
+| -------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
+| A missing grant                        | raises `42501`                    | `throws_ok`                                                                                  |
+| A `with check` violation               | raises `42501`                    | `throws_ok`                                                                                  |
+| A `using` clause filtering the row out | raises nothing, matches zero rows | `is_empty` over the statement with `returning`, then a read proving the target row is intact |
+
+Never prove an allowed write with `lives_ok`. It passes when the write matched zero rows. Add `returning` and assert the returned value.
+
+Switch role and identity with `set local role` and `set local request.jwt.claim.sub`.
+
 ### Specify roles in your policies
 
 Always name the role a policy applies to, using the `to` clause. Instead of this:
@@ -64593,7 +64869,11 @@ using ( (select auth.uid()) = user_id );
 
 This prevents the policy `( (select auth.uid()) = user_id )` from running for any `anon` users, since the execution stops at the `to authenticated` step.
 
-These three rules keep policies correct as a table grows. For the measured impact and for tuning beyond them, see [Row Level Security performance](https://supabase.com/docs/guides/database/postgres/row-level-security-performance).
+### Run the test suite
+
+The files above live under `supabase/tests/` and run through [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap). Create them with `supabase test new <table>_rls.test`, and run them with `supabase test db`.
+
+[`supabase-test-helpers`](https://github.com/usebasejump/supabase-test-helpers/tree/main) adds `tests.create_supabase_user()`, `tests.authenticate_as()`, and `tests.rls_enabled()`. See [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended) and [Testing your database](https://supabase.com/docs/guides/database/testing).
 
 ### Add indexes
 
@@ -64650,6 +64930,8 @@ This method works well for JWT functions like `auth.uid()` and `auth.jwt()` as w
 
 Caution: You can only use this technique if the results of the query or function do not change based on the row data.
 
+Indexing the filter columns and wrapping helper calls keeps policies fast as a table grows. For the measured impact, and for tuning beyond these two rules, see [Row Level Security performance](https://supabase.com/docs/guides/database/postgres/row-level-security-performance).
+
 ### Expose a view safely
 
 In Postgres 15 and above, make a view obey the RLS policies of its underlying tables when invoked by `anon` and `authenticated` by setting `security_invoker = true`.
@@ -64661,99 +64943,6 @@ as select <QUERY>
 ```
 
 In older versions of Postgres, protect your views by revoking access from the `anon` and `authenticated` roles, or by putting them in an unexposed schema.
-
-### Test your policies
-
-We recommend writing tests for every policy, in the same change that sets the grants and creates the policies. Tests are a fundamental part of a secure setup, and they give you a repeatable way to prove a policy behaves the way you intended.
-
-A wrong policy fails quietly. Too permissive, and a query returns rows it shouldn't. Too strict, and it returns nothing and raises no error. Neither case surfaces as an error, so tests are how you find out.
-
-Supabase runs database tests with [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap) through the CLI. Test files are `.sql` files under `supabase/tests/`.
-
-#### Anatomy of a policy test
-
-Each case sets an identity, runs one statement as that identity, and asserts the outcome. Three things decide whether the assertion means anything.
-
-**Identity.** Switch role and identity between cases with `set local role` and `set local request.jwt.claim.sub`, so each assertion runs as the user it describes. Without the switch, every case runs as the same role and proves nothing about access.
-
-**Denials.** A denied request doesn't always raise an error, so match the assertion to the way the denial happens:
-
-- A missing grant raises `42501`. Assert it with `throws_ok`.
-- A `with check` violation raises `42501`. Assert it with `throws_ok`.
-- A `using` clause that filters the target row out raises nothing. The update or delete matches zero rows instead. Assert that no row changed.
-
-**Allowed writes.** The absence of an error doesn't prove that anything changed. Add `returning` to the statement so one assertion covers both directions. An allowed write returns the changed row, and a write the policy filters out returns nothing.
-
-#### Write and run the tests
-
-1. Create a test file:
-
-   ```bash
-   supabase test new profiles_rls
-   ```
-
-2. Write the tests. Cover `select`, `insert`, `update`, and `delete` twice each, once for a request the policy allows and once for a request it denies, for `anon` as well as `authenticated`.
-
-   [`supabase-test-helpers`](https://github.com/usebasejump/supabase-test-helpers/tree/main) removes most of the setup below. It adds `tests.create_supabase_user()`, `tests.authenticate_as()`, and `tests.rls_enabled()`, so you don't hand-roll user seeding or role switching. See [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended) for schema-wide assertions and a worked multi-tenant example.
-
-3. Run the suite:
-
-   ```bash
-   supabase test db
-   ```
-
-This example shows each of those techniques against a `profiles` table where `authenticated` holds every privilege, `anon` holds none, and each user reads and writes only their own row. Extend it to the remaining operations:
-
-```sql supabase/tests/profiles_rls.test.sql
-begin;
-select plan(4);
-
-insert into auth.users (id, email)
-values
-  ('11111111-1111-1111-1111-111111111111', 'owner@example.com'),
-  ('22222222-2222-2222-2222-222222222222', 'other@example.com');
-
--- anon holds no grant, so the request stops before any policy runs.
-set local role anon;
-select throws_ok(
-  $$select * from profiles$$,
-  '42501',
-  null,
-  'anon cannot read profiles'
-);
-
--- The owner writes their own row. returning proves the row changed.
-set local role authenticated;
-set local request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
-select results_eq(
-  $$insert into profiles (id, user_id, avatar_url)
-    values (
-      gen_random_uuid(),
-      '11111111-1111-1111-1111-111111111111',
-      'owner.png'
-    )
-    returning avatar_url$$,
-  array['owner.png'],
-  'the owner creates their own profile'
-);
-
--- A signed-in stranger holds the grant, so the policy is what stops them. The
--- using clause filters the row out, so these match nothing and raise nothing.
-set local request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
-select is_empty(
-  $$select * from profiles$$,
-  'another user reads no profiles'
-);
-select is_empty(
-  $$update profiles set avatar_url = 'stolen.png' returning avatar_url$$,
-  'another user updates no profiles'
-);
-
-select * from finish();
-rollback;
-```
-
-For CLI setup and more pgTAP helpers, see [Testing your database](https://supabase.com/docs/guides/database/testing).
 
 ## RLS reference
 
@@ -64864,9 +65053,71 @@ to authenticated
 using ( (select private.has_good_role()) );
 ```
 
+Add member and non-member cases to that table's file under `supabase/tests/`. A member who is not the owner must be allowed; a non-member must not.
+
 Set `search_path = ''` on every `security definer` function and schema-qualify the names inside it. Without a pinned `search_path`, a caller can point an unqualified name at their own object and run it with the function owner's privileges.
 
 Caution: A `security definer` function in an exposed schema is callable over the Data API with the creator's privileges. Never create one in a schema listed under "Exposed schemas" in your [API settings](https://supabase.com/dashboard/project/_/settings/api).
+
+### Avoid recursive policies
+
+Two tables whose policies read each other never resolve. Postgres raises `42P17`, `infinite recursion detected in policy for relation`, and the query fails for every role the policies apply to.
+
+Sharing features produce this shape. A policy on `lists` checks `list_members` to find who the list is shared with, and a policy on `list_members` checks `lists` to find who owns it:
+
+```sql
+-- Reject: each policy reads the table the other one protects.
+create policy "members read lists" on lists for select
+to authenticated
+using (
+  exists (
+    select 1 from list_members m
+    where m.list_id = lists.id and m.user_id = (select auth.uid())
+  )
+);
+
+create policy "members read membership" on list_members for select
+to authenticated
+using (
+  exists (
+    select 1 from lists l
+    where l.id = list_members.list_id and l.owner_id = (select auth.uid())
+  )
+);
+```
+
+Break the cycle with a [security definer function](#use-security-definer-functions). It reads the membership table as its owner, so the second policy never runs and the cycle is broken:
+
+```sql
+create schema if not exists private;
+
+create function private.user_list_ids()
+returns setof uuid
+language sql
+security definer
+set search_path = ''
+stable
+as $$
+  select list_id from public.list_members
+  where user_id = (select auth.uid())
+$$;
+
+revoke execute on function private.user_list_ids() from public;
+grant usage on schema private to authenticated;
+grant execute on function private.user_list_ids() to authenticated;
+
+create policy "members read lists" on lists for select
+to authenticated
+using ( id in (select private.user_list_ids()) );
+
+create policy "members read membership" on list_members for select
+to authenticated
+using ( list_id in (select private.user_list_ids()) );
+```
+
+The function filters on `(select auth.uid())`, so it returns only the caller's lists. A member who doesn't own the list still reads it, and a non-member reads nothing.
+
+This works because the function runs as its owner, and a `security definer` function only skips RLS when its owner can. On Supabase the owner is `postgres`, which has `bypassrls`. A function owned by a role without `bypassrls`, or reading a table set to `force row level security`, evaluates the membership policy again and stays recursive.
 
 ### Bypassing Row Level Security
 
@@ -66090,13 +66341,16 @@ Supabase Pipelines is a managed CDC product for moving data from Supabase Postgr
 
 #### Supported destinations
 
-Pipelines currently supports BigQuery as the managed destination. You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations) while we expand destination support.
+BigQuery is currently available as a managed destination. ClickHouse, DuckLake, and Snowflake are in Early Access. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) to these destinations.
 
 Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. Choose destination resources as close as possible to Frankfurt to reduce network latency and replication lag.
 
-| Destination                                                                | Insert      | Update      | Delete      | Truncate    | Schema change  | Description                                                         |
-| -------------------------------------------------------------------------- | ----------- | ----------- | ----------- | ----------- | -------------- | ------------------------------------------------------------------- |
-| [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery) | ✅ Supported | ✅ Supported | ✅ Supported | ✅ Supported | Beta (limited) | Managed replication to Google BigQuery for analytics and reporting. |
+| Destination                                                                    | Insert      | Update                  | Delete                       | Truncate    | Schema change          | Data model                                                                       |
+| ------------------------------------------------------------------------------ | ----------- | ----------------------- | ---------------------------- | ----------- | ---------------------- | -------------------------------------------------------------------------------- |
+| [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery)     | ✅ Supported | ✅ Supported             | ✅ Supported                  | ✅ Supported | Beta (limited)         | Current-state tables.                                                            |
+| [ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse) | ✅ Supported | `REPLICA IDENTITY FULL` | Primary-key or full identity | ✅ Supported | Early Access (limited) | Current-state tables (default) or append-only CDC history.                       |
+| [DuckLake](https://supabase.com/docs/guides/database/replication/ducklake)     | ✅ Supported | Row identity required   | Row identity required        | ✅ Supported | Early Access (limited) | Current-state lakehouse tables backed by a SQL catalog and object storage.       |
+| [Snowflake](https://supabase.com/docs/guides/database/replication/snowflake)   | ✅ Supported | `REPLICA IDENTITY FULL` | Row identity required        | ✅ Supported | Early Access (limited) | Append-only CDC history. Source `TRUNCATE` operations and table resets erase it. |
 
 ### Manual replication
 
@@ -66339,6 +66593,393 @@ Column defaults are handled independently from whether the column allows `NULL`.
 
 ---
 
+# ClickHouse destination
+
+Replicate Supabase Postgres changes to ClickHouse.
+
+Configure ClickHouse as a Supabase Pipelines destination.
+
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
+
+Note: The ClickHouse destination is in Early Access and available only to approved organizations. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) before following this guide.
+
+[ClickHouse](https://clickhouse.com/) is a column-oriented database for analytics. Supabase Pipelines can maintain current-state tables in ClickHouse or write an append-only change history, depending on the selected table engine.
+
+## Prepare ClickHouse resources
+
+Before creating the destination:
+
+1. Create or choose a ClickHouse database for the replicated tables.
+2. Create a dedicated ClickHouse user for Pipelines.
+3. Grant the user access to the target database. Pipelines must be able to:
+   - Query `system.databases`, `system.tables`, and `system.columns`
+   - Create, alter, truncate, and drop tables
+   - Create and drop views when using `ReplacingMergeTree`
+   - Insert rows into managed tables
+4. Copy the database's HTTPS endpoint, including its port when required. Pipelines rejects HTTP endpoints and private or internal hostnames.
+
+Keep the database otherwise empty. Pipelines manages the replicated tables and current-state views. Don't pre-create or manually alter those objects.
+
+The default `ReplacingMergeTree` engine requires ClickHouse **23.5 or newer**. The `MergeTree` event-log engine does not have this minimum-version requirement.
+
+## Configure ClickHouse as a destination
+
+1. Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication)
+2. Click **Add destination**
+3. Select **ClickHouse**. If it isn't available, [request Early Access](https://supabase.com/go/supabase-pipelines-new-destinations).
+4. Select a Postgres publication and enter a destination name
+5. Enter the ClickHouse settings:
+   - **URL**: The HTTPS endpoint, including its port when required
+   - **User**: The dedicated ClickHouse user
+   - **Password**: The user's password, if authentication requires one
+   - **Database**: The existing target database
+   - **Table engine**: Choose **ReplacingMergeTree** for current-state tables or **MergeTree** for an append-only event log
+6. Click **Create and start pipeline**
+
+Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. When possible, place the ClickHouse service close to Frankfurt to reduce network latency and replication lag.
+
+## How table names are mapped
+
+Pipelines maps each Postgres schema and table pair to one ClickHouse table. Existing underscores are doubled, and the schema and table names are joined with one underscore:
+
+| Postgres table   | ClickHouse table  |
+| ---------------- | ----------------- |
+| `public.orders`  | `public_orders`   |
+| `my_schema.logs` | `my__schema_logs` |
+
+Postgres schema and table names cannot start or end with `_` or contain `"` or `;` when replicating to ClickHouse.
+
+## Choose a table engine
+
+The table engine controls how ClickHouse represents changes. It is selected for the entire destination.
+
+| Engine                         | Data model                    | Source primary key                                      | Query pattern                               |
+| ------------------------------ | ----------------------------- | ------------------------------------------------------- | ------------------------------------------- |
+| `ReplacingMergeTree` (default) | Current-state tables          | Required                                                | Query the generated `<table>__current` view |
+| `MergeTree`                    | Append-only CDC event history | Optional for insert-only tables; see requirements below | Query the base table                        |
+
+### ReplacingMergeTree
+
+`ReplacingMergeTree` is the default and is intended for current-state analytics. Pipelines:
+
+- Uses the source primary key as ClickHouse's sorting and deduplication key
+- Adds an `_etl_version UInt128` ordering column
+- Adds an `_etl_deleted UInt8` tombstone column
+- Creates a `<table>__current` view that runs the base table with `FINAL` and removes deleted rows
+
+The `_etl_version` and `_etl_deleted` names are reserved and can't be used by source columns.
+
+During Early Access, source primary-key values must remain immutable when using `ReplacingMergeTree`. Updating a primary-key value can leave the old key visible in the generated current-state view. This limitation will be removed when primary-key update handling is available.
+
+Query the generated view for the current state:
+
+```sql
+select *
+from "public_orders__current";
+```
+
+ClickHouse background merges combine older row versions over time. Until they do, querying the base table without `FINAL` can return multiple versions of the same source row. Use the generated `__current` view for normal current-state queries.
+
+Pipelines does not run `OPTIMIZE ... FINAL CLEANUP`. ClickHouse operators remain responsible for any physical tombstone cleanup required by their storage-retention policy.
+
+### MergeTree
+
+`MergeTree` stores every replicated change as an append-only event. Pipelines adds:
+
+- `cdc_operation`, containing `INSERT`, `UPDATE`, or `DELETE`
+- `cdc_lsn`, containing the Postgres commit LSN for the change
+
+The `cdc_operation` and `cdc_lsn` names are reserved and can't be used by source columns.
+
+Read the base table to analyze the event history. Multiple changes committed in one Postgres transaction can share the same `cdc_lsn`, so it is not a unique event ID or a total ordering for reconstructing current state.
+
+A source `TRUNCATE` truncates the ClickHouse table for either engine. Resetting a table also drops and recreates its table and, for `ReplacingMergeTree`, its generated view. These operations erase the destination data accumulated for that table before a new initial sync begins.
+
+## Source table requirements
+
+ClickHouse requirements depend on the engine and the operations published for a table.
+
+| Source table and publication                        | Support | Guidance                                                                                                                                    |
+| --------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ReplacingMergeTree` table without a primary key    | No      | Add a source primary key, include all primary-key columns in the publication, or use `MergeTree` for an event-log layout.                   |
+| Insert-only `MergeTree` table without a primary key | Yes     | No row identity is required for inserts.                                                                                                    |
+| Table with a primary key                            | Yes     | Include every primary-key column in the publication.                                                                                        |
+| Updates with primary-key replica identity           | No      | Use `REPLICA IDENTITY FULL` so unchanged out-of-line values can be reconstructed.                                                           |
+| Deletes with primary-key replica identity           | Yes     | The publication must include every primary-key column.                                                                                      |
+| Updates or deletes with `REPLICA IDENTITY FULL`     | Yes     | Full identity provides the complete row image required for updates.                                                                         |
+| Updates with `REPLICA IDENTITY USING INDEX`         | No      | Use `REPLICA IDENTITY FULL`.                                                                                                                |
+| Deletes with `REPLICA IDENTITY USING INDEX`         | Limited | Supported only when the selected index resolves to the same columns as the source primary key. Alternative unique indexes aren't supported. |
+| Updates or deletes with `REPLICA IDENTITY NOTHING`  | No      | Configure primary-key or full identity for deletes and full identity for updates.                                                           |
+
+Top-level Postgres array columns can contain arrays with nullable elements, but the array column itself must not contain `NULL`. ClickHouse's RowBinary format cannot encode a top-level `NULL` array. Replace existing `NULL` values and make the source array column `NOT NULL`, or ensure producers always write an array value. Empty arrays remain supported.
+
+## Type mapping
+
+Pipelines creates ClickHouse columns with these mappings:
+
+| Postgres type                 | ClickHouse type              |
+| ----------------------------- | ---------------------------- |
+| `boolean`                     | `Boolean`                    |
+| `smallint`                    | `Int16`                      |
+| `integer`                     | `Int32`                      |
+| `bigint`                      | `Int64`                      |
+| `real`                        | `Float32`                    |
+| `double precision`            | `Float64`                    |
+| `date`                        | `Date32`                     |
+| `timestamp without time zone` | `DateTime64(6)`              |
+| `timestamp with time zone`    | `DateTime64(6, 'UTC')`       |
+| `uuid`                        | `UUID`                       |
+| `oid`                         | `UInt32`                     |
+| Other scalar and custom types | `String`                     |
+| Arrays                        | `Array(Nullable(<element>))` |
+
+Nullable scalar columns are wrapped in `Nullable(...)`. Character, text, `numeric`, `money`, JSON, `time`, `interval`, binary, bit-string, enum, and unsupported custom values are serialized into `String` columns rather than stored as native ClickHouse types.
+
+## Schema change support
+
+ClickHouse schema change support is limited during Early Access.
+
+Supported changes include:
+
+- Adding columns
+- Renaming columns, except moving a nested subcolumn to a different parent
+- Dropping columns
+- Dropping `NOT NULL` from an existing scalar column
+- Adding, changing, or removing supported column defaults
+
+The following changes are not applied automatically:
+
+- Changing a column's data type
+- Adding `NOT NULL` to an existing nullable column
+- Changing, dropping, or renaming a source primary-key column when using `ReplacingMergeTree`
+- Renaming a source table or schema
+
+New scalar columns are made nullable when ClickHouse needs a value for historical rows and the source default cannot be represented safely. Some Postgres defaults cannot be translated to ClickHouse and are skipped with a warning.
+
+ClickHouse DDL is not transactional. An interrupted multi-column schema change can leave a partially applied destination schema. Don't repair managed tables or views manually. If the pipeline remains failed after a restart, [contact support](https://supabase.com/dashboard/support/new).
+
+## Troubleshooting
+
+| Issue                                              | Resolution                                                                                                                                                                                                                  |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ClickHouse isn't available in the destination list | The destination is organization-gated during Early Access. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations).                                                                                   |
+| URL validation fails                               | Use the public ClickHouse HTTPS endpoint, including its port when required. HTTP, localhost, and private or internal endpoints are not supported.                                                                           |
+| Connection fails                                   | Confirm the endpoint is reachable from the internet and that the username and password are correct.                                                                                                                         |
+| Database validation fails                          | Create the configured database and grant the user permission to read `system.databases`.                                                                                                                                    |
+| Validation succeeds but table setup or writes fail | Grant the user the target-database permissions listed above. Check for a pre-existing table or view with the generated name, and don't manually modify managed objects.                                                     |
+| `ReplacingMergeTree` initialization fails          | Confirm the server is ClickHouse 23.5 or newer and every source table has a published primary key.                                                                                                                          |
+| Updates or deletes fail                            | Use `REPLICA IDENTITY FULL` for updates. Deletes can use primary-key identity or full identity. Include all identity columns in the publication.                                                                            |
+| A nullable array fails to replicate                | Replace top-level `NULL` array values and make the source column `NOT NULL`, or ensure producers always write an array. Empty arrays are supported.                                                                         |
+| A schema change fails                              | Check the supported changes above. ClickHouse DDL can be partially applied, so don't repair managed objects manually. [Contact support](https://supabase.com/dashboard/support/new) with the pipeline ID and error details. |
+
+## Additional resources
+
+- [ClickHouse documentation](https://clickhouse.com/docs)
+- [ReplacingMergeTree](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree)
+- [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring)
+
+
+---
+
+# DuckLake destination
+
+Replicate Supabase Postgres tables to DuckLake.
+
+Configure DuckLake as a Supabase Pipelines destination.
+
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
+
+Note: The DuckLake destination is in Early Access and available only to approved organizations. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) before following this guide.
+
+[DuckLake](https://ducklake.select/) is an open lakehouse format that stores metadata in a SQL catalog and table data in object storage. Supabase Pipelines keeps current-state DuckLake tables synchronized with published Postgres tables.
+
+## Understand the DuckLake components
+
+A DuckLake destination has three independent components:
+
+| Component        | Purpose                                                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Postgres catalog | Stores DuckLake schemas, snapshots, file references, and other metadata. This is not a copy of the replicated table data.           |
+| Object storage   | Stores Parquet data and delete files under an `s3://` path.                                                                         |
+| Query engine     | Reads the catalog and object storage. Pipelines doesn't include a DuckLake query endpoint; use DuckDB or another compatible engine. |
+
+Always query through the DuckLake catalog. Reading the Parquet objects directly can miss inlined changes, delete files, and the current snapshot selected by the catalog.
+
+You can query replicated tables, but treat them and their underlying catalog and object-storage state as read-only. Writes outside Pipelines can conflict with replication and background maintenance.
+
+## Choose a configuration mode
+
+The Dashboard offers two ways to provide the catalog and storage.
+
+### Use Supabase
+
+Use this mode to back the DuckLake with Supabase projects. Pipelines provisions its own catalog and object-storage credentials when you create the destination.
+
+Before you begin:
+
+- Choose active, healthy, non-branch projects from the same organization for the catalog and storage. You can use the same project for both.
+- Make sure your organization role can administer SQL in the catalog project and Storage in the storage project.
+- Create a private standard Storage bucket, or create one from the destination form.
+- Choose a metadata schema unique to this DuckLake. Use only letters, numbers, and underscores.
+- Keep the catalog project and storage project in the same region when possible. Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**, so resources near Frankfurt reduce network latency.
+
+To configure the destination:
+
+1. Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication)
+2. Click **Add destination**
+3. Select **DuckLake**. If it isn't available, [request Early Access](https://supabase.com/go/supabase-pipelines-new-destinations).
+4. Select a Postgres publication and enter a destination name
+5. Select **Use Supabase**
+6. Configure the catalog:
+   - **Catalog project**: The project whose Postgres database stores DuckLake metadata
+   - **Pool size**: The number of concurrent DuckDB connections to the catalog, from `1` to `6`. The default is `4`.
+   - **Metadata schema**: A unique Postgres schema for this DuckLake's metadata
+7. Configure object storage:
+   - **Storage project**: The project whose Storage service holds DuckLake files
+   - **Bucket**: A dedicated private bucket for the DuckLake
+8. Click **Create and start pipeline**
+
+Validation can show warnings that Supabase catalog and Storage credentials are provisioned only when the destination is saved. This is expected for **Use Supabase** mode. Review the selected projects and proceed to create the destination.
+
+Pipelines-generated credentials remain hidden and are only for the managed writer. Create separate read credentials when connecting an external query engine.
+
+### Custom parameters
+
+Use this mode with a Postgres catalog and S3-compatible object storage that you control.
+
+Prepare the following resources:
+
+1. A Postgres database reachable from managed Pipelines. Create a dedicated user that can create and modify the DuckLake metadata schema and its tables.
+2. An S3-compatible bucket and a dedicated prefix for this DuckLake.
+3. Object-storage credentials that can list, read, write, and delete objects under that prefix. Delete access is required for managed file cleanup.
+
+Use a new catalog metadata schema and data prefix for each destination. Reusing an existing schema or prefix can mix the metadata or files of different DuckLakes.
+
+Configure these fields in the destination form:
+
+- **Catalog URL**: A `postgres://` or `postgresql://` connection URL, including credentials and an `sslmode` appropriate for your provider
+- **Data path**: An `s3://<bucket>/<prefix>` URL
+- **Pool size**: From `1` to `6`; the default is `4`
+- **S3 access key ID** and **S3 secret access key**: A credential pair for the data path
+- **S3 region**: The storage provider's region
+- **S3 endpoint**: The provider endpoint without `http://` or `https://`
+- **S3 URL style**: `path` for Supabase Storage and many S3-compatible providers, or `vhost` for virtual-host-style addressing
+- **Use SSL**: Keep enabled for production endpoints
+- **Metadata schema**: A unique Postgres schema for DuckLake metadata, using only letters, numbers, and underscores
+
+The catalog URL and storage credentials are stored as secrets and aren't returned after creation. When editing the destination, leave a secret field empty to keep its stored value, or enter a new value to replace it.
+
+## Query the destination
+
+Pipelines manages replication but doesn't provide query compute for DuckLake during Early Access. Connect a DuckLake-compatible engine, such as DuckDB with its `ducklake` extension, to the same Postgres catalog and object-storage path.
+
+For **Use Supabase** mode, create separate read credentials for the selected catalog and Storage projects. The writer credentials generated for Pipelines aren't exposed. For **Custom parameters**, use separate read-only credentials when your catalog and storage provider support them.
+
+After attaching the catalog under an alias such as `my_ducklake`, source schemas and tables are available as qualified DuckLake tables:
+
+```sql
+select *
+from my_ducklake.public.orders;
+```
+
+See the [DuckDB connection guide](https://ducklake.select/docs/stable/duckdb/usage/connecting) for the current `ducklake` extension and `ATTACH` syntax. If your query client can't read a Supabase-backed catalog during Early Access, [contact support](https://supabase.com/dashboard/support/new).
+
+## How replication works
+
+For each published Postgres table, Pipelines:
+
+1. Creates the corresponding schema and table in DuckLake
+2. Copies existing rows during the initial sync
+3. Applies subsequent inserts, updates, deletes, and truncates to the current-state table
+4. Applies supported source schema changes
+
+Source schema and table names are preserved, while ASCII uppercase letters in column names are converted to lowercase. DuckDB compares schema, table, and column identifiers without ASCII case distinctions, so don't publish names that differ only by ASCII case. Use distinct lowercase column names. Source column names matching the generated `supabase_etl_ducklake_dropped_<ordinal>_<hash>` shape are reserved for schema-change recovery.
+
+A source `TRUNCATE` truncates the DuckLake table. Resetting a table drops and recreates the DuckLake table before running a new initial sync. Removing a source table from the publication stops new changes after the pipeline restarts but leaves the destination table in place.
+
+## Source table requirements
+
+Insert-only tables don't require a primary key or replica identity. Updates and deletes require a published Postgres row identity.
+
+| Source table setting                             | DuckLake support | Guidance                                                                                                  |
+| ------------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------- |
+| `REPLICA IDENTITY DEFAULT` with a primary key    | Supported        | Include every primary-key column in the publication.                                                      |
+| `REPLICA IDENTITY USING INDEX`                   | Supported        | Include every column from the replica-identity index in the publication.                                  |
+| `REPLICA IDENTITY FULL`                          | Supported        | Use when the table has no suitable key or the full old row is required. This increases source WAL volume. |
+| `REPLICA IDENTITY NOTHING`                       | Insert-only      | Inserts replicate, but updates and deletes don't contain an identity that DuckLake can match safely.      |
+| `REPLICA IDENTITY DEFAULT` without a primary key | Insert-only      | Add a key, configure a replica-identity index, or use full identity before publishing updates or deletes. |
+
+Changing replica identity only affects new WAL records. A retained update or delete written before the change can continue to fail after restart and may require recreating the pipeline or restarting the affected table's initial sync.
+
+## Type mapping
+
+Pipelines creates DuckLake columns with these mappings:
+
+| Postgres type                          | DuckLake type                     |
+| -------------------------------------- | --------------------------------- |
+| `boolean`                              | `boolean`                         |
+| `smallint`                             | `smallint`                        |
+| `integer`                              | `integer`                         |
+| `bigint`                               | `bigint`                          |
+| `real`                                 | `float`                           |
+| `double precision`                     | `double`                          |
+| Compatible `numeric(precision, scale)` | `decimal(precision, scale)`       |
+| `date`                                 | `date`                            |
+| `time without time zone`               | `time`                            |
+| `timestamp without time zone`          | `timestamp`                       |
+| `timestamp with time zone`             | `timestamptz`                     |
+| `uuid`                                 | `uuid`                            |
+| `json` and `jsonb`                     | `json`                            |
+| `oid`                                  | `ubigint`                         |
+| `bytea`                                | `blob`                            |
+| Supported Postgres arrays              | Corresponding DuckLake array type |
+| Other scalar and custom types          | `varchar`                         |
+
+DuckDB decimals support precision from `1` to `38` and a scale between `0` and the precision. Postgres `numeric` values declared outside that range, unconstrained `numeric`, and numeric types with unsupported modifiers are stored as `varchar` to preserve their serialized value.
+
+## Schema change support
+
+DuckLake schema change support is limited during Early Access.
+
+Supported changes include:
+
+- Adding columns
+- Renaming columns
+- Dropping columns
+- Dropping `NOT NULL` from an existing column
+- Adding, changing, or removing supported column defaults
+
+The following changes are not applied automatically:
+
+- Changing a column's data type
+- Adding `NOT NULL` to an existing nullable column
+- Renaming a source table or schema
+
+New columns are created as nullable so existing destination rows remain valid. If a source default can be represented safely, it is stored as DuckLake metadata; unsupported defaults are skipped with a warning. DuckLake applies each planned multi-column schema change in a transaction.
+
+## Troubleshooting
+
+| Issue                                                  | Resolution                                                                                                                                                                                          |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DuckLake isn't available in the destination list       | The destination is organization-gated during Early Access. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations).                                                           |
+| Supabase mode shows credential-provisioning warnings   | This is expected before creation. Confirm your selected projects, bucket, and metadata schema, then proceed. Credentials are provisioned when the destination is saved.                             |
+| Catalog URL validation fails                           | Use a valid `postgres://` or `postgresql://` URL with credentials and an `sslmode` appropriate for your provider. Confirm the catalog is reachable from managed Pipelines.                          |
+| Data path validation fails                             | Use an `s3://<bucket>/<prefix>` URL. Local `file://` paths aren't supported.                                                                                                                        |
+| S3 validation fails                                    | Provide both non-empty keys, the correct region, an endpoint without a protocol scheme, the correct URL style, and the provider's SSL setting. Confirm the credentials cover the configured prefix. |
+| Metadata schema already exists                         | For a new DuckLake, choose another schema. Proceed with an existing schema only when you intentionally want to reuse that DuckLake and its corresponding data path.                                 |
+| Inserts work but updates or deletes fail               | Configure a primary-key identity, replica-identity index, or `REPLICA IDENTITY FULL`, and include every identity column in the publication.                                                         |
+| An external query omits recent changes or deleted rows | Attach and query the DuckLake catalog instead of scanning raw Parquet files. Confirm that the query engine has access to both the Postgres catalog and the object-storage path.                     |
+| A schema change fails                                  | Check the supported changes above. Don't modify managed catalog tables or files manually. [Contact support](https://supabase.com/dashboard/support/new) with the pipeline ID and error details.     |
+
+## Additional resources
+
+- [DuckLake documentation](https://ducklake.select/docs/stable/)
+- [DuckLake architecture](https://ducklake.select/manifesto/)
+- [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring)
+
+
+---
+
 # Manual replication FAQ
 
 Common questions and considerations when setting up manual replication.
@@ -66574,15 +67215,15 @@ Note: Supabase Pipelines is currently in public alpha. Features and behavior may
 
 ## What destinations are supported?
 
-Pipelines currently supports **BigQuery** as the managed destination. See the [BigQuery destination guide](https://supabase.com/docs/guides/database/replication/bigquery) for configuration details.
+**BigQuery** is currently available as a managed destination. **ClickHouse**, **DuckLake**, and **Snowflake** are in Early Access. See the [ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse), [DuckLake](https://supabase.com/docs/guides/database/replication/ducklake), and [Snowflake](https://supabase.com/docs/guides/database/replication/snowflake) destination guides for setup instructions and data-model details.
 
-You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations). Supported destinations can be Supabase-managed or third-party systems as support expands.
+[Request Early Access](https://supabase.com/go/supabase-pipelines-new-destinations) for ClickHouse, DuckLake, or Snowflake. Supported destinations can be Supabase-managed or third-party systems as support expands.
 
 ## Does the destination's region affect performance?
 
 Yes. The further apart your source database, the pipeline, and your destination are, the more network latency is added to replication, which increases replication lag and reduces throughput.
 
-Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. For the best performance, place both your source project and destination as close to Frankfurt as possible. When configuring a destination provider such as BigQuery, choose its closest available region.
+Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. For the best performance, place both your source project and destination as close to Frankfurt as possible. Choose the closest practical BigQuery dataset location, ClickHouse service region, DuckLake catalog and storage region, or Snowflake account region.
 
 If you can only optimize one side, prioritize placing your **destination** close to the pipeline's region. Replicated data continuously streams out to the destination, so latency on that leg has a bigger impact on overall replication lag than latency between the pipeline and the source.
 
@@ -66594,7 +67235,7 @@ Pipelines requires a Pro, Team, or Enterprise plan. During public alpha, access 
 
 We are currently working on a new Supabase Warehouse product designed to address the limitations of the previous Analytics Buckets. Our goal is to build a solution we can confidently stand behind, rather than continuing to support an approach that does not meet the quality and flexibility we want for our users.
 
-As a result, replication into Analytics Buckets via Pipelines is no longer supported. Right now, **BigQuery** is the only supported managed destination, and we are actively working on expanding capabilities.
+As a result, replication into Analytics Buckets via Pipelines is no longer supported. Separately, **BigQuery** is currently available as a managed Pipelines destination, and **ClickHouse**, **DuckLake**, and **Snowflake** are in Early Access. DuckLake here is a Pipelines replication destination, not the Warehouse product described above.
 
 ## What does Pipelines install in the database?
 
@@ -66607,9 +67248,9 @@ The replication state tables are not updated very often, especially after the in
 
 ## What schema changes are supported?
 
-Schema change support is currently in beta and limited to the BigQuery destination.
+Schema change support is destination-specific and limited.
 
-Supported schema changes:
+BigQuery beta support includes:
 
 - Adding a scalar, top-level column (created as `NULLABLE` in BigQuery)
 - Removing a column
@@ -66618,6 +67259,12 @@ Supported schema changes:
 - Setting or dropping supported column default metadata
 
 Initial BigQuery table creation preserves whether each scalar, non-array Postgres column allows `NULL`. Arrays use BigQuery's `REPEATED` mode. For later changes, `DROP NOT NULL` relaxes a BigQuery `REQUIRED` column to `NULLABLE`, while `SET NOT NULL` leaves an existing BigQuery column nullable and logs a warning. Newly added scalar, top-level columns are always nullable in BigQuery. Supported defaults are applied separately as destination metadata and do not populate existing destination rows. Pipelines does not currently support changing column data types. See [BigQuery schema change support](https://supabase.com/docs/guides/database/replication/bigquery#schema-change-support) for details.
+
+Snowflake Early Access supports adding, renaming, and dropping columns. It doesn't support column type changes or table and schema renames. Changes to whether existing columns accept `NULL` and changes to their defaults are ignored. Schema changes affect existing history. Dropping a column removes it from older events. See [Snowflake schema change support](https://supabase.com/docs/guides/database/replication/snowflake#schema-change-support) for details.
+
+ClickHouse Early Access supports adding, renaming, and dropping columns, dropping `NOT NULL`, and supported default changes. It doesn't apply column type changes or `SET NOT NULL`. Changing a source primary-key column isn't supported for `ReplacingMergeTree`. ClickHouse DDL is not transactional, so an interrupted multi-column change can be partially applied. See [ClickHouse schema change support](https://supabase.com/docs/guides/database/replication/clickhouse#schema-change-support) for details.
+
+DuckLake Early Access supports adding, renaming, and dropping columns, dropping `NOT NULL`, and supported default changes. It doesn't apply column type changes or `SET NOT NULL`. New columns are made nullable, and each multi-column schema change is applied in a transaction. See [DuckLake schema change support](https://supabase.com/docs/guides/database/replication/ducklake#schema-change-support) for details.
 
 ## What happens when you disable Pipelines?
 
@@ -66632,6 +67279,9 @@ Disabling Pipelines stops Supabase from managing replication for the project. It
 Common reasons:
 
 - **Missing primary key**: BigQuery requires each source table to have a primary key and requires the publication to include its columns. This is a BigQuery Pipelines requirement, not a general requirement for publishing Postgres inserts.
+- **ClickHouse requirements**: `ReplacingMergeTree` requires a source primary key. ClickHouse updates require `REPLICA IDENTITY FULL`. Deletes require primary-key identity or full identity. The publication must include all primary-key columns.
+- **DuckLake requirements**: Insert-only tables don't require row identity. Updates and deletes require a primary key, `REPLICA IDENTITY USING INDEX`, or `REPLICA IDENTITY FULL`, and the publication must include every identity column.
+- **Insufficient replica identity**: Snowflake updates require `REPLICA IDENTITY FULL`. Deletes require a primary key, `REPLICA IDENTITY USING INDEX`, or `REPLICA IDENTITY FULL`. The publication must include all identity columns.
 - **Not in publication**: Ensure the table is included in your Postgres publication
 - **Generated columns**: Generated columns are skipped during replication
 
@@ -66651,13 +67301,19 @@ See [Partitioned tables](https://supabase.com/docs/guides/database/replication/p
 
 If inserts replicate but updates or deletes fail, the source table might not be sending enough old-row identity through Postgres logical replication.
 
-Every table sent to BigQuery must have a primary key, and every primary-key column must be included in the publication. For updates and deletes, use the primary key replica identity or `REPLICA IDENTITY FULL`. Full replica identity is also recommended for tables with large `text`, `jsonb`, `bytea`, or other values that Postgres can store out of line.
+For BigQuery, every source table must have a primary key, every primary-key column must be included in the publication, and updates and deletes require a supported primary-key identity or full identity.
+
+For ClickHouse, the default `ReplacingMergeTree` engine requires a source primary key. The `MergeTree` event-log engine can replicate inserts from tables without a primary key. Updates require `REPLICA IDENTITY FULL`. Deletes require primary-key identity or full identity. The publication must include every primary-key column.
+
+For DuckLake, insert-only tables don't require row identity. Updates and deletes require a primary-key identity, `REPLICA IDENTITY USING INDEX`, or `REPLICA IDENTITY FULL`. The publication must include every identity column.
+
+For Snowflake, updates require `REPLICA IDENTITY FULL`. Deletes require a primary key, `REPLICA IDENTITY USING INDEX`, or `REPLICA IDENTITY FULL`. The publication must include all identity columns. Insert-only Snowflake tables don't require row identity.
 
 ```sql
 alter table public.your_table replica identity full;
 ```
 
-Full replica identity increases WAL volume and only affects new WAL records. Fix the setting before generating more changes. If the failing update is already retained in WAL, restarting may fail again; recreate the pipeline or restart the affected table's initial sync. See [BigQuery source table requirements](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements) for details.
+Full replica identity increases WAL volume and only affects new WAL records. Fix the setting before generating more changes. If the failing update is already retained in WAL, restarting may fail again; recreate the pipeline or restart the affected table's initial sync. See the [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements), [ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse#source-table-requirements), [DuckLake](https://supabase.com/docs/guides/database/replication/ducklake#source-table-requirements), or [Snowflake](https://supabase.com/docs/guides/database/replication/snowflake#source-table-requirements) requirements for details.
 
 ## Why aren't publication changes reflected after adding or removing tables?
 
@@ -66736,7 +67392,7 @@ When a project is downgraded to the Free Plan, all replication pipelines created
 
 ## What happens if a table is deleted at the destination?
 
-Don't delete or modify tables or views managed by Pipelines. For BigQuery, deleting a managed object can stop replication and may require a new, billable initial sync. Pipelines does not guarantee that it will automatically repair or fully resynchronize a destination object that was removed manually.
+Don't delete or modify tables or views managed by Pipelines. Deleting a managed object can stop replication and may require a new, billable initial sync. Pipelines does not guarantee that it will automatically repair or fully resynchronize an object removed manually.
 
 **To permanently remove a table from your destination you have two options:**
 
@@ -66760,7 +67416,7 @@ Yes. Pipelines uses at-least-once processing. Failed destination write attempts 
 
 In rare cases, Pipelines can count an acknowledged batch but crash or be interrupted before its replication checkpoint is persisted. Recovery can then process and count the same data again.
 
-BigQuery uses the replicated source primary key and CDC ordering metadata to converge on the current table state. Pipelines does not provide a history of each delivery attempt that you can query or guarantee exactly-once event processing.
+BigQuery and the default ClickHouse `ReplacingMergeTree` layout use the replicated source primary key and ordering metadata to converge on current table state. DuckLake applies current-state mutation batches and records destination progress in its catalog. ClickHouse `MergeTree` tables are append-only histories; `cdc_lsn` can be shared by changes in the same transaction and isn't a unique event ID. Snowflake uses committed channel offsets to suppress ordinary replay, but its append-only histories still require consumers to tolerate repeated events. `_cdc_sequence_number` is an ordering and checkpoint token, not a globally unique event ID. Pipelines doesn't guarantee exactly-once event processing.
 
 ## Where to find replication logs
 
@@ -66910,6 +67566,9 @@ After the affected table finishes copying and catches up, the temporary slot is 
 - Avoid leaving pipelines stopped for long periods while the source database is still receiving writes.
 - Schedule bulk updates, imports, and migrations during lower-traffic windows when possible.
 - For BigQuery, verify that service account permissions, table requirements, and replica identity settings match the [BigQuery destination guide](https://supabase.com/docs/guides/database/replication/bigquery).
+- For ClickHouse, check the HTTPS endpoint, target-database permissions, selected table engine, server version, and source table requirements against the [ClickHouse destination guide](https://supabase.com/docs/guides/database/replication/clickhouse).
+- For DuckLake, check catalog connectivity, object-storage permissions, catalog and storage latency, and source row identity against the [DuckLake destination guide](https://supabase.com/docs/guides/database/replication/ducklake).
+- For Snowflake, check the service user's default role, schema privileges, key pair, row limits, and replica identity against the [Snowflake destination guide](https://supabase.com/docs/guides/database/replication/snowflake).
 - If the initial sync is the bottleneck, review **Table sync workers** and **Copy connections per table** in the pipeline's advanced settings. Increasing either can use more source database connections; increasing table sync workers can also use more temporary replication slots.
 
 ## Handling errors
@@ -66928,7 +67587,7 @@ Table errors occur during the initial sync and affect individual tables. These e
 
 **Recovering from table errors:**
 
-When a table encounters an error during the initial sync, you can reset the table state. This restarts that table's initial sync from the beginning.
+When a table encounters an error during the initial sync, you can reset the table state. This deletes the table's existing destination data and restarts its initial sync from the beginning. For ClickHouse, the reset drops and recreates the table and any generated current-state view. For DuckLake, it drops and recreates the table in the catalog; managed maintenance later cleans up unreferenced files. For Snowflake, it drops and recreates the append-only history table and its managed streaming channel.
 
 ### Pipeline errors
 
@@ -67147,7 +67806,7 @@ Publications created from the Dashboard replication flow use `publish_via_partit
 
 On Postgres 15 and newer, row filters on partition publications apply during both the initial sync and ongoing replication. Pipelines uses the row filter attached to the effective publication table entry: the published partition root when `publish_via_partition_root = true`, and the published leaf relation when `publish_via_partition_root = false`.
 
-The publication setting controls which Postgres relation becomes a destination table. It does not copy the source table's physical partitioning configuration, partition key, or partition bounds to BigQuery.
+The publication setting controls which Postgres relation becomes a destination table. It does not copy the source table's physical partitioning configuration, partition key, or partition bounds to the destination.
 
 Note: With `publish_via_partition_root = true`, truncating an individual leaf partition is not replicated as a truncate event for the published parent. This is useful for append-only data such as events: you can truncate old leaf partitions to keep Postgres storage bounded while retaining the rows already copied to the destination. If you want the destination to be truncated too, run `TRUNCATE` on the published partition root.
 
@@ -67166,7 +67825,7 @@ Before creating a managed replication pipeline, enable Pipelines for your projec
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 2. Click **Add destination** to show the replication side panel
-3. Select a Pipelines destination, such as **BigQuery**
+3. Select a Pipelines destination, such as **BigQuery**, or **ClickHouse**, **DuckLake**, or **Snowflake** if your organization has Early Access
 4. Click **Enable Pipelines**
 
 ### Step 3: Configure a destination
@@ -67175,7 +67834,7 @@ Once Pipelines is enabled and you have a Postgres publication, configure a desti
 
 #### Choose and configure your destination
 
-Follow these steps to configure your destination. Each destination has its own setup requirements and behavior. **BigQuery** is currently available. You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations).
+Follow these steps to configure your destination. Each destination has its own setup requirements and data model. **BigQuery** is currently available. **ClickHouse**, **DuckLake**, and **Snowflake** are in Early Access. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) to these destinations.
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 
@@ -67186,10 +67845,13 @@ Follow these steps to configure your destination. Each destination has its own s
 4. Configure the destination details:
    - **Destination name**: A name to identify this destination
    - **Publication**: Select an existing publication, or click **New publication** to create one by choosing a name and at least one table
-   - **Region**: Managed Pipelines run in the fixed **AWS `eu-central-1` (Frankfurt)** region. This can't be changed. In your destination provider, choose a nearby dataset, warehouse, or storage bucket region.
+   - **Region**: Managed Pipelines run in the fixed **AWS `eu-central-1` (Frankfurt)** region. This can't be changed. In your destination provider, choose nearby destination resources when possible.
 
 5. Configure the destination-specific settings. See the destination guide for required credentials, permissions, and limitations:
    - [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery)
+   - [ClickHouse (Early Access)](https://supabase.com/docs/guides/database/replication/clickhouse)
+   - [DuckLake (Early Access)](https://supabase.com/docs/guides/database/replication/ducklake)
+   - [Snowflake (Early Access)](https://supabase.com/docs/guides/database/replication/snowflake)
 
 6. Optionally expand **Advanced settings** to tune pipeline behavior:
 
@@ -67271,11 +67933,11 @@ Note: If your Postgres publication uses `FOR ALL TABLES` or `FOR TABLES IN SCHEM
 
 2. **Restart the replication pipeline** using the actions menu (see [Managing your pipeline](#managing-your-pipeline)) for the changes to take effect.
 
-Note: When a table is deleted at the destination, the behavior depends on the destination. In general, the pipeline tries to recreate the table so replication can continue. To permanently delete a table, stop the pipeline first or remove it from the publication before deleting. See the [Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-happens-if-a-table-is-deleted-at-the-destination) for details.
+Note: Don't manually delete or modify a destination table managed by Pipelines. This can stop replication and require a new initial sync. Supported source schema changes are documented below. To permanently remove a destination table, first remove its source table from the publication and restart the pipeline, then delete the destination table. Alternatively, delete the whole destination. See the [Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-happens-if-a-table-is-deleted-at-the-destination) for details.
 
 ### Schema change support
 
-Schema change support depends on the destination. BigQuery is currently the only destination with beta schema change support. See [BigQuery schema change support](https://supabase.com/docs/guides/database/replication/bigquery#schema-change-support) for supported and unsupported changes.
+Schema change support is destination-specific and limited. See the [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery#schema-change-support), [ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse#schema-change-support), [DuckLake](https://supabase.com/docs/guides/database/replication/ducklake#schema-change-support), or [Snowflake](https://supabase.com/docs/guides/database/replication/snowflake#schema-change-support) guide for the exact behavior.
 
 ### How it works
 
@@ -67292,7 +67954,7 @@ Pipelines automatically optimizes how changes are delivered to the destination. 
 If you encounter issues during setup:
 
 - **Publication not appearing**: Ensure you created the Postgres publication via SQL and refresh the dashboard
-- **Tables not showing in publication**: Verify your tables meet the requirements of the selected destination. BigQuery requires a source primary key and requires the publication to include its columns.
+- **Tables not showing in publication**: Verify your tables meet the requirements of the selected destination. BigQuery and ClickHouse `ReplacingMergeTree` require a source primary key. ClickHouse updates require `REPLICA IDENTITY FULL`; deletes require primary-key or full identity. DuckLake updates and deletes require a primary-key identity, replica-identity index, or full identity. With a primary-key identity or replica-identity index, include every identity column in the publication. Snowflake requires `REPLICA IDENTITY FULL` when updates are published.
 - **Pipeline failed to start**: Check the error message in the status view for specific details
 - **No data being replicated**: Verify your Postgres publication includes the correct tables and event types
 
@@ -67302,21 +67964,258 @@ For more troubleshooting help, see the [Pipelines FAQ](https://supabase.com/docs
 
 Pipelines has the following limitations:
 
-- **Primary keys**: Requirements are destination-specific. Postgres can publish inserts for a table without a primary key, but BigQuery Pipelines always requires a source primary key and requires the publication to include its columns.
+- **Row identity**: Requirements are destination-specific. BigQuery and ClickHouse `ReplacingMergeTree` require a source primary key and its published columns. ClickHouse updates require `REPLICA IDENTITY FULL`; deletes require primary-key or full identity. DuckLake insert-only tables don't require a key, but updates and deletes require a primary-key identity, replica-identity index, or full identity. With a primary-key identity or replica-identity index, include every identity column in the publication. Snowflake insert-only tables don't require a key. Snowflake deletes require a published primary-key or replica-identity index unless full identity is used. Snowflake updates require `REPLICA IDENTITY FULL`.
 - **Custom data types**: Custom values replicate as strings. Check that your destination can interpret those string values correctly.
 - **Generated columns**: Generated columns are skipped. Use triggers to store derived values in regular columns if you need them in the destination.
-- **Replica identity**: Requirements are destination-specific. Updates and deletes need enough row identity to apply safely. See [BigQuery source table requirements](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements) for the supported modes.
-- **Schema changes**: Currently in beta and limited to BigQuery
+- **Replica identity**: Updates and deletes need the mode required by the destination. See the [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements), [ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse#source-table-requirements), [DuckLake](https://supabase.com/docs/guides/database/replication/ducklake#source-table-requirements), and [Snowflake](https://supabase.com/docs/guides/database/replication/snowflake#source-table-requirements) requirements.
+- **Schema changes**: Support is destination-specific and limited.
 - **No user-defined transformations**: Pipelines performs destination-compatible type and name mapping, but doesn't run custom transformations
-- **At-least-once processing**: Failed destination write attempts that Pipelines retries are not counted. In rare cases, Pipelines can count an acknowledged batch but crash or be interrupted before its replication checkpoint is persisted. Recovery can then process and count that batch again. BigQuery uses primary-key-based CDC to converge on the current table state. See [Can data be processed more than once?](https://supabase.com/docs/guides/database/replication/pipelines-faq#can-data-be-processed-more-than-once) for details.
+- **At-least-once processing**: In rare recovery cases, an acknowledged batch can be processed and counted again. BigQuery, DuckLake, and the default ClickHouse `ReplacingMergeTree` layout maintain current-state tables. ClickHouse `MergeTree` and Snowflake store append-only histories, so consumers must tolerate repeated events. See [Can data be processed more than once?](https://supabase.com/docs/guides/database/replication/pipelines-faq#can-data-be-processed-more-than-once) for details.
 
-Destination-specific limitations, such as BigQuery's row size limits, are documented in each destination guide.
+Destination-specific limitations, such as row size and type mappings, are documented in each destination guide.
 
 ### Next steps
 
 - [Set up BigQuery](https://supabase.com/docs/guides/database/replication/bigquery)
+- [Set up ClickHouse](https://supabase.com/docs/guides/database/replication/clickhouse)
+- [Set up DuckLake](https://supabase.com/docs/guides/database/replication/ducklake)
+- [Set up Snowflake](https://supabase.com/docs/guides/database/replication/snowflake)
 - [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring)
 - [View the Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq)
+
+
+---
+
+# Snowflake destination
+
+Replicate Supabase Postgres changes to Snowflake.
+
+Configure Snowflake as a Supabase Pipelines destination.
+
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
+
+Note: The Snowflake destination is in Early Access and available only to approved organizations. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) before following this guide.
+
+[Snowflake](https://www.snowflake.com/) is a managed data platform. Supabase Pipelines writes an append-only change history for each replicated Postgres table to Snowflake.
+
+## Prepare Snowflake resources
+
+Create a dedicated Snowflake database, schema, role, and service user for Pipelines. Keep the schema otherwise empty to avoid ownership conflicts. Use unquoted identifiers for the service user and role. Pipelines converts the account and user names to uppercase during authentication.
+
+Run the following as a Snowflake administrator. Change the example names as needed:
+
+```sql
+create role if not exists PIPELINES_ROLE;
+
+create user if not exists PIPELINES_USER
+  type = service;
+
+grant role PIPELINES_ROLE to user PIPELINES_USER;
+alter user PIPELINES_USER set default_role = PIPELINES_ROLE;
+
+create database if not exists PIPELINES_DB;
+create schema if not exists PIPELINES_DB.REPLICATED;
+
+grant usage on database PIPELINES_DB to role PIPELINES_ROLE;
+grant usage on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
+grant create table on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
+grant create pipe on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
+```
+
+The pipeline role must own destination tables so it can alter, truncate, or drop them. Don't pre-create destination tables under another role.
+
+The role also needs `CREATE PIPE` so Snowflake can create each table's managed default Snowpipe Streaming pipe, named `<TABLE>-STREAMING`, when Pipelines opens a channel. Pipelines does not need a virtual warehouse, stage, or manually created pipe.
+
+Use a separate role and warehouse for downstream queries and transformations. The pipeline service role does not need query or transformation privileges.
+
+### Keep the SQL and streaming roles aligned
+
+Pipelines uses two Snowflake interfaces:
+
+- SQL requests use the optional **Role** configured in the Dashboard. When **Role** is empty, they use the user's default role.
+- Snowpipe Streaming uses the user's `DEFAULT_ROLE`. It does not use the optional **Role** setting.
+
+Use one dedicated role for both interfaces. Set it as the service user's `DEFAULT_ROLE`. Leave **Role** empty in the Dashboard or set it to the same role. If the roles differ, SQL validation and table creation can succeed while streaming fails.
+
+### Generate a key pair
+
+Pipelines authenticates with an RSA key pair. Snowflake requires a key of at least 2048 bits and recommends PKCS #8. Generate an unencrypted private key:
+
+```bash
+openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out rsa_key.p8 -nocrypt
+```
+
+To use a passphrase, generate an encrypted PKCS #8 private key:
+
+```bash
+openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 -inform PEM -out rsa_key.p8
+```
+
+Derive the public key:
+
+```bash
+openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub
+```
+
+Register only the public-key body with the service user. Omit the `BEGIN PUBLIC KEY` and `END PUBLIC KEY` lines:
+
+```sql
+alter user PIPELINES_USER set rsa_public_key = '<public-key-body>';
+```
+
+Keep `rsa_key.p8` and its passphrase secret. Don't commit them, paste them into logs, or send them to support. The Dashboard accepts unencrypted PKCS #1 or PKCS #8 keys, and encrypted PKCS #8 keys with a passphrase. It does not support encrypted PKCS #1 keys.
+
+See [Snowflake key-pair authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth) to verify the public-key fingerprint and rotate keys with `RSA_PUBLIC_KEY_2`.
+
+### Find the account identifier
+
+Run this query in Snowflake:
+
+```sql
+select current_organization_name() || '-' || current_account_name();
+```
+
+Enter the result as **Account ID**, for example `MYORG-MYACCOUNT`. Do not enter a full URL or dotted locator-and-region hostname. Account IDs can contain up to 63 characters. Legacy one-part account locators are also accepted. See [Snowflake account identifiers](https://docs.snowflake.com/en/user-guide/admin-account-identifier) for details.
+
+## Configure Snowflake as a destination
+
+1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard.
+2. Click **Add destination**.
+3. Select **Snowflake**. If it isn't available, [request Early Access](https://supabase.com/go/supabase-pipelines-new-destinations).
+4. Select a Postgres publication and enter a destination name.
+5. Enter the Snowflake settings:
+   - **Account ID**: The organization and account identifier, such as `MYORG-MYACCOUNT`.
+   - **User**: The dedicated unquoted service user, such as `PIPELINES_USER`.
+   - **Database**: The destination database, such as `PIPELINES_DB`.
+   - **Schema**: The dedicated destination schema, such as `REPLICATED`.
+   - **Role**: Leave empty to use the user's `DEFAULT_ROLE`. If set, enter the same role.
+   - **Private key**: The complete PEM-encoded private key, including its begin and end lines.
+   - **Private key passphrase**: Required only for an encrypted PKCS #8 key.
+6. Review the [source table requirements](#source-table-requirements) and click **Create and start pipeline**.
+
+Enter the database and schema identifiers exactly as stored in Snowflake. Unquoted identifiers are stored in uppercase. Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. When possible, use a Snowflake account near Frankfurt.
+
+## How it works
+
+Pipelines uses Snowflake's SQL REST API to validate the database and schema, create, evolve, and reset destination tables, and apply source `TRUNCATE` operations. It sends initial and ongoing row data through Snowpipe Streaming. These operations do not use a virtual warehouse.
+
+Validation checks authentication, database and schema visibility, and that `QUOTED_IDENTIFIERS_IGNORE_CASE` is `FALSE`. It does not verify that the role can create or own tables, create pipes, or write through Snowpipe Streaming.
+
+### Destination table names
+
+Pipelines maps each Postgres schema and table pair to one Snowflake table name. It doubles existing underscores, joins the names with one underscore, and uppercases the result:
+
+| Postgres table         | Snowflake table          |
+| ---------------------- | ------------------------ |
+| `public.orders`        | `PUBLIC_ORDERS`          |
+| `sales_eu.order_items` | `SALES__EU_ORDER__ITEMS` |
+
+Postgres schema and table names cannot start or end with `_` or contain `"` or `;`. Names that differ only in case map to the same Snowflake name. Use lowercase Postgres names to avoid collisions. Source column names are preserved as quoted identifiers, except for the reserved metadata names below.
+
+### Append-only change history
+
+Each destination table contains the replicated source columns plus two `VARCHAR NOT NULL` metadata columns:
+
+| Column                 | Meaning                                                                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `_cdc_operation`       | Lowercase operation: `insert`, `update`, or `delete`.                                                    |
+| `_cdc_sequence_number` | Fixed-width hexadecimal commit LSN and transaction ordinal, such as `00000000016b3740/0000000000000002`. |
+
+The metadata names are reserved and can't be used by source columns. Initial-sync rows use `insert` and the shared sequence number `0000000000000000/0000000000000000`.
+
+Snowflake tables are an event history, not a current-state replica:
+
+- An insert appends the new row.
+- An update appends the complete new row. It does not append a before image.
+- A delete appends the complete old row for `REPLICA IDENTITY FULL`. For a primary-key or `USING INDEX` identity, it appends only the identity columns and sets all other source columns to `NULL`.
+- A source `TRUNCATE` truncates the Snowflake table, resets its streaming state, and does not append a truncate event.
+
+To derive current state, group by a stable source identity and select the row with the latest `_cdc_sequence_number`. Exclude identities whose latest operation is `delete`. The sequence number is used for ordering and checkpointing. It is not a globally unique event ID. Pipelines provides at-least-once delivery, so consumers must tolerate duplicates. Snowpipe committed offsets suppress routine replay but do not change this guarantee.
+
+Resetting a table drops and recreates its Snowflake table and managed streaming state. This erases its history. Removing a table from the Postgres publication stops new changes after the pipeline restarts. The existing Snowflake table remains.
+
+## Source table requirements
+
+Required `REPLICA IDENTITY` depends on the operations enabled in the Postgres publication:
+
+| Published operations | Required replica identity                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `INSERT` only        | No row identity is required.                                                                                   |
+| `DELETE`             | A primary key, `REPLICA IDENTITY USING INDEX`, or `REPLICA IDENTITY FULL`. Identity columns must be published. |
+| `UPDATE`             | `REPLICA IDENTITY FULL`.                                                                                       |
+
+Set full replica identity before publishing updates:
+
+```sql
+alter table public.your_table replica identity full;
+```
+
+`REPLICA IDENTITY FULL` increases WAL volume, but lets Pipelines construct complete new rows when Postgres omits unchanged out-of-line TOAST values. The setting applies only to new WAL records. If retained WAL already contains an incompatible update, reset the affected table after changing the setting.
+
+## Type mapping
+
+Pipelines creates Snowflake columns with these mappings:
+
+| Postgres type                           | Snowflake type                  |
+| --------------------------------------- | ------------------------------- |
+| `boolean`                               | `BOOLEAN`                       |
+| `smallint`, `integer`, `bigint`         | `SMALLINT`, `INTEGER`, `BIGINT` |
+| `real`, `double precision`              | `FLOAT`, `DOUBLE`               |
+| `date`, `time`                          | `DATE`, `TIME`                  |
+| `timestamp`, `timestamp with time zone` | `TIMESTAMP_NTZ`, `TIMESTAMP_TZ` |
+| `json`, `jsonb`                         | `VARIANT`                       |
+| One-dimensional arrays                  | `ARRAY`                         |
+| `oid`                                   | `BIGINT`                        |
+| Other types                             | `VARCHAR`                       |
+
+Pipelines uses `VARCHAR` for character and text types, `numeric`, `time with time zone`, `interval`, `uuid`, `bytea`, bit strings, and custom or unknown types. `bytea` values are lowercase hexadecimal strings. Pipelines stores these values in serialized form, not as native Snowflake types.
+
+Additional limits apply:
+
+- Multi-dimensional arrays aren't supported. Non-default lower bounds on one-dimensional arrays aren't preserved.
+- Non-finite floating-point and `numeric` values are rejected.
+- An uncompressed serialized row larger than 2 MiB is rejected.
+- Source primary-key, unique, check, length, precision, and nullability constraints aren't copied. Only the two CDC metadata columns are `NOT NULL`.
+
+## Schema change support
+
+Snowflake schema change support is limited during Early Access.
+
+Supported changes:
+
+- Add a column.
+- Rename a column.
+- Drop a column.
+
+Unsupported or limited changes:
+
+- Changing a column type isn't supported.
+- Source table and schema renames aren't supported.
+- Changes to nullability or existing column defaults are ignored.
+- Initial table creation can copy compatible literal defaults. Added columns can copy string, numeric, or boolean literal defaults. Other defaults are omitted.
+
+Snowflake DDL changes existing history. Adding a column with a default can populate older rows. Renaming a column changes the historical schema. Dropping a column removes it from old events. Snowflake DDL is not transactional, so an interrupted multi-column change can leave a partially applied schema. Do not alter managed destination objects manually. If the pipeline remains failed after a restart, [contact support](https://supabase.com/dashboard/support/new).
+
+## Troubleshooting
+
+| Symptom                                               | What to check                                                                                                                                                                                                                                                                |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Authentication fails                                  | Confirm the account identifier and user, the registered public-key fingerprint, the complete private-key PEM, and the passphrase. Don't provide a passphrase for an unencrypted key.                                                                                         |
+| Database or schema isn't found                        | Match the database and schema names exactly, including case. Confirm that the role has `USAGE` on both.                                                                                                                                                                      |
+| Validation succeeds but table initialization fails    | Confirm that the role has `CREATE TABLE` and `CREATE PIPE` on the schema. Check that another role does not own a table with the same name. Snowflake manages the default pipe. Use a dedicated empty schema.                                                                 |
+| Validation or table creation succeeds but writes fail | Confirm that the service user's `DEFAULT_ROLE` is the pipeline role. Leave **Role** empty or set it to the same role. Confirm that the role has `CREATE PIPE`. Check that Snowflake network policies allow the account control endpoint and discovered Snowpipe ingest host. |
+| Updates or deletes fail                               | Check the publication's operations, replica identity, and included identity columns. Updates require `REPLICA IDENTITY FULL`.                                                                                                                                                |
+| A row is rejected                                     | Check for multi-dimensional arrays, non-finite numbers, serialized rows larger than 2 MiB, or source columns named `_cdc_operation` or `_cdc_sequence_number`.                                                                                                               |
+| A schema change fails                                 | Check the supported changes above. Snowflake DDL can be partially applied, so do not repair managed tables manually. [Contact support](https://supabase.com/dashboard/support/new) with the pipeline ID and error details.                                                   |
+
+Use [pipeline monitoring](https://supabase.com/docs/guides/database/replication/pipelines-monitoring) and [replication logs](https://supabase.com/dashboard/project/_/logs/replication-logs) to inspect table state, lag, and errors.
+
+## Additional resources
+
+- [Snowflake key-pair authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth)
+- [Snowflake account identifiers](https://docs.snowflake.com/en/user-guide/admin-account-identifier)
+- [Snowpipe Streaming default pipe](https://docs.snowflake.com/en/user-guide/snowpipe-streaming/snowpipe-streaming-pipe-object)
+- [Snowpipe Streaming operations and privileges](https://docs.snowflake.com/en/user-guide/snowpipe-streaming/snowpipe-streaming-operations)
 
 
 ---
@@ -87053,8 +87952,6 @@ Learn how to use Supabase in your Next.js App.
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
 
-Explore Components
-
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
 - [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
@@ -87368,8 +88265,6 @@ At this stage you have a fully functional application!
 Learn how to use Supabase in your Nuxt 3 App.
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
@@ -87855,8 +88750,6 @@ For an unauthenticated route, pass `auth: 'none'`. For app-wide auth, register `
 Learn how to use Supabase in your React App.
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
@@ -90458,8 +91351,6 @@ At this stage you have a fully functional application!
 Learn how to use Supabase in your Vue 3 App.
 
 Note: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
@@ -100559,7 +101450,7 @@ An AI agent can work through this loop for you, but only if it can read your pro
 
 Debugging with an agent needs two things:
 
-- The [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) provides the tools this guide relies on: `get_logs` for a per-service log dump, `query_logs` to run read-only SQL against your logs for filtering and aggregation, `get_advisors` for security and performance findings, and `execute_sql` to inspect your schema and policies.
+- The [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) provides the tools this guide relies on: `get_logs` for a per-service log dump, `query_logs` to run read-only SQL against your logs for filtering and aggregation (see [Querying with the Logs Explorer](https://supabase.com/docs/guides/monitoring-and-debugging/logs#querying-with-the-logs-explorer) for the ClickHouse SQL syntax it accepts), `get_advisors` for security and performance findings, and `execute_sql` to inspect your schema and policies.
 - The [Supabase agent skill](https://supabase.com/docs/guides/ai-tools/ai-skills) teaches the agent this workflow: locate the failing layer, gather evidence from the matching log source, and verify the fix by re-running the operation that failed.
 
 Install both in one step with the [Supabase plugin for AI coding agents](https://supabase.com/docs/guides/ai-tools/plugins). Connecting an agent to your project carries security risks, so read the [MCP security best practices](https://supabase.com/docs/guides/ai-tools/mcp#security-risks) first.
@@ -150693,6 +151584,10 @@ try {
 }
 ```
 
+## hasLogger
+
+Returns true if a custom `logger` has been configured on this client.
+
 ## httpSend
 
 Sends a broadcast message explicitly via REST API.
@@ -168854,6 +169749,52 @@ if (error) {
 const { data } = await ctx.supabase.rpc('get_my_items')
 ```
 
+## ident
+
+Quote a Postgres identifier — a table, column, or role name — for safe
+interpolation into SQL text.
+
+Bind parameters cover *values* and nothing else: `order by $1` sorts every
+row by the constant string `$1`, and `select $1 from t` selects a literal,
+not a column. Identifiers therefore have to reach the server as SQL text,
+which is the one place string-building is unavoidable. This makes that step
+safe by quoting the name and doubling any embedded quote, so the result is
+always exactly one identifier no matter what it contains.
+
+**It is not an allowlist.** Quoting a caller-supplied name yields a valid
+identifier, not a permitted one — `ident(req.query.sort)` cannot inject SQL
+but can still read a column the caller was never meant to see. Check the
+name against a fixed set you control first, then quote it.
+
+### Examples
+
+#### Example 1
+
+```ts
+const SORTABLE = new Set(['created_at', 'title'])
+if (!SORTABLE.has(column)) throw new Error('unsupported sort column')
+const rows = await ctx.postgres.queryRaw(
+  `select id, title from posts order by ${ident(column)} desc`,
+)
+```
+
+## PostgresApi
+
+The shape of `ctx.postgres` and `ctx.postgresAdmin`.
+
+Both halves expose the same surface — they differ in what runs around the
+query, not in how you call it. `withPostgresClient` wraps every query in a
+transaction that injects the caller's claims and drops to their role;
+`withPostgresAdminClient` runs it as-is, as the connection-string role.
+
+## RequestClaims
+
+Minimal claims shape withPostgresClient needs on the upstream context.
+
+Satisfied both by `withSupabase`'s JWKS-verified `ctx.jwtClaims` and by the
+standalone `withClaims` middleware — `withPostgresClient` only reads `role`
+and serializes the whole object into `request.jwt.claims`.
+
 ## resourceMetadataResponse
 
 RFC 9728 OAuth Protected Resource Metadata response.
@@ -168898,6 +169839,109 @@ Deno.serve(
   ),
 )
 ```
+
+## withPostgresAdminClient
+
+Contributes `ctx.postgresAdmin` — a `pg` client that **bypasses RLS**, for
+full-table access. The direct-connection counterpart to
+`withSupabaseAdminClient`, and the deliberate opt-out from the guardrails
+`withPostgresClient` (`@supabase/server/middleware/postgres`) enforces.
+
+Queries run as-is, as the role in the connection string: no claim injection,
+no role switching, no wrapping transaction. Whatever that role may read, the
+caller may read.
+
+Unlike `withPostgresClient` this declares **no upstream prerequisite** — it
+never looks at `ctx.jwtClaims`, so it composes in any auth mode, including
+`auth: 'secret'` and `auth: 'none'`:
+
+```ts
+import { withSupabase } from '@supabase/server'
+import { withPostgresAdminClient } from '@supabase/server/middleware/postgres-admin'
+
+export default {
+  fetch: withSupabase(
+    { auth: 'secret', middleware: [withPostgresAdminClient()] },
+    async (_req, ctx) => {
+      const rows = await ctx.postgresAdmin.query`select user_id, count(*) from notes group by user_id`
+      return Response.json(rows)
+    },
+  ),
+}
+```
+
+Compose both halves when a handler needs each in turn — they share one pool,
+and `ctx.postgres` stays RLS-scoped regardless:
+
+```ts
+middleware: [withPostgresClient(), withPostgresAdminClient()]
+```
+
+> **Authorization is yours now.** RLS is not consulted, so any per-user
+> scoping has to be a `where` clause you write. Reach for
+> `withPostgresClient` unless you specifically need to cross user
+> boundaries.
+
+> **Runtime note.** `pg` needs raw TCP, so this runs on Node/Deno (including
+> the Supabase Edge runtime), **not** on Workers-style isolates.
+
+## WithPostgresAdminClientConfig
+
+Configuration for withPostgresAdminClient.
+
+## withPostgresClient
+
+Contributes `ctx.postgres` — an RLS-scoped `pg` client, the safe version of
+"authenticate, then query as the user". This is the direct-connection
+counterpart to `withSupabaseClient`, and its service-role companion is
+`withPostgresAdminClient` (`@supabase/server/middleware/postgres-admin`).
+
+Every query runs in its own short transaction that injects the caller's
+claims and drops to their role, exactly like PostgREST:
+
+```sql
+begin;
+select set_config('request.jwt.claims', $claims, true);  -- auth.uid() resolves
+set local role "authenticated";                          -- RLS now enforces
+<your query>
+commit;
+```
+
+Everything is transaction-local, so nothing leaks onto the pooled connection.
+
+Only `authenticated` and `anon` are assumed. A token naming any other role —
+including `service_role` — is **refused** with a 500 and
+`code: 'UNSUPPORTED_ROLE'`, never silently downgraded to `anon`: running the
+query as the wrong identity would return zero rows and leave nothing to
+debug. Bypassing RLS is a separate, explicit opt-in: compose
+`withPostgresAdminClient`.
+
+> **Custom roles.** Supabase supports custom Postgres roles via the `role`
+> claim, and RLS still applies to them. They are not supported here yet, so
+> such a token is refused rather than downgraded.
+
+Reads the caller's claims from `ctx.jwtClaims`, which `withSupabase` already
+populates (JWKS-verified) — so inside `withSupabase` you compose it directly:
+
+```ts
+withSupabase({ auth: 'user', middleware: [withPostgresClient()] }, handler)
+```
+
+Standalone (no `withSupabase`), pair it with `withClaims` so `ctx.jwtClaims`
+is present before it runs.
+
+> **Table grants.** Queries run as `authenticated` or `anon`, so those
+> roles need explicit table privileges (e.g. \`grant select, insert on
+>
+> <table> to authenticated`) in addition to RLS policies. A missing grant
+> fails with `permission denied` (SQLSTATE 42501) before RLS is consulted.
+
+> **Runtime note.** `pg` needs raw TCP, so this runs on Node/Deno (including
+> the Supabase Edge runtime), **not** on Workers-style isolates.
+
+## WithPostgresClientConfig
+
+Configuration for withPostgresClient.
 
 ## withSupabase
 
@@ -169241,6 +170285,13 @@ Named secret key not found in `SUPABASE_SECRET_KEYS`.
 ## MissingSupabaseURLError
 
 `SUPABASE_URL` is not set.
+
+## UnsupportedRoleError
+
+The caller's verified `role` claim names a Postgres role the middleware
+will not assume — either one that would bypass RLS, or one it does not
+support yet. Returned by `withPostgresClient` instead of silently running
+the query as `anon`.
 
 ## Types
 

@@ -9,7 +9,7 @@ Benchmark Pinecone at production scale by importing 10M vectors and measuring se
 This guide walks you through testing Pinecone at production scale. You'll import 10 million vectors, run a benchmark, and analyze the results to verify Pinecone meets production requirements for semantic search applications.
 
 <Note>
-  This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/index-data/import-data), which is not available on the Starter or Builder plans. New users can sign up for the [Standard trial](/guides/organizations/manage-billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can [upgrade](/guides/organizations/manage-billing/upgrade-billing-plan).
+  This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/index-data/import-data), which is not available on the Starter or Builder plans. New users can sign up for the [Standard trial](/guides/organizations/manage-billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can activate the trial or [upgrade](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 ## About this test

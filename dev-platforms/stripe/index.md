@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 456 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 457 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -12,6 +12,7 @@
 - `connect` — [Platforms and marketplaces with Stripe Connect](pages/connect.md) · [原文](https://docs.stripe.com/connect.md)
 - `currencies` — [Supported currencies](pages/currencies.md) · [原文](https://docs.stripe.com/currencies.md)
 - `declines` — [Declines](pages/declines.md) · [原文](https://docs.stripe.com/declines.md)
+- `directory` — [Stripe Directory](pages/directory.md) · [原文](https://docs.stripe.com/directory.md)
 - `event-destinations` — [Integrate with events](pages/event-destinations.md) · [原文](https://docs.stripe.com/event-destinations.md)
 - `js` — [Stripe.js](pages/js.md) · [原文](https://docs.stripe.com/js.md)
 - `payouts` — [Receive payouts](pages/payouts.md) · [原文](https://docs.stripe.com/payouts.md)

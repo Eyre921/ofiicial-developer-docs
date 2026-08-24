@@ -33,6 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/get
 ### Query parameters
 
 - `version_id` (string, optional, nullable) — The version ID to retrieve. If omitted, returns the version at branch HEAD.
+- `agent_version_id` (string, optional, nullable) — The agent version ID to retrieve the procedure for.
 
 ## Response
 

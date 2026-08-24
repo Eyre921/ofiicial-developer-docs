@@ -90,7 +90,7 @@ Successful Response
 - `pending_change` (object or object, optional, nullable) — The pending change for the user.
   - PendingSubscriptionSwitchResponseModel
     - `next_tier` (enum, required) — The tier to change to.
-      - Allowed values: `free`, `starter`, `creator`, `pro`, `growing_business`, `scale_2024_08_10`, `grant_tier_1_2025_07_23`, `grant_tier_2_2025_07_23`, `trial`, `enterprise`
+      - Allowed values: `free`, `starter`, `go`, `creator`, `pro`, `growing_business`, `scale_2024_08_10`, `grant_tier_1_2025_07_23`, `grant_tier_2_2025_07_23`, `trial`, `enterprise`
     - `next_billing_period` (enum, required) — The billing period to change to.
       - Allowed values: `monthly_period`, `3_month_period`, `6_month_period`, `annual_period`
     - `timestamp_seconds` (integer, required) — The timestamp of the change.

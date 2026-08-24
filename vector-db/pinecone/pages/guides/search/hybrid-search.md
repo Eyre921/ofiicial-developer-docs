@@ -113,8 +113,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
 
 <Steps>
   <Step title="Create the index">
-    <a />
-
     To store both dense and sparse vectors in a single index, use the [`create_index`](/reference/api/latest/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
 
     ```python Python theme={null}
@@ -140,8 +138,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Generate vectors">
-    <a />
-
     Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-embeddings).
 
     ```python Python [expandable] theme={null}
@@ -264,8 +260,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Upsert records with dense and sparse vectors">
-    <a />
-
     Use the [`upsert`](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
 
     <Note>
@@ -297,8 +291,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index">
-    <a />
-
     Use the [`embed`](/reference/api/latest/inference/generate-embeddings) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
 
     ```Python Python theme={null}
@@ -569,8 +561,6 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index with explicit weighting">
-    <a />
-
     For a conceptual overview of why this normalization is needed, see [Normalize sparse and dense values](#normalize-sparse-and-dense-values).
 
     Because Pinecone views your sparse-dense vector as a single vector, it does not offer a built-in parameter to adjust the weight of a query's dense part against its sparse part; the index is agnostic to density or sparsity of coordinates in your vectors. You may, however, incorporate a linear weighting scheme by customizing your query vector, as demonstrated in the function below.
@@ -624,8 +614,6 @@ To perform hybrid search with separate indexes, follow these steps:
 
 <Steps>
   <Step title="Create the indexes">
-    <a />
-
     [Create one index for dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors) and [another for sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), either with integrated embedding or for vectors created with external models.
 
     For example, the following code creates indexes with integrated embedding models.
@@ -663,8 +651,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Upsert dense and sparse vectors">
-    <a />
-
     [Upsert dense vectors](/guides/index-data/upsert-data#upsert-dense-vectors) and [upsert sparse vectors](/guides/index-data/upsert-data#upsert-sparse-vectors) into their respective indexes.
 
     Make sure to establish a linkage between the dense and sparse vectors so you can merge and deduplicate search results later. For example, the following uses `_id` as the linkage, but you can use any other custom field as well. Because the indexes are integrated with embedding models, you provide the source texts and Pinecone converts them to vectors automatically.
@@ -786,8 +772,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Search by dense vectors">
-    <a />
-
     Perform a [semantic search](/guides/search/semantic-search) against the index that stores dense vectors.
 
     For example, the following code searches that index for 40 records most semantically related to the query "Q3 2024 us economic data". Because the index is integrated with an embedding model, you provide the query as text and Pinecone converts the text to a dense vector automatically.
@@ -1043,8 +1027,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Search by sparse vectors">
-    <a />
-
     Perform a [lexical search](/guides/search/lexical-search) against the index that stores sparse vectors.
 
     For example, the following code searches that index for 40 records that most exactly match the words in the query. Again, because the index is integrated with an embedding model, you provide the query as text and Pinecone converts the text to a sparse vector automatically.
@@ -1301,8 +1283,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Merge and deduplicate the results">
-    <a />
-
     Merge the 40 dense and 40 sparse results and deduplicated them based on the field you used to link sparse and dense vectors.
 
     For example, the following code merges and deduplicates the results based on the `_id` field, resulting in 52 unique results.
@@ -1382,8 +1362,6 @@ To perform hybrid search with separate indexes, follow these steps:
   </Step>
 
   <Step title="Rerank the results">
-    <a />
-
     Use one of Pinecone's [hosted reranking models](/guides/search/rerank-results#reranking-models) to rerank the merged and deduplicated results based on a unified relevance score and then return a smaller set of the most highly relevant results.
 
     For example, the following code sends the 52 unique results from the last step to the `bge-reranker-v2-m3` reranking model and returns the top 10 most relevant results.

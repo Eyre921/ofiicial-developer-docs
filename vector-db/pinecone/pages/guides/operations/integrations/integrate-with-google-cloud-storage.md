@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-g
 path: guides/operations/integrations/integrate-with-google-cloud-storage
 ---
 
-Connect Pinecone to a Google Cloud Storage bucket with a service account key to import data into your indexes.
+Set up a Pinecone storage integration with a Google Cloud Storage bucket using a service account key to bulk import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -37,6 +37,10 @@ Pinecone will use a service account to access your GCS bucket.
 
 ## 3. Add a storage integration
 
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
 In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Google Cloud Storage:
 
 1. Select your project.
@@ -47,6 +51,28 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 6. Open the JSON key file for your service account.
 7. Copy the contents of the key file and paste them into the **Index account key JSON** field.
 8. Click **Add integration**.
+
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the contents of your service account key file as the `gcp_service_account.key_json` field. The following example uses [`jq`](https://jqlang.github.io/jq/) to safely JSON-encode the key file before sending it:
+
+```bash curl theme={null}
+jq -n --arg key "$(cat service-account-key.json)" \
+    '{name: "my-gcs-integration", provider: "gcs", gcp_service_account: {key_json: $key}}' \
+  | curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+      -H "Api-Key: ${PINECONE_API_KEY}" \
+      -H "X-Pinecone-API-Version: unstable" \
+      -H "Content-Type: application/json" \
+      --data @-
+```
+
+Replace `service-account-key.json` with the path to the [JSON key file you created](#1-create-a-service-account-and-key), and `my-gcs-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If the service account key is invalid, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
 
 ## Next steps
 

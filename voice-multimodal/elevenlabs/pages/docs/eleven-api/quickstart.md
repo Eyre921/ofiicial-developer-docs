@@ -32,6 +32,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -44,12 +46,45 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
 and/or [ffmpeg](https://ffmpeg.org/).
 
 #### Make your first request
 
+#### SDK
+
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
+
+{/* This snippet was auto-generated */}
 
 ```python
 from dotenv import load_dotenv
@@ -92,7 +127,7 @@ await play(audio);
 
 ```
 
-#### Run the code
+Then run it:
 
 ```python
 python example.py
@@ -103,6 +138,21 @@ npx tsx example.mts
 ```
 
 You should hear the audio play through your speakers.
+
+#### CLI
+
+Generate speech and save it to an MP3 file:
+
+```bash
+elevenlabs text-to-speech convert \
+  --voice-id JBFqnCBsd6RMkjVDRZzb \
+  --model-id eleven_v3 \
+  --text "The first move is what sets everything in motion." \
+  --output-format mp3_44100_128 \
+  --output audio.mp3
+```
+
+Open `audio.mp3` to hear the result.
 
 ## Next steps
 

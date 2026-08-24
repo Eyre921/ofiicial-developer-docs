@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/index-creation-error-missing-sp
 path: troubleshooting/index-creation-error-missing-spec
 ---
 
-Troubleshoot “Index creation error - missing spec parameter” in Pinecone: Using the new API, creating an index requires passing appropriate values into the.
+Fix the Pinecone create_index TypeError for a missing spec parameter by passing the spec argument that sets the index's deployment model, cloud, and region.
 
 ## Problem
 

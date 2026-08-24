@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/contact-support
 path: troubleshooting/contact-support
 ---
 
-Troubleshoot “Contact Support” in Pinecone: Pinecone Support is available to customers on the Builder and Standard billing plans.
+Contact Pinecone Support from the console Help center, check which billing and support plans include it, and find business hours and Sev-1 coverage.
 
 Pinecone Support is available to customers on the **Builder**, **Standard**, and **Enterprise** billing plans.
 

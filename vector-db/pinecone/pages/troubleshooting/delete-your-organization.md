@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/delete-your-organization
 path: troubleshooting/delete-your-organization
 ---
 
-Troubleshoot “Delete your organization” in Pinecone: If you want to delete your Pinecone organization entirely, you'll need to delete all projects, which.
+Delete a Pinecone organization by first deleting its indexes, collections, and projects, then downgrading to the Starter plan. This can't be undone.
 
 If you want to delete your Pinecone organization entirely, you'll need to delete all projects, which first requires deleting all indexes and collections, and downgrade to the Starter plan.
 

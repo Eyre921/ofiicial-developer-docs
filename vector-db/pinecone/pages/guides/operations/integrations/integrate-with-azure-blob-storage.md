@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-a
 path: guides/operations/integrations/integrate-with-azure-blob-storage
 ---
 
-Connect Pinecone to Azure Blob Storage using a service principal to import data into your indexes.
+Set up a Pinecone storage integration with an Azure Blob Storage container using a service principal to bulk import data into your indexes.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -49,6 +49,10 @@ Pinecone uses a service principal to access your Azure Blob Storage container.
 
 ## 3. In Pinecone, add a storage integration
 
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
 In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Azure Blob Storage:
 
 1. Select your project.
@@ -58,6 +62,34 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 5. Select **Azure Blob Storage**.
 6. For **Tenant ID**, **Client ID**, and **Client secret**, enter the values you copied from Azure.
 7. Click **Add integration**.
+
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the values you copied from Azure as the `azure_app_credentials` field:
+
+```bash curl theme={null}
+curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+    -H "Api-Key: ${PINECONE_API_KEY}" \
+    -H "X-Pinecone-API-Version: unstable" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "my-azure-integration",
+      "provider": "azure_blob",
+      "azure_app_credentials": {
+        "tenant_id": "TENANT_ID",
+        "client_id": "CLIENT_ID",
+        "client_secret": "CLIENT_SECRET"
+      }
+    }'
+```
+
+Replace `TENANT_ID`, `CLIENT_ID`, and `CLIENT_SECRET` with the values you copied from Azure, and `my-azure-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If the credentials are invalid, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
 
 ## Next steps
 

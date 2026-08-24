@@ -17,6 +17,35 @@ ElevenLabs provides officially supported libraries that are updated with the lat
 | Python            | [GitHub README](https://github.com/elevenlabs/elevenlabs-python) | [PyPI](https://pypi.org/project/elevenlabs/)                   |
 | Javascript (Node) | [GitHub README](https://github.com/elevenlabs/elevenlabs-js)     | [npm](https://www.npmjs.com/package/@elevenlabs/elevenlabs-js) |
 
+## Command-line interface
+
+The [ElevenLabs CLI](/docs/eleven-agents/operate/cli) brings the REST API to your terminal. Homebrew (macOS) and Scoop (Windows) are the recommended install methods.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 ## Official Agents Platform libraries
 
 These libraries are designed for use with ElevenLabs [Agents Platform](/docs/eleven-agents/overview).

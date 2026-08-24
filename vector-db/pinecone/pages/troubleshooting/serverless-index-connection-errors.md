@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/serverless-index-connection-err
 path: troubleshooting/serverless-index-connection-errors
 ---
 
-Troubleshoot “Serverless index connection errors” in Pinecone: To connect to a serverless index, you must use an updated Pinecone client. Trying to connect.
+Fix Pinecone serverless connection errors that fail to resolve a controller hostname by upgrading to a current version of the Python or Node.js SDK.
 
 ## Problem
 

@@ -15,7 +15,6 @@ The number and type of seat depends on your subscription:
 | Plan              | Included Full Seats | Included Basic Seats |
 | ----------------- | ------------------- | -------------------- |
 | Free              | 1                   | 20                   |
-| PAYG              | 1                   | 20                   |
 | Starter           | 1                   | 20                   |
 | Creator           | 1                   | 20                   |
 | Pro               | 1                   | 20                   |
@@ -24,6 +23,8 @@ The number and type of seat depends on your subscription:
 | Business (Legacy) | 5                   | 20                   |
 | Enterprise        | 11 (negotiable)     | 1,000                |
 
-Full Seats provide unrestricted access to all ElevenLabs products and features within a workspace, while Basic Seats have unlimited access to ElevenAgents and ElevenAPI, and limited access to ElevenCreative, up to 50,000 credits each month (\$5 for Enterprise customers).  
+All seats draw from the shared credit balance for the workspace. Full Seats provide full access to all ElevenLabs products and features within a workspace, while Basic Seats have full access to ElevenAgents and ElevenAPI, and can use up to 50,000 credits on ElevenCreative each billing cycle (\$5 usage per month for Enterprise customers).
+
+Workspace admins on Pro, Scale, and Business plans can purchase additional Full Seats from Workspace Settings, up to a maximum of 11 Full Seats per workspace. Enterprise Full Seat counts are defined in your contract and are not limited by this cap. For details, see [Members](/docs/overview/administration/workspaces/members#additional-full-seats).
 
 Every user in a workspace draws from the same shared credit pool — Basic Seat users do not receive their own credit allocation. The 50,000 credit figure is a per-user ceiling on how much of that shared pool each Basic Seat user can consume through ElevenCreative in a billing period. It is not additional capacity added on top of your plan.

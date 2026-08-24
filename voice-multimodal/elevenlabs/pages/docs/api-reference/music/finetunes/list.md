@@ -27,7 +27,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/finetunes/list
 ### Query parameters
 
 - `cursor` (string, optional, nullable) — Used for fetching the next page. Cursor is returned in the response.
-- `page_size` (integer, optional, default: 50) — How many finetunes to return. Max 100, default 50.
+- `page_size` (integer, optional, default: 50) — How many finetunes to return. Max 150, default 50.
 - `visibility` (enum, optional, nullable) — Filter by visibility. 'private' returns private finetunes; 'workspace' returns workspace-shared finetunes; 'public' returns public finetunes, which are currently ElevenLabs curated finetunes. Omit to return all accessible finetunes.
   - Allowed values: `private`, `workspace`, `public`
 - `created_by` (enum, optional, nullable) — Filter by creator. 'self' returns finetunes you created; 'workspace' returns finetunes created by workspace teammates; 'elevenlabs' returns ElevenLabs curated finetunes. Omit to return finetunes from all creators.
@@ -64,36 +64,28 @@ Successful Response
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "finetunes": [
     {
-      "id": "ftn_9a8b7c6d5e4f3a2b1c0d",
-      "name": "Chillwave Sunset",
+      "id": "string",
+      "name": "string",
       "tags": [
-        "chillwave",
-        "electronic",
-        "ambient"
+        "string"
       ],
       "model_id": "music_v1",
       "created_at": "2024-01-15T09:30:00Z",
       "visibility": "private",
       "created_by": "self",
-      "status": "completed",
-      "training_progress": 1,
-      "primary_genre": "Electronic",
-      "failure_reason": null
+      "status": "pending",
+      "training_progress": 1.1,
+      "primary_genre": "string",
+      "failure_reason": "audio_processing_failed"
     }
   ],
-  "next_cursor": "eyJwYWdlIjoxLCJpZCI6ImZ0bl85YWJjNmQ1ZTRmM2EyYjFjMGQifQ==",
+  "next_cursor": "string",
   "has_more": true
 }
 ```
@@ -125,7 +117,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -134,11 +125,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/music/finetunes"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -161,8 +148,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -173,8 +158,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/music/finetunes")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -184,12 +167,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/music/finetunes', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/music/finetunes');
 
 echo $response->getBody();
 ```
@@ -199,25 +177,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/finetunes");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/music/finetunes")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -32,6 +32,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-u
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
 - `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
+- `minimum_frequency_days` (integer, optional, nullable) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer. Defaults to 7, tightened to the parent folder's frequency if that is stricter. Only applicable when auto-sync is enabled.
 
 ## Response
 

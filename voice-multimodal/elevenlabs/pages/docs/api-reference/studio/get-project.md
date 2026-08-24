@@ -830,6 +830,7 @@ Successful Response
   - `voice_id` (string, optional, nullable)
   - `can_use_assistant` (boolean, optional, default: true)
   - `is_voice_changer_on` (boolean, optional, default: false)
+  - `restricted_to_user_email_domains` (list of string, optional, nullable)
 
 ## Examples
 

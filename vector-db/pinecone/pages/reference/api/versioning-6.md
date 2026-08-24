@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/versioning
 path: reference/api/versioning
 ---
 
-Pinecone REST API: Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves.
+Learn how Pinecone versions its APIs by release date, how long each stable version is supported, and how to set the X-Pinecone-Api-Version header.
 
 Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format `YYYY-MM`, for example, `2025-10`.
 

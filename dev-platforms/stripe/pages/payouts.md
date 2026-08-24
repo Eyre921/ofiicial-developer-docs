@@ -8,15 +8,19 @@ path: payouts
 
 Set up your bank account to receive payouts.
 
-You receive funds when Stripe (or your platform) makes payouts to your bank account. Payout availability varies depending on your industry and country of operation. When you start processing live payments, Stripe typically schedules your initial payout for 7-14 days after you successfully receive your first payment. Your first payout might take longer, depending on your industry risk level and country of operation. Subsequent payouts follow your account’s [payout schedule](https://docs.stripe.com/payouts.md#payout-schedule).
+Stripe sends funds from your available balance to your bank account as payouts:
 
-You can see a comprehensive list of your payouts and the expected dates of deposit into your bank account in the [Dashboard](https://dashboard.stripe.com/test/payouts). If you’re a *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platform, see [Connect payouts](https://docs.stripe.com/connect/payouts-connected-accounts.md).
+- **First payout:** After you successfully receive your first live payment, Stripe typically schedules your initial payout to complete within 7–14 days. It can take longer depending on your industry, country of operation, and risk level.
+- **Subsequent payouts:** Payouts follow your account’s [payout schedule](https://docs.stripe.com/payouts.md#payout-schedule). The time when funds become available depends on your [settlement timing](https://docs.stripe.com/payouts.md#payout-speed), and your bank might take additional time to make the funds available after receiving them.
+- **Track a payout:** View your payouts and their expected deposit dates in the [Dashboard](https://dashboard.stripe.com/test/payouts).
+
+If you’re a *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platform, see [Connect payouts](https://docs.stripe.com/connect/payouts-connected-accounts.md).
 
 ## Add or update your bank account 
 
-You can add a new bank account or update existing account details from your [Payout settings](https://dashboard.stripe.com/account/payouts) in the Dashboard. Based on your bank’s location, Stripe might require different account details to activate your bank account. You must match the currency of the bank account to the currency in your [Payout settings](https://dashboard.stripe.com/account/payouts). To modify banking information, click **Edit** next to the bank account you want to update.
+You can add a bank account or update existing account details in [Payout settings](https://dashboard.stripe.com/account/payouts) in the Dashboard. To update an account, click **Edit** next to the bank account.
 
-Use the following table to see the required bank details for specific countries:
+The account details required depend on your bank’s location. The bank account currency must match the currency in your [Payout settings](https://dashboard.stripe.com/account/payouts). Use the following table to find the required bank details for each country:
 
 #### Albania (AL)
 
@@ -1019,15 +1023,15 @@ For eligible businesses in the US, payment proceeds settle in your [financial ac
 
 ### Supported accounts and settlement currencies 
 
-In most cases, bank accounts must be located in the country where the *settlement currency* (The settlement currency is the currency your bank account uses) is the official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency. Some additional settlement currencies incur a fee when funds settle. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multi-currency-settlement.md).
+Bank accounts generally must be located in a country where the *settlement currency* (The settlement currency is the currency your bank account uses) is an official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency. Some additional settlement currencies incur a fee when funds settle. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multi-currency-settlement.md).
 
-At times, Stripe supports non-primary currencies that don’t incur a settlement fee. See the following table for the list of supported free currencies per country:
+Stripe supports certain non-primary currencies without a settlement fee. The following table lists the supported free currencies by country:
 
 Acquiring fees, where applicable, are based on the settlement currency. You can find these acquiring fees listed by currency on your country’s pricing page.
 
 ### Multiple bank accounts for different settlement currencies 
 
-In some countries, you can enable settlements and payouts in additional currencies by adding one bank account per supported settlement currency. If you use multiple bank accounts, you must select a default settlement currency, which you can change at any time.
+In supported countries, you can enable settlements and payouts in additional currencies by adding one bank account per supported settlement currency. If you use multiple bank accounts, you must select a default settlement currency, which you can change at any time.
 
 Charges that are *presented* (The presentment currency is the currency the customer uses to make a payment) in any enabled settlement currency settle without [currency conversion](https://docs.stripe.com/currencies.md). Payments presented in a currency that you haven’t configured an additional bank account for automatically convert to your default currency.
 
@@ -1063,11 +1067,11 @@ Your payout schedule determines when Stripe sends money to your bank account. Yo
 
 Choosing a payout schedule doesn’t change how long it takes for your pending balance to become available. It only controls when payouts are sent.
 
-For example, if your account is set to daily payouts with a 3-business-day [settlement timing](https://docs.stripe.com/payouts.md#payout-speed), Stripe pays out funds daily from transactions that were captured three business days earlier.
+For example, if your account is set to daily payouts with a 3-business-day [settlement timing](https://docs.stripe.com/payouts.md#payout-speed), Stripe pays out funds daily from transactions that were captured 3 business days earlier.
 
 ### Country-specific payout restrictions
 
-Some countries have preset payout schedules due to local regulations:
+Some countries have preset payout schedules because of local regulations:
 
 - Brazil and India: Payouts are always automatic and daily.
 - Japan: Daily payouts aren’t available. The default schedule is manual. You can also choose weekly and monthly payout schedules.
@@ -1077,9 +1081,9 @@ These restrictions might differ if you use [cross-border payouts](https://docs.s
 
 ### Manual payouts
 
-If you turn off automatic payouts, you must manually send funds to your bank account. You can do this in the [Dashboard](https://dashboard.stripe.com/settings/payouts) or by using the API to [create payouts](https://docs.stripe.com/api/payouts/create.md).
+If you turn off automatic payouts, you must manually send funds to your bank account through the [Dashboard](https://dashboard.stripe.com/settings/payouts) or by using the API to [create payouts](https://docs.stripe.com/api/payouts/create.md).
 
-Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. In most regions, manual payouts typically take 1-4 business days to arrive in your bank account after initiating the manual payout. Same-day manual payouts are available in the US, UK, and Eurozone under the conditions outlined in the following table:
+Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. Manual payouts typically take 1–4 business days to arrive in your bank account after you initiate them. Same-day manual payouts are available in the US, UK, and Eurozone under the conditions outlined in the following table:
 
 | Region | Eligible currency | Eligible businesses | Payout limit |
 | --- | --- | --- | --- |
@@ -1098,7 +1102,7 @@ curl https://api.stripe.com/v1/payouts \
 
 The payout schedule refers to the cadence at which your funds are paid out, for example, day of the week. The settlement timing refers to the amount of time it takes for your funds to become available. Settlement timing varies per country and is typically expressed as “T+X” days. Some payment processors might start “T” from their internal settlement time, meaning when the funds land in their bank accounts.
 
-Stripe uses “T” to refer to the transaction time, which indicates the time of the original payment confirmation or capture, and the counting starts earlier. If your Stripe account is in a country with a T+3 standard settlement timing and you use a manual payout schedule, your Stripe balance is available for payout within three business days of capturing a payment. However, if you use a daily automatic payout schedule with a T+3 standard settlement timing, Stripe pays out funds daily from transactions captured 3 business days earlier.
+Stripe uses “T” to refer to the transaction time, which indicates the time of the original payment confirmation or capture, and the counting starts earlier. If your Stripe account is in a country with a T+3 standard settlement timing and you use a manual payout schedule, your Stripe balance is available for payout within 3 business days of capturing a payment. However, if you use a daily automatic payout schedule with a T+3 standard settlement timing, Stripe pays out funds daily from transactions captured 3 business days earlier.
 
 Most banks deposit payouts into your bank account as soon as they receive them, though some might take a few extra days to make them available. The type of business and the country you’re in can also affect payout timing.
 

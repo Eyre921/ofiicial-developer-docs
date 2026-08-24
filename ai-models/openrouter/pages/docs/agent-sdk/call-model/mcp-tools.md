@@ -1,5 +1,5 @@
 ---
-title: "MCP tools"
+title: "MCP Tools"
 source: https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools.md
 path: docs/agent-sdk/call-model/mcp-tools
 ---
@@ -8,7 +8,7 @@ path: docs/agent-sdk/call-model/mcp-tools
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# MCP tools
+# MCP Tools
 
 > Connect remote Model Context Protocol servers to the Agent SDK with @openrouter/mcp (auth, caching, streaming, resources, and elicitation).
 

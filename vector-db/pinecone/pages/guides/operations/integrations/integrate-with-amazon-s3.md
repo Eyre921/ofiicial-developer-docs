@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/operations/integrations/integrate-with-a
 path: guides/operations/integrations/integrate-with-amazon-s3
 ---
 
-Connect Pinecone to an Amazon S3 bucket using an IAM role to import data and export audit logs.
+Set up a Pinecone storage integration with an Amazon S3 bucket using an IAM role to bulk import data into indexes and export audit logs.
 
 <Note>
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
@@ -151,7 +151,11 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
   This step is required for [importing data](/guides/index-data/import-data). It is not required for [storing audit logs](/guides/production/configure-audit-logs).
 </Note>
 
-In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Amazon S3..
+You can add a storage integration in the Pinecone console or with the API.
+
+### Use the console
+
+In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add an integration with Amazon S3.
 
 1. Select your project.
 2. Go to [**Manage > Storage integrations**](https://app.pinecone.io/organizations/-/projects/-/storage).
@@ -160,6 +164,32 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 5. Select **Amazon S3**.
 6. Enter the **ARN** of the [IAM role you created](/guides/operations/integrations/integrate-with-amazon-s3#2-set-up-access-using-an-iam-role).
 7. Click **Add integration**.
+
+### Use the API
+
+<Note>
+  This endpoint requires `X-Pinecone-API-Version: unstable`. Unstable endpoints can change without notice.
+</Note>
+
+Pass the ARN of your IAM role as the `aws_iam_role.role_arn` field:
+
+```bash curl theme={null}
+curl -sS -X POST "https://api.pinecone.io/storage-integrations" \
+    -H "Api-Key: ${PINECONE_API_KEY}" \
+    -H "X-Pinecone-API-Version: unstable" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "my-s3-integration",
+      "provider": "s3",
+      "aws_iam_role": {
+        "role_arn": "arn:aws:iam::123456789012:role/pinecone-s3-access"
+      }
+    }'
+```
+
+Replace the `role_arn` value with the ARN of the [IAM role you created](#2-set-up-access-using-an-iam-role), and `my-s3-integration` with a unique name for the integration.
+
+The response includes the integration's `id`, which you need to [import data](/guides/index-data/import-data), and a `status` of `Validated` or `Invalid`. If Pinecone can't assume the role, the request still succeeds and the integration is created with a `status` of `Invalid`, so check the status before you import.
 
 ## Next steps
 

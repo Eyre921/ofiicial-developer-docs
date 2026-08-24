@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -98,6 +98,7 @@
 - `docs/finalize` — [Finalize](pages/docs/finalize.md) · [原文](https://developers.deepgram.com/docs/finalize.md)
 - `docs/find-and-replace` — [Find and Replace](pages/docs/find-and-replace.md) · [原文](https://developers.deepgram.com/docs/find-and-replace.md)
 - `docs/fips-compliant-deployment` — [FIPS-Compliant Deployment](pages/docs/fips-compliant-deployment.md) · [原文](https://developers.deepgram.com/docs/fips-compliant-deployment.md)
+- `docs/fips-endpoints-sagemaker` — [Use FIPS Endpoints](pages/docs/fips-endpoints-sagemaker.md) · [原文](https://developers.deepgram.com/docs/fips-endpoints-sagemaker.md)
 - `docs/flux-self-hosted` — [Using the Flux Model](pages/docs/flux-self-hosted.md) · [原文](https://developers.deepgram.com/docs/flux-self-hosted.md)
 - `docs/flux-template-apps` — [Template Apps](pages/docs/flux-template-apps.md) · [原文](https://developers.deepgram.com/docs/flux-template-apps.md)
 - `docs/flux-tts/batch` — [Getting Started with Flux TTS Batch (REST)](pages/docs/flux-tts/batch.md) · [原文](https://developers.deepgram.com/docs/flux-tts/batch.md)

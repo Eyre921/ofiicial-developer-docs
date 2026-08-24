@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/pinecone-support-slas
 path: troubleshooting/pinecone-support-slas
 ---
 
-Troubleshoot “Pinecone Support SLAs” in Pinecone: New first-response SLAs went into effect on September 16th, 2024. See the pricing page for more details.
+Look up Pinecone Support first-response SLAs by support plan and ticket severity, from 30 minutes on a Premium Sev-1 to business days at lower severities.
 
 <Note>
   New first-response SLAs went into effect on September 16th, 2024. See the [pricing page](https://www.pinecone.io/pricing/?plans=support) for more details.

@@ -24,7 +24,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  <p>Follow these best practices when using GitHub's API.</p>
+  Follow these best practices when using GitHub's API.
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
@@ -36,7 +36,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
+  Write a script using the Octokit.js SDK to interact with the REST API.
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 

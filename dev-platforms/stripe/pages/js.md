@@ -652,6 +652,10 @@ Default is `'billing'`. `'none'` opts out of showing the checkbox in either Addr
 Allows PaymentMethods to be created from the Elements instance using [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md).
 
 **NOTE:** The Express Checkout Element doesn't support [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md) with [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) or [Klarna](https://docs.stripe.com/payments/klarna.md). Use [stripe.createConfirmationToken](https://docs.stripe.com/js/confirmation_tokens/create_confirmation_token.md) instead. Card installments are also unsupported and either blocks showing the plan selection UI, or raises an error for manual enablement using `paymentMethodOptions`.
+    - `allowedPaymentMethodTypes`
+      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
+
+The list of payment method types to allow for this payment. From this list, Stripe automatically renders the relevant payment methods. You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
     - `excludedPaymentMethodTypes`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
@@ -1075,6 +1079,10 @@ Any fonts that have already been loaded during creation or previous updates will
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Address Element](https://docs.stripe.com/elements/address-element.md).
 
 The client_secret returned from create a [CustomerSession](https://docs.stripe.com/api/customer_sessions.md) associated with the [Customer ID](https://docs.stripe.com/api/customers/object.md#customer_object-id). When the `customerSessionClientSecret` is used with `element.update()`, saved payment methods associated with the previous session are cleared, and the payment element is re-rendered with any saved payment methods associated with the updated secret.
+    - `allowedPaymentMethodTypes`
+      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
+
+The list of payment method types to allow for this payment. From this list, Stripe automatically renders the relevant payment methods. You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
     - `excludedPaymentMethodTypes`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
@@ -8913,6 +8921,10 @@ Default is `'billing'`. `'none'` opts out of showing the checkbox in either Addr
 Allows PaymentMethods to be created from the Elements instance using [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md).
 
 **NOTE:** The Express Checkout Element doesn't support [stripe.createPaymentMethod](https://docs.stripe.com/js/payment_methods/create_payment_method_elements.md) with [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) or [Klarna](https://docs.stripe.com/payments/klarna.md). Use [stripe.createConfirmationToken](https://docs.stripe.com/js/confirmation_tokens/create_confirmation_token.md) instead. Card installments are also unsupported and either blocks showing the plan selection UI, or raises an error for manual enablement using `paymentMethodOptions`.
+    - `allowedPaymentMethodTypes`
+      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
+
+The list of payment method types to allow for this payment. From this list, Stripe automatically renders the relevant payment methods. You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
     - `excludedPaymentMethodTypes`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 

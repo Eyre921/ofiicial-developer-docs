@@ -175,8 +175,6 @@ Traffic is also encrypted in transit between the Pinecone backend and cloud infr
 
 ## Network security
 
-<a />
-
 ### Private Endpoints
 
 Use [Private Endpoints](/guides/production/configure-private-endpoints) to connect via AWS PrivateLink or Azure Private Link. This establishes private connectivity between your Pinecone serverless indexes and your cloud VPC/VNet while keeping traffic off the public internet.

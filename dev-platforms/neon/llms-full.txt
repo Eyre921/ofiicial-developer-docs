@@ -11296,10 +11296,10 @@ This adds the MCP config to your editor's configuration files. Add `-g` for glob
 | Assistant                 | `--agent`            |
 | :------------------------ | :------------------- |
 | Antigravity               | `antigravity`        |
-| Cline (VS Code extension) | `cline`              |
-| Cline CLI                 | `cline-cli`          |
 | Claude Code               | `claude-code`        |
 | Claude Desktop            | `claude-desktop`     |
+| Cline (VS Code extension) | `cline`              |
+| Cline CLI                 | `cline-cli`          |
 | Codex                     | `codex`              |
 | Cursor                    | `cursor`             |
 | fx                        | `fx`                 |
@@ -11313,63 +11313,33 @@ This adds the MCP config to your editor's configuration files. Add `-g` for glob
 
 **Aliases:** `cline-vscode` → `cline`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`. Config paths differ by agent and by project vs global (`-g`); see the [add-mcp README](https://github.com/neondatabase/add-mcp#supported-agents).
 
-## Kiro
+## ChatGPT
 
-For manual configuration, Kiro reads **`~/.kiro/settings/mcp.json`** (global) or **`.kiro/settings/mcp.json`** (project). See [Kiro MCP documentation](https://kiro.dev/docs/mcp/).
+Connect ChatGPT to Neon using custom MCP connectors. Enable Developer mode, add the Neon connector, then enable it per chat.
 
-**Tip: One-click install for Kiro**
+![ChatGPT with Neon MCP Server](https://neon.com/docs/changelog/chatgpt_mcp.png)
 
-[https://kiro.dev/launch/mcp/add?name=Neon&config=%7B%22url%22%3A%20%22https%3A//mcp.neon.tech/mcp%22%7D](https://kiro.dev/launch/mcp/add?name=Neon\&config=%7B%22url%22%3A%20%22https%3A//mcp.neon.tech/mcp%22%7D)
+1. **Add MCP server to ChatGPT**
 
-## Cursor
+   In your ChatGPT account settings, go to **Settings** → **Connectors** → **Advanced Settings** and enable **Developer mode**.
 
-**Quick Setup**
+   Still on the Connectors tab, you can then **create** a Neon connection from the **Browse connectors** section. Use the following URL:
 
-Run the [init](https://neon.com/docs/cli/init) command:
-
-```bash
-npx neon@latest init
-```
-
-Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
-
-**OAuth**
-
-```bash
-npx add-mcp https://mcp.neon.tech/mcp -a cursor
-```
-
-Restart Cursor (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
-
-**API key**
-
-1. Open Cursor. Create a `.cursor` directory in your project root if needed.
-
-2. Create or open the `mcp.json` file in the `.cursor` directory.
-
-3. Add the "Neon" server entry within the `mcpServers` object. Replace `<YOUR_NEON_API_KEY>` with your Neon API key:
-
-   ```json
-   {
-     "mcpServers": {
-       "neon": {
-         "type": "http",
-         "url": "https://mcp.neon.tech/mcp",
-         "headers": {
-           "Authorization": "Bearer <YOUR_NEON_API_KEY>"
-         }
-       }
-     }
-   }
+   ```bash
+   https://mcp.neon.tech/mcp
    ```
 
-4. Save the configuration file. Cursor may detect the change or require a restart.
+   Make sure you choose **OAuth** for authentication and check "I trust this application", then complete the authorization flow when prompted.
 
-**Tip: One-click install for Cursor**
+   ![ChatGPT connector configuration](https://neon.com/docs/ai/chatgpt_mcp_add_connector.png)
 
-[https://cursor.com/en-US/install-mcp?name=Neon&config=eyJ1cmwiOiJodHRwczovL21jcC5uZW9uLnRlY2gvbWNwIn0%3D](https://cursor.com/en-US/install-mcp?name=Neon\&config=eyJ1cmwiOiJodHRwczovL21jcC5uZW9uLnRlY2gvbWNwIn0%3D)
+   ![ChatGPT with Neon MCP tools enabled](https://neon.com/docs/ai/chatgpt_mcp_tools.png)
 
-For more, see [Get started with Cursor and Neon MCP Server](https://neon.com/guides/cursor-mcp-neon).
+2. **Enable Neon per chat**
+
+   In each chat where you want to use Neon, click the **+** button and enable Developer Mode for that chat. Under **Add sources**, you can then enable the Neon connector you just created.
+
+   Once connected, you can use natural language to manage your Neon databases directly in ChatGPT.
 
 ## Claude Code
 
@@ -11401,80 +11371,6 @@ claude mcp add --transport http neon https://mcp.neon.tech/mcp \
 Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys).
 
 For more, see [Get started with Claude Code and Neon MCP Server](https://neon.com/guides/claude-code-mcp-neon).
-
-## VS Code (with GitHub Copilot)
-
-**Note:** To use MCP servers with VS Code, you need [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) and [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extensions installed
-
-**Quick Setup**
-
-Run the [init](https://neon.com/docs/cli/init) command:
-
-```bash
-npx neon@latest init
-```
-
-Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
-
-**OAuth**
-
-```bash
-npx add-mcp https://mcp.neon.tech/mcp -a vscode
-```
-
-Restart VS Code (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection. Then open GitHub Copilot Chat and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode).
-
-**API key**
-
-Add the Neon MCP server to your [User Settings (JSON)](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_add-an-mcp-server-to-your-user-settings):
-
-```json
-{
-  "mcp": {
-    "servers": {
-      "neon": {
-        "type": "http",
-        "url": "https://mcp.neon.tech/mcp",
-        "headers": {
-          "Authorization": "Bearer <YOUR_NEON_API_KEY>"
-        }
-      }
-    }
-  }
-}
-```
-
-Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys). Then open GitHub Copilot Chat and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode).
-
-For a detailed guide including an Azure Function REST API example, see [Using Neon MCP Server with GitHub Copilot in VS Code](https://neon.com/guides/neon-mcp-server-github-copilot-vs-code).
-
-## ChatGPT
-
-Connect ChatGPT to Neon using custom MCP connectors. Enable Developer mode, add the Neon connector, then enable it per chat.
-
-![ChatGPT with Neon MCP Server](https://neon.com/docs/changelog/chatgpt_mcp.png)
-
-1. **Add MCP server to ChatGPT**
-
-   In your ChatGPT account settings, go to **Settings** → **Connectors** → **Advanced Settings** and enable **Developer mode**.
-
-   Still on the Connectors tab, you can then **create** a Neon connection from the **Browse connectors** section. Use the following URL:
-
-   ```bash
-   https://mcp.neon.tech/mcp
-   ```
-
-   Make sure you choose **OAuth** for authentication and check "I trust this application", then complete the authorization flow when prompted.
-
-   ![ChatGPT connector configuration](https://neon.com/docs/ai/chatgpt_mcp_add_connector.png)
-
-   ![ChatGPT with Neon MCP tools enabled](https://neon.com/docs/ai/chatgpt_mcp_tools.png)
-
-2. **Enable Neon per chat**
-
-   In each chat where you want to use Neon, click the **+** button and enable Developer Mode for that chat. Under **Add sources**, you can then enable the Neon connector you just created.
-
-   Once connected, you can use natural language to manage your Neon databases directly in ChatGPT.
 
 ## Claude Desktop
 
@@ -11572,6 +11468,195 @@ For more, see [Get started with Neon MCP server with Claude Desktop](https://neo
 
 For more, see [Get started with Cline and Neon MCP Server](https://neon.com/guides/cline-mcp-neon).
 
+## Cursor
+
+**Quick Setup**
+
+Run the [init](https://neon.com/docs/cli/init) command:
+
+```bash
+npx neon@latest init
+```
+
+Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
+
+**OAuth**
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a cursor
+```
+
+Restart Cursor (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
+
+**API key**
+
+1. Open Cursor. Create a `.cursor` directory in your project root if needed.
+
+2. Create or open the `mcp.json` file in the `.cursor` directory.
+
+3. Add the "Neon" server entry within the `mcpServers` object. Replace `<YOUR_NEON_API_KEY>` with your Neon API key:
+
+   ```json
+   {
+     "mcpServers": {
+       "neon": {
+         "type": "http",
+         "url": "https://mcp.neon.tech/mcp",
+         "headers": {
+           "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+         }
+       }
+     }
+   }
+   ```
+
+4. Save the configuration file. Cursor may detect the change or require a restart.
+
+**Tip: One-click install for Cursor**
+
+[https://cursor.com/en-US/install-mcp?name=Neon&config=eyJ1cmwiOiJodHRwczovL21jcC5uZW9uLnRlY2gvbWNwIn0%3D](https://cursor.com/en-US/install-mcp?name=Neon\&config=eyJ1cmwiOiJodHRwczovL21jcC5uZW9uLnRlY2gvbWNwIn0%3D)
+
+For more, see [Get started with Cursor and Neon MCP Server](https://neon.com/guides/cursor-mcp-neon).
+
+## fx
+
+[fx](https://fx.sh) reads MCP servers only from **`~/.fx/mcp.json`**. A project file cannot add a server. add-mcp always writes that global file; `-g` is not required.
+
+**Note:** fx rejects a literal `Authorization` header. Do not pass `--header "Authorization: Bearer $NEON_API_KEY"` when installing to fx. Use `bearer_token_env` (API key tab) or `/mcp auth` (OAuth tab).
+
+**OAuth**
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a fx
+```
+
+This writes `~/.fx/mcp.json`:
+
+```json
+{
+  "mcp": {
+    "neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp",
+      "enabled": true
+    }
+  }
+}
+```
+
+A running session applies the change with `/mcp reload`. Then authorize from the fx shell:
+
+```text
+/mcp auth neon --open
+```
+
+Confirm with `/mcp list`.
+
+**API key**
+
+1. Create a [Neon API key](https://neon.com/docs/manage/api-keys#creating-api-keys) and export it in the environment fx will inherit:
+
+   ```bash
+   export NEON_API_KEY=<YOUR_NEON_API_KEY>
+   ```
+
+2. Write `~/.fx/mcp.json`:
+
+   ```json
+   {
+     "mcp": {
+       "neon": {
+         "type": "http",
+         "url": "https://mcp.neon.tech/mcp",
+         "enabled": true,
+         "bearer_token_env": "NEON_API_KEY"
+       }
+     }
+   }
+   ```
+
+3. Start a new `fx` or `fx ask` session from this shell. Confirm with `/mcp list`. `/mcp reload` applies a later file change only in a session that already has `NEON_API_KEY`.
+
+See [fx MCP](https://fx.sh/docs/capabilities/mcp) for `/mcp reload`, `/mcp auth`, `/mcp list`, and `bearer_token_env`.
+
+## Gamut
+
+1. In your [Gamut](https://www.gamut.so/mcp/developer-tools/neon) agent, go to **Connections** and click **Add Connection**.
+2. Search for **Neon** and click **+** to add it.
+3. When the OAuth window opens, sign in to Neon and authorize the connection.
+4. Ask your agent to query or manage your Neon database to verify the connection.
+
+## Jules
+
+1. Create a [Neon API key](https://neon.com/docs/manage/api-keys#creating-api-keys) from your Neon Console **Settings**.
+2. Go to [jules.google.com](https://jules.google.com) > **Settings** > **MCP** (or use [this direct link](https://jules.google.com/settings/mcp)).
+3. Click **Connect** on the Neon server and paste your API key when prompted.
+4. Run a task invoking the Neon MCP server to verify the connection.
+
+## Kimi Code
+
+Kimi Code doesn't use `add-mcp`. Instead, install Neon's [agent skills](https://github.com/neondatabase/agent-skills) repository as a plugin. Kimi reads its own manifest (`kimi.plugin.json`), which declares the Neon MCP Server, so this one command wires up the MCP connection along with the skills:
+
+```bash
+/plugins install https://github.com/neondatabase/agent-skills
+```
+
+Plugin changes apply to new sessions, so run `/new` afterward. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for more on what's included.
+
+## Kiro
+
+For manual configuration, Kiro reads **`~/.kiro/settings/mcp.json`** (global) or **`.kiro/settings/mcp.json`** (project). See [Kiro MCP documentation](https://kiro.dev/docs/mcp/).
+
+**Tip: One-click install for Kiro**
+
+[https://kiro.dev/launch/mcp/add?name=Neon&config=%7B%22url%22%3A%20%22https%3A//mcp.neon.tech/mcp%22%7D](https://kiro.dev/launch/mcp/add?name=Neon\&config=%7B%22url%22%3A%20%22https%3A//mcp.neon.tech/mcp%22%7D)
+
+## VS Code (with GitHub Copilot)
+
+**Note:** To use MCP servers with VS Code, you need [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) and [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extensions installed
+
+**Quick Setup**
+
+Run the [init](https://neon.com/docs/cli/init) command:
+
+```bash
+npx neon@latest init
+```
+
+Authenticates via OAuth, creates an API key, installs the [Neon extension](https://neon.com/docs/local/vscode-extension) (which includes the MCP Server), and installs [agent skills](https://github.com/neondatabase/agent-skills). Then ask your AI assistant **"Get started with Neon"**.
+
+**OAuth**
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a vscode
+```
+
+Restart VS Code (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection. Then open GitHub Copilot Chat and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode).
+
+**API key**
+
+Add the Neon MCP server to your [User Settings (JSON)](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_add-an-mcp-server-to-your-user-settings):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "neon": {
+        "type": "http",
+        "url": "https://mcp.neon.tech/mcp",
+        "headers": {
+          "Authorization": "Bearer <YOUR_NEON_API_KEY>"
+        }
+      }
+    }
+  }
+}
+```
+
+Replace `<YOUR_NEON_API_KEY>` with your [Neon API key](https://neon.com/docs/manage/api-keys). Then open GitHub Copilot Chat and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode).
+
+For a detailed guide including an Azure Function REST API example, see [Using Neon MCP Server with GitHub Copilot in VS Code](https://neon.com/guides/neon-mcp-server-github-copilot-vs-code).
+
 ## Windsurf (Codeium)
 
 **OAuth**
@@ -11660,91 +11745,6 @@ Add this to `~/.config/zed/settings.json`. Replace `<YOUR_NEON_API_KEY>` with yo
 ```
 
 For more details, including workflow examples and troubleshooting, see [Get started with Zed and Neon MCP Server](https://neon.com/guides/zed-mcp-neon).
-
-## fx
-
-[fx](https://fx.sh) reads MCP servers only from **`~/.fx/mcp.json`**. A project file cannot add a server. add-mcp always writes that global file; `-g` is not required.
-
-**Note:** fx rejects a literal `Authorization` header. Do not pass `--header "Authorization: Bearer $NEON_API_KEY"` when installing to fx. Use `bearer_token_env` (API key tab) or `/mcp auth` (OAuth tab).
-
-**OAuth**
-
-```bash
-npx add-mcp https://mcp.neon.tech/mcp -a fx
-```
-
-This writes `~/.fx/mcp.json`:
-
-```json
-{
-  "mcp": {
-    "neon": {
-      "type": "http",
-      "url": "https://mcp.neon.tech/mcp",
-      "enabled": true
-    }
-  }
-}
-```
-
-A running session applies the change with `/mcp reload`. Then authorize from the fx shell:
-
-```text
-/mcp auth neon --open
-```
-
-Confirm with `/mcp list`.
-
-**API key**
-
-1. Create a [Neon API key](https://neon.com/docs/manage/api-keys#creating-api-keys) and export it in the environment fx will inherit:
-
-   ```bash
-   export NEON_API_KEY=<YOUR_NEON_API_KEY>
-   ```
-
-2. Write `~/.fx/mcp.json`:
-
-   ```json
-   {
-     "mcp": {
-       "neon": {
-         "type": "http",
-         "url": "https://mcp.neon.tech/mcp",
-         "enabled": true,
-         "bearer_token_env": "NEON_API_KEY"
-       }
-     }
-   }
-   ```
-
-3. Start a new `fx` or `fx ask` session from this shell. Confirm with `/mcp list`. `/mcp reload` applies a later file change only in a session that already has `NEON_API_KEY`.
-
-See [fx MCP](https://fx.sh/docs/capabilities/mcp) for `/mcp reload`, `/mcp auth`, `/mcp list`, and `bearer_token_env`.
-
-## Jules
-
-1. Create a [Neon API key](https://neon.com/docs/manage/api-keys#creating-api-keys) from your Neon Console **Settings**.
-2. Go to [jules.google.com](https://jules.google.com) > **Settings** > **MCP** (or use [this direct link](https://jules.google.com/settings/mcp)).
-3. Click **Connect** on the Neon server and paste your API key when prompted.
-4. Run a task invoking the Neon MCP server to verify the connection.
-
-## Kimi Code
-
-Kimi Code doesn't use `add-mcp`. Instead, install Neon's [agent skills](https://github.com/neondatabase/agent-skills) repository as a plugin. Kimi reads its own manifest (`kimi.plugin.json`), which declares the Neon MCP Server, so this one command wires up the MCP connection along with the skills:
-
-```bash
-/plugins install https://github.com/neondatabase/agent-skills
-```
-
-Plugin changes apply to new sessions, so run `/new` afterward. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for more on what's included.
-
-## Gamut
-
-1. In your [Gamut](https://www.gamut.so/mcp/developer-tools/neon) agent, go to **Connections** and click **Add Connection**.
-2. Search for **Neon** and click **+** to add it.
-3. When the OAuth window opens, sign in to Neon and authorize the connection.
-4. Ask your agent to query or manage your Neon database to verify the connection.
 
 ## Other MCP clients
 
@@ -20164,6 +20164,7 @@ Inspect a branch's Postgres health and configuration.
 | `neon inspect db outliers`             | Queries taking the most cumulative execution time (needs pg\_stat\_statements)                                                                 |
 | `neon inspect db replication-slots`    | Replication slots (compute-wide): kind, status, client, restart/confirmed-flush LSNs, and lag (pg\_replication\_slots + pg\_stat\_replication) |
 | `neon inspect db seq-scans`            | Number of sequential scans recorded against each table (pg\_stat\_user\_tables)                                                                |
+| `neon inspect db stalled-queries`      | Active queries running longer than 30 seconds with parallel workers, waits, and blockers (compute-wide)                                        |
 | `neon inspect db subscriptions`        | Per-table logical replication progress on this subscriber (pg\_subscription\_rel)                                                              |
 | `neon inspect db table-sizes`          | Size of each table (including TOAST), largest first (pg\_table\_size)                                                                          |
 | `neon inspect db unused-indexes`       | Non-unique indexes with few scans — candidates for removal (pg\_stat\_user\_indexes)                                                           |
@@ -20207,35 +20208,35 @@ Usage: `neon me [options]`
 
 Manage Neon Auth.
 
-| Subcommand                                      | Description                         |
-| ----------------------------------------------- | ----------------------------------- |
-| `neon neon-auth config email-password get`      | Get email and password config       |
-| `neon neon-auth config email-password update`   | Update email and password config    |
-| `neon neon-auth config email-provider get`      | Get email provider config           |
-| `neon neon-auth config email-provider test`     | Send a test email                   |
-| `neon neon-auth config email-provider update`   | Update email provider config        |
-| `neon neon-auth config organization get`        | Get organization plugin config      |
-| `neon neon-auth config organization update`     | Update organization plugin config   |
-| `neon neon-auth config webhook get`             | Get webhook config                  |
-| `neon neon-auth config webhook update`          | Update webhook config               |
-| `neon neon-auth disable`                        | Disable Neon Auth on a branch       |
-| `neon neon-auth domain add <domain>`            | Add a trusted domain                |
-| `neon neon-auth domain allow-localhost disable` | Restrict localhost connections      |
-| `neon neon-auth domain allow-localhost enable`  | Allow localhost connections         |
-| `neon neon-auth domain allow-localhost get`     | Get localhost connection setting    |
-| `neon neon-auth domain delete <domain>`         | Delete a trusted domain             |
-| `neon neon-auth domain list`                    | List trusted domains                |
-| `neon neon-auth enable`                         | Enable Neon Auth on a branch        |
-| `neon neon-auth oauth-provider add`             | Add an OAuth provider               |
-| `neon neon-auth oauth-provider delete`          | Delete an OAuth provider            |
-| `neon neon-auth oauth-provider list`            | List OAuth providers                |
-| `neon neon-auth oauth-provider update`          | Update an OAuth provider            |
-| `neon neon-auth plugins get <plugin-name>`      | Get a specific plugin configuration |
-| `neon neon-auth plugins list`                   | List all plugin configurations      |
-| `neon neon-auth status`                         | Get Neon Auth status for a branch   |
-| `neon neon-auth user create`                    | Create an auth user                 |
-| `neon neon-auth user delete <user-id>`          | Delete an auth user                 |
-| `neon neon-auth user set-role <user-id>`        | Set roles for an auth user          |
+| Subcommand                                      | Description                                                |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `neon neon-auth config email-password get`      | Get email and password config                              |
+| `neon neon-auth config email-password update`   | Update email and password config                           |
+| `neon neon-auth config email-provider get`      | Get email provider config                                  |
+| `neon neon-auth config email-provider test`     | Send a test message through the saved custom SMTP provider |
+| `neon neon-auth config email-provider update`   | Update email provider config                               |
+| `neon neon-auth config organization get`        | Get organization plugin config                             |
+| `neon neon-auth config organization update`     | Update organization plugin config                          |
+| `neon neon-auth config webhook get`             | Get webhook config                                         |
+| `neon neon-auth config webhook update`          | Update webhook config                                      |
+| `neon neon-auth disable`                        | Disable Neon Auth on a branch                              |
+| `neon neon-auth domain add <domain>`            | Add a trusted domain                                       |
+| `neon neon-auth domain allow-localhost disable` | Restrict localhost connections                             |
+| `neon neon-auth domain allow-localhost enable`  | Allow localhost connections                                |
+| `neon neon-auth domain allow-localhost get`     | Get localhost connection setting                           |
+| `neon neon-auth domain delete <domain>`         | Delete a trusted domain                                    |
+| `neon neon-auth domain list`                    | List trusted domains                                       |
+| `neon neon-auth enable`                         | Enable Neon Auth on a branch                               |
+| `neon neon-auth oauth-provider add`             | Add an OAuth provider                                      |
+| `neon neon-auth oauth-provider delete`          | Delete an OAuth provider                                   |
+| `neon neon-auth oauth-provider list`            | List OAuth providers                                       |
+| `neon neon-auth oauth-provider update`          | Update an OAuth provider                                   |
+| `neon neon-auth plugins get <plugin-name>`      | Get a specific plugin configuration                        |
+| `neon neon-auth plugins list`                   | List all plugin configurations                             |
+| `neon neon-auth status`                         | Get Neon Auth status for a branch                          |
+| `neon neon-auth user create`                    | Create an auth user                                        |
+| `neon neon-auth user delete <user-id>`          | Delete an auth user                                        |
+| `neon neon-auth user set-role <user-id>`        | Set roles for an auth user                                 |
 
 ### open
 
@@ -22659,13 +22660,13 @@ INFO: Function hello deleted from branch br-cool-darkness-123456
 
 --- [Document source](https://neon.com/docs/cli/init.md) ---
 
-> Summary: The `neon init` command sets up a project to use Neon with an AI coding assistant by running OAuth, creating an API key, writing the Neon MCP server config, and installing agent skills. It supports Cursor, VS Code, Claude Code, and any editor supported by add-mcp. Use this page when starting a new project with `npx neon@latest init` or when you need to know which files get created and where. The `--agent` flag targets a specific editor without the interactive prompt.
+> Summary: The `neon init` command sets up a project to use Neon with an AI coding assistant: it installs or updates the Neon CLI, runs OAuth, creates an API key, installs agent skills, and can configure the Neon MCP server. Works with Cursor, VS Code, Claude Code, and any add-mcp client. The `--agent` flag runs it in agent/JSON mode.
 
 # Neon CLI command: init
 
-Initialize an app project with Neon, including auth, MCP server, extensions, and agent skills
+Install the Neon CLI and set up a project with auth, agent skills, and optionally the MCP server and editor extension
 
-The `init` command sets up your app project to use Neon with your AI coding assistant. It authenticates via OAuth, creates a Neon API key, configures the Neon MCP server for your editor (installing the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect) for Cursor and VS Code), and installs [Neon agent skills](https://github.com/neondatabase/agent-skills). Run it once from your project root.
+The `init` command sets up your app project to use Neon with your AI coding assistant. It installs or updates the Neon CLI, authenticates via OAuth, creates a Neon API key, can configure the Neon MCP server for your editor (installing the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect) for Cursor and VS Code), and installs [Neon agent skills](https://github.com/neondatabase/agent-skills). Run it once from your project root.
 
 ## Usage
 
@@ -22694,7 +22695,7 @@ Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill ne
 | `--preview`         | Enable preview features (e.g. project bootstrapping from templates).                     | boolean | `false` |    No    |
 | `--skip-migrations` | Skip the migrations phase.                                                               | boolean | `false` |    No    |
 
-Use `--agent` to configure a specific editor, skipping the interactive selection prompt. Without `--agent`, `init` runs an interactive wizard that detects installed tools and lets you choose which to configure; if nothing is detected, you go straight to that list.
+Use `--agent` (alias `-a`) to run `init` in agent/JSON mode, designed for when an AI coding assistant runs the command for you; the agent type is auto-detected. Without `--agent`, `init` runs an interactive wizard that detects installed tools and lets you choose which to configure; if nothing is detected, you go straight to that list.
 
 ## Coding assistant support
 
@@ -22825,7 +22826,7 @@ Some queries read from Postgres statistics extensions. `outliers` and `calls` ne
 
 From an AI assistant, the same checks are available through the Neon MCP server's `inspect_database` tool. See [Database diagnostics](https://neon.com/docs/ai/neon-mcp-server#database-diagnostics).
 
-Subcommands: [bloat](https://neon.com/docs/cli/inspect#db-bloat), [calls](https://neon.com/docs/cli/inspect#db-calls), [index-sizes](https://neon.com/docs/cli/inspect#db-index-sizes), [lfc-hit-rate](https://neon.com/docs/cli/inspect#db-lfc-hit-rate), [locks](https://neon.com/docs/cli/inspect#db-locks), [long-running-queries](https://neon.com/docs/cli/inspect#db-long-running-queries), [outliers](https://neon.com/docs/cli/inspect#db-outliers), [replication-slots](https://neon.com/docs/cli/inspect#db-replication-slots), [seq-scans](https://neon.com/docs/cli/inspect#db-seq-scans), [subscriptions](https://neon.com/docs/cli/inspect#db-subscriptions), [table-sizes](https://neon.com/docs/cli/inspect#db-table-sizes), [unused-indexes](https://neon.com/docs/cli/inspect#db-unused-indexes), [vacuum-stats](https://neon.com/docs/cli/inspect#db-vacuum-stats), [working-set](https://neon.com/docs/cli/inspect#db-working-set)
+Subcommands: [bloat](https://neon.com/docs/cli/inspect#db-bloat), [calls](https://neon.com/docs/cli/inspect#db-calls), [index-sizes](https://neon.com/docs/cli/inspect#db-index-sizes), [lfc-hit-rate](https://neon.com/docs/cli/inspect#db-lfc-hit-rate), [locks](https://neon.com/docs/cli/inspect#db-locks), [long-running-queries](https://neon.com/docs/cli/inspect#db-long-running-queries), [outliers](https://neon.com/docs/cli/inspect#db-outliers), [replication-slots](https://neon.com/docs/cli/inspect#db-replication-slots), [seq-scans](https://neon.com/docs/cli/inspect#db-seq-scans), [stalled-queries](https://neon.com/docs/cli/inspect#db-stalled-queries), [subscriptions](https://neon.com/docs/cli/inspect#db-subscriptions), [table-sizes](https://neon.com/docs/cli/inspect#db-table-sizes), [unused-indexes](https://neon.com/docs/cli/inspect#db-unused-indexes), [vacuum-stats](https://neon.com/docs/cli/inspect#db-vacuum-stats), [working-set](https://neon.com/docs/cli/inspect#db-working-set)
 
 ### neon inspect db table-sizes
 
@@ -22895,6 +22896,18 @@ neon inspect db long-running-queries
 
 ```text
 No long-running queries in any database.
+```
+
+### neon inspect db stalled-queries
+
+Active queries running longer than 30 seconds, with their parallel workers, what each one is waiting on, and any queries blocking them. It runs compute-wide. When nothing qualifies, it says so instead of printing an empty table:
+
+```bash
+neon inspect db stalled-queries
+```
+
+```text
+No active queries running longer than 30 seconds.
 ```
 
 ### neon inspect db locks
@@ -24059,26 +24072,20 @@ neon neon-auth config email-provider update --type standard --host smtp.example.
 
 ### neon neon-auth config email-provider test
 
-Sends a test email so you can verify your SMTP configuration.
+Sends a test email through your saved SMTP provider so you can verify it works. Configure the provider first with [`update`](https://neon.com/docs/cli/neon-auth#config-email-provider-update).
 
 ```bash
 neon neon-auth config email-provider test [options]
 ```
 
-| Option              | Description                         | Type   | Default | Required |
-| ------------------- | ----------------------------------- | ------ | ------- | :------: |
-| `--host`            | SMTP host                           | string | —       |    Yes   |
-| `--password`        | SMTP password                       | string | —       |    Yes   |
-| `--port`            | SMTP port                           | number | —       |    Yes   |
-| `--recipient-email` | Email address to send test email to | string | —       |    Yes   |
-| `--sender-email`    | Sender email address                | string | —       |    Yes   |
-| `--sender-name`     | Sender display name                 | string | —       |    Yes   |
-| `--username`        | SMTP username                       | string | —       |    Yes   |
-| `--branch`          | Branch ID or name                   | string | —       |    No    |
-| `--project-id`      | Project ID                          | string | —       |    No    |
+| Option              | Description                                  | Type   | Default | Required |
+| ------------------- | -------------------------------------------- | ------ | ------- | :------: |
+| `--recipient-email` | Email address to deliver the test message to | string | —       |    Yes   |
+| `--branch`          | Branch ID or name                            | string | —       |    No    |
+| `--project-id`      | Project ID                                   | string | —       |    No    |
 
 ```bash
-neon neon-auth config email-provider test --recipient-email user@example.com --host smtp.example.com --port 587 --username example_username --password AbC123dEf --sender-email noreply@example.com --sender-name "Example App"
+neon neon-auth config email-provider test --recipient-email user@example.com
 ```
 
 ### neon neon-auth config organization
@@ -61616,13 +61623,13 @@ Lakebase Postgres is available via Neon and via Databricks. For what's the same 
 
 --- [Document source](https://neon.com/docs/get-started/with-an-agent.md) ---
 
-> Summary: `npx neon@latest init` connects an AI coding assistant to Neon, installing agent skills and configuring the MCP server in one command.
+> Summary: `neon init` sets up Neon for your project through your AI coding assistant: it installs the Neon CLI, signs you in, installs agent skills, and can configure the MCP server, so your agent can create a project and connect your app.
 
 # Get started with your AI agent
 
-Connect your AI coding assistant to Neon
+Set up Neon in your project using your AI coding assistant
 
-`npx neon@latest init` gives your agent two things: Neon-specific context from agent skills, and tools to act on your Neon account through the MCP server. The result is an agent that can connect your app to Neon and help you use Neon features as you build. For Cursor and VS Code, it also installs the Neon Local Connect extension for in-editor schema browsing.
+Set up Neon for your project without leaving your editor. `neon init` installs the Neon CLI, signs you in, installs Neon-specific agent skills, and can set up the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server). Together these give your agent what it needs to create a Neon project, connect your app, and use Neon features as you build. For Cursor and VS Code, it also installs the Neon Local Connect extension for in-editor schema browsing.
 
 New to the platform? The [backend overview](https://neon.com/docs/get-started/backend-overview) shows how Postgres, Managed Better Auth, Object Storage, Functions, and the AI Gateway fit together. For a hands-on walkthrough, see [Build a full backend](https://neon.com/docs/get-started/full-backend-quickstart).
 
@@ -61630,8 +61637,32 @@ New to the platform? The [backend overview](https://neon.com/docs/get-started/ba
 
 You'll need:
 
-- [Node.js 18+](https://nodejs.org/)
-- A supported AI coding assistant, such as Cursor, VS Code with GitHub Copilot, Claude Code, Codex, Zed, Gemini CLI, Cline, OpenCode, or another [client supported by add-mcp](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp)
+- [Node.js 20+](https://nodejs.org/)
+- A supported AI coding assistant, such as Cursor or Claude Code (see [supported clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp))
+
+## Let your agent set it up
+
+The fastest path is to let your agent do the whole setup, from running `init` to proving the connection works. Paste this prompt into your editor's AI chat:
+
+```text filename="AI assistant prompt"
+Help me get set up with Neon, based on my project:
+
+1. Run `npx neon@latest init --agent` and work through the steps it returns to install the CLI, sign in, and connect my project. If it opens a browser for sign-in, ask me to confirm before continuing.
+2. Run it through verification and show me the real query result, not just "setup complete." Give me a command to re-check it myself (e.g. `neon psql`), and never print secrets.
+3. Then suggest next steps for my project, such as a schema or migrations, branching for previews, or Neon's other services (Object Storage, Functions, Managed Better Auth, AI Gateway).
+```
+
+Your agent installs the Neon CLI and runs its setup for you, so there's no switching between the terminal and the chat. It:
+
+- Signs you in to Neon (finish the browser step if it prompts), creates an API key, optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and installs [agent skills](https://neon.com/docs/ai/agent-skills)
+- Creates or connects a Neon project, writes your `DATABASE_URL` into your env file, and adds a Postgres driver for your stack
+- Uses the connection and shows you a real result so you can see it's working
+
+To confirm it yourself, run the command the agent gives you (e.g., `neon psql`), or open your project in the [Neon Console](https://console.neon.tech).
+
+## Prefer to run it yourself?
+
+You can run the setup manually and then hand off to your agent.
 
 ## Run the init command
 
@@ -61641,19 +61672,9 @@ From your project root, run:
 npx neon@latest init
 ```
 
-The wizard asks which editor to configure, then:
+**Note:** `neon init` installs or updates the Neon CLI and sets up your editor tooling: authentication, agent skills, and optionally the MCP server. It doesn't create a Neon project, though; your agent does that when you ask it to get started.
 
-- Signs you in to Neon (or signs you up for free)
-- Creates a Neon API key
-- Installs [agent skills](https://neon.com/docs/ai/agent-skills)
-- Configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server)
-- For Cursor and VS Code, installs the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect)
-
-Run this from your project root so the skills are installed in the right place. For details and manual setup, see the [`neon init` reference](https://neon.com/docs/cli/init).
-
-## Restart your editor
-
-Reload your editor so it picks up the new MCP configuration and skills. For Cursor and VS Code, this also activates the Neon Local Connect extension.
+The wizard asks which editor to configure, then signs you in, creates an API key, installs [agent skills](https://neon.com/docs/ai/agent-skills), optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and (for Cursor and VS Code) installs the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect). Run it from your project root so the skills land in the right place. For details and manual setup, see the [`neon init` reference](https://neon.com/docs/cli/init).
 
 ## Tell your agent
 
@@ -61663,22 +61684,13 @@ In your editor's AI chat, send:
 Get started with Neon
 ```
 
-Your agent reads the installed skill and uses the MCP server to walk you through setup. It can:
-
-- Create a Neon project
-- Configure your app
-- Write your `DATABASE_URL` to `.env`
-- Suggest a Postgres driver and starter query
-
-The exact flow depends on your project. Your agent can scaffold a new connection or help with a migration.
+Your agent reads the installed skill to create or connect a Neon project, pull your `DATABASE_URL` into your env file, add a Postgres driver, and run a real query to confirm the connection. The exact flow depends on your project.
 
 ## What's next
 
+- [How a Neon backend fits together](https://neon.com/docs/get-started/backend-overview)
+- [Build a full backend with Next.js and Neon](https://neon.com/docs/get-started/full-backend-quickstart)
 - [About branching](https://neon.com/docs/introduction/branching)
-- [Managed Better Auth](https://neon.com/docs/auth/overview)
-- [Data API](https://neon.com/docs/data-api/overview)
-- [Browse your schema with Neon Local Connect](https://neon.com/docs/local/vscode-extension)
-- [`neon init` reference](https://neon.com/docs/cli/init)
 
 --- [Document source](https://neon.com/docs/get-started/workflow-primer.md) ---
 
@@ -112813,6 +112825,10 @@ We're expanding the platform with [a branchable stack of backend primitives](htt
 
 We're accelerating work on improving and scaling the core database on Neon as well. Here is what is on the roadmap.
 
+### Real-time sync
+
+- Real-time Postgres sync powered by the Electric sync engine, keeping your database and connected clients (browser tabs, mobile apps, and agents) continuously in sync so you can build real-time, collaborative, and agentic apps without hand-rolling a sync layer. [Read the announcement](https://neon.com/blog/electric-joins-neon).
+
 ### Backups & restore
 
 - Externally exported backups
@@ -112860,6 +112876,8 @@ We're accelerating work on improving and scaling the core database on Neon as we
 
 ## What we've shipped recently 🚢
 
+- **Neon MCP server as a Claude connector**: The Neon MCP server is now listed in Claude's connector directory, so you can create projects and branches, run SQL, change schemas, and diagnose slow queries from Claude.ai or Claude Desktop. [Learn more](https://neon.com/docs/ai/neon-mcp-server#claude-connector).
+- **AI Gateway as a Vercel AI SDK provider**: The Neon AI Gateway is now a community provider for the Vercel AI SDK, so you can reach frontier and open-source models through one credential built into your branch and swap models without per-provider SDKs or keys. [Learn more](https://neon.com/docs/ai-gateway/overview).
 - **Project-level permissions**: Grant people and agents Viewer, Editor, or Admin access on individual projects instead of across your whole organization, on top of four organization roles (Admin, Editor, Viewer, Collaborator). Now available to all organizations. [Learn more](https://neon.com/docs/manage/user-permissions).
 - **API keys and profiles in the Neon CLI**: New `neon api-keys` and `neon profile` commands let you mint account, organization, or project-scoped keys and switch between multiple accounts from the terminal. [Learn more](https://neon.com/docs/cli/api-keys).
 - **More models on the AI Gateway**: The AI Gateway catalog expanded with Kimi K3, GLM-5.2, Inkling, and new Gemini and GPT models, all reachable through one credential and one base URL. [Learn more](https://neon.com/docs/ai-gateway/models#available-models).
@@ -114831,8 +114849,8 @@ Before performing this procedure:
 
 - A new Neon project was created for the destination database, and a database with the same name as the source database was created (`neondb`)
 - Connection strings for the source and destination databases were collected:
-  - source: `postgresql://neondb_owner:npg_AbC123dEf@ep-dry-morning-a8vn5za2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
-  - destination: `postgresql://neondb_owner:npg_AbC123dEf@ep-dry-morning-a8vn5za2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
+  - source: `postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
+  - destination: `postgresql://alex:AbC123dEf@ep-dry-morning-a8vn5za2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
 
 ```bash
 ~$ cd mydump

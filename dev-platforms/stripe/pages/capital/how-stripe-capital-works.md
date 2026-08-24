@@ -167,7 +167,7 @@ Stripe Capital offers financing for eligible UK users processing payments throug
 
 ## Eligibility
 
-Stripe, with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible UK businesses with at least 6 months of processing history receive an email and Dashboard notification if we have an offer available. Stripe has partnered with YouLend to evaluate UK financing applications.
+Stripe, with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible UK businesses with at least 3 months of processing history receive an email and Dashboard notification if we have an offer available. Stripe has partnered with YouLend to evaluate UK financing applications.
 
 We evaluate your business daily for eligibility, which includes your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees.
 

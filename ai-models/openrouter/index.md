@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 318 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -14,7 +14,7 @@
 - `docs/agent-sdk/call-model/examples/weather-tool` — [Weather Tool](pages/docs/agent-sdk/call-model/examples/weather-tool.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/weather-tool.md)
 - `docs/agent-sdk/call-model/items` — [Working with Items](pages/docs/agent-sdk/call-model/items.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/items.md)
 - `docs/agent-sdk/call-model/lifecycle-hooks` — [Lifecycle Hooks](pages/docs/agent-sdk/call-model/lifecycle-hooks.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks.md)
-- `docs/agent-sdk/call-model/mcp-tools` — [MCP tools](pages/docs/agent-sdk/call-model/mcp-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools.md)
+- `docs/agent-sdk/call-model/mcp-tools` — [MCP Tools](pages/docs/agent-sdk/call-model/mcp-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools.md)
 - `docs/agent-sdk/call-model/message-formats` — [Message Formats](pages/docs/agent-sdk/call-model/message-formats.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/message-formats.md)
 - `docs/agent-sdk/call-model/next-turn-params` — [Next Turn Params](pages/docs/agent-sdk/call-model/next-turn-params.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/next-turn-params.md)
 - `docs/agent-sdk/call-model/overview` — [Call Model (Typescript)](pages/docs/agent-sdk/call-model/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/overview.md)
@@ -25,24 +25,6 @@
 - `docs/agent-sdk/call-model/tools` — [Tools](pages/docs/agent-sdk/call-model/tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/tools.md)
 - `docs/agent-sdk/dev-tools/devtools` — [DevTools](pages/docs/agent-sdk/dev-tools/devtools.md) · [原文](https://openrouter.ai/docs/agent-sdk/dev-tools/devtools.md)
 - `docs/agent-sdk/overview` — [Agent SDK](pages/docs/agent-sdk/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/overview.md)
-- `docs/agent-sdk/typescript/api-reference/analytics` — [Analytics - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/analytics.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/analytics.md)
-- `docs/agent-sdk/typescript/api-reference/apikeys` — [APIKeys - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/apikeys.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/apikeys.md)
-- `docs/agent-sdk/typescript/api-reference/chat` — [Chat - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/chat.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/chat.md)
-- `docs/agent-sdk/typescript/api-reference/credits` — [Credits - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/credits.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/credits.md)
-- `docs/agent-sdk/typescript/api-reference/embeddings` — [Embeddings - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/embeddings.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/embeddings.md)
-- `docs/agent-sdk/typescript/api-reference/endpoints` — [Endpoints - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/endpoints.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/endpoints.md)
-- `docs/agent-sdk/typescript/api-reference/generations` — [Generations - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/generations.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/generations.md)
-- `docs/agent-sdk/typescript/api-reference/guardrails` — [Guardrails - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/guardrails.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/guardrails.md)
-- `docs/agent-sdk/typescript/api-reference/models` — [Models - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/models.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/models.md)
-- `docs/agent-sdk/typescript/api-reference/oauth` — [OAuth - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/oauth.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/oauth.md)
-- `docs/agent-sdk/typescript/api-reference/organization` — [Organization - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/organization.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/organization.md)
-- `docs/agent-sdk/typescript/api-reference/providers` — [Providers - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/providers.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/providers.md)
-- `docs/agent-sdk/typescript/api-reference/rerank` — [Rerank - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/rerank.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/rerank.md)
-- `docs/agent-sdk/typescript/api-reference/responses` — [Beta.Responses - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/responses.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/responses.md)
-- `docs/agent-sdk/typescript/api-reference/tts` — [Speech - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/tts.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/tts.md)
-- `docs/agent-sdk/typescript/api-reference/videogeneration` — [VideoGeneration - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/videogeneration.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/videogeneration.md)
-- `docs/agent-sdk/typescript/api-reference/workspaces` — [Workspaces - TypeScript SDK](pages/docs/agent-sdk/typescript/api-reference/workspaces.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/api-reference/workspaces.md)
-- `docs/agent-sdk/typescript/overview` — [TypeScript SDK](pages/docs/agent-sdk/typescript/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/typescript/overview.md)
 - `docs/agent-sdk/usage-for-agents` — [Usage for Agents](pages/docs/agent-sdk/usage-for-agents.md) · [原文](https://openrouter.ai/docs/agent-sdk/usage-for-agents.md)
 - `docs/api_reference/authentication` — [Authentication](pages/docs/api_reference/authentication.md) · [原文](https://openrouter.ai/docs/api_reference/authentication.md)
 - `docs/api_reference/embeddings` — [Embeddings](pages/docs/api_reference/embeddings.md) · [原文](https://openrouter.ai/docs/api_reference/embeddings.md)
@@ -276,7 +258,7 @@
 - `docs/guides/features/sovereign-ai` — [Sovereign AI](pages/docs/guides/features/sovereign-ai.md) · [原文](https://openrouter.ai/docs/guides/features/sovereign-ai.md)
 - `docs/guides/features/sso` — [Single Sign-On (SSO)](pages/docs/guides/features/sso.md) · [原文](https://openrouter.ai/docs/guides/features/sso.md)
 - `docs/guides/features/structured-outputs` — [Structured Outputs](pages/docs/guides/features/structured-outputs.md) · [原文](https://openrouter.ai/docs/guides/features/structured-outputs.md)
-- `docs/guides/features/tool-calling` — [Tool & Function Calling](pages/docs/guides/features/tool-calling.md) · [原文](https://openrouter.ai/docs/guides/features/tool-calling.md)
+- `docs/guides/features/tool-calling` — [Client Tools](pages/docs/guides/features/tool-calling.md) · [原文](https://openrouter.ai/docs/guides/features/tool-calling.md)
 - `docs/guides/features/workspaces` — [Workspaces](pages/docs/guides/features/workspaces.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces.md)
 - `docs/guides/features/workspaces/switching` — [Switching Workspaces](pages/docs/guides/features/workspaces/switching.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces/switching.md)
 - `docs/guides/features/workspaces/workspace-budgets` — [Workspace Budgets](pages/docs/guides/features/workspaces/workspace-budgets.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md)

@@ -85,8 +85,8 @@ Successful Response
     - `hostname` (string, required) — The hostname of the allowed origin
   - `markdown_link_include_www` (boolean, optional, default: true) — Whether to automatically include www. variants of allowed hosts
   - `markdown_link_allow_http` (boolean, optional, default: true) — Whether to allow http:// in addition to https:// for allowed hosts
-  - `mic_muting_enabled` (boolean, optional, default: false) — Whether to enable mic muting
-  - `transcript_enabled` (boolean, optional, default: false) — Whether the widget should show the conversation transcript as it goes on
+  - `mic_muting_enabled` (boolean, optional, default: true) — Whether to enable mic muting
+  - `transcript_enabled` (boolean, optional, default: true) — Whether the widget should show the conversation transcript as it goes on
   - `text_input_enabled` (boolean, optional, default: true) — Whether the user should be able to send text messages
   - `conversation_mode_toggle_enabled` (boolean, optional, default: false) — Whether to enable the conversation mode toggle in the widget
   - `default_expanded` (boolean, optional, default: false) — Whether the widget should be expanded by default

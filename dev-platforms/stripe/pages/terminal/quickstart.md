@@ -371,7 +371,7 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a ConnectionToken endpoint
 
-To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
+To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md?dashboard-or-api=api#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
 
 ### Install the SDK
 
@@ -588,7 +588,7 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a ConnectionToken endpoint
 
-To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
+To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md?dashboard-or-api=api#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
 
 ### Install the SDK
 
@@ -868,7 +868,7 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a ConnectionToken endpoint
 
-To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
+To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md?dashboard-or-api=api#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
 
 ### Install the SDK
 
@@ -1130,7 +1130,7 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a ConnectionToken endpoint
 
-To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
+To connect to a reader, your back end needs to give the SDK permission to use it with your Stripe account by providing it with the secret from a [ConnectionToken](https://docs.stripe.com/api/terminal/connection_tokens.md). Create connection tokens only for trusted clients, and [pass a location ID](https://docs.stripe.com/terminal/fleet/locations-and-zones.md?dashboard-or-api=api#connection-tokens) when creating a connection token to control access to readers. ​​If you’re using Connect, [scope the connection token](https://docs.stripe.com/terminal/features/connect.md) to the relevant connected accounts.
 
 ### Install the SDK
 

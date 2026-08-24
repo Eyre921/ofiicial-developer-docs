@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1273 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1291 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -293,6 +293,15 @@
 - `docs/api-reference/tools/get-executions` — [Get tool executions](pages/docs/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-executions.md)
 - `docs/api-reference/tools/list` — [List tools](pages/docs/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/list.md)
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)
+- `docs/api-reference/triage-tickets/add-ticket-comment-route` — [Add comment](pages/docs/api-reference/triage-tickets/add-ticket-comment-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/add-ticket-comment-route.md)
+- `docs/api-reference/triage-tickets/add-turn-comment-route` — [Add turn comment](pages/docs/api-reference/triage-tickets/add-turn-comment-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/add-turn-comment-route.md)
+- `docs/api-reference/triage-tickets/create-agent-conversation-ticket-route` — [Create conversation ticket](pages/docs/api-reference/triage-tickets/create-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/create-agent-conversation-ticket-route.md)
+- `docs/api-reference/triage-tickets/create-manual-agent-ticket-route` — [Create manual ticket](pages/docs/api-reference/triage-tickets/create-manual-agent-ticket-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/create-manual-agent-ticket-route.md)
+- `docs/api-reference/triage-tickets/delete-agent-conversation-ticket-route` — [Delete ticket](pages/docs/api-reference/triage-tickets/delete-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/delete-agent-conversation-ticket-route.md)
+- `docs/api-reference/triage-tickets/get-agent-conversation-ticket-route` — [Get ticket](pages/docs/api-reference/triage-tickets/get-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/get-agent-conversation-ticket-route.md)
+- `docs/api-reference/triage-tickets/get-assignable-users-route` — [List assignable users](pages/docs/api-reference/triage-tickets/get-assignable-users-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/get-assignable-users-route.md)
+- `docs/api-reference/triage-tickets/list-agent-conversation-tickets-route` — [List tickets](pages/docs/api-reference/triage-tickets/list-agent-conversation-tickets-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list-agent-conversation-tickets-route.md)
+- `docs/api-reference/triage-tickets/update-agent-conversation-ticket-route` — [Update ticket](pages/docs/api-reference/triage-tickets/update-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/update-agent-conversation-ticket-route.md)
 - `docs/api-reference/twilio/outbound-call` — [Outbound call via twilio](pages/docs/api-reference/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/outbound-call.md)
 - `docs/api-reference/twilio/register-call` — [Register call](pages/docs/api-reference/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/register-call.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
@@ -512,6 +521,15 @@
 - `docs/eleven-agents/api-reference/tools/get-executions` — [Get tool executions](pages/docs/eleven-agents/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-executions.md)
 - `docs/eleven-agents/api-reference/tools/list` — [List tools](pages/docs/eleven-agents/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/list.md)
 - `docs/eleven-agents/api-reference/tools/update` — [Update tool](pages/docs/eleven-agents/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/update.md)
+- `docs/eleven-agents/api-reference/triage-tickets/add-ticket-comment-route` — [Add comment](pages/docs/eleven-agents/api-reference/triage-tickets/add-ticket-comment-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-ticket-comment-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/add-turn-comment-route` — [Add turn comment](pages/docs/eleven-agents/api-reference/triage-tickets/add-turn-comment-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-turn-comment-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/create-agent-conversation-ticket-route` — [Create conversation ticket](pages/docs/eleven-agents/api-reference/triage-tickets/create-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-agent-conversation-ticket-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/create-manual-agent-ticket-route` — [Create manual ticket](pages/docs/eleven-agents/api-reference/triage-tickets/create-manual-agent-ticket-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-manual-agent-ticket-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/delete-agent-conversation-ticket-route` — [Delete ticket](pages/docs/eleven-agents/api-reference/triage-tickets/delete-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/delete-agent-conversation-ticket-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/get-agent-conversation-ticket-route` — [Get ticket](pages/docs/eleven-agents/api-reference/triage-tickets/get-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get-agent-conversation-ticket-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/get-assignable-users-route` — [List assignable users](pages/docs/eleven-agents/api-reference/triage-tickets/get-assignable-users-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get-assignable-users-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/list-agent-conversation-tickets-route` — [List tickets](pages/docs/eleven-agents/api-reference/triage-tickets/list-agent-conversation-tickets-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-agent-conversation-tickets-route.md)
+- `docs/eleven-agents/api-reference/triage-tickets/update-agent-conversation-ticket-route` — [Update ticket](pages/docs/eleven-agents/api-reference/triage-tickets/update-agent-conversation-ticket-route.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update-agent-conversation-ticket-route.md)
 - `docs/eleven-agents/api-reference/twilio/outbound-call` — [Outbound call via twilio](pages/docs/eleven-agents/api-reference/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/twilio/outbound-call.md)
 - `docs/eleven-agents/api-reference/twilio/register-call` — [Register call](pages/docs/eleven-agents/api-reference/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/twilio/register-call.md)
 - `docs/eleven-agents/api-reference/users/list` — [List users](pages/docs/eleven-agents/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md)

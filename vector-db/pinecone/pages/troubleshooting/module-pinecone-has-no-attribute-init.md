@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/module-pinecone-has-no-attribut
 path: troubleshooting/module-pinecone-has-no-attribute-init
 ---
 
-Troubleshoot “Python AttributeError: module pinecone has no attribute init” in Pinecone: If you are using Pinecone serverless and getting the error , first.
+Fix the Python AttributeError 'module pinecone has no attribute init' by upgrading to Pinecone Python SDK 3.0 or later, which serverless indexes require.
 
 ## Problem
 

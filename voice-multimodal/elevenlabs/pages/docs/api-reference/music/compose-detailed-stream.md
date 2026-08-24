@@ -101,12 +101,7 @@ Server-Sent Events for composition plan, song metadata, audio chunks with option
 
 ```json
 [
-  "data: {\"event\":\"composition_plan\",\"data\":{\"plan\":\"Starting with a mellow intro, building up to an energetic chorus with layered synths and driving drums.\"}}\n",
-  "data: {\"event\":\"song_metadata\",\"data\":{\"title\":\"Sunset Drive\",\"artist\":\"Neon Horizon\",\"genre\":\"Synthwave\",\"bpm\":110}}\n",
-  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=\"}\n",
-  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAE=\"}\n",
-  "data: {\"event\":\"word_timestamps\",\"data\":{\"words\":[{\"word\":\"Sunset\",\"start\":0.0,\"end\":0.5},{\"word\":\"Drive\",\"start\":0.5,\"end\":1.0}]}}\n",
-  "data: {\"event\":\"completion\",\"data\":{\"message\":\"Stream ended successfully.\"}}\n"
+  "string"
 ]
 ```
 

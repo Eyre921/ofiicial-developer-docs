@@ -46,7 +46,7 @@ Successful Response
 - `creator_user_id` (string, required, nullable) — The ID of the user who created the resource.
 - `anonymous_access_level_override` (enum, required, nullable) — The access level for anonymous users. If None, the resource is not shared publicly.
   - Allowed values: `admin`, `editor`, `commenter`, `viewer`
-- `role_to_group_ids` (map from string to list of string, required) — A mapping of roles to group IDs. When the resource is shared with a user, the group id is the user's id.
+- `role_to_group_ids` (map from string to list of string, required) — A mapping of grant slots to group IDs. Keys are the preset access roles plus workspace custom-role ids ('role_...'). When the resource is shared with a user, the group id is the user's id.
 - `share_options` (list of object, required) — List of options for sharing the resource further in the workspace. These are users who don't have access to the resource yet.
   - `name` (string, required) — The name of the principal.
   - `id` (string, required) — The ID of the principal.
@@ -70,6 +70,9 @@ Successful Response
     ],
     "editor": [
       "8ruQDGM2R4w1mFbHI5aROCUjIpJZ"
+    ],
+    "role_01jd7yq2k8f0abcd1234wxyz": [
+      "9mQrTx4vNb2wKpLs6ZyE1cHgUdFa"
     ],
     "viewer": []
   },

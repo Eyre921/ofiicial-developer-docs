@@ -105,14 +105,14 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
       - `text_only` (boolean, optional, default: false) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
       - `max_duration_seconds` (integer, optional, default: 600) — The maximum duration of a conversation in seconds
       - `client_events` (list of enum, optional) — The events that will be sent to the client
-        - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+        - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
       - `file_input` (object, optional) — Configuration for file input (image/PDF uploads) during conversations.
         - `enabled` (boolean, optional, default: true) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
         - `max_files_in_memory` (integer, optional, default: 10) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
         - `max_files_per_conversation` (integer, optional, default: 10) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
       - `monitoring_enabled` (boolean, optional, default: false) — Enable real-time monitoring of conversations via WebSocket
       - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
-        - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+        - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
       - `background_sound` (object, optional) — Configuration for background sound during conversations.
         - `source_type` ("preset", optional) — The type of background sound source.
         - `source_id` (enum, optional) — Identifier for the sound source.
@@ -127,6 +127,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
         - `turn` (object, optional) — Configuration for turn detection
           - `soft_timeout_config` (object, optional) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
             - `message` (string, optional) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+            - `additional_soft_timeout_messages` (list of string, optional) — Extra static filler messages for subsequent soft timeouts in the same LLM generation. The first timeout uses `message`. If fewer messages are configured than `max_soft_timeouts_per_generation`, the last configured message is repeated; otherwise a built-in filler is used.
         - `tts` (object, optional) — Configuration for conversational text to speech
           - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
             - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
@@ -451,8 +452,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
         - `hostname` (string, required) — The hostname of the allowed origin
       - `markdown_link_include_www` (boolean, optional, default: true) — Whether to automatically include www. variants of allowed hosts
       - `markdown_link_allow_http` (boolean, optional, default: true) — Whether to allow http:// in addition to https:// for allowed hosts
-      - `mic_muting_enabled` (boolean, optional, default: false) — Whether to enable mic muting
-      - `transcript_enabled` (boolean, optional, default: false) — Whether the widget should show the conversation transcript as it goes on
+      - `mic_muting_enabled` (boolean, optional, default: true) — Whether to enable mic muting
+      - `transcript_enabled` (boolean, optional, default: true) — Whether the widget should show the conversation transcript as it goes on
       - `text_input_enabled` (boolean, optional, default: true) — Whether the user should be able to send text messages
       - `conversation_mode_toggle_enabled` (boolean, optional, default: false) — Whether to enable the conversation mode toggle in the widget
       - `default_expanded` (boolean, optional, default: false) — Whether the widget should be expanded by default
@@ -646,6 +647,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
         - `turn` (object, optional) — Configures overrides for nested fields.
           - `soft_timeout_config` (object, optional) — Configures overrides for nested fields.
             - `message` (boolean, optional, default: false) — Whether to allow overriding the message field.
+            - `additional_soft_timeout_messages` (boolean, optional, default: false) — Whether to allow overriding the additional_soft_timeout_messages field.
         - `tts` (object, optional) — Configures overrides for nested fields.
           - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
           - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
@@ -669,6 +671,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
       - `custom_llm_extra_body` (boolean, optional, default: false) — Whether to include custom LLM extra body
       - `enable_conversation_initiation_client_data_from_webhook` (boolean, optional, default: false) — Whether to enable conversation initiation client data from webhooks
       - `enable_starting_workflow_node_id_from_client` (boolean, optional, default: false) — Whether clients may pass starting_workflow_node_id in initiation client data; if false, sending it fails conversation start.
+      - `enable_procedure_ids_from_client` (boolean, optional, default: false) — Whether clients may pass procedure_ids in initiation client data to select which of the agent's procedures are available for the conversation; if false, sending it fails conversation start.
     - `workspace_overrides` (object, optional) — Workspace overrides for the agent
       - `conversation_initiation_client_data_webhook` (object, optional) — The webhook to send conversation initiation client data to
         - `url` (string, required) — The URL to send the webhook to
@@ -765,11 +768,18 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
     - `alerting` (object, optional) — Agent-level alerting configuration overriding workspace settings.
       - `monitor_configs` (map from string to object, optional) — Alerting configuration keyed by monitor name.
         - `threshold` (double, optional) — Failure rate threshold at which this monitor can notify.
+        - `relative_increase_threshold` (double, optional) — Relative increase over the trailing baseline at which this monitor can notify (0.2 = 20% above baseline, 0 = any failure).
+        - `min_failure_count` (integer, optional) — Minimum failures in the window before this monitor can fire.
+        - `min_history_bucket_count` (integer, optional) — Minimum trailing buckets with traffic before spike detection can fire.
+        - `min_sample_count` (integer, optional) — Minimum samples in the window before this monitor can fire.
+        - `suspect_trigger_threshold` (integer, optional) — How many suspect buckets within the lookback window are required to promote a suspect to an alert.
         - `auto_resolve_after_inactive_minutes` (integer, optional) — How many minutes an alert can stay inactive before it is auto-resolved.
       - `auto_resolve_after_inactive_minutes` (integer, optional) — How many minutes an alert can stay inactive before it is auto-resolved. Unset values fall through to the next layer.
-      - `notifiers` (list of object, optional) — Delivery channels for alert lifecycle notifications. Stacked and deduped by webhook_id with other layers.
-        - `webhook_id` (string, required) — ID of the workspace webhook to deliver alert lifecycle notifications to.
-        - `type` ("webhook", optional)
+      - `notifiers` (list of object, optional) — Delivery channels for alert lifecycle notifications. Stacked and deduped by ``webhook_id`` / ``connection_id`` with other layers.
+        - `type`: `integration`
+          - `connection_id` (string, required) — ID of the workspace integration connection (e.g. PagerDuty) to deliver alert lifecycle notifications to. The connection's integration must have the monitoring capability.
+        - `type`: `webhook`
+          - `webhook_id` (string, required) — ID of the workspace webhook to deliver alert lifecycle notifications to.
   - `workflow` (object, optional)
     - `edges` (map from string to object, optional)
       - `source` (string, required) — ID of the source node.
@@ -1036,7 +1046,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-test
           - `tool_id` (string, required)
           - `schema_overrides` (map from string to object, optional) — Per-node parameter overrides applied on top of the tool's own configuration. Keys are dotted parameter paths (webhook tools prefix keys with path_params./query_params./request_body.). These take precedence over any overrides already defined on the tool itself.
             - `source`: `constant`
-              - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+              - `constant_value` (string or integer or double or boolean or list of any or map from string to any, optional) — The constant value to use
             - `source`: `dynamic_variable`
               - `dynamic_variable` (string, required) — The name of the dynamic variable to use
             - `source`: `llm`
@@ -1209,6 +1219,7 @@ Successful Response
       - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
         - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
       - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+      - `environment` (string, optional) — The environment to resolve environment-specific variable values against when running this test (URL, headers, auth connections). If not provided, defaults to 'production'. For simulation tests, simulation_environment takes precedence when set.
       - `failure_examples` (list of object, optional) — Non-empty list of example responses that should be considered failures
         - `response` (string, required)
         - `type` ("failure", required)
@@ -1426,6 +1437,7 @@ Successful Response
       - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
         - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
       - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+      - `environment` (string, optional) — The environment to resolve environment-specific variable values against when running this test (URL, headers, auth connections). If not provided, defaults to 'production'. For simulation tests, simulation_environment takes precedence when set.
       - `evaluation_model` (enum, optional) — LLM model to use for evaluating simulation results.
         - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
       - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
@@ -1665,6 +1677,7 @@ Successful Response
       - `conversation_initiation_source` (enum, optional, default: unknown) — Simulate the test as if the conversation originated from this channel.
         - Allowed values: `unknown`, `android_sdk`, `node_js_sdk`, `react_native_sdk`, `react_sdk`, `js_sdk`, `python_sdk`, `widget`, `sip_trunk`, `twilio`, `exotel`, `genesys`, `avaya`, `audiocodes`, `swift_sdk`, `whatsapp`, `twilio_sms`, `flutter_sdk`, `zendesk_integration`, `slack_integration`, `telegram_integration`, `intercom_integration`, `freshdesk_integration`, `salesforce_integration`, `template_preview`, `genesys_bot_connector`, `subagent_tool`
       - `dynamic_variables` (map from string to any, optional) — Dynamic variables to replace in the agent config during testing
+      - `environment` (string, optional) — The environment to resolve environment-specific variable values against when running this test (URL, headers, auth connections). If not provided, defaults to 'production'. For simulation tests, simulation_environment takes precedence when set.
       - `from_conversation_metadata` (object, optional) — Metadata of a conversation this test was created from (if applicable).
         - `conversation_id` (string, required)
         - `agent_id` (string, required)

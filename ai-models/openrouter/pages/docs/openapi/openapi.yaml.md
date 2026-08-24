@@ -15122,7 +15122,7 @@ components:
         config:
           apiKey: '************...AbCd'
           mlApp: 'my-llm-app'
-          url: 'https://api.us5.datadoghq.com'
+          url: 'https://api.datadoghq.com'
         created_at: '2025-08-24T10:30:00Z'
         enabled: true
         filter_rules: null
@@ -15170,8 +15170,8 @@ components:
               minLength: 1
               type: 'string'
             url:
-              default: 'https://api.us5.datadoghq.com'
-              description: 'Datadog API URL for your region (e.g., https://api.datadoghq.com, https://api.us3.datadoghq.com, https://api.datadoghq.eu)'
+              default: 'https://api.datadoghq.com'
+              description: 'Datadog API URL for your region (e.g., https://api.datadoghq.com, https://api.us3.datadoghq.com, https://api.us5.datadoghq.com, https://api.datadoghq.eu)'
               type: 'string'
           required:
             - 'apiKey'
@@ -20577,6 +20577,20 @@ components:
         prompt:
           description: 'Overridden price in USD per token for prompt (input) processing'
           type: 'string'
+        utc_days:
+          description: 'Condition: UTC weekdays the entry applies on, evaluated at the request instant. Scopes the utc_start/utc_end window (or, without a window, the whole UTC day) to the listed days. Absent means every day.'
+          items:
+            enum:
+              - 'monday'
+              - 'tuesday'
+              - 'wednesday'
+              - 'thursday'
+              - 'friday'
+              - 'saturday'
+              - 'sunday'
+            type: 'string'
+          minItems: 1
+          type: 'array'
         utc_end:
           description: 'Condition: exclusive end of a daily UTC time window as an HHMM clock number (e.g. 400 = 04:00)'
           format: 'double'
@@ -33161,6 +33175,7 @@ paths:
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                       disabled: false
                       expires_at: '2027-12-31T23:59:59Z'
+                      external_user: null
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'Production API Key'
@@ -33187,6 +33202,7 @@ paths:
                         creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                         disabled: false
                         expires_at: '2027-12-31T23:59:59Z'
+                        external_user: null
                         hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                         include_byok_in_limit: false
                         label: 'sk-or-v1-0e6...1c96'
@@ -33239,6 +33255,12 @@ paths:
                           description: 'ISO 8601 UTC timestamp when the API key expires, or null if no expiration'
                           example: '2027-12-31T23:59:59Z'
                           format: 'date-time'
+                          type:
+                            - 'string'
+                            - 'null'
+                        external_user:
+                          description: 'Partner''s end-user identifier used for attribution.'
+                          example: null
                           type:
                             - 'string'
                             - 'null'
@@ -33327,6 +33349,7 @@ paths:
                         - 'byok_usage_monthly'
                         - 'created_at'
                         - 'updated_at'
+                        - 'external_user'
                         - 'creator_user_id'
                         - 'workspace_id'
                       type: 'object'
@@ -33380,7 +33403,7 @@ paths:
         - 'API Keys'
       x-speakeasy-name-override: 'list'
     post:
-      description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. `external_user` and `external_api_key` are accepted only with a client secret, and `external_user` is required there; supplying either field with a management key is rejected with 403.'
       operationId: 'createKeys'
       requestBody:
         content:
@@ -33414,7 +33437,12 @@ paths:
                     - 'string'
                     - 'null'
                 external_api_key:
-                  description: 'Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret.'
+                  description: 'Optional partner-supplied API key. Stored as a SHA-256 hash and never returned. Accepted only when authenticating with a Connect client secret; supplying it with a management key is rejected with 403.'
+                  maxLength: 512
+                  minLength: 1
+                  type: 'string'
+                external_user:
+                  description: 'Partner''s end-user identifier for attribution, between 1 and 512 characters. Accepted only when authenticating with a Connect client secret, where it is required; supplying it with a management key is rejected with 403.'
                   maxLength: 512
                   minLength: 1
                   type: 'string'
@@ -33468,6 +33496,7 @@ paths:
                   creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                   disabled: false
                   expires_at: '2027-12-31T23:59:59Z'
+                  external_user: null
                   hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                   include_byok_in_limit: true
                   label: 'My New API Key'
@@ -33493,6 +33522,7 @@ paths:
                     creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                     disabled: false
                     expires_at: '2027-12-31T23:59:59Z'
+                    external_user: null
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: true
                     label: 'My New API Key'
@@ -33519,6 +33549,7 @@ paths:
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                       disabled: false
                       expires_at: '2027-12-31T23:59:59Z'
+                      external_user: null
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
@@ -33571,6 +33602,12 @@ paths:
                         description: 'ISO 8601 UTC timestamp when the API key expires, or null if no expiration'
                         example: '2027-12-31T23:59:59Z'
                         format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
+                      external_user:
+                        description: 'Partner''s end-user identifier used for attribution.'
+                        example: null
                         type:
                           - 'string'
                           - 'null'
@@ -33659,6 +33696,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
                     type: 'object'
@@ -33727,7 +33765,7 @@ paths:
       x-speakeasy-name-override: 'create'
   /keys/{hash}:
     delete:
-      description: 'Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Delete an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.'
       operationId: 'deleteKeys'
       parameters:
         - description: 'The hash identifier of the API key to delete'
@@ -33851,6 +33889,7 @@ paths:
                     creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                     disabled: false
                     expires_at: '2027-12-31T23:59:59Z'
+                    external_user: null
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: false
                     label: 'Production API Key'
@@ -33876,6 +33915,7 @@ paths:
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                       disabled: false
                       expires_at: '2027-12-31T23:59:59Z'
+                      external_user: null
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
@@ -33928,6 +33968,12 @@ paths:
                         description: 'ISO 8601 UTC timestamp when the API key expires, or null if no expiration'
                         example: '2027-12-31T23:59:59Z'
                         format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
+                      external_user:
+                        description: 'Partner''s end-user identifier used for attribution.'
+                        example: null
                         type:
                           - 'string'
                           - 'null'
@@ -34016,6 +34062,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
                     type: 'object'
@@ -34068,7 +34115,7 @@ paths:
         - 'API Keys'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys), or with a Connect client secret. A client secret reaches only the keys that same client created; any other key responds as if it does not exist.'
       operationId: 'updateKeys'
       parameters:
         - description: 'The hash identifier of the API key to update'
@@ -34166,6 +34213,7 @@ paths:
                     creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                     disabled: false
                     expires_at: null
+                    external_user: null
                     hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                     include_byok_in_limit: true
                     label: 'Updated API Key Name'
@@ -34191,6 +34239,7 @@ paths:
                       creator_user_id: 'user_2dHFtVWx2n56w6HkM0000000000'
                       disabled: false
                       expires_at: '2027-12-31T23:59:59Z'
+                      external_user: null
                       hash: 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
                       include_byok_in_limit: false
                       label: 'sk-or-v1-0e6...1c96'
@@ -34243,6 +34292,12 @@ paths:
                         description: 'ISO 8601 UTC timestamp when the API key expires, or null if no expiration'
                         example: '2027-12-31T23:59:59Z'
                         format: 'date-time'
+                        type:
+                          - 'string'
+                          - 'null'
+                      external_user:
+                        description: 'Partner''s end-user identifier used for attribution.'
+                        example: null
                         type:
                           - 'string'
                           - 'null'
@@ -34331,6 +34386,7 @@ paths:
                       - 'byok_usage_monthly'
                       - 'created_at'
                       - 'updated_at'
+                      - 'external_user'
                       - 'creator_user_id'
                       - 'workspace_id'
                     type: 'object'

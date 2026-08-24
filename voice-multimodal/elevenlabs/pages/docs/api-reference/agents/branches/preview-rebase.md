@@ -108,14 +108,14 @@ Successful Response
     - `text_only` (boolean, optional, default: false) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
     - `max_duration_seconds` (integer, optional, default: 600) — The maximum duration of a conversation in seconds
     - `client_events` (list of enum, optional) — The events that will be sent to the client
-      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
     - `file_input` (object, optional) — Configuration for file input (image/PDF uploads) during conversations.
       - `enabled` (boolean, optional, default: true) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
       - `max_files_in_memory` (integer, optional, default: 10) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
       - `max_files_per_conversation` (integer, optional, default: 10) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
     - `monitoring_enabled` (boolean, optional, default: false) — Enable real-time monitoring of conversations via WebSocket
     - `monitoring_events` (list of enum, optional) — The events that will be sent to monitoring connections.
-      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+      - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
     - `background_sound` (object, optional) — Configuration for background sound during conversations.
       - `source_type` (enum, optional, nullable) — The type of background sound source.
         - Allowed values: `preset`
@@ -131,6 +131,7 @@ Successful Response
       - `turn` (object, optional, nullable) — Configuration for turn detection
         - `soft_timeout_config` (object, optional, nullable) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
           - `message` (string, optional, nullable) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+          - `additional_soft_timeout_messages` (list of string, optional, nullable) — Extra static filler messages for subsequent soft timeouts in the same LLM generation. The first timeout uses `message`. If fewer messages are configured than `max_soft_timeouts_per_generation`, the last configured message is repeated; otherwise a built-in filler is used.
       - `tts` (object, optional, nullable) — Configuration for conversational text to speech
         - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
           - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
@@ -789,8 +790,8 @@ Successful Response
       - `hostname` (string, required) — The hostname of the allowed origin
     - `markdown_link_include_www` (boolean, optional, default: true) — Whether to automatically include www. variants of allowed hosts
     - `markdown_link_allow_http` (boolean, optional, default: true) — Whether to allow http:// in addition to https:// for allowed hosts
-    - `mic_muting_enabled` (boolean, optional, default: false) — Whether to enable mic muting
-    - `transcript_enabled` (boolean, optional, default: false) — Whether the widget should show the conversation transcript as it goes on
+    - `mic_muting_enabled` (boolean, optional, default: true) — Whether to enable mic muting
+    - `transcript_enabled` (boolean, optional, default: true) — Whether the widget should show the conversation transcript as it goes on
     - `text_input_enabled` (boolean, optional, default: true) — Whether the user should be able to send text messages
     - `conversation_mode_toggle_enabled` (boolean, optional, default: false) — Whether to enable the conversation mode toggle in the widget
     - `default_expanded` (boolean, optional, default: false) — Whether the widget should be expanded by default
@@ -946,7 +947,7 @@ Successful Response
     - `is_system_provided` (boolean, optional, default: false) — If true, the value will be populated by the system at runtime. Used by API Integration Webhook tools for templating. Mutually exclusive with description, dynamic_variable, constant_value, and is_omitted.
     - `dynamic_variable` (string, optional, default: ) — The name of the dynamic variable to use for this property's value. Mutually exclusive with description, is_system_provided, constant_value, and is_omitted.
     - `allowed_values_dynamic_variable` (string, optional, default: ) — When set, the LLM provides the value but the runtime rejects any value not present in the list held by this dynamic variable. Use to let the LLM pick from a server-verified set (e.g. the IDs the current user is allowed to access). Requires description; mutually exclusive with dynamic_variable, is_system_provided, constant_value, and is_omitted.
-    - `constant_value` (string or integer or double or boolean, optional, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+    - `constant_value` (string or integer or double or boolean, optional, nullable, default: ) — A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
     - `is_omitted` (boolean, optional, default: false) — If true, this parameter will be completely omitted from the request. Only valid for optional parameters. Mutually exclusive with description, dynamic_variable, is_system_provided, and constant_value.
     - `llm` (enum, optional, nullable) — LLM model to use for this analysis item. If not set, uses agent's analysis_llm default.
       - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `claude-sonnet-4-5`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
@@ -984,6 +985,7 @@ Successful Response
       - `turn` (object, optional) — Configures overrides for nested fields.
         - `soft_timeout_config` (object, optional) — Configures overrides for nested fields.
           - `message` (boolean, optional, default: false) — Whether to allow overriding the message field.
+          - `additional_soft_timeout_messages` (boolean, optional, default: false) — Whether to allow overriding the additional_soft_timeout_messages field.
       - `tts` (object, optional) — Configures overrides for nested fields.
         - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
         - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
@@ -1007,6 +1009,7 @@ Successful Response
     - `custom_llm_extra_body` (boolean, optional, default: false) — Whether to include custom LLM extra body
     - `enable_conversation_initiation_client_data_from_webhook` (boolean, optional, default: false) — Whether to enable conversation initiation client data from webhooks
     - `enable_starting_workflow_node_id_from_client` (boolean, optional, default: false) — Whether clients may pass starting_workflow_node_id in initiation client data; if false, sending it fails conversation start.
+    - `enable_procedure_ids_from_client` (boolean, optional, default: false) — Whether clients may pass procedure_ids in initiation client data to select which of the agent's procedures are available for the conversation; if false, sending it fails conversation start.
   - `workspace_overrides` (object, optional) — Workspace overrides for the agent
     - `conversation_initiation_client_data_webhook` (object, optional, nullable) — The webhook to send conversation initiation client data to
       - `url` (string, required) — The URL to send the webhook to
@@ -1108,11 +1111,18 @@ Successful Response
   - `alerting` (object, optional, nullable) — Agent-level alerting configuration overriding workspace settings.
     - `monitor_configs` (map from string to object, optional)
       - `threshold` (double, optional, nullable) — Failure rate threshold at which this monitor can notify.
+      - `relative_increase_threshold` (double, optional, nullable) — Relative increase over the trailing baseline at which this monitor can notify (0.2 = 20% above baseline, 0 = any failure).
+      - `min_failure_count` (integer, optional, nullable) — Minimum failures in the window before this monitor can fire.
+      - `min_history_bucket_count` (integer, optional, nullable) — Minimum trailing buckets with traffic before spike detection can fire.
+      - `min_sample_count` (integer, optional, nullable) — Minimum samples in the window before this monitor can fire.
+      - `suspect_trigger_threshold` (integer, optional, nullable) — How many suspect buckets within the lookback window are required to promote a suspect to an alert.
       - `auto_resolve_after_inactive_minutes` (integer, optional, nullable) — How many minutes an alert can stay inactive before it is auto-resolved.
     - `auto_resolve_after_inactive_minutes` (integer, optional, nullable)
     - `notifiers` (list of object, optional)
-      - `webhook_id` (string, required)
-      - `type` ("webhook", optional, default: webhook)
+      - `type`: `integration` (AlertingIntegrationNotifierResponse)
+        - `connection_id` (string, required)
+      - `type`: `webhook` (AlertingWebhookNotifierResponse)
+        - `webhook_id` (string, required)
   - `safety` (object, optional)
     - `is_blocked_ivc` (boolean, optional, default: false)
     - `is_blocked_non_ivc` (boolean, optional, default: false)
@@ -1414,14 +1424,14 @@ Successful Response
           - `text_only` (boolean, optional, nullable) — If enabled audio will not be processed and only text will be used, use to avoid audio pricing.
           - `max_duration_seconds` (integer, optional, nullable) — The maximum duration of a conversation in seconds
           - `client_events` (list of enum, optional, nullable) — The events that will be sent to the client
-            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
           - `file_input` (object, optional, nullable) — Configuration for file input (image/PDF uploads) during conversations.
             - `enabled` (boolean, optional, nullable) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
             - `max_files_in_memory` (integer, optional, nullable) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
             - `max_files_per_conversation` (integer, optional, nullable) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
           - `monitoring_enabled` (boolean, optional, nullable) — Enable real-time monitoring of conversations via WebSocket
           - `monitoring_events` (list of enum, optional, nullable) — The events that will be sent to monitoring connections.
-            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `internal_turn_probability`, `internal_tentative_agent_response`
+            - Allowed values: `conversation_initiation_metadata`, `asr_initiation_metadata`, `ping`, `audio`, `interruption`, `user_transcript`, `tentative_user_transcript`, `agent_response`, `agent_response_correction`, `client_tool_call`, `mcp_tool_call`, `mcp_connection_status`, `agent_tool_request`, `agent_tool_response`, `agent_tool_response_full_payload`, `agent_response_metadata`, `vad_score`, `agent_chat_response_part`, `client_error`, `guardrail_triggered`, `dtmf_request`, `agent_response_complete`, `context_usage`, `internal_turn_probability`, `internal_tentative_agent_response`
           - `background_sound` (object, optional, nullable) — Configuration for background sound during conversations.
             - `source_type` (enum, optional, nullable) — The type of background sound source.
             - `source_id` (enum, optional, nullable) — Identifier for the sound source.
@@ -1539,7 +1549,7 @@ Successful Response
         - `tool_id` (string, required)
         - `schema_overrides` (map from string to object, optional, nullable) — Per-node parameter overrides applied on top of the tool's own configuration. Keys are dotted parameter paths (webhook tools prefix keys with path_params./query_params./request_body.). These take precedence over any overrides already defined on the tool itself.
           - `source`: `constant` (ConstantSchemaOverride)
-            - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+            - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required, nullable) — The constant value to use
           - `source`: `dynamic_variable` (DynamicVariableSchemaOverride)
             - `dynamic_variable` (string, required) — The name of the dynamic variable to use
           - `source`: `llm` (LLMSchemaOverride)
@@ -1818,7 +1828,9 @@ Successful Response
           "x": 0,
           "y": 0
         },
-        "preserve_client_tts_overrides": false
+        "preserve_client_tts_overrides": false,
+        "drop_history": false,
+        "isolate_history": false
       },
       "tool_node_a": {
         "type": "tool",

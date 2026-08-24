@@ -67,7 +67,6 @@ Successful Response
   - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
 - `is_new_user` (boolean, required, deprecated) — Whether the user is new. This field is deprecated and will be removed in the future. Use 'created_at' instead.
 - `can_use_delayed_payment_methods` (boolean, required, deprecated) — This field is deprecated and will be removed in a future major version. Instead use subscription.trust_on_invoice_creation.
-- `xi_api_key` (string, optional, nullable) — The API key of the user.
 - `show_compliance_terms` (boolean, optional, default: false) — Whether to show compliance terms (ToS, Privacy Policy, biometric consent) during onboarding. Set for users signing up from the marketing site.
 - `first_name` (string, optional, nullable) — First name of the user.
 - `is_api_key_hashed` (boolean, optional, default: false) — Whether the user's API key is hashed.
@@ -116,7 +115,6 @@ Successful Response
   "seat_type": "workspace_member",
   "is_new_user": false,
   "can_use_delayed_payment_methods": false,
-  "xi_api_key": "8so27l7327189x0h939ekx293380l920",
   "show_compliance_terms": false,
   "first_name": "John",
   "is_api_key_hashed": false

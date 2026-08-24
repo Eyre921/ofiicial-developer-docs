@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/nexus/quickstart
 path: guides/nexus/quickstart
 ---
 
-Deploy Pinecone Nexus in your own cloud with BYOC, build a context from your documents, and query it for grounded, cited answers.
+Deploy Pinecone Nexus with BYOC, curate a context from your own documents, and run KnowQL queries that return grounded, cited multi-document answers.
 
 Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with bring-your-own-cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
 

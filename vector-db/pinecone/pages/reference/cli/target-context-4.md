@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/cli/target-context
 path: reference/cli/target-context
 ---
 
-Pinecone CLI: The CLI's **target context** determines which organization and project your commands operate on. You must authenticate before setting target.
+Set the Pinecone CLI target context with pc target to control which organization and project your commands run against, including in CI/CD and JSON mode.
 
 The CLI's **target context** determines which organization and project your commands operate on. You must [authenticate](/reference/cli/authentication) before setting target context.
 

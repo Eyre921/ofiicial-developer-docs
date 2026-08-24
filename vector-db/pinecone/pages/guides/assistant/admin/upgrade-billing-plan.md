@@ -6,11 +6,15 @@ path: guides/assistant/admin/upgrade-billing-plan
 
 Learn how Pinecone Assistant admins upgrade to a paid plan to unlock higher limits, more files, evaluations, and advanced access controls.
 
-This page describes how to upgrade from the free Starter plan to the [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), paying either with a credit/debit card or through a supported cloud marketplace.
+This page describes how to upgrade to a paid [Builder, Standard, or Enterprise plan](https://www.pinecone.io/pricing/), either from the free Starter plan or from Builder to Standard or Enterprise. You can pay with a credit/debit card, or through a supported cloud marketplace if your organization is on the Starter plan.
 
 <Note>
   To change your plan, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles).
 </Note>
+
+<Tip>
+  To evaluate the Standard plan before you start paying, see the [Standard plan trial](/guides/organizations/manage-billing/standard-trial). You get 21 days and \$300 in credits. Each organization can activate one trial, and [some organizations aren't eligible](/guides/organizations/manage-billing/standard-trial#limits).
+</Tip>
 
 <Tip>
   To commit to annual spending, [contact Pinecone](https://www.pinecone.io/contact).

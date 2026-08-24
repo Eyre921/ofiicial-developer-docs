@@ -36,6 +36,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -48,7 +50,38 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 #### Make the API request
+
+#### SDK
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -106,7 +139,7 @@ const transcription = await elevenlabs.speechToText.convert({
 console.log(transcription);
 ```
 
-#### Execute the code
+Then run it:
 
 ```python
 python example.py
@@ -117,6 +150,23 @@ npx tsx example.mts
 ```
 
 You should see the transcription of the audio file printed to the console.
+
+#### CLI
+
+Download the sample audio, then transcribe it:
+
+```bash
+curl -O https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3
+
+elevenlabs speech-to-text convert \
+  --file nicole.mp3 \
+  --model-id scribe_v2 \
+  --tag-audio-events true \
+  --language-code eng \
+  --diarize true
+```
+
+The transcription is printed to your terminal.
 
 ## Next steps
 

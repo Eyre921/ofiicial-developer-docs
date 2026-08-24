@@ -32,6 +32,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -44,7 +46,38 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 #### Make the API request
+
+#### SDK
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -92,7 +125,7 @@ const track = await elevenlabs.music.compose({
 await pipeline(Readable.from(track), createWriteStream("path/to/music.mp3"));
 ```
 
-#### Execute the code
+Then run it:
 
 ```python
 python example.py
@@ -103,6 +136,20 @@ npx tsx example.mts
 ```
 
 You should hear the generated music playing.
+
+#### CLI
+
+Generate a track and save it to a file:
+
+```bash
+elevenlabs music compose \
+  --prompt "Create an intense, fast-paced electronic track for a high-adrenaline video game scene. Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with rising tension, quick transitions, and dynamic energy bursts." \
+  --music-length-ms 10000 \
+  --model-id music_v2 \
+  --output music.mp3
+```
+
+Open `music.mp3` to hear the result.
 
 ## Composition plans
 

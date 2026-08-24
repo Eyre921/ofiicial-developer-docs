@@ -109,7 +109,7 @@ Successful Response
       - `preserve_native_type` (boolean, optional, default: false) — If true, non-scalar values (lists, objects) extracted from the tool response are stored as their native type instead of being stringified to JSON. Enable this to use extracted arrays directly as list dynamic variables.
     - `input_overrides` (map from string to object, optional, nullable) — Mapping of json path to input override configuration
       - `source`: `constant` (ConstantSchemaOverride)
-        - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required) — The constant value to use
+        - `constant_value` (string or integer or double or boolean or list of any or map from string to any, required, nullable) — The constant value to use
       - `source`: `dynamic_variable` (DynamicVariableSchemaOverride)
         - `dynamic_variable` (string, required) — The name of the dynamic variable to use
       - `source`: `llm` (LLMSchemaOverride)

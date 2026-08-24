@@ -14,36 +14,26 @@ Downgrade your Pinecone subscription from a paid tier back to the free Starter p
   If you are on the Standard plan with credit/debit card billing and want to reduce spend without returning to the free Starter plan, consider [switching to the Builder plan](#switch-from-standard-to-builder) for a flat \$20/month.
 </Tip>
 
-## Requirements
+## Before you downgrade
 
-Before you can downgrade, your organization must be under the [Starter plan quotas](/reference/api/database-limits):
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
 
-* No more than 5 indexes, all serverless and in the `us-east-1` region of AWS
-  * If you have serverless indexes in a region other than `us-east-1`, [create a new serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data) into the new index, and [delete the old index](/guides/manage-data/manage-indexes#delete-an-index).
-  * If you have more than 5 serverless indexes, [delete indexes](/guides/manage-data/manage-indexes#delete-an-index) until you have 5 or fewer.
-  * If you have pod-based indexes, [delete them](/guides/manage-data/manage-indexes#delete-an-index).
-* No more than 1 project
-  * If you have more than 1 project, [delete all but 1 project](/guides/projects/manage-projects#delete-a-project).
-  * Before you can delete a project, you must [delete all indexes](/guides/manage-data/manage-indexes#delete-an-index) and [delete all collections](/guides/manage-data/back-up-an-index#delete-a-collection) in the project.
-* No more than 2 GB of data across all of your serverless indexes
-  * If you are storing more than 2 GB of data, [delete records](/guides/manage-data/delete-data) until you're storing less than 2 GB.
-* No more than 100 namespaces per serverless index
-  * If any serverless index has more than 100 namespaces, [delete namespaces](/guides/manage-data/delete-data#delete-all-records-from-a-namespace) until it has 100 or fewer remaining.
-* No more than 3 [assistants](/guides/assistant/overview)
-  * If you have more than 3 assistants, [delete assistants](/guides/assistant/manage-assistants#delete-an-assistant) until you have 3 or fewer.
-* Within the Starter plan's monthly [ingestion](/guides/assistant/pricing-and-limits#ingestion) and token limits
-  * Your usage must fit within the Starter plan limits for [ingestion units](/guides/assistant/pricing-and-limits#ingestion), chat tokens, context tokens, and storage. Reduce files or usage until you are within those limits.
-* No more than 1 GB of assistant storage
-  * If you have more than 1 GB of assistant storage, [delete files](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) until you're storing less than 1 GB.
-* No more than 2 users
-* No collections or backups (these are automatically deleted as part of the downgrade process)
+The downgrade doesn't reduce your data or change your configuration, so do this first:
+
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index **before** you start the downgrade: the migration saves your index as a collection, and the downgrade deletes all collections.
+* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
+* **Disconnect your organization's [SSO connection](/guides/organizations/understanding-organizations#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/guides/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Get under the Starter storage limits.** Do this last, after the migrations above, which can briefly leave a second copy of an index: no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 <Note>
-  You do not need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion, tokens, and so on) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
+  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder—such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO—must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
 
 ## Downgrade to the Starter plan
@@ -51,7 +41,7 @@ Before you can downgrade, your organization must be under the [Starter plan quot
 The downgrade process is different depending on how you are paying for Pinecone.
 
 <Warning>
-  It is important to start the downgrade process in the Pinecone console, as described below. When you do so, Pinecone checks that you are under the [Starter plan quotas](#requirements) before allowing you to downgrade. In contrast, if you start the downgrade process in one of the cloud marketplaces, Pinecone cannot check that you are under these quotas before allowing you to downgrade. If you are over the quotas, Pinecone will deactivate your account, and you will need to [contact support](https://www.pinecone.io/contact/support/).
+  Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 </Warning>
 
 <Tabs>

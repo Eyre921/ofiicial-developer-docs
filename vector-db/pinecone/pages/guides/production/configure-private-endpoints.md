@@ -8,8 +8,6 @@ Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link 
 
 This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
 
-<a />
-
 ## Use Private Endpoints with Pinecone
 
 ### Before you begin
@@ -51,8 +49,6 @@ The following steps assume you have:
 <Note>
   Private Endpoints are configured at the project-level and you can add up to 10 endpoints per project. If you have multiple projects in your organization, Private Endpoints need to be set up separately for each.
 </Note>
-
-<a />
 
 ### 1. Create a private endpoint in your cloud provider
 

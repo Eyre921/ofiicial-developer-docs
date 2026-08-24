@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/login-code-issues
 path: troubleshooting/login-code-issues
 ---
 
-Troubleshoot “Login code issues” in Pinecone: If the email token you received from Pinecone is not accepted when logging in there may be a few different.
+Fix a rejected Pinecone login code, which can expire after 10 hours or be invalidated by a shared inbox, a newer code request, or an offset system clock.
 
 If the email token you received from Pinecone is not accepted when logging in there may be a few different reasons why:
 

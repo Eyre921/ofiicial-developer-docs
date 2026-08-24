@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/debug-model-vs-pinecone-recall-
 path: troubleshooting/debug-model-vs-pinecone-recall-issues
 ---
 
-Troubleshoot “Debug model vs. Pinecone recall issues” in Pinecone: Before starting, establish an evaluation framework for your model and Pinecone recall.
+Distinguish an embedding model problem from a Pinecone recall problem using a six-step evaluation that compares brute-force search against your index.
 
 ## **Step 1: Establish the evaluation framework**
 

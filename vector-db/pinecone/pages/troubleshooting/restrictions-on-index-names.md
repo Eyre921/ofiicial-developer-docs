@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/restrictions-on-index-names
 path: troubleshooting/restrictions-on-index-names
 ---
 
-Troubleshoot “Restrictions on index names” in Pinecone: There are two main restrictions on index names in Pinecone: character restrictions and a maximum.
+Learn the rules for Pinecone index names: lowercase alphanumeric Latin characters and dashes only, no dots, and 52 characters total with your project ID.
 
 There are two main restrictions on index names in Pinecone: **character restrictions** and a **maximum length**.
 

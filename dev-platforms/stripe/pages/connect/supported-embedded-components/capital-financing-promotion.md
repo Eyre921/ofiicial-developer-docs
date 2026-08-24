@@ -101,6 +101,8 @@ container.appendChild(capitalFinancingPromotion);
 | --- | --- | --- | --- |
 | `setOnApplicationSubmitted` | `() => void` | The connected account has successfully submitted their application for financing. |  |
 | `setOnApplicationStepChange` | `({step: string}) => void` | The connected account has navigated through the application. |  |
+| `setOnAdvanceToCapitalFinancingApplication` | `() => void` | The connected account clicked **View offer** to advance to the financing application. |  |
+| `setDisableNestedCapitalFinancingApplication` | `boolean` | If true, the component doesn’t open the built-in application dialog when the connected account clicks **View offer**. | false |
 | `setLayout` | `full | banner` | Controls the layout of the component. `banner` mode greatly reduces the vertical size of the component, which is useful when stacking the component with other content on the page. | `full` |
 | `setOnEligibleFinancingOfferLoaded` | `({productType: standard | refill | none}) => void` | The connected account’s financing offer has been loaded. The `productType` field corresponds to the `product_type` field on the [Financing Offer](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-product_type) object. |  |
 | `setPrivacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` |
@@ -113,6 +115,8 @@ container.appendChild(capitalFinancingPromotion);
 | --- | --- | --- | --- | --- |
 | `onApplicationSubmitted` | `() => void` | The connected account has successfully submitted their application for financing. |  | optional |
 | `onApplicationStepChange` | `({step: string}) => void` | The connected account navigated through the application. See [details](https://docs.stripe.com/connect/supported-embedded-components/capital-financing-promotion.md#display-states). |  | optional |
+| `onAdvanceToCapitalFinancingApplication` | `() => void` | The connected account clicked **View offer** to advance to the financing application. |  | optional |
+| `disableNestedCapitalFinancingApplication` | `boolean` | If true, the component doesn’t open the built-in application dialog when the connected account clicks **View offer**. | false | optional |
 | `layout` | `full | banner` | Controls the layout of the component. `banner` mode greatly reduces the vertical size of the component, which is useful when stacking the component with other content on the page. | `"full"` | optional |
 | `onEligibleFinancingOfferLoaded` | `({productType: "standard" | "refill" | "none"}) => void` | The connected account’s financing offer has been loaded. The `productType` field corresponds to the `product_type` field on the [Financing Offer](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-product_type) object. |  | optional |
 | `privacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` | optional |
@@ -132,6 +136,51 @@ Add the promotion component on your platform’s home page, or a dedicated **Fin
 - **Offer in review**: After an eligible connected account submits their financing application, the promotion component renders an empty screen while the application is under review. To display an application status tracker, use the [Capital financing component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md).
 - **Submitted offer**: After a connected account submits their financing application, the component renders an empty screen. Listen to the `onApplicationSubmitted` event to display a confirmation screen instead.
 - **Active financing in progress**: If no refill offer is available for the connected account, the component doesn’t render and returns `null`. If a refill offer is available, the component behaves the same as the active offer state. It shows the full offer details and a **Start application** button.
+
+### Open the application in a custom dialog 
+
+To open the application in your dialog, enable both `capital_financing_promotion` and `capital_financing_application` when you [create the Account Session](https://docs.stripe.com/api/account_sessions/create.md). Set `disableNestedCapitalFinancingApplication` to true, then use `onAdvanceToCapitalFinancingApplication` to open a dialog containing `ConnectCapitalFinancingApplication`.
+
+```jsx
+import {useState} from 'react';
+import {
+  ConnectCapitalFinancingApplication,
+  ConnectCapitalFinancingPromotion,
+  ConnectComponentsProvider,
+} from '@stripe/react-connect-js';
+import {Dialog} from './components/Dialog';
+
+export default function CapitalPromotion({
+  onApplicationSubmitted,
+  onApplicationStepChange,
+}) {
+  const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
+
+  return (
+    <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+      <ConnectCapitalFinancingPromotion
+        disableNestedCapitalFinancingApplication={true}
+        onAdvanceToCapitalFinancingApplication={() =>
+          setApplicationDialogOpen(true)
+        }
+      />
+
+      {applicationDialogOpen && (
+        <Dialog onClose={() => setApplicationDialogOpen(false)}>
+          <ConnectCapitalFinancingApplication
+            onApplicationSubmitted={onApplicationSubmitted}
+            onApplicationStepChange={onApplicationStepChange}
+          />
+        </Dialog>
+      )}
+    </ConnectComponentsProvider>
+  );
+}
+```
+
+> #### Callbacks in a custom dialog
+> 
+> Disabling the nested application prevents `onApplicationSubmitted` and `onApplicationStepChange` from firing on the promotion component. Set these callbacks on the separately rendered application component, as shown in the example.
 
 ### The onApplicationStepChange type
 

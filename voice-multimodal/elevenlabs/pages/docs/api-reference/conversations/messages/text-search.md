@@ -30,8 +30,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/text-
 - `agent_id` (string, optional, nullable) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
 - `visited_agent_ids` (list of string, optional, nullable) — Filter conversations where any of these agents participated. Can not exceed 50 values.
 - `visited_agent_branch_ids` (list of string, optional, nullable) — Filter conversations where any of these agent branches participated. Can not exceed 50 values.
+- `triggered_procedure_ids` (list of string, optional, nullable) — Filter conversations where any of these procedures were triggered. Can not exceed 50 values.
 - `call_successful` (enum, optional, nullable) — The result of the success evaluation
-  - Allowed values: `success`, `failure`, `unknown`
+  - Allowed values: `success`, `failure`, `unknown`, `error`
 - `call_start_before_unix` (integer, optional, nullable) — Unix timestamp (in seconds) to filter conversations up to this start date.
 - `call_start_after_unix` (integer, optional, nullable) — Unix timestamp (in seconds) to filter conversations after to this start date.
 - `call_duration_min_secs` (integer, optional, nullable) — Minimum call duration in seconds.
@@ -45,6 +46,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/messages/text-
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.
 - `tool_names_successful` (list of string, optional, nullable) — Filter conversations by tool names that had successful calls.
 - `tool_names_errored` (list of string, optional, nullable) — Filter conversations by tool names that had errored calls.
+- `include_invalid_tool_calls` (boolean, optional, default: false) — Also match tool calls that never ran.
 - `main_languages` (list of string, optional, nullable) — Filter conversations by detected main language (language code).
 - `exclude_statuses` (list of enum, optional, nullable) — Exclude conversations with the given statuses. Useful for hiding in-progress / processing conversations from list views.
   - Allowed values: `initiated`, `in-progress`, `processing`, `done`, `failed`

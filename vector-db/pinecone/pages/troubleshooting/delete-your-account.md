@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/delete-your-account
 path: troubleshooting/delete-your-account
 ---
 
-Troubleshoot “Delete your account” in Pinecone: To delete your Pinecone account, you need to remove your user from all organizations and delete any.
+Delete your Pinecone account by removing your user from every organization and deleting any organization where you are the sole member. This is permanent.
 
 To delete your Pinecone account, you need to remove your user from all organizations and delete any organizations in which you are the sole member.
 

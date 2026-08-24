@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/reference/api/errors
 path: reference/api/errors
 ---
 
-Pinecone REST API: Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the range.
+Look up the HTTP status codes the Pinecone API returns, what each 2xx success and 4xx or 5xx error means, and where to handle them in production.
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
@@ -48,7 +48,7 @@ The request failed because the resource already exists.
 
 ## 412 - FAILED PRECONDITIONS
 
-The request failed due to preconditions not being met. |
+The request failed due to preconditions not being met.
 
 ## 422 - UNPROCESSABLE ENTITY
 

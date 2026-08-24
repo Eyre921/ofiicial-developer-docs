@@ -30,6 +30,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/get-webrtc-tok
 - `participant_name` (string, optional, nullable) — Optional custom participant name. If not provided, user ID will be used
 - `branch_id` (string, optional, nullable) — The ID of the branch to use
 - `environment` (string, optional, nullable) — The environment to use for resolving environment variables (e.g. 'production', 'staging'). Defaults to 'production'.
+- `debug_events_request` (boolean, optional, default: false) — Whether to enable debug events. Only available for users with editor access to the agent.
 
 ## Response
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/error-cannot-import-name-pineco
 path: troubleshooting/error-cannot-import-name-pinecone
 ---
 
-Troubleshoot “Error: Cannot import name 'Pinecone' from 'pinecone'” in Pinecone: When using an older version of the Python SDK (earlier than 3.0.0), trying.
+Fix the Python ImportError 'cannot import name Pinecone from pinecone' by upgrading the Pinecone Python SDK to 3.0.0 or later, with or without gRPC.
 
 ## Problem
 

@@ -63,7 +63,7 @@ Successful Response
       - Allowed values: `prompt`, `auto`
     - `url` (string, required)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -95,7 +95,7 @@ Successful Response
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -188,7 +188,7 @@ Successful Response
       - `started_at` (integer, optional)
       - `completed_at` (integer, optional)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -226,30 +226,30 @@ Successful Response
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation...</p>",
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "extracted_inner_html": "extracted_inner_html",
+  "id": "id",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 4523
+    "created_at_unix_secs": 1,
+    "last_updated_at_unix_secs": 1,
+    "size_bytes": 1
   },
-  "name": "ElevenLabs API Overview",
+  "name": "name",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.elevenlabs.io/api-overview",
+  "url": "url",
   "auto_sync_info": {
-    "minimum_frequency_days": 7,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "next_refresh_by": 1688806400
+    "minimum_frequency_days": 1,
+    "auto_remove": true,
+    "consec_failures": 1,
+    "next_refresh_by": 1
   },
   "content_format": "html",
-  "folder_parent_id": "root_folder_01",
+  "folder_parent_id": "folder_parent_id",
   "folder_path": [
     {
-      "id": "root_folder_01",
-      "name": "Root"
+      "id": "id",
+      "name": "name"
     }
   ]
 }

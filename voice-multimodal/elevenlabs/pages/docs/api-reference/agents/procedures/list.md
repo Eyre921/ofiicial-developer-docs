@@ -29,6 +29,10 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/procedures/list
 - `agent_id` (string, required) — Agent ID to get the procedure draft from
 - `branch_id` (string, required) — Branch ID to get the procedure draft from
 
+### Query parameters
+
+- `agent_version_id` (string, optional, nullable) — The agent version ID to retrieve the procedure for.
+
 ## Response
 
 ### 200
@@ -70,7 +74,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.list("agent_id", "branch_id");
+    await client.conversationalAi.agents.procedures.list("agent_id", "branch_id", {});
 }
 main();
 

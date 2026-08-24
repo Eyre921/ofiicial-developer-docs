@@ -504,6 +504,17 @@ components:
         - entities
       description: Payload for detected entities on a committed transcript.
       title: CommittedTranscriptEntities
+    ScribeWarning:
+      type: object
+      properties:
+        message_type:
+          type: string
+          default: warning
+        warning:
+          type: string
+      required:
+        - warning
+      title: ScribeWarning
     ScribeError:
       type: object
       properties:
@@ -734,6 +745,7 @@ components:
         - $ref: '#/components/schemas/CommittedTranscript'
         - $ref: '#/components/schemas/CommittedTranscriptWithTimestamps'
         - $ref: '#/components/schemas/CommittedTranscriptEntities'
+        - $ref: '#/components/schemas/ScribeWarning'
         - $ref: '#/components/schemas/ScribeError'
         - $ref: '#/components/schemas/ScribeAuthError'
         - $ref: '#/components/schemas/ScribeQuotaExceededError'

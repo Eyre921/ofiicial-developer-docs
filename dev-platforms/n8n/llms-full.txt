@@ -1364,12 +1364,13 @@ SQLite is fine for trying things out, but for a production instance that must ha
 
    services:
      postgres:
-       image: postgres:16
+       image: postgres:18
        restart: always
        environment:
          POSTGRES_USER: ${POSTGRES_USER}
          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
          POSTGRES_DB: ${POSTGRES_DB}
+         PGDATA: /var/lib/postgresql/data
        volumes:
          - db-storage:/var/lib/postgresql/data
        healthcheck:
@@ -1378,6 +1379,10 @@ SQLite is fine for trying things out, but for a production instance that must ha
          timeout: 5s
          retries: 10
    ```
+
+   <div data-gb-custom-block data-tag="hint" data-style="warning" class="hint hint-warning"><p>Postgres 18 changed where it stores data by default. Setting `PGDATA` keeps it in the same folder as earlier versions, so the volume mount stays the same. Don't remove that line: without it, Postgres 18 writes somewhere the volume doesn't cover and your database starts empty.</p></div>
+
+   <div data-gb-custom-block data-tag="hint" data-style="warning" class="hint hint-warning"><p>Already running an older Postgres? Moving straight to 18 is a major version upgrade, and Postgres can't open a data directory written by an older major. Bumping the image tag on an existing setup fails with `database files are incompatible with server`. Your data stays intact. Back up first with `pg_dumpall`, then follow the official [PostgreSQL upgrade guide](https://www.postgresql.org/docs/18/upgrading.html).</p></div>
 3. Point n8n at it by adding these to the n8n service's environment block, and making it wait on Postgres too:
 
    ```yaml
@@ -1621,7 +1626,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1856,7 +1861,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2220,7 +2225,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2310,7 +2315,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2666,7 +2671,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2771,6 +2776,14 @@ Create an `n8n-secret.yaml` file. Refer to [Environment variables](/deploy/host-
 
 The two deployment manifests (`n8n-deployment.yaml` and `postgres-deployment.yaml`) define the n8n and Postgres applications to Kubernetes.
 
+{% hint style="warning" %}
+The manifests run PostgreSQL 18. Setting up for the first time needs nothing extra.
+
+If you already have a database running an older PostgreSQL major version, don't apply this to it. PostgreSQL 18 can't open a data directory written by an older major version, and moving the folder doesn't help. The pod stays in `CrashLoopBackOff` with `database files are incompatible with server`. PostgreSQL leaves your data alone, and you can pin the image back to the version you were on.
+
+To move an existing database across, follow the official [PostgreSQL upgrade guide](https://www.postgresql.org/docs/18/upgrading.html) first.
+{% endhint %}
+
 The manifests define the following:
 
 * Send the environment variables defined to each application pod
@@ -2859,7 +2872,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -2972,6 +2985,14 @@ Create an `n8n-secret.yaml` file. Refer to [Environment variables](/deploy/host-
 
 The two deployment manifests (`n8n-deployment.yaml` and `postgres-deployment.yaml`) define the n8n and Postgres applications to Kubernetes.
 
+{% hint style="warning" %}
+The manifests run PostgreSQL 18. Setting up for the first time needs nothing extra.
+
+If you already have a database running an older PostgreSQL major version, don't apply this to it. PostgreSQL 18 can't open a data directory written by an older major version, and moving the folder doesn't help. The pod stays in `CrashLoopBackOff` with `database files are incompatible with server`. PostgreSQL leaves your data alone, and you can pin the image back to the version you were on.
+
+To move an existing database across, follow the official [PostgreSQL upgrade guide](https://www.postgresql.org/docs/18/upgrading.html) first.
+{% endhint %}
+
 The manifests define the following:
 
 * Send the environment variables defined to each application pod
@@ -3053,7 +3074,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3322,7 +3343,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3434,6 +3455,14 @@ Create an `n8n-secret.yaml` file. Refer to [Environment variables](/deploy/host-
 ## Deployments <a href="#deployments" id="deployments"></a>
 
 The two deployment manifests (`n8n-deployment.yaml` and `postgres-deployment.yaml`) define the n8n and Postgres applications to Kubernetes.
+
+{% hint style="warning" %}
+The manifests run PostgreSQL 18. Setting up for the first time needs nothing extra.
+
+If you already have a database running an older PostgreSQL major version, don't apply this to it. PostgreSQL 18 can't open a data directory written by an older major version, and moving the folder doesn't help. The pod stays in `CrashLoopBackOff` with `database files are incompatible with server`. PostgreSQL leaves your data alone, and you can pin the image back to the version you were on.
+
+To move an existing database across, follow the official [PostgreSQL upgrade guide](https://www.postgresql.org/docs/18/upgrading.html) first.
+{% endhint %}
 
 The manifests define the following:
 
@@ -4582,7 +4611,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.6 Current `beta`: 2.36.4
+Current `stable`: 2.35.7 Current `beta`: 2.36.6
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7433,7 +7462,9 @@ n8n supports:
 
 Run the latest minor release within your major version.
 
-n8n doesn't officially support PostgreSQL-compatible derivatives, such as Amazon Aurora, AlloyDB, CockroachDB, or YugabyteDB.
+Amazon Aurora PostgreSQL is **experimental**. n8n's hosting templates offer it for high-availability setups, where Aurora recovers faster when the primary database goes down. n8n doesn't test or certify Aurora, and n8n's PostgreSQL version support doesn't extend to it. Use upstream PostgreSQL unless you specifically need what Aurora offers.
+
+n8n doesn't support other PostgreSQL-compatible derivatives, such as AlloyDB, CockroachDB, or YugabyteDB.
 
 The PostgreSQL project retires its oldest maintained major version and releases a new one every November, so n8n's supported version range shifts each year. Check this page for the current supported versions, rather than relying on a specific version number you've seen elsewhere.
 

@@ -71,8 +71,11 @@
 - [ElevenLabs](https://docs.vapi.ai/customization/custom-voices/elevenlabs.md): Set up a custom ElevenLabs voice in Vapi
 - [PlayHT](https://docs.vapi.ai/customization/custom-voices/playht.md): Set up a custom PlayHT voice in Vapi
 - [Cartesia](https://docs.vapi.ai/customization/custom-voices/cartesia.md): Use a custom Cartesia voice in Vapi by connecting your Cartesia API key and selecting your voice.
+- [Gandr](https://docs.vapi.ai/customization/custom-voices/gandr.md): Wire Gandr, a text to speech API for voice agents, into Vapi with the custom-voice provider and Custom Credentials.
 - [Custom transcriber](https://docs.vapi.ai/customization/custom-transcriber.md): Integrate your own transcription service with Vapi
+- [Gradium](https://docs.vapi.ai/customization/custom-transcriber/gradium.md): Stream Vapi call audio to Gradium's real-time speech-to-text over a WebSocket bridge.
 - [Custom TTS integration](https://docs.vapi.ai/customization/custom-voices/custom-tts.md): Learn to integrate your own text-to-speech system with VAPI
+- [Gradium](https://docs.vapi.ai/customization/custom-tts/gradium.md): Connect the Gradium text-to-speech API to Vapi through a custom voice endpoint.
 - [Fine-tuned OpenAI models](https://docs.vapi.ai/customization/custom-llm/fine-tuned-openai-models.md): Use Another LLM or Your Own Server
 - [Connecting Your Custom LLM to Vapi: A Comprehensive Guide](https://docs.vapi.ai/customization/custom-llm/using-your-server.md)
 - [Custom LLM Tool Calling Integration](https://docs.vapi.ai/customization/tool-calling-integration.md)

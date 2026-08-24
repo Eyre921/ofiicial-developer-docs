@@ -77,8 +77,6 @@ There's no universal formula for choosing between on-demand and dedicated read n
     Similar requirements apply to other real-time use cases like semantic search at scale, personalization engines, and mission-critical services with strict performance SLOs.
   </Accordion>
 
-  <a />
-
   <Accordion title="Single namespace workload (multi-namespace coming soon)">
     Dedicated read nodes indexes support only a single namespace. If your application requires multiple namespaces, on-demand is a better fit.
 

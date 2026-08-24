@@ -31,12 +31,13 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 ### Query parameters
 
 - `page_size` (integer, optional) — Number of top-level topic groups to return.
-- `sort_by` (enum, optional) — Topic table column to sort by.
-  - Allowed values: `conversations`, `sentiment`, `success_rate`
+- `sort_by` (enum, optional) — Column to rank topics by. Use conversations for volume, sentiment with sort_direction=asc for the most negative topics, and frustration with sort_direction=desc for the most frustrated ones. Topics with no score are always ranked last.
+  - Allowed values: `conversations`, `sentiment`, `success_rate`, `frustration`
 - `sort_direction` (enum, optional) — Direction to sort topics.
   - Allowed values: `asc`, `desc`
-- `from_unix_secs` (integer, optional) — Start of the window to view topics for. When set with to_unix_secs, per-day topics in the range are aggregated together.
+- `from_unix_secs` (integer, optional) — Start of the window to view topics for. When set with to_unix_secs, the completed daily topic-discovery runs in the range are aggregated together, so the window scopes the metrics as well as the topic set. Floored to the start of its UTC day because runs cover whole UTC days; aggregated_run_count reports how many runs were summed. Omit both bounds to get the single latest run.
 - `to_unix_secs` (integer, optional) — End of the window to view topics for.
+- `include_evaluation_criteria` (boolean, optional, default: true) — Include the per-criteria evaluation breakdown on each topic's metrics. Pass false to drop it: it dominates the payload and the weighted success_rate is returned either way.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -74,8 +75,10 @@ Successful Response
       - `success_count` (integer, optional, default: 0)
       - `failure_count` (integer, optional, default: 0)
       - `unknown_count` (integer, optional, default: 0)
+  - `success_rate` (double, optional) — Success rate across the topic's evaluation criteria, weighted by scored conversations. Returned regardless of include_evaluation_criteria.
 - `window_start_unix_secs` (integer, required)
 - `window_end_unix_secs` (integer, required)
+- `aggregated_run_count` (integer, optional, default: 0) — Number of daily topic-discovery runs the returned metrics were summed over.
 - `has_more` (boolean, optional, default: false)
 - `next_cursor` (string, optional)
 
@@ -93,11 +96,13 @@ Successful Response
       "conversation_count": 1,
       "parent_topic_id": "parent_topic_id",
       "x_2d": 1.1,
-      "y_2d": 1.1
+      "y_2d": 1.1,
+      "success_rate": 1.1
     }
   ],
   "window_start_unix_secs": 1,
   "window_end_unix_secs": 1,
+  "aggregated_run_count": 1,
   "has_more": true,
   "next_cursor": "next_cursor"
 }
@@ -113,6 +118,7 @@ async function main() {
     await client.conversationalAi.conversations.topics.get("agent_id", {
         cursor: "cursor",
         fromUnixSecs: 1,
+        includeEvaluationCriteria: true,
         pageSize: 1,
         sortBy: "conversations",
         sortDirection: "asc",
@@ -132,6 +138,7 @@ client.conversational_ai.conversations.topics.get(
     agent_id="agent_id",
     cursor="cursor",
     from_unix_secs=1,
+    include_evaluation_criteria=True,
     page_size=1,
     sort_by="conversations",
     sort_direction="asc",
@@ -151,7 +158,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -170,7 +177,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -185,7 +192,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")
   .asString();
 ```
 
@@ -195,7 +202,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1');
 
 echo $response->getBody();
 ```
@@ -203,7 +210,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -211,7 +218,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

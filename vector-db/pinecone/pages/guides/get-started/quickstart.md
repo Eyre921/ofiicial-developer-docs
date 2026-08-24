@@ -78,7 +78,7 @@ If you're new to Pinecone, sign up at [app.pinecone.io](https://app.pinecone.io)
 * [Standard plan trial](/guides/organizations/manage-billing/standard-trial): 21 days and \$300 in credits with access to Standard plan [features](https://www.pinecone.io/pricing/) and [higher limits](/reference/api/database-limits) that let you test Pinecone at scale.
 
 <Note>
-  If you're already on a Starter plan, you can [upgrade to Builder](/guides/organizations/manage-billing/upgrade-billing-plan) at any time, or activate a Standard plan trial (one trial per organization).
+  If you're already on a Starter or Builder plan, you can activate a Standard plan trial at any time (one trial per organization). From Starter, you can also [upgrade to Builder](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
 After signing up, you'll receive an API key in the console. Save this key. You'll need it to authenticate your requests to Pinecone.

@@ -71,7 +71,7 @@ Successful Response
           - `id` (string, required)
           - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
       - `auto_sync_info` (object, optional)
-        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
         - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
         - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
         - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -128,7 +128,7 @@ Successful Response
           - `id` (string, required)
           - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
       - `auto_sync_info` (object, optional)
-        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
         - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
         - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
         - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -208,7 +208,7 @@ Successful Response
           - `id` (string, required)
           - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
       - `auto_sync_info` (object, optional)
-        - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+        - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
         - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
         - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
         - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -222,12 +222,6 @@ Successful Response
 - `next_cursor` (string, optional)
 
 ## Examples
-
-**Request**
-
-```json
-{}
-```
 
 **Response**
 
@@ -244,13 +238,13 @@ Successful Response
           "role": "admin",
           "access_source": "creator"
         },
-        "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "id": "id",
         "metadata": {
-          "created_at_unix_secs": 1672531200,
-          "last_updated_at_unix_secs": 1680307200,
-          "size_bytes": 2540000
+          "created_at_unix_secs": 1,
+          "last_updated_at_unix_secs": 1,
+          "size_bytes": 1
         },
-        "name": "Introduction to Machine Learning.pdf",
+        "name": "name",
         "supported_usages": [
           "prompt"
         ],
@@ -258,26 +252,22 @@ Successful Response
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1675209600,
-            "id": "a12b3c4d-5678-90ef-ab12-cd34ef567890",
-            "name": "ML Research Assistant"
+            "created_at_unix_secs": 1,
+            "id": "id",
+            "name": "name"
           }
         ]
       },
-      "score": 0.95,
+      "score": 1.1,
       "search_snippet": [
         {
-          "value": "Machine learning is a subset of artificial intelligence that focuses on building systems that learn from data.",
+          "value": "value",
           "is_hit": true
-        },
-        {
-          "value": "These algorithms improve their performance as they are exposed to more data over time.",
-          "is_hit": false
         }
       ]
     }
   ],
-  "next_cursor": "eyJwYWdlIjoyfQ=="
+  "next_cursor": "next_cursor"
 }
 ```
 
@@ -287,16 +277,13 @@ Successful Response
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-    });
+    const client = new ElevenLabsClient();
     await client.conversationalAi.knowledgeBase.search({
-        cursor: "eyJwYWdlIjoxfQ==",
-        pageSize: 25,
-        query: "machine learning algorithms",
+        cursor: "cursor",
+        pageSize: 1,
+        query: "query",
         types: [
             "file",
-            "text",
         ],
     });
 }
@@ -307,17 +294,14 @@ main();
 ```python
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs(
-    api_key="sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-)
+client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.search(
-    cursor="eyJwYWdlIjoxfQ==",
-    page_size=25,
-    query="machine learning algorithms",
+    cursor="cursor",
+    page_size=1,
+    query="query",
     types=[
-        "file",
-        "text"
+        "file"
     ],
 )
 
@@ -328,21 +312,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -359,15 +337,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -377,10 +352,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D")
-  .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
-  .header("Content-Type", "application/json")
-  .body("{}")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D")
   .asString();
 ```
 
@@ -390,13 +362,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D');
 
 echo $response->getBody();
 ```
@@ -404,31 +370,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

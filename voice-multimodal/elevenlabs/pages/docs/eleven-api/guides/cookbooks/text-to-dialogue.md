@@ -27,6 +27,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -39,7 +41,38 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 #### Make the API request
+
+#### SDK
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice, and add the following code.
 Add audio tags inside each `text` value to guide that speaker's delivery. The `voice_id`
@@ -98,7 +131,7 @@ const audio = await elevenlabs.textToDialogue.convert({
 play(audio);
 ```
 
-#### Execute the code
+Then run it:
 
 ```python
 python example.py
@@ -109,6 +142,21 @@ npx tsx example.mts
 ```
 
 You should hear the dialogue audio play.
+
+#### CLI
+
+Pass the dialogue inputs as a JSON array and save the audio to a file:
+
+```bash
+elevenlabs text-to-dialogue convert \
+  --output dialogue.mp3 \
+  --inputs '[
+    { "text": "[cheerfully] Hello, how are you?", "voice_id": "9BWtsMINqrJLrRacOk9x" },
+    { "text": "[stuttering] I... I am doing well, thank you.", "voice_id": "IKne3meq5aSn9XLyUdCD" }
+  ]'
+```
+
+Open `dialogue.mp3` to hear the result.
 
 ## WebSocket streaming
 

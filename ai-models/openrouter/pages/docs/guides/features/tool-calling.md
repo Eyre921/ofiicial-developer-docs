@@ -1,5 +1,5 @@
 ---
-title: "Tool & Function Calling"
+title: "Client Tools"
 source: https://openrouter.ai/docs/guides/features/tool-calling.md
 path: docs/guides/features/tool-calling
 ---
@@ -8,9 +8,9 @@ path: docs/guides/features/tool-calling
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Tool & Function Calling
+# Client Tools
 
-> Use tools in your prompts
+> Use client tools in your prompts
 
 export const Template = ({children, data}) => {
   const replace = s => s.replace(/\{\{(\w+)\}\}/g, (_, k) => (k in data) ? data[k] : `{{${k}}}`);

@@ -31,12 +31,13 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/topics/get
 ### Query parameters
 
 - `page_size` (integer, optional, nullable) — Number of top-level topic groups to return.
-- `sort_by` (enum, optional) — Topic table column to sort by.
-  - Allowed values: `conversations`, `sentiment`, `success_rate`
+- `sort_by` (enum, optional) — Column to rank topics by. Use conversations for volume, sentiment with sort_direction=asc for the most negative topics, and frustration with sort_direction=desc for the most frustrated ones. Topics with no score are always ranked last.
+  - Allowed values: `conversations`, `sentiment`, `success_rate`, `frustration`
 - `sort_direction` (enum, optional) — Direction to sort topics.
   - Allowed values: `asc`, `desc`
-- `from_unix_secs` (integer, optional, nullable) — Start of the window to view topics for. When set with to_unix_secs, per-day topics in the range are aggregated together.
+- `from_unix_secs` (integer, optional, nullable) — Start of the window to view topics for. When set with to_unix_secs, the completed daily topic-discovery runs in the range are aggregated together, so the window scopes the metrics as well as the topic set. Floored to the start of its UTC day because runs cover whole UTC days; aggregated_run_count reports how many runs were summed. Omit both bounds to get the single latest run.
 - `to_unix_secs` (integer, optional, nullable) — End of the window to view topics for.
+- `include_evaluation_criteria` (boolean, optional, default: true) — Include the per-criteria evaluation breakdown on each topic's metrics. Pass false to drop it: it dominates the payload and the weighted success_rate is returned either way.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -74,8 +75,10 @@ Successful Response
       - `success_count` (integer, optional, default: 0)
       - `failure_count` (integer, optional, default: 0)
       - `unknown_count` (integer, optional, default: 0)
+  - `success_rate` (double, optional, nullable) — Success rate across the topic's evaluation criteria, weighted by scored conversations. Returned regardless of include_evaluation_criteria.
 - `window_start_unix_secs` (integer, required)
 - `window_end_unix_secs` (integer, required)
+- `aggregated_run_count` (integer, optional, default: 0) — Number of daily topic-discovery runs the returned metrics were summed over.
 - `has_more` (boolean, optional, default: false)
 - `next_cursor` (string, optional, nullable)
 
@@ -121,11 +124,13 @@ Successful Response
             "unknown_count": 0
           }
         ]
-      }
+      },
+      "success_rate": 1.1
     }
   ],
   "window_start_unix_secs": 1,
   "window_end_unix_secs": 1,
+  "aggregated_run_count": 0,
   "has_more": false,
   "next_cursor": "string"
 }

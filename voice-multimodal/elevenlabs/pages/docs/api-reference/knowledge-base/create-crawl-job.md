@@ -35,6 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
 - `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
+- `minimum_frequency_days` (integer, optional, nullable) — Minimum frequency (in days) at which the underlying eligible documents are refreshed. The actual interval may be shorter, never longer. Defaults to 7, tightened to the parent folder's frequency if that is stricter. Only applicable when auto-sync is enabled.
 
 ## Response
 
@@ -57,7 +58,7 @@ Successful Response
 
 ```json
 {
-  "url": "https://docs.elevenlabs.io/api/knowledge-base"
+  "url": "string"
 }
 ```
 
@@ -65,14 +66,14 @@ Successful Response
 
 ```json
 {
-  "id": "crawljob-9f8b7a6d-1234-4e56-8abc-1234567890ab",
+  "id": "string",
   "type": "discovery",
-  "root_folder_id": "folder-4d3c2b1a-5678-4e90-b123-abcdef123456",
-  "status": "pending",
-  "created_at": 1712000000,
+  "root_folder_id": "string",
+  "status": "string",
+  "created_at": 1,
   "folder_path": [
     {
-      "id": "folder-root-0001"
+      "id": "string"
     }
   ]
 }
@@ -86,7 +87,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.knowledgeBase.crawlJobs.create({
-        url: "https://docs.elevenlabs.io/api/knowledge-base",
+        url: "string",
     });
 }
 main();
@@ -99,7 +100,7 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.knowledge_base.crawl_jobs.create(
-    url="https://docs.elevenlabs.io/api/knowledge-base",
+    url="string",
 )
 
 ```
@@ -118,7 +119,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
-	payload := strings.NewReader("{\n  \"url\": \"https://docs.elevenlabs.io/api/knowledge-base\"\n}")
+	payload := strings.NewReader("{\n  \"url\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -146,7 +147,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"url\": \"https://docs.elevenlabs.io/api/knowledge-base\"\n}"
+request.body = "{\n  \"url\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -158,7 +159,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl")
   .header("Content-Type", "application/json")
-  .body("{\n  \"url\": \"https://docs.elevenlabs.io/api/knowledge-base\"\n}")
+  .body("{\n  \"url\": \"string\"\n}")
   .asString();
 ```
 
@@ -170,7 +171,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl', [
   'body' => '{
-  "url": "https://docs.elevenlabs.io/api/knowledge-base"
+  "url": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -186,7 +187,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"url\": \"https://docs.elevenlabs.io/api/knowledge-base\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"url\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -194,7 +195,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["url": "https://docs.elevenlabs.io/api/knowledge-base"] as [String : Any]
+let parameters = ["url": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -10,17 +10,7 @@ Add financial accounts, money movement, and card issuing to your platform withou
 Available in: US
 Launch Stripe Treasury and Issuing for platforms as a prebuilt set of embeddable components. Render Stripe financial account features such as bill pay, issuing, and cash rewards as a branded UI in your platform application while avoiding custom coding and compliance reviews. Stripe provides features such as pre-configured fees, pre-configured Radar rules, and extending [managed risk](https://docs.stripe.com/connect/risk-management/managed-risk.md) coverage to both payments and financial accounts.
 
-### Request preview access to prebuilt embedded finance.
-
-Enter your email to request access.
-
-```bash
-curl https://docs.stripe.com/preview/register \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -H "Referer: https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance" \
-  -d '{"email": "EMAIL", "preview": "efs_waitlist_preview"}'
-```
+Prebuilt embedded finance is in private preview. [Request access](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md#join-waitlist).
 
 ## Before you begin
 
@@ -342,6 +332,20 @@ onboarding.setOnExit(() => {
   // Check if capabilities are now active and update which components to render
   checkCapabilityStatus(connectedAccountId);
 });
+```
+
+## Join the waitlist 
+
+### Request preview access to prebuilt embedded finance.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance" \
+  -d '{"email": "EMAIL", "preview": "efs_waitlist_preview"}'
 ```
 
 ## See also

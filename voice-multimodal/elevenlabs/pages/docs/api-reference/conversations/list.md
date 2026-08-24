@@ -30,8 +30,9 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 - `agent_id` (string, optional, nullable) — Agent id (agent_…) or speech engine external id (seng_), resolved to the same underlying resource.
 - `visited_agent_ids` (list of string, optional, nullable) — Filter conversations where any of these agents participated. Can not exceed 50 values.
 - `visited_agent_branch_ids` (list of string, optional, nullable) — Filter conversations where any of these agent branches participated. Can not exceed 50 values.
+- `triggered_procedure_ids` (list of string, optional, nullable) — Filter conversations where any of these procedures were triggered. Can not exceed 50 values.
 - `call_successful` (enum, optional, nullable) — The result of the success evaluation
-  - Allowed values: `success`, `failure`, `unknown`
+  - Allowed values: `success`, `failure`, `unknown`, `error`
 - `call_start_before_unix` (integer, optional, nullable) — Unix timestamp (in seconds) to filter conversations up to this start date.
 - `call_start_after_unix` (integer, optional, nullable) — Unix timestamp (in seconds) to filter conversations after to this start date.
 - `call_duration_min_secs` (integer, optional, nullable) — Minimum call duration in seconds.
@@ -47,6 +48,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 - `tool_names` (list of string, optional, nullable) — Filter conversations by tool names used during the call.
 - `tool_names_successful` (list of string, optional, nullable) — Filter conversations by tool names that had successful calls.
 - `tool_names_errored` (list of string, optional, nullable) — Filter conversations by tool names that had errored calls.
+- `include_invalid_tool_calls` (boolean, optional, default: false) — Also match tool calls that never ran.
 - `main_languages` (list of string, optional, nullable) — Filter conversations by detected main language (language code).
 - `page_size` (integer, optional, default: 30) — How many conversations to return at maximum. Can not exceed 100, defaults to 30.
 - `summary_mode` (enum, optional, default: exclude) — Whether to include transcript summaries in the response.
@@ -69,6 +71,8 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/list
 - `guardrail_types` (list of enum, optional, nullable) — Filter to conversations where a guardrail of any of these types triggered (metadata.triggered_guardrails.guardrail_type). Repeat param to match any of several.
   - Allowed values: `custom`, `prompt_injection`, `self_harm_intent`, `violence_graphic`, `sexual`, `violence`, `harassment`, `sexual_minors`, `self_harm`, `self_harm_instructions`, `harassment_threatening`, `hate`, `hate_threatening`, `profanity`, `religion_or_politics`, `medical_and_legal`, `guardrail`
 - `custom_guardrail_names` (list of string, optional, nullable) — Filter to conversations where a custom guardrail with any of these names triggered (metadata.triggered_guardrails.guardrail_name). Only custom guardrails carry a name. Repeat param to match any of several.
+- `sort_direction` (enum, optional) — The direction to sort conversations by call start time. Defaults to descending (newest first).
+  - Allowed values: `asc`, `desc`
 
 ## Response
 

@@ -8,47 +8,166 @@ path: webhooks
 
 Listen for events from Stripe on your webhook endpoint so your integration can automatically trigger reactions.
 
-> #### Send events to your AWS account or Azure subscription
-> 
-> You can send events directly to [Amazon EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md) or [Azure Event Grid](https://docs.stripe.com/event-destinations/eventgrid.md) as event destinations.
-
-Create an event destination to receive events at an HTTPS webhook endpoint. After you register a webhook endpoint, Stripe can push real-time event data to your application’s webhook endpoint when [events](https://docs.stripe.com/event-destinations.md#events-overview) happen in your Stripe account. Stripe uses HTTPS to send webhook events to your app as a JSON payload that includes an [Event object](https://docs.stripe.com/api/events.md).
+You can create an HTTPS webhook endpoint to receive events. After you register a webhook endpoint, Stripe pushes real-time data to it when [events](https://docs.stripe.com/event-destinations.md#events-overview) happen in your Stripe account. Stripe uses HTTPS to send webhook events to your app as a JSON payload that includes event information.
 
 Receiving webhook events helps you respond to asynchronous events, such as when a customer’s bank confirms a payment, a customer disputes a charge, or a recurring payment succeeds.
 
-## Get started 
+You can also consume Stripe events in your AWS or Azure infrastructure by sending events directly to [Amazon EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md) or [Azure Event Grid](https://docs.stripe.com/event-destinations/eventgrid.md).
 
-To start receiving webhook events in your app:
+Complete the steps below to start receiving webhook events in your app. You can register and create one endpoint to handle several different event types at the same time or set up individual endpoints for specific events.
 
-1. Create a webhook endpoint handler to receive event data POST requests.
-2. Test your webhook endpoint handler locally using the Stripe CLI.
-3. Create a new [event destination](https://docs.stripe.com/event-destinations.md) for your webhook endpoint.
-4. Secure your webhook endpoint.
+## Set up your endpoint
 
-You can register and create one endpoint to handle several different event types at the same time, or set up individual endpoints for specific events.
+Use the [API](https://docs.stripe.com/api/v2/event-destinations.md) or the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench to register your webhook endpoint’s accessible URL so Stripe knows where to deliver events. You can register up to 16 webhook endpoints with Stripe. Registered webhook endpoints must be publicly accessible HTTPS URLs.
 
-## Unsupported event type behaviors for organization event destinations
+- If you have a localhost server but don’t have a publically accessible HTTPS URL, you can use a tunnelling tool such as [ngrok](https://ngrok.com/) to generate a temporary publically accessible HTTPS URL to use for testing purposes.
+- Alternatively, you can [test locally using Stripe CLI](https://docs.stripe.com/webhooks.md#local-listener) before registering a publicly accessible HTTPS URL.
 
-Stripe sends most event types asynchronously, but waits for a response for some event types. In these cases, Stripe behaves differently based on whether or not the event destination responds.
+### Webhook URL format 
 
-If your event destination receives [Organization](https://docs.stripe.com/get-started/account/orgs.md) events, those requiring a response have the following limitations:
+The URL format to register a webhook endpoint is:
 
-- You can’t subscribe to `issuing_authorization.request` for organization destinations. Instead, set up a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) in a Stripe account within the organization to subscribe to this event type. Use `issuing_authorization.request` to authorize purchase requests in real-time.
-- Organization destinations receiving `checkout_sessions.completed` can’t [handle redirect behavior](https://docs.stripe.com/checkout/fulfillment.md#redirect-hosted-checkout) when you embed [Checkout](https://docs.stripe.com/payments/checkout.md) directly in your website or redirect customers to a Stripe-hosted payment page. To influence Checkout redirect behavior, process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization.
-- Organization destinations responding unsuccessfully to an `invoice.created` event can’t influence [automatic invoice finalization when using automatic collection](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand). You must process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization to trigger automatic invoice finalization.
+```
+https://<your-website>/<your-webhook-endpoint>
+```
+
+For example, if your domain is `https://mycompanysite.com` and the route to your webhook endpoint is `@app.route('/stripe_webhooks', methods=['POST'])`, specify `https://mycompanysite.com/stripe_webhooks` as the endpoint URL.
+
+### Create an event destination for your webhook endpoint 
+
+#### Dashboard
+
+To create a new webhook endpoint in the Dashboard:
+
+1. Open the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench.
+2. Click **Create an event destination**.
+3. Select **Your account** to listen to events from your own account.
+4. Select the API version for the [events object](https://docs.stripe.com/api/events.md) you want to consume.
+5. Select the [event types](https://docs.stripe.com/api/events/types.md) that you want to send to a webhook endpoint.
+6. Select **Continue**, then select **Webhook endpoint** as the destination type.
+7. Click **Continue**, then provide the **Endpoint URL** and an optional description for the webhook.
+8. On the webhook settings page, a signing secret beginning with `whsec_` appears. Click **Reveal secret** and copy the value to use when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
+
+> [Workbench](https://docs.stripe.com/workbench.md) replaces the existing [Developers Dashboard](https://docs.stripe.com/development/dashboard.md). You can still [create a new webhook endpoint](https://docs.stripe.com/development/dashboard/webhooks.md) in the Developers Dashboard, although we recommend using Workbench.
+
+#### API
+
+Use the [/v2/core/event_destinations](https://docs.stripe.com/api/v2/event-destinations.md) endpoint to register a new endpoint.
+
+#### Snapshot events
+
+To listen to [snapshot events](https://docs.stripe.com/api/events/types.md) from your own account, set the [event_payload](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-event_payload) value to `snapshot` and the [enabled_events](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-enabled_events) value to the event types that you want to send to the webhook endpoint:
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/event_destinations \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-07-29.preview" \
+  --json '{
+    "name": "My event destination",
+    "type": "webhook_endpoint",
+    "events_from": [
+        "@self"
+    ],
+    "event_payload": "snapshot",
+    "enabled_events": [
+        "payment_intent.succeeded",
+        "payment_intent.payment_failed"
+    ],
+    "webhook_endpoint": {
+        "url": "https://mycompanysite.com/webhook"
+    },
+    "include": [
+        "webhook_endpoint.signing_secret"
+    ]
+  }'
+```
+
+The output contains a `webhook_endpoint.signing_secret` value that starts with `whsec_`. Copy this value to use when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
+
+#### Thin events
+
+If you are using [thin events](https://docs.stripe.com/api/v2/core/events/event-types.md), you will need to register a separate webhook endpoint. Read more about [the differences between thin and snapshot events](https://docs.stripe.com/event-destinations.md#events-overview).
+
+To listen to [thin events](https://docs.stripe.com/api/v2/core/events/event-types.md) from your own account, set the [event_payload](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-event_payload) value to `thin` and the [enabled_events](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-enabled_events) value to the event types that you want to send to the webhook endpoint:
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/event_destinations \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-07-29.preview" \
+  --json '{
+    "name": "My event destination",
+    "type": "webhook_endpoint",
+    "events_from": [
+        "@self"
+    ],
+    "event_payload": "thin",
+    "enabled_events": [
+        "v1.billing.meter.error_report_triggered"
+    ],
+    "webhook_endpoint": {
+        "url": "https://mycompanysite.com/webhook"
+    },
+    "include": [
+        "webhook_endpoint.signing_secret"
+    ]
+  }'
+```
+
+The output contains a `webhook_endpoint.signing_secret` value that starts with `whsec_`. Copy this value to use when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
+
+### Test locally without a registered URL 
+
+If you don’t have a registered publicly accessible HTTPS URL, you can test webhooks locally by using the Stripe CLI to [forward events to your local endpoint](https://docs.stripe.com/cli/use-cli#forward-events-to-your-local-webhook-endpoint):
+
+1. If you haven’t already, [install the Stripe CLI](https://docs.stripe.com/cli/install) on your machine.
+
+2. Log in to your Stripe account and set up the CLI by running `stripe login` on the command line.
+
+3. Allow your local host to receive a simulated event by running [stripe listen](https://docs.stripe.com/cli/listen), depending on the scope and type of event:
+
+   #### Forward snapshot events
+
+   Use the following command to forward [snapshot events](https://docs.stripe.com/event-destinations.md#events-overview) from your account to your local listener.
+
+   ```bash
+   stripe listen --forward-to localhost:4242/webhook
+   ```
+
+   #### Forward thin events
+
+   Use the following command to forward [thin events](https://docs.stripe.com/event-destinations.md#events-overview) from your account to your local listener.
+
+   ```bash
+   stripe listen --forward-thin-to localhost:4242/webhook --thin-events "*"
+   ```
+
+   This command assumes you have a localhost website on port 4242 with a `POST /webhook` endpoint, which you can configure when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
+
+4. The `stripe listen` command outputs the `{{WEBHOOK_SIGNING_SECRET}}`. Copy this value to use when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
+
+   ```output
+   Ready! Your webhook signing secret is '{{WEBHOOK_SIGNING_SECRET}}' (^C to quit)
+   ```
+
+> To use the `--forward-to` argument with `stripe listen`, you must run the command with [Stripe CLI](https://docs.stripe.com/cli.md) in a terminal. This command can’t be run in the [Workbench Shell](https://docs.stripe.com/workbench/shell.md) because it doesn’t support the `--forward-to` argument.
 
 ## Create a handler
 
 Set up an HTTP or HTTPS endpoint function that can accept webhook requests with a POST method. If you’re still developing your endpoint function on your local machine, it can use HTTP. After it’s publicly accessible, your webhook endpoint function must use HTTPS.
 
+Use the Stripe API reference to identify the [thin event objects](https://docs.stripe.com/api/v2/core/events/event-types.md) or [snapshot event objects](https://docs.stripe.com/api/events/types.md) your webhook handler needs to process.
+
 Set up your endpoint function so that it:
 
-- Handles POST requests with a JSON payload consisting of an [event object](https://docs.stripe.com/api/events/object.md).
-- For [organization](https://docs.stripe.com/get-started/account/orgs.md) event handlers, it inspects the `context` value to determine which account in an organization generated the event, then sets the `Stripe-Context` header corresponding to the `context` value.
-- Quickly returns a successful status code (`2xx`) prior to any complex logic that might cause a timeout. For example, you must return a `200` response before updating a customer’s invoice as paid in your accounting system.
+- Handles POST requests with a JSON payload that includes event information.
+- Verifies the webhook request is generated by Stripe using the JSON payload, the `Stripe-Signature` header, and the `whsec_` webhook signing secret from the previous step. If verification fails, you get an error.
+- Quickly returns a successful status code (`2xx`) before any complex logic that might cause a timeout. For example, you must return a `200` response before updating a customer’s invoice as paid in your accounting system.
 
-> - Use our [interactive webhook endpoint builder](https://docs.stripe.com/webhooks/quickstart.md) to build a webhook endpoint function in your programming language.
-- Use the Stripe API reference to identify the [thin event objects](https://docs.stripe.com/api/v2/core/events/event-types.md) or [snapshot event objects](https://docs.stripe.com/api/events/object.md) your webhook handler needs to process.
+> #### Don't manipulate the raw body request
+> 
+> Stripe requires the raw body of the request to perform signature verification. If you’re using a framework, make sure it doesn’t manipulate the raw body. Any manipulation to the raw body of the request causes the verification to fail.
+> 
+> Learn how to [troubleshoot signature verification errors](https://docs.stripe.com/webhooks/signature.md).
 
 #### Example endpoint 
 
@@ -211,6 +330,108 @@ def webhook():
         return jsonify(error=str(e)), 400
 ```
 
+## Test your handler
+
+Before you go live with your webhook endpoint function, we recommend testing your application integration by triggering events in a sandbox or sending test events with the [Stripe CLI](https://docs.stripe.com/cli.md).
+
+### Trigger test events 
+
+To send test events, trigger an event type that your event destination is subscribed to by manually creating an object in the Stripe Dashboard. Learn how to trigger events with [Stripe for VS Code](https://docs.stripe.com/stripe-vscode.md).
+
+#### Trigger a snapshot event
+
+You can use the following command in either [Stripe Shell](https://docs.stripe.com/workbench/shell.md) or [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `payment_intent.succeeded` event:
+
+```bash
+stripe trigger payment_intent.succeeded
+Running fixture for: payment_intent
+Trigger succeeded! Check dashboard for event details.
+```
+
+#### Trigger a thin event
+
+You can use the following command in the [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `v1.billing.meter.error_report_triggered` event:
+
+```bash
+stripe trigger v1.billing.meter.error_report_triggered
+Setting up fixture for: list_billing_meters
+Running fixture for: list_billing_meters
+Setting up fixture for: billing_meter
+Running fixture for: billing_meter
+Setting up fixture for: list_billing_meters_after_creation
+Running fixture for: list_billing_meters_after_creation
+Setting up fixture for: billing_meter_event_session
+Running fixture for: billing_meter_event_session
+Setting up fixture for: create_billing_meter_event_stream
+Running fixture for: create_billing_meter_event_stream
+Trigger succeeded! Check dashboard for event details.
+```
+
+## Optional: Create an event destination for Connect
+
+When you [create an event destination](https://docs.stripe.com/webhooks.md#create-webhook-endpoint) as a Connect platform, you choose which scope it listens to:
+
+#### Dashboard
+
+- **Your account**: Events from resources in your account.
+- **Connected accounts**: Events from resources that belong to your connected accounts.
+
+#### API
+
+- [events_from=[“@self”]](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-events_from): Events from resources in your account.
+- [events_from=[“@accounts”]](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-events_from): Events from resources that belong to your connected accounts.
+
+Register an event destination for **Connected accounts** to receive events for resources that belong to your connected accounts. Examples include [direct charges](https://docs.stripe.com/connect/direct-charges.md), Customers and payment methods of connected accounts, payout failures, and legacy snapshot connected-account lifecycle updates, such as onboarding, verification, external-account changes, and account disconnections. For Accounts v2, this scope only receives snapshot events for Account objects representing your connected accounts.
+
+Depending on your Connect integration, you may also need to register an event destination for **Your account**. Reasons include:
+
+- Processing events for resources in your platform account, including platform Customers, platform-owned charges, [destination charges](https://docs.stripe.com/connect/destination-charges.md), and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
+- Processing thin events related to Accounts v2 objects representing connected accounts.
+
+See [Connect webhooks](https://docs.stripe.com/connect/webhooks.md?accounts-namespace=v2) for more details.
+
+### Test Connect locally without a registered URL 
+
+#### Snapshot events
+
+Use the following command to forward [snapshot events](https://docs.stripe.com/event-destinations.md#events-overview) from connected accounts to your local listener.
+
+```bash
+stripe listen --forward-connect-to localhost:4242/webhook
+```
+
+#### Thin events
+
+Use the following command to forward [thin events](https://docs.stripe.com/event-destinations.md#events-overview) from connected accounts to your local listener.
+
+```bash
+stripe listen --forward-thin-connect-to localhost:4242/webhook --thin-events "*"
+```
+
+## Optional: Create an event destination for Organizations
+
+When you [create an event destination](https://docs.stripe.com/webhooks.md#create-webhook-endpoint) as an Organization, you choose which scope it listens to:
+
+#### Dashboard
+
+- **Accounts in your organization**: Events from resources in your organization’s accounts.
+- **Connected accounts**: Events from resources inside your organization’s connected accounts.
+
+#### API
+
+- [events_from=[“@organization_members”]](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-events_from): Events from resources in your organization’s accounts.
+- [events_from=[“@organization_members/@accounts”]](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-events_from): Events from resources inside your organization’s connected accounts.
+
+### Unsupported event type behaviors for organization event destinations
+
+Stripe sends most event types asynchronously, but waits for a response for some event types. In these cases, Stripe behaves differently based on whether the event destination responds.
+
+If your event destination receives [Organization](https://docs.stripe.com/get-started/account/orgs.md) events, those requiring a response have the following limitations:
+
+- You can’t subscribe to `issuing_authorization.request` for organization destinations. Instead, set up a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) in a Stripe account within the organization to subscribe to this event type. Use `issuing_authorization.request` to authorize purchase requests in real-time.
+- Organization destinations receiving `checkout_sessions.completed` can’t [handle redirect behavior](https://docs.stripe.com/checkout/fulfillment.md#redirect-hosted-checkout) when you embed [Checkout](https://docs.stripe.com/payments/checkout.md) directly in your website or redirect customers to a Stripe-hosted payment page. To influence Checkout redirect behavior, process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization.
+- Organization destinations responding unsuccessfully to an `invoice.created` event can’t influence [automatic invoice finalization when using automatic collection](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand). You must process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization to trigger automatic invoice finalization.
+
 #### Using `context` 
 
 #### Snapshot events
@@ -315,185 +536,142 @@ event_notification.fetch_event()
 client.v1.invoices.list(stripe_context=event_notification.context)
 ```
 
-## Test your handler
+## Debug webhook integrations 
 
-Before you go-live with your webhook endpoint function, we recommend that you test your application integration. You can do so by configuring a local listener to send events to your local machine, and sending test events. You need to use the [CLI](https://docs.stripe.com/cli.md) to test.
+Multiple types of issues can occur when delivering events to your webhook endpoint:
 
-#### Forward events to a local endpoint 
+- Stripe might not be able to deliver an event to your webhook endpoint.
+- Your webhook endpoint might have an SSL issue.
+- Your network connectivity is intermittent.
+- Your webhook endpoint isn’t receiving events that you expect to receive.
 
-To forward events to your local endpoint, run the following command with the [CLI](https://docs.stripe.com/cli.md) to set up a local listener. The `--forward-to` flag sends all [Stripe events](https://docs.stripe.com/cli/trigger#trigger-event) in a [sandbox](https://docs.stripe.com/sandboxes.md) to your local webhook endpoint. Use the appropriate CLI commands below depending on whether you use [thin](https://docs.stripe.com/event-destinations.md#events-overview) or snapshot events.
+### View event deliveries 
 
-#### Forward snapshot events
+To view event deliveries, open [Workbench](https://docs.stripe.com/workbench.md), select the webhook endpoint under **Webhooks**, then select the **Event deliveries** tab. The **Event deliveries** tab provides a list of events and whether they’re `Delivered`, `Pending`, or `Failed`. Click an event to view metadata, including the HTTP status code of the delivery attempt and the time of pending future deliveries.
 
-Use the following command to forward [snapshot events](https://docs.stripe.com/event-destinations.md#events-overview) to your local listener.
+You can also use the [Stripe CLI](https://docs.stripe.com/cli.md) to [listen for events](https://docs.stripe.com/webhooks.md#test-webhook) directly in your terminal.
 
-```bash
-stripe listen --forward-to localhost:4242/webhook
+### Fix HTTP status codes
+
+When an event displays a status code of `200`, it indicates successful delivery to the webhook endpoint. You might also receive a status code other than `200`. View the table below for a list of common HTTP status codes and recommended solutions.
+
+| Pending webhook status | Description | Fix |
+| --- | --- | --- |
+| (Unable to connect) ERR | We’re unable to establish a connection to the destination server. | Make sure that your host domain is publicly accessible to the internet. |
+| (`302`) ERR (or other `3xx` status) | The destination server attempted to redirect the request to another location. We consider redirect responses to webhook requests as failures. | Set the webhook endpoint destination to the URL resolved by the redirect. |
+| (`400`) ERR (or other `4xx` status) | The destination server can’t or won’t process the request. This might occur when the server detects an error (`400`), when the destination URL has access restrictions, (`401`, `403`, `405`), or when the destination URL doesn’t exist (`404`). | Make sure that your endpoint is publicly accessible to the internet and accepts a POST HTTP method. |
+| (`500`) ERR (or other `5xx` status) | The destination server encountered an error while processing the request. | Review your application’s logs to understand why it’s returning a `500` error. |
+| (TLS error) ERR | We couldn’t establish a secure connection to the destination server. Issues with the SSL/TLS certificate or an intermediate certificate in the destination server’s certificate chain usually cause these errors. Stripe requires *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) version `v1.2` or higher. | Perform an [SSL server test](https://www.ssllabs.com/ssltest/) to find issues that might cause this error. |
+| (Timed out) ERR | The destination server took too long to respond to the webhook request. | Make sure you defer complex logic and return a successful response immediately in your webhook handling code. |
+
+## Event delivery behaviors 
+
+This section helps you understand different behaviors to expect regarding how Stripe sends events to your webhook endpoint.
+
+### Automatic retries
+
+Stripe attempts to deliver events to your destination for up to three days with an exponential back off in live mode. View when the next retry will occur, if applicable, in your event destination’s **Event deliveries** tab. We retry event deliveries created in a sandbox three times over the course of a few hours. If your destination has been disabled or deleted when we attempt a retry, we prevent future retries of that event. However, if you disable and then re-enable the event destination before we’re able to retry, you still see future retry attempts.
+
+### Manual retries
+
+There are two ways to manually retry events:
+
+- In the Stripe Dashboard, click **Resend** when looking at a specific event. This works for up to 15 days after the event creation.
+- With the [Stripe CLI](https://docs.stripe.com/cli/events/resend), run the `stripe events resend <event_id> --webhook-endpoint=<endpoint_id>` command. This works for up to 30 days after the event creation.
+
+Manually resending an event that had previous delivery failures to a webhook endpoint doesn’t dismiss Stripe’s [automatic retry behavior](https://docs.stripe.com/webhooks.md#automatic-retries), even if it results in a `2xx` status code. Learn how to [process undelivered webhook events](https://docs.stripe.com/webhooks/process-undelivered-events.md) to stop future retries.
+
+### Event ordering
+
+Stripe doesn’t guarantee the delivery of events in the order that they’re generated. For example, creating a subscription might generate the following events:
+
+- `customer.subscription.created`
+- `invoice.created`
+- `invoice.paid`
+- `charge.created` (if there’s a charge)
+
+Make sure that your event destination isn’t dependent on receiving events in a specific order. Be prepared to manage their delivery appropriately. You can also use the API to retrieve any missing objects. For example, you can retrieve the invoice, charge, and subscription objects with the information from `invoice.paid` if you receive this event first.
+
+### API versioning
+
+The API version in your account settings when the event occurs dictates the API version, and therefore the structure of an [Event](https://docs.stripe.com/api/events.md) sent to your destination. For example, if your account is set to an older API version, such as 2015-02-16, and you change the API version for a specific request with [versioning](https://docs.stripe.com/api.md#versioning), the [Event](https://docs.stripe.com/api/events.md) object generated and sent to your destination is still based on the 2015-02-16 API version. You can’t change [Event](https://docs.stripe.com/api/events.md) objects after creation. For example, if you update a charge, the original charge event remains unchanged. As a result, subsequent updates to your account’s API version don’t retroactively alter existing [Event](https://docs.stripe.com/api/events.md) objects. Retrieving an older [Event](https://docs.stripe.com/api/events.md) by calling `/v1/events` using a newer API version also has no impact on the structure of the received event. You can set test event destinations to either your default API version or the latest API version. The [Event](https://docs.stripe.com/api/events.md) sent to the destination is structured for the event destination’s specified version.
+
+## Best practices for using webhooks 
+
+Review these best practices to make sure your webhook endpoints remain secure and function well with your integration.
+
+### Handle duplicate events
+
+Webhook endpoints might occasionally receive the same event more than once. You can guard against duplicated event receipts by logging the [event IDs](https://docs.stripe.com/api/events/object.md#event_object-id) you’ve processed, and then not processing already-logged events.
+
+In some cases, two separate Event objects are generated and sent. To identify these duplicates, use the ID of the object in `data.object` along with the `event.type`.
+
+### Only listen to event types your integration requires
+
+Configure your webhook endpoints to receive only the types of events required by your integration. Listening for extra events (or all events) puts undue strain on your server and we don’t recommend it.
+
+You can [change the events](https://docs.stripe.com/api/webhook_endpoints/update.md#update_webhook_endpoint-enabled_events) that a webhook endpoint receives in the Dashboard or with the API.
+
+### Handle events asynchronously
+
+Configure your handler to process incoming events with an asynchronous queue. You might encounter scalability issues if you choose to process events synchronously. Any large spike in webhook deliveries (for example, during the beginning of the month when all subscriptions renew) might overwhelm your endpoint hosts.
+
+Asynchronous queues allow you to process the concurrent events at a rate your system can support.
+
+### Exempt webhook route from CSRF protection 
+
+If you’re using Rails, Django, or another web framework, your site might automatically check that every POST request contains a *CSRF token*. This is an important security feature that helps protect you and your users from [cross-site request forgery](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_\(CSRF\)) attempts. However, this security measure might also prevent your site from processing legitimate events. If so, you might need to exempt the webhooks route from CSRF protection.
+
+#### Rails
+
+```ruby
+class StripeController < ApplicationController
+  # If your controller accepts requests other than Stripe webhooks,
+  # you'll probably want to use `protect_from_forgery` to add CSRF
+  # protection for your application. But don't forget to exempt
+  # your webhook route!
+  protect_from_forgery except: :webhook
+
+  def webhook
+    # Process webhook data in `params`
+  end
+end
 ```
 
-#### Forward thin events
+### Receive events with an HTTPS server
 
-Use the following command to forward [thin events](https://docs.stripe.com/event-destinations.md#events-overview) to your local listener.
+If you use an HTTPS URL for your webhook endpoint (required in live mode), Stripe validates that the connection to your server is secure before sending your webhook data. For this to work, your server must be correctly configured to support HTTPS with a valid server certificate. Stripe webhooks support only *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) versions v1.2 and v1.3.
 
-```bash
-$ stripe listen --forward-thin-to localhost:4242/webhook --thin-events "*"
-```
+### Roll endpoint signing secrets periodically 
 
-> You can also run `stripe listen` to see events in [Stripe Shell](https://docs.stripe.com/workbench/shell.md), although you won’t be able to forward events from the shell to your local endpoint.
+The secret used for verifying that events come from Stripe is modifiable in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench. To keep them safe, we recommend that you roll (change) secrets periodically, or when you suspect a compromised secret.
 
-Useful configurations to help you test with your local listener include the following:
+To roll a secret:
 
-- To disable HTTPS certificate verification, use the `--skip-verify` optional flag.
-- To forward only specific events, use the `--events` optional flag and pass in a comma separated list of events.
+1. Click each endpoint in the Workbench [Webhooks](https://dashboard.stripe.com/webhooks) tab that you want to roll the secret for.
+2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 24 hours to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
 
-#### Forward target snapshot events
+### Verify events are sent from Stripe 
 
-Use the following command to forward target snapshot events to your local listener.
+Without verification, an attacker could send fake webhook events to your endpoint to trigger actions like fulfilling orders, granting account access, or modifying records. Always verify that webhook events originate from Stripe before acting on them.
 
-```bash
-stripe listen --events payment_intent.created,customer.created,payment_intent.succeeded,checkout.session.completed,payment_intent.payment_failed \
-  --forward-to localhost:4242/webhook
-```
+Use both of these protections:
 
-#### Forward target thin events
+- **IP allowlisting**: Stripe sends webhook events from a set list of [IP addresses](https://docs.stripe.com/ips.md). Configure your server or firewall to only accept webhook requests from these addresses.
+- **Signature verification**: Stripe signs every webhook event by including a signature in the `Stripe-Signature` header. Verify this signature using our [official libraries](https://docs.stripe.com/webhooks.md#verify-official-libraries) or [manually](https://docs.stripe.com/webhooks.md#verify-manually) to confirm the event wasn’t sent or modified by a third party.
 
-Use the following command to forward target thin events to your local listener.
+The following section describes how to verify webhook signatures:
 
-```bash
-stripe listen --thin-events v1.billing.meter.error_report_triggered,v1.billing.meter.no_meter_found \
-  --forward-thin-to localhost:4242/webhook
-```
+1. Retrieve your endpoint’s secret.
+2. Verify the signature.
 
-- To forward events to your local webhook endpoint from the public webhook endpoint that you already registered on Stripe, use the `--load-from-webhooks-api` optional flag. It loads your registered endpoint, parses the path and its registered events, then appends the path to your local webhook endpoint in the `--forward-to path`.
+#### Retrieving your endpoint’s secret 
 
-#### Forward snapshot events from a public webhook endpoint
+Use Workbench and go to the [Webhooks](https://dashboard.stripe.com/webhooks) tab to view all your endpoints. Select an endpoint that you want to obtain the secret for, then click **Click to reveal**.
 
-Use the following command to forward snapshot events from a public webhook endpoint to your local listener.
+Stripe generates a unique secret key for each endpoint. If you use the same endpoint for both [test and live API keys](https://docs.stripe.com/keys.md#test-live-modes), the secret is different for each one. Additionally, if you use multiple endpoints, you must obtain a secret for each one you want to verify signatures on. After this setup, Stripe starts to sign each webhook it sends to the endpoint.
 
-```bash
-stripe listen --load-from-webhooks-api --forward-to localhost:4242/webhook
-```
-
-#### Forward thin events from a public webhook endpoint
-
-Use the following command to forward thin events from a public webhook endpoint to your local listener.
-
-```bash
-stripe listen --load-from-webhooks-api --forward-thin-to localhost:4242/webhook
-```
-
-- To check webhook signatures, use the `{{WEBHOOK_SIGNING_SECRET}}` from the initial output of the listen command.
-
-```output
-Ready! Your webhook signing secret is '{{WEBHOOK_SIGNING_SECRET}}' (^C to quit)
-```
-
-#### Triggering test events 
-
-To send test events, trigger an event type that your event destination is subscribed to by manually creating an object in the Stripe Dashboard. Learn how to trigger events with [Stripe for VS Code](https://docs.stripe.com/stripe-vscode.md).
-
-#### Trigger a snapshot event
-
-You can use the following command in either [Stripe Shell](https://docs.stripe.com/workbench/shell.md) or [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `payment_intent.succeeded` event:
-
-```bash
-stripe trigger payment_intent.succeeded
-Running fixture for: payment_intent
-Trigger succeeded! Check dashboard for event details.
-```
-
-#### Trigger a thin event
-
-You can use the following command in the [Stripe CLI](https://docs.stripe.com/cli.md). This example triggers a `v1.billing.meter.error_report_triggered` event:
-
-```bash
-stripe trigger v1.billing.meter.error_report_triggered
-Setting up fixture for: list_billing_meters
-Running fixture for: list_billing_meters
-Setting up fixture for: billing_meter
-Running fixture for: billing_meter
-Setting up fixture for: list_billing_meters_after_creation
-Running fixture for: list_billing_meters_after_creation
-Setting up fixture for: billing_meter_event_session
-Running fixture for: billing_meter_event_session
-Setting up fixture for: create_billing_meter_event_stream
-Running fixture for: create_billing_meter_event_stream
-Trigger succeeded! Check dashboard for event details.
-```
-
-## Register your endpoint
-
-After testing your webhook endpoint function, use the [API](https://docs.stripe.com/api/v2/event-destinations.md) or the **Webhooks** tab in Workbench to register your webhook endpoint’s accessible URL so Stripe knows where to deliver events. You can register up to 16 webhook endpoints with Stripe. Registered webhook endpoints must be publicly accessible **HTTPS** URLs.
-
-#### Webhook URL format 
-
-The URL format to register a webhook endpoint is:
-
-```
-https://<your-website>/<your-webhook-endpoint>
-```
-
-For example, if your domain is `https://mycompanysite.com` and the route to your webhook endpoint is `@app.route('/stripe_webhooks', methods=['POST'])`, specify `https://mycompanysite.com/stripe_webhooks` as the **Endpoint URL**.
-
-#### Create an event destination for your webhook endpoint 
-
-Create an event destination using Workbench in the Dashboard or programmatically with the [API](https://docs.stripe.com/api/v2/event-destinations.md). You can register up to 16 event destinations on each Stripe account.
-
-When you create an event destination, you choose which scope it listens to:
-
-- **Your account**: events from resources in your account. If you use the Accounts v2 API, this includes thin events for accounts created in your account, such as connected accounts, but not their snapshot events.
-- **Connected accounts**: events from resources belonging to `Accounts` that you create in your account, such as connected accounts. If you use the Accounts v2 API, this scope includes snapshot events for `Account` objects created in your account, but not their thin events. However, it includes both snapshot and thin events for `Account` objects belonging to those `Accounts`.
-
-Most developers start with destinations that listen to the **Your account** scope. If you use Connect or the Accounts v2 API, you might need destinations that listen to both scopes. See [Connect webhooks](https://docs.stripe.com/connect/webhooks.md?accounts-namespace=v2)
-
-#### Dashboard
-
-To create a new webhook endpoint in the Dashboard:
-
-1. Open the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench.
-2. Click **Create an event destination**.
-3. Select where you want to receive events from. Stripe supports two types of configurations: **Your account** and [Connected accounts](https://docs.stripe.com/connect.md). Select **Account** to listen to events from your own account. If you created a [Connect application](https://docs.stripe.com/connect.md) and want to listen to events from your connected accounts, select **Connected accounts**.
-
-> #### Listen to events from an organization webhook endpoint
-> 
-> If you create a webhook endpoint in an [organization account](https://docs.stripe.com/get-started/account/orgs.md), select **Accounts** to listen to events from accounts in your organization. If you have [Connect platforms](https://docs.stripe.com/connect.md) as members of your organizations and want to listen to events from the all the platforms’ connected accounts, select **Connected accounts**.
-
-1. Select the API version for the [events object](https://docs.stripe.com/api/events.md) you want to consume.
-2. Select the [event types](https://docs.stripe.com/api/events/types.md) that you want to send to a webhook endpoint.
-3. Select **Continue**, then select **Webhook endpoint** as the destination type.
-4. Click **Continue**, then provide the **Endpoint URL** and an optional description for the webhook.
-
-#### API
-
-You can create a new event destination that notifies you when a [usage-based billing](https://docs.stripe.com/billing/subscriptions/usage-based.md) validation error is triggered using the [API](https://docs.stripe.com/api/v2/event-destinations.md).
-
-If you’ve created a [Connect application](https://docs.stripe.com/connect.md) and want to listen to your connected accounts, use the [events_from](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-events_from) parameter and set its value to `@accounts`. For [Organization](https://docs.stripe.com/get-started/account/orgs.md) event destinations, use `@organization_members` for events from accounts in your organization, or `@organization_members/@accounts` for events from connected accounts across your organization.
-
-```curl
-curl -X POST https://api.stripe.com/v2/core/event_destinations \
-  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
-  --json '{
-    "name": "My event destination",
-    "description": "This is my event destination, I like it a lot",
-    "type": "webhook_endpoint",
-    "event_payload": "thin",
-    "enabled_events": [
-        "v1.billing.meter.error_report_triggered"
-    ],
-    "webhook_endpoint": {
-        "url": "https://example.com/my/webhook/endpoint"
-    }
-  }'
-```
-
-> [Workbench](https://docs.stripe.com/workbench.md) replaces the existing [Developers Dashboard](https://docs.stripe.com/development/dashboard.md). If you’re still using the Developers Dashboard, see how to [create a new webhook endpoint](https://docs.stripe.com/development/dashboard/webhooks.md).
-
-## Secure your endpoint
-
-After confirming that your endpoint works as expected, secure it by implementing [webhook best practices](https://docs.stripe.com/webhooks.md#best-practices).
-
-Secure your integration by making sure your handler verifies that all webhook requests are generated by Stripe. You can verify webhook signatures using our official libraries or verify them manually.
+#### Verify the signature 
 
 #### Verify with official libraries (recommended)
 
@@ -610,141 +788,6 @@ Compare the signature (or signatures) in the header to the expected signature. F
 
 To protect against timing attacks, use a constant-time-string comparison to compare the expected signature to each of the received signatures.
 
-## Debug webhook integrations 
-
-Multiple types of issues can occur when delivering events to your webhook endpoint:
-
-- Stripe might not be able to deliver an event to your webhook endpoint.
-- Your webhook endpoint might have an SSL issue.
-- Your network connectivity is intermittent.
-- Your webhook endpoint isn’t receiving events that you expect to receive.
-
-### View event deliveries 
-
-To view event deliveries, open [Workbench](https://docs.stripe.com/workbench.md), select the webhook endpoint under **Webhooks**, then select the **Event deliveries** tab. The **Event deliveries** tab provides a list of events and whether they’re `Delivered`, `Pending`, or `Failed`. Click an event to view metadata, including the HTTP status code of the delivery attempt and the time of pending future deliveries.
-
-You can also use the [Stripe CLI](https://docs.stripe.com/cli.md) to [listen for events](https://docs.stripe.com/webhooks.md#test-webhook) directly in your terminal.
-
-### Fix HTTP status codes
-
-When an event displays a status code of `200`, it indicates successful delivery to the webhook endpoint. You might also receive a status code other than `200`. View the table below for a list of common HTTP status codes and recommended solutions.
-
-| Pending webhook status | Description | Fix |
-| --- | --- | --- |
-| (Unable to connect) ERR | We’re unable to establish a connection to the destination server. | Make sure that your host domain is publicly accessible to the internet. |
-| (`302`) ERR (or other `3xx` status) | The destination server attempted to redirect the request to another location. We consider redirect responses to webhook requests as failures. | Set the webhook endpoint destination to the URL resolved by the redirect. |
-| (`400`) ERR (or other `4xx` status) | The destination server can’t or won’t process the request. This might occur when the server detects an error (`400`), when the destination URL has access restrictions, (`401`, `403`, `405`), or when the destination URL doesn’t exist (`404`). | Make sure that your endpoint is publicly accessible to the internet and accepts a POST HTTP method. |
-| (`500`) ERR (or other `5xx` status) | The destination server encountered an error while processing the request. | Review your application’s logs to understand why it’s returning a `500` error. |
-| (TLS error) ERR | We couldn’t establish a secure connection to the destination server. Issues with the SSL/TLS certificate or an intermediate certificate in the destination server’s certificate chain usually cause these errors. Stripe requires *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) version `v1.2` or higher. | Perform an [SSL server test](https://www.ssllabs.com/ssltest/) to find issues that might cause this error. |
-| (Timed out) ERR | The destination server took too long to respond to the webhook request. | Make sure you defer complex logic and return a successful response immediately in your webhook handling code. |
-
-## Event delivery behaviors 
-
-This section helps you understand different behaviors to expect regarding how Stripe sends events to your webhook endpoint.
-
-### Automatic retries
-
-Stripe attempts to deliver events to your destination for up to three days with an exponential back off in live mode. View when the next retry will occur, if applicable, in your event destination’s **Event deliveries** tab. We retry event deliveries created in a sandbox three times over the course of a few hours. If your destination has been disabled or deleted when we attempt a retry, we prevent future retries of that event. However, if you disable and then re-enable the event destination before we’re able to retry, you still see future retry attempts.
-
-### Manual retries
-
-There are two ways to manually retry events:
-
-- In the Stripe Dashboard, click **Resend** when looking at a specific event. This works for up to 15 days after the event creation.
-- With the [Stripe CLI](https://docs.stripe.com/cli/events/resend), run the `stripe events resend <event_id> --webhook-endpoint=<endpoint_id>` command. This works for up to 30 days after the event creation.
-
-Manually resending an event that had previous delivery failures to a webhook endpoint doesn’t dismiss Stripe’s [automatic retry behavior](https://docs.stripe.com/webhooks.md#automatic-retries), even if it results in a `2xx` status code. Learn how to [process undelivered webhook events](https://docs.stripe.com/webhooks/process-undelivered-events.md) to stop future retries.
-
-### Event ordering
-
-Stripe doesn’t guarantee the delivery of events in the order that they’re generated. For example, creating a subscription might generate the following events:
-
-- `customer.subscription.created`
-- `invoice.created`
-- `invoice.paid`
-- `charge.created` (if there’s a charge)
-
-Make sure that your event destination isn’t dependent on receiving events in a specific order. Be prepared to manage their delivery appropriately. You can also use the API to retrieve any missing objects. For example, you can retrieve the invoice, charge, and subscription objects with the information from `invoice.paid` if you receive this event first.
-
-### API versioning
-
-The API version in your account settings when the event occurs dictates the API version, and therefore the structure of an [Event](https://docs.stripe.com/api/events.md) sent to your destination. For example, if your account is set to an older API version, such as 2015-02-16, and you change the API version for a specific request with [versioning](https://docs.stripe.com/api.md#versioning), the [Event](https://docs.stripe.com/api/events.md) object generated and sent to your destination is still based on the 2015-02-16 API version. You can’t change [Event](https://docs.stripe.com/api/events.md) objects after creation. For example, if you update a charge, the original charge event remains unchanged. As a result, subsequent updates to your account’s API version don’t retroactively alter existing [Event](https://docs.stripe.com/api/events.md) objects. Retrieving an older [Event](https://docs.stripe.com/api/events.md) by calling `/v1/events` using a newer API version also has no impact on the structure of the received event. You can set test event destinations to either your default API version or the latest API version. The [Event](https://docs.stripe.com/api/events.md) sent to the destination is structured for the event destination’s specified version.
-
-## Best practices for using webhooks 
-
-Review these best practices to make sure your webhook endpoints remain secure and function well with your integration.
-
-### Handle duplicate events
-
-Webhook endpoints might occasionally receive the same event more than once. You can guard against duplicated event receipts by logging the [event IDs](https://docs.stripe.com/api/events/object.md#event_object-id) you’ve processed, and then not processing already-logged events.
-
-In some cases, two separate Event objects are generated and sent. To identify these duplicates, use the ID of the object in `data.object` along with the `event.type`.
-
-### Only listen to event types your integration requires
-
-Configure your webhook endpoints to receive only the types of events required by your integration. Listening for extra events (or all events) puts undue strain on your server and we don’t recommend it.
-
-You can [change the events](https://docs.stripe.com/api/webhook_endpoints/update.md#update_webhook_endpoint-enabled_events) that a webhook endpoint receives in the Dashboard or with the API.
-
-### Handle events asynchronously
-
-Configure your handler to process incoming events with an asynchronous queue. You might encounter scalability issues if you choose to process events synchronously. Any large spike in webhook deliveries (for example, during the beginning of the month when all subscriptions renew) might overwhelm your endpoint hosts.
-
-Asynchronous queues allow you to process the concurrent events at a rate your system can support.
-
-### Exempt webhook route from CSRF protection 
-
-If you’re using Rails, Django, or another web framework, your site might automatically check that every POST request contains a *CSRF token*. This is an important security feature that helps protect you and your users from [cross-site request forgery](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_\(CSRF\)) attempts. However, this security measure might also prevent your site from processing legitimate events. If so, you might need to exempt the webhooks route from CSRF protection.
-
-#### Rails
-
-```ruby
-class StripeController < ApplicationController
-  # If your controller accepts requests other than Stripe webhooks,
-  # you'll probably want to use `protect_from_forgery` to add CSRF
-  # protection for your application. But don't forget to exempt
-  # your webhook route!
-  protect_from_forgery except: :webhook
-
-  def webhook
-    # Process webhook data in `params`
-  end
-end
-```
-
-### Receive events with an HTTPS server
-
-If you use an HTTPS URL for your webhook endpoint (required in live mode), Stripe validates that the connection to your server is secure before sending your webhook data. For this to work, your server must be correctly configured to support HTTPS with a valid server certificate. Stripe webhooks support only *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) versions v1.2 and v1.3.
-
-### Roll endpoint signing secrets periodically 
-
-The secret used for verifying that events come from Stripe is modifiable in the **Webhooks** tab in Workbench. To keep them safe, we recommend that you roll (change) secrets periodically, or when you suspect a compromised secret.
-
-To roll a secret:
-
-1. Click each endpoint in the Workbench **Webhooks** tab that you want to roll the secret for.
-2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 24 hours to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
-
-### Verify events are sent from Stripe 
-
-Without verification, an attacker could send fake webhook events to your endpoint to trigger actions like fulfilling orders, granting account access, or modifying records. Always verify that webhook events originate from Stripe before acting on them.
-
-Use both of these protections:
-
-- **IP allowlisting**: Stripe sends webhook events from a set list of [IP addresses](https://docs.stripe.com/ips.md). Configure your server or firewall to only accept webhook requests from these addresses.
-- **Signature verification**: Stripe signs every webhook event by including a signature in the `Stripe-Signature` header. Verify this signature using our [official libraries](https://docs.stripe.com/webhooks.md#verify-official-libraries) or [manually](https://docs.stripe.com/webhooks.md#verify-manually) to confirm the event wasn’t sent or modified by a third party.
-
-The following section describes how to verify webhook signatures:
-
-1. Retrieve your endpoint’s secret.
-2. Verify the signature.
-
-#### Retrieving your endpoint’s secret 
-
-Use Workbench and go to the **Webhooks** tab to view all your endpoints. Select an endpoint that you want to obtain the secret for, then click **Click to reveal**.
-
-Stripe generates a unique secret key for each endpoint. If you use the same endpoint for both [test and live API keys](https://docs.stripe.com/keys.md#test-live-modes), the secret is different for each one. Additionally, if you use multiple endpoints, you must obtain a secret for each one you want to verify signatures on. After this setup, Stripe starts to sign each webhook it sends to the endpoint.
-
 ### Preventing replay attacks 
 
 A [replay attack](https://en.wikipedia.org/wiki/Replay_attack) is when an attacker intercepts a valid payload and its signature, then re-transmits them. To mitigate such attacks, Stripe includes a timestamp in the `Stripe-Signature` header. Because this timestamp is part of the signed payload, it’s also verified by the signature, so an attacker can’t change the timestamp without invalidating the signature. If the signature is valid but the timestamp is too old, you can have your application reject the payload.
@@ -757,7 +800,7 @@ Stripe generates the timestamp and signature each time we send an event to your 
 
 ### Quickly return a 2xx response 
 
-Your [endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) must quickly return a successful status code (`2xx`) prior to any complex logic that could cause a timeout. For example, you must return a `200` response before updating a customer’s invoice as paid in your accounting system.
+Your [endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) must quickly return a successful status code (`2xx`) before any complex logic that could cause a timeout. For example, you must return a `200` response before updating a customer’s invoice as paid in your accounting system.
 
 ## See also
 

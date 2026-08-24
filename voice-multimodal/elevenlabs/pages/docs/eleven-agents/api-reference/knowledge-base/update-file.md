@@ -62,7 +62,7 @@ Successful Response
       - Allowed values: `prompt`, `auto`
     - `url` (string, required)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -94,7 +94,7 @@ Successful Response
     - `supported_usages` (list of enum, required)
       - Allowed values: `prompt`, `auto`
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -187,7 +187,7 @@ Successful Response
       - `started_at` (integer, optional)
       - `completed_at` (integer, optional)
     - `auto_sync_info` (object, optional)
-      - `minimum_frequency_days` (integer, optional, default: 7) — Maximum number of days between automatic syncs
+      - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
       - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
       - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
       - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
@@ -210,7 +210,7 @@ Successful Response
 
 ```json
 {
-  "file": "<file: U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==>"
+  "file": "<file: [object Object]>"
 }
 ```
 
@@ -224,33 +224,33 @@ Successful Response
     "creator_name": "John Doe",
     "creator_email": "john.doe@example.com",
     "role": "admin",
-    "anonymous_access_level_override": "viewer",
+    "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<p>Welcome to the Q2 2024 product documentation. This document covers all updates and features released in this quarter.</p>",
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "extracted_inner_html": "extracted_inner_html",
+  "id": "id",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 2540000
+    "created_at_unix_secs": 1,
+    "last_updated_at_unix_secs": 1,
+    "size_bytes": 1
   },
-  "name": "Product Documentation Q2 2024",
+  "name": "name",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.company.com/product-q2-2024.pdf",
+  "url": "url",
   "auto_sync_info": {
-    "minimum_frequency_days": 7,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "next_refresh_by": 1688806400
+    "minimum_frequency_days": 1,
+    "auto_remove": true,
+    "consec_failures": 1,
+    "next_refresh_by": 1
   },
   "content_format": "html",
-  "folder_parent_id": "folder_9X7b2LkPq3",
+  "folder_parent_id": "folder_parent_id",
   "folder_path": [
     {
-      "id": "folder_root",
-      "name": "Company Knowledge Base"
+      "id": "id",
+      "name": "name"
     }
   ]
 }
@@ -295,7 +295,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -323,7 +323,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -335,7 +335,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -349,7 +349,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -363,7 +363,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -374,7 +374,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ=="
+    "fileName": "[object Object]"
   ]
 ]
 

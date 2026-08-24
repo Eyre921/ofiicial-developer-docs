@@ -652,6 +652,7 @@ Successful Response
     - `turn` (object, optional) — Configuration for turn detection
       - `soft_timeout_config` (object, optional) — Configuration for soft timeout functionality. Provides immediate feedback during longer LLM responses.
         - `message` (string, optional) — Message to show when the first soft timeout is reached while waiting for LLM response. Supports dynamic variables (e.g., \{\{system\_\_time}}, \{\{custom\_variable}}).
+        - `additional_soft_timeout_messages` (list of string, optional) — Extra static filler messages for subsequent soft timeouts in the same LLM generation. The first timeout uses `message`. If fewer messages are configured than `max_soft_timeouts_per_generation`, the last configured message is repeated; otherwise a built-in filler is used.
     - `tts` (object, optional) — Configuration for conversational text to speech
       - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
         - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
@@ -691,6 +692,7 @@ Successful Response
   - `branch_id` (string, optional) — ID of the agent branch to use for this conversation
   - `environment` (string, optional) — Environment to use for resolving environment variables
   - `starting_workflow_node_id` (string, optional) — If set, start the workflow at this node id instead of the default entry
+  - `procedure_ids` (list of string, optional) — If set, only these procedures are available to the starting agent. Each ID must be attached to that agent; unknown IDs fail conversation start. An empty list disables all of that agent's procedures. Not applied after an agent transfer. Requires enable_procedure_ids_from_client.
   - `dynamic_variables` (map from string to any, optional)
 - `environment` (string, optional, default: production)
 - `tag_ids` (list of string, optional) — Conversation tag ids assigned to this conversation.
@@ -1019,6 +1021,9 @@ Successful Response
     "branch_id": "branch_id",
     "environment": "environment",
     "starting_workflow_node_id": "starting_workflow_node_id",
+    "procedure_ids": [
+      "procedure_ids"
+    ],
     "dynamic_variables": {
       "key": "value"
     }

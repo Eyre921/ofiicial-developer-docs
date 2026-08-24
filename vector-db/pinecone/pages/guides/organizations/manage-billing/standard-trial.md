@@ -1,10 +1,10 @@
 ---
-title: "Standard trial"
+title: "Pinecone Standard plan trial"
 source: https://docs.pinecone.io/guides/organizations/manage-billing/standard-trial
 path: guides/organizations/manage-billing/standard-trial
 ---
 
-Get $300 in credits over 21 days with the Pinecone Standard plan trial, including RBAC, bulk import, backup and restore, and higher scale limits.
+Evaluate the Pinecone Standard plan with $300 in credits over 21 days, including bulk import, backup and restore, RBAC, and higher scale limits.
 
 The Standard trial lets you evaluate Pinecone without requiring any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits) that are suitable for testing Pinecone at scale.
 
@@ -25,54 +25,46 @@ The Standard trial lets you evaluate Pinecone without requiring any up-front pay
 
 ## Expiration
 
-At the end of a Standard trial, or when you've used all of your credits, you can take one of the following actions:
+When your Standard trial ends, or when you use all of your credits, your quotas are blocked and console access is limited to the billing page. You don't automatically return to your previous plan; to restore full access, take one of the following actions:
 
-* Add a payment method and continue on with the Standard plan.
+* Add a payment method and continue on the Standard plan.
 * Upgrade to the Enterprise plan.
-* [Downgrade to the Starter plan](#downgrading-to-the-starter-plan) (you can also do this before your trial expires, if you choose).
+* [Downgrade to the Starter plan](#downgrade-to-the-starter-plan) (you can also do this any time before the trial expires).
+
+If you started the trial from the Builder plan, you aren't charged the \$20/month Builder fee during the trial.
 
 <Note>
   Learn more about [pricing](https://www.pinecone.io/pricing/).
 </Note>
 
-## Downgrading to the Starter plan
+## Downgrade to the Starter plan
 
-To downgrade from a Standard trial to the Starter plan, you'll need to bring your usage within Starter plan limits.
+You can downgrade from a Standard trial to the Starter plan at any time.
 
-* No more than 5 indexes, all serverless and in the `us-east-1` region of AWS
-  * If you have serverless indexes in a region other than `us-east-1`, [create a new serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data) into the new index, and [delete the old index](/guides/manage-data/manage-indexes#delete-an-index).
-  * If you have more than 5 serverless indexes, [delete indexes](/guides/manage-data/manage-indexes#delete-an-index) until you have 5 or fewer.
-  * If you have pod-based indexes, [delete them](/guides/manage-data/manage-indexes#delete-an-index).
-* No more than 1 project
-  * If you have more than 1 project, [delete all but 1 project](/guides/projects/manage-projects#delete-a-project).
-  * Before you can delete a project, you must [delete all indexes](/guides/manage-data/manage-indexes#delete-an-index) and [delete all collections](/guides/manage-data/back-up-an-index#delete-a-collection) in the project.
-* No more than 2 GB of data across all of your serverless indexes
-  * If you are storing more than 2 GB of data, [delete records](/guides/manage-data/delete-data) until you're storing less than 2 GB.
-* No more than 100 namespaces per serverless index
-  * If any serverless index has more than 100 namespaces, [delete namespaces](/guides/manage-data/delete-data#delete-all-records-from-a-namespace) until it has 100 or fewer remaining.
-* No more than 3 [assistants](/guides/assistant/overview)
-  * If you have more than 3 assistants, [delete assistants](/guides/assistant/manage-assistants#delete-an-assistant) until you have 3 or fewer.
-* Within the Starter plan's monthly [ingestion](/guides/assistant/pricing-and-limits#ingestion) and token limits
-  * Your usage must fit within the Starter plan limits for [ingestion units](/guides/assistant/pricing-and-limits#ingestion), chat tokens, context tokens, and storage. Reduce files or usage until you are within those limits.
-* No more than 1 GB of assistant storage
-  * If you have more than 1 GB of assistant storage, [delete files](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) until you're storing less than 1 GB.
-* No more than 2 users
-* No collections or backups (these are automatically deleted as part of the downgrade process)
+When you downgrade to the Starter plan in the Pinecone console, you choose which projects, indexes, assistants, and members to keep, up to the [Starter plan limits](/reference/api/database-limits): 1 project, 5 serverless indexes in the `us-east-1` region of AWS, 5 assistants, and 2 members. Pinecone deletes everything you don't keep, along with all backups, backup schedules, and collections.
+
+The downgrade doesn't reduce your data or change your configuration, so do this first:
+
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index **before** you start the downgrade: the migration saves your index as a collection, and the downgrade deletes all collections.
+* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
+* **Disconnect your organization's [SSO connection](/guides/organizations/understanding-organizations#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/guides/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Get under the Starter storage limits.** Do this last, after the migrations above, which can briefly leave a second copy of an index: no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 <Note>
-  You do not need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion, tokens, and so on) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
+  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 </Note>
 
 <Note>
-  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder—such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO—must be removed or stopped.
+  **Switching from Standard to Builder instead of Starter?** Your organization must be under the [Builder plan quotas](/reference/api/database-limits), backups must be deleted, and any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO, must be removed or stopped.
 </Note>
-
-If you have questions, [contact Support](https://www.pinecone.io/contact/support/).
 
 ## Limits
 
 * Each organization is allowed only one trial.
-* Organizations already on a Builder, Standard, or Enterprise plan cannot activate a Standard plan trial.
-* Organizations that initially subscribed to Pinecone through marketplace partners cannot activate a Standard plan trial.
+* Organizations already on a Standard or Enterprise plan can't activate a Standard plan trial.
+* Organizations that initially subscribed to Pinecone through marketplace partners can't activate a Standard plan trial.
 
-If you have any questions, [contact Support](https://www.pinecone.io/contact/support/).
+If you have questions, [contact Support](https://www.pinecone.io/contact/support/).

@@ -28,6 +28,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -40,10 +42,41 @@ npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
 
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
+```
+
 The Python example uses the `requests` library to download the dubbed audio. Install it
 with `pip install requests`.
 
 #### Make the API request
+
+#### SDK
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice, and add the following code:
 
@@ -157,7 +190,7 @@ console.log("Saved dubbed audio to dubbed.wav");
 The download URL in `outputs.lossless_audio` is signed and expires about an hour after it
 is issued. Fetch the language again to get a fresh URL if it has expired.
 
-#### Execute the code
+Then run it:
 
 ```python
 python example.py
@@ -165,6 +198,38 @@ python example.py
 
 ```typescript
 npx tsx example.mts
+```
+
+The dubbed audio is saved to `dubbed.wav` in your working directory.
+
+#### CLI
+
+The CLI mirrors the same flow. Each step prints JSON — copy the `project_id` and
+`language_id` from the responses into the next command, and poll the `get` commands
+until the status settles.
+
+```bash
+# 1. Create a project from a source URL (note the returned project_id)
+elevenlabs dubbing project create \
+  --source-url https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3 \
+  --source-language en \
+  --reference "Quickstart dub"
+
+# 2. Poll until the project status is "ready"
+elevenlabs dubbing project get --project-id <project_id> --query status
+
+# 3. Add a Spanish language target (note the returned language_id)
+elevenlabs dubbing project language create --project-id <project_id> --target-language es
+
+# 4. Poll until the language status is "completed"
+elevenlabs dubbing project language get \
+  --project-id <project_id> --language-id <language_id> --query status
+
+# 5. Get the signed download URL, then save the dubbed audio
+elevenlabs dubbing project language get \
+  --project-id <project_id> --language-id <language_id> --query outputs.lossless_audio
+
+curl -o dubbed.wav "<lossless_audio_url>"
 ```
 
 The dubbed audio is saved to `dubbed.wav` in your working directory.

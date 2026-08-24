@@ -28,7 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/upload
 ### Body (multipart/form-data)
 
 - `file` (file, required) — The audio file to upload.
-- `extract_composition_plan` (enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1` or `music_v2`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
+- `extract_composition_plan` (boolean or enum, optional) — Whether to generate and return the composition plan for the uploaded song. Pass a model id (`music_v1` or `music_v2`) to control which composition plan format is returned. Passing `true`/`false` is deprecated; `true` defaults to the `music_v1` plan format. Enabling this will increase the latency.
 - `with_timestamps` (boolean, optional) — Whether to transcribe the uploaded song and return word-level timestamps. If True, the response will include words_timestamps but will increase the latency.
 
 ## Response

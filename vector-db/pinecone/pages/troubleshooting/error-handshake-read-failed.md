@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/troubleshooting/error-handshake-read-failed
 path: troubleshooting/error-handshake-read-failed
 ---
 
-Troubleshoot “Error: Handshake read failed when connecting” in Pinecone: When trying to connect to Pinecone server, some users may receive an error message.
+Fix the Pinecone 'Handshake read failed' connection error by checking your firewall and network, then verifying your SDK setup and API key are correct.
 
 ## Problem
 

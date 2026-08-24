@@ -30,6 +30,8 @@ ELEVENLABS_API_KEY=<your_api_key_here>
 
 #### Install the SDK
 
+#### SDK
+
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
 ```python
@@ -40,6 +42,35 @@ pip install python-dotenv
 ```typescript
 npm install @elevenlabs/elevenlabs-js
 npm install dotenv
+```
+
+#### CLI
+
+Install the ElevenLabs CLI. Homebrew (macOS) and Scoop (Windows) are recommended.
+
+```bash title="Homebrew (macOS)"
+brew install elevenlabs/tap/elevenlabs
+```
+
+```powershell title="Scoop (Windows)"
+scoop bucket add elevenlabs https://github.com/elevenlabs/scoop-bucket
+scoop install elevenlabs
+```
+
+```bash title="curl"
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/elevenlabs/cli/releases/latest/download/elevenlabs-cli-installer.sh | sh
+```
+
+Working with an AI coding assistant? Run `elevenlabs generate-skills` in your project to write a
+`SKILL.md` for every command group into `skills/`, so your assistant knows the CLI's full surface
+without you pasting docs. Use `--output-dir` to put them elsewhere. This reads the CLI's own
+embedded API definition, so it needs no API key and works offline — and it stays in step with
+whichever CLI version you have installed.
+
+Then authenticate — this opens your browser to authorize the CLI:
+
+```bash
+elevenlabs auth login
 ```
 
 #### Submit the generation
@@ -53,6 +84,8 @@ returns as soon as the generation is queued. It requires a webhook subscribed to
 events; see [Image & Video
 webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up, or omit the
 field and poll instead.
+
+#### SDK
 
 ```python
 # example.py
@@ -95,6 +128,27 @@ const generation = await elevenlabs.flows.image.create({
 });
 
 console.log(generation.id, generation.status);
+```
+
+#### CLI
+
+The CLI submits the same request as JSON, then polls until the generation completes and downloads the result:
+
+```bash
+# 1. Submit the generation (note the returned id)
+elevenlabs flows image create --json '{
+  "model_id": "gemini-3-pro-image",
+  "prompt": "A corgi in a tiny lifeguard chair on a sunlit beach at golden hour, photorealistic",
+  "aspect_ratio": "16:9",
+  "resolution": "2K"
+}'
+
+# 2. Poll until the status is "completed"
+elevenlabs flows image get --generation-id <id> --query status
+
+# 3. Read the signed content URL, then download the image
+elevenlabs flows image get --generation-id <id> --query content_url
+curl -o corgi.png "<content_url>"
 ```
 
 The response contains the generation ID and nothing else. A newly created generation is always
