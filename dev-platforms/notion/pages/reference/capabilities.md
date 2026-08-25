@@ -48,9 +48,7 @@ A connection can request different levels of user capabilities, which affect how
 * **User information without email addresses**: Selecting this option ensures that User objects will include all information about a user, including name and profile image, but omit the email address.
 * **User information with email addresses**: Selecting this option ensures that User objects will include all information about the user, including name, profile image, and their email address.
 
-## Capability Behaviors and Best Practices
-
-A connection's capabilities will never supersede a user's. If a user loses edit access to the page where they have added a connection, that connection will now also only have read access, regardless of the capabilities the connection was created with. Similarly, a PAT can only use the permissions of the user who created it.
+## Capability behaviors and best practices
 
 For public connections, users will need to re-authenticate with a connection if the capabilities are changed in the time since the user last authenticated with the connection.
 

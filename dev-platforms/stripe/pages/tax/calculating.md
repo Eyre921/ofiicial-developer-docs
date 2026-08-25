@@ -41,11 +41,11 @@ If your business ships goods from locations other than your head office, you can
 
 You can calculate taxes based on [performance location addresses](https://docs.stripe.com/tax/location-sales.md) that differ from your business address and your customer’s address. If you provide a performance location, Stripe Tax uses its address as the place of taxation for physical goods, services and events. To use performance locations:
 
-- You must define performance locations through the Stripe Tax API.
-- Performance locations aren’t supported through the Dashboard.
+- You can provide a performance location on line items through the Tax Calculations API, Checkout Sessions, Payment Intents, Payment Links, and invoices. For implementation instructions, see [Tax in-person sales at a specific location](https://docs.stripe.com/tax/optional-tax-location/integration-guide.md) and [Tax ticket sales based on event location](https://docs.stripe.com/tax/tax-for-tickets/integration-guide.md).
+- You can also set a performance location from a product’s details page in the Dashboard for eligible tax codes. See [Product tax codes](https://docs.stripe.com/tax/tax-codes.md) to find supported tax codes.
 - Unrecognized performance location addresses return a tax calculation error.
 - You can’t use performance locations for digital product tax codes.
-- Some [product tax codes](https://docs.stripe.com/tax/tax-codes.md) **require** the performance location.
+- Some [product tax codes](https://docs.stripe.com/tax/tax-codes.md?type=events) **require** the performance location.
 
 Even if you provide a performance location, the business address and the customer address remain relevant in determining whether reverse charges might apply.
 
@@ -63,7 +63,7 @@ Discounts don’t affect the tax rates themselves, only the amount on which tax 
 
 ## Tax breakdowns
 
-Stripe Tax provides detailed tax breakdowns for each transaction. These breakdowns aren’t sorted in any specific order. All applicable taxes are calculated and applied simultaneously. The order of items in the breakdown doesn’t indicate priority or application sequence.
+Stripe Tax provides detailed tax breakdowns for each transaction. All applicable taxes are calculated and applied simultaneously, and the order of items in the breakdown doesn’t indicate priority or application sequence. Stripe Tax orders the breakdown by jurisdiction level (country, then state, county, city, and district), then by tax amount, then by jurisdiction name.
 
 [Specify product tax codes and tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md): Learn how to set up products and prices to automatically calculate tax.
 

@@ -4,83 +4,64 @@ source: https://docs.stripe.com/disputes/match.md
 path: disputes/match
 ---
 
-# High risk merchant lists
+# Terminated merchant files
 
-Learn the criteria for inclusion in MATCH and VMSS lists.
+Learn about the Mastercard (MATCH) and Visa (VMSS) databases.
 
-*Card networks* (A network that processes the transactions of a particular card brand. It might be an intermediary in front of an issuing bank as with Visa or Mastercard, or a standalone entity as with American Express), such as Visa and Mastercard, operate databases known as Terminated Merchant Files (TMFs) that contain information about accounts that have been closed by credit card processors around the world for high chargebacks or violations of card brand rules.
+Visa and Mastercard operate global databases known as terminated merchant files (TMF), specifically Mastercard’s MATCH and Visa’s VMSS. Acquirers must screen all applicants against these databases before approval and report any merchant they terminate for fraud, severe policy violations, or excessive chargebacks.
 
-All payment processors must check these databases when accepting a new user, and must also add merchants to the database if they close the account and it meets TMF criteria.
-
-Being placed on a TMF can have serious effects. While they’re only supposed to be informational tools during the account application process, many entities refuse to accept businesses or individuals listed on a TMF. For this reason, it’s important to be aware of TMF criteria and make sure you avoid becoming eligible.
-
-The most common lists are Mastercard’s MATCH and Visa’s VMSS. In the following sections, we describe how MATCH and VMSS qualification works and what happens to MATCH entries.
+A TMF listing creates a severe industry-wide restriction, as most processors automatically reject listed businesses or principal owners. Listings remain active for 5 years. Only the specific acquiring bank that initiated the listing can request a removal or correction.
 
 ## MATCH
 
-MATCH stands for Mastercard Alert to Control High-risk Merchants system. MATCH is Mastercard’s database of Terminated Merchant Files (TMFs) that contain information about accounts that have been closed by credit card processors around the world for high chargebacks or violations of card brand rules.
+Member Alert to Control High-Risk Merchants (MATCH) is Mastercard’s global database of businesses terminated by acquirers because of severe rule violations, fraud, or high chargebacks.
 
-### Criteria for MATCH qualification
+### MATCH qualification and reporting
 
-When a relationship ends between a business and a credit card processor, the processor must determine whether the business meets criteria to be placed on MATCH.
+Acquirers must review every terminated account against MATCH criteria. If the merchant qualifies, the acquirer must add them to the database within 1 business day of termination or eligibility.
 
-If any MATCH criteria are satisfied, the processor must add information about the business to MATCH within one business day of termination or within one business day of the account becoming eligible for MATCH after termination.
+#### MATCH Qualitative Criteria
 
-#### MATCH qualitative criteria
-
-The majority of MATCH criteria, or “reason codes,” involve breaches of card network rules, including illegal activity and collusion. These 11 reason codes, and the exact Mastercard definition, are listed below.
-
-The Identity Theft reason code should be used when a fraudulent account is opened with stolen information, and the listing of this information on MATCH shouldn’t hamper the legitimate identity holder from opening a processing account. It instead serves as a warning to the credit card processor that the application may contain stolen identity information.
+Acquirers categorize MATCH listings using 11 standard reason codes based on rule violations.
 
 | Code | Reason | Description |
 | --- | --- | --- |
-| 1 | Account Data Compromise | An occurrence that results, directly or indirectly, in the unauthorized access to or disclosure of Account data. |
-| 2 | Common Point of Purchase | Account data is stolen at the Merchant and then used for fraudulent purchases at other Merchant locations. |
-| 3 | Laundering | The Merchant was engaged in laundering activity. Laundering means that a Merchant presented to its Acquirer Transaction records that weren’t valid Transactions for sales of goods or services between that Merchant and a bona fide Cardholder. |
-| 7 | Fraud Conviction | There was a criminal fraud conviction of a principal owner or partner of the Merchant. |
-| 8 | Mastercard Questionable Merchant Audit Program | The Merchant was determined to be a Questionable Merchant as per the criteria set forth in the Mastercard Questionable Merchant Audit Program. |
-| 9 | Bankruptcy/Liquidation/Insolvency | The Merchant was unable or is likely to become unable to discharge its financial obligations. |
-| 10 | Violation of Standards | With respect to a Merchant reported by a Mastercard Acquirer, the Merchant was in violation of one or more Standards that describe procedures to be employed by the Merchant in Transactions in which Cards are used, including, by way of example and not limitation, the Standards for honoring all Cards, displaying the Marks, charges to Cardholders, minimum/ maximum Transaction amount restrictions, and prohibited Transactions set forth in Chapter 5 of the Mastercard Rules manual. |
-| 11 | Merchant Collusion | The Merchant participated in fraudulent collusive activity. |
-| 12 | PCIDSS Non-Compliance | The Merchant failed to comply with Payment Card Industry (PCI) Data Security Standard (DSS) requirements. |
-| 13 | Illegal Transactions | The Merchant was engaged in illegal Transactions. |
-| 14 | Identity Theft | The Acquirer has reason to believe that the identity of the listed Merchant or its principal owners was unlawfully assumed for the purpose of unlawfully entering into a Merchant Agreement. |
+| 1 | Account Data Compromise | An occurrence that results in the unauthorized access to or disclosure of account data. |
+| 2 | Common Point of Purchase | Account data is stolen at the merchant and then used for fraudulent purchases at other merchant locations. |
+| 3 | Laundering | The merchant was engaged in laundering activity. Laundering means that a merchant presented  transaction records to its acquirer that weren’t valid transactions for sales of goods or services between that merchant and an actual cardholder. |
+| 7 | Fraud Conviction | There was a criminal fraud conviction of a principal owner or partner of the merchant. |
+| 8 | Mastercard Questionable Merchant Audit Program | The merchant was determined to be a questionable merchant as per the criteria set forth in the Mastercard questionable merchant audit program. |
+| 9 | Bankruptcy/Liquidation/Insolvency | The merchant was unable or is likely to become unable to discharge its financial obligations. |
+| 10 | Violation of Standards | The merchant was in violation of one or more standards that describe procedures to be employed by the merchant in transactions that cards are used in, including, by way of example and not limitation, the standards for honoring all cards, displaying the marks, charges to cardholders, minimum and maximum transaction amount restrictions, and prohibited transactions set forth in chapter 5 of the Mastercard Rules manual. |
+| 11 | Merchant Collusion | The merchant participated in fraudulent collusive activity. |
+| 12 | PCIDSS Non-Compliance | The merchant failed to comply with Payment Card Industry (PCI) Data Security Standard (DSS) requirements. |
+| 13 | Illegal Transactions | The merchant was engaged in illegal Transactions. |
+| 14 | Identity Theft | The acquirer has reason to believe that the identity of the listed merchant or its principal owners was unlawfully assumed for the purpose of unlawfully entering into a merchant Agreement. |
 
 #### MATCH quantitative criteria
 
-Two MATCH reason codes have specific numeric thresholds defined by Mastercard for when processors must add accounts to MATCH.
-
-These reason codes, which involve chargeback and fraud activity on an account, are the most common reasons for being added to MATCH, and can affect businesses that aren’t engaged in illegal or rule-violating activity. These reason codes are as follows:
+Mastercard defines specific numeric thresholds for the two most common MATCH reason codes: Excessive Chargebacks and Excessive Fraud. Merchants can trigger these codes based strictly on transaction volume, even without intentional rule violations.
 
 | Code | Reason | Description |
 | --- | --- | --- |
-| 4 | Excessive Chargebacks | With respect to a Merchant reported by a Mastercard Acquirer, the number of Mastercard chargebacks in any single month exceeded 1% of the number of Mastercard sales Transactions in that month, and those chargebacks totaled USD 5,000 or more. |
-| 5 | Excessive Fraud | The Merchant effected fraudulent Transactions of any type (counterfeit or otherwise) meeting or exceeding the following minimum reporting Standard: the Merchant’s fraud-to-sales dollar volume ratio was 8% or greater in a calendar month, and the Merchant effected 10 or more fraudulent Transactions totaling USD 5,000 or more in that calendar month. |
+| 4 | Excessive Chargebacks | Merchants trigger this code when monthly Mastercard chargebacks exceed 1% of total monthly Mastercard sales transactions and total 5,000 USD or more. Both thresholds must be met in the same month to qualify. |
+| 5 | Excessive Fraud | Merchants trigger this code when monthly fraud-to-sales dollar volume reaches 8% or greater, and the merchant processes 10 or more fraudulent transactions totaling 5,000 USD or more. All conditions must be met within the same calendar month. |
 
-### Additional information on excessive chargebacks and fraud
+### Network differences and timing rules
 
-These MATCH reason codes are separate from card brand chargeback and fraud monitoring programs operated by Visa and Mastercard. However, as defined, the excessive chargebacks criteria only applies to activity on Mastercard cards, even though MATCH is required by all major card networks. If dispute activity doesn’t take place on a Mastercard card, it wouldn’t qualify toward MATCH counts. Other card networks may ask for businesses to be listed on MATCH if those businesses hit the “excessive” stages of their card brand monitoring programs or are fined as part of those programs.
+The dispute data used to calculate Code 04 relies entirely on Mastercard transactions. Other networks can still request a MATCH listing if a merchant breaches their specific monitoring thresholds or incurs network fines.
 
-A month is defined as a calendar month. For example, if a processor were evaluating MATCH eligibility from the month of January, they would look at the number of transactions in January and the number of chargebacks in January—not the number of chargebacks from transactions made in January.
+All calculations measure chargebacks and sales transactions processed within the same calendar month, regardless of when the original purchase occurred.
 
-After a business meets the excessive chargebacks or fraud MATCH criteria in a calendar month, the merchant must be added to MATCH if the processing relationship is terminated, even if the processing relationship isn’t ended in that calendar month. For example, if a business only meets MATCH criteria in February, and the processing relationship isn’t ended until September, the processor is still required to add information to MATCH even though the qualifying activity took place in February. Additionally, even if a business doesn’t meet MATCH criteria when the relationship is initially terminated, it can still qualify for MATCH if the criteria are met afterward—for example, if chargebacks are initiated after termination.
+Furthermore, closing a processing account doesn’t prevent a listing. Acquirers must add a merchant to MATCH if they meet the criteria, even if the violation occurs or the relationship officially ends months after account closure.
 
-#### Example qualification data
+#### Sample qualification scenario
 
-Take the following sample data from a calendar month:
-
-- Number of Mastercard transactions: 125
-- Number of Mastercard chargebacks: 6
-- Ratio of chargebacks to transactions: (6/125) = 4.8%
-- Volume of Mastercard chargebacks: 6250 USD
-
-In this case, the business would qualify for MATCH for excessive chargebacks if the processing relationship later terminates. It doesn’t matter if chargebacks are later reversed or won by the merchant.
-
-There is no minimum number of chargebacks for MATCH qualification for excessive chargebacks.
+Consider a merchant that records 125 Mastercard transactions and 6 Mastercard chargebacks totaling 6,250 USD in a single calendar month. This activity represents a 4.8% dispute ratio. Because both thresholds are crossed, the ratio exceeds 1% and the total volume exceeds 5,000 USD, the business qualifies for a MATCH listing upon termination. Winning or reversing the chargebacks later doesn’t alter this status. Mastercard doesn’t require a minimum count of individual chargebacks to trigger an excessive chargeback listing.
 
 ### Information added to MATCH
 
-The card networks require that the following information be added to MATCH if available:
+The card networks require that the following information be added to MATCH:
 
 - Business Legal Name and DBA
 - Business Address
@@ -94,81 +75,72 @@ The card networks require that the following information be added to MATCH if av
 - Account Opening Date and Termination Date
 - MATCH Reason Code
 
-Mastercard doesn’t assess the accuracy of MATCH listings.
+Stripe doesn’t disclose MATCH database information to users.
 
-### Removal from MATCH
+### MATCH entry removal
 
-Unfortunately, Stripe—or any other processor—usually can’t remove an account’s information from MATCH upon request. A processor can only remove a MATCH entry if:
+An acquirer can only remove a MATCH listing under two conditions.
 
-- The processor added the business to MATCH in error.
-- The listing is for MATCH reason code 12 (Payment Card Industry Data Security Standard Noncompliance) and the processor has confirmed that the business has become compliant with the Payment Card Industry Data Security Standard.
+First, the acquirer must have added the merchant to the database in error.
 
-If you believe either of those two situations exist, you’ll need to reach out to the processor that listed your information on MATCH to be removed. Records remain on the MATCH system for five years before being automatically purged by Mastercard.
+Second, if the merchant was listed under Reason Code 12 for PCI DSS noncompliance, the acquirer can remove the listing after verifying that the merchant has achieved full compliance.
 
-### Next steps if you’re listed on MATCH
+Merchants who meet either removal condition must contact the specific acquirer that issued the listing.
 
-If you’re listed on MATCH, you’re likely to find out when you attempt to sign up for a new processor. MATCH is only supposed to be used as an informational tool by processors during the application process; however, the presence of a MATCH listing often means that an application is declined.
+If the listing acquirer is unknown, merchants can email Mastercard directly at matchbusinessowner@mastercard.com to request their listing details.
 
-You’ll need to reach out to your previous processor to find out why your information was added to MATCH. Note, however, that MATCH criteria are determined by Mastercard and processors are required to follow this criteria. Stripe can’t remove a merchant that met the “excessive chargebacks” criteria even if the business has remediated the issues leading to chargebacks, for example.
+### Stripe MATCH processing limitations
 
-Due to banking partner restrictions, Stripe generally can’t process for businesses listed on MATCH unless extenuating circumstances apply, such as the case of a legitimate merchant who previously had their identity information stolen.
-
-If you require assistance with a dispute, [contact Stripe support](https://support.stripe.com/contact).
+A MATCH listing generally disqualifies a merchant from processing with Stripe. Because Mastercard dictates the database rules, Stripe can’t remove a merchant that met the excessive chargeback criteria, even if the business has resolved its dispute issues. Stripe can only consider processing for a listed merchant if they provide proof of an extenuating circumstance, such as being a verified victim of identity theft under Reason Code 14.
 
 ## VMSS
 
-VMSS is Visa’s database of Terminated Merchant Files (TMFs) that contain information about accounts that have been closed by credit card processors around the world for high chargebacks or violations of card brand rules.
+Visa Merchant Screening Service (VMSS) is Visa’s global database of merchants terminated by acquirers because of severe rule violations, fraud, or high chargebacks.
 
-### Criteria for VMSS Qualification
+### VMSS qualification and reporting
 
-When a relationship ends between a business and a credit card processor, the processor must determine whether the business meets the criteria to be placed on VMSS.
-
-If any VMSS criteria are satisfied, the processor must add information about the terminated business to VMSS.
+Acquirers must review every terminated account against VMSS criteria. If the merchant qualifies, the acquirer must report the business and its principal owners to the VMSS database.
 
 #### VMSS qualitative criteria
 
-The majority of VMSS criteria, or “reason codes,” involve breaches of card network rules, including illegal activity and collusion. See the 13 reason codes and the exact Visa definition below.
+Acquirers categorize VMSS listings using 13 standard reason codes based on rule violations, illegal activity, and collusion.
 
-The `Identity Theft` reason code applies when a fraudulent account is opened with stolen information, and the listing of this information on VMSS shouldn’t hamper the legitimate identity holder from opening a processing account. It instead serves as a warning to the credit card processor that the application might contain stolen identity information.
+The Identity Theft reason code applies when an unauthorized user opens an account using stolen credentials. This specific listing flags potential identity fraud for future acquirers without penalizing the actual identity theft victim.
 
 | Code | Reason | Description |
 | --- | --- | --- |
-| 23 | Transaction Laundering | The Merchant or Third Party Agent misrepresented the source of submitted transactions (unauthorized aggregation), and/or submitted transactions on behalf of another Merchant (factoring). |
-| 24 | Illegal Transactions | The Merchant or Third Party Agent submitted unlawful and/or prohibited transactions into the payment system. |
-| 25 | Visa Risk Compliance Program Identification | The Merchant or Third Party Agent was terminated at the Acquirer’s discretion after identification in a Visa risk compliance program and didn’t adequately remediate. |
-| 26 | Merchant Collusion | The Merchant or Third Party Agent colluded to commit fraud. |
-| 27 | Common Point of Purchase (CPP) | The Merchant or Third Party Agent was identified as a location where account data from legitimate transactions was compromised for use in subsequent fraudulent activity (including skimming) and didn’t adequately remediate. |
-| 28 | Fraud Conviction | The principal owners of a Merchant outlet or Third Party Agent was/were convicted of a fraud crime. |
-| 29 | Bankruptcy/Liquidation/Insolvency | The Merchant or Third Party Agent can’t fulfill its financial obligations due to potential or actual bankruptcy, insolvency, or suspension of business operations. |
-| 30 | Violation of Merchant or Third Party Agent Agreement | The Merchant or Third Party Agent breached their agreement. |
-| 31 | Violation of the Visa Rules | The Merchant or Third Party Agent violated the Visa Rules exposing the Acquirer of the payment system to undue risk. |
-| 32 | Account Information Security Program Noncompliance | The Merchant or Third Party Agent was non-compliant with the Payment Card Industry Data Security Standard (PCI DSS) and/or the Payment Application Data Security Standard (PA-DSS) requirements. |
-| 33 | Account Data Compromise | The Merchant or Third Party Agent suffered a data breach, directly or indirectly resulting in an unauthorized disclosure of payment account and/or transaction information. |
-| 34 | Merchant Identity Theft | The Merchant application was submitted using principal owner and /or corporate officer information belonging to individuals that were never party to the Merchant agreement. |
-| 35 | Disqualification from the Visa Payment System | Visa disqualified the Merchant or Third Party Agent from participating in the Visa payment system. |
+| 23 | Transaction Laundering | The merchant or third party agent misrepresented the source of submitted transactions (unauthorized aggregation), or submitted transactions on behalf of another merchant (factoring). |
+| 24 | Illegal Transactions | The merchant or third party agent submitted unlawful or prohibited transactions into the payment system. |
+| 25 | Visa Risk Compliance Program Identification | The merchant or third party agent was terminated at the acquirer’s discretion after identification in a Visa risk compliance program and didn’t adequately remediate. |
+| 26 | Merchant Collusion | The merchant or third party agent colluded to commit fraud. |
+| 27 | Common Point of Purchase (CPP) | The merchant or third party agent was identified as a location where account data from legitimate transactions was compromised for use in subsequent fraudulent activity (including skimming) and didn’t adequately remediate. |
+| 28 | Fraud Conviction | The principal owners of a merchant outlet or third party agent were convicted of a fraud crime. |
+| 29 | Bankruptcy/Liquidation/Insolvency | The merchant or third party agent can’t fulfill its financial obligations because of potential or actual bankruptcy, insolvency, or suspension of business operations. |
+| 30 | Violation of Merchant or Third Party Agent Agreement | The merchant or third party agent breached their agreement. |
+| 31 | Violation of the Visa Rules | The merchant or third party agent violated the Visa rules exposing the acquirer of the payment system to undue risk. |
+| 32 | Account Information Security Program Noncompliance | The merchant or third party agent was non-compliant with the Payment Card Industry Data Security Standard (PCI DSS) or the Payment Application Data Security Standard (PA-DSS) requirements. |
+| 33 | Account Data Compromise | The merchant or third party agent suffered a data breach, directly or indirectly resulting in an unauthorized disclosure of payment account or transaction information. |
+| 34 | Merchant Identity Theft | The merchant application was submitted using principal owner or corporate officer information belonging to individuals that were never a party to the merchant agreement. |
+| 35 | Disqualification from the Visa Payment System | Visa disqualified the merchant or third party agent from participating in the Visa payment system. |
 
 #### VMSS quantitative criteria
 
-Two VMSS reason codes have specific numeric thresholds defined by Visa for when processors must add accounts to the VMSS list.
-
-These reason codes, which involve chargeback and fraud activity on an account, are the most common reasons for being added to VMSS, and can affect businesses that aren’t engaged in illegal or rule-violating activity. These reason codes are as follows:
+Visa defines specific numeric thresholds for its two most common reason codes: excessive chargebacks and excessive fraud. Merchants can trigger these listings based strictly on transaction metrics, even without intentional rule violations.
 
 | Code | Reason | Description |
 | --- | --- | --- |
-| 21 | Excessive Fraud | The Merchant or Third Party Agent submitted excessive fraudulent transactions (250,000 USD fraud amount and 1.8 percent (180 basis points) fraud-to-sales amount ratio in any single month) into payment system, and didn’t adequately remediate. |
-| 22 | Excessive Disputes | The Merchant or Third Party Agent generated excessive disputes (1,000 dispute count, and 1.8 percent (180 basis points) dispute-to-sales amount ratio in any single month) into payment system and didn’t adequately remediate. |
+| 21 | Excessive Fraud | The merchant or third party agent submitted excessive fraudulent transactions (an amount of 250,000 USD fraud and 1.8 percent, which translates to 180 basis points of a fraud-to-sales amount ratio in any single month) into the payment system, and didn’t adequately remediate. |
+| 22 | Excessive Disputes | The merchant or third party agent generated excessive disputes (1,000 dispute count and 1.8 percent, which translates to 180 basis points dispute-to-sales amount ratio in any single month) into payment system and didn’t adequately remediate. |
 
-### Removal from VMSS
+### VMSS entry removal
 
-Stripe—or any other processor—usually can’t remove an account’s information from VMSS upon request. A processor can only remove a VMSS entry if the processor themselves added the business to VMSS in error.
+Listings remain active in the VMSS database for 5 years.
 
-### Next steps if you’re listed on VMSS
+Visa doesn’t  allow merchants to appeal listings directly, nor do they allow banks to delete an entry only because a merchant resolves their chargeback issues. The bank that issued the listing can only modify or delete the file if they confirm that the original entry was made in error.
 
-If you’re listed on VMSS, you might not know until you attempt to sign up for a new processor. VMSS is only supposed to be used as an informational tool by processors during the application process; however, the presence of a VMSS listing often leads to an application being declined.
+Merchants who don’t know which acquiring bank placed them on the database might attempt to contact Visa directly through the Visa “Contact Us” page to see if they can locate the listing source.
 
-You’ll need to contact your previous processor to find out why your information was added to VMSS. However, VMSS criteria are determined by Visa and processors are required to follow this criteria. Stripe can’t remove a business that met the “excessive chargebacks” criteria under any circumstances. For example, this is true even if the business has remediated the issues leading to chargebacks.
+### Stripe VMSS processing limitations
 
-Because of banking partner restrictions, Stripe generally can’t process for businesses listed on VMSS unless extenuating circumstances apply, such as the case of a legitimate business who previously had their identity information stolen.
-
-If you require assistance with a dispute, [contact Stripe support](https://support.stripe.com/contact).
+A VMSS listing generally disqualifies a merchant from processing with Stripe. Stripe can’t remove a merchant that met Visa’s excessive chargeback criteria, regardless of any subsequent dispute remediation.
 

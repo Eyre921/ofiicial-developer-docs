@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -86,6 +86,7 @@
 - `api-reference/introduction` — [Introduction](pages/api-reference/introduction.md) · [原文](https://docs.fireworks.ai/api-reference/introduction)
 - `api-reference/list-accounts` — [List Accounts](pages/api-reference/list-accounts.md) · [原文](https://docs.fireworks.ai/api-reference/list-accounts)
 - `api-reference/list-api-keys` — [List API Keys](pages/api-reference/list-api-keys.md) · [原文](https://docs.fireworks.ai/api-reference/list-api-keys)
+- `api-reference/list-audit-logs` — [List User Audit Logs](pages/api-reference/list-audit-logs.md) · [原文](https://docs.fireworks.ai/api-reference/list-audit-logs)
 - `api-reference/list-batch-inference-jobs` — [List Batch Inference Jobs](pages/api-reference/list-batch-inference-jobs.md) · [原文](https://docs.fireworks.ai/api-reference/list-batch-inference-jobs)
 - `api-reference/list-datasets` — [List Datasets](pages/api-reference/list-datasets.md) · [原文](https://docs.fireworks.ai/api-reference/list-datasets)
 - `api-reference/list-deployed-models` — [List LoRAs](pages/api-reference/list-deployed-models.md) · [原文](https://docs.fireworks.ai/api-reference/list-deployed-models)

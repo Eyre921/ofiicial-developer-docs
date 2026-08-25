@@ -4,277 +4,102 @@ source: https://resend.com/docs/dashboard/receiving/introduction
 path: docs/dashboard/receiving/introduction
 ---
 
-Learn how to receive emails via webhooks.
+An introduction to receiving emails with Resend.
 
-Resend supports receiving emails (commonly called inbound) in addition to sending emails. This is useful for:
+## Receiving emails through Resend
 
-* Receiving support emails from users
-* Processing forwarded attachments
-* Replying to emails from customers
+Resend provides all the tools you need to receive emails (commonly called inbound) at [a verified domain](/docs/dashboard/domains/introduction), or at your account's Resend-managed `<id>.resend.app` subdomain.
 
-## How does it work
+This is useful for:
 
-Resend processes all incoming emails for your receiving domain, parses the contents and attachments, and then sends a `POST` request to an endpoint that you choose.
+* Receiving support emails from users.
+* Processing forwarded attachments.
+* Replying to emails from customers.
 
-To receive emails, you can either use a domain managed by Resend, or [set up a custom domain](/docs/dashboard/receiving/custom-domains).
+## Receiving features
 
-<img alt="Receiving email process" />
+With Resend's email receiving features, you can:
 
-<Info>
-  Importantly, *any email* sent to your receiving domain will be received by Resend and forwarded to your webhook. You can intelligently route based on the `to` field in the webhook event.
+* View all received emails in the [**Emails** Dashboard page](https://resend.com/emails).
+* Receive incoming emails and [get notified with a webhook](/docs/dashboard/receiving/create-receiving-webhook) event.
+* [Poll for new inbound emails in the terminal](/docs/cli#receiving) and display them as they arrive.
+* [Retrieve full email content](/docs/dashboard/receiving/get-email-content) (HTML, text, headers) for use in your application.
+* [Process attachments](/docs/dashboard/receiving/attachments) using attachment metadata and temporary download URLs.
+* [Forward emails](/docs/dashboard/receiving/forward-emails) to another email address.
+* [Reply to emails](/docs/dashboard/receiving/reply-to-emails) in the same thread
+* [View API endpoint logs](/docs/dashboard/logs/introduction) and deliverability metrics for monitoring and troubleshooting.
 
-  For example, if your domain is `cool-hedgehog.resend.app`, you will receive
-  emails sent to `anything@cool-hedgehog.resend.app`.
+## Quickstart
 
-  The same applies to [custom domains](/docs/dashboard/receiving/custom-domains). If
-  your domain is `yourdomain.tld`, you will receive emails sent to
-  `anything@yourdomain.tld`.
-</Info>
-
-## Receive emails from your app with a webhook
-
-Here's how to start receiving emails using a domain managed by Resend.
+To start receiving emails using a domain managed by Resend, get your unique `<id>.resend.app` domain:
 
 <Steps>
-  <Step title="Get your .resend.app domain">
-    Any emails sent to an `<anything>@<id>.resend.app` address will be received by Resend and forwarded to your webhook.
+  <Step title="Go to the Emails page in your Resend dashboard." />
 
-    To see your Resend domain:
+  <Step title="Select the Receiving tab." />
 
-    1. Go to the [emails page](https://resend.com/emails).
-    2. Select the ["Receiving" tab](https://resend.com/emails/receiving).
-    3. Click the three dots button and select "Receiving address."
+  <Step title="Get your custom Resend domain.">
+    Click the three dots button and select Receiving address to see your custom Resend subdomain.
 
     <img alt="Get your Resend domain" />
   </Step>
 
-  <Step title="Configure webhooks">
-    1. Go to the [Webhooks](https://resend.com/webhooks) page.
-    2. Click `Add Webhook`.
-    3. Enter the URL of your webhook endpoint.
-    4. Select the event type `email.received`.
-    5. Click `Add`.
-
-    <Tip>
-      For development, you can create a tunnel to your localhost server using a tool like
-      [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
-
-      Example: `https://example123.ngrok.io/api/webhook`
-    </Tip>
-
-    <Tip>
-      The [Resend CLI](/docs/cli) also has a built-in `emails receiving listen` command
-      that polls for new inbound emails and displays them as they arrive. See the
-      [CLI reference](/docs/cli#receiving) for setup instructions.
-    </Tip>
-
-    <img alt="Add Webhook for Receiving Emails" />
+  <Step title="Send yourself a test email.">
+    Send an email to any username at your subdomain (e.g., `test@<id>.resend.app`). You will receive emails sent to any address at your Resend domain.
   </Step>
 
-  <Step title="Receive email events">
-    In your application, create a new route that can accept `POST` requests.
-
-    Here's how you can implement this:
-
-    <CodeGroup>
-      ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // app/api/events/route.ts
-      import type { NextRequest } from 'next/server';
-      import { NextResponse } from 'next/server';
-
-      export const POST = async (request: NextRequest) => {
-        const event = await request.json();
-
-        if (event.type === 'email.received') {
-          return NextResponse.json(event);
-        }
-
-        return NextResponse.json({});
-      };
-      ```
-
-      ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // routes/api.php
-      use Illuminate\Http\Request;
-      use Illuminate\Support\Facades\Route;
-
-      Route::post('/events', function (Request $request) {
-          $event = $request->json()->all();
-
-          if ($event['type'] === 'email.received') {
-              return response()->json($event);
-          }
-
-          return response()->json([]);
-      });
-      ```
-
-      ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // index.php
-      header('Content-Type: application/json');
-
-      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-          http_response_code(405);
-          echo json_encode(['error' => 'Method Not Allowed']);
-          exit;
-      }
-
-      $body = file_get_contents('php://input');
-      $event = json_decode($body, true);
-
-      if (json_last_error() !== JSON_ERROR_NONE) {
-          http_response_code(400);
-          echo json_encode(['error' => 'Invalid JSON']);
-          exit;
-      }
-
-      if ($event['type'] === 'email.received') {
-          echo json_encode($event);
-          exit;
-      }
-
-      echo json_encode([]);
-      ```
-
-      ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-      #[derive(Serialize)]
-      struct Empty {}
-
-      async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
-          if matches!(
-              event.r#type,
-              resend_rs::events::EmailEventType::EmailReceived
-          ) {
-              Json(event).into_response()
-          } else {
-              Json(Empty {}).into_response()
-          }
-      }
-      ```
-    </CodeGroup>
-
-    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
-
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "type": "email.received",
-      "created_at": "2026-02-22T23:41:12.126Z",
-      "data": {
-        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-        "created_at": "2026-02-22T23:41:11.894Z",
-        "from": "onboarding@resend.dev",
-        "to": ["delivered@resend.dev"],
-        "bcc": [],
-        "cc": [],
-        "received_for": ["forwarded@example.com"],
-        "message_id": "<111-222-333@email.example.com>",
-        "subject": "Sending this example",
-        "attachments": [
-          {
-            "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
-            "filename": "avatar.png",
-            "content_type": "image/png",
-            "content_disposition": "inline",
-            "content_id": "img001"
-          }
-        ]
-      }
-    }
-    ```
-  </Step>
+  <Step title="View your received email in the Receiving tab of the Emails Dashboard page." />
 </Steps>
 
-## What can you do with Receiving emails
+You can also [configure a verified domain for receiving emails](/docs/dashboard/receiving/custom-domains) at your custom domain. Once you add the MX record to your custom domain, you will receive emails through Resend for any address at that domain.
 
-Once you receive an email, you can process it in a variety of ways. Here are some common actions you can take:
+## Configure Webhook
 
-* [Get email content](/docs/dashboard/receiving/get-email-content)
-* [Process attachments](/docs/dashboard/receiving/attachments)
-* [Forward emails to another address](/docs/dashboard/receiving/forward-emails)
-* [Reply to emails in the same thread](/docs/dashboard/receiving/reply-to-emails)
+Once you can receive mail, you can [create a received mail webhook](/docs/dashboard/receiving/create-receiving-webhook) to receive real-time notifications about incoming email.
 
-<Info>
-  Webhooks do not include the email body, headers, or attachments, only their
-  metadata. You must call the [Received emails
-  API](/docs/api-reference/emails/retrieve-received-email) or the [Attachments
-  API](/docs/api-reference/emails/list-received-email-attachments) to retrieve them.
-  This design choice supports large attachments in serverless environments that
-  have limited request body sizes.
-</Info>
+Resend processes all incoming emails to your receiving domain, parses the contents and attachments, and then sends a `POST` request to an endpoint that you choose to handle the received email.
 
-## FAQ
+<img alt="Receiving email process" />
 
-<AccordionGroup>
-  <Accordion title="Will I receive emails for any address at my domain?">
-    Yes. Once you add the MX record to your [custom domains](/docs/dashboard/receiving/custom-domains), you will receive emails for
-    any address at that domain.
+## Choose your infrastructure
 
-    For example, if your domain is `yourdomain.tld`, you will receive
-    emails sent to `<anything>@yourdomain.tld`. You can then filter or
-    route based on the `to` field in the webhook event.
+To handle your received emails, you can use a variety of tools:
 
-    The same applies if you use the domain managed by Resend. If the domain given to you is `cool-hedgehog.resend.app`,
-    you'll receive any email send to `<anything>@cool-hedgehog.resend.app`.
-  </Accordion>
+* [SDK](/docs/sdks): process inbound emails with an SDK built for your language
+* [Integrations](/docs/integrations): process inbound emails using a framework or tool you already use
+* [API](/docs/api-reference/emails/retrieve-received-email): process inbound emails with raw HTTP API calls
+* [CLI](/docs/cli#receiving): process inbound emails and stream incoming messages from the terminal
+* [MCP](/docs/mcp-server): list, read, and download inbound emails through your agent with MCP
 
-  <Accordion title="Can I receive emails on a subdomain?">
-    Yes. You can add the MX record to any subdomain (e.g.
-    `subdomain.yourdomain.tld`) and receive emails there.
-  </Accordion>
+See how to use all of Resend's receiving features such as processing attachments and forwarding emails to another address in the [receiving email guides](#related-guides).
 
-  <Accordion title="Should I add the `MX` records for my root domain or a subdomain?">
-    If you already have existing MX records for your root domain, we recommend
-    that you create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX
-    record there. This way, you can use Resend for receiving emails without
-    affecting your existing email service.
+## Manage your received emails
 
-    If you still want to use the same domain both in for Resend and your day-to-day
-    email service, you can also set up forwarding rules in your existing email service
-    to forward emails to an address that's configured in Resend or forward them directly
-    to the SMTP server address that appears in the receiving `MX` record.
-  </Accordion>
+After you've received your first email, you'll be able to view and manage your emails in the [Emails Dashboard page](https://resend.com/emails) under the Receiving tab. From here, you can view email details, share a public version, and more.
 
-  <Accordion title="Will I lose my emails if my webhook endpoint is down?">
-    No, you will not lose your emails. Resend stores emails as soon as they come
-    in.
+You can also manage your emails programmatically using the [Receiving API](/docs/api-reference/emails/retrieve-received-email), [CLI commands](/docs/cli#receiving), or the [MCP server](/docs/mcp-server).
 
-    Even if your webhook endpoint is down, you can still see your emails in
-    the dashboard and retrieve them using the [Receiving
-    API](/docs/api-reference/emails/retrieve-received-email).
+Learn more about [managing your received emails](/docs/dashboard/receiving/manage-emails) in the dedicated guide.
 
-    Additionally, we will retry delivering the webhook event on the schedule
-    described in our [webhooks documentation](/docs/webhooks/introduction#faq)
-    and you can also replay individual webhook events from the
-    [webhooks](/docs/webhooks/introduction) page in the dashboard.
-  </Accordion>
+## Related Guides
 
-  <Accordion title="How can I make sure that it's Resend who's sending me webhooks?">
-    All of Resend's webhooks include a secret and headers that you can use to verify
-    the authenticity of the request.
+See how to use Resend's receiving features.
 
-    In our SDKs, you can verify webhooks using
-    `resend.webhooks.verify()`, as shown below.
+<CardGroup>
+  <Card title="Custom domains" icon="globe" href="/docs/dashboard/receiving/custom-domains" />
 
-    ```js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    // throws an error if the webhook is invalid
-    // otherwise, returns the parsed payload object
-    const result = resend.webhooks.verify({
-      payload: JSON.stringify(req.body),
-      headers: {
-        id: req.headers['svix-id'],
-        timestamp: req.headers['svix-timestamp'],
-        signature: req.headers['svix-signature'],
-      },
-      webhookSecret: process.env.RESEND_WEBHOOK_SECRET,
-    })
-    ```
+  <Card title="Received email webhook" icon="mailbox-open-letter" href="/docs/dashboard/receiving/create-receiving-webhook" />
 
-    You can find more code samples and instructions on how to verify webhooks in our
-    [webhook verification documentation](/docs/webhooks/verify-webhooks-requests).
-  </Accordion>
-</AccordionGroup>
+  <Card title="Get email content" icon="envelope-open-text" href="/docs/dashboard/receiving/get-email-content" />
 
-## Try it yourself
+  <Card title="Process attachments" icon="file-plus" href="/docs/dashboard/receiving/attachments" />
+
+  <Card title="Forward emails" icon="arrow-turn-right" href="/docs/dashboard/receiving/forward-emails" />
+
+  <Card title="Threaded replies" icon="comment-arrow-down" href="/docs/dashboard/receiving/reply-to-emails" />
+</CardGroup>
+
+## Examples
 
 <CardGroup>
   <Card title="Next.js (TypeScript)" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/inbound">

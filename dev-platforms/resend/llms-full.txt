@@ -995,6 +995,107 @@ Update an existing API key.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.apiKeys.update(
+    'b6d24b8e-af0b-4c3c-be0c-359bbd97381e',
+    { name: 'Production' },
+  );
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->apiKeys->update('b6d24b8e-af0b-4c3c-be0c-359bbd97381e', [
+    'name' => 'Production'
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.ApiKeys.UpdateParams = {
+    "api_key_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
+    "name": "Production",
+  }
+
+  resend.ApiKeys.update(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    id: "b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
+    name: "Production"
+  }
+  Resend::ApiKeys.update(params)
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+  	params := &resend.UpdateApiKeyRequest{
+  		Name: "Production",
+  	}
+  	client.ApiKeys.Update("b6d24b8e-af0b-4c3c-be0c-359bbd97381e", params)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::UpdateApiKeyOptions, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _api_key = resend
+      .api_keys
+      .update(
+        "b6d24b8e-af0b-4c3c-be0c-359bbd97381e",
+        UpdateApiKeyOptions::new("Production"),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          UpdateApiKeyOptions params = UpdateApiKeyOptions
+                  .builder()
+                  .name("Production").build();
+
+          UpdateApiKeyResponseSuccess apiKey = resend.apiKeys().update("b6d24b8e-af0b-4c3c-be0c-359bbd97381e", params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.ApiKeyUpdateAsync( new Guid( "b6d24b8e-af0b-4c3c-be0c-359bbd97381e" ), "Production" );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X PATCH 'https://api.resend.com/api-keys/b6d24b8e-af0b-4c3c-be0c-359bbd97381e' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
@@ -1002,6 +1103,10 @@ Update an existing API key.
        -d $'{
     "name": "Production"
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend api-keys update b6d24b8e-af0b-4c3c-be0c-359bbd97381e --name Production
   ```
 </RequestExample>
 
@@ -3220,155 +3325,11 @@ You can retrieve broadcasts created via both this API and the Resend dashboard.
 </ResponseExample>
 
 
-# Retrieve Metrics
-Source: https://resend.com/docs/api-reference/broadcasts/get-broadcasts-metrics
-
-GET /broadcasts/metrics
-Retrieve account-wide broadcast metrics, aggregated across all broadcasts.
-
-<Warning>
-  Broadcast metrics and recipients are currently in private beta and only
-  available to a limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
-<Note>
-  Metrics are retained according to your plan's data retention window.
-  Requesting a `start_date` older than your retention window returns data
-  clamped to the oldest date your plan retains. This doesn't apply when
-  `broadcast_id` is set.
-</Note>
-
-<Note>
-  Responses are cached for up to 15 minutes, so a request for the same range may
-  return slightly stale data within that window.
-</Note>
-
-## Query Parameters
-
-<ListParamFormatNote />
-
-<ParamField type="string">
-  The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
-  (`2026-07-01T00:00:00Z`). Must be on or before `end_date`. Defaults to 6 days
-  before `end_date`.
-</ParamField>
-
-<ParamField type="string">
-  The end of the date range, as an ISO 8601 date or datetime. Values in the
-  future are clamped to the current time. Defaults to now.
-</ParamField>
-
-<ParamField type="string">
-  The IANA timezone (e.g. `America/New_York`) used to bucket periods when
-  `period` is in `dimensions`.
-</ParamField>
-
-<ParamField type="hourly | daily | weekly | monthly">
-  The bucket size used when `period` is in `dimensions`. Accepted but has no
-  effect otherwise.
-</ParamField>
-
-<ParamField type="string[]">
-  List of metrics to include in the response. Defaults to all of the
-  following:
-
-  `delivered`, `complained`, `suppressed`, `bounced`, `bounced_transient`,
-  `bounced_permanent`, `bounced_undetermined`, `opened`, `clicked`,
-  `unsubscribed`, `delivery_delayed`, `failed`, `sent`, `unique_opened`,
-  `unique_clicked`, `delivery_rate`, `open_rate`, `click_rate`, `bounce_rate`,
-  `complaint_rate`, `unsubscribe_rate`
-</ParamField>
-
-<ParamField type="string[]">
-  List of dimensions to break the response down by. Combine
-  `period` with `broadcast` for a joint breakdown (one row per unique `period`
-
-  * `broadcast` pair). Defaults to `[]`, returning a single `totals` row for
-    the whole range, with no `data`.
-
-  Possible values:
-
-  * `period`: one row per `granularity` period, in chronological order.
-  * `broadcast`: one row per broadcast, including its `name` resolved from your
-    account.
-</ParamField>
-
-<ParamField type="string[]">
-  List of broadcast IDs to restrict the response to, up to 100.
-</ParamField>
-
-<RequestExample>
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/broadcasts/metrics?start_date=2026-07-01&end_date=2026-07-08&metrics=sent,delivered,open_rate&dimensions=period,broadcast' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "metrics",
-    "start_date": "2026-07-01T00:00:00.000Z",
-    "end_date": "2026-07-08T00:00:00.000Z",
-    "metrics": ["sent", "delivered", "open_rate"],
-    "dimensions": ["period", "broadcast"],
-    "granularity": "daily",
-    "totals": {
-      "sent": 1204,
-      "delivered": 1180,
-      "open_rate": 50.0
-    },
-    "data": [
-      {
-        "period": "2026-07-01",
-        "id": "d91cd9bd-1176-4f47-2a4b-fce2d5399cbf",
-        "name": "July Newsletter",
-        "sent": 172,
-        "delivered": 169,
-        "open_rate": 49.7
-      }
-    ]
-  }
-  ```
-</ResponseExample>
-
-
 # List Clicked Links
 Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-clicked-links
 
 GET /broadcasts/:broadcast_id/clicked-links
 Retrieve the links clicked in a broadcast.
-
-<Warning>
-  Broadcast metrics and recipients are currently in private beta and only
-  available to a limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
 
 Retrieve every link clicked in a broadcast, ranked by total clicks. Results are
 paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
@@ -3445,9 +3406,75 @@ paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
   );
   ```
 
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Broadcasts.clicked_links(
+      id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+      params={"limit": 20},
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Broadcasts.clicked_links("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", { limit: 20 })
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Broadcasts.ClickedLinks("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _links = resend
+      .broadcasts
+      .clicked_links("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", ListOptions::default())
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  ListBroadcastClickedLinksResponseSuccess data = resend.broadcasts().clickedLinks("559ac32e-9ef5-46fb-82a1-b76b840c0f7b");
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.BroadcastClickedLinksAsync( new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ) );
+  Console.WriteLine( "Nr Links={0}", resp.Content.Data.Count );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/clicked-links?limit=20' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend broadcasts clicked-links 559ac32e-9ef5-46fb-82a1-b76b840c0f7b --limit 20
   ```
 </RequestExample>
 
@@ -3480,24 +3507,6 @@ Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipien
 
 GET /broadcasts/:broadcast_id/recipients
 Retrieve the recipients of a broadcast for a given event type.
-
-<Warning>
-  Broadcast metrics and recipients are currently in private beta and only
-  available to a limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
 
 Retrieve the recipients of a broadcast, filtered by a single event `type` (for
 example everyone who `opened`, `clicked`, or `bounced`). Results are paginated
@@ -3609,9 +3618,91 @@ with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` a
   );
   ```
 
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Broadcasts.recipients(
+      "559ac32e-9ef5-46fb-82a1-b76b840c0f7b", {"type": "clicked", "limit": 20}
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Broadcasts.recipients(
+    "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+    { type: "clicked", limit: 20 },
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	limit := 20
+  	client.Broadcasts.Recipients("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", &resend.ListBroadcastRecipientsOptions{
+  		Type:  resend.BroadcastRecipientEventTypeClicked,
+  		Limit: &limit,
+  	})
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::{BroadcastRecipientEventType, ListRecipientsOptions}, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let list_opts = ListRecipientsOptions::new(BroadcastRecipientEventType::Clicked).with_limit(20);
+
+    let _recipients = resend
+      .broadcasts
+      .recipients("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", list_opts)
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  ListBroadcastRecipientsResponseSuccess data = resend.broadcasts().recipients(
+      "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+      ListBroadcastRecipientsParams.builder()
+          .type(BroadcastRecipientEventType.CLICKED)
+          .limit(20)
+          .build());
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.BroadcastListRecipientsAsync(
+      new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ),
+      BroadcastRecipientEventType.Clicked,
+      new BroadcastListRecipientsQuery() { Limit = 20 } );
+  Console.WriteLine( "Recipients={0}", resp.Content.Data.Count );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/recipients?type=clicked&limit=20' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend broadcasts recipients 559ac32e-9ef5-46fb-82a1-b76b840c0f7b --type clicked --limit 20
   ```
 </RequestExample>
 
@@ -9238,24 +9329,6 @@ Source: https://resend.com/docs/api-reference/emails/get-metrics
 GET /emails/metrics
 Retrieve account-level email metrics.
 
-<Warning>
-  Email metrics are currently in private beta and only available to a
-  limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
 <Note>
   Metrics are retained according to your plan's data retention window.
   Requesting a `start_date` older than your retention window returns data
@@ -9340,17 +9413,8 @@ Retrieve account-level email metrics.
     startDate: '2026-07-01',
     endDate: '2026-07-08',
     dimensions: ['period', 'broadcast'],
-    filter: { broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'] },
+    broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
   });
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend->emails->metrics([
-    'start_date' => '2026-07-01',
-    'end_date' => '2026-07-08',
-    'dimensions' => ['period', 'broadcast'],
-    'broadcast_id' => ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
-  ]);
   ```
 
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -9412,20 +9476,21 @@ Retrieve account-level email metrics.
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::types::{Dimension, GetEmailMetricsOptions};
+  use resend_rs::types::GetEmailMetricsOptions;
   use resend_rs::{Resend, Result};
 
   #[tokio::main]
   async fn main() -> Result<()> {
     let resend = Resend::new("re_xxxxxxxxx");
 
-    let options = GetEmailMetricsOptions::new()
+    let options = GetEmailMetricsOptions::default()
       .with_start_date("2026-07-01")
       .with_end_date("2026-07-08")
-      .with_dimensions([Dimension::Period, Dimension::Broadcast])
+      .with_period_dimension()
+      .with_broadcast_dimension()
       .with_broadcast_id("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a");
 
-    let metrics = resend.emails.metrics(options).await?;
+    let _metrics = resend.emails.metrics(options).await?;
 
     Ok(())
   }
@@ -35320,54 +35385,21 @@ Here's how you can implement this:
 Once you process attachments, you may want to forward the email to another address. Learn more about [forwarding emails](/docs/dashboard/receiving/forward-emails).
 
 
-# Custom Receiving Domains
-Source: https://resend.com/docs/dashboard/receiving/custom-domains
+# Create a receiving Webhook
+Source: https://resend.com/docs/dashboard/receiving/create-receiving-webhook
 
-Receive emails using your own domain.
+Learn how to create a webhook to respond to received emails with Resend.
 
-Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), you can also receive emails using your own custom domain, such as `yourdomain.tld`.
+## Configure Webhook
 
-## Enabling receiving for a new domain
+Once you can [receive emails](/docs/dashboard/receiving/introduction#quickstart), you can create a route to handle these emails in your application and configure an [`email.received` webhook](/docs/webhooks/emails/received) in your Dashboard.
+
+Alternatively, you can use Resend's code tools to create your webhook from the [Webhooks API](/docs/api-reference/webhooks/create-webhook) or with a [webhook CLI command](/docs/cli#webhooks).
+
+To configure your webhook in the Dashboard:
 
 <Steps>
-  <Step title="Add the DNS record">
-    First, [verify your domain](/docs/dashboard/domains/introduction).
-
-    Receiving emails requires an extra [MX record](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
-
-    1. Go to the [Domains](https://resend.com/domains) page
-    2. Copy the MX record
-    3. Paste the MX record into your domain's DNS service
-
-    <img alt="Add DNS records for Receiving Emails" />
-
-    <Info>
-      If you already have existing MX records for your domain (because you're already
-      using it for a real inbox, for example), we recommend that you
-      create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX record
-      there. This way, you can use Resend for receiving emails without affecting
-      your existing email service. Note that you will *not* receive emails at Resend
-      if the required `MX` record is not the lowest priority value for the domain.
-
-      Alternatively, you can configure your email service to forward emails to an address
-      that's configured in Resend or forward them directly to the SMTP server address
-      that appears in the receiving `MX` record.
-    </Info>
-  </Step>
-
-  <Step title="Configure webhooks">
-    Next, create a new webhook endpoint to receive email events.
-
-    1. Go to the [Webhooks](https://resend.com/webhooks) page
-    2. Click "Add Webhook"
-    3. Enter the URL of your webhook endpoint
-    4. Select the event type `email.received`
-    5. Click "Add"
-
-    <img alt="Add Webhook for Receiving Emails" />
-  </Step>
-
-  <Step title="Receive email events">
+  <Step title="Create a route to receive emails.">
     In your application, create a new route that can accept `POST` requests.
 
     Here's how you can implement this:
@@ -35451,34 +35483,117 @@ Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), 
 
     Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "type": "email.received",
-      "created_at": "2026-02-22T23:41:12.126Z",
-      "data": {
-        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-        "created_at": "2026-02-22T23:41:11.894Z",
-        "from": "onboarding@resend.dev",
-        "to": ["delivered@resend.dev"],
-        "bcc": [],
-        "cc": [],
-        "received_for": ["forwarded@example.com"],
-        "message_id": "<111-222-333@email.example.com>",
-        "subject": "Sending this example",
-        "attachments": [
-          {
-            "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
-            "filename": "avatar.png",
-            "content_type": "image/png",
-            "content_disposition": "inline",
-            "content_id": "img001"
-          }
-        ]
+    <Tip>
+      Any email sent to any username at your receiving domain will be received
+      by Resend and forwarded to your webhook. You can intelligently route based
+      on the `to` field in the webhook event to create different workflows to
+      handle different inbound emails.
+    </Tip>
+  </Step>
+
+  <Step title="Go to the Webhooks page in your Resend Dashboard" />
+
+  <Step title="Click Add Webhook." />
+
+  <Step title="Enter the URL of the route you created for your webhook endpoint." />
+
+  <Step title="Select the event type `email.received`.">
+    <img alt="Add Webhook for Receiving Emails" />
+  </Step>
+
+  <Step title="Click Add." />
+</Steps>
+
+<Tip>
+  For development, you can create a tunnel to your localhost server using a tool like
+  [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
+
+  Example: `https://example123.ngrok.io/api/webhook`
+</Tip>
+
+Once you receive an email event, you can process the email body and attachments from the webhook payload.
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "type": "email.received",
+  "created_at": "2026-02-22T23:41:12.126Z",
+  "data": {
+    "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
+    "created_at": "2026-02-22T23:41:11.894Z",
+    "from": "onboarding@resend.dev",
+    "to": ["delivered@resend.dev"],
+    "bcc": [],
+    "cc": [],
+    "received_for": ["forwarded@example.com"],
+    "message_id": "<111-222-333@email.example.com>",
+    "subject": "Sending this example",
+    "attachments": [
+      {
+        "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
+        "filename": "avatar.png",
+        "content_type": "image/png",
+        "content_disposition": "inline",
+        "content_id": "img001"
       }
-    }
-    ```
+    ]
+  }
+}
+```
+
+<Info>
+  Webhooks do not include the email body, headers, or attachments, only their
+  metadata. You must call the [Received emails
+  API](/docs/api-reference/emails/retrieve-received-email) or the [Attachments
+  API](/docs/api-reference/emails/list-received-email-attachments) to retrieve them.
+  This design choice supports large attachments in serverless environments that
+  have limited request body sizes.
+</Info>
+
+## API Reference
+
+For complete API documentation, see the [Webhooks API reference](/docs/api-reference/webhooks/create-webhook).
+
+
+# Custom Receiving Domains
+Source: https://resend.com/docs/dashboard/receiving/custom-domains
+
+Receive emails using your own domain.
+
+In addition to [using Resend-managed domains](/docs/dashboard/receiving/introduction#quickstart), you can also receive emails using your own custom domain.
+
+## Enabling receiving for a new domain
+
+Receiving emails requires an extra [MX record](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
+
+<Steps>
+  <Step title="Verify your domain">
+    If you have not already done so, [add and verify your
+    domain](/docs/add-a-domain).
+  </Step>
+
+  <Step title="Navigate to the Domains page in your Dashboard" />
+
+  <Step title="Copy the MX record" />
+
+  <Step title="Paste the MX record into your domain's DNS service">
+    <img alt="Add DNS records for Receiving Emails" />
   </Step>
 </Steps>
+
+<Warning>
+  If you already have existing MX records for your domain (because you're already
+  using it for a real inbox, for example), we recommend that you
+  create a subdomain (e.g. `subdomain.example.com`) and add the MX record
+  there. This way, you can use Resend for receiving emails without affecting
+  your existing email service. Note that you will *not* receive emails at Resend
+  if the required `MX` record is not the lowest priority value for the domain.
+
+  Alternatively, you can configure your email service to forward emails to an address
+  that's configured in Resend or forward them directly to the SMTP server address
+  that appears in the receiving `MX` record.
+</Warning>
+
+You can now [create a webhook to receive emails](/docs/dashboard/receiving/create-receiving-webhook) at your custom domain in your application.
 
 ## Enabling receiving for an existing domain
 
@@ -35495,7 +35610,7 @@ Once you add the MX record, confirm by clicking the **I've added the record** bu
 <AccordionGroup>
   <Accordion title="What happens if I already have MX records for my domain?">
     If you already have existing MX records for your domain, we recommend that you
-    create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX record
+    create a subdomain (e.g. `subdomain.example.com`) and add the MX record
     there.
 
     That's because emails will usually only be delivered to the MX record with the lowest
@@ -35852,277 +35967,102 @@ Here are some examples:
 # Receiving Emails
 Source: https://resend.com/docs/dashboard/receiving/introduction
 
-Learn how to receive emails via webhooks.
+An introduction to receiving emails with Resend.
 
-Resend supports receiving emails (commonly called inbound) in addition to sending emails. This is useful for:
+## Receiving emails through Resend
 
-* Receiving support emails from users
-* Processing forwarded attachments
-* Replying to emails from customers
+Resend provides all the tools you need to receive emails (commonly called inbound) at [a verified domain](/docs/dashboard/domains/introduction), or at your account's Resend-managed `<id>.resend.app` subdomain.
 
-## How does it work
+This is useful for:
 
-Resend processes all incoming emails for your receiving domain, parses the contents and attachments, and then sends a `POST` request to an endpoint that you choose.
+* Receiving support emails from users.
+* Processing forwarded attachments.
+* Replying to emails from customers.
 
-To receive emails, you can either use a domain managed by Resend, or [set up a custom domain](/docs/dashboard/receiving/custom-domains).
+## Receiving features
 
-<img alt="Receiving email process" />
+With Resend's email receiving features, you can:
 
-<Info>
-  Importantly, *any email* sent to your receiving domain will be received by Resend and forwarded to your webhook. You can intelligently route based on the `to` field in the webhook event.
+* View all received emails in the [**Emails** Dashboard page](https://resend.com/emails).
+* Receive incoming emails and [get notified with a webhook](/docs/dashboard/receiving/create-receiving-webhook) event.
+* [Poll for new inbound emails in the terminal](/docs/cli#receiving) and display them as they arrive.
+* [Retrieve full email content](/docs/dashboard/receiving/get-email-content) (HTML, text, headers) for use in your application.
+* [Process attachments](/docs/dashboard/receiving/attachments) using attachment metadata and temporary download URLs.
+* [Forward emails](/docs/dashboard/receiving/forward-emails) to another email address.
+* [Reply to emails](/docs/dashboard/receiving/reply-to-emails) in the same thread
+* [View API endpoint logs](/docs/dashboard/logs/introduction) and deliverability metrics for monitoring and troubleshooting.
 
-  For example, if your domain is `cool-hedgehog.resend.app`, you will receive
-  emails sent to `anything@cool-hedgehog.resend.app`.
+## Quickstart
 
-  The same applies to [custom domains](/docs/dashboard/receiving/custom-domains). If
-  your domain is `yourdomain.tld`, you will receive emails sent to
-  `anything@yourdomain.tld`.
-</Info>
-
-## Receive emails from your app with a webhook
-
-Here's how to start receiving emails using a domain managed by Resend.
+To start receiving emails using a domain managed by Resend, get your unique `<id>.resend.app` domain:
 
 <Steps>
-  <Step title="Get your .resend.app domain">
-    Any emails sent to an `<anything>@<id>.resend.app` address will be received by Resend and forwarded to your webhook.
+  <Step title="Go to the Emails page in your Resend dashboard." />
 
-    To see your Resend domain:
+  <Step title="Select the Receiving tab." />
 
-    1. Go to the [emails page](https://resend.com/emails).
-    2. Select the ["Receiving" tab](https://resend.com/emails/receiving).
-    3. Click the three dots button and select "Receiving address."
+  <Step title="Get your custom Resend domain.">
+    Click the three dots button and select Receiving address to see your custom Resend subdomain.
 
     <img alt="Get your Resend domain" />
   </Step>
 
-  <Step title="Configure webhooks">
-    1. Go to the [Webhooks](https://resend.com/webhooks) page.
-    2. Click `Add Webhook`.
-    3. Enter the URL of your webhook endpoint.
-    4. Select the event type `email.received`.
-    5. Click `Add`.
-
-    <Tip>
-      For development, you can create a tunnel to your localhost server using a tool like
-      [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
-
-      Example: `https://example123.ngrok.io/api/webhook`
-    </Tip>
-
-    <Tip>
-      The [Resend CLI](/docs/cli) also has a built-in `emails receiving listen` command
-      that polls for new inbound emails and displays them as they arrive. See the
-      [CLI reference](/docs/cli#receiving) for setup instructions.
-    </Tip>
-
-    <img alt="Add Webhook for Receiving Emails" />
+  <Step title="Send yourself a test email.">
+    Send an email to any username at your subdomain (e.g., `test@<id>.resend.app`). You will receive emails sent to any address at your Resend domain.
   </Step>
 
-  <Step title="Receive email events">
-    In your application, create a new route that can accept `POST` requests.
-
-    Here's how you can implement this:
-
-    <CodeGroup>
-      ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // app/api/events/route.ts
-      import type { NextRequest } from 'next/server';
-      import { NextResponse } from 'next/server';
-
-      export const POST = async (request: NextRequest) => {
-        const event = await request.json();
-
-        if (event.type === 'email.received') {
-          return NextResponse.json(event);
-        }
-
-        return NextResponse.json({});
-      };
-      ```
-
-      ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // routes/api.php
-      use Illuminate\Http\Request;
-      use Illuminate\Support\Facades\Route;
-
-      Route::post('/events', function (Request $request) {
-          $event = $request->json()->all();
-
-          if ($event['type'] === 'email.received') {
-              return response()->json($event);
-          }
-
-          return response()->json([]);
-      });
-      ```
-
-      ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-      // index.php
-      header('Content-Type: application/json');
-
-      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-          http_response_code(405);
-          echo json_encode(['error' => 'Method Not Allowed']);
-          exit;
-      }
-
-      $body = file_get_contents('php://input');
-      $event = json_decode($body, true);
-
-      if (json_last_error() !== JSON_ERROR_NONE) {
-          http_response_code(400);
-          echo json_encode(['error' => 'Invalid JSON']);
-          exit;
-      }
-
-      if ($event['type'] === 'email.received') {
-          echo json_encode($event);
-          exit;
-      }
-
-      echo json_encode([]);
-      ```
-
-      ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-      #[derive(Serialize)]
-      struct Empty {}
-
-      async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
-          if matches!(
-              event.r#type,
-              resend_rs::events::EmailEventType::EmailReceived
-          ) {
-              Json(event).into_response()
-          } else {
-              Json(Empty {}).into_response()
-          }
-      }
-      ```
-    </CodeGroup>
-
-    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
-
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "type": "email.received",
-      "created_at": "2026-02-22T23:41:12.126Z",
-      "data": {
-        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-        "created_at": "2026-02-22T23:41:11.894Z",
-        "from": "onboarding@resend.dev",
-        "to": ["delivered@resend.dev"],
-        "bcc": [],
-        "cc": [],
-        "received_for": ["forwarded@example.com"],
-        "message_id": "<111-222-333@email.example.com>",
-        "subject": "Sending this example",
-        "attachments": [
-          {
-            "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
-            "filename": "avatar.png",
-            "content_type": "image/png",
-            "content_disposition": "inline",
-            "content_id": "img001"
-          }
-        ]
-      }
-    }
-    ```
-  </Step>
+  <Step title="View your received email in the Receiving tab of the Emails Dashboard page." />
 </Steps>
 
-## What can you do with Receiving emails
+You can also [configure a verified domain for receiving emails](/docs/dashboard/receiving/custom-domains) at your custom domain. Once you add the MX record to your custom domain, you will receive emails through Resend for any address at that domain.
 
-Once you receive an email, you can process it in a variety of ways. Here are some common actions you can take:
+## Configure Webhook
 
-* [Get email content](/docs/dashboard/receiving/get-email-content)
-* [Process attachments](/docs/dashboard/receiving/attachments)
-* [Forward emails to another address](/docs/dashboard/receiving/forward-emails)
-* [Reply to emails in the same thread](/docs/dashboard/receiving/reply-to-emails)
+Once you can receive mail, you can [create a received mail webhook](/docs/dashboard/receiving/create-receiving-webhook) to receive real-time notifications about incoming email.
 
-<Info>
-  Webhooks do not include the email body, headers, or attachments, only their
-  metadata. You must call the [Received emails
-  API](/docs/api-reference/emails/retrieve-received-email) or the [Attachments
-  API](/docs/api-reference/emails/list-received-email-attachments) to retrieve them.
-  This design choice supports large attachments in serverless environments that
-  have limited request body sizes.
-</Info>
+Resend processes all incoming emails to your receiving domain, parses the contents and attachments, and then sends a `POST` request to an endpoint that you choose to handle the received email.
 
-## FAQ
+<img alt="Receiving email process" />
 
-<AccordionGroup>
-  <Accordion title="Will I receive emails for any address at my domain?">
-    Yes. Once you add the MX record to your [custom domains](/docs/dashboard/receiving/custom-domains), you will receive emails for
-    any address at that domain.
+## Choose your infrastructure
 
-    For example, if your domain is `yourdomain.tld`, you will receive
-    emails sent to `<anything>@yourdomain.tld`. You can then filter or
-    route based on the `to` field in the webhook event.
+To handle your received emails, you can use a variety of tools:
 
-    The same applies if you use the domain managed by Resend. If the domain given to you is `cool-hedgehog.resend.app`,
-    you'll receive any email send to `<anything>@cool-hedgehog.resend.app`.
-  </Accordion>
+* [SDK](/docs/sdks): process inbound emails with an SDK built for your language
+* [Integrations](/docs/integrations): process inbound emails using a framework or tool you already use
+* [API](/docs/api-reference/emails/retrieve-received-email): process inbound emails with raw HTTP API calls
+* [CLI](/docs/cli#receiving): process inbound emails and stream incoming messages from the terminal
+* [MCP](/docs/mcp-server): list, read, and download inbound emails through your agent with MCP
 
-  <Accordion title="Can I receive emails on a subdomain?">
-    Yes. You can add the MX record to any subdomain (e.g.
-    `subdomain.yourdomain.tld`) and receive emails there.
-  </Accordion>
+See how to use all of Resend's receiving features such as processing attachments and forwarding emails to another address in the [receiving email guides](#related-guides).
 
-  <Accordion title="Should I add the `MX` records for my root domain or a subdomain?">
-    If you already have existing MX records for your root domain, we recommend
-    that you create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX
-    record there. This way, you can use Resend for receiving emails without
-    affecting your existing email service.
+## Manage your received emails
 
-    If you still want to use the same domain both in for Resend and your day-to-day
-    email service, you can also set up forwarding rules in your existing email service
-    to forward emails to an address that's configured in Resend or forward them directly
-    to the SMTP server address that appears in the receiving `MX` record.
-  </Accordion>
+After you've received your first email, you'll be able to view and manage your emails in the [Emails Dashboard page](https://resend.com/emails) under the Receiving tab. From here, you can view email details, share a public version, and more.
 
-  <Accordion title="Will I lose my emails if my webhook endpoint is down?">
-    No, you will not lose your emails. Resend stores emails as soon as they come
-    in.
+You can also manage your emails programmatically using the [Receiving API](/docs/api-reference/emails/retrieve-received-email), [CLI commands](/docs/cli#receiving), or the [MCP server](/docs/mcp-server).
 
-    Even if your webhook endpoint is down, you can still see your emails in
-    the dashboard and retrieve them using the [Receiving
-    API](/docs/api-reference/emails/retrieve-received-email).
+Learn more about [managing your received emails](/docs/dashboard/receiving/manage-emails) in the dedicated guide.
 
-    Additionally, we will retry delivering the webhook event on the schedule
-    described in our [webhooks documentation](/docs/webhooks/introduction#faq)
-    and you can also replay individual webhook events from the
-    [webhooks](/docs/webhooks/introduction) page in the dashboard.
-  </Accordion>
+## Related Guides
 
-  <Accordion title="How can I make sure that it's Resend who's sending me webhooks?">
-    All of Resend's webhooks include a secret and headers that you can use to verify
-    the authenticity of the request.
+See how to use Resend's receiving features.
 
-    In our SDKs, you can verify webhooks using
-    `resend.webhooks.verify()`, as shown below.
+<CardGroup>
+  <Card title="Custom domains" icon="globe" href="/docs/dashboard/receiving/custom-domains" />
 
-    ```js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    // throws an error if the webhook is invalid
-    // otherwise, returns the parsed payload object
-    const result = resend.webhooks.verify({
-      payload: JSON.stringify(req.body),
-      headers: {
-        id: req.headers['svix-id'],
-        timestamp: req.headers['svix-timestamp'],
-        signature: req.headers['svix-signature'],
-      },
-      webhookSecret: process.env.RESEND_WEBHOOK_SECRET,
-    })
-    ```
+  <Card title="Received email webhook" icon="mailbox-open-letter" href="/docs/dashboard/receiving/create-receiving-webhook" />
 
-    You can find more code samples and instructions on how to verify webhooks in our
-    [webhook verification documentation](/docs/webhooks/verify-webhooks-requests).
-  </Accordion>
-</AccordionGroup>
+  <Card title="Get email content" icon="envelope-open-text" href="/docs/dashboard/receiving/get-email-content" />
 
-## Try it yourself
+  <Card title="Process attachments" icon="file-plus" href="/docs/dashboard/receiving/attachments" />
+
+  <Card title="Forward emails" icon="arrow-turn-right" href="/docs/dashboard/receiving/forward-emails" />
+
+  <Card title="Threaded replies" icon="comment-arrow-down" href="/docs/dashboard/receiving/reply-to-emails" />
+</CardGroup>
+
+## Examples
 
 <CardGroup>
   <Card title="Next.js (TypeScript)" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/inbound">
@@ -36149,6 +36089,59 @@ Once you receive an email, you can process it in a variety of ways. Here are som
     See the full source code.
   </Card>
 </CardGroup>
+
+
+# Managing Emails
+Source: https://resend.com/docs/dashboard/receiving/manage-emails
+
+An introduction to managing your received emails with Resend.
+
+Your received emails are available in the [**Receiving** tab](https://resend.com/emails/receiving) of the **Emails** Dashboard page.
+
+You can also manage your received emails using the [Receiving API](/docs/api-reference/emails/retrieve-received-email), [MCP server](/docs/mcp-server), and [CLI commands](/docs/cli#receiving) for tasks such as retrieving full email details and attachments.
+
+## View email details
+
+All received emails are stored and available on the [**Emails** Dashboard page](https://resend.com/emails) as they arrive.
+
+In the [**"Receiving"** tab](https://resend.com/emails/receiving), select any email to view its associated metadata. View the sender address, recipient address, subject, unique id, and more. Each email also contains a **Preview**, **Plain Text**, **HTML**, and Raw version to visualize the content of your received email in its various formats.
+
+<img alt="Viewing a received email" />
+
+If your webhook endpoint is down, you can still replay individual webhook events from the [Webhooks Dashboard page](https://resend.com/webhooks). You can also retrieve your emails at any time using the [Receiving API](/docs/api-reference/emails/retrieve-received-email) and the [receiving CLI commands](/docs/cli#receiving).
+
+## Export your data
+
+Admins can download your data in CSV format for the following resources:
+
+* Emails
+* Broadcasts
+* Contacts
+* Segments
+* Domains
+* Logs
+* API keys
+
+<Info>Currently, exports are limited to admin users of your team.</Info>
+
+To start, apply filters to your data and click on the "Export" button. Confirm your filters before exporting your data.
+
+<video />
+
+If your exported data includes 1,000 items or less, the export will download immediately. For larger exports, you'll receive an email with a link to download your data.
+
+All admins on your team can securely access the export for 7 days. Unavailable exports are marked as "Expired."
+
+<Note>
+  All exports your team creates are listed in the
+  [Exports](https://resend.com/exports) page under **Settings** > **Team** >
+  **Exports**. Select any export to view its details page. All members of your
+  team can view your exports, but only admins can download the data.
+</Note>
+
+## API Reference
+
+For complete API documentation, see the [Receiving API reference](/docs/api-reference/emails/retrieve-received-email).
 
 
 # Reply to Receiving Emails
@@ -36887,13 +36880,22 @@ Manage your account subscription and billing information
 The [Billing](https://resend.com/settings/billing) page in the Settings section provides a clear view of your subscription details, billing email, payment method, and account invoices. From here, you can:
 
 * View and manage your subscription - Upgrade, downgrade, or modify your current plan.
-* Manage billing contacts - Ensure the right people receive billing-related notifications.
+* Update the billing email - Set the single address that receives invoices and billing-related notifications.
 * Update payment information - Add or change your credit card or billing details.
 * Add billing address - Provide your billing address for invoices.
 * Add tax ID - Add your VAT number or tax ID for proper invoicing.
 * Access invoices - Download past invoices for your records.
 
 For any other billing inquiries, please [contact support](https://resend.com/help).
+
+## Billing email recipients
+
+Each team has one billing email address. Invoices and billing notifications are sent only to that address, and it cannot be set to multiple recipients.
+
+If more than one person needs to receive invoices, you have two options:
+
+* Set the billing email to a distribution list or alias that forwards to everyone who needs it.
+* [Invite them to your team](/docs/dashboard/settings/team). Team members can open the [Billing](https://resend.com/settings/billing) page to view and download every invoice.
 
 ## How to cancel your subscription
 
@@ -41469,10 +41471,13 @@ Free accounts have the following:
 
 * Marketing emails: unlimited emails to up to 1,000 contacts per month.
 
+* Domains: up to 3 verified domains.
+
 ## Paid Plan Quota
 
 * Transactional Pro, Scale and Enterprise plans have no daily quota limits, though the plan tier will dictate the monthly email quota. Both sent and received emails count towards this monthly quota. To see your current month usage, view the [**Usage page**](https://resend.com/settings/usage). Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards the monthly quota.
 * Marketing Pro, Enterprise plans have unlimited emails, though the plan tier will dictate the monthly contacts.
+* Pro plans include 10 domains and Scale plans include 1,000 domains. Enterprise domain limits are set by contract. Pro and Scale plans can add 100 more domains with a [\$20/month add-on](/docs/knowledge-base/what-is-resend-pricing#add-ons).
 
 ## Overage Limits
 
@@ -44719,7 +44724,7 @@ You can also [cancel a Broadcast via the API](/docs/api-reference/broadcasts/can
 ## Related pages
 
 * [Managing Broadcasts](/docs/dashboard/broadcasts/introduction)
-* [Broadcast statuses](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses)
+* [Broadcast statuses](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses)
 
 
 # How to ensure sensitive data isn't stored on Resend
@@ -47856,6 +47861,17 @@ Marketing Email plans are based on the number of contacts, not the number of ema
 | Pro Marketing | \$650/mo | 150,000     |
 | Enterprise    | Custom   | Custom      |
 
+## Domains
+
+Each plan includes a set number of domains:
+
+| Plan       | Domains         |
+| ---------- | --------------- |
+| Free       | 3               |
+| Pro        | 10              |
+| Scale      | 1,000           |
+| Enterprise | Set by contract |
+
 ## Automations
 
 All plans include 10,000 Automation Runs per month. Paid plans can continue beyond the included usage with pay-as-you-go billing at \$0.0015 per run. The Free plan includes 10,000 Automation Runs per month with no overage.
@@ -47863,6 +47879,8 @@ All plans include 10,000 Automation Runs per month. Paid plans can continue beyo
 ## Add-ons
 
 Dedicated IPs are available for \$30/month on the Scale plan for customers sending more than 3,000 emails per day. Dedicated IPs include automatic warmup, monitoring, and autoscaling.
+
+Additional domains are available for \$20/month on the Pro and Scale plans. The add-on includes 100 domains on top of what your plan includes and can be added or removed at any time from the Dashboard.
 
 ## Annual plans
 
@@ -59234,12 +59252,12 @@ Event triggered whenever a **contact was successfully created**.
     Contact's email address
   </ParamField>
 
-  <ParamField type="string">
-    Contact's first name
+  <ParamField type="string | null">
+    Contact's first name. May be absent from the payload
   </ParamField>
 
-  <ParamField type="string">
-    Contact's last name
+  <ParamField type="string | null">
+    Contact's last name. May be absent from the payload
   </ParamField>
 
   <ParamField type="boolean">
@@ -59259,8 +59277,8 @@ Event triggered whenever a **contact was successfully created**.
       "created_at": "2026-11-17T19:32:22.980Z",
       "updated_at": "2026-11-17T19:32:22.980Z",
       "email": "steve.wozniak@gmail.com",
-      "first_name": "Steve",
-      "last_name": "Wozniak",
+      "first_name": null,
+      "last_name": null,
       "unsubscribed": false
     }
   }
@@ -59300,12 +59318,12 @@ Event triggered whenever a **contact was successfully deleted**.
     Contact's email address
   </ParamField>
 
-  <ParamField type="string">
-    Contact's first name
+  <ParamField type="string | null">
+    Contact's first name. May be absent from the payload
   </ParamField>
 
-  <ParamField type="string">
-    Contact's last name
+  <ParamField type="string | null">
+    Contact's last name. May be absent from the payload
   </ParamField>
 
   <ParamField type="boolean">
@@ -59366,12 +59384,12 @@ Event triggered whenever a **contact was successfully updated**.
     Contact's email address
   </ParamField>
 
-  <ParamField type="string">
-    Contact's first name
+  <ParamField type="string | null">
+    Contact's first name. May be absent from the payload
   </ParamField>
 
-  <ParamField type="string">
-    Contact's last name
+  <ParamField type="string | null">
+    Contact's last name. May be absent from the payload
   </ParamField>
 
   <ParamField type="boolean">

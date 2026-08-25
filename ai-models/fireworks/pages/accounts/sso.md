@@ -85,9 +85,15 @@ If you have an enterprise account, Fireworks supports bringing your own identity
   </Step>
 
   <Step title="Note down metadata URL">
-    Note down the "metadata url" for your newly created application. You will need to provide this to your Fireworks AI representative to complete your account set up.
+    Note down the "metadata url" for your newly created application. You will need to provide this to your Fireworks AI representative to complete your account set up. If the metadata URL is not publicly reachable, provide the metadata XML file instead.
   </Step>
 </Steps>
+
+## SAML sign-in flow
+
+By default, Fireworks uses **service provider (SP) initiated** SAML: users start at [app.fireworks.ai](https://app.fireworks.ai) or with `firectl signin` and are redirected to your identity provider.
+
+**IdP-initiated** SAML is supported as an opt-in for SAML identity providers. When enabled, users can also start from your identity provider's portal (for example, the Okta app tile). Enable it with [`--enable-idp-initiated-sso`](/tools-sdks/firectl/commands/identity-provider-create) when creating or updating the identity provider. This option is SAML-only; OIDC providers cannot use it.
 
 ## Just-In-Time (JIT) user provisioning
 
@@ -140,7 +146,7 @@ We recommend disabling JIT provisioning when SCIM is enabled so that your direct
 
 ## Enforce SSO
 
-When SSO enforcement is enabled, account access is restricted to users with approved tenant domains only. Users with matching domains must authenticate via the identity provider, and users with other domains are blocked.
+When SSO enforcement is enabled, account access is restricted to users with approved tenant domains only. Users with matching domains must authenticate via the identity provider, and users with other domains are blocked. API keys and service accounts are not blocked by SSO enforcement.
 
 To enforce SSO, use the [`--enforce-sso`](/tools-sdks/firectl/commands/identity-provider-create) flag when creating your identity provider with firectl, or toggle "Enforce SSO for all users" in the Fireworks console.
 
@@ -148,12 +154,13 @@ To enforce SSO, use the [`--enforce-sso`](/tools-sdks/firectl/commands/identity-
 
 ### Invalid samlResponse or relayState from identity provider
 
-This error occurs if you are trying to use identity provider (IdP) initiated login. Fireworks currently only supports
-service provider (SP) initiated login.
+This error usually means the login started from the identity provider (IdP-initiated) but IdP-initiated SAML is not enabled for your identity provider.
 
-See [Understanding SAML](https://developer.okta.com/docs/concepts/saml/#understand-sp-initiated-sign-in-flow) for an
-in-depth explanation.
+* For SP-initiated login, start from [app.fireworks.ai](https://app.fireworks.ai) instead of your IdP's app tile.
+* For IdP-initiated login, enable [`--enable-idp-initiated-sso`](/tools-sdks/firectl/commands/identity-provider-create) on a SAML identity provider (or ask your Fireworks representative to enable it).
+
+See [Understanding SAML](https://developer.okta.com/docs/concepts/saml/#understand-sp-initiated-sign-in-flow) for SP-initiated versus IdP-initiated flows.
 
 ### Required String parameter 'RelayState' is not present
 
-See above.
+Same cause as above: an IdP-initiated login without IdP-initiated SSO enabled.

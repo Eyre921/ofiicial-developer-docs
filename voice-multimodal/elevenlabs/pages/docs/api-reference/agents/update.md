@@ -135,6 +135,18 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/update
         - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
           - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
         - `voice_id` (string, optional, nullable) — The voice ID to use for TTS
+        - `supported_voices` (list of object, optional, nullable) — Additional supported voices for the agent
+          - `label` (string, required)
+          - `voice_id` (string, required)
+          - `description` (string, optional, nullable)
+          - `language` (string, optional, nullable)
+          - `model_family` (enum, optional, nullable)
+            - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`
+          - `optimize_streaming_latency` (enum, optional, nullable)
+            - Allowed values: `0`, `1`, `2`, `3`, `4`
+          - `stability` (double, optional, nullable)
+          - `speed` (double, optional, nullable)
+          - `similarity_boost` (double, optional, nullable)
         - `stability` (double, optional, nullable) — The stability of generated speech
         - `speed` (double, optional, nullable) — The speed of generated speech
         - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
@@ -986,6 +998,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/update
       - `tts` (object, optional) — Configures overrides for nested fields.
         - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
         - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
+        - `supported_voices` (boolean, optional, default: false) — Whether to allow overriding the supported_voices field.
         - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
         - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
         - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.
@@ -1575,6 +1588,18 @@ Successful Response
         - `model_id` (enum, optional, nullable, default: eleven_flash_v2) — The model to use for TTS
           - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
         - `voice_id` (string, optional, nullable) — The voice ID to use for TTS
+        - `supported_voices` (list of object, optional, nullable) — Additional supported voices for the agent
+          - `label` (string, required)
+          - `voice_id` (string, required)
+          - `description` (string, optional, nullable)
+          - `language` (string, optional, nullable)
+          - `model_family` (enum, optional, nullable)
+            - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`
+          - `optimize_streaming_latency` (enum, optional, nullable)
+            - Allowed values: `0`, `1`, `2`, `3`, `4`
+          - `stability` (double, optional, nullable)
+          - `speed` (double, optional, nullable)
+          - `similarity_boost` (double, optional, nullable)
         - `stability` (double, optional, nullable) — The stability of generated speech
         - `speed` (double, optional, nullable) — The speed of generated speech
         - `similarity_boost` (double, optional, nullable) — The similarity boost for generated speech
@@ -2428,6 +2453,7 @@ Successful Response
       - `tts` (object, optional) — Configures overrides for nested fields.
         - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
         - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
+        - `supported_voices` (boolean, optional, default: false) — Whether to allow overriding the supported_voices field.
         - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
         - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
         - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.
@@ -3306,7 +3332,8 @@ Successful Response
         ]
       }
     },
-    "prevent_subagent_loops": false
+    "prevent_subagent_loops": false,
+    "subgraphs": {}
   }
 }
 ```

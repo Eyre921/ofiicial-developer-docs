@@ -20,4 +20,4 @@ In the <strong>Publish to the Voice Library</strong> settings, use the drop dow
 
  
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/35971482008209" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f70eeb10aa93400ef0d8f390cc3710c96dc20b4bfe10681861e4ded5906ac429/assets/images/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T233525Z&X-Amz-Expires=604800&X-Amz-Signature=ba1d6e8f7fbe2ade5596abd084ac2a12b826d3e6663b10da9b863a78ad797aec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />

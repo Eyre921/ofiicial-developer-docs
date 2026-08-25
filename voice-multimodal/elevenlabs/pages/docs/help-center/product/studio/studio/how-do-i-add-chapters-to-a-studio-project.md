@@ -12,8 +12,8 @@ When you create a Studio project using the <strong>New audiobook</strong> opti
 
 To manage chapters in an existing project, go to <strong>Project options</strong> in the top left corner, then select <strong>Manage chapters</strong>. This will open the <strong>Chapters sidebar</strong>.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/43294708987537" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70c468910efa03c84f4cd309a937cbe537c223c2f1e6598db37eef6bd26e4f0d/assets/images/help-center/product/studio/studio-manage-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T233714Z&X-Amz-Expires=604800&X-Amz-Signature=3ac9702ee1302b710760a4b58539e95ceeab07d41cb753317deb78292e83cad0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 You can add a new chapter using the <strong>+</strong> button. You can also rename and remove chapters using the <strong>Chapter actions</strong> (three dots) button, and drag and drop the chapters to rearrange them.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/43294661341585" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0a498e857491f4974398d85b788ad49025892cf3aeed63913b03ce6e28d5d0cf/assets/images/help-center/product/studio/studio-chapter-options.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T233714Z&X-Amz-Expires=604800&X-Amz-Signature=e1b4cd9033aed08f687096ba7b271af9afe2c2aeb955a6e306ae17c794ad1c78&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />

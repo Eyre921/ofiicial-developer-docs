@@ -16,7 +16,9 @@ See costs and features for each plan at [GitHub Pricing](https://github.com/pric
 
 When you read GitHub Docs, make sure to select the version that reflects your plan. For more information, see [About versions of GitHub Docs](/en/get-started/using-github-docs/about-versions-of-github-docs).
 
-## GitHub Free for personal accounts
+## Individual plans
+
+### GitHub Free for personal accounts
 
 With GitHub Free for personal accounts, you can work with unlimited collaborators on unlimited public repositories with a full feature set, and on unlimited private repositories with a limited feature set.
 
@@ -34,7 +36,7 @@ With GitHub Free, your personal account includes:
   * Deployment protection rules for public repositories
 * GitHub Pages in public repositories
 
-## GitHub Pro
+### GitHub Pro
 
 In addition to the features available with GitHub Free for personal accounts, GitHub Pro includes:
 
@@ -66,7 +68,9 @@ In addition to the features available with GitHub Free for personal accounts, Gi
     > \[!NOTE]
     > Certain contributor, commit, and code frequency insights are only available for repositories that have fewer than 10,000 commits.
 
-## GitHub Free for organizations
+## Organization and enterprise plans
+
+### GitHub Free for organizations
 
 With GitHub Free for organizations, you can work with unlimited collaborators on unlimited public repositories with a full feature set, or unlimited private repositories with a limited feature set.
 
@@ -76,7 +80,7 @@ In addition to the features available with GitHub Free for personal accounts, Gi
 * Team access controls for managing groups
 * 2,000 GitHub Actions minutes per month
 
-## GitHub Team
+### GitHub Team
 
 In addition to the features available with GitHub Free for organizations, GitHub Team includes:
 
@@ -127,7 +131,7 @@ GitHub bills for GitHub Team on a per-user basis. For more information, see [Abo
 
 GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners. See [Choosing the runner for a job](/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories). For private repositories, each GitHub account receives a quota of free minutes and storage for use with GitHub-hosted runners, depending on the account's plan. Any usage beyond the included amounts is billed to your account.
 
-## GitHub Enterprise
+### GitHub Enterprise
 
 GitHub Enterprise includes two deployment options: GitHub Enterprise Cloud, which is hosted by GitHub in the cloud, and GitHub Enterprise Server, which is self-hosted. For more information, see [About GitHub for enterprises](/en/enterprise-cloud@latest/admin/overview/about-github-for-enterprises) in the GitHub Enterprise Cloud documentation.
 

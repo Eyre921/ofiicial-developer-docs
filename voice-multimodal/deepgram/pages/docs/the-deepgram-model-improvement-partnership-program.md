@@ -35,7 +35,6 @@ Deepgram's infrastructure, policies, and procedures are designed to meet industr
 Participation in this program is voluntary and includes a number of valuable benefits.
 
 * Increased accuracy of our voice AI models for your domain and use case with more frequent, higher impact releases of next-gen models that continue to get better and better.
-* Discounted pricing for program participants that yields significant savings.
 * Better technical support with faster root cause analysis and time to resolution.
 * Preferential placement on early access wait lists for future voice AI models, features, and functionality.
 * Accelerated custom model training timelines for individual customers in need of additional accuracy.

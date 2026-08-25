@@ -33,12 +33,12 @@ Event triggered whenever a **contact was successfully updated**.
     Contact's email address
   </ParamField>
 
-  <ParamField type="string">
-    Contact's first name
+  <ParamField type="string | null">
+    Contact's first name. May be absent from the payload
   </ParamField>
 
-  <ParamField type="string">
-    Contact's last name
+  <ParamField type="string | null">
+    Contact's last name. May be absent from the payload
   </ParamField>
 
   <ParamField type="boolean">

@@ -8,57 +8,15 @@ path: docs/guides/features/plugins/fusion
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Fusion
+# Fusion Router
 
-> Multi-model analysis with an analyst model
+> Multi-model deliberation as a model slug
 
-export const Template = ({children, data}) => {
-  const replace = s => s.replace(/\{\{(\w+)\}\}/g, (_, k) => (k in data) ? data[k] : `{{${k}}}`);
-  const leafText = node => typeof node === 'string' ? node : node?.$$typeof && typeof node.props?.children === 'string' ? node.props.children : null;
-  const collapseTokens = nodes => {
-    const out = [];
-    let i = 0;
-    while (i < nodes.length) {
-      const ta = leafText(nodes[i]);
-      const tb = leafText(nodes[i + 1]);
-      const tc = leafText(nodes[i + 2]);
-      if (ta != null && tb != null && tc != null) {
-        const m = (ta + tb + tc).match(/^([\s\S]*)\{\{(\w+)\}\}([\s\S]*)$/);
-        if (m && (m[2] in data)) {
-          out.push(m[1] + data[m[2]] + m[3]);
-          i += 3;
-          continue;
-        }
-      }
-      out.push(nodes[i]);
-      i++;
-    }
-    return out;
-  };
-  const process = node => {
-    if (typeof node === 'string') return replace(node);
-    if (Array.isArray(node)) return collapseTokens(node.map(process));
-    if (node && typeof node === 'object') {
-      if (node.$$typeof) return {
-        ...node,
-        props: process(node.props)
-      };
-      return Object.fromEntries(Object.entries(node).map(([k, v]) => [k, process(v)]));
-    }
-    return node;
-  };
-  return <>{process(children)}</>;
-};
+The [Fusion Router](https://openrouter.ai/openrouter/fusion) (`openrouter/fusion`) gives your model access to a multi-model deliberation tool. When invoked, a panel of models answers your prompt in parallel, then an analyst model compares their responses and returns structured analysis covering consensus, contradictions, coverage gaps, unique insights, and blind spots. Your model uses that analysis to write a better final answer.
 
-export const API_KEY_REF = '<OPENROUTER_API_KEY>';
+## Overview
 
-The Fusion plugin gives your model access to a multi-model deliberation tool. When the model invokes it, a panel of models answers your prompt in parallel (with `openrouter:web_search`), an analyst compares their responses and returns structured analysis, and your model uses that analysis to write a better final answer.
-
-The Fusion plugin is a configuration surface for the [`openrouter:fusion` server tool](/docs/guides/features/server-tools/fusion). It's also the mechanism behind the [`openrouter/fusion` model alias](/docs/guides/routing/routers/fusion-router). All three entry points hit the same pipeline.
-
-## When to use Fusion
-
-Reach for Fusion when a single model isn't enough, such as for research, expert critique, or tasks that benefit from multiple perspectives. Fusion is overkill for short tactical prompts; use it when the cost of being wrong outweighs the cost of a few extra completions.
+Use Fusion when a single model isn't enough: research questions, expert critique, "compare and contrast" prompts, or anything where the cost of being wrong outweighs the cost of a few extra completions.
 
 ## How it works
 
@@ -71,73 +29,18 @@ flowchart LR
   model --> answer[Final answer]
 ```
 
-1. The plugin injects the `openrouter:fusion` tool into your request. If you used `model: "openrouter/fusion"`, it also resolves the alias to a real model.
-2. Your model reads the prompt and decides whether to invoke `openrouter:fusion`.
+1. You send a request with `model: "openrouter/fusion"`. The router resolves the alias to a real model and attaches the `openrouter:fusion` tool.
+2. Your model reads the prompt and decides whether the task warrants deliberation. If so, it invokes `openrouter:fusion`. (Use `tool_choice: "required"` to guarantee invocation.)
 3. The **panel** (a set of models) answers your prompt in parallel, each with `openrouter:web_search` and `openrouter:web_fetch` enabled.
-4. The **analyst** receives all panel responses, with `openrouter:web_search` and `openrouter:web_fetch` available, and compares them. It doesn't merge them. It returns structured analysis as JSON: consensus (points all or most models agree on, treated as higher-confidence), contradictions, partial coverage, unique insights from individual models, and blind spots none of them addressed.
-5. Your model receives the structured analysis and writes the final answer.
+4. The **analyst** receives all panel responses, with `openrouter:web_search` and `openrouter:web_fetch` available, and compares them (it doesn't merge them). It returns structured analysis as JSON: what all or most models agreed on (treated as higher-confidence consensus), where they disagreed, what only some models covered, unique insights from individual models, and blind spots none of them addressed.
+5. Your model receives the analysis and writes the final answer.
 
-## Configuration
+`openrouter:web_search` and `openrouter:web_fetch` are enabled on both the panel and the analyst calls, so models can pull fresh sources while they answer and analyze.
 
-```json lines theme={null}
-{
-  "model": "openrouter/fusion",
-  "plugins": [
-    {
-      "id": "fusion",
-      "analysis_models": [
-        "~anthropic/claude-opus-latest",
-        "~openai/gpt-latest",
-        "~google/gemini-pro-latest"
-      ],
-      "model": "~openai/gpt-latest"
-    }
-  ]
-}
-```
-
-| Field             | Default                                                                                             | Description                                                                                                                                                                                                                                      |
-| ----------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `preset`          | *none*                                                                                              | A curated OpenRouter preset slug (e.g. `general-high`) that expands into a panel + analyst, so you don't have to name models. Explicit `analysis_models` / `model` override it. See [Presets](#presets).                                         |
-| `analysis_models` | Quality preset (`~anthropic/claude-opus-latest`, `~openai/gpt-latest`, `~google/gemini-pro-latest`) | Models that form the panel. Each runs in parallel with `openrouter:web_search` and `openrouter:web_fetch`. 1–8 models allowed.                                                                                                                   |
-| `model`           | First model in the Quality preset (`~anthropic/claude-opus-latest`)                                 | The analyst model that produces the structured analysis. With `model: "openrouter/fusion"`, this also becomes the model that writes your final answer; when you attach the plugin to your own model instead, the analyst defaults to that model. |
-| `max_tool_calls`  | `4`                                                                                                 | Max tool-calling steps each panel model and the analyst may take in their `openrouter:web_search` / `openrouter:web_fetch` loop before they must return text. Range 1–16.                                                                        |
-| `enabled`         | `true`                                                                                              | Set to `false` to bypass fusion for a single request.                                                                                                                                                                                            |
-
-When you send `model: "openrouter/fusion"` without a plugin config, the defaults match the **Quality** preset on the [Fusion lab](https://openrouter.ai/fusion/).
-
-### Presets
-
-Don't want to pick models? Reference a curated preset by slug with `preset`.
-The panel and analyst are chosen for you:
-
-```json lines theme={null}
-{
-  "model": "openrouter/fusion",
-  "plugins": [{ "id": "fusion", "preset": "general-budget" }]
-}
-```
-
-Slugs follow `<task>-<tier>`: `task` is what you're optimizing the panel for,
-and `tier` is the quality/cost/speed tradeoff (`high` = strongest models, `budget` =
-cheaper panel with the same frontier analyst, `fast` = a latency-homogeneous panel
-where every model has similar TTFT so no single model gates the fan-out). These
-mirror the presets shown in the [Fusion lab](https://openrouter.ai/labs/fusion) UI.
-
-| Preset           | For                                                                                    |
-| ---------------- | -------------------------------------------------------------------------------------- |
-| `general-high`   | The strongest all-round panel.                                                         |
-| `general-budget` | A cheaper panel with a frontier analyst for strong synthesis at lower cost.            |
-| `general-fast`   | A latency-homogeneous panel optimized for fast agentic turns, with a frontier analyst. |
-
-Explicit `analysis_models` or `model` always take precedence over a preset.
-
-## Two entry points, one pipeline
-
-`openrouter/fusion` is equivalent to enabling the `openrouter:fusion` server tool on the configured model. These behave identically:
+## Two ways to use it
 
 <CodeGroup>
-  ```json title="Model alias" lines theme={null}
+  ```json title="Model alias (tool auto-injected)" lines theme={null}
   {
     "model": "openrouter/fusion",
     "messages": [
@@ -146,7 +49,7 @@ Explicit `analysis_models` or `model` always take precedence over a preset.
   }
   ```
 
-  ```json title="Server tool" lines theme={null}
+  ```json title="Server tool (explicit)" lines theme={null}
   {
     "model": "~anthropic/claude-opus-latest",
     "messages": [
@@ -159,79 +62,250 @@ Explicit `analysis_models` or `model` always take precedence over a preset.
   ```
 </CodeGroup>
 
-In both cases, the model decides when to call `openrouter:fusion`. For prompts that don't need deliberation, it answers directly, including invoking any other tools you've defined.
+Both hit the same pipeline. The model alias is simpler because it auto-injects the tool so you don't have to declare it. The server tool form gives you more control (choose your own outer model, combine fusion with other tools).
 
-## Complete example
+In both cases, the model decides when to call `openrouter:fusion`. For prompts that don't need deliberation, it answers directly, including invoking any other tools you've defined. Add `tool_choice: "required"` to force fusion on every request.
 
-<Template
-  data={{
-API_KEY_REF,
-}}
->
-  <CodeGroup>
-    ```typescript title="TypeScript" expandable lines theme={null}
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer {{API_KEY_REF}}',
-        'Content-Type': 'application/json',
+## Fast preset model: `openrouter/fusion-flash`
+
+`openrouter/fusion-flash` is a separately-listed model that runs the fusion pipeline with the `general-fast` preset pre-selected, a latency-homogeneous panel tuned for fast agentic turns. When you don't pin your own fusion config, these two requests behave the same:
+
+<CodeGroup>
+  ```json title="Fusion Flash" theme={null}
+  {
+    "model": "openrouter/fusion-flash",
+    "messages": [{ "role": "user", "content": "..." }]
+  }
+  ```
+
+  ```json title="Explicit preset" theme={null}
+  {
+    "model": "openrouter/fusion",
+    "plugins": [{ "id": "fusion", "preset": "general-fast" }],
+    "messages": [{ "role": "user", "content": "..." }]
+  }
+  ```
+</CodeGroup>
+
+The model pins the preset as a default and gets its own entry in `/api/v1/models` and its own usage attribution in your activity feed. Anything you pass explicitly wins: a `fusion` plugin config with its own `preset`, `analysis_models`, or `model` overrides the implied `general-fast`. Variant suffixes (`openrouter/fusion-flash:free`) parse the same way they do on `openrouter/fusion`.
+
+## Quick start
+
+<CodeGroup>
+  ```typescript title="TypeScript SDK" lines theme={null}
+  import { OpenRouter } from '@openrouter/sdk';
+
+  const openRouter = new OpenRouter({
+    apiKey: '<OPENROUTER_API_KEY>',
+  });
+
+  const completion = await openRouter.chat.send({
+    model: 'openrouter/fusion',
+    messages: [
+      {
+        role: 'user',
+        content: 'Survey the strongest arguments for and against a carbon tax. Where do experts disagree?',
       },
-      body: JSON.stringify({
-        model: 'openrouter/fusion',
-        messages: [
-          {
-            role: 'user',
-            content: 'Compare ridge, lasso, and elastic-net regression. Where does each shine?',
-          },
+    ],
+  });
+
+  console.log(completion.choices[0].message.content);
+  ```
+
+  ```bash title="cURL" lines theme={null}
+  curl https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "openrouter/fusion",
+      "messages": [
+        {"role": "user", "content": "Survey the strongest arguments for and against a carbon tax. Where do experts disagree?"}
+      ]
+    }'
+  ```
+</CodeGroup>
+
+## Configuration
+
+Override the default panel and analyst for a Fusion run via the `plugins` array or the `tools` array. Both are optional; omit them entirely and fusion uses the Quality preset defaults. A plugin entry alone does not start Fusion; it configures a run started by the model slug or the server tool.
+
+### Plugin config (recommended with the model slug)
+
+Pass a `fusion` plugin entry alongside `model: "openrouter/fusion"`. This is the same pattern the [Pareto Router](/docs/guides/routing/routers/pareto-router) uses for `min_coding_score`.
+
+<CodeGroup>
+  ```typescript title="TypeScript SDK" lines theme={null}
+  const completion = await openRouter.chat.send({
+    model: 'openrouter/fusion',
+    plugins: [
+      {
+        id: 'fusion',
+        analysis_models: [
+          '~anthropic/claude-opus-latest',
+          '~openai/gpt-latest',
+          '~google/gemini-pro-latest',
         ],
-        plugins: [
-          {
-            id: 'fusion',
-            analysis_models: [
-              '~anthropic/claude-opus-latest',
-              '~openai/gpt-latest',
-            ],
-          },
-        ],
-      }),
-    });
-
-    const data = await response.json();
-    console.log(data.choices[0].message.content);
-    ```
-
-    ```python title="Python" expandable lines theme={null}
-    import requests
-
-    response = requests.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      headers={
-        "Authorization": f"Bearer {{API_KEY_REF}}",
-        "Content-Type": "application/json",
+        model: '~openai/gpt-latest',
       },
-      json={
-        "model": "openrouter/fusion",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Compare ridge, lasso, and elastic-net regression. Where does each shine?",
-          },
-        ],
-        "plugins": [
-          {
-            "id": "fusion",
-            "analysis_models": [
-              "~anthropic/claude-opus-latest",
-              "~openai/gpt-latest",
-            ],
-          },
-        ],
+    ],
+    messages: [
+      {
+        role: 'user',
+        content: 'Compare ridge, lasso, and elastic-net regression. Where does each shine?',
       },
-    )
-    print(response.json()["choices"][0]["message"]["content"])
-    ```
-  </CodeGroup>
-</Template>
+    ],
+  });
+  ```
+
+  ```bash title="cURL" lines theme={null}
+  curl https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "openrouter/fusion",
+      "plugins": [
+        {
+          "id": "fusion",
+          "analysis_models": ["~anthropic/claude-opus-latest", "~openai/gpt-latest", "~google/gemini-pro-latest"],
+          "model": "~openai/gpt-latest"
+        }
+      ],
+      "messages": [
+        {"role": "user", "content": "Compare ridge, lasso, and elastic-net regression."}
+      ]
+    }'
+  ```
+</CodeGroup>
+
+### Tool config (when using your own outer model)
+
+When you bring your own model and add `openrouter:fusion` as a server tool, configure it via the `tools` array instead:
+
+<CodeGroup>
+  ```typescript title="TypeScript SDK" expandable lines theme={null}
+  const completion = await openRouter.chat.send({
+    model: '~anthropic/claude-opus-latest',
+    messages: [
+      {
+        role: 'user',
+        content: 'Compare ridge, lasso, and elastic-net regression. Where does each shine?',
+      },
+    ],
+    tools: [
+      {
+        type: 'openrouter:fusion',
+        parameters: {
+          analysis_models: [
+            '~anthropic/claude-opus-latest',
+            '~openai/gpt-latest',
+            '~google/gemini-pro-latest',
+          ],
+          model: '~openai/gpt-latest',
+        },
+      },
+    ],
+  });
+  ```
+
+  ```bash title="cURL" lines theme={null}
+  curl https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "~anthropic/claude-opus-latest",
+      "messages": [
+        {"role": "user", "content": "Compare ridge, lasso, and elastic-net regression."}
+      ],
+      "tools": [
+        {
+          "type": "openrouter:fusion",
+          "parameters": {
+            "analysis_models": ["~anthropic/claude-opus-latest", "~openai/gpt-latest", "~google/gemini-pro-latest"],
+            "model": "~openai/gpt-latest"
+          }
+        }
+      ]
+    }'
+  ```
+</CodeGroup>
+
+| Field                   | Default                                                                                             | Description                                                                                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `analysis_models`       | Quality preset (`~anthropic/claude-opus-latest`, `~openai/gpt-latest`, `~google/gemini-pro-latest`) | Models that form the panel. Each runs in parallel with `openrouter:web_search` and `openrouter:web_fetch` enabled. 1–8 models allowed.                                    |
+| `model`                 | Your outer model                                                                                    | The analyst model that produces the structured analysis JSON. Defaults to the same model handling your request.                                                           |
+| `max_tool_calls`        | `4`                                                                                                 | Max tool-calling steps each panel model and the analyst may take in their `openrouter:web_search` / `openrouter:web_fetch` loop before they must return text. Range 1–16. |
+| `max_completion_tokens` | `16000`                                                                                             | Max output tokens (including reasoning) per inner panel/analyst call. Keeps reasoning-heavy models from exhausting their budget before producing visible text.            |
+| `reasoning`             | Provider default                                                                                    | Reasoning config forwarded to the panel and analyst calls: an object with optional `effort` and `max_tokens`.                                                             |
+| `temperature`           | Provider default                                                                                    | Temperature (`0`–`2`) forwarded to the panel calls. The analyst always runs at temperature 0.                                                                             |
+
+## Forcing fusion on every request
+
+By default, the model decides when to call `openrouter:fusion`. To guarantee it runs on every request, set `tool_choice: "required"`:
+
+<CodeGroup>
+  ```typescript title="TypeScript SDK" lines theme={null}
+  const completion = await openRouter.chat.send({
+    model: 'openrouter/fusion',
+    messages: [
+      {
+        role: 'user',
+        content: 'Compare ridge, lasso, and elastic-net regression.',
+      },
+    ],
+    tool_choice: 'required',
+  });
+  ```
+
+  ```bash title="cURL" lines theme={null}
+  curl https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "openrouter/fusion",
+      "messages": [
+        {"role": "user", "content": "Compare ridge, lasso, and elastic-net regression."}
+      ],
+      "tool_choice": "required"
+    }'
+  ```
+</CodeGroup>
+
+Because `openrouter/fusion` only injects one tool (`openrouter:fusion`), requiring *some* tool call effectively forces fusion. If your request also includes other tools, the model may pick one of those instead.
+
+## Response
+
+The response `model` field reports the **concrete model** that handled the request, not the `openrouter/fusion` alias:
+
+```json lines theme={null}
+{
+  "id": "gen-...",
+  "model": "anthropic/claude-opus-4.5",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "..."
+      }
+    }
+  ]
+}
+```
+
+To confirm a generation went through the Fusion Router, check the [generation metadata](/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation). The `router` field reports `openrouter/fusion`:
+
+```json lines theme={null}
+{
+  "data": {
+    "id": "gen-...",
+    "model": "anthropic/claude-opus-4.5",
+    "router": "openrouter/fusion"
+  }
+}
+```
+
+## Cost
+
+Fusion runs N panel calls + 1 analyst call in addition to your normal request. With the default 3-model panel, expect roughly 4–5× the cost of a single completion on the same prompt. Cost scales linearly with panel size.
 
 ## Recursion protection
 
@@ -240,8 +314,7 @@ Inner fusion calls carry an `x-openrouter-fusion-depth` header. Panel and analys
 ## Related
 
 * [`openrouter:fusion` server tool](/docs/guides/features/server-tools/fusion)
-* [Fusion Router (`openrouter/fusion`)](/docs/guides/routing/routers/fusion-router)
-* [Web Search server tool](/docs/guides/features/server-tools/web-search)
-* [Web Fetch server tool](/docs/guides/features/server-tools/web-fetch)
-* [`/labs/fusion`](https://openrouter.ai/fusion/), interactive playground
+* [Auto Router](/docs/guides/routing/routers/auto-router)
+* [Pareto Router](/docs/guides/routing/routers/pareto-router)
+* [`/labs/fusion`](https://openrouter.ai/fusion/): interactive playground
 

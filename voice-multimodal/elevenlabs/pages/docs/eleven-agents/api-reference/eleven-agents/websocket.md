@@ -1184,6 +1184,64 @@ components:
         - eleven_v3_conversational
       description: The model to use for TTS
       title: ConversationInitiationClientDataConversationConfigOverrideTtsModelId
+    ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsModelFamily:
+      type: string
+      enum:
+        - turbo
+        - flash
+        - multilingual
+        - v3_conversational
+      title: >-
+        ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsModelFamily
+    ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsOptimizeStreamingLatency:
+      type: string
+      enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+      title: >-
+        ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsOptimizeStreamingLatency
+    ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItems:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+        voice_id:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        language:
+          type: string
+        model_family:
+          $ref: >-
+            #/components/schemas/ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsModelFamily
+        optimize_streaming_latency:
+          $ref: >-
+            #/components/schemas/ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsOptimizeStreamingLatency
+        stability:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+        speed:
+          type: number
+          format: double
+          minimum: 0.7
+          maximum: 1.2
+        similarity_boost:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+      required:
+        - label
+        - voice_id
+      title: >-
+        ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItems
     ConversationInitiationClientDataConversationConfigOverrideTtsPronunciationDictionaryLocatorsItems:
       type: object
       properties:
@@ -1216,6 +1274,12 @@ components:
         voice_id:
           type: string
           description: The voice ID to use for TTS
+        supported_voices:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItems
+          description: Additional supported voices for the agent
         stability:
           type: number
           format: double

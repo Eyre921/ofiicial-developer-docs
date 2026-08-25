@@ -6,10 +6,6 @@ path: guides/production/bring-your-own-cloud
 
 Deploy Pinecone BYOC in your own AWS, GCP, or Azure account for data sovereignty, network isolation, and regional data residency requirements.
 
-<Note>
-  BYOC is in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure.
-</Note>
-
 Pinecone BYOC (bring your own cloud) is designed for organizations with strict requirements around data sovereignty, network isolation, and data residency.
 
 With BYOC, you deploy the Pinecone data plane in your own cloud account (AWS, GCP, or Azure), and you get the benefits of a managed service — upgrades, scaling, and maintenance — without giving up control of your data or infrastructure.
@@ -594,7 +590,7 @@ Some features available in the standard Pinecone service are not yet supported o
 * Reading and writing data from the index browser in the Pinecone console.
 * Pinecone CLI data plane operations (queries, upserts, fetches). Control plane operations (create, list, delete indexes) work as expected.
 * Imports from private cloud storage buckets, unless the bucket is in the same cloud account as your BYOC deployment.
-* On-demand indexes (initial release supports DRN indexes only).
+* On-demand indexes. BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes) indexes only.
 
 To [monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus), you must configure Prometheus within your VPC.
 

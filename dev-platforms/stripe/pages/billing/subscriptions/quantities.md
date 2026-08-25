@@ -125,7 +125,9 @@ Subscriptions that charge a fixed rate on an interval are billed at the start of
 
 When a subscription combines a fixed rate with usage-based billing, metered usage from the previous billing period is charged alongside the fixed rate for the new billing period at the start of each renewal. The usage-based billing and fixed rate are combined in a single invoice.
 
-Since using multiple products with a subscription results in a single invoice and payment, all the prices for those products must use the same currency. You’re also limited to 20 products in a single subscription.
+Using multiple products with a subscription results in a single invoice and payment, meaning all the prices for those products must use the same currency.
+
+You’re also limited to 20 subscription items in a single subscription.
 
 To handle multiple products in a subscription that might have different billing periods, you can create a [mixed interval subscription](https://docs.stripe.com/billing/subscriptions/mixed-interval.md).
 

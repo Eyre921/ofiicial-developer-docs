@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/nexus-release-notes/feature-availability
 path: nexus-release-notes/feature-availability
 ---
 
-Feature availability phases for Pinecone Nexus.
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
 
 This page defines the different availability phases of a feature in Pinecone.
 

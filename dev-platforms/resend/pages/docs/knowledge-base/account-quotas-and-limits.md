@@ -28,10 +28,13 @@ Free accounts have the following:
 
 * Marketing emails: unlimited emails to up to 1,000 contacts per month.
 
+* Domains: up to 3 verified domains.
+
 ## Paid Plan Quota
 
 * Transactional Pro, Scale and Enterprise plans have no daily quota limits, though the plan tier will dictate the monthly email quota. Both sent and received emails count towards this monthly quota. To see your current month usage, view the [**Usage page**](https://resend.com/settings/usage). Multiple `To`, `CC`, or `BCC` recipients in sent emails count as separate emails towards the monthly quota.
 * Marketing Pro, Enterprise plans have unlimited emails, though the plan tier will dictate the monthly contacts.
+* Pro plans include 10 domains and Scale plans include 1,000 domains. Enterprise domain limits are set by contract. Pro and Scale plans can add 100 more domains with a [\$20/month add-on](/docs/knowledge-base/what-is-resend-pricing#add-ons).
 
 ## Overage Limits
 

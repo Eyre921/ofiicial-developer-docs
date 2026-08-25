@@ -54,6 +54,17 @@ Marketing Email plans are based on the number of contacts, not the number of ema
 | Pro Marketing | \$650/mo | 150,000     |
 | Enterprise    | Custom   | Custom      |
 
+## Domains
+
+Each plan includes a set number of domains:
+
+| Plan       | Domains         |
+| ---------- | --------------- |
+| Free       | 3               |
+| Pro        | 10              |
+| Scale      | 1,000           |
+| Enterprise | Set by contract |
+
 ## Automations
 
 All plans include 10,000 Automation Runs per month. Paid plans can continue beyond the included usage with pay-as-you-go billing at \$0.0015 per run. The Free plan includes 10,000 Automation Runs per month with no overage.
@@ -61,6 +72,8 @@ All plans include 10,000 Automation Runs per month. Paid plans can continue beyo
 ## Add-ons
 
 Dedicated IPs are available for \$30/month on the Scale plan for customers sending more than 3,000 emails per day. Dedicated IPs include automatic warmup, monitoring, and autoscaling.
+
+Additional domains are available for \$20/month on the Pro and Scale plans. The add-on includes 100 domains on top of what your plan includes and can be added or removed at any time from the Dashboard.
 
 ## Annual plans
 

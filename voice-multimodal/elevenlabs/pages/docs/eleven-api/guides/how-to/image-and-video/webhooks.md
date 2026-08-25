@@ -98,6 +98,12 @@ delivery would not be possible:
 | `invalid_webhook_id`     | A listed webhook is not subscribed to generation events, or no longer exists. |
 | `webhook_disabled`       | A targeted webhook is disabled, manually or automatically after failures.     |
 
+Webhook delivery pairs well with [chained
+generations](/docs/eleven-api/guides/how-to/image-and-video/references#chain-one-generation-into-the-next):
+set `webhook` on the final generation and the whole chain runs server-side with a single event at
+the end. This holds when the chain fails partway through as well — the failure cascades to the
+final generation, which delivers it as a `failed` event with a `dependency_failed` reason.
+
 ## Webhook payload
 
 A completed generation delivers the output URL and MIME type:

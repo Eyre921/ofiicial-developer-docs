@@ -8014,6 +8014,415 @@ Additionally, requests with the following filters will **not** match because the
 ```
 
 
+# Migrate from pgvector
+Source: https://docs.pinecone.io/guides/index-data/migrate-from-pgvector
+
+Migrate pgvector records to Pinecone Database, validate search results, synchronize changes, and cut over application traffic.
+
+This guide shows you how to migrate a vector-search workload from pgvector to Pinecone Database while keeping PostgreSQL available as the source of truth until cutover. It's based on the [pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration), which provides a step-by-step migration manual, a runnable notebook, and a synchronization script that supports backfills, incremental synchronization, and reconciliation.
+
+## Before you migrate
+
+You need:
+
+* A Pinecone account and [API key](https://app.pinecone.io/organizations/-/projects/-/keys).
+* Network access to your PostgreSQL database.
+* Python 3.9 or later.
+* A PostgreSQL role that can read the tables you want to migrate.
+* Write access to PostgreSQL if you use the synchronization script. The script creates bookkeeping tables or an outbox table and triggers, depending on the synchronization strategy.
+
+Clone the migration repository and install its dependencies:
+
+```bash Terminal theme={null}
+git clone https://github.com/pinecone-field/pgvector-migration.git
+cd pgvector-migration
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+<Note>
+  The repository's `requirements.txt` installs the `pinecone`, `psycopg`, `pgvector`, and `pyarrow` packages used throughout this guide.
+</Note>
+
+Set the connection string, API key, and Pinecone index name as environment variables:
+
+```bash Terminal theme={null}
+export PG_CONN="postgresql://USER:PASSWORD@HOST:5432/DATABASE"
+export PINECONE_API_KEY="YOUR_API_KEY"
+export PINECONE_INDEX="pgvector-migration"
+```
+
+<Warning>
+  Complete the workflow first in a test or staging environment using a disposable Pinecone index and representative source data. Delete the disposable index after validation. When you repeat the workflow in production, create a new, empty production index and don't stream pilot records into its target namespaces. Bulk import requires those namespaces not to exist.
+</Warning>
+
+<Tip>
+  The [`migration_walkthrough.ipynb`](https://github.com/pinecone-field/pgvector-migration/blob/main/migration_walkthrough.ipynb) notebook runs every step in this guide against a local Dockerized pgvector database, so you can test the workflow before running it against your own data.
+</Tip>
+
+## 1. Inspect the pgvector data
+
+For every table you want to migrate, identify the primary key, vector column, vector dimension, distance metric, metadata columns, and row count.
+
+Find the vector columns and their dimensions:
+
+```sql PostgreSQL theme={null}
+SELECT c.relname AS table_name,
+       a.attname AS column_name,
+       format_type(a.atttypid, a.atttypmod) AS column_type
+FROM pg_attribute a
+JOIN pg_class c ON c.oid = a.attrelid
+JOIN pg_type t ON t.oid = a.atttypid
+WHERE t.typname = 'vector'
+  AND a.attnum > 0
+  AND NOT a.attisdropped
+  AND c.relkind = 'r'
+ORDER BY table_name;
+```
+
+Inspect each pgvector index to determine the distance metric:
+
+```sql PostgreSQL theme={null}
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE tablename = 'TABLE_NAME';
+```
+
+Map the pgvector operator class to the Pinecone metric:
+
+| pgvector operator class | pgvector operator | Pinecone metric |
+| ----------------------- | ----------------- | --------------- |
+| `vector_cosine_ops`     | `<=>`             | `cosine`        |
+| `vector_ip_ops`         | `<#>`             | `dotproduct`    |
+| `vector_l2_ops`         | `<->`             | `euclidean`     |
+
+If the table doesn't have a pgvector index, inspect the distance operator used by your application queries. The Pinecone index dimension and metric must match the source data.
+
+Also record the source count for each table. You'll compare these counts with Pinecone after the backfill:
+
+```sql PostgreSQL theme={null}
+SELECT count(*) FROM TABLE_NAME;
+```
+
+## 2. Map access controls
+
+If your tables use PostgreSQL row-level security (RLS), review every policy before choosing a Pinecone layout:
+
+```sql PostgreSQL theme={null}
+SELECT schemaname, tablename, policyname, cmd, qual
+FROM pg_policies
+WHERE schemaname = 'public'
+ORDER BY tablename, policyname;
+```
+
+Pinecone doesn't evaluate PostgreSQL RLS policies. Use a namespace for a hard tenant boundary, or copy access-control attributes into record metadata and apply a server-side metadata filter to every search. Derive the namespace or filter values from the authenticated session, not from client input.
+
+If a policy depends on joins, functions, or data outside the vector row, enforce the access decision in your application. When you denormalize permissions into metadata, synchronize permission changes as well as changes to the vector table.
+
+## 3. Choose the index and namespace layout
+
+By default, `sync.py` uses one Pinecone index and maps each PostgreSQL table to a namespace with the same name. The steps below use this layout. Tables can share an index only when their vectors have the same dimension and use the same distance metric.
+
+| Source data                                         | Pinecone layout                                                                   |
+| --------------------------------------------------- | --------------------------------------------------------------------------------- |
+| One table, or several tables searched independently | One namespace per table in a shared index                                         |
+| Several tables searched together                    | One shared namespace with a `source_table` metadata field                         |
+| Tables with different dimensions or metrics         | One index per dimension and metric combination                                    |
+| Tenant-isolated data                                | One namespace per tenant, with optional metadata filters for finer access control |
+
+To use a shared namespace, tenant-based namespaces, or multiple indexes, update the namespace and index routing in `sync.py` before you run the migration.
+
+Use a string for every record ID. The migration repository prefixes source IDs with the table name, such as `documents#4021`, to prevent collisions. Each Pinecone record contains the vector in `values` and selected source columns in `metadata`.
+
+Metadata values must be strings, numbers, booleans, or lists of strings. Omit `NULL` values and convert PostgreSQL `numeric` values to floats. Don't name a source metadata field `metadata`; `metadata` is the top-level Parquet column that contains the JSON-encoded metadata object.
+
+## 4. Create the Pinecone index
+
+<Note>
+  The examples below use two PostgreSQL tables, `documents` and `products`, with 768-dimensional vectors stored in an `embedding` column and queried using cosine distance. Replace all example table names, column names, dimensions, metrics, metadata fields, and namespaces with values from your workload.
+</Note>
+
+Create a new, empty production serverless index with the dimension and metric you identified from pgvector:
+
+```python Python theme={null}
+import os
+
+from pinecone import Pinecone, ServerlessSpec
+
+pc = Pinecone(
+    api_key=os.environ["PINECONE_API_KEY"],
+    source_tag="pinecone_io:docs:pgvector_migration",
+)
+
+index_name = "pgvector-migration"
+
+if not pc.has_index(index_name):
+    pc.create_index(
+        name=index_name,
+        dimension=768,
+        metric="cosine",
+        spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+    )
+```
+
+Replace the example dimension, metric, cloud, and region with values appropriate for your workload. If separate source tables have different dimensions or metrics, create separate indexes.
+
+## 5. Configure the source tables
+
+In the cloned migration repository, edit the `TABLES` configuration near the top of [`sync.py`](https://github.com/pinecone-field/pgvector-migration/blob/main/sync.py) to match your PostgreSQL schema. Each entry defines the primary key, vector column, metadata columns, and optional change timestamp:
+
+```python Python theme={null}
+TABLES = {
+    "documents": {
+        "id": "id",
+        "vector": "embedding",
+        "metadata": ["title", "category"],
+        "updated_at": "updated_at",
+    },
+    "products": {
+        "id": "id",
+        "vector": "embedding",
+        "metadata": ["name", "price"],
+        "updated_at": "updated_at",
+    },
+}
+```
+
+By default, `sync.py` maps each configured table to a namespace with the same name.
+
+Run all `sync.py` commands below from the root of the cloned pgvector-migration repository.
+
+## 6. Backfill the records
+
+### Initialize change tracking
+
+The following workflow uses the default change-log strategy. If the source stays writable during the backfill, initialize change tracking before copying records. This captures changes made during the backfill so you can apply them afterward:
+
+```bash Terminal theme={null}
+python sync.py init --strategy changelog
+```
+
+### Bulk import
+
+For a production backfill, use [bulk import](/guides/index-data/import-data). Create an `export.py` file with the following code from the tool's migration workflow. It writes one import-ready Parquet file per table.
+
+<Note>
+  The export script reuses the PostgreSQL connection, `TABLES` configuration, and record-mapping helpers from `sync.py`. Configure `TABLES` in `sync.py` before running the export.
+</Note>
+
+```python Python theme={null}
+import json
+import os
+
+import pyarrow as pa
+import pyarrow.parquet as pq
+
+from sync import TABLES, build_record, connect, select_cols
+
+
+PARQUET_SCHEMA = pa.schema([
+    ("id", pa.string()),
+    ("values", pa.list_(pa.float32())),
+    ("metadata", pa.string()),
+])
+
+
+def export_table_to_parquet(conn, table, config, output_path):
+    ids, values, metadata = [], [], []
+    with conn.transaction():
+        with conn.cursor(name=f"stream_{table}") as cursor:
+            cursor.execute(f"SELECT {select_cols(config)} FROM {table}")
+            for row in cursor:
+                record_id, vector, record_metadata = build_record(
+                    table, row, config
+                )
+                ids.append(record_id)
+                values.append(vector)
+                metadata.append(json.dumps(record_metadata))
+
+    arrow_table = pa.table(
+        {"id": ids, "values": values, "metadata": metadata},
+        schema=PARQUET_SCHEMA,
+    )
+    pq.write_table(arrow_table, output_path)
+    print(f"Wrote {len(ids)} records to {output_path}")
+
+
+conn = connect()
+try:
+    os.makedirs("export", exist_ok=True)
+    for table, config in TABLES.items():
+        os.makedirs(f"export/{table}", exist_ok=True)
+        export_table_to_parquet(
+            conn,
+            table,
+            config,
+            f"export/{table}/0.parquet",
+        )
+finally:
+    conn.close()
+```
+
+Run the export:
+
+```bash Terminal theme={null}
+python export.py
+```
+
+The script creates one directory per namespace and one Parquet file per table:
+
+```console Output theme={null}
+export/
+├── documents/
+│   └── 0.parquet
+└── products/
+    └── 0.parquet
+```
+
+If a table would produce a file larger than the maximum file size, split it into numbered files in the same namespace directory. Review the [import limits](/guides/index-data/import-data#import-limits) before exporting a large dataset.
+
+Upload the generated directory tree to Amazon S3, Google Cloud Storage, or Azure Blob Storage. Then start an import using the import root URI:
+
+```python Python theme={null}
+from pinecone import ImportErrorMode
+
+index = pc.Index(host="INDEX_HOST")
+
+operation = index.start_import(
+    uri="s3://BUCKET_NAME/IMPORT_ROOT",
+    integration_id="STORAGE_INTEGRATION_ID",
+    error_mode=ImportErrorMode.CONTINUE,
+)
+
+print(operation.id)
+```
+
+Use the import ID with the [`describe_import` operation](/guides/index-data/import-data#5-track-import-progress) to monitor progress. Each import takes at least 10 minutes. Wait until the import status is `Completed` before validating record counts in the next step.
+
+The target namespaces must not already exist. A private bucket or container requires a [storage integration](/guides/operations/integrations/manage-storage-integrations).
+
+### Streaming backfill
+
+For a small dataset, you can instead use the streaming backfill in `sync.py`:
+
+```bash Terminal theme={null}
+python sync.py backfill
+```
+
+Streaming upsert requests are limited by both record count and request size. The script uses batches of 200 records to stay below the 2 MB request limit for its 768-dimensional example. Reduce the batch size for larger vectors or metadata.
+
+### Apply captured changes
+
+If you initialized change tracking, apply the changes captured while the backfill was running:
+
+```bash Terminal theme={null}
+python sync.py sync --strategy changelog
+```
+
+## 7. Validate the backfill
+
+Compare the source row count for each table with the record count for its target namespace:
+
+```python Python theme={null}
+index = pc.Index(host="INDEX_HOST")
+stats = index.describe_index_stats()
+
+print(stats.total_vector_count)
+for namespace, details in stats.namespaces.items():
+    print(namespace, details.vector_count)
+```
+
+Index statistics are eventually consistent, so allow time for the counts to update.
+
+Next, run a representative set of query vectors against pgvector and Pinecone. For example, the following code compares the top 10 results for a vector selected from the `documents` table:
+
+```python Python theme={null}
+import os
+
+import psycopg
+from pgvector.psycopg import register_vector
+from pinecone import Pinecone
+
+conn = psycopg.connect(os.environ["PG_CONN"])
+register_vector(conn)
+
+pc = Pinecone(
+    api_key=os.environ["PINECONE_API_KEY"],
+    source_tag="pinecone_io:docs:pgvector_migration",
+)
+index = pc.Index(host="INDEX_HOST")
+
+query_vector = conn.execute(
+    "SELECT embedding FROM documents WHERE embedding IS NOT NULL LIMIT 1"
+).fetchone()[0]
+
+pgvector_ids = [
+    f"documents#{row[0]}"
+    for row in conn.execute(
+        "SELECT id FROM documents ORDER BY embedding <=> %s LIMIT %s",
+        (query_vector, 10),
+    ).fetchall()
+]
+
+pinecone_ids = [
+    match.id
+    for match in index.query(
+        vector=query_vector.tolist(),
+        top_k=10,
+        namespace="documents",
+    ).matches
+]
+
+print("pgvector:", pgvector_ids)
+print("Pinecone:", pinecone_ids)
+```
+
+Replace the table, columns, namespace, and pgvector operator with values for your workload. Use `<=>` for cosine distance, `<#>` for inner product, or `<->` for Euclidean distance.
+
+Compare the returned record IDs and ordering. Small ordering differences for near-ties are expected with approximate search. Large differences can indicate a mismatched metric or inconsistent vector normalization.
+
+## 8. Keep Pinecone synchronized
+
+After the initial copy, synchronize inserts, updates, and deletes until cutover. The repository's `sync.py` supports two strategies:
+
+| Strategy   | Use when                                                                 | Behavior                                                                                            |
+| ---------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Change-log | Updates and deletes must be captured reliably.                           | Creates an outbox table and per-table triggers, then applies the latest operation for each record.  |
+| Watermark  | The workload is mostly inserts and has a maintained `updated_at` column. | Tracks migrated IDs and the last synchronization timestamp. Deletes are detected with an anti-join. |
+
+The change-log strategy is the default. Run the synchronization command on a schedule until cutover:
+
+```bash Terminal theme={null}
+python sync.py sync --strategy changelog
+```
+
+The PostgreSQL role used by the script must be able to create the outbox table, functions, and triggers, and update the outbox table.
+
+For workloads that are mostly inserts and have a maintained `updated_at` column, the tool also supports a watermark strategy. This strategy uses its first synchronization run to backfill records. For setup, limitations, and commands, see the [watermark strategy in the pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration#strategy-a--watermark--anti-join-in-postgres-simplest).
+
+Periodically reconcile all record IDs, and run reconciliation immediately before cutover:
+
+```bash Terminal theme={null}
+python sync.py reconcile
+```
+
+Reconciliation upserts records missing from Pinecone and deletes records that no longer exist in pgvector.
+
+## 9. Cut over application traffic
+
+Keep pgvector serving traffic and continue synchronization while you cut over:
+
+1. Shadow a sample of production searches to Pinecone without returning those results to users. Compare search quality and latency.
+2. Route a small percentage of reads to Pinecone and monitor results.
+3. Increase the percentage after validation.
+4. Immediately before switching the primary read path, run `sync` with your selected strategy, run `python sync.py reconcile`, and then run `sync` again to apply changes captured during reconciliation.
+5. Run `sync` once more and confirm that it reports no outstanding changes. Then make Pinecone the primary read path.
+6. Keep pgvector available as a rollback target until the new read path is stable. You can point reads back to pgvector as it never stopped serving and is still authoritative.
+
+For implementation details, troubleshooting, and the complete runnable workflow, see the [pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration).
+
+
 # Upsert records
 Source: https://docs.pinecone.io/guides/index-data/upsert-data
 
@@ -25148,10 +25557,6 @@ Source: https://docs.pinecone.io/guides/production/bring-your-own-cloud
 
 Deploy Pinecone BYOC in your own AWS, GCP, or Azure account for data sovereignty, network isolation, and regional data residency requirements.
 
-<Note>
-  BYOC is in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure.
-</Note>
-
 Pinecone BYOC (bring your own cloud) is designed for organizations with strict requirements around data sovereignty, network isolation, and data residency.
 
 With BYOC, you deploy the Pinecone data plane in your own cloud account (AWS, GCP, or Azure), and you get the benefits of a managed service — upgrades, scaling, and maintenance — without giving up control of your data or infrastructure.
@@ -25736,7 +26141,7 @@ Some features available in the standard Pinecone service are not yet supported o
 * Reading and writing data from the index browser in the Pinecone console.
 * Pinecone CLI data plane operations (queries, upserts, fetches). Control plane operations (create, list, delete indexes) work as expected.
 * Imports from private cloud storage buckets, unless the bucket is in the same cloud account as your BYOC deployment.
-* On-demand indexes (initial release supports DRN indexes only).
+* On-demand indexes. BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes) indexes only.
 
 To [monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus), you must configure Prometheus within your VPC.
 
@@ -40648,75 +41053,6 @@ For guidance and examples, see [Fetch data](https://docs.pinecone.io/guides/mana
 </ResponseExample>
 
 
-# Fetch records by metadata
-Source: https://docs.pinecone.io/reference/api/2026-04/data-plane/fetch_by_metadata
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_data_2026-04.oas.yaml post /vectors/fetch_by_metadata
-Look up and return records by metadata from a single namespace. The returned records include the vector data and metadata.
-For guidance and examples, see [Fetch data](https://docs.pinecone.io/guides/manage-data/fetch-data).
-
-<RequestExample>
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
-
-  curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
-    -d '{
-      "namespace": "__default__",
-      "filter": {"genre": {"$eq": "Action/Adventure"}},
-      "limit": 2
-    }'
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "vectors": {
-      "0": {
-        "id": "0",
-        "values": [
-          0.0234527588, 0.0291595459 ...
-        ],
-        "metadata": {
-          "box-office": 2923706026,
-          "genre": "Action/Adventure",
-          "summary": "On the alien world of Pandora, paraplegic Marine Jake Sully uses an avatar to walk again and becomes torn between his mission and protecting the planet's indigenous Na'vi people. The film stars Sam Worthington, Zoe Saldana, and Sigourney Weaver.",
-          "title": "Avatar",
-          "year": 2009
-        }
-      },
-      "1": {
-        "id": "1",
-        "values": [
-          0.0397644043, 0.013053894, ...
-        ],
-        "metadata": {
-          "box-office": 2799439100,
-          "genre": "Action/Adventure",
-          "summary": "In the aftermath of Thanos wiping out half of the universe, the remaining Avengers assemble once more to undo the chaos, leading to a time-traveling adventure. Stars Robert Downey Jr., Chris Evans, and Scarlett Johansson.",
-          "title": "Avengers: Endgame",
-          "year": 2019
-        }
-      }
-    },
-    "namespace": "__default__",
-    "usage": {
-      "readUnits": 1
-    },
-    "pagination": {
-      "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
-    }
-  }
-  ```
-</ResponseExample>
-
-
 # List namespaces
 Source: https://docs.pinecone.io/reference/api/2026-04/data-plane/listnamespaces
 
@@ -50980,6 +51316,75 @@ For guidance and examples, see [Import data](https://docs.pinecone.io/guides/ind
     "finished_at": "2024-08-19T20:49:00.754Z",
     "percent_complete": 42.2,
     "records_imported": 1000000
+  }
+  ```
+</ResponseExample>
+
+
+# Fetch records by metadata
+Source: https://docs.pinecone.io/reference/api/2026-04/data-plane/fetch_by_metadata
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_data_2026-04.oas.yaml post /vectors/fetch_by_metadata
+Look up and return records by metadata from a single namespace. The returned records include the vector data and metadata.
+For guidance and examples, see [Fetch data](https://docs.pinecone.io/guides/manage-data/fetch-data).
+
+<RequestExample>
+  ```shell curl theme={null}
+  # To get the unique host for an index,
+  # see https://docs.pinecone.io/guides/manage-data/target-an-index
+  PINECONE_API_KEY="YOUR_API_KEY"
+  INDEX_HOST="INDEX_HOST"
+
+  curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-04" \
+    -d '{
+      "namespace": "__default__",
+      "filter": {"genre": {"$eq": "Action/Adventure"}},
+      "limit": 2
+    }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "vectors": {
+      "0": {
+        "id": "0",
+        "values": [
+          0.0234527588, 0.0291595459 ...
+        ],
+        "metadata": {
+          "box-office": 2923706026,
+          "genre": "Action/Adventure",
+          "summary": "On the alien world of Pandora, paraplegic Marine Jake Sully uses an avatar to walk again and becomes torn between his mission and protecting the planet's indigenous Na'vi people. The film stars Sam Worthington, Zoe Saldana, and Sigourney Weaver.",
+          "title": "Avatar",
+          "year": 2009
+        }
+      },
+      "1": {
+        "id": "1",
+        "values": [
+          0.0397644043, 0.013053894, ...
+        ],
+        "metadata": {
+          "box-office": 2799439100,
+          "genre": "Action/Adventure",
+          "summary": "In the aftermath of Thanos wiping out half of the universe, the remaining Avengers assemble once more to undo the chaos, leading to a time-traveling adventure. Stars Robert Downey Jr., Chris Evans, and Scarlett Johansson.",
+          "title": "Avengers: Endgame",
+          "year": 2019
+        }
+      }
+    },
+    "namespace": "__default__",
+    "usage": {
+      "readUnits": 1
+    },
+    "pagination": {
+      "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
+    }
   }
   ```
 </ResponseExample>
@@ -70507,7 +70912,7 @@ Official AWS reference architecture for building high-scale production systems w
 # Sample apps
 Source: https://docs.pinecone.io/examples/sample-apps
 
-Full-stack sample applications built with Pinecone: semantic search over PDFs, multi-tenant RAG with namespace isolation, multimodal search, and Assistant chat.
+Sample apps and tools built with Pinecone, including semantic search, multi-tenant RAG, multimodal search, Assistant chat, and pgvector migration.
 
 <div>
   <div>
@@ -70531,6 +70936,12 @@ Full-stack sample applications built with Pinecone: semantic search over PDFs, m
 
     <ExampleCard title="Pinecone Assistant">
       <Tag icon="/images/examples/nextjs.svg" />
+    </ExampleCard>
+
+    <ExampleCard title="pgvector migration tool">
+      <Tag />
+
+      <Tag />
     </ExampleCard>
   </div>
 
@@ -71146,24 +71557,6 @@ Use FlowiseAI with Pinecone to build low-code LLM apps that upsert documents and
 Flowise is a low-code LLM apps development platform. It supports integrations with dozens of systems, including databases and chat models.
 
 The Pinecone integration with Flowise allows users to build RAG apps, including upserting and querying documents.
-
-<PrimarySecondaryCTA />
-
-
-# Gathr
-Source: https://docs.pinecone.io/integrations/gathr
-
-Use Gathr's no-code data-to-outcome platform with Pinecone to build enterprise RAG apps, chatbots, and vector pipelines from ingestion through deployment.
-
-[Gathr](https://www.gathr.one/) is the world's first and only "data to outcome" platform. Leading enterprises use Gathr to build and operationalize data and AI-driven solutions at scale.
-
-Gathr unifies data engineering, machine learning, generative AI, actionable analytics, and process automation on a single platform. With Gen AI capabilities and no-code rapid application development, Gathr significantly boosts productivity for all. The unified experience fosters seamless handoff and collaboration between teams, accelerating the journey from prototype to production.
-
-Users have achieved success with Gathr, from ingesting petabyte-scale data in real time to orchestrating thousands of complex data processing pipelines in months and delivering actionable insights and xOps solutions to multiply business impact. Additionally, Gathr helps enterprises architect Gen AI solutions for use cases like document summarization, sentiment analysis, next best action, insider threat detection, predictive maintenance, custom chatbots, and more.
-
-Gathr Gen AI Fabric is designed to build enterprise-grade Gen AI solutions end-to-end on a unified platform. It offers production-ready building blocks for creating Gen AI solutions, out-of-the-box Gen AI solution templates, and GathrIQ, a data-to-outcome copilot.
-
-One of the building blocks is integration with Vector DB and Knowledge Graphs. Gathr supports reading and writing from Pinecone using a built-in, ready-to-use connector to support use cases requiring knowledge graphs.
 
 <PrimarySecondaryCTA />
 
@@ -79245,82 +79638,6 @@ curl -X DELETE "https://api.pinecone.io/admin/role-bindings/9a8e3528-b9c0-4358-8
 For more information, see [Delete a role binding](/reference/api/2026-04/admin/delete_role_binding).
 
 
-# Organizations overview
-Source: https://docs.pinecone.io/guides/assistant/admin/organizations-overview
-
-Learn how Pinecone organizations group projects under shared billing, and how organization owners, members, and roles control access and permissions.
-
-A Pinecone organization is a set of [projects](/guides/assistant/admin/projects-overview) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
-
-<Note>
-  While an email address can be associated with multiple organizations, it cannot be used to create more than one organization. For information about managing organization members, see [Manage organization members](/guides/assistant/admin/manage-organization-members).
-</Note>
-
-## Projects in an organization
-
-Each organization contains one or more projects that share the same organization owners and billing settings. Each project belongs to exactly one organization. If you need to move a project from one organization to another, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-
-## Billing settings
-
-All of the projects in an organization share the same billing method and settings. The billing settings for the organization are controlled by the organization owners.
-
-Organization owners can update the billing contact information, update the payment method, and view and download invoices using the [Pinecone console](https://app.pinecone.io/organizations/-/settings/billing).
-
-## Organization roles
-
-Organization owners can manage access to their organizations and projects by assigning roles to organization members and service accounts. A role determines the permissions that a [principal](/guides/assistant/admin/security-overview#role-based-access-controls-rbac) (a user, service account, or API key) has within Pinecone. The organization roles are as follows:
-
-* **Organization owner** (`OrgOwner`): Full control over the organization, including billing, members, service accounts, security, and every project. Inherits [owner access](/guides/assistant/admin/projects-overview#project-roles) to all projects in the organization.
-
-* **Organization manager** (`OrgManager`): Can view organization details and create projects. Organization managers cannot manage billing, members, service accounts, or organization settings.
-
-* **Organization member** (`OrgMember`): Can view organization details and access the projects they are added to. Organization members cannot create projects or manage organization settings. To grant project access, add the member to one or more projects and assign a [project role](/guides/assistant/admin/projects-overview#project-roles); see [Manage project members](/guides/assistant/admin/manage-project-members).
-
-* **Billing admin** (`OrgBillingAdmin`): Can view organization details and manage billing, subscriptions, and usage. Billing admins cannot manage members or organization settings, and they cannot manage projects unless they are also [project owners](/guides/assistant/admin/projects-overview#project-roles).
-
-The following table summarizes the permissions for each organization role:
-
-| Permission                             | Owner | Manager | Member | Billing admin |
-| -------------------------------------- | :---: | :-----: | :----: | :-----------: |
-| View account details                   |   ✓   |    ✓    |    ✓   |       ✓       |
-| Create projects                        |   ✓   |    ✓    |        |               |
-| View billing and usage details         |   ✓   |         |        |       ✓       |
-| Manage billing details                 |   ✓   |         |        |       ✓       |
-| Invite and remove organization members |   ✓   |         |        |               |
-| Update organization member roles       |   ✓   |         |        |               |
-| Manage service accounts                |   ✓   |         |        |               |
-| Configure single sign-on (SSO)         |   ✓   |         |        |               |
-| Configure audit logs                   |   ✓   |         |        |               |
-| Update organization name               |   ✓   |         |        |               |
-| Delete the organization                |   ✓   |         |        |               |
-
-## Organization single sign-on (SSO)
-
-SSO allows organizations to manage their teams' access to Pinecone through their identity management solution. Once your integration is configured, you can specify a default role for teammates when they sign up.
-
-<Note>For organizations that use SSO for authentication, console sessions are re-authenticated at least every 24 hours.</Note>
-
-For more information, see [Configure single sign-on](/guides/assistant/admin/configure-sso-with-okta).
-
-<Note>SSO is available on Standard and Enterprise plans.</Note>
-
-## Service accounts
-
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
-
-[Service accounts](/guides/assistant/admin/manage-organization-service-accounts) enable programmatic access to Pinecone's Admin API, which can be used to create and manage projects and API keys.
-
-Use service accounts to automate infrastructure management and integrate Pinecone into your deployment workflows, rather than through manual actions in the Pinecone console. Service accounts use the [organization roles](/guides/assistant/admin/organizations-overview#organization-roles) and [project role](/guides/assistant/admin/projects-overview#project-roles) for permissioning, and provide a secure and auditable way to handle programmatic access.
-
-## See also
-
-* [Manage organization members](/guides/assistant/admin/manage-organization-members)
-* [Manage project members](/guides/assistant/admin/manage-project-members)
-* [Project overview](/guides/assistant/admin/projects-overview)
-
-
 # Security overview
 Source: https://docs.pinecone.io/guides/assistant/admin/security-overview
 
@@ -84823,6 +85140,24 @@ Follow these steps to monitor a Pinecone project with Datadog:
 On the **Monitoring Resources** tab, you'll find dashboards for the pod-based and serverless indexes in your project and recommendations for [configuring monitors](https://docs.datadoghq.com/monitors/configuration/?tab=thresholdalert) using [Pinecone's metrics](/guides/production/monitoring#available-metrics).
 
 
+# Gathr
+Source: https://docs.pinecone.io/integrations/gathr
+
+Use Gathr's no-code data-to-outcome platform with Pinecone to build enterprise RAG apps, chatbots, and vector pipelines from ingestion through deployment.
+
+[Gathr](https://www.gathr.one/) is the world's first and only "data to outcome" platform. Leading enterprises use Gathr to build and operationalize data and AI-driven solutions at scale.
+
+Gathr unifies data engineering, machine learning, generative AI, actionable analytics, and process automation on a single platform. With Gen AI capabilities and no-code rapid application development, Gathr significantly boosts productivity for all. The unified experience fosters seamless handoff and collaboration between teams, accelerating the journey from prototype to production.
+
+Users have achieved success with Gathr, from ingesting petabyte-scale data in real time to orchestrating thousands of complex data processing pipelines in months and delivering actionable insights and xOps solutions to multiply business impact. Additionally, Gathr helps enterprises architect Gen AI solutions for use cases like document summarization, sentiment analysis, next best action, insider threat detection, predictive maintenance, custom chatbots, and more.
+
+Gathr Gen AI Fabric is designed to build enterprise-grade Gen AI solutions end-to-end on a unified platform. It offers production-ready building blocks for creating Gen AI solutions, out-of-the-box Gen AI solution templates, and GathrIQ, a data-to-outcome copilot.
+
+One of the building blocks is integration with Vector DB and Knowledge Graphs. Gathr supports reading and writing from Pinecone using a built-in, ready-to-use connector to support use cases requiring knowledge graphs.
+
+<PrimarySecondaryCTA />
+
+
 # Genkit
 Source: https://docs.pinecone.io/integrations/genkit
 
@@ -88132,7 +88467,7 @@ Pinecone release notes for 2023: new features, improvements, and API changes.
 
 * Pinecone is now registered to collect Value Added Tax (VAT) or Goods and Services Tax (GST) for accounts based in various global regions. If applicable, add your VAT or GST number to your account under **Settings > Billing**.
 
-### October 2023
+## October 2023
 
 ### Features
 
@@ -88238,7 +88573,7 @@ Source: https://docs.pinecone.io/release-notes/2024
 
 Pinecone release notes for 2024: new features, improvements, and API changes.
 
-## December 2024
+These release notes cover all Pinecone products. Use the filters to narrow the list.
 
 <Update label="2024-12-23">
   ### Increased namespaces limit
@@ -88334,8 +88669,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Pinecone Inference now supports [`pinecone-sparse-english-v0`](/guides/search/rerank-results#pinecone-sparse-english-v0), Pinecone's sparse embedding model, which estimates the lexical importance of tokens by leveraging their context, unlike traditional retrieval models like BM25, which rely solely on term frequency. This model is in [public preview](/release-notes/feature-availability).
 </Update>
 
-## November 2024
-
 <Update label="2024-11-30">
   ### Pinecone docs: New workflows and best practices
 
@@ -88401,8 +88734,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 
   Added an [Assistant quickstart](/guides/assistant/quickstart/sdk-quickstart).
 </Update>
-
-## October 2024
 
 <Update label="2024-10-31">
   ### Cequence released updated Scala SDK
@@ -88484,8 +88815,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   You can now [update an existing assistant](/guides/assistant/manage-assistants#update-an-existing-assistant) with new instructions or metadata.
 </Update>
 
-## September 2024
-
 <Update label="2024-09-25">
   Added the [Matillion](/integrations/matillion) integration page.
 </Update>
@@ -88511,7 +88840,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-09-18">
-  Added the `metrics_alignment` operation, which provides a way to [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from a RAG system. This feature is in [public preview](/release-notes/feature-availability).
+  Added the `metrics_alignment` operation, which provides a way to [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from a RAG system. This feature is in [public preview](/assistant-release-notes/feature-availability).
 
   ***
 
@@ -88545,8 +88874,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-09-11">
   Added Go examples for [batch upserts](/guides/index-data/upsert-data#upsert-in-batches), [parallel upserts](/guides/index-data/upsert-data#send-upserts-in-parallel), and [deleting all records for a parent document](/guides/index-data/data-modeling#delete-chunks).
 </Update>
-
-## August 2024
 
 <Update label="2024-08-28">
   Added the [Aryn](/integrations/aryn) integration page.
@@ -88589,7 +88916,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-08-15">
-  [Pinecone Assistant](/guides/assistant/overview) is now in [public preview](/release-notes/feature-availability).
+  [Pinecone Assistant](/guides/assistant/overview) is now in [public preview](/assistant-release-notes/feature-availability).
 </Update>
 
 <Update label="2024-08-13">
@@ -88603,8 +88930,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-08-05">
   Added the [Nuclia](/integrations/nuclia) integration page
 </Update>
-
-## July 2024
 
 <Update label="2024-07-30">
   Added the [Redpanda](/integrations/redpanda) integration page.
@@ -88665,8 +88990,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Added the [Twelve Labs](/integrations/twelve-labs) integration page.
 </Update>
 
-## June 2024
-
 <Update label="2024-06-30">
   Added a [model gallery](/models/overview) with details and guidance on popular embedding and reranking models, including models hosted on Pinecone's infrastructure.
 </Update>
@@ -88719,8 +89042,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Added the [Fleak](/integrations/fleak) integration page.
 </Update>
 
-## May 2024
-
 <Update label="2024-05-31">
   Released [version 1.2.1](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v1.2.1) of the [Pinecone Java SDK](/reference/sdks/java/overview). This version fixes the error `Could Not Find NameResolverProvider` using uber jar.
 </Update>
@@ -88769,8 +89090,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Released [version 4.0.0](https://github.com/pinecone-io/pinecone-python-client/releases/tag/v4.0.0) of the Pinecone Python SDK. In this release, we are upgrading the `protobuf` dependency in our optional `grpc` extras from `3.20.3` to `4.25.3`. Significant performance improvements have been made with this update. This is a breaking change for users of the optional GRPC addon ([installed with `pinecone[grpc]`](https://github.com/pinecone-io/pinecone-python-client?tab=readme-ov-file#working-with-grpc-for-improved-performance)).
 </Update>
 
-## April 2024
-
 <Update label="2024-04-30">
   * The docs now have a new AI chatbot. Use the search bar at the top of our docs to find related content across all of our resources.
   * We've updated the look and feel of our [example notebooks](/examples/notebooks) and [sample apps](/examples/sample-apps). A new sample app, [Namespace Notes](/examples/sample-apps/namespace-notes), a simple multi-tenant RAG app that uploads documents, has also been added.
@@ -88807,8 +89126,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-04-12">
   Released version 1.0.0 of the [Pinecone Java SDK](/reference/sdks/java/overview). With this version, the Java SDK is [officially supported](/troubleshooting/pinecone-support-slas) by Pinecone. For full details on the release, see the [v1.0.0 release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v1.0.0) in GitHub. For usage examples, see [our guides](/guides/get-started/quickstart) or the [GitHub README](https://github.com/pinecone-io/pinecone-java-client). To migrate to v1.0.0 from version 0.8.x or below, see the [Java v1.0.0 migration guide](https://github.com/pinecone-io/pinecone-java-client/blob/main/v1-migration.md).
 </Update>
-
-## March 2024
 
 <Update label="2024-03-31">
   Added a [Troubleshooting](https://docs.pinecone.io/troubleshooting/) section, which includes content on best practices, troubleshooting, and how to address common errors.
@@ -88882,8 +89199,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   You can now [configure single single-on](/guides/production/configure-single-sign-on/okta) to manage your teams' access to Pinecone through any identity management solution with SAML 2.0 support, such as Okta. This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/) only.
 </Update>
 
-## February 2024
-
 <Update label="2024-02-29">
   Updated the [Langchain integration guide](/integrations/langchain) to avoid a [namespace collision issue](/troubleshooting/pinecone-attribute-errors-with-langchain).
 </Update>
@@ -88907,8 +89222,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-02-01">
   Added a [Llamaindex integration guide](/integrations/llamaindex) on building a RAG pipeline with LlamaIndex and Pinecone.
 </Update>
-
-## January 2024
 
 <Update label="2024-01-31">
   The latest version of the [Canopy SDK](https://github.com/pinecone-io/canopy/blob/main/README.md) (v0.6.0) adds support for the new API mentioned above as well as namespaces, LLMs that do not have function calling functionality for query generation, and more. See the [release notes](https://github.com/pinecone-io/canopy/releases/tag/v0.6.0) in GitHub for more details.
@@ -88938,7 +89251,7 @@ Source: https://docs.pinecone.io/release-notes/2025
 
 Pinecone release notes for 2025: new features, improvements, and API changes.
 
-## December 2025
+These release notes cover all Pinecone products. Use the filters to narrow the list.
 
 <Update label="2025-12-29">
   ### Increased metadata limit for assistants
@@ -89004,8 +89317,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   For more information, see [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes).
 </Update>
 
-## November 2025
-
 <Update label="2025-11-19">
   ### Pinecone API version `2025-10` is now the latest stable version
 
@@ -89057,8 +89368,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   If you're using the old syntax, update it so that your filter works correctly. For more information about listing the files associated with an assistant, see [Manage files](/guides/assistant/manage-files).
 </Update>
 
-## October 2025
-
 <Update label="2025-10-30">
   ### Increased files per assistant on the Starter plan
 
@@ -89099,8 +89408,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   For more information, see the [CLI quickstart](/reference/cli/quickstart).
 </Update>
 
-## September 2025
-
 <Update label="2025-09-30">
   ### Production best practices
 
@@ -89124,10 +89431,8 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 <Update label="2025-09-02">
   ### Multimodal context for assistants
 
-  Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal). This feature is in [public preview](/release-notes/feature-availability).
+  Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal). This feature is in [public preview](/assistant-release-notes/feature-availability).
 </Update>
-
-## August 2025
 
 <Update label="2025-08-29">
   ### Filter lexical search by required terms
@@ -89174,7 +89479,7 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Before then, update your applications to use the streamable HTTP transport MCP endpoint (`/mcp/assistants/<YOUR_ASSISTANT_NAME>`). This endpoint follows the current [MCP protocol specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) and provides improved flexibility and compatibility.
 
-  Please note that Assistant MCP servers are in [early access](/release-notes/feature-availability) and are not intended for production usage.
+  Please note that Assistant MCP servers are in [early access](/assistant-release-notes/feature-availability) and are not intended for production usage.
 
   For more information, see [Use an Assistant MCP server](/guides/assistant/mcp-server).
 </Update>
@@ -89184,8 +89489,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Added the [VoltAgent](/integrations/voltagent) integration page.
 </Update>
-
-## July 2025
 
 <Update label="2025-07-28">
   ### Increased context window for `pinecone-sparse-english-v0`
@@ -89211,8 +89514,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   * [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#3-start-migration).
   * Controlling whether `signed_url` is included in the response when [describing a file](/guides/assistant/manage-files#get-the-status-of-a-file) for an assistant.
 </Update>
-
-## June 2025
 
 <Update label="2025-06-26">
   ### Unlimited assistant file storage for paid plans
@@ -89276,8 +89577,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Released [`v6.1.0`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.0) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [controlling the context snippets sent to the LLM](/guides/assistant/chat-with-assistant#control-the-context-snippets-sent-to-the-llm) by an assistant.
 </Update>
-
-## May 2025
 
 <Update label="2025-05-29">
   ### Released Python SDK v7.0.1 and v7.0.2
@@ -89380,8 +89679,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   * [Decrease latency](https://docs.pinecone.io/guides/optimize/decrease-latency)
 </Update>
 
-## April 2025
-
 <Update label="2025-04-25">
   ### Bring Your Own Cloud (BYOC) in GCP
 
@@ -89423,8 +89720,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   You can now use the "Copy page" options at the top of every page of the Pinecone documentation to quickly ground LLMs with Pinecone-specific context.
 </Update>
-
-## March 2025
 
 <Update label="2025-03-26">
   ### Control the context snippets the assistant sends to the LLM
@@ -89481,8 +89776,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) lets you deploy Pinecone Database in your private AWS account to ensure data sovereignty and compliance, with Pinecone handling provisioning, operations, and maintenance. This feature is in [public preview](/release-notes/feature-availability) on AWS.
 </Update>
-
-## February 2025
 
 <Update label="2025-02-21">
   ### Docs site refresh
@@ -89601,8 +89894,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   </Warning>
 </Update>
 
-## January 2025
-
 <Update label="2025-01-29">
   ### Update to the API keys page
 
@@ -89647,7 +89938,15 @@ Source: https://docs.pinecone.io/release-notes/2026
 
 Pinecone release notes for 2026: new features, improvements, and API changes.
 
-## August 2026
+These release notes cover all Pinecone products. Use the filters to narrow the list.
+
+<Update label="2026-08-25">
+  ### General availability: Bring your own cloud (BYOC)
+
+  [BYOC](/guides/production/bring-your-own-cloud) is now [generally available](/release-notes/feature-availability) and recommended for production usage on the Enterprise plan, across AWS, GCP, and Azure.
+
+  BYOC runs the Pinecone data plane inside your own cloud account, so your vectors, metadata, and queries stay in your environment. An agent in your cluster pulls operations from Pinecone and runs them locally, so Pinecone needs no inbound network access to your infrastructure.
+</Update>
 
 <Update label="2026-08-21">
   ### Index fullness metrics for dedicated read nodes
@@ -89663,13 +89962,17 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
 </Update>
 
+<Update label="2026-08-06">
+  ### General availability: Pinecone Nexus
+
+  Pinecone Nexus, the knowledge engine for agents, is now [generally available](/nexus-release-notes/feature-availability). Point Nexus at your sources, curate them into a context, and query that context to get grounded, cited answers. Get started in the [Nexus quickstart](/guides/nexus/quickstart).
+</Update>
+
 <Update label="2026-08-01">
   ### Released Pinecone Terraform Provider v4.0.0
 
   Released [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds resources for managing [service accounts](/guides/organizations/manage-service-accounts), [role bindings](/guides/production/manage-rbac), organization invites, and removing organization members. It also adds data sources for reading existing indexes, collections, projects, service accounts, role bindings, invites, and users, and `terraform import` support for every resource.
 </Update>
-
-## July 2026
 
 <Update label="2026-07-21">
   ### Fuzzy matching and substring search for full-text search
@@ -89731,8 +90034,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 1. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
 </Update>
 
-## June 2026
-
 <Update label="2026-06-03">
   ### Multi-region and multi-cloud support on the Builder plan
 
@@ -89757,12 +90058,10 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   For details, see [Understanding cost — Imports](/guides/manage-cost/understanding-cost#imports).
 </Update>
 
-## May 2026
-
 <Update label="2026-05-05">
   ### Public preview: Pinecone Marketplace
 
-  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
+  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/marketplace-release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
 
   Highlights:
 
@@ -89812,8 +90111,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions).
 </Update>
 
-## April 2026
-
 <Update label="2026-04-28">
   ### General availability: Fetch by metadata
 
@@ -89850,8 +90147,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   For details, see [Pricing and limits](/guides/assistant/pricing-and-limits) and [Pinecone pricing](https://www.pinecone.io/pricing/).
 </Update>
 
-## March 2026
-
 <Update label="2026-03-26">
   ### General availability: platform and operations features
 
@@ -89881,8 +90176,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   Released [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds support for [BYOC indexes](/guides/production/bring-your-own-cloud), [dedicated read nodes](/guides/index-data/dedicated-read-nodes), and [metadata indexing](/guides/index-data/create-an-index#metadata-indexing) on serverless and BYOC indexes.
 </Update>
 
-## February 2026
-
 <Update label="2026-02-19">
   ### BYOC now available on AWS, GCP, and Azure
 
@@ -89898,8 +90191,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
   Full HIPAA compliance remains included with the Enterprise plan. To enable the add-on on the Standard plan, [contact sales](mailto:sales@pinecone.io) or see [Understanding cost — HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
 </Update>
-
-## January 2026
 
 <Update label="2026-01-28">
   ### Claude model deprecation for Assistant
@@ -91738,6 +92029,82 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
     ```
   </Tab>
 </Tabs>
+
+
+# Organizations overview
+Source: https://docs.pinecone.io/guides/assistant/admin/organizations-overview
+
+Learn how Pinecone organizations group projects under shared billing, and how organization owners, members, and roles control access and permissions.
+
+A Pinecone organization is a set of [projects](/guides/assistant/admin/projects-overview) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
+
+<Note>
+  While an email address can be associated with multiple organizations, it cannot be used to create more than one organization. For information about managing organization members, see [Manage organization members](/guides/assistant/admin/manage-organization-members).
+</Note>
+
+## Projects in an organization
+
+Each organization contains one or more projects that share the same organization owners and billing settings. Each project belongs to exactly one organization. If you need to move a project from one organization to another, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+
+## Billing settings
+
+All of the projects in an organization share the same billing method and settings. The billing settings for the organization are controlled by the organization owners.
+
+Organization owners can update the billing contact information, update the payment method, and view and download invoices using the [Pinecone console](https://app.pinecone.io/organizations/-/settings/billing).
+
+## Organization roles
+
+Organization owners can manage access to their organizations and projects by assigning roles to organization members and service accounts. A role determines the permissions that a [principal](/guides/assistant/admin/security-overview#role-based-access-controls-rbac) (a user, service account, or API key) has within Pinecone. The organization roles are as follows:
+
+* **Organization owner** (`OrgOwner`): Full control over the organization, including billing, members, service accounts, security, and every project. Inherits [owner access](/guides/assistant/admin/projects-overview#project-roles) to all projects in the organization.
+
+* **Organization manager** (`OrgManager`): Can view organization details and create projects. Organization managers cannot manage billing, members, service accounts, or organization settings.
+
+* **Organization member** (`OrgMember`): Can view organization details and access the projects they are added to. Organization members cannot create projects or manage organization settings. To grant project access, add the member to one or more projects and assign a [project role](/guides/assistant/admin/projects-overview#project-roles); see [Manage project members](/guides/assistant/admin/manage-project-members).
+
+* **Billing admin** (`OrgBillingAdmin`): Can view organization details and manage billing, subscriptions, and usage. Billing admins cannot manage members or organization settings, and they cannot manage projects unless they are also [project owners](/guides/assistant/admin/projects-overview#project-roles).
+
+The following table summarizes the permissions for each organization role:
+
+| Permission                             | Owner | Manager | Member | Billing admin |
+| -------------------------------------- | :---: | :-----: | :----: | :-----------: |
+| View account details                   |   ✓   |    ✓    |    ✓   |       ✓       |
+| Create projects                        |   ✓   |    ✓    |        |               |
+| View billing and usage details         |   ✓   |         |        |       ✓       |
+| Manage billing details                 |   ✓   |         |        |       ✓       |
+| Invite and remove organization members |   ✓   |         |        |               |
+| Update organization member roles       |   ✓   |         |        |               |
+| Manage service accounts                |   ✓   |         |        |               |
+| Configure single sign-on (SSO)         |   ✓   |         |        |               |
+| Configure audit logs                   |   ✓   |         |        |               |
+| Update organization name               |   ✓   |         |        |               |
+| Delete the organization                |   ✓   |         |        |               |
+
+## Organization single sign-on (SSO)
+
+SSO allows organizations to manage their teams' access to Pinecone through their identity management solution. Once your integration is configured, you can specify a default role for teammates when they sign up.
+
+<Note>For organizations that use SSO for authentication, console sessions are re-authenticated at least every 24 hours.</Note>
+
+For more information, see [Configure single sign-on](/guides/assistant/admin/configure-sso-with-okta).
+
+<Note>SSO is available on Standard and Enterprise plans.</Note>
+
+## Service accounts
+
+<Note>
+  This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
+</Note>
+
+[Service accounts](/guides/assistant/admin/manage-organization-service-accounts) enable programmatic access to Pinecone's Admin API, which can be used to create and manage projects and API keys.
+
+Use service accounts to automate infrastructure management and integrate Pinecone into your deployment workflows, rather than through manual actions in the Pinecone console. Service accounts use the [organization roles](/guides/assistant/admin/organizations-overview#organization-roles) and [project role](/guides/assistant/admin/projects-overview#project-roles) for permissioning, and provide a secure and auditable way to handle programmatic access.
+
+## See also
+
+* [Manage organization members](/guides/assistant/admin/manage-organization-members)
+* [Manage project members](/guides/assistant/admin/manage-project-members)
+* [Project overview](/guides/assistant/admin/projects-overview)
 
 
 # Projects overview
@@ -94148,278 +94515,12 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 
 
 
-# 2022 releases
-Source: https://docs.pinecone.io/assistant-release-notes/2022
-
-Pinecone release notes for 2022: new features, improvements, and API changes.
-
-## December 22, 2022
-
-#### Pinecone is now available in Google Cloud Marketplace
-
-You can now [sign up for Pinecone billing through Google Cloud Marketplace](/guides/organizations/manage-billing/upgrade-billing-plan).
-
-## December 6, 2022
-
-#### Organizations are generally available
-
-Pinecone now features [organizations](/guides/organizations/understanding-organizations), which allow one or more users to control billing and project settings across multiple projects owned by the same organization.
-
-#### p2 pod type is generally available
-
-The [p2 pod type](/guides/index-data/indexing-overview#p2-pods) is now generally available and ready for production workloads. p2 pods are now available in the Starter plan and support the [dotproduct distance metric](/guides/index-data/create-an-index#dotproduct).
-
-#### Performance improvements
-
-* [Bulk vector\_deletes](/guides/index-data/upsert-data/#deleting-vectors) are now up to 10x faster in many circumstances.
-* [Creating collections](/guides/manage-data/back-up-an-index) is now faster.
-
-## October 31, 2022
-
-#### Hybrid search (Early access)
-
-Pinecone now supports keyword-aware semantic search with the new hybrid search indexes and endpoints. Hybrid search enables improved relevance for semantic search results by combining them with keyword search.
-
-This is an **early access** feature and is available only by [signing up](https://www.pinecone.io/hybrid-search-early-access/).
-
-## October 17, 2022
-
-#### Status page
-
-The new [Pinecone Status Page](https://status.pinecone.io/) displays information about the status of the Pinecone service, including the status of individual cloud regions and a log of recent incidents.
-
-## September 16, 2022
-
-#### Public collections
-
-You can now create indexes from public collections, which are collections containing public data from real-world data sources. Currently, public collections include the Glue - SSTB collection, the TREC Question classification collection, and the SQuAD collection.
-
-## August 16, 2022
-
-#### Collections (Public preview)("Beta")
-
-You can now \[make static copies of your index]\(/guides/manage-data/back-up-an-index using collections]\(/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections). After you create a collection from an index, you can create a new index from that collection. The new index can use any pod type and any number of pods. Collections only consume storage.
-
-This is a **public preview** feature and is not appropriate for production workloads.
-
-#### Vertical scaling
-
-You can now [change the size of the pods](/guides/indexes/pods/scale-pod-based-indexes#increase-pod-size) for a live index to accommodate more vectors or queries without interrupting reads or writes. The p1 and s1 pod types are now available in [4 different sizes](/guides/index-data/indexing-overview/#pods-pod-types-and-pod-sizes): `1x`, `2x`, `4x`, and `8x`. Capacity and compute per pod double with each size increment.
-
-#### p2 pod type (Public preview)("Beta")
-
-The new [p2 pod type](/guides/index-data/indexing-overview/#p2-pods) provides search speeds of around 5ms and throughput of 200 queries per second per replica, or approximately 10x faster speeds and higher throughput than the p1 pod type, depending on your data and network conditions.
-
-This is a **public preview** feature and is not appropriate for production workloads.
-
-#### Improved p1 and s1 performance
-
-The [s1](/guides/index-data/indexing-overview/#s1-pods) and [p1](/guides/index-data/indexing-overview/#p1-pods) pod types now offer approximately 50% higher query throughput and 50% lower latency, depending on your workload.
-
-## July 26, 2022
-
-You can now specify a [metadata filter](/guides/index-data/indexing-overview#metadata/) to get results for a subset of the vectors in your index by calling [describe\_index\_stats](/reference/api/2024-07/control-plane/describe_index) with a [filter](/reference/api/2024-07/control-plane/describe_index#!path=filter\&t=request) object.
-
-The `describe_index_stats` operation now uses the `POST` HTTP request type. The `filter` parameter is only accepted by `describe_index_stats` calls using the `POST` request type. Calls to `describe_index_stats` using the `GET` request type are now deprecated.
-
-## July 12, 2022
-
-#### Pinecone Console Guided Tour
-
-You can now choose to follow a guided tour in the [Pinecone console](https://app.pinecone.io). This interactive tutorial walks you through creating your first index, upserting vectors, and querying your data. The purpose of the tour is to show you all the steps you need to start your first project in Pinecone.
-
-## June 24, 2022
-
-#### Updated response codes
-
-The [create\_index](/reference/api/2024-07/control-plane/create_index), [delete\_index](/reference/api/2024-07/control-plane/delete_index), and `scale_index` operations now use more specific HTTP response codes that describe the type of operation that succeeded.
-
-## June 7, 2022
-
-#### Selective metadata indexing
-
-You can now store more metadata and more unique metadata values! [Select which metadata fields you want to index for filtering](/guides/indexes/pods/manage-pod-based-indexes#selective-metadata-indexing) and which fields you only wish to store and retrieve. When you index metadata fields, you can filter vector search queries using those fields. When you store metadata fields without indexing them, you keep memory utilization low, especially when you have many unique metadata values, and therefore can fit more vectors per pod.
-
-#### Single-vector queries
-
-You can now [specify a single query vector using the vector input](/reference/api/2024-07/data-plane/query/#!path=vector\&t=request). We now encourage all users to query using a single vector rather than a batch of vectors, because batching queries can lead to long response messages and query times, and single queries execute just as fast on the server side.
-
-#### Query by ID
-
-You can now [query your Pinecone index using only the ID for another vector](/reference/api/2024-07/data-plane/query/#!path=id\&t=request). This is useful when you want to search for the nearest neighbors of a vector that is already stored in Pinecone.
-
-#### Improved index fullness accuracy
-
-The index fullness metric in [describe\_index\_stats()](/reference/api/2024-07/control-plane/describe_index#!c=200\&path=indexFullness\&t=response) results is now more accurate.
-
-## April 25, 2022
-
-#### Partial updates (Public preview)
-
-You can now perform a partial update by ID and individual value pairs. This allows you to update individual metadata fields without having to upsert a matching vector or update all metadata fields at once.
-
-#### New metrics
-
-Users on all plans can now see metrics for the past one (1) week in the Pinecone console. Users on the Enterprise plan now have access to the following metrics via the [Prometheus metrics endpoint](/guides/production/monitoring/):
-
-* `pinecone_vector_count`
-* `pinecone_request_count_total`
-* `pinecone_request_error_count_total`
-* `pinecone_request_latency_seconds`
-* `pinecone_index_fullness` (Public preview)
-
-**Note:** The accuracy of the `pinecone_index_fullness` metric is improved. This may result in changes from historic reported values. This metric is in public preview.
-
-#### Spark Connector
-
-Spark users who want to manage parallel upserts into Pinecone can now use the [official Spark connector for Pinecone](https://github.com/pinecone-io/spark-pinecone#readme) to upsert their data from a Spark dataframe.
-
-#### Support for Boolean and float metadata in Pinecone indexes
-
-You can now add `Boolean` and `float64` values to [metadata JSON objects associated with a Pinecone index.](/guides/index-data/indexing-overview#metadata)
-
-#### New state field in describe\_index results
-
-The [describe\_index](/reference/api/2024-07/control-plane/describe_index/) operation results now contain a value for `state`, which describes the state of the index. The possible values for `state` are `Initializing`, `ScalingUp`, `ScalingDown`, `Terminating`, and `Ready`.
-
-##### Delete by metadata filter
-
-The [Delete](/reference/api/2024-07/data-plane/delete/) operation now supports filtering my metadata.
-
-
-# 2023 releases
-Source: https://docs.pinecone.io/assistant-release-notes/2023
-
-Pinecone release notes for 2023: new features, improvements, and API changes.
-
-## December 2023
-
-### Features
-
-* The free Starter plan now supports up to 100 namespaces. [Namespaces](/guides/index-data/indexing-overview#namespaces) let you partition vectors within an index to speed up queries or comply with [multitenancy](/guides/index-data/implement-multitenancy) requirements.
-
-## November 2023
-
-### Features
-
-* The new [Pinecone AWS Reference Architecture](https://github.com/pinecone-io/aws-reference-architecture-pulumi/tree/main) is an open-source, distributed system that performs vector-database-enabled semantic search over Postgres records. You can use it as a learning resource or as a starting point for high-scale use cases.
-
-### SDKs
-
-* [Canopy](https://github.com/pinecone-io/canopy/blob/main/README.md) is a new open-source Retrieval Augmented Generation (RAG) framework and context engine built on top of Pinecone. It enables you to start chatting with your documents or text data with a few simple commands.\
-  The latest version of the Canopy SDK (v0.2.0) adds support for OpenAI SDK v1.2.3. See the [release notes](https://github.com/pinecone-io/canopy/releases/tag/V0.2.0) in GitHub for more details.
-
-### Billing
-
-* Pinecone is now registered to collect Value Added Tax (VAT) or Goods and Services Tax (GST) for accounts based in various global regions. If applicable, add your VAT or GST number to your account under **Settings > Billing**.
-
-### October 2023
-
-### Features
-
-* [Collections](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections) are now generally available (GA).
-
-### Regions
-
-* Pinecone Azure support via the [‘eastus-azure\` region](/guides/projects/understanding-projects#project-environments) is now generally available (GA).
-
-### SDKs
-
-* The latest version of our Node SDK is v1.1.2. See the [release notes](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v1.1.2) in GitHub for more details.
-
-### Console
-
-* The Index Browser is now available in the console. This allows you to preview, query, and filter by metadata directly from the console. The Index Browser can be found within the index detail page.
-* We’re improved the design of our metrics page to include new charts for record and error count plus additional latencies (p90, p99) to help triage and understand issues.
-
-### Integrations
-
-* Knowledge Base for Amazon Bedrock is now available in private preview. Integrate your enterprise data via retrieval augmented generation (RAG) when building search and GenAI applications. [Learn more](https://www.pinecone.io/blog/amazon-bedrock-integration/).
-* Pinecone Sink Connector for Confluent is now available in public preview. Gain access to data streams from across your business to build a real-time knowledge base for your AI applications. [Learn more](https://www.pinecone.io/confluent-integration).
-
-### Billing
-
-* You can now [sign up for Pinecone billing through Microsoft Marketplace](/guides/organizations/manage-billing/upgrade-billing-plan).
-
-### Privacy
-
-* Pinecone is now HIPAA compliant across all of our cloud providers (AWS, Azure, and GCP).
-
-## September 11, 2023
-
-Pinecone Azure support via the [eastus-azure region](/guides/projects/understanding-projects#project-environments) is now generally available (GA).
-
-## August 14, 2023
-
-Pinecone now supports deploying projects to Azure using the new [eastus-azure region](/guides/projects/understanding-projects#project-environments). This is a public preview environment, so test thoroughly before deploying to production.
-
-## June 21, 2023
-
-The new `gcp-starter` region is now in public preview. This region has distinct limitations from other Starter Plan regions. `gcp-starter` is the default region for some new users.
-
-## April 26, 2023
-
-[Indexes in the starter plan](/guides/index-data/indexing-overview#starter-plan) now support approximately 100,000 1536-dimensional embeddings with metadata. Capacity is proportional for other dimensionalities.
-
-## April 3, 2023
-
-Pinecone now supports [new US and EU cloud regions](/guides/projects/understanding-projects#project-environments).
-
-## March 21, 2023
-
-Pinecone now supports SSO on some Enterprise plans. [Contact Support](https://app.pinecone.io/organizations/-/settings/support) to set up your integration.
-
-## March 1, 2023
-
-Pinecone now supports [40kb of metadata per vector](/guides/index-data/indexing-overview#metadata#supported-metadata-size).
-
-## February 22, 2023
-
-#### Sparse-dense embeddings are now in public preview.
-
-Pinecone now supports [vectors with sparse and dense values](/guides/search/hybrid-search#use-a-single-index-for-dense-and-sparse-vectors). To use sparse-dense embeddings in Python, upgrade to Python SDK version 2.2.0.
-
-#### Pinecone Python SDK version 2.2.0 is available
-
-Python SDK version 2.2.0 with support for sparse-dense embeddings is now available on [GitHub](https://github.com/pinecone-io/pinecone-python-client) and [PYPI](https://pypi.org/project/pinecone-client/2.2.0/).
-
-## February 15, 2023
-
-#### New Node.js SDK is now available in public preview
-
-You can now try out our new [Node.js SDK for Pinecone](https://sdk.pinecone.io/typescript/).
-
-## February 14, 2023
-
-#### New usage reports in the Pinecone console
-
-You can now monitor your current and projected Pinecone usage with the [**Usage** dashboard](/guides/manage-cost/monitor-usage-and-costs).
-
-## January 31, 2023
-
-#### Pinecone is now available in AWS Marketplace
-
-You can now [sign up for Pinecone billing through Amazon Web Services Marketplace](/guides/organizations/manage-billing/upgrade-billing-plan).
-
-## January 3, 2023
-
-#### Pinecone Python SDK version 2.1.0 is now available on GitHub.
-
-The [latest release of the Python SDK](https://github.com/pinecone-io/pinecone-python-client/releases/tag/2.1.0) makes the following changes:
-
-* Fixes "Connection Reset by peer" error after long idle periods
-* Adds typing and explicit names for arguments in all client operations
-* Adds docstrings to all client operations
-* Adds Support for batch upserts by passing `batch_size` to the upsert method
-* Improves gRPC query results parsing performance
-
-
 # 2024 releases
 Source: https://docs.pinecone.io/assistant-release-notes/2024
 
 Pinecone release notes for 2024: new features, improvements, and API changes.
 
-## December 2024
+These release notes cover all Pinecone products. Use the filters to narrow the list.
 
 <Update label="2024-12-23">
   ### Increased namespaces limit
@@ -94515,8 +94616,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Pinecone Inference now supports [`pinecone-sparse-english-v0`](/guides/search/rerank-results#pinecone-sparse-english-v0), Pinecone's sparse embedding model, which estimates the lexical importance of tokens by leveraging their context, unlike traditional retrieval models like BM25, which rely solely on term frequency. This model is in [public preview](/release-notes/feature-availability).
 </Update>
 
-## November 2024
-
 <Update label="2024-11-30">
   ### Pinecone docs: New workflows and best practices
 
@@ -94582,8 +94681,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 
   Added an [Assistant quickstart](/guides/assistant/quickstart/sdk-quickstart).
 </Update>
-
-## October 2024
 
 <Update label="2024-10-31">
   ### Cequence released updated Scala SDK
@@ -94665,8 +94762,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   You can now [update an existing assistant](/guides/assistant/manage-assistants#update-an-existing-assistant) with new instructions or metadata.
 </Update>
 
-## September 2024
-
 <Update label="2024-09-25">
   Added the [Matillion](/integrations/matillion) integration page.
 </Update>
@@ -94692,7 +94787,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-09-18">
-  Added the `metrics_alignment` operation, which provides a way to [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from a RAG system. This feature is in [public preview](/release-notes/feature-availability).
+  Added the `metrics_alignment` operation, which provides a way to [evaluate the correctness and completeness of a response](/guides/assistant/evaluate-answers) from a RAG system. This feature is in [public preview](/assistant-release-notes/feature-availability).
 
   ***
 
@@ -94726,8 +94821,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-09-11">
   Added Go examples for [batch upserts](/guides/index-data/upsert-data#upsert-in-batches), [parallel upserts](/guides/index-data/upsert-data#send-upserts-in-parallel), and [deleting all records for a parent document](/guides/index-data/data-modeling#delete-chunks).
 </Update>
-
-## August 2024
 
 <Update label="2024-08-28">
   Added the [Aryn](/integrations/aryn) integration page.
@@ -94770,7 +94863,7 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 </Update>
 
 <Update label="2024-08-15">
-  [Pinecone Assistant](/guides/assistant/overview) is now in [public preview](/release-notes/feature-availability).
+  [Pinecone Assistant](/guides/assistant/overview) is now in [public preview](/assistant-release-notes/feature-availability).
 </Update>
 
 <Update label="2024-08-13">
@@ -94784,8 +94877,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-08-05">
   Added the [Nuclia](/integrations/nuclia) integration page
 </Update>
-
-## July 2024
 
 <Update label="2024-07-30">
   Added the [Redpanda](/integrations/redpanda) integration page.
@@ -94846,8 +94937,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Added the [Twelve Labs](/integrations/twelve-labs) integration page.
 </Update>
 
-## June 2024
-
 <Update label="2024-06-30">
   Added a [model gallery](/models/overview) with details and guidance on popular embedding and reranking models, including models hosted on Pinecone's infrastructure.
 </Update>
@@ -94900,8 +94989,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Added the [Fleak](/integrations/fleak) integration page.
 </Update>
 
-## May 2024
-
 <Update label="2024-05-31">
   Released [version 1.2.1](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v1.2.1) of the [Pinecone Java SDK](/reference/sdks/java/overview). This version fixes the error `Could Not Find NameResolverProvider` using uber jar.
 </Update>
@@ -94950,8 +95037,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   Released [version 4.0.0](https://github.com/pinecone-io/pinecone-python-client/releases/tag/v4.0.0) of the Pinecone Python SDK. In this release, we are upgrading the `protobuf` dependency in our optional `grpc` extras from `3.20.3` to `4.25.3`. Significant performance improvements have been made with this update. This is a breaking change for users of the optional GRPC addon ([installed with `pinecone[grpc]`](https://github.com/pinecone-io/pinecone-python-client?tab=readme-ov-file#working-with-grpc-for-improved-performance)).
 </Update>
 
-## April 2024
-
 <Update label="2024-04-30">
   * The docs now have a new AI chatbot. Use the search bar at the top of our docs to find related content across all of our resources.
   * We've updated the look and feel of our [example notebooks](/examples/notebooks) and [sample apps](/examples/sample-apps). A new sample app, [Namespace Notes](/examples/sample-apps/namespace-notes), a simple multi-tenant RAG app that uploads documents, has also been added.
@@ -94988,8 +95073,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-04-12">
   Released version 1.0.0 of the [Pinecone Java SDK](/reference/sdks/java/overview). With this version, the Java SDK is [officially supported](/troubleshooting/pinecone-support-slas) by Pinecone. For full details on the release, see the [v1.0.0 release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v1.0.0) in GitHub. For usage examples, see [our guides](/guides/get-started/quickstart) or the [GitHub README](https://github.com/pinecone-io/pinecone-java-client). To migrate to v1.0.0 from version 0.8.x or below, see the [Java v1.0.0 migration guide](https://github.com/pinecone-io/pinecone-java-client/blob/main/v1-migration.md).
 </Update>
-
-## March 2024
 
 <Update label="2024-03-31">
   Added a [Troubleshooting](https://docs.pinecone.io/troubleshooting/) section, which includes content on best practices, troubleshooting, and how to address common errors.
@@ -95063,8 +95146,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
   You can now [configure single single-on](/guides/production/configure-single-sign-on/okta) to manage your teams' access to Pinecone through any identity management solution with SAML 2.0 support, such as Okta. This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/) only.
 </Update>
 
-## February 2024
-
 <Update label="2024-02-29">
   Updated the [Langchain integration guide](/integrations/langchain) to avoid a [namespace collision issue](/troubleshooting/pinecone-attribute-errors-with-langchain).
 </Update>
@@ -95088,8 +95169,6 @@ Pinecone release notes for 2024: new features, improvements, and API changes.
 <Update label="2024-02-01">
   Added a [Llamaindex integration guide](/integrations/llamaindex) on building a RAG pipeline with LlamaIndex and Pinecone.
 </Update>
-
-## January 2024
 
 <Update label="2024-01-31">
   The latest version of the [Canopy SDK](https://github.com/pinecone-io/canopy/blob/main/README.md) (v0.6.0) adds support for the new API mentioned above as well as namespaces, LLMs that do not have function calling functionality for query generation, and more. See the [release notes](https://github.com/pinecone-io/canopy/releases/tag/v0.6.0) in GitHub for more details.
@@ -95119,7 +95198,7 @@ Source: https://docs.pinecone.io/assistant-release-notes/2025
 
 Pinecone release notes for 2025: new features, improvements, and API changes.
 
-## December 2025
+These release notes cover all Pinecone products. Use the filters to narrow the list.
 
 <Update label="2025-12-29">
   ### Increased metadata limit for assistants
@@ -95185,8 +95264,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   For more information, see [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes).
 </Update>
 
-## November 2025
-
 <Update label="2025-11-19">
   ### Pinecone API version `2025-10` is now the latest stable version
 
@@ -95238,8 +95315,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   If you're using the old syntax, update it so that your filter works correctly. For more information about listing the files associated with an assistant, see [Manage files](/guides/assistant/manage-files).
 </Update>
 
-## October 2025
-
 <Update label="2025-10-30">
   ### Increased files per assistant on the Starter plan
 
@@ -95280,8 +95355,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   For more information, see the [CLI quickstart](/reference/cli/quickstart).
 </Update>
 
-## September 2025
-
 <Update label="2025-09-30">
   ### Production best practices
 
@@ -95305,10 +95378,8 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 <Update label="2025-09-02">
   ### Multimodal context for assistants
 
-  Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal). This feature is in [public preview](/release-notes/feature-availability).
+  Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal). This feature is in [public preview](/assistant-release-notes/feature-availability).
 </Update>
-
-## August 2025
 
 <Update label="2025-08-29">
   ### Filter lexical search by required terms
@@ -95355,7 +95426,7 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Before then, update your applications to use the streamable HTTP transport MCP endpoint (`/mcp/assistants/<YOUR_ASSISTANT_NAME>`). This endpoint follows the current [MCP protocol specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) and provides improved flexibility and compatibility.
 
-  Please note that Assistant MCP servers are in [early access](/release-notes/feature-availability) and are not intended for production usage.
+  Please note that Assistant MCP servers are in [early access](/assistant-release-notes/feature-availability) and are not intended for production usage.
 
   For more information, see [Use an Assistant MCP server](/guides/assistant/mcp-server).
 </Update>
@@ -95365,8 +95436,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Added the [VoltAgent](/integrations/voltagent) integration page.
 </Update>
-
-## July 2025
 
 <Update label="2025-07-28">
   ### Increased context window for `pinecone-sparse-english-v0`
@@ -95392,8 +95461,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   * [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#3-start-migration).
   * Controlling whether `signed_url` is included in the response when [describing a file](/guides/assistant/manage-files#get-the-status-of-a-file) for an assistant.
 </Update>
-
-## June 2025
 
 <Update label="2025-06-26">
   ### Unlimited assistant file storage for paid plans
@@ -95457,8 +95524,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   Released [`v6.1.0`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.0) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [controlling the context snippets sent to the LLM](/guides/assistant/chat-with-assistant#control-the-context-snippets-sent-to-the-llm) by an assistant.
 </Update>
-
-## May 2025
 
 <Update label="2025-05-29">
   ### Released Python SDK v7.0.1 and v7.0.2
@@ -95561,8 +95626,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   * [Decrease latency](https://docs.pinecone.io/guides/optimize/decrease-latency)
 </Update>
 
-## April 2025
-
 <Update label="2025-04-25">
   ### Bring Your Own Cloud (BYOC) in GCP
 
@@ -95604,8 +95667,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   You can now use the "Copy page" options at the top of every page of the Pinecone documentation to quickly ground LLMs with Pinecone-specific context.
 </Update>
-
-## March 2025
 
 <Update label="2025-03-26">
   ### Control the context snippets the assistant sends to the LLM
@@ -95662,8 +95723,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
 
   [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) lets you deploy Pinecone Database in your private AWS account to ensure data sovereignty and compliance, with Pinecone handling provisioning, operations, and maintenance. This feature is in [public preview](/release-notes/feature-availability) on AWS.
 </Update>
-
-## February 2025
 
 <Update label="2025-02-21">
   ### Docs site refresh
@@ -95782,8 +95841,6 @@ Pinecone release notes for 2025: new features, improvements, and API changes.
   </Warning>
 </Update>
 
-## January 2025
-
 <Update label="2025-01-29">
   ### Update to the API keys page
 
@@ -95828,7 +95885,15 @@ Source: https://docs.pinecone.io/assistant-release-notes/2026
 
 Pinecone release notes for 2026: new features, improvements, and API changes.
 
-## August 2026
+These release notes cover all Pinecone products. Use the filters to narrow the list.
+
+<Update label="2026-08-25">
+  ### General availability: Bring your own cloud (BYOC)
+
+  [BYOC](/guides/production/bring-your-own-cloud) is now [generally available](/release-notes/feature-availability) and recommended for production usage on the Enterprise plan, across AWS, GCP, and Azure.
+
+  BYOC runs the Pinecone data plane inside your own cloud account, so your vectors, metadata, and queries stay in your environment. An agent in your cluster pulls operations from Pinecone and runs them locally, so Pinecone needs no inbound network access to your infrastructure.
+</Update>
 
 <Update label="2026-08-21">
   ### Index fullness metrics for dedicated read nodes
@@ -95844,13 +95909,17 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
 </Update>
 
+<Update label="2026-08-06">
+  ### General availability: Pinecone Nexus
+
+  Pinecone Nexus, the knowledge engine for agents, is now [generally available](/nexus-release-notes/feature-availability). Point Nexus at your sources, curate them into a context, and query that context to get grounded, cited answers. Get started in the [Nexus quickstart](/guides/nexus/quickstart).
+</Update>
+
 <Update label="2026-08-01">
   ### Released Pinecone Terraform Provider v4.0.0
 
   Released [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds resources for managing [service accounts](/guides/organizations/manage-service-accounts), [role bindings](/guides/production/manage-rbac), organization invites, and removing organization members. It also adds data sources for reading existing indexes, collections, projects, service accounts, role bindings, invites, and users, and `terraform import` support for every resource.
 </Update>
-
-## July 2026
 
 <Update label="2026-07-21">
   ### Fuzzy matching and substring search for full-text search
@@ -95912,8 +95981,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 1. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
 </Update>
 
-## June 2026
-
 <Update label="2026-06-03">
   ### Multi-region and multi-cloud support on the Builder plan
 
@@ -95938,12 +96005,10 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   For details, see [Understanding cost — Imports](/guides/manage-cost/understanding-cost#imports).
 </Update>
 
-## May 2026
-
 <Update label="2026-05-05">
   ### Public preview: Pinecone Marketplace
 
-  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
+  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/marketplace-release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
 
   Highlights:
 
@@ -95993,8 +96058,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions).
 </Update>
 
-## April 2026
-
 <Update label="2026-04-28">
   ### General availability: Fetch by metadata
 
@@ -96031,8 +96094,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   For details, see [Pricing and limits](/guides/assistant/pricing-and-limits) and [Pinecone pricing](https://www.pinecone.io/pricing/).
 </Update>
 
-## March 2026
-
 <Update label="2026-03-26">
   ### General availability: platform and operations features
 
@@ -96062,8 +96123,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
   Released [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds support for [BYOC indexes](/guides/production/bring-your-own-cloud), [dedicated read nodes](/guides/index-data/dedicated-read-nodes), and [metadata indexing](/guides/index-data/create-an-index#metadata-indexing) on serverless and BYOC indexes.
 </Update>
 
-## February 2026
-
 <Update label="2026-02-19">
   ### BYOC now available on AWS, GCP, and Azure
 
@@ -96079,8 +96138,6 @@ Pinecone release notes for 2026: new features, improvements, and API changes.
 
   Full HIPAA compliance remains included with the Enterprise plan. To enable the add-on on the Standard plan, [contact sales](mailto:sales@pinecone.io) or see [Understanding cost — HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
 </Update>
-
-## January 2026
 
 <Update label="2026-01-28">
   ### Claude model deprecation for Assistant
@@ -96295,6 +96352,67 @@ A **connector** is the integration that ingests documents from a source system. 
 ## Evaluation
 
 An **evaluation** is an automatic quality check that runs on publish. Marketplace generates test questions from the connected sources, asks the application to answer them, and scores responses on faithfulness and relevance. Results are visible from the deployment dashboard. See [Evaluations](/guides/marketplace/evaluations).
+
+
+# Create a deployment
+Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
+
+Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
+
+<Note>
+  This feature is in [public preview](/release-notes/feature-availability).
+</Note>
+
+This page shows you how to create a [deployment](/guides/marketplace/concepts#deployment) in Pinecone Marketplace.
+
+## Before you begin
+
+* A Marketplace account. See the [Quickstart](/guides/marketplace/quickstart) for access.
+* A clear use case in mind, so you can pick a starting [template](/guides/marketplace/template-catalog).
+
+## 1. Open the catalog
+
+Go to [marketplace.pinecone.io](https://marketplace.pinecone.io) and select **New deployment**. The catalog lists the available vertical templates.
+
+## 2. Pick a template
+
+Choose the template that most closely matches your use case. Templates set the initial system prompt, recommended layout, suggested components, and starter prompts. You can change any of these later.
+
+## 3. Name the deployment
+
+In the setup wizard:
+
+* Give the deployment a short, descriptive name.
+* Add a one-line description that end users see in the application header.
+* Select the Pinecone organization and project the deployment belongs to.
+
+## 4. Choose a layout
+
+Pick the consumer layout that fits the experience you want: chat, search, structured, or hybrid. The template suggests a default, which you can override. See [Configure layouts](/guides/marketplace/configure-layouts).
+
+## 5. Configure operating parameters
+
+Tune the system prompt, response style, and other operating parameters. For details, see [Configure operating parameters](/guides/marketplace/configure-operating-parameters).
+
+## 6. Add a knowledge base
+
+A deployment must have at least one knowledge base. For each knowledge base:
+
+* Give it a name that describes the domain (for example, `policies`, `product-docs`).
+* Connect a source. See [Connectors](/guides/marketplace/connectors-overview).
+
+You can add additional knowledge bases now or later. Multi-knowledge-base deployments use the [Knowledge Agent Toolkit (KAT)](/guides/marketplace/kat-overview) to route between domains.
+
+## 7. Save as a building version
+
+When you finish the wizard, Marketplace saves your work as a building version. The deployment is not yet live. From the dashboard, you can:
+
+* Continue editing the building version.
+* Publish it. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
+
+<Note>
+  You can edit a building version as many times as you want before publishing. Each edit replaces the in-progress configuration; nothing is sent to end users until you publish.
+</Note>
 
 
 # Pinecone Marketplace
@@ -97629,21 +97747,327 @@ The full response also carries `citations` and `usage`. See [Authentication](/re
 # 2026 releases
 Source: https://docs.pinecone.io/nexus-release-notes/2026
 
-Pinecone Nexus release notes for 2026.
+Pinecone release notes for 2026: new features, improvements, and API changes.
 
-## August 2026
+These release notes cover all Pinecone products. Use the filters to narrow the list.
+
+<Update label="2026-08-25">
+  ### General availability: Bring your own cloud (BYOC)
+
+  [BYOC](/guides/production/bring-your-own-cloud) is now [generally available](/release-notes/feature-availability) and recommended for production usage on the Enterprise plan, across AWS, GCP, and Azure.
+
+  BYOC runs the Pinecone data plane inside your own cloud account, so your vectors, metadata, and queries stay in your environment. An agent in your cluster pulls operations from Pinecone and runs them locally, so Pinecone needs no inbound network access to your infrastructure.
+</Update>
+
+<Update label="2026-08-21">
+  ### Index fullness metrics for dedicated read nodes
+
+  Indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) now emit [index fullness](/guides/index-data/dedicated-read-nodes#index-fullness) as time-series metrics. [Monitor fullness over time](/guides/production/monitoring#available-metrics) via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
+</Update>
+
+<Update label="2026-08-19">
+  ### Pod-to-serverless migration supports up to 50 million records
+
+  [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#limitations) now supports indexes with up to 50 million records, up from 25 million.
+
+  If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
+</Update>
 
 <Update label="2026-08-06">
-  ### Nexus launch
+  ### General availability: Pinecone Nexus
 
-  Pinecone Nexus, the knowledge engine for agents, is now generally available. Point Nexus at your sources, curate them into a context, and query that context to get grounded, cited answers. Get started in the [Nexus quickstart](/guides/nexus/quickstart).
+  Pinecone Nexus, the knowledge engine for agents, is now [generally available](/nexus-release-notes/feature-availability). Point Nexus at your sources, curate them into a context, and query that context to get grounded, cited answers. Get started in the [Nexus quickstart](/guides/nexus/quickstart).
+</Update>
+
+<Update label="2026-08-01">
+  ### Released Pinecone Terraform Provider v4.0.0
+
+  Released [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds resources for managing [service accounts](/guides/organizations/manage-service-accounts), [role bindings](/guides/production/manage-rbac), organization invites, and removing organization members. It also adds data sources for reading existing indexes, collections, projects, service accounts, role bindings, invites, and users, and `terraform import` support for every resource.
+</Update>
+
+<Update label="2026-07-21">
+  ### Fuzzy matching and substring search for full-text search
+
+  [Full-text search](/guides/search/full-text-search) now supports two new ways to match text:
+
+  * **Fuzzy matching (typo tolerance)** — In a `query_string` search, append `~` to a term to match indexed terms within a small edit distance: `body:(compxter~1)` matches `computer`. Use `term~` for an automatic distance based on term length, or `term~N` for a fixed distance (`N` is 0–2). Fuzzy works on existing indexes with no reindex. See [Fuzzy matching](/guides/search/full-text-search#query-syntax-reference).
+  * **Substring search with n-grams** — Configure a text field for character n-gram tokenization to match on partial words, prefixes, and autocomplete-style queries. Add an `ngram` object (`min_gram`, `max_gram`, `prefix_only`) to a field's `full_text_search` config at index creation, then query it with ordinary `text` or `query_string` searches. See [Substring search with n-grams](/guides/search/full-text-search#substring-search-with-n-grams).
+
+  Full-text search remains in [public preview](/release-notes/feature-availability) under API version `2026-01.alpha`.
+</Update>
+
+<Update label="2026-07-20">
+  ### Manage roles from your identity provider with SAML and SCIM
+
+  Organizations on the Enterprise plan with SSO can now manage Pinecone roles directly from their identity provider (IdP), instead of assigning them manually in Pinecone. Two modes are available:
+
+  * **SAML role management** sets each user's organization and project roles from a SAML attribute on every SSO login.
+  * **SCIM provisioning** syncs members and their roles in real time as you add, update, deactivate, or remove them in your IdP.
+
+  Both modes use the same `pinecone:*` role values and work with Okta and other SAML 2.0 / SCIM 2.0 providers. Configure them under **Settings > Access > Identity provider** in the Pinecone console. For more information, see [Manage roles with Okta](/guides/production/configure-single-sign-on/okta-role-management) and [SCIM provisioning with Okta](/guides/production/configure-single-sign-on/okta-scim-provisioning).
+</Update>
+
+<Update label="2026-07-13">
+  ### Expanded role-based access controls (RBAC)
+
+  Pinecone now offers an expanded set of roles for managing access to organizations and projects. New **Organization member** and **Project member** roles grant more restricted access than the owner and manager roles, and projects now support granular editor and viewer roles (project, control plane, and data plane) that you can assign to users, service accounts, and API keys.
+
+  To better communicate the access hierarchy, organization owners are now shown in each project's member list. This replaces the separate project-role assignments that could fall out of sync with the access organization owners inherit to all projects. Effective permissions are unchanged.
+
+  If you used the previous role model, the **User** role has been renamed to **Manager**: the organization-level **User** role is now **Organization manager**, and the project-level **User** role is now **Project manager**. This is a name change only—permissions are unchanged and existing assignments are migrated automatically.
+
+  You can assign and manage roles in the [Pinecone console](https://app.pinecone.io) or programmatically with the Admin API. For more information, see [Manage roles and access](/guides/production/manage-rbac), [Organization roles](/guides/organizations/understanding-organizations#organization-roles), and [Project roles](/guides/projects/understanding-projects#project-roles).
+</Update>
+
+<Update label="2026-07-02">
+  ### Public preview: Restore a backup to a different region
+
+  You can now restore a [serverless backup](/guides/manage-data/backups-overview) into a different region on the same cloud provider. Use the `unstable` version of the create index endpoint, specifying the backup as `source_backup_id` within `spec.serverless` and the target region there. Restoring to a different cloud provider is not supported, and the feature is currently available through the REST API only.
+
+  For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
+</Update>
+
+<Update label="2026-07-01">
+  ### Cohere Rerank 4.0 Fast is generally available, and cohere-rerank-3.5 is deprecated
+
+  [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) (Cohere Rerank 4.0 Fast) is now generally available as a [reranking model](/guides/search/rerank-results#reranking-models) on Pinecone. It succeeds `cohere-rerank-3.5`, improves relevance quality, and supports multiple rerank fields. Cohere Rerank 4.0 is hosted on Azure AI under the Global Standard deployment type, and requests may be processed in regions outside the United States.
+
+  With this release, [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is **deprecated**:
+
+  * **Through July 31, 2026**: `cohere-rerank-3.5` continues to serve requests as before.
+  * **August 1, 2026**: requests to `cohere-rerank-3.5` are automatically served by `cohere-rerank-4-fast`.
+
+  No code change is required for the transition, but note two differences before you migrate:
+
+  * **Relevance scores differ.** `cohere-rerank-4-fast` returns different scores than `cohere-rerank-3.5`. If your application relies on hard-coded score thresholds, re-tune them against `cohere-rerank-4-fast` before August 1.
+  * **Billing counts units differently.** The per-unit rate is unchanged at \$2.00 per 1,000 rerank units. One rerank unit covers a query plus up to 100 documents, with documents longer than \~500 tokens auto-chunked into \~500-token chunks that each count toward that 100. As a result, `cohere-rerank-4-fast` can bill multiple units for a large request, whereas `cohere-rerank-3.5` billed one unit per request.
+
+  To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 1. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
+</Update>
+
+<Update label="2026-06-03">
+  ### Multi-region and multi-cloud support on the Builder plan
+
+  The [Builder plan](https://www.pinecone.io/pricing/) now supports serverless indexes in every generally available cloud region, the same regions available on the Standard and Enterprise plans. Previously, Builder indexes were limited to the `us-east-1` region of AWS.
+
+  Highlights:
+
+  * **All supported regions** — Create Builder serverless indexes across AWS, GCP, and Azure, including `us-west-2` (Oregon), `eu-west-1` (Ireland), `eu-central-1` (Frankfurt), `ap-southeast-1` (Singapore), `us-central1` (Iowa), `europe-west4` (Netherlands), and `eastus2` (Virginia).
+  * **Lower latency and data residency** — Deploy indexes closer to your application or in a region that meets your data residency requirements, without upgrading to Standard or Enterprise.
+  * **No pricing change** — Builder remains a flat \$20/month plan with no usage overages.
+
+  The Starter plan continues to support the `us-east-1` region of AWS only. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions). For plan quotas, see [Database limits](/reference/api/database-limits).
+</Update>
+
+<Update label="2026-06-01">
+  ### Cheaper bulk imports and free import credit
+
+  [Importing from object storage](/guides/index-data/import-data) is now cheaper: the bulk-import overage rate is **\$0.25/GB**, down from \$1/GB.
+
+  In addition, **Standard and Enterprise** organizations now get a **one-time \$250 bulk import credit** (1 TB), valid through July 31, 2026. Usage beyond the credit is billed at the new \$0.25/GB rate. Builder and Starter plans are not eligible.
+
+  For details, see [Understanding cost — Imports](/guides/manage-cost/understanding-cost#imports).
+</Update>
+
+<Update label="2026-05-05">
+  ### Public preview: Pinecone Marketplace
+
+  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/marketplace-release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
+
+  Highlights:
+
+  * **Templates and connectors** — Start from pre-built templates, connect data sources (Google Drive, manual upload), and configure knowledge processing with the Knowledge Agent Toolkit (KAT).
+  * **Multi-domain routing** — Route end-user queries across multiple knowledge domains within a single deployment.
+  * **Evaluations and analytics** — Run evaluations against your deployment and monitor usage with event logs.
+  * **Versioning and rollback** — Publish deployment versions and roll back to previous configurations.
+  * **End-user experience** — Authenticated chat interface with citations, visual components, and feedback collection.
+  * **Increased Starter plan limits** - The Starter plan is currently offering 1M input tokens per month (500K before promotion) to help explore Marketplace apps until June 30, 2026.
+
+  For details, see the [Marketplace quickstart](/guides/marketplace/quickstart) and [Marketplace API reference](/reference/api/marketplace/introduction).
+</Update>
+
+<Update label="2026-05-04">
+  ### New Builder plan
+
+  The [Builder plan](https://www.pinecone.io/pricing/) is now available at **\$20/month** (flat). Builder is designed for individual developers who need higher limits than Starter without committing to usage-based pricing. Key differences from Starter:
+
+  * **10 serverless indexes** (up from 5)
+  * **10 GB storage per organization**
+  * **100 namespaces per index** (up from 20)
+  * **Prometheus and Datadog monitoring**
+
+  Builder is a fixed-price plan with no overages. When you hit a quota, operations are blocked rather than billed. Payment is by credit or debit card only. You can upgrade from Starter or downgrade from Standard at any time in the Pinecone console.
+
+  For full quotas, see [Database limits](/reference/api/database-limits). For billing details, see [Understanding cost](/guides/manage-cost/understanding-cost).
+</Update>
+
+<Update label="2026-05-04">
+  ### Public preview: Full-text search
+
+  [Full-text search](/guides/search/full-text-search) is now in [public preview](/release-notes/feature-availability). Full-text search uses a typed document model: you upsert data as JSON documents, declare ranking fields in a schema, and Pinecone indexes them accordingly. Schema field types: `string` with `full_text_search` (indexed for BM25 ranking), `dense_vector`, and `sparse_vector`. Any other fields you upsert are stored as metadata and automatically indexed for filtering — no schema declaration required.
+
+  Highlights:
+
+  * **Four scoring methods** via `score_by`: `text` (BM25), `query_string` (Lucene syntax, including cross-field boolean queries), `dense_vector`, and `sparse_vector`.
+  * **New data plane endpoints** under `/namespaces/{namespace}/documents/`: `upsert`, `search`, `fetch`, and `delete`.
+  * **New filter operator** `$match_phrase` for phrase matching against text fields, composable with any `score_by` method.
+  * **Flexible deployment**: on-demand read capacity (`read_capacity.mode: "OnDemand"`) and dedicated read capacity (`read_capacity.mode: "Dedicated"`) are both supported on managed (serverless) indexes.
+
+  Use API version `2026-01.alpha` to access the feature.
+</Update>
+
+<Update label="2026-05-01">
+  ### New AWS regions for serverless indexes
+
+  You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions).
+</Update>
+
+<Update label="2026-04-28">
+  ### General availability: Fetch by metadata
+
+  The [Fetch by metadata](/reference/api/latest/data-plane/fetch_by_metadata) operation is now [generally available](/release-notes/feature-availability) and recommended for production usage. Use a metadata filter expression to fetch matching records without knowing their IDs, and paginate with `paginationToken` to retrieve result sets larger than 10,000 records per response.
+
+  For more information, see [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
+</Update>
+
+<Update label="2026-04-21">
+  ### Upsert files with custom IDs in Assistant
+
+  Pinecone Assistant now supports [upserting files](/guides/assistant/upload-files#upsert-a-file) with user-provided file IDs, so you can create or replace a file by a stable custom identifier instead of relying on system-generated UUIDs. For more information, see [File identifiers](/guides/assistant/files-overview#file-identifiers).
+
+  As part of this update, [upload](/guides/assistant/upload-files), upsert, and delete operations now return an operation object that can be polled for status and progress. Assistant also includes new API endpoints to [list and describe file operations](/guides/assistant/manage-files#track-file-operations).
+
+  This update applies to the API only; SDK support is not yet available.
+</Update>
+
+<Update label="2026-04-15">
+  ### General availability: Dedicated Read Nodes
+
+  [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) are now [generally available](/release-notes/feature-availability) and recommended for production usage on Standard and Enterprise plans. You can provision read hardware for large, high-throughput indexes that need predictable, low latency using the console and API.
+</Update>
+
+<Update label="2026-04-01">
+  ### Pinecone Assistant usage-based pricing and monthly Starter limits
+
+  Pinecone Assistant pricing is now fully usage-based. The hourly per-assistant fee has been removed. On Standard and Enterprise, you pay for what you use: ingestion (file uploads and updates on an assistant), storage, and chat, context, and evaluation tokens — with no base charge per assistant.
+
+  For the Starter plan, Assistant included allowances are now monthly and reset each billing period (they are no longer all-time project totals). Starter includes **500,000 chat input tokens, 300,000 chat output tokens, 500,000 context retrieval tokens, and 1,000 ingestion units** per month. When you upload files to an assistant, usage is measured in ingestion units (approximately one unit per chunk, \~400 tokens); multimodal PDF chunks account for more ingestion units per chunk than standard text on the same meter.
+
+  Per-assistant file count limits have been removed for all plans. Usage is governed by ingestion and storage allowances, file size and page limits, and rate limits instead of a cap on the number of stored documents.
+
+  For details, see [Pricing and limits](/guides/assistant/pricing-and-limits) and [Pinecone pricing](https://www.pinecone.io/pricing/).
+</Update>
+
+<Update label="2026-03-26">
+  ### General availability: platform and operations features
+
+  The following capabilities are now [generally available](/release-notes/feature-availability) and recommended for production usage:
+
+  * **Namespace creation** — [Create namespace API](/guides/manage-data/manage-namespaces)
+  * **Pinecone MCP server** — [Integrate AI agents with Pinecone](/guides/operations/mcp-server)
+  * **Assistant MCP server** — [Use an Assistant MCP server](/guides/assistant/mcp-server)
+  * **Bulk metadata updates** — [Update metadata across multiple records](/guides/manage-data/update-data#update-metadata-across-multiple-records)
+  * **Customer-managed encryption keys (CMEK)** — [Configure CMEK](/guides/production/configure-cmek)
+  * **Data import from object storage** (Amazon S3, Google Cloud Storage, Azure Blob Storage) — [Import records](/guides/index-data/import-data)
+  * **Audit logs** — [Configure audit logs](/guides/production/configure-audit-logs)
+  * **Admin API and service accounts** (organization- and project-level) — [Manage service accounts](/guides/organizations/manage-service-accounts), [Manage service accounts at the project level](/guides/projects/manage-service-accounts)
+  * **Backups and restore** (serverless indexes) — [Back up an index](/guides/manage-data/back-up-an-index), [Restore an index](/guides/manage-data/restore-an-index)
+  * **Pinecone Local** (local development emulator) — [Local development](/guides/operations/local-development)
+  * **Automated testing with Pinecone Local** — [Automated testing](/guides/production/automated-testing)
+  * **Indexes with sparse vectors** — [Indexes with sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors)
+  * **`pinecone-sparse-english-v0`** — [Sparse English embedding model](/guides/search/rerank-results#pinecone-sparse-english-v0)
+  * **Prometheus monitoring** (serverless indexes) — [Monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus)
+  * **Evaluate answers (`metrics_alignment`)** — [Evaluate answers](/guides/assistant/evaluate-answers)
+  * **Manage storage integrations** — [Manage storage integrations](/guides/operations/integrations/manage-storage-integrations)
+</Update>
+
+<Update label="2026-03-03">
+  ### Released Pinecone Terraform Provider v3.0.0
+
+  Released [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds support for [BYOC indexes](/guides/production/bring-your-own-cloud), [dedicated read nodes](/guides/index-data/dedicated-read-nodes), and [metadata indexing](/guides/index-data/create-an-index#metadata-indexing) on serverless and BYOC indexes.
+</Update>
+
+<Update label="2026-02-19">
+  ### BYOC now available on AWS, GCP, and Azure
+
+  [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) is now available in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure. BYOC lets you run Pinecone's data plane inside your own cloud account with a zero-access operating model — Pinecone never needs SSH, VPN, or inbound network access to your infrastructure.
+
+  Deploy using a self-serve Pulumi-based setup wizard, with pull-based operations that execute locally in your cluster. Your vectors, metadata, and queries never leave your environment.
+</Update>
+
+<Update label="2026-02-01">
+  ### HIPAA compliance add-on for Standard plan
+
+  HIPAA compliance is now available as an optional add-on for [Standard plan](https://www.pinecone.io/pricing/) customers. For **\$190 per month**, you get HIPAA-ready infrastructure, encrypted data storage, audit logging, enhanced security controls, and BAA execution and compliance documentation support.
+
+  Full HIPAA compliance remains included with the Enterprise plan. To enable the add-on on the Standard plan, [contact sales](mailto:sales@pinecone.io) or see [Understanding cost — HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
+</Update>
+
+<Update label="2026-01-28">
+  ### Claude model deprecation for Assistant
+
+  Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Pinecone Assistant automatically routes all chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to Claude Sonnet 4.5, which provides enhanced intelligence at the same price. No code changes are required.
+
+  To update your code to explicitly use Claude Sonnet 4.5, set `model: "claude-sonnet-4-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
+
+<Update label="2026-01-28">
+  ### Pinecone Assistant node for n8n
+
+  The official Pinecone Assistant n8n node brings Assistant's end-to-end RAG capabilities directly into n8n workflows, letting you connect any data source to AI-backed automation.
+
+  For more information, see the [Assistant quickstart for n8n](/guides/assistant/quickstart/n8n-quickstart).
+</Update>
+
+<Update label="2026-01-27">
+  ### Claude Sonnet 4.5 now available for Assistant chat
+
+  Pinecone Assistant now supports Anthropic's Claude Sonnet 4.5 model. To use this model, set `model: "claude-sonnet-4-5"` in your [chat](/reference/api/latest/assistant/chat_assistant) requests. In the Pinecone console, Claude Sonnet 4.5 is also available as a selection in the **Chat model** dropdown menu in the playground for each assistant.
+
+  For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
+
+<Update label="2026-01-23">
+  ### Metadata filter limit: 10,000 values per `$in`/`$nin` operator
+
+  Pinecone now enforces a limit of 10,000 values per `$in` or `$nin` operator in metadata filter expressions. This limit helps ensure consistent query performance and protects shared infrastructure from excessive load caused by very large filters.
+
+  Requests that exceed this limit will fail with a `400 - BAD_REQUEST` error.
+
+  If your application currently uses large `$in` filters (especially for access control), consider these approaches:
+
+  * **Namespace-based isolation** (recommended): Create separate namespaces for each tenant instead of filtering by thousands of tenant IDs. This can also reduce query costs (queries on a 1 GB namespace cost 1 RU instead of 100 RUs for a 100 GB namespace with filtering).
+  * **Access control groups**: Filter by organization, project, or role identifiers instead of individual user IDs.
+  * **Post-filter client-side**: Retrieve a larger top K without filtering, then filter results in your application.
+
+  For more information, see [Metadata filter limits](/reference/api/database-limits#metadata-filter-limits) and [Design for multi-tenancy](/guides/index-data/data-modeling#design-for-multi-tenancy).
+</Update>
+
+<Update label="2026-01-16">
+  ### Request-per-second limits for data plane operations
+
+  Pinecone now enforces request-per-second rate limits on data plane operations (query, upsert, delete, and update) at the namespace level. These limits are set to 100 requests per second per namespace for all plans and provide protection against excessive request rates.
+
+  Request-per-second limits are enforced in addition to existing read unit and write unit limits. If you exceed a request-per-second limit, you'll receive a `429 - TOO_MANY_REQUESTS` error.
+
+  For more information, see [Database limits](/reference/api/database-limits#data-plane-operations-requests-per-second-limits).
+</Update>
+
+<Update label="2026-01-15">
+  ### Pagination support for fetch by metadata
+
+  The [Fetch by metadata](/reference/api/latest/data-plane/fetch_by_metadata) operation now supports pagination, allowing you to fetch large result sets in multiple requests. Use the `paginationToken` parameter to retrieve the next page of results.
+
+  When there are more results available, the response includes a `pagination` object with a `next` token. Pass this token as the `paginationToken` parameter in subsequent requests to fetch the next page. When there are no more results, the response does not include a `pagination` object.
+
+  For more information, see [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
 </Update>
 
 
 # Feature availability
 Source: https://docs.pinecone.io/nexus-release-notes/feature-availability
 
-Feature availability phases for Pinecone Nexus.
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
 
 This page defines the different availability phases of a feature in Pinecone.
 
@@ -98176,67 +98600,6 @@ Link access does not establish an end-user identity. Events from link-accessed a
 ## Sharing the application
 
 After publishing, copy the deployment URL from the dashboard and share it with end users. The URL is the entry point regardless of which consumer authentication provider is configured.
-
-
-# Create a deployment
-Source: https://docs.pinecone.io/guides/marketplace/create-a-deployment
-
-Create a new Pinecone Marketplace deployment from a vertical template, name it, choose a layout, and configure operating parameters for your use case.
-
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability).
-</Note>
-
-This page shows you how to create a [deployment](/guides/marketplace/concepts#deployment) in Pinecone Marketplace.
-
-## Before you begin
-
-* A Marketplace account. See the [Quickstart](/guides/marketplace/quickstart) for access.
-* A clear use case in mind, so you can pick a starting [template](/guides/marketplace/template-catalog).
-
-## 1. Open the catalog
-
-Go to [marketplace.pinecone.io](https://marketplace.pinecone.io) and select **New deployment**. The catalog lists the available vertical templates.
-
-## 2. Pick a template
-
-Choose the template that most closely matches your use case. Templates set the initial system prompt, recommended layout, suggested components, and starter prompts. You can change any of these later.
-
-## 3. Name the deployment
-
-In the setup wizard:
-
-* Give the deployment a short, descriptive name.
-* Add a one-line description that end users see in the application header.
-* Select the Pinecone organization and project the deployment belongs to.
-
-## 4. Choose a layout
-
-Pick the consumer layout that fits the experience you want: chat, search, structured, or hybrid. The template suggests a default, which you can override. See [Configure layouts](/guides/marketplace/configure-layouts).
-
-## 5. Configure operating parameters
-
-Tune the system prompt, response style, and other operating parameters. For details, see [Configure operating parameters](/guides/marketplace/configure-operating-parameters).
-
-## 6. Add a knowledge base
-
-A deployment must have at least one knowledge base. For each knowledge base:
-
-* Give it a name that describes the domain (for example, `policies`, `product-docs`).
-* Connect a source. See [Connectors](/guides/marketplace/connectors-overview).
-
-You can add additional knowledge bases now or later. Multi-knowledge-base deployments use the [Knowledge Agent Toolkit (KAT)](/guides/marketplace/kat-overview) to route between domains.
-
-## 7. Save as a building version
-
-When you finish the wizard, Marketplace saves your work as a building version. The deployment is not yet live. From the dashboard, you can:
-
-* Continue editing the building version.
-* Publish it. See [Publish a deployment](/guides/marketplace/publish-a-deployment).
-
-<Note>
-  You can edit a building version as many times as you want before publishing. Each edit replaces the in-progress configuration; nothing is sent to end users until you publish.
-</Note>
 
 
 # Deployer authentication
@@ -98835,6 +99198,352 @@ If publish fails, fix the underlying issue and republish. The previous active ve
 ## Publishing again
 
 Editing an active deployment creates a new building version automatically. Publish the building version when you are ready. Each publish is preserved in the version history; see [Manage versions and rollback](/guides/marketplace/manage-versions-and-rollback).
+
+
+# 2026 releases
+Source: https://docs.pinecone.io/marketplace-release-notes/2026
+
+Pinecone release notes for 2026: new features, improvements, and API changes.
+
+These release notes cover all Pinecone products. Use the filters to narrow the list.
+
+<Update label="2026-08-25">
+  ### General availability: Bring your own cloud (BYOC)
+
+  [BYOC](/guides/production/bring-your-own-cloud) is now [generally available](/release-notes/feature-availability) and recommended for production usage on the Enterprise plan, across AWS, GCP, and Azure.
+
+  BYOC runs the Pinecone data plane inside your own cloud account, so your vectors, metadata, and queries stay in your environment. An agent in your cluster pulls operations from Pinecone and runs them locally, so Pinecone needs no inbound network access to your infrastructure.
+</Update>
+
+<Update label="2026-08-21">
+  ### Index fullness metrics for dedicated read nodes
+
+  Indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes) now emit [index fullness](/guides/index-data/dedicated-read-nodes#index-fullness) as time-series metrics. [Monitor fullness over time](/guides/production/monitoring#available-metrics) via the [Prometheus or Datadog integration](/guides/production/monitoring#monitor-with-datadog).
+</Update>
+
+<Update label="2026-08-19">
+  ### Pod-to-serverless migration supports up to 50 million records
+
+  [Migrating a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless#limitations) now supports indexes with up to 50 million records, up from 25 million.
+
+  If you need to migrate a larger index, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) before you start, as the limit can often be raised for your project.
+</Update>
+
+<Update label="2026-08-06">
+  ### General availability: Pinecone Nexus
+
+  Pinecone Nexus, the knowledge engine for agents, is now [generally available](/nexus-release-notes/feature-availability). Point Nexus at your sources, curate them into a context, and query that context to get grounded, cited answers. Get started in the [Nexus quickstart](/guides/nexus/quickstart).
+</Update>
+
+<Update label="2026-08-01">
+  ### Released Pinecone Terraform Provider v4.0.0
+
+  Released [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds resources for managing [service accounts](/guides/organizations/manage-service-accounts), [role bindings](/guides/production/manage-rbac), organization invites, and removing organization members. It also adds data sources for reading existing indexes, collections, projects, service accounts, role bindings, invites, and users, and `terraform import` support for every resource.
+</Update>
+
+<Update label="2026-07-21">
+  ### Fuzzy matching and substring search for full-text search
+
+  [Full-text search](/guides/search/full-text-search) now supports two new ways to match text:
+
+  * **Fuzzy matching (typo tolerance)** — In a `query_string` search, append `~` to a term to match indexed terms within a small edit distance: `body:(compxter~1)` matches `computer`. Use `term~` for an automatic distance based on term length, or `term~N` for a fixed distance (`N` is 0–2). Fuzzy works on existing indexes with no reindex. See [Fuzzy matching](/guides/search/full-text-search#query-syntax-reference).
+  * **Substring search with n-grams** — Configure a text field for character n-gram tokenization to match on partial words, prefixes, and autocomplete-style queries. Add an `ngram` object (`min_gram`, `max_gram`, `prefix_only`) to a field's `full_text_search` config at index creation, then query it with ordinary `text` or `query_string` searches. See [Substring search with n-grams](/guides/search/full-text-search#substring-search-with-n-grams).
+
+  Full-text search remains in [public preview](/release-notes/feature-availability) under API version `2026-01.alpha`.
+</Update>
+
+<Update label="2026-07-20">
+  ### Manage roles from your identity provider with SAML and SCIM
+
+  Organizations on the Enterprise plan with SSO can now manage Pinecone roles directly from their identity provider (IdP), instead of assigning them manually in Pinecone. Two modes are available:
+
+  * **SAML role management** sets each user's organization and project roles from a SAML attribute on every SSO login.
+  * **SCIM provisioning** syncs members and their roles in real time as you add, update, deactivate, or remove them in your IdP.
+
+  Both modes use the same `pinecone:*` role values and work with Okta and other SAML 2.0 / SCIM 2.0 providers. Configure them under **Settings > Access > Identity provider** in the Pinecone console. For more information, see [Manage roles with Okta](/guides/production/configure-single-sign-on/okta-role-management) and [SCIM provisioning with Okta](/guides/production/configure-single-sign-on/okta-scim-provisioning).
+</Update>
+
+<Update label="2026-07-13">
+  ### Expanded role-based access controls (RBAC)
+
+  Pinecone now offers an expanded set of roles for managing access to organizations and projects. New **Organization member** and **Project member** roles grant more restricted access than the owner and manager roles, and projects now support granular editor and viewer roles (project, control plane, and data plane) that you can assign to users, service accounts, and API keys.
+
+  To better communicate the access hierarchy, organization owners are now shown in each project's member list. This replaces the separate project-role assignments that could fall out of sync with the access organization owners inherit to all projects. Effective permissions are unchanged.
+
+  If you used the previous role model, the **User** role has been renamed to **Manager**: the organization-level **User** role is now **Organization manager**, and the project-level **User** role is now **Project manager**. This is a name change only—permissions are unchanged and existing assignments are migrated automatically.
+
+  You can assign and manage roles in the [Pinecone console](https://app.pinecone.io) or programmatically with the Admin API. For more information, see [Manage roles and access](/guides/production/manage-rbac), [Organization roles](/guides/organizations/understanding-organizations#organization-roles), and [Project roles](/guides/projects/understanding-projects#project-roles).
+</Update>
+
+<Update label="2026-07-02">
+  ### Public preview: Restore a backup to a different region
+
+  You can now restore a [serverless backup](/guides/manage-data/backups-overview) into a different region on the same cloud provider. Use the `unstable` version of the create index endpoint, specifying the backup as `source_backup_id` within `spec.serverless` and the target region there. Restoring to a different cloud provider is not supported, and the feature is currently available through the REST API only.
+
+  For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
+</Update>
+
+<Update label="2026-07-01">
+  ### Cohere Rerank 4.0 Fast is generally available, and cohere-rerank-3.5 is deprecated
+
+  [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) (Cohere Rerank 4.0 Fast) is now generally available as a [reranking model](/guides/search/rerank-results#reranking-models) on Pinecone. It succeeds `cohere-rerank-3.5`, improves relevance quality, and supports multiple rerank fields. Cohere Rerank 4.0 is hosted on Azure AI under the Global Standard deployment type, and requests may be processed in regions outside the United States.
+
+  With this release, [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is **deprecated**:
+
+  * **Through July 31, 2026**: `cohere-rerank-3.5` continues to serve requests as before.
+  * **August 1, 2026**: requests to `cohere-rerank-3.5` are automatically served by `cohere-rerank-4-fast`.
+
+  No code change is required for the transition, but note two differences before you migrate:
+
+  * **Relevance scores differ.** `cohere-rerank-4-fast` returns different scores than `cohere-rerank-3.5`. If your application relies on hard-coded score thresholds, re-tune them against `cohere-rerank-4-fast` before August 1.
+  * **Billing counts units differently.** The per-unit rate is unchanged at \$2.00 per 1,000 rerank units. One rerank unit covers a query plus up to 100 documents, with documents longer than \~500 tokens auto-chunked into \~500-token chunks that each count toward that 100. As a result, `cohere-rerank-4-fast` can bill multiple units for a large request, whereas `cohere-rerank-3.5` billed one unit per request.
+
+  To control the transition yourself, migrate your rerank requests to `cohere-rerank-4-fast` before August 1. For model details and parameters, see [Reranking models](/guides/search/rerank-results#reranking-models).
+</Update>
+
+<Update label="2026-06-03">
+  ### Multi-region and multi-cloud support on the Builder plan
+
+  The [Builder plan](https://www.pinecone.io/pricing/) now supports serverless indexes in every generally available cloud region, the same regions available on the Standard and Enterprise plans. Previously, Builder indexes were limited to the `us-east-1` region of AWS.
+
+  Highlights:
+
+  * **All supported regions** — Create Builder serverless indexes across AWS, GCP, and Azure, including `us-west-2` (Oregon), `eu-west-1` (Ireland), `eu-central-1` (Frankfurt), `ap-southeast-1` (Singapore), `us-central1` (Iowa), `europe-west4` (Netherlands), and `eastus2` (Virginia).
+  * **Lower latency and data residency** — Deploy indexes closer to your application or in a region that meets your data residency requirements, without upgrading to Standard or Enterprise.
+  * **No pricing change** — Builder remains a flat \$20/month plan with no usage overages.
+
+  The Starter plan continues to support the `us-east-1` region of AWS only. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions). For plan quotas, see [Database limits](/reference/api/database-limits).
+</Update>
+
+<Update label="2026-06-01">
+  ### Cheaper bulk imports and free import credit
+
+  [Importing from object storage](/guides/index-data/import-data) is now cheaper: the bulk-import overage rate is **\$0.25/GB**, down from \$1/GB.
+
+  In addition, **Standard and Enterprise** organizations now get a **one-time \$250 bulk import credit** (1 TB), valid through July 31, 2026. Usage beyond the credit is billed at the new \$0.25/GB rate. Builder and Starter plans are not eligible.
+
+  For details, see [Understanding cost — Imports](/guides/manage-cost/understanding-cost#imports).
+</Update>
+
+<Update label="2026-05-05">
+  ### Public preview: Pinecone Marketplace
+
+  [Pinecone Marketplace](/guides/marketplace/overview) is now in [public preview](/marketplace-release-notes/feature-availability). Marketplace lets you build, publish, and operate AI-powered knowledge applications on top of Pinecone, with a managed deployment lifecycle and end-user chat interface.
+
+  Highlights:
+
+  * **Templates and connectors** — Start from pre-built templates, connect data sources (Google Drive, manual upload), and configure knowledge processing with the Knowledge Agent Toolkit (KAT).
+  * **Multi-domain routing** — Route end-user queries across multiple knowledge domains within a single deployment.
+  * **Evaluations and analytics** — Run evaluations against your deployment and monitor usage with event logs.
+  * **Versioning and rollback** — Publish deployment versions and roll back to previous configurations.
+  * **End-user experience** — Authenticated chat interface with citations, visual components, and feedback collection.
+  * **Increased Starter plan limits** - The Starter plan is currently offering 1M input tokens per month (500K before promotion) to help explore Marketplace apps until June 30, 2026.
+
+  For details, see the [Marketplace quickstart](/guides/marketplace/quickstart) and [Marketplace API reference](/reference/api/marketplace/introduction).
+</Update>
+
+<Update label="2026-05-04">
+  ### New Builder plan
+
+  The [Builder plan](https://www.pinecone.io/pricing/) is now available at **\$20/month** (flat). Builder is designed for individual developers who need higher limits than Starter without committing to usage-based pricing. Key differences from Starter:
+
+  * **10 serverless indexes** (up from 5)
+  * **10 GB storage per organization**
+  * **100 namespaces per index** (up from 20)
+  * **Prometheus and Datadog monitoring**
+
+  Builder is a fixed-price plan with no overages. When you hit a quota, operations are blocked rather than billed. Payment is by credit or debit card only. You can upgrade from Starter or downgrade from Standard at any time in the Pinecone console.
+
+  For full quotas, see [Database limits](/reference/api/database-limits). For billing details, see [Understanding cost](/guides/manage-cost/understanding-cost).
+</Update>
+
+<Update label="2026-05-04">
+  ### Public preview: Full-text search
+
+  [Full-text search](/guides/search/full-text-search) is now in [public preview](/release-notes/feature-availability). Full-text search uses a typed document model: you upsert data as JSON documents, declare ranking fields in a schema, and Pinecone indexes them accordingly. Schema field types: `string` with `full_text_search` (indexed for BM25 ranking), `dense_vector`, and `sparse_vector`. Any other fields you upsert are stored as metadata and automatically indexed for filtering — no schema declaration required.
+
+  Highlights:
+
+  * **Four scoring methods** via `score_by`: `text` (BM25), `query_string` (Lucene syntax, including cross-field boolean queries), `dense_vector`, and `sparse_vector`.
+  * **New data plane endpoints** under `/namespaces/{namespace}/documents/`: `upsert`, `search`, `fetch`, and `delete`.
+  * **New filter operator** `$match_phrase` for phrase matching against text fields, composable with any `score_by` method.
+  * **Flexible deployment**: on-demand read capacity (`read_capacity.mode: "OnDemand"`) and dedicated read capacity (`read_capacity.mode: "Dedicated"`) are both supported on managed (serverless) indexes.
+
+  Use API version `2026-01.alpha` to access the feature.
+</Update>
+
+<Update label="2026-05-01">
+  ### New AWS regions for serverless indexes
+
+  You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions).
+</Update>
+
+<Update label="2026-04-28">
+  ### General availability: Fetch by metadata
+
+  The [Fetch by metadata](/reference/api/latest/data-plane/fetch_by_metadata) operation is now [generally available](/release-notes/feature-availability) and recommended for production usage. Use a metadata filter expression to fetch matching records without knowing their IDs, and paginate with `paginationToken` to retrieve result sets larger than 10,000 records per response.
+
+  For more information, see [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
+</Update>
+
+<Update label="2026-04-21">
+  ### Upsert files with custom IDs in Assistant
+
+  Pinecone Assistant now supports [upserting files](/guides/assistant/upload-files#upsert-a-file) with user-provided file IDs, so you can create or replace a file by a stable custom identifier instead of relying on system-generated UUIDs. For more information, see [File identifiers](/guides/assistant/files-overview#file-identifiers).
+
+  As part of this update, [upload](/guides/assistant/upload-files), upsert, and delete operations now return an operation object that can be polled for status and progress. Assistant also includes new API endpoints to [list and describe file operations](/guides/assistant/manage-files#track-file-operations).
+
+  This update applies to the API only; SDK support is not yet available.
+</Update>
+
+<Update label="2026-04-15">
+  ### General availability: Dedicated Read Nodes
+
+  [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes) are now [generally available](/release-notes/feature-availability) and recommended for production usage on Standard and Enterprise plans. You can provision read hardware for large, high-throughput indexes that need predictable, low latency using the console and API.
+</Update>
+
+<Update label="2026-04-01">
+  ### Pinecone Assistant usage-based pricing and monthly Starter limits
+
+  Pinecone Assistant pricing is now fully usage-based. The hourly per-assistant fee has been removed. On Standard and Enterprise, you pay for what you use: ingestion (file uploads and updates on an assistant), storage, and chat, context, and evaluation tokens — with no base charge per assistant.
+
+  For the Starter plan, Assistant included allowances are now monthly and reset each billing period (they are no longer all-time project totals). Starter includes **500,000 chat input tokens, 300,000 chat output tokens, 500,000 context retrieval tokens, and 1,000 ingestion units** per month. When you upload files to an assistant, usage is measured in ingestion units (approximately one unit per chunk, \~400 tokens); multimodal PDF chunks account for more ingestion units per chunk than standard text on the same meter.
+
+  Per-assistant file count limits have been removed for all plans. Usage is governed by ingestion and storage allowances, file size and page limits, and rate limits instead of a cap on the number of stored documents.
+
+  For details, see [Pricing and limits](/guides/assistant/pricing-and-limits) and [Pinecone pricing](https://www.pinecone.io/pricing/).
+</Update>
+
+<Update label="2026-03-26">
+  ### General availability: platform and operations features
+
+  The following capabilities are now [generally available](/release-notes/feature-availability) and recommended for production usage:
+
+  * **Namespace creation** — [Create namespace API](/guides/manage-data/manage-namespaces)
+  * **Pinecone MCP server** — [Integrate AI agents with Pinecone](/guides/operations/mcp-server)
+  * **Assistant MCP server** — [Use an Assistant MCP server](/guides/assistant/mcp-server)
+  * **Bulk metadata updates** — [Update metadata across multiple records](/guides/manage-data/update-data#update-metadata-across-multiple-records)
+  * **Customer-managed encryption keys (CMEK)** — [Configure CMEK](/guides/production/configure-cmek)
+  * **Data import from object storage** (Amazon S3, Google Cloud Storage, Azure Blob Storage) — [Import records](/guides/index-data/import-data)
+  * **Audit logs** — [Configure audit logs](/guides/production/configure-audit-logs)
+  * **Admin API and service accounts** (organization- and project-level) — [Manage service accounts](/guides/organizations/manage-service-accounts), [Manage service accounts at the project level](/guides/projects/manage-service-accounts)
+  * **Backups and restore** (serverless indexes) — [Back up an index](/guides/manage-data/back-up-an-index), [Restore an index](/guides/manage-data/restore-an-index)
+  * **Pinecone Local** (local development emulator) — [Local development](/guides/operations/local-development)
+  * **Automated testing with Pinecone Local** — [Automated testing](/guides/production/automated-testing)
+  * **Indexes with sparse vectors** — [Indexes with sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors)
+  * **`pinecone-sparse-english-v0`** — [Sparse English embedding model](/guides/search/rerank-results#pinecone-sparse-english-v0)
+  * **Prometheus monitoring** (serverless indexes) — [Monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus)
+  * **Evaluate answers (`metrics_alignment`)** — [Evaluate answers](/guides/assistant/evaluate-answers)
+  * **Manage storage integrations** — [Manage storage integrations](/guides/operations/integrations/manage-storage-integrations)
+</Update>
+
+<Update label="2026-03-03">
+  ### Released Pinecone Terraform Provider v3.0.0
+
+  Released [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) of the [Terraform Provider for Pinecone](/integrations/terraform). This version adds support for [BYOC indexes](/guides/production/bring-your-own-cloud), [dedicated read nodes](/guides/index-data/dedicated-read-nodes), and [metadata indexing](/guides/index-data/create-an-index#metadata-indexing) on serverless and BYOC indexes.
+</Update>
+
+<Update label="2026-02-19">
+  ### BYOC now available on AWS, GCP, and Azure
+
+  [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) is now available in [public preview](/release-notes/feature-availability) on AWS, GCP, and Azure. BYOC lets you run Pinecone's data plane inside your own cloud account with a zero-access operating model — Pinecone never needs SSH, VPN, or inbound network access to your infrastructure.
+
+  Deploy using a self-serve Pulumi-based setup wizard, with pull-based operations that execute locally in your cluster. Your vectors, metadata, and queries never leave your environment.
+</Update>
+
+<Update label="2026-02-01">
+  ### HIPAA compliance add-on for Standard plan
+
+  HIPAA compliance is now available as an optional add-on for [Standard plan](https://www.pinecone.io/pricing/) customers. For **\$190 per month**, you get HIPAA-ready infrastructure, encrypted data storage, audit logging, enhanced security controls, and BAA execution and compliance documentation support.
+
+  Full HIPAA compliance remains included with the Enterprise plan. To enable the add-on on the Standard plan, [contact sales](mailto:sales@pinecone.io) or see [Understanding cost — HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
+</Update>
+
+<Update label="2026-01-28">
+  ### Claude model deprecation for Assistant
+
+  Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Pinecone Assistant automatically routes all chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to Claude Sonnet 4.5, which provides enhanced intelligence at the same price. No code changes are required.
+
+  To update your code to explicitly use Claude Sonnet 4.5, set `model: "claude-sonnet-4-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
+
+<Update label="2026-01-28">
+  ### Pinecone Assistant node for n8n
+
+  The official Pinecone Assistant n8n node brings Assistant's end-to-end RAG capabilities directly into n8n workflows, letting you connect any data source to AI-backed automation.
+
+  For more information, see the [Assistant quickstart for n8n](/guides/assistant/quickstart/n8n-quickstart).
+</Update>
+
+<Update label="2026-01-27">
+  ### Claude Sonnet 4.5 now available for Assistant chat
+
+  Pinecone Assistant now supports Anthropic's Claude Sonnet 4.5 model. To use this model, set `model: "claude-sonnet-4-5"` in your [chat](/reference/api/latest/assistant/chat_assistant) requests. In the Pinecone console, Claude Sonnet 4.5 is also available as a selection in the **Chat model** dropdown menu in the playground for each assistant.
+
+  For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+</Update>
+
+<Update label="2026-01-23">
+  ### Metadata filter limit: 10,000 values per `$in`/`$nin` operator
+
+  Pinecone now enforces a limit of 10,000 values per `$in` or `$nin` operator in metadata filter expressions. This limit helps ensure consistent query performance and protects shared infrastructure from excessive load caused by very large filters.
+
+  Requests that exceed this limit will fail with a `400 - BAD_REQUEST` error.
+
+  If your application currently uses large `$in` filters (especially for access control), consider these approaches:
+
+  * **Namespace-based isolation** (recommended): Create separate namespaces for each tenant instead of filtering by thousands of tenant IDs. This can also reduce query costs (queries on a 1 GB namespace cost 1 RU instead of 100 RUs for a 100 GB namespace with filtering).
+  * **Access control groups**: Filter by organization, project, or role identifiers instead of individual user IDs.
+  * **Post-filter client-side**: Retrieve a larger top K without filtering, then filter results in your application.
+
+  For more information, see [Metadata filter limits](/reference/api/database-limits#metadata-filter-limits) and [Design for multi-tenancy](/guides/index-data/data-modeling#design-for-multi-tenancy).
+</Update>
+
+<Update label="2026-01-16">
+  ### Request-per-second limits for data plane operations
+
+  Pinecone now enforces request-per-second rate limits on data plane operations (query, upsert, delete, and update) at the namespace level. These limits are set to 100 requests per second per namespace for all plans and provide protection against excessive request rates.
+
+  Request-per-second limits are enforced in addition to existing read unit and write unit limits. If you exceed a request-per-second limit, you'll receive a `429 - TOO_MANY_REQUESTS` error.
+
+  For more information, see [Database limits](/reference/api/database-limits#data-plane-operations-requests-per-second-limits).
+</Update>
+
+<Update label="2026-01-15">
+  ### Pagination support for fetch by metadata
+
+  The [Fetch by metadata](/reference/api/latest/data-plane/fetch_by_metadata) operation now supports pagination, allowing you to fetch large result sets in multiple requests. Use the `paginationToken` parameter to retrieve the next page of results.
+
+  When there are more results available, the response includes a `pagination` object with a `next` token. Pass this token as the `paginationToken` parameter in subsequent requests to fetch the next page. When there are no more results, the response does not include a `pagination` object.
+
+  For more information, see [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
+</Update>
+
+
+# Feature availability
+Source: https://docs.pinecone.io/marketplace-release-notes/feature-availability
+
+Pinecone feature availability across public preview, general availability, and limited availability releases, with links to release notes.
+
+This page defines the different availability phases of a feature in Pinecone.
+
+The availability phases are used to communicate the maturity and stability of a feature. The availability phases are:
+
+* **Early access**: In active development and may change at any time. Intended for user feedback only. In some cases, users must be granted explicit access to the API by Pinecone.
+
+* **Public preview**: Unlikely to change between public preview and general availability. Not recommended for production usage. Available to all users.
+
+* **Limited availability**: Available to select customers in a subset of regions and providers for production usage.
+
+* **General availability**: Will not change on short notice. Recommended for production usage. Officially [supported by Pinecone](/troubleshooting/pinecone-support-slas) for non-production and production usage.
+
+* **Deprecated**: Still supported, but no longer under active development, except for critical security fixes. Existing usage will continue to function, but migration following the upgrade guide is strongly recommended. Will be removed in the future at an announced date.
+
+* **End of life (EOL)**: Removed, and no longer supported or available.
+
+<Note>
+  A feature is in **general availability** unless explicitly marked otherwise.
+</Note>
 
 
 # Authentication

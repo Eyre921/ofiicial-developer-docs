@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/examples/sample-apps
 path: examples/sample-apps
 ---
 
-Full-stack sample applications built with Pinecone: semantic search over PDFs, multi-tenant RAG with namespace isolation, multimodal search, and Assistant chat.
+Sample apps and tools built with Pinecone, including semantic search, multi-tenant RAG, multimodal search, Assistant chat, and pgvector migration.
 
 <div>
   <div>
@@ -28,6 +28,12 @@ Full-stack sample applications built with Pinecone: semantic search over PDFs, m
 
     <ExampleCard title="Pinecone Assistant">
       <Tag icon="/images/examples/nextjs.svg" />
+    </ExampleCard>
+
+    <ExampleCard title="pgvector migration tool">
+      <Tag />
+
+      <Tag />
     </ExampleCard>
   </div>
 

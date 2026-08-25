@@ -18,9 +18,9 @@ You need an existing Custom Agent because it's the Agent you'll chat with in thi
 
 To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/help/custom-agents#build-a-custom-agent).
 
-**A personal access token to authenticate requests**
+**A token to authenticate requests**
 
-This quickstart sends API requests on your behalf, so each request needs a [personal access token](/guides/get-started/personal-access-tokens) (PAT). It lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion.
+Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection's installation access token, described below.
 
 <Steps>
   <Step>
@@ -40,7 +40,29 @@ This quickstart sends API requests on your behalf, so each request needs a [pers
   </Step>
 </Steps>
 
-Set the token as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
+**An internal connection token to authenticate requests**
+
+You can instead use an internal connection's installation access token. The connection can access only Custom Agents that are explicitly shared with it.
+
+<Steps>
+  <Step>
+    Open your connection in the <a href={developerConnectionsUrl}>Developer portal</a>.
+  </Step>
+
+  <Step>
+    In the **Configuration** tab, enable the **View threads and interact with agents** capability.
+  </Step>
+
+  <Step>
+    Open the **Agent access** tab and select the Custom Agent you want the connection to use.
+  </Step>
+
+  <Step>
+    Return to the **Configuration** tab, copy the **Installation access token**, and save it somewhere secure.
+  </Step>
+</Steps>
+
+Set the token you chose as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
 
 <CodeGroup>
   ```bash macOS / Linux theme={null}
@@ -54,9 +76,9 @@ Set the token as an environment variable so you can use it in the examples below
 
 ## Step 1: Pick a Custom Agent
 
-Pick the Custom Agent you want to chat with. It can be the Custom Agent you created for this quickstart or an existing Custom Agent in your workspace that you can access. Use [Query agents](/reference/notion-agent-apis/query-agents) to find it.
+Pick the Custom Agent you want to chat with. With a PAT, it can be an existing Custom Agent in your workspace that you can access. With a connection token, it must be a Custom Agent that you selected in the connection's **Agent access** tab. Use [Query agents](/reference/notion-agent-apis/query-agents) to find it.
 
-The example below narrows results to Custom Agents you created. Remove the `created_by` filter to choose another Custom Agent you can access.
+The example below lists Custom Agents that your token can access, most recently created first.
 
 ```bash curl theme={null}
 curl -X POST https://api.notion.com/v1/agents/query \
@@ -64,16 +86,12 @@ curl -X POST https://api.notion.com/v1/agents/query \
   -H "Notion-Version: 2026-03-11" \
   -H "Content-Type: application/json" \
   -d '{
-    "filter": {
-      "property": "created_by",
-      "people": { "contains": "me" }
-    },
     "sorts": [{ "property": "created_time", "direction": "descending" }],
     "page_size": 10
   }'
 ```
 
-You get back a list of your Custom Agents, most recently created first:
+You get back a list of accessible Custom Agents, most recently created first:
 
 ```json Response theme={null}
 {

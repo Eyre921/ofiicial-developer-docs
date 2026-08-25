@@ -94,6 +94,16 @@ Stripe automatically enables the fraudulent non-card payments control by default
 
 You can monitor performance and review information about blocked payments on the [risk controls page](https://dashboard.stripe.com/settings/radar/risk-controls) in the Dashboard. You can also simulate how this risk control would have affected past payments to better understand the impact on conversion and fraud prevention.
 
+## Abuse controls (Private preview)
+
+### Refund abuse 
+
+Refund abuse happens when customers request refunds for goods or services they’ve already received and plan to keep. When you enable this control, Radar automatically blocks payments from customers who are likely refund abusers.
+
+You can monitor performance and review affected payments on the [risk controls](https://dashboard.stripe.com/settings/radar/risk-controls) page in the Dashboard.
+
+> Risk control applies to card payments only.
+
 ## Radar scores
 
 Radar scores are numerical signals that represent the likelihood of fraud or abuse for a payment. You can use scores to write custom [Radar rules](https://docs.stripe.com/radar/rules.md) or to understand why a payment was blocked. Some scores also contribute to an [overall risk level](https://docs.stripe.com/radar/risk-settings.md#overall-risk-level), which summarizes risk as a single signal.

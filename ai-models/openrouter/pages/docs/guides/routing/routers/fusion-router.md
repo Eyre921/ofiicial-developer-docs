@@ -127,7 +127,7 @@ The model pins the preset as a default and gets its own entry in `/api/v1/models
 
 ## Configuration
 
-Override the default panel and analyst via the `plugins` array or the `tools` array. Both are optional; omit them entirely and fusion uses the Quality preset defaults.
+Override the default panel and analyst for a Fusion run via the `plugins` array or the `tools` array. Both are optional; omit them entirely and fusion uses the Quality preset defaults. A plugin entry alone does not start Fusion; it configures a run started by the model slug or the server tool.
 
 ### Plugin config (recommended with the model slug)
 
@@ -314,7 +314,6 @@ Inner fusion calls carry an `x-openrouter-fusion-depth` header. Panel and analys
 ## Related
 
 * [`openrouter:fusion` server tool](/docs/guides/features/server-tools/fusion)
-* [Fusion plugin](/docs/guides/features/plugins/fusion)
 * [Auto Router](/docs/guides/routing/routers/auto-router)
 * [Pareto Router](/docs/guides/routing/routers/pareto-router)
 * [`/labs/fusion`](https://openrouter.ai/fusion/): interactive playground

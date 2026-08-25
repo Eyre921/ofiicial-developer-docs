@@ -44,6 +44,17 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/whats-app/outb
       - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
         - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
       - `voice_id` (string, optional) — The voice ID to use for TTS
+      - `supported_voices` (list of object, optional) — Additional supported voices for the agent
+        - `label` (string, required)
+        - `voice_id` (string, required)
+        - `description` (string, optional)
+        - `language` (string, optional)
+        - `model_family` (enum, optional)
+          - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`
+        - `optimize_streaming_latency` (integer, optional)
+        - `stability` (double, optional)
+        - `speed` (double, optional)
+        - `similarity_boost` (double, optional)
       - `stability` (double, optional) — The stability of generated speech
       - `speed` (double, optional) — The speed of generated speech
       - `similarity_boost` (double, optional) — The similarity boost for generated speech

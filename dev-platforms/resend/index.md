@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 354 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -26,7 +26,6 @@
 - `docs/api-reference/broadcasts/create-broadcast` — [Create Broadcast](pages/docs/api-reference/broadcasts/create-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/create-broadcast)
 - `docs/api-reference/broadcasts/delete-broadcast` — [Delete Broadcast](pages/docs/api-reference/broadcasts/delete-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/delete-broadcast)
 - `docs/api-reference/broadcasts/get-broadcast` — [Retrieve Broadcast](pages/docs/api-reference/broadcasts/get-broadcast.md) · [原文](https://resend.com/docs/api-reference/broadcasts/get-broadcast)
-- `docs/api-reference/broadcasts/get-broadcasts-metrics` — [Retrieve Metrics](pages/docs/api-reference/broadcasts/get-broadcasts-metrics.md) · [原文](https://resend.com/docs/api-reference/broadcasts/get-broadcasts-metrics)
 - `docs/api-reference/broadcasts/list-broadcast-clicked-links` — [List Clicked Links](pages/docs/api-reference/broadcasts/list-broadcast-clicked-links.md) · [原文](https://resend.com/docs/api-reference/broadcasts/list-broadcast-clicked-links)
 - `docs/api-reference/broadcasts/list-broadcast-recipients` — [List Recipients](pages/docs/api-reference/broadcasts/list-broadcast-recipients.md) · [原文](https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipients)
 - `docs/api-reference/broadcasts/list-broadcasts` — [List Broadcasts](pages/docs/api-reference/broadcasts/list-broadcasts.md) · [原文](https://resend.com/docs/api-reference/broadcasts/list-broadcasts)
@@ -183,10 +182,12 @@
 - `docs/dashboard/emails/tags` — [Managing Tags](pages/docs/dashboard/emails/tags.md) · [原文](https://resend.com/docs/dashboard/emails/tags)
 - `docs/dashboard/logs/introduction` — [Introduction](pages/docs/dashboard/logs/introduction.md) · [原文](https://resend.com/docs/dashboard/logs/introduction)
 - `docs/dashboard/receiving/attachments` — [Process Receiving Attachments](pages/docs/dashboard/receiving/attachments.md) · [原文](https://resend.com/docs/dashboard/receiving/attachments)
+- `docs/dashboard/receiving/create-receiving-webhook` — [Create a receiving Webhook](pages/docs/dashboard/receiving/create-receiving-webhook.md) · [原文](https://resend.com/docs/dashboard/receiving/create-receiving-webhook)
 - `docs/dashboard/receiving/custom-domains` — [Custom Receiving Domains](pages/docs/dashboard/receiving/custom-domains.md) · [原文](https://resend.com/docs/dashboard/receiving/custom-domains)
 - `docs/dashboard/receiving/forward-emails` — [Forward Received Emails](pages/docs/dashboard/receiving/forward-emails.md) · [原文](https://resend.com/docs/dashboard/receiving/forward-emails)
 - `docs/dashboard/receiving/get-email-content` — [Get Email Content](pages/docs/dashboard/receiving/get-email-content.md) · [原文](https://resend.com/docs/dashboard/receiving/get-email-content)
 - `docs/dashboard/receiving/introduction` — [Receiving Emails](pages/docs/dashboard/receiving/introduction.md) · [原文](https://resend.com/docs/dashboard/receiving/introduction)
+- `docs/dashboard/receiving/manage-emails` — [Managing Emails](pages/docs/dashboard/receiving/manage-emails.md) · [原文](https://resend.com/docs/dashboard/receiving/manage-emails)
 - `docs/dashboard/receiving/reply-to-emails` — [Reply to Receiving Emails](pages/docs/dashboard/receiving/reply-to-emails.md) · [原文](https://resend.com/docs/dashboard/receiving/reply-to-emails)
 - `docs/dashboard/segments/introduction` — [Managing Segments](pages/docs/dashboard/segments/introduction.md) · [原文](https://resend.com/docs/dashboard/segments/introduction)
 - `docs/dashboard/segments/migrating-from-audiences-to-segments` — [Migrating from Audiences to Segments](pages/docs/dashboard/segments/migrating-from-audiences-to-segments.md) · [原文](https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-segments)

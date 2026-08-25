@@ -607,6 +607,7 @@ Install the CLI and start a project:
 ### Integrations
 - [Expo Router integration](https://docs.expo.dev/eas/observe/integrations/expo-router.md)
 - [React Navigation integration](https://docs.expo.dev/eas/observe/integrations/react-navigation.md)
+- [Expo Image integration](https://docs.expo.dev/eas/observe/integrations/expo-image.md)
 - [Integrate a third-party package with EAS Observe](https://docs.expo.dev/eas/observe/integrations/third-party.md)
 
 ### Reference

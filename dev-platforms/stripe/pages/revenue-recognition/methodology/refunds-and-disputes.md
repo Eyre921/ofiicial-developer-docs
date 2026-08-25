@@ -32,6 +32,10 @@ In this situation, the full amount of 90 USD is recognized as revenue, and subse
 | Revenue | +90.00 |  |
 | Refunds |  | +90.00 |
 
+### Refunds in the same accounting period 
+
+You can record refunds separately instead of having them offset revenue. For example, a customer pays 90 USD and receives a full refund in the same accounting period. By default, the refund offsets the revenue, so neither amount appears in the report. If you enable **Record refunds separately**, the report shows 90 USD in Revenue and 90 USD in Refunds. The net amount remains 0 USD in both cases.
+
 In this example, the *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) for a subscription was disputed.
 
 - On January 1, a customer starts a three month subscription for 90 USD, which generates and finalizes an invoice.

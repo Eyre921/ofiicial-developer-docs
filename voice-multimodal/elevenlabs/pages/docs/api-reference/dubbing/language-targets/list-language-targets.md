@@ -56,9 +56,8 @@ Successful Response
     - `lossless_audio` (string, optional, nullable) — Signed URL of the dubbed lossless audio track.
   - `output_revision` (integer, optional, nullable) — The `revision` the current dubbed output was generated from; equal to `revision` when up to date, less than it when 'stale'. Null until a generation has completed.
   - `error` (object, optional, nullable) — Why this language failed; null unless `status` is 'failed', and also null for the few languages that failed before failure reporting was introduced. A code of 'project_failed' means the parent project failed, so read the project for the underlying cause.
-    - `code` (string, required) — Stable identifier for the failure, safe to branch on. New codes are added over time, so treat an unrecognized value as 'internal_error'.
-    - `message` (string, required) — Human-readable description of the failure, for display. The wording may change at any time; branch on `code` instead.
-    - `retryable` (boolean, required) — Whether resubmitting the same input could succeed. False means the failure describes the input or the account, so an identical retry will fail the same way.
+    - `message_type` ("error", required)
+    - `error` (string, required)
   - `warnings` (list of object, optional) — Non-fatal conditions raised while dubbing this language, empty when there are none. Reflects the latest generation. Conditions raised while preparing the source are reported on the project instead.
     - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
     - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.

@@ -4,6 +4,12 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-08-25">
+  # SSO documentation: IdP-initiated SAML
+
+  Updated the [Custom SSO](/accounts/sso) guide. IdP-initiated SAML is supported as an opt-in (`--enable-idp-initiated-sso`); the previous troubleshooting copy that said Fireworks only supported SP-initiated login was incorrect.
+</Update>
+
 <Update label="2026-08-14">
   # Serverless deprecation: DeepSeek V4 Flash
 

@@ -864,6 +864,8 @@ In rare cases, you may need to run code _before_ the DOM updates. For this we ca
 </div>
 ```
 
+`$effect.pre` runs before DOM updates that are scheduled after it, not before every DOM mutation in the flush - DOM of parent components may already be updated. When using [await expressions](await-expressions), block updates like `{#if ...}` and `{#each ...}` in the same component also run before `$effect.pre`.
+
 Apart from the timing, `$effect.pre` works exactly like `$effect`.
 
 ## `$effect.tracking`
@@ -1330,6 +1332,8 @@ In this case, you can specify a fallback value for when no prop is passed at all
 let { value = $bindable('fallback'), ...props } = $props();
 ```
 
+When a bindable prop has a fallback value, the parent must pass a value other than `undefined` if it uses `bind:`. This avoids ambiguity about which value should apply, since the parent and child should share the same value for a binding.
+
 # $inspect
 
 > [!NOTE] `$inspect` only works during development. In a production build it becomes a noop.
@@ -1630,7 +1634,7 @@ You can add a special comment starting with `@component` that will show up when 
 - You can also use code blocks here.
 - Usage:
   ```html
-  <Main name="Arethra">
+  <Main name="Aretha">
   ```
 -->
 <script>
@@ -2641,7 +2645,7 @@ Declaration tags define local variables inside markup with `const` or `let`:
 
 {#each boxes as box}
 	{const area = box.width * box.height}
-	{const label = `${box.width} ⨉ ${box.height} = ${area}`}
+	{const label = `${box.width} × ${box.height} = ${area}`}
 
 	<p>{label}</p>
 {/each}
@@ -2948,6 +2952,19 @@ You can give the `<select>` a default value by adding a `selected` attribute to 
 	<option value={b} selected>b</option>
 	<option value={c}>c</option>
 </select>
+```
+
+Since 5.57.0, if a `<select>` has a `defaultValue` and is part of a form, it will revert to that value instead of the empty string when the form is reset. Note that for the initial render the value of the binding takes precedence unless it is `null` or `undefined`.
+
+```svelte
+<form>
+	<select bind:value defaultValue="b">
+		<option>a</option>
+		<option>b</option>
+		<option>c</option>
+	</select>
+	<input type="reset" value="Reset">
+</form>
 ```
 
 ## `<audio>`
@@ -4803,9 +4820,9 @@ Svelte will warn you if you get it wrong.
 
 Similarly, to pass primitive values through context, use functions as described in [Passing state into functions]($state#Passing-state-into-functions).
 
-## Component testing
+## Mounting components with context
 
-When writing [component tests](testing#Unit-and-component-tests-with-Vitest-Component-testing), it can be useful to create a wrapper component that sets the context in order to check the behaviour of a component that uses it. As of version 5.49, you can do this sort of thing:
+To mount a component with specific context, create a wrapper component that sets the context before rendering the component. This is useful for [component tests](testing#Unit-and-component-tests-with-Vitest-Component-testing), or any other scenario that needs to provide context through `mount`. As of version 5.49, you can do this sort of thing:
 
 ```js
 import { mount, unmount } from 'svelte';
@@ -4830,6 +4847,8 @@ test('MyComponent', () => {
 ```
 
 This approach also works with [`hydrate`](imperative-component-api#hydrate) and [`render`](imperative-component-api#render).
+
+The context set by the wrapper only applies to that mounted component tree. Each call to `mount`, `hydrate` or `render` creates a separate wrapper instance, so the context does not leak into other mounted components.
 
 ## Replacing global state
 
@@ -4964,7 +4983,7 @@ To implement a chat window that autoscrolls to the bottom when new messages appe
 
 In Svelte 4, we do this with `beforeUpdate`, but this is a flawed approach — it fires before _every_ update, whether it's relevant or not. In the example below, we need to introduce checks like `updatingMessages` to make sure we don't mess with the scroll position when someone toggles dark mode.
 
-With runes, we can use `$effect.pre`, which behaves the same as `$effect` but runs before the DOM is updated. As long as we explicitly reference `messages` inside the effect body, it will run whenever `messages` changes, but _not_ when `theme` changes.
+With runes, we can use `$effect.pre`, which behaves the same as `$effect` but runs before DOM updates scheduled after it (see [$effect.pre]($effect#$effect.pre) for the exact ordering). As long as we explicitly reference `messages` inside the effect body, it will run whenever `messages` changes, but _not_ when `theme` changes.
 
 `beforeUpdate`, and its equally troublesome counterpart `afterUpdate`, are therefore deprecated in Svelte 5.
 
@@ -5930,6 +5949,12 @@ If you don't give `$state` an initial value, part of its types will be `undefine
 // @noErrors
 // Error: Type 'number | undefined' is not assignable to type 'number'
 let count: number = $state();
+```
+
+You can pass the type directly as a generic parameter to safely handle this. TypeScript will infer the variable as `number | undefined`.
+
+```ts
+let count = $state<number>();
 ```
 
 If you know that the variable _will_ be defined before you first use it, use an `as` casting. This is especially useful in the context of classes:
@@ -7536,7 +7561,9 @@ However, you can use any router library. A sampling of available routers are hig
 
 While most mobile apps are written without using JavaScript, if you'd like to leverage your existing Svelte components and knowledge of Svelte when building mobile apps, you can turn a [SvelteKit SPA](https://kit.svelte.dev/docs/single-page-apps) into a mobile app with [Tauri](https://v2.tauri.app/start/frontend/sveltekit/) or [Capacitor](https://capacitorjs.com/solution/svelte). Mobile features like the camera, geolocation, and push notifications are available via plugins for both platforms.
 
-Some work has been completed towards [custom renderer support in Svelte 5](https://github.com/sveltejs/svelte/issues/15470), but this feature is not yet available. The custom rendering API would support additional mobile frameworks like Lynx JS and Svelte Native. Svelte Native was an option available for Svelte 4, but Svelte 5 does not currently support it. Svelte Native lets you write NativeScript apps using Svelte components that contain [NativeScript UI components](https://docs.nativescript.org/ui/) rather than DOM elements, which may be familiar for users coming from React Native.
+You can also write apps in Svelte that compiles to native components by using [Symbiote Native](https://docs.symbiote-native.dev/), which leverages the infrastructure provided by React Native.
+
+Work has been completed towards [custom renderer support in Svelte 5](https://github.com/sveltejs/svelte/issues/15470), but this feature is not yet merged. The custom rendering API will allow support in additional mobile frameworks like Lynx JS and Svelte Native. Symbiote Native will also adopt this API. Svelte Native was an option available for Svelte 4, but Svelte 5 does not currently support it. Svelte Native lets you write NativeScript apps using Svelte components that contain [NativeScript UI components](https://docs.nativescript.org/ui/) rather than DOM elements.
 
 ## Can I tell Svelte not to remove my unused styles?
 
@@ -10555,6 +10582,10 @@ interface Warning extends ICompileDiagnostic {}
 
 # svelte/easing
 
+This module provides a set of functions that allow you to manipulate time values in different ways. It’s particularly useful for animations when combined with the `motion` module. 
+
+
+
 ```js
 // @noErrors
 import {
@@ -10594,6 +10625,8 @@ import {
 
 ## backIn
 
+Rebound effect on start.
+
 <div class="ts-block">
 
 ```dts
@@ -10605,6 +10638,8 @@ function backIn(t: number): number;
 
 
 ## backInOut
+
+Rebound effect on start and end of value range.
 
 <div class="ts-block">
 
@@ -10618,6 +10653,8 @@ function backInOut(t: number): number;
 
 ## backOut
 
+Rebound effect on end.
+
 <div class="ts-block">
 
 ```dts
@@ -10629,6 +10666,8 @@ function backOut(t: number): number;
 
 
 ## bounceIn
+
+Bounce effect on start.
 
 <div class="ts-block">
 
@@ -10642,6 +10681,8 @@ function bounceIn(t: number): number;
 
 ## bounceInOut
 
+Bounce effect on start and end.
+
 <div class="ts-block">
 
 ```dts
@@ -10653,6 +10694,8 @@ function bounceInOut(t: number): number;
 
 
 ## bounceOut
+
+Bounce effect on end.
 
 <div class="ts-block">
 
@@ -10666,6 +10709,8 @@ function bounceOut(t: number): number;
 
 ## circIn
 
+Circular effect, accelerate on start.
+
 <div class="ts-block">
 
 ```dts
@@ -10677,6 +10722,8 @@ function circIn(t: number): number;
 
 
 ## circInOut
+
+Circular effect, accelerate on start, decelerate towards end.
 
 <div class="ts-block">
 
@@ -10690,6 +10737,8 @@ function circInOut(t: number): number;
 
 ## circOut
 
+Circular effect, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10701,6 +10750,8 @@ function circOut(t: number): number;
 
 
 ## cubicIn
+
+Cubic scaling, accelerate on start
 
 <div class="ts-block">
 
@@ -10714,6 +10765,8 @@ function cubicIn(t: number): number;
 
 ## cubicInOut
 
+Cubic scaling, accelerate on start, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10725,6 +10778,8 @@ function cubicInOut(t: number): number;
 
 
 ## cubicOut
+
+Cubic scaling, decelerate towards end.
 
 <div class="ts-block">
 
@@ -10738,6 +10793,8 @@ function cubicOut(t: number): number;
 
 ## elasticIn
 
+Elastic effect on start.
+
 <div class="ts-block">
 
 ```dts
@@ -10749,6 +10806,8 @@ function elasticIn(t: number): number;
 
 
 ## elasticInOut
+
+Elastic effect on start and end.
 
 <div class="ts-block">
 
@@ -10762,6 +10821,8 @@ function elasticInOut(t: number): number;
 
 ## elasticOut
 
+Elastic effect on end.
+
 <div class="ts-block">
 
 ```dts
@@ -10773,6 +10834,8 @@ function elasticOut(t: number): number;
 
 
 ## expoIn
+
+Exponential effect on start.
 
 <div class="ts-block">
 
@@ -10786,6 +10849,8 @@ function expoIn(t: number): number;
 
 ## expoInOut
 
+Exponential effect on start and end.
+
 <div class="ts-block">
 
 ```dts
@@ -10797,6 +10862,8 @@ function expoInOut(t: number): number;
 
 
 ## expoOut
+
+Exponential effect on end.
 
 <div class="ts-block">
 
@@ -10810,6 +10877,8 @@ function expoOut(t: number): number;
 
 ## linear
 
+Returns value as is.
+
 <div class="ts-block">
 
 ```dts
@@ -10821,6 +10890,8 @@ function linear(t: number): number;
 
 
 ## quadIn
+
+Quadratic scaling, accelerate on start.
 
 <div class="ts-block">
 
@@ -10834,6 +10905,8 @@ function quadIn(t: number): number;
 
 ## quadInOut
 
+Quadratic scaling, accelerate on start, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10845,6 +10918,8 @@ function quadInOut(t: number): number;
 
 
 ## quadOut
+
+Quadratic scaling, decelerate towards end.
 
 <div class="ts-block">
 
@@ -10858,6 +10933,8 @@ function quadOut(t: number): number;
 
 ## quartIn
 
+Quartic scaling, accelerate on start.
+
 <div class="ts-block">
 
 ```dts
@@ -10869,6 +10946,8 @@ function quartIn(t: number): number;
 
 
 ## quartInOut
+
+Quartic scaling, accelerate on start, decelerate towards end.
 
 <div class="ts-block">
 
@@ -10882,6 +10961,8 @@ function quartInOut(t: number): number;
 
 ## quartOut
 
+Quartic scaling, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10893,6 +10974,8 @@ function quartOut(t: number): number;
 
 
 ## quintIn
+
+Quintic scaling, accelerate on start.
 
 <div class="ts-block">
 
@@ -10906,6 +10989,8 @@ function quintIn(t: number): number;
 
 ## quintInOut
 
+Quintic scaling, accelerate on start, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10917,6 +11002,8 @@ function quintInOut(t: number): number;
 
 
 ## quintOut
+
+Quintic scaling, decelerate towards end.
 
 <div class="ts-block">
 
@@ -10930,6 +11017,8 @@ function quintOut(t: number): number;
 
 ## sineIn
 
+Sinusoidal effect, accelerate on start.
+
 <div class="ts-block">
 
 ```dts
@@ -10942,6 +11031,8 @@ function sineIn(t: number): number;
 
 ## sineInOut
 
+Sinusoidal effect, accelerate on start, decelerate towards end.
+
 <div class="ts-block">
 
 ```dts
@@ -10953,6 +11044,8 @@ function sineInOut(t: number): number;
 
 
 ## sineOut
+
+Sinusoidal effect, decelerate towards end.
 
 <div class="ts-block">
 
@@ -12646,6 +12739,101 @@ function render<
 
 </div>
 
+
+
+## Csp
+
+<div class="ts-block">
+
+```dts
+type Csp = { nonce?: string; hash?: boolean };
+```
+
+</div>
+
+## RenderOutput
+
+<div class="ts-block">
+
+```dts
+type RenderOutput = SyncRenderOutput &
+	PromiseLike<SyncRenderOutput>;
+```
+
+</div>
+
+## Sha256Source
+
+<div class="ts-block">
+
+```dts
+type Sha256Source = `sha256-${string}`;
+```
+
+</div>
+
+## SyncRenderOutput
+
+<div class="ts-block">
+
+```dts
+interface SyncRenderOutput {/*…*/}
+```
+
+<div class="ts-block-property">
+
+```dts
+head: string;
+```
+
+<div class="ts-block-property-details">
+
+HTML that goes into the `<head>`
+
+</div>
+</div>
+
+<div class="ts-block-property">
+
+```dts
+html: string;
+```
+
+<div class="ts-block-property-details">
+
+<div class="ts-block-property-bullets">
+
+- <span class="tag deprecated">deprecated</span> use `body` instead
+
+</div>
+
+</div>
+</div>
+
+<div class="ts-block-property">
+
+```dts
+body: string;
+```
+
+<div class="ts-block-property-details">
+
+HTML that goes somewhere into the `<body>`
+
+</div>
+</div>
+
+<div class="ts-block-property">
+
+```dts
+hashes: {
+	script: Sha256Source[];
+};
+```
+
+<div class="ts-block-property-details"></div>
+</div></div>
+
 # svelte/store
 
 ```js
@@ -14333,6 +14521,18 @@ Cannot use `%rune%` rune in non-runes mode
 Cannot use rune without parentheses
 ```
 
+Runes are keywords rather than values — they can't be assigned to a variable or passed to a function, only called. Referencing one without parentheses is therefore an error...
+
+```js
+let count = $state;
+```
+
+...whether it's a rune like `$state` or one reached through a property, like `$derived.by`. Add the parentheses, along with any arguments the rune expects:
+
+```js
+let count = $state(0);
+```
+
 ### rune_removed
 
 ```
@@ -15143,7 +15343,7 @@ Enforce that heading elements (`h1`, `h2`, etc.) and anchors have content and th
 '%event%' event must be accompanied by '%accompanied_by%' event
 ```
 
-Enforce that `onmouseover` and `onmouseout` are accompanied by `onfocus` and `onblur`, respectively. This helps to ensure that any functionality triggered by these mouse events is also accessible to keyboard users.
+Enforce that `onmouseover` and `onmouseout` are accompanied by `onfocus` (or `onfocusin`) and `onblur` (or `onfocusout`), respectively. This helps to ensure that any functionality triggered by these mouse events is also accessible to keyboard users.
 
 ```svelte
 <!-- A11y: onmouseover must be accompanied by onfocus -->
@@ -16657,27 +16857,6 @@ Reactive `$state(...)` proxies and the values they proxy have different identiti
 ```
 
 To resolve this, ensure you're comparing values where both values were created with `$state(...)`, or neither were. Note that `$state.raw(...)` will _not_ create a state proxy.
-
-### state_proxy_unmount
-
-```
-Tried to unmount a state proxy, rather than a component
-```
-
-`unmount` was called with a state proxy:
-
-```js
-import { mount, unmount } from 'svelte';
-import Component from './Component.svelte';
-let target = document.body;
-// ---cut---
-let component = $state(mount(Component, { target }));
-
-// later...
-unmount(component);
-```
-
-Avoid using `$state` here. If `component` _does_ need to be reactive for some reason, use `$state.raw` instead.
 
 ### svelte_boundary_reset_noop
 

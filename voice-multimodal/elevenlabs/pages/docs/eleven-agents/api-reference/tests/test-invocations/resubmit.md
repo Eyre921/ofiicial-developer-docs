@@ -129,6 +129,16 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
           - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
             - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
           - `voice_id` (string, optional) — The voice ID to use for TTS
+          - `supported_voices` (list of object, optional) — Additional supported voices for the agent
+            - `label` (string, required)
+            - `voice_id` (string, required)
+            - `description` (string, optional)
+            - `language` (string, optional)
+            - `model_family` (enum, optional)
+            - `optimize_streaming_latency` (integer, optional)
+            - `stability` (double, optional)
+            - `speed` (double, optional)
+            - `similarity_boost` (double, optional)
           - `stability` (double, optional) — The stability of generated speech
           - `speed` (double, optional) — The speed of generated speech
           - `similarity_boost` (double, optional) — The similarity boost for generated speech
@@ -648,6 +658,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
         - `tts` (object, optional) — Configures overrides for nested fields.
           - `model_id` (boolean, optional, default: false) — Whether to allow overriding the model_id field.
           - `voice_id` (boolean, optional, default: false) — Whether to allow overriding the voice_id field.
+          - `supported_voices` (boolean, optional, default: false) — Whether to allow overriding the supported_voices field.
           - `stability` (boolean, optional, default: false) — Whether to allow overriding the stability field.
           - `speed` (boolean, optional, default: false) — Whether to allow overriding the speed field.
           - `similarity_boost` (boolean, optional, default: false) — Whether to allow overriding the similarity_boost field.

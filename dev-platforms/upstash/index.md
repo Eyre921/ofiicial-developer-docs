@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 905 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 906 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -63,6 +63,7 @@
 - `docs/box/overall/git` — [Git](pages/docs/box/overall/git.md) · [原文](https://upstash.com/docs/box/overall/git)
 - `docs/box/overall/how-it-works` — [Box Basics](pages/docs/box/overall/how-it-works.md) · [原文](https://upstash.com/docs/box/overall/how-it-works)
 - `docs/box/overall/keep-alive` — [Keep Alive](pages/docs/box/overall/keep-alive.md) · [原文](https://upstash.com/docs/box/overall/keep-alive)
+- `docs/box/overall/live-sessions` — [Live Sessions](pages/docs/box/overall/live-sessions.md) · [原文](https://upstash.com/docs/box/overall/live-sessions)
 - `docs/box/overall/network-policy` — [Network Policy](pages/docs/box/overall/network-policy.md) · [原文](https://upstash.com/docs/box/overall/network-policy)
 - `docs/box/overall/preview` — [Public URLs](pages/docs/box/overall/preview.md) · [原文](https://upstash.com/docs/box/overall/preview)
 - `docs/box/overall/pricing` — [Pricing & Limits](pages/docs/box/overall/pricing.md) · [原文](https://upstash.com/docs/box/overall/pricing)

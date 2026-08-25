@@ -7,24 +7,6 @@ path: docs/api-reference/emails/get-metrics
 GET /emails/metrics
 Retrieve account-level email metrics.
 
-<Warning>
-  Email metrics are currently in private beta and only available to a
-  limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
 <Note>
   Metrics are retained according to your plan's data retention window.
   Requesting a `start_date` older than your retention window returns data
@@ -109,17 +91,8 @@ Retrieve account-level email metrics.
     startDate: '2026-07-01',
     endDate: '2026-07-08',
     dimensions: ['period', 'broadcast'],
-    filter: { broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'] },
+    broadcastId: ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
   });
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend->emails->metrics([
-    'start_date' => '2026-07-01',
-    'end_date' => '2026-07-08',
-    'dimensions' => ['period', 'broadcast'],
-    'broadcast_id' => ['5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a'],
-  ]);
   ```
 
   ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -181,20 +154,21 @@ Retrieve account-level email metrics.
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::types::{Dimension, GetEmailMetricsOptions};
+  use resend_rs::types::GetEmailMetricsOptions;
   use resend_rs::{Resend, Result};
 
   #[tokio::main]
   async fn main() -> Result<()> {
     let resend = Resend::new("re_xxxxxxxxx");
 
-    let options = GetEmailMetricsOptions::new()
+    let options = GetEmailMetricsOptions::default()
       .with_start_date("2026-07-01")
       .with_end_date("2026-07-08")
-      .with_dimensions([Dimension::Period, Dimension::Broadcast])
+      .with_period_dimension()
+      .with_broadcast_dimension()
       .with_broadcast_id("5a5a3b1e-3b1a-4b1a-8b1a-3b1a4b1a8b1a");
 
-    let metrics = resend.emails.metrics(options).await?;
+    let _metrics = resend.emails.metrics(options).await?;
 
     Ok(())
   }

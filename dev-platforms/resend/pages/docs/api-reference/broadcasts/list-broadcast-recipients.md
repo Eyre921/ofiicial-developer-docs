@@ -7,24 +7,6 @@ path: docs/api-reference/broadcasts/list-broadcast-recipients
 GET /broadcasts/:broadcast_id/recipients
 Retrieve the recipients of a broadcast for a given event type.
 
-<Warning>
-  Broadcast metrics and recipients are currently in private beta and only
-  available to a limited number of users. APIs might change before it is generally available.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
-    ```
-  </CodeGroup>
-</Warning>
-
 Retrieve the recipients of a broadcast, filtered by a single event `type` (for
 example everyone who `opened`, `clicked`, or `bounced`). Results are paginated
 with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` and
@@ -135,9 +117,91 @@ with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` a
   );
   ```
 
+  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Broadcasts.recipients(
+      "559ac32e-9ef5-46fb-82a1-b76b840c0f7b", {"type": "clicked", "limit": 20}
+  )
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Broadcasts.recipients(
+    "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+    { type: "clicked", limit: 20 },
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	limit := 20
+  	client.Broadcasts.Recipients("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", &resend.ListBroadcastRecipientsOptions{
+  		Type:  resend.BroadcastRecipientEventTypeClicked,
+  		Limit: &limit,
+  	})
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{types::{BroadcastRecipientEventType, ListRecipientsOptions}, Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let list_opts = ListRecipientsOptions::new(BroadcastRecipientEventType::Clicked).with_limit(20);
+
+    let _recipients = resend
+      .broadcasts
+      .recipients("559ac32e-9ef5-46fb-82a1-b76b840c0f7b", list_opts)
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend resend = new Resend("re_xxxxxxxxx");
+
+  ListBroadcastRecipientsResponseSuccess data = resend.broadcasts().recipients(
+      "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+      ListBroadcastRecipientsParams.builder()
+          .type(BroadcastRecipientEventType.CLICKED)
+          .limit(20)
+          .build());
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.BroadcastListRecipientsAsync(
+      new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ),
+      BroadcastRecipientEventType.Clicked,
+      new BroadcastListRecipientsQuery() { Limit = 20 } );
+  Console.WriteLine( "Recipients={0}", resp.Content.Data.Count );
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/recipients?type=clicked&limit=20' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend broadcasts recipients 559ac32e-9ef5-46fb-82a1-b76b840c0f7b --type clicked --limit 20
   ```
 </RequestExample>
 

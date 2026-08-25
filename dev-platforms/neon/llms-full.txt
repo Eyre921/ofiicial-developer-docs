@@ -1,6 +1,6 @@
 # Neon Postgres Documentation
 
-> Neon is the backend for apps and agents. Services include Neon Postgres, Neon Auth, Data API, Neon Functions, Object Storage, and AI Gateway. Every service is agent-ready: instant, branchable, and serverless. Neon Postgres includes autoscaling, instant restore, and scale-to-zero, and is fully compatible with any language, framework, or ORM that supports Postgres.
+> Neon is a complete set of cloud backend primitives built around Lakebase Postgres, for developers, startups, and agent platforms, from Databricks. Services include Lakebase Postgres, Managed Better Auth, Data API, Functions, Object Storage, and AI Gateway. Lakebase Postgres on Neon includes autoscaling, instant restore, and scale-to-zero, and works with any language, framework, or ORM that supports Postgres.
 > This file contains the full Neon documentation. For a table of contents, see https://neon.com/docs/llms.txt
 
 --- [Document source](https://neon.com/docs/ai-gateway/anthropic-messages.md) ---
@@ -816,11 +816,13 @@ Make your first inference request in minutes
 
 The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-To set up Neon AI Gateway with an AI coding assistant, install the Neon Platform (`neon`) and Neon AI Gateway skills:
+To set up Neon AI Gateway with an AI coding assistant, install the Neon Platform (`neon`) and Neon AI Gateway skills with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon -s neon-ai-gateway
+neon skills -s neon -s neon-ai-gateway
 ```
+
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-ai-gateway` instead.
 
 ## Get access
 
@@ -9441,7 +9443,7 @@ The quota block error uses a different shape:
 
 --- [Document source](https://neon.com/docs/ai/agent-skills.md) ---
 
-> Summary: Agent Skills are structured context files (SKILL.md) that give AI coding assistants accurate knowledge of Neon's platform, APIs, SDKs, and best practices. Install them when using Cursor, Claude Code, OpenAI Codex, or any Agent Skills-compatible tool. Skills cover Postgres, Auth, Neon Functions, Object Storage, AI Gateway, branching workflows, and more. Install all skills with `npx skills add neondatabase/agent-skills -y`, a single skill with `-s`, `neon init`, or editor plugins at project level or globally.
+> Summary: Agent Skills are structured context files (SKILL.md) that give AI coding assistants accurate knowledge of Neon's platform, APIs, SDKs, and best practices. Install them when using Cursor, Claude Code, OpenAI Codex, or any Agent Skills-compatible tool. Skills cover Postgres, Auth, Neon Functions, Object Storage, AI Gateway, branching workflows, and more. Install them with `neon skills`, `npx skills add neondatabase/agent-skills -y`, `neon init`, or editor plugins at project level or globally.
 
 # Agent Skills
 
@@ -9455,6 +9457,26 @@ Agent Skills provide your AI coding assistant with structured context about Neon
 
 There are several ways to install Neon skills depending on your editor and workflow.
 
+### neon skills
+
+The [Neon CLI](https://neon.com/docs/cli) installs skills interactively:
+
+```bash
+neon skills
+```
+
+It pre-selects your detected agents, lets you pick which skills to add, and confirms before writing. Pass `-s <skill>` and `--agent <name>` to skip the prompts, `--global` to install user-level, and run `neon skills update` to refresh installed skills. See the [`neon skills` reference](https://neon.com/docs/cli/skills) for all options.
+
+### neon plugins
+
+For agents that support plugin marketplaces (Claude Code, Cursor, Codex, and more), the Neon CLI can install the plugin, which bundles the skills and the Neon MCP Server:
+
+```bash
+neon plugins
+```
+
+It pre-selects your detected agents and confirms before writing. Pass `--agent <name>` to name agents, `-y` to install into detected agents without prompts, and `--global` to install user-level. See the [`neon plugins` reference](https://neon.com/docs/cli/plugins) for all options.
+
 ### npx skills
 
 For any AI tool that supports the [Agent Skills](https://agentskills.io) format, install skills from the [Agent Skills repository](https://github.com/neondatabase/agent-skills):
@@ -9466,7 +9488,7 @@ npx skills add neondatabase/agent-skills -y
 This installs **all** skills in the repository. To install a specific skill instead, pass the `-s` flag:
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres -y
+npx skills add neondatabase/agent-skills -s neon -y
 ```
 
 Useful flags:
@@ -9485,7 +9507,7 @@ In Cursor chat, run:
 /add-plugin neon-postgres
 ```
 
-Or install from [cursor.com/marketplace/neon](https://cursor.com/marketplace/neon). See [Cursor plugin for Neon](https://neon.com/docs/ai/ai-cursor-plugin) for details.
+Or install from [cursor.com/marketplace/neon](https://cursor.com/marketplace/neon). To install from the command line, run [`npx neon@latest plugins --agent cursor`](https://neon.com/docs/cli/plugins). See [Cursor plugin for Neon](https://neon.com/docs/ai/ai-cursor-plugin) for details.
 
 **Note:** Editor plugins currently bundle the core Postgres skill set and MCP integration. To give your assistant context for **Neon Functions**, **Object Storage**, and **AI Gateway**, run `npx skills add neondatabase/agent-skills -y` or install the platform skills individually (see [Available skills](https://neon.com/docs/ai/agent-skills#available-skills)).
 
@@ -9498,13 +9520,13 @@ If you're using Claude Code, install the Neon plugin for skills and MCP integrat
 /plugin install neon-postgres@neon
 ```
 
-See [Claude Code plugin for Neon](https://neon.com/docs/ai/ai-claude-code-plugin) for details.
+Or install it from the command line with [`npx neon@latest plugins --agent claude-code`](https://neon.com/docs/cli/plugins). See [Claude Code plugin for Neon](https://neon.com/docs/ai/ai-claude-code-plugin) for details.
 
 ### Codex plugin
 
 If you're using OpenAI Codex, install the **Neon** plugin from the [Codex plugin directory](https://developers.openai.com/codex/plugins/) (in the Codex app under **Plugins**, or in the Codex CLI with `/plugins`). It includes the Neon app (MCP), the main Neon skill, and the egress optimizer skill.
 
-See [Codex plugin for Neon](https://neon.com/docs/ai/ai-codex-plugin) for details.
+To install from the command line instead, run [`npx neon@latest plugins --agent codex`](https://neon.com/docs/cli/plugins). See [Codex plugin for Neon](https://neon.com/docs/ai/ai-codex-plugin) for details.
 
 ### Kimi Code plugin
 
@@ -9546,20 +9568,19 @@ Skills are grouped by area. Each skill is a `SKILL.md` entry point that your age
 
 Start here for platform overview and Postgres development.
 
-| Skill                                                                        | Description                                                                                                                 |
-| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| [`neon`](https://skills.sh/neondatabase/agent-skills/neon)                   | Platform overview for apps and agents: Postgres, Auth, Data API, Functions, Storage, and AI Gateway, and how to get started |
-| [`neon-postgres`](https://skills.sh/neondatabase/agent-skills/neon-postgres) | Full index of Neon Serverless Postgres documentation and best practices                                                     |
+| Skill                                                                        | Description                                                                                                                                                |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`neon`](https://skills.sh/neondatabase/agent-skills/neon)                   | Platform overview for apps and agents: Postgres, Auth, Data API, Functions, Storage, and AI Gateway, including Claimable Neon when there is no account yet |
+| [`neon-postgres`](https://skills.sh/neondatabase/agent-skills/neon-postgres) | Full index of Neon Serverless Postgres documentation and best practices                                                                                    |
 
 ### Database workflows
 
-Provision, branch, and optimize Postgres projects.
+Branch and optimize Postgres projects.
 
-| Skill                                                                                                          | Description                                                                                                                               |
-| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| [`claimable-postgres`](https://skills.sh/neondatabase/agent-skills/claimable-postgres)                         | Instant temporary Postgres via [Claimable Postgres](https://neon.com/docs/reference/claimable-postgres), no login or credit card required |
-| [`neon-postgres-branches`](https://skills.sh/neondatabase/agent-skills/neon-postgres-branches)                 | Choose and create the right branch type for migrations, schema-only branches, and reset-from-parent workflows                             |
-| [`neon-postgres-egress-optimizer`](https://skills.sh/neondatabase/agent-skills/neon-postgres-egress-optimizer) | Diagnose and fix excessive Postgres egress and query overfetching                                                                         |
+| Skill                                                                                                          | Description                                                                                                   |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`neon-postgres-branches`](https://skills.sh/neondatabase/agent-skills/neon-postgres-branches)                 | Choose and create the right branch type for migrations, schema-only branches, and reset-from-parent workflows |
+| [`neon-postgres-egress-optimizer`](https://skills.sh/neondatabase/agent-skills/neon-postgres-egress-optimizer) | Diagnose and fix excessive Postgres egress and query overfetching                                             |
 
 ### Neon Platform
 
@@ -9579,7 +9600,7 @@ For codegen tools and multi-tenant products that provision Neon for their users,
 
 Skills can be installed at two levels:
 
-- **Project level** (default): Skills are installed in your project directory, for example via `neon init` or `npx skills add`. Your AI assistant picks them up when working in that project. This is best for team workflows since the configuration can be committed with the project.
+- **Project level** (default): Skills are installed in your project directory, for example via `neon skills`, `neon init`, or `npx skills add`. Your AI assistant picks them up when working in that project. This is best for team workflows since the configuration can be committed with the project.
 - **Global**: Skills are installed at the user or system level and available across all projects. Useful for personal development environments where you want Neon context everywhere. Pass the `-g` flag to install globally:
 
   ```bash
@@ -9601,7 +9622,7 @@ With the full skill set installed, your assistant can guide you across the Neon 
 
 **Database workflows**
 
-- **Disposable databases** via Claimable Postgres for agents and tests
+- **Disposable projects** via [Claimable Neon](https://neon.com/claimable-neon), for agents and tests
 - **Branch types and workflows** for migrations, schema-only branches, and reset-from-parent
 - **Egress optimization** for high transfer costs and query anti-patterns
 
@@ -9939,6 +9960,12 @@ The plugin's MCP server integration lets Claude interact with Neon's live API en
    /plugin install neon@claude-plugins-official
    ```
 
+   Or install it from the [Neon CLI](https://neon.com/docs/cli), which can target several agents in one command:
+
+   ```bash
+   neon plugins --agent claude-code
+   ```
+
 2. Verify the installation:
    Ask Claude Code:
 
@@ -9950,19 +9977,19 @@ The plugin's MCP server integration lets Claude interact with Neon's live API en
 
 3. Start using the Skills:
    Use natural language prompts like:
-   > "Use the neon-drizzle Skill to set up Drizzle ORM with Neon."
+   > "Use the neon-postgres Skill to set up Drizzle ORM with Neon."
 
 Claude will automatically select and execute the relevant workflow.
 
 ## Use skills outside Claude Code
 
-The [Agent Skills repository](https://github.com/neondatabase/agent-skills) provides skills for other AI tools as well. You can install them with:
+The [Agent Skills repository](https://github.com/neondatabase/agent-skills) provides skills for other AI tools as well. With the [Neon CLI](https://neon.com/docs/cli), install them with:
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres
+neon skills -s neon -s neon-postgres
 ```
 
-See [Agent Skills](https://neon.com/docs/ai/agent-skills) for all installation options.
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-postgres`. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for all installation options.
 
 ## Learn more
 
@@ -10067,17 +10094,17 @@ To configure Neon MCP and agent skills across supported tools from the command l
 npx neon@latest init
 ```
 
-That flow can set up OAuth, API keys, MCP configuration, and project-level skills where applicable. See the [`neon init` reference](https://neon.com/docs/cli/init) for details. To install just the Neon MCP server for Codex, run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp).
+That flow can set up OAuth, API keys, MCP configuration, and project-level skills where applicable. See the [`neon init` reference](https://neon.com/docs/cli/init) for details. To install just the Neon MCP server for Codex, run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp). To install the plugin (skills plus MCP) for Codex, run [`npx neon@latest plugins --agent codex`](https://neon.com/docs/cli/plugins).
 
 ## Use skills outside the Codex plugin
 
-The [Agent Skills repository](https://github.com/neondatabase/agent-skills) publishes the same skills for other AI tools. Install the main Neon skill with:
+The [Agent Skills repository](https://github.com/neondatabase/agent-skills) publishes the same skills for other AI tools. With the [Neon CLI](https://neon.com/docs/cli), install the core Neon skills with:
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres
+neon skills -s neon -s neon-postgres
 ```
 
-See [Agent Skills](https://neon.com/docs/ai/agent-skills) for global vs project install and other options.
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-postgres`. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for global vs project install and other options.
 
 ## Learn more
 
@@ -10278,7 +10305,7 @@ If you want Neon to configure AI tooling automatically, run:
 npx neon@latest init
 ```
 
-This configures MCP and installs Neon agent skills for supported editors. To install just the Neon MCP server for Cursor, run [`npx neon@latest mcp --agent cursor`](https://neon.com/docs/cli/mcp).
+This configures MCP and installs Neon agent skills for supported editors. To install just the Neon MCP server for Cursor, run [`npx neon@latest mcp --agent cursor`](https://neon.com/docs/cli/mcp). To install just agent skills for Cursor, run [`npx neon@latest skills --agent cursor`](https://neon.com/docs/cli/skills). To install the plugin (skills plus MCP) for Cursor, run [`npx neon@latest plugins --agent cursor`](https://neon.com/docs/cli/plugins).
 
 ## Learn more
 
@@ -11314,12 +11341,15 @@ This writes the MCP config to your editor. Add `-g` for global (user-level) inst
 | Gemini CLI                | `gemini-cli`         |
 | GitHub Copilot CLI        | `github-copilot-cli` |
 | Goose                     | `goose`              |
+| Kilo Code                 | `kilo-code`          |
+| Kimi Code                 | `kimi-code`          |
+| Kiro CLI                  | `kiro-cli`           |
 | MCPorter                  | `mcporter`           |
 | OpenCode                  | `opencode`           |
 | VS Code                   | `vscode`             |
 | Zed                       | `zed`                |
 
-**Aliases:** `cline-vscode` → `cline`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`. Config paths differ by agent and by project vs global (`-g`); see the [add-mcp README](https://github.com/neondatabase/add-mcp#supported-agents).
+**Aliases:** `cline-vscode` → `cline`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`, `kilo`/`kilocode` → `kilo-code`, `kimi` → `kimi-code`, `kiro` → `kiro-cli`. Config paths differ by agent and by project vs global (`-g`); see the [add-mcp README](https://github.com/neondatabase/add-mcp#supported-agents).
 
 ## ChatGPT
 
@@ -11603,7 +11633,15 @@ See [fx MCP](https://fx.sh/docs/capabilities/mcp) for `/mcp reload`, `/mcp auth`
 
 ## Kimi Code
 
-Kimi Code doesn't use `add-mcp`. Instead, install Neon's [agent skills](https://github.com/neondatabase/agent-skills) repository as a plugin. Kimi reads its own manifest (`kimi.plugin.json`), which declares the Neon MCP Server, so this one command wires up the MCP connection along with the skills:
+Wire up the Neon MCP Server with add-mcp:
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a kimi-code
+```
+
+Restart Kimi Code (or run `/new` to start a fresh session). When the OAuth window opens, click **Authorize** to complete the connection.
+
+Alternatively, install Neon's [agent skills](https://github.com/neondatabase/agent-skills) repository as a plugin. Kimi reads its own manifest (`kimi.plugin.json`), which declares the Neon MCP Server, so this one command wires up the MCP connection along with the skills:
 
 ```bash
 /plugins install https://github.com/neondatabase/agent-skills
@@ -11612,6 +11650,14 @@ Kimi Code doesn't use `add-mcp`. Instead, install Neon's [agent skills](https://
 Plugin changes apply to new sessions, so run `/new` afterward. See [Agent Skills](https://neon.com/docs/ai/agent-skills) for more on what's included.
 
 ## Kiro
+
+Wire up the Neon MCP Server with add-mcp:
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a kiro-cli
+```
+
+Restart Kiro (or enable the MCP server in settings). When the OAuth window opens, click **Authorize** to complete the connection.
 
 For manual configuration, Kiro reads **`~/.kiro/settings/mcp.json`** (global) or **`.kiro/settings/mcp.json`** (project). See [Kiro MCP documentation](https://kiro.dev/docs/mcp/).
 
@@ -12517,7 +12563,7 @@ If [IP Allow](https://neon.com/docs/introduction/ip-allow) is enabled on your pr
 
 ## Database diagnostics
 
-When you ask why a branch is slow, large, or behind, the MCP server can run `inspect_database` instead of inventing catalog SQL. It exposes the same 14 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): table and index sizes, unused indexes, sequential scans, long-running queries and locks, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state.
+When you ask why a branch is slow, large, or behind, the MCP server can run `inspect_database` instead of inventing catalog SQL. It exposes the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): table and index sizes, unused indexes, sequential scans, long-running and stalled queries and locks, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. The `stalled-queries` check reports active queries running longer than 30 seconds, with their waits, blockers, parallel workers, query IDs, and query text.
 
 Pick a check with the `check` parameter (for example `table-sizes` or `unused-indexes`). The tool runs inside a read-only transaction, so it works with [`?readonly=true`](https://neon.com/docs/ai/neon-mcp-server#read-only-mode). It belongs to the `querying` category, not `observability`. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool reports that and asks before suggesting installation.
 
@@ -12540,7 +12586,7 @@ Search and navigation tools (search across projects, fetch resource details by I
 
 Schema tools accept schema-qualified table names, such as `crm.contacts`. An unqualified name resolves against the database `search_path`, which defaults to the `public` schema.
 
-The `querying` category includes `inspect_database`, which runs the same 14 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
+The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
 
 **Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
@@ -20083,6 +20129,18 @@ Pin a branch in the local context (.neon) so subsequent commands target it.
 
 Usage: `neon checkout [id|name] [options]`
 
+### claim (alias: `claimable`)
+
+Create and claim temporary Neon projects.
+
+| Subcommand          | Description                                                                       |
+| ------------------- | --------------------------------------------------------------------------------- |
+| `neon claim accept` | Create a claim code and open the URL where a human signs in and takes the project |
+| `neon claim create` | Create a temporary Neon project without an account                                |
+| `neon claim delete` | Permanently delete the linked unclaimed project                                   |
+| `neon claim list`   | List claimable projects saved on this machine                                     |
+| `neon claim status` | Show the linked claimable project's lifecycle and claim status                    |
+
 ### config
 
 Manage a branch with a neon.ts policy.
@@ -20282,6 +20340,12 @@ Manage organizations.
 | ---------------- | ------------------ |
 | `neon orgs list` | List organizations |
 
+### plugins
+
+Install the Neon plugin into coding agents.
+
+Usage: `neon plugins [options]`
+
 ### profile (alias: `profiles`)
 
 Manage named sets of Neon credentials.
@@ -20327,6 +20391,14 @@ Manage roles.
 Deprecated: use `neon link`. Set the .neon context (raw write).
 
 Usage: `neon set-context [options]`
+
+### skills
+
+Install Neon agent skills into coding agents.
+
+| Subcommand           | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `neon skills update` | Update installed skills to the latest versions |
 
 ### snapshots (alias: `snapshot`)
 
@@ -21688,6 +21760,112 @@ neon checkout br-cool-snow-12345678 --project-id polished-snowflake-12345678
 
 After checking out a branch, commands such as [`connection-string`](https://neon.com/docs/cli/connection-string) and [`psql`](https://neon.com/docs/cli/psql) use the pinned branch by default.
 
+--- [Document source](https://neon.com/docs/cli/claim.md) ---
+
+> Summary: The Neon CLI `claim` command (`neon claimable` is an alias) creates a temporary Neon project before anyone signs in. The CLI stores an identity assertion, writes credentials to `.env`, and later opens a claim URL so a human can take the project. See [Claimable Neon](/docs/reference/claimable-neon).
+
+# Neon CLI command: claim
+
+Create and claim a temporary Neon project without an account
+
+The `claim` command creates a temporary Neon project when there is no Neon account yet. `neon claimable` is an alias. The CLI stores an identity assertion on the machine, writes provisioned variables to `.env` (or `.env.local`), and later opens a claim URL so a human can take the project into their organization.
+
+If `neon claim` is not a command, or `neon claim --help` does not list `create`, install the latest CLI (`npm i -g neon@latest`) or use the HTTP flow in [Claimable Neon](https://neon.com/docs/reference/claimable-neon).
+
+Do not pass `--api-key` or `--profile`. Those are refused. `neon auth` and `neon init --agent` need a human Neon account; use this command instead when there is none.
+
+Start in the browser at [neon.com/claimable-neon](https://neon.com/claimable-neon), or give an agent [`auth.md`](https://neon.com/auth.md).
+
+Subcommands: [accept](https://neon.com/docs/cli/claim#accept), [create](https://neon.com/docs/cli/claim#create), [delete](https://neon.com/docs/cli/claim#delete), [list](https://neon.com/docs/cli/claim#list), [status](https://neon.com/docs/cli/claim#status)
+
+## neon claim create
+
+Creates a temporary project and saves its identity assertion. Postgres is always requested. Pass `--service` for Data API, Managed Better Auth, or other services. If a [`neon.ts`](https://neon.com/docs/reference/neon-ts) file is present, declared services are requested automatically.
+
+```bash
+neon claim create [options]
+```
+
+| Option       | Description                                                                                                                                                                                                                                  | Type    | Default | Required |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`   | Path to neon.ts. Defaults to walking up from the current directory                                                                                                                                                                           | string  | —       |    No    |
+| `--env-pull` | Write the provisioned DATABASE\_URL and service URLs to a dotenv file                                                                                                                                                                        | boolean | `true`  |    No    |
+| `--file`     | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
+| `--service`  | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
+
+```bash
+neon claim create --env-pull
+```
+
+```bash
+neon claim create \
+  --service data-api \
+  --service auth \
+  --env-pull
+```
+
+`--env-pull` is on by default. It writes provisioned vars to an existing `.env`, otherwise `.env.local`, and gitignores that file. If `.env` or `.env.local` already has a `DATABASE_URL` (or other Neon-managed keys), pass `--file <path>` or `--no-env-pull`.
+
+After create, regular Neon CLI commands use the saved assertion. Explicit Neon account credentials take precedence when you pass them.
+
+## neon claim status
+
+Shows the linked claimable project's lifecycle and claim status.
+
+```bash
+neon claim status [options]
+```
+
+```bash
+neon claim status
+```
+
+## neon claim accept
+
+Creates a claim code and opens the URL where a human signs in and takes the project. `--open` is on by default. `--no-open` prints the URL.
+
+```bash
+neon claim accept [options]
+```
+
+| Option   | Description                            | Type    | Default | Required |
+| -------- | -------------------------------------- | ------- | ------- | :------: |
+| `--open` | Open the verification URL in a browser | boolean | `true`  |    No    |
+
+```bash
+neon claim accept --no-open
+```
+
+Opening the URL does not freeze access. Continuing to Neon from that URL starts the transfer and rotates `DATABASE_URL` before the console org picker.
+
+## neon claim list
+
+Lists claimable projects saved on this machine.
+
+```bash
+neon claim list [options]
+```
+
+```bash
+neon claim list
+```
+
+## neon claim delete
+
+Permanently deletes the linked unclaimed project. Pass `--yes` to skip the confirmation prompt.
+
+```bash
+neon claim delete [options]
+```
+
+| Option        | Description                  | Type    | Default | Required |
+| ------------- | ---------------------------- | ------- | ------- | :------: |
+| `--yes`, `-y` | Skip the confirmation prompt | boolean | `false` |    No    |
+
+```bash
+neon claim delete --yes
+```
+
 --- [Document source](https://neon.com/docs/cli/completion.md) ---
 
 > Summary: The `neon completion` command generates a yargs-based shell tab-completion script for `neon` that surfaces available commands and options when you press Tab. Use this page when you want to enable autocomplete for the Neon CLI in your terminal, so you can stop typing full command names from memory. Installation targets include `.bashrc`, `.bash_profile`, `.profile`, and `.zshrc` on Linux and macOS.
@@ -22704,7 +22882,7 @@ npx neon@latest init
 
 After running the command, restart your editor and ask your AI assistant to "Get started with Neon" to launch an interactive onboarding guide. The installed agent skills help you get started, including configuring a database connection. For Cursor and VS Code, the Neon Local Connect extension also provides database schema browsing, SQL editing, and table data management directly in your IDE.
 
-Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill neon --skill neon-postgres --agent <name>` for each selected editor. You can also run this command directly to install skills without the rest of the init flow, or use `npx skills add ... -g` to install globally. See [neon-postgres on skills.sh](https://skills.sh/neondatabase/agent-skills/neon-postgres) for more about the skills.
+Under the hood, `init` runs `npx skills add neondatabase/agent-skills --skill neon --skill neon-postgres --agent <name>` for each selected editor. To install skills on their own, without the rest of the init flow, use [`neon skills`](https://neon.com/docs/cli/skills) (add `--global` for a user-level install). See [neon-postgres on skills.sh](https://skills.sh/neondatabase/agent-skills/neon-postgres) for more about the skills.
 
 **Warning:** Skills are installed at the project level in the current working directory. Run `init` from your project root, otherwise skills will end up in the wrong location. You may want to commit project-level files so teammates get the same skills, or add them to `.gitignore` for per-developer setup.
 
@@ -22942,6 +23120,14 @@ neon inspect db locks
 
 ```text
 No locks held in any database.
+```
+
+### neon inspect db stalled-queries
+
+Active queries that have been running for at least 30 seconds, reported with their waits, blockers, parallel workers, query IDs, and query text. Where `long-running-queries` catches statements past a five-minute mark, this surfaces stalls sooner and shows what each backend is waiting on. Parallel workers are grouped with their leader process, and the `Blocking Pids` column shows which backends are holding others up. Run it during an incident to see what is running right now and what is blocking it.
+
+```bash
+neon inspect db stalled-queries
 ```
 
 ### neon inspect db outliers
@@ -23637,7 +23823,7 @@ Run `neon mcp` with no flags for an interactive walkthrough: it asks whether to 
 
 **mcp vs init:**
 
-[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the MCP Server along with agent skills and editor config. Use `mcp` when you only want to install the Neon MCP Server into your agents.
+[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the MCP Server along with agent skills and editor config. Use `neon mcp` when you only want to install the Neon MCP Server into your agents, or [`neon skills`](https://neon.com/docs/cli/skills) when you only want to install agent skills.
 
 ## Usage
 
@@ -23652,8 +23838,8 @@ neon mcp [options]
 | `--agent`, `-a`             | Coding agent to install into (repeatable). Skips the agent picker                                                                                                                  | array   | —       |    No    |
 | `--category`                | MCP tool category (repeatable or comma-separated). Default: all                                                                                                                    | array   | —       |    No    |
 | `--oauth`                   | Write the server URL only. The agent prompts for Neon sign-in on first use. No CLI login, no API key minted. Skips the auth question                                               | boolean | `false` |    No    |
-| `--project`                 | Write project-level MCP config. Skips the config-location question. Does not change the minted key                                                                                 | boolean | `false` |    No    |
-| `--project-id`              | Pin MCP tools to one Neon project (?projectId=). Does not change the minted key. Interactive asks only for a linked project-folder install                                         | string  | —       |    No    |
+| `--project`                 | Write project-level MCP config. Skips the config-location question. A linked project-folder install may still pin a project and scope a newly minted key                           | boolean | `false` |    No    |
+| `--project-id`              | Pin MCP tools to one Neon project (?projectId=). A newly minted API key is limited to that project. A linked project-folder install asks the same when you pick API-key auth       | string  | —       |    No    |
 | `--read-only`, `--readonly` | Restrict MCP tools to read-only (?readonly=true). Not prompted. Does not change the minted key                                                                                     | boolean | `false` |    No    |
 | `--yes`, `-y`               | Skip prompts. Defaults to global config, every detected agent and a minted account-wide API key. --project, --oauth, --agent, --read-only, --project-id and --category still apply | boolean | `false` |    No    |
 
@@ -23661,9 +23847,9 @@ neon mcp [options]
 
 By default, `mcp` mints a new Neon API key and writes it into each agent's config. Minting requires you to already be signed in, so run [`neon auth`](https://neon.com/docs/cli/auth) first or pass `--api-key`. If you aren't authenticated, the command stops and tells you to sign in, pass `--api-key`, or use `--oauth`.
 
-**Warning: Minted keys are account-wide**
+**Warning: Minted keys are account-wide by default**
 
-A minted API key reaches everything your account can access, in every organization. The command prints the key's id when it mints one. Revoke it with [`neon api-keys revoke <id>`](https://neon.com/docs/cli/api-keys).
+By default a minted API key reaches everything your account can access, in every organization. Pass `--project-id` to limit a newly minted key to a single project instead (see [Scoping the tools](https://neon.com/docs/cli/mcp#scoping-the-tools)). The command prints the key's id when it mints one. Revoke it with [`neon api-keys revoke <id>`](https://neon.com/docs/cli/api-keys).
 
 To install without minting a key, pass `--oauth`. This writes the server URL only, and the agent prompts you to sign in to Neon on first use. When `mcp` finds a Neon API key already configured for an agent, it reuses that key instead of minting a new one.
 
@@ -23679,9 +23865,9 @@ By default the server exposes every MCP tool. Use these flags to narrow what an 
 
 - `--read-only` hides the write tools by adding `?readonly=true` to the server URL.
 - `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, and `docs`.
-- `--project-id <id>` pins the tools to a single Neon project with `?projectId=`.
+- `--project-id <id>` pins the tools to a single Neon project with `?projectId=`, and limits a newly minted key to that project.
 
-These flags shape the server URL only. They don't change the scope of a minted API key.
+`--read-only` and `--category` shape the server URL only; they don't change a key's scope, and neither does reusing an already-configured key.
 
 ### Global vs project config
 
@@ -23740,7 +23926,7 @@ Limit the agent to schema and querying tools:
 neon mcp --category querying --category schema
 ```
 
-Pin the MCP tools to a single project:
+Pin the tools to one project and limit the minted key to it:
 
 ```bash
 neon mcp --project-id cold-grass-40154007
@@ -24558,6 +24744,98 @@ neon orgs list -o json
 ```
 
 </details>
+
+--- [Document source](https://neon.com/docs/cli/plugins.md) ---
+
+> Summary: The Neon CLI `plugins` command installs the `neon-postgres` plugin into coding agents that support plugin marketplaces, such as Claude Code, Cursor, and Codex. The plugin bundles Neon's agent skills and MCP access. Run it with no flags for an interactive walkthrough, or pass `--agent` and `-y` to pick the agents and skip the prompts.
+
+# Neon CLI command: plugins
+
+Install the Neon plugin into coding agents that support plugin marketplaces
+
+The `plugins` command installs the `neon-postgres` plugin into coding agents that support plugin marketplaces, so tools like Claude Code, Cursor, and Codex know how to work with Neon. The plugin bundles [Neon's agent skills](https://neon.com/docs/ai/agent-skills) and the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server) in one package.
+
+```bash
+neon plugins
+```
+
+[Install the Neon CLI](https://neon.com/docs/cli/install) with `npm i -g neon@latest`, or run it once with `npx neon@latest plugins`.
+
+With no flags it runs an interactive walkthrough: pick the agents, then confirm. Pass flags to skip the prompts and script it. Without a terminal, pass `-y` to install into detected agents, or name agents with `--agent`.
+
+**plugins vs skills vs mcp:**
+
+Use `neon plugins` for agents that support plugin marketplaces, where the plugin bundles skills and MCP access together. Use [`neon skills`](https://neon.com/docs/cli/skills) to install [agent skills](https://neon.com/docs/ai/agent-skills) on their own, and [`neon mcp`](https://neon.com/docs/cli/mcp) to set up just the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server). [`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command that sets these up together.
+
+`plugins` runs via `npx`, so it needs Node.js; without it the command stops with a message to install Node.js and retry.
+
+## Usage
+
+```bash
+neon plugins [options]
+```
+
+## Options
+
+| Option          | Description                                                       | Type    | Default | Required |
+| --------------- | ----------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker | array   | —       |    No    |
+| `--global`      | Install user-level. Default is project                            | boolean | `false` |    No    |
+| `--yes`, `-y`   | Skip prompts                                                      | boolean | `false` |    No    |
+
+### Choosing agents
+
+Without `--agent`, the interactive command lists the supported agents, pre-selects the ones it detects, and lets you toggle the selection. In non-interactive mode, `-y` installs into every detected agent. Pass `--agent <name>` (repeatable) to name agents explicitly and skip the picker.
+
+The agents that support plugins are `claude-code`, `claude-desktop`, `codex`, `cursor`, `github-copilot-cli`, `grok-build`, and `vscode`. Several also accept aliases: `claude` for `claude-code`, `grok` for `grok-build`, and `copilot`, `github-copilot`, or `vs-code` for `vscode`. Passing an unknown agent stops the command and prints the supported list. An agent with no plugin support is skipped when others can install, or stops the command when it's the only one selected.
+
+Agents that share a target collapse into one: Claude Desktop and Claude Code both write to `claude-code`, and VS Code and the GitHub Copilot CLI both write to `github-copilot`.
+
+### Directory vs user-level
+
+By default `plugins` installs into the current project, so the setup travels with the repository. Pass `--global` to install user-level instead, which applies across your projects.
+
+Some agents only support user-level plugins. In a project install, `github-copilot-cli`, `grok-build`, and `vscode` need `--global`; without it, the command tells you to pass it.
+
+## Examples
+
+Run the interactive install:
+
+```bash
+neon plugins
+```
+
+Install into a specific agent, skipping every prompt:
+
+```bash
+neon plugins --agent claude-code -y
+```
+
+```text filename="Output"
+Plugins
+Scope    Plugin         Agent        Status
+project  neon-postgres  claude-code  installed
+
+INFO: Installed the Neon plugin (project).
+```
+
+Install into several agents at once:
+
+```bash
+neon plugins --agent cursor --agent claude-code
+```
+
+Install non-interactively into every detected agent:
+
+```bash
+neon plugins -y
+```
+
+Install user-level so the plugin applies across your projects, including agents that only support user-level plugins:
+
+```bash
+neon plugins --global
+```
 
 --- [Document source](https://neon.com/docs/cli/profile.md) ---
 
@@ -25620,6 +25898,146 @@ The first time a `.neon` file is created in a directory, the CLI adds `.neon` to
 This keeps local project settings out of git by default. If you want to commit `.neon` and share context with your team, remove the entry from `.gitignore`. The CLI will not re-add it when updating an existing `.neon` file.
 
 **Note:** Neon does not save any confidential information to the context file (for example, auth tokens). You can safely commit this file to your repository or share with others.
+
+--- [Document source](https://neon.com/docs/cli/skills.md) ---
+
+> Summary: The Neon CLI `skills` command installs [Neon agent skills](/docs/ai/agent-skills) into your coding agents so they know how to work with Neon. Run it with no flags for an interactive walkthrough, or pass flags to pick the skills and agents and skip the prompts. Use `neon skills update` to refresh installed skills to their latest versions.
+
+# Neon CLI command: skills
+
+Install and update Neon agent skills in your coding agents
+
+The `skills` command installs [Neon agent skills](https://neon.com/docs/ai/agent-skills) into your coding agents, so tools like Cursor and Claude Code know how to work with Neon's Postgres, AI Gateway, Object Storage, and Functions.
+
+```bash
+neon skills
+```
+
+[Install the Neon CLI](https://neon.com/docs/cli/install) with `npm i -g neon@latest`, or run it once with `npx neon@latest skills`.
+
+With no flags it runs an interactive walkthrough: pick the agents, then the skills, then confirm. Pass flags to skip the prompts and script it. Without a terminal, pass `-y` or `--skill` to tell it which skills to install; `--agent` alone isn't enough.
+
+**skills vs init:**
+
+[`neon init`](https://neon.com/docs/cli/init) is the broader onboarding command: it sets up the Neon MCP Server along with agent skills and editor config. Use `neon skills` when you only want to install or update agent skills, and [`neon mcp`](https://neon.com/docs/cli/mcp) when you only want the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server).
+
+`skills` runs via `npx`, so it needs Node.js 22.20.0+; older or missing Node stops the command with an upgrade message.
+
+Subcommands: [update](https://neon.com/docs/cli/skills#update)
+
+## neon skills
+
+```bash
+neon skills [command] [options]
+```
+
+| Option          | Description                                                          | Type    | Default | Required |
+| --------------- | -------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker    | array   | —       |    No    |
+| `--global`      | Install user-level skills (skills CLI -g). Default is this directory | boolean | `false` |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker                | array   | —       |    No    |
+| `--yes`, `-y`   | Skip prompts                                                         | boolean | `false` |    No    |
+
+### Choosing agents
+
+Without `--agent`, the interactive command lists all supported agents, pre-selects the ones it detects, and lets you toggle the selection. In non-interactive mode, `-y` installs into every detected agent. Pass `--agent <name>` (repeatable) to name agents explicitly and skip the picker.
+
+The supported agents are `antigravity`, `cline`, `cline-cli`, `claude-code`, `claude-desktop`, `codex`, `cursor`, `gemini-cli`, `goose`, `github-copilot-cli`, `grok-build`, `opencode`, `vscode`, `windsurf`, and `zed`. A few also accept aliases (`claude` for `claude-code`, `copilot` for `vscode`, `gemini` for `gemini-cli`). Passing an unknown agent stops the command and prints the current supported list.
+
+An agent that can't install skills is skipped with a warning. Agents that share a target collapse into one: Claude Desktop and Claude Code both write to `claude-code`, and VS Code and the GitHub Copilot CLI both write to `github-copilot`.
+
+### Choosing skills
+
+Without `--skill`, the interactive command lets you pick from the catalog, and `-y` installs the default set. Pass `--skill <name>` (repeatable) to name skills explicitly and skip the picker.
+
+The available skills are:
+
+| Skill                            | Installed by default |
+| -------------------------------- | -------------------- |
+| `claimable-postgres`             | Yes                  |
+| `neon`                           | Yes                  |
+| `neon-ai-gateway`                | Yes                  |
+| `neon-functions`                 | Yes                  |
+| `neon-object-storage`            | Yes                  |
+| `neon-postgres`                  | Yes                  |
+| `neon-postgres-branches`         | Yes                  |
+| `neon-postgres-egress-optimizer` | Yes                  |
+| `neon-postgres-agent-platforms`  | No                   |
+
+Passing an unknown skill stops the command and prints the current supported list.
+
+The list of installable skills is built into each CLI release, so a skill that Neon publishes after the version you installed won't appear until you upgrade the CLI.
+
+### Directory vs user-level
+
+By default `skills` installs into the current directory, so the setup travels with the repository. Pass `--global` to install user-level skills instead, which apply across your projects.
+
+### Examples
+
+Run the interactive install:
+
+```bash
+neon skills
+```
+
+Install non-interactively into every detected agent, using the default skills in the current directory:
+
+```bash
+neon skills -y
+```
+
+Install named skills into a specific agent. Naming both `--skill` and `--agent` skips every prompt:
+
+```bash
+neon skills -s neon -s neon-ai-gateway --agent cursor
+```
+
+```text filename="Output"
+Skills
+Scope           Skills                 Agents  Status
+this directory  neon, neon-ai-gateway  cursor  installed
+
+INFO: Wrote skills in this directory.
+```
+
+Install user-level skills that apply across your projects:
+
+```bash
+neon skills --global
+```
+
+## neon skills update
+
+Updates every skill installed in the current directory to its latest version, or every user-level skill with `--global`. It takes neither `--agent` nor `--skill`; it updates whatever is already installed. When there's nothing to update, the status is `none` and the `Detail` column shows the reason.
+
+```bash
+neon skills update [options]
+```
+
+| Option          | Description                                                         | Type    | Default | Required |
+| --------------- | ------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--global`      | Update user-level skills (skills CLI -g). Default is this directory | boolean | `false` |    No    |
+| `--agent`, `-a` | Coding agent to install into (repeatable). Skips the agent picker   | array   | —       |    No    |
+| `--skill`, `-s` | Skill to install (repeatable). Skips the skill picker               | array   | —       |    No    |
+| `--yes`, `-y`   | Skip prompts                                                        | boolean | `false` |    No    |
+
+Update skills in the current directory without prompting:
+
+```bash
+neon skills update -y
+```
+
+```text filename="Output"
+Skills
+Scope           Status   Detail
+this directory  updated  ✓ Updated 1 skill(s)
+```
+
+Update user-level skills:
+
+```bash
+neon skills update --global -y
+```
 
 --- [Document source](https://neon.com/docs/cli/snapshots.md) ---
 
@@ -28006,7 +28424,7 @@ Search and navigation tools (search across projects, fetch resource details by I
 
 Schema tools accept schema-qualified table names, such as `crm.contacts`. An unqualified name resolves against the database `search_path`, which defaults to the `public` schema.
 
-The `querying` category includes `inspect_database`, which runs the same 14 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
+The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
 
 **Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
@@ -29866,11 +30284,13 @@ That's a deployed function in three commands. The rest of this guide builds a mo
 - The latest `neon`, installed and authenticated. Functions commands are new and change often, so upgrade before you start (`npm install -g neon@latest`).
 - Node.js 20 or later. Deployed functions run on Node.js 24, so use 24 locally for the closest match.
 
-`neon init --preview` is designed to be run by your AI coding assistant. It outputs structured instructions that guide the agent through setup. To install the Neon Platform (`neon`) and Neon Functions skills separately:
+`neon init --preview` is designed to be run by your AI coding assistant. It outputs structured instructions that guide the agent through setup. To install the Neon Platform (`neon`) and Neon Functions skills separately with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon -s neon-functions
+neon skills -s neon -s neon-functions
 ```
+
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-functions` instead.
 
 ## Set up your project
 
@@ -59580,7 +60000,7 @@ The beta services live under `preview` while they're in beta; that key goes away
 
 Two ways to get it running:
 
-**Let your AI editor build it.** Copy the prompt at the top of this page and hand it to your assistant. It runs `neon init` to configure the MCP server and install the core skill, adds the Object Storage, Functions, and AI Gateway skills with `npx skills add neondatabase/agent-skills`, then builds against each capability's current API.
+**Let your AI editor build it.** Copy the prompt at the top of this page and hand it to your assistant. It runs `neon init` to configure the MCP server and install the core skill, adds the Object Storage, Functions, and AI Gateway skills with `neon skills`, then builds against each capability's current API.
 
 **Start from a template.** `neon bootstrap` scaffolds a ready-to-run starter, installs dependencies, and links a project:
 
@@ -61821,7 +62241,7 @@ npx neon@latest init
 
 The wizard asks which editor to configure, then signs you in, creates an API key, installs [agent skills](https://neon.com/docs/ai/agent-skills), optionally configures the [Neon MCP server](https://neon.com/docs/ai/neon-mcp-server), and (for Cursor and VS Code) installs the [Neon Local Connect extension](https://marketplace.visualstudio.com/items?itemName=databricks.neon-local-connect). Run it from your project root so the skills land in the right place. For details and manual setup, see the [`neon init` reference](https://neon.com/docs/cli/init).
 
-If you only want the MCP server, without the skills or extension, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead.
+If you only want the MCP server, without the skills or extension, run [`npx neon@latest mcp`](https://neon.com/docs/cli/mcp) instead. If you only want agent skills, run [`npx neon@latest skills`](https://neon.com/docs/cli/skills).
 
 ## Tell your agent
 
@@ -62066,10 +62486,10 @@ This integration uses a **project-per-tenant model**, where each tenant (user, a
 
 **Tip: Code samples and agent skill**
 
-The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides runnable TypeScript samples for the patterns in this guide. Install the companion agent skill with:
+The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides runnable TypeScript samples for the patterns in this guide. Install the companion agent skill with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms -y
+neon skills -s neon-postgres-agent-platforms -y
 ```
 
 ## Provisioning projects
@@ -93452,7 +93872,7 @@ Use this approach when you want to create databases for your users without requi
 - Instant database provisioning with no user signup required
 - 72-hour database lifespan if not claimed
 - Seamless ownership transfer when users are ready
-- Connection strings remain valid after claiming
+- Claiming moves the project into the user's organization. neon.new keeps the connection string; Claimable Neon rotates `DATABASE_URL`
 - Configurable transfer request expiration
 
 **Example use cases:**
@@ -93468,10 +93888,10 @@ Use this approach when you want to create databases for your users without requi
 
 - [TanStack](https://neon.com/blog/neon-joins-tanstack-instant-postgres-integration-for-faster-javascript-development): Official database partner offering instant Postgres through their Vite plugin and create-tanstack CLI
 - [Netlify DB](https://www.netlify.com/blog/netlify-db-database-for-ai-native-development/): One-click Postgres databases for Netlify projects, built on the claimable database flow
-- [Claimable Postgres by Neon](https://neon.new/): Try instant Postgres provisioning without signup using `npx neon-new` or at [neon.new](https://neon.new/)
+- [Claimable Neon](https://neon.com/claimable-neon): instant Neon project without signup, via the Neon CLI or [auth.md](https://neon.com/auth.md)
 
 * [Claimable database guide](https://neon.com/docs/workflows/claimable-database-integration): Learn how to implement claimable databases
-* [Claimable Postgres documentation](https://neon.com/docs/reference/claimable-postgres): See Claimable Postgres implementation details
+* [Claimable Neon documentation](https://neon.com/docs/reference/claimable-neon): See Claimable Neon implementation details
 
 ---
 
@@ -95952,7 +96372,7 @@ This guide shows how to deploy a simple Node.js application connected to a Lakeb
 
 ## Quick start alternative
 
-If you want to get started quickly with Next.js and Lakebase Postgres on Railway, you can use the [Next.js with Neon Postgres template](https://railway.com/deploy/nextjs-with-neon-postgres?utm_medium=integration\&utm_source=button\&utm_campaign=neon). This template uses [Claimable Postgres by Neon](https://neon.com/docs/reference/claimable-postgres) to provision a database instantly without signup, perfect for rapid prototyping. The database is claimable for 72 hours, giving you time to develop before claiming it to your Neon account.
+If you want to get started quickly with Next.js and Lakebase Postgres on Railway, you can use the [Next.js with Neon Postgres template](https://railway.com/deploy/nextjs-with-neon-postgres?utm_medium=integration\&utm_source=button\&utm_campaign=neon). That template provisions a database without signup. The current no-signup project flow is [Claimable Neon](https://neon.com/docs/reference/claimable-neon). Unclaimed projects expire in 72 hours.
 
 For a more detailed walkthrough using Node.js/Express with manual setup, continue with this guide below.
 
@@ -96107,7 +96527,7 @@ To delete your Neon project, follow the steps outlined in the Neon documentation
 
 - [Railway platform](https://railway.com?utm_medium=integration\&utm_source=button\&utm_campaign=neon)
 - [Next.js with Neon Postgres Railway template](https://railway.com/deploy/nextjs-with-neon-postgres?utm_medium=integration\&utm_source=button\&utm_campaign=neon)
-- [Claimable Postgres](https://neon.com/docs/reference/claimable-postgres)
+- [Claimable Neon](https://neon.com/docs/reference/claimable-neon)
 
 --- [Document source](https://neon.com/docs/guides/react-router.md) ---
 
@@ -102959,37 +103379,7 @@ Add a `.env` file to your project directory and add your Neon connection string 
 DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
 ```
 
-If you haven't created a database yet, run the following command to generate a [Claimable Postgres by Neon database](https://neon.new/). It will spin up a database instance that you can use for 72 hours, or claim to keep forever.
-
-**npm**
-
-```bash
-  npm neon-new
-```
-
-**yarn**
-
-```bash
-  yarn dlx neon-new
-```
-
-**pnpm**
-
-```bash
-  pnpm neon-new
-```
-
-**bun**
-
-```bash
-  bunx neon-new
-```
-
-**deno**
-
-```bash
-  deno run -A neon-new
-```
+If you haven't created a project yet, [Claimable Neon](https://neon.com/claimable-neon) provisions a temporary Neon project without an account. A human can claim the project into a Neon account before it expires. See [Claimable Neon](https://neon.com/docs/reference/claimable-neon).
 
 ## Configure the Postgres client
 
@@ -110005,10 +110395,10 @@ For step-by-step implementation instructions, see the [AI Agent integration guid
 
 **Tip: Code samples and agent skill**
 
-The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides TypeScript samples and a companion agent skill for building on the agent plan. Install the companion skill with:
+The [neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms) repository provides TypeScript samples and a companion agent skill for building on the agent plan. Install the companion skill with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms -y
+neon skills -s neon-postgres-agent-platforms -y
 ```
 
 --- [Document source](https://neon.com/docs/introduction/architecture-overview.md) ---
@@ -112197,11 +112587,13 @@ For broader cost reduction strategies across all billing metrics, see [Cost opti
 
 ### Use the egress optimizer agent skill
 
-An [agent skill](https://github.com/neondatabase/agent-skills) is available that guides your AI assistant through diagnosing and fixing application-side query patterns that cause excessive egress. The skill walks through analyzing your codebase for anti-patterns (such as `SELECT *`, missing pagination, high-frequency queries on static data, and application-side aggregation), applying fixes, and verifying with tests. To add it to your AI assistant:
+An [agent skill](https://github.com/neondatabase/agent-skills) is available that guides your AI assistant through diagnosing and fixing application-side query patterns that cause excessive egress. The skill walks through analyzing your codebase for anti-patterns (such as `SELECT *`, missing pagination, high-frequency queries on static data, and application-side aggregation), applying fixes, and verifying with tests. To add it to your AI assistant with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon-postgres-egress-optimizer
+neon skills -s neon-postgres-egress-optimizer
 ```
+
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-postgres-egress-optimizer` instead.
 
 **Tip:** Building a platform on Neon? You can cap per-project network transfer with [consumption limits](https://neon.com/docs/guides/consumption-limits).
 
@@ -113066,12 +113458,12 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Neon CircleCI orb**: A community-contributed orb provisions a Neon database branch per job for isolated, production-like CI. [Learn more](https://neon.com/docs/guides/branching-circleci).
 - **Add organization members by domain**: Verify email domains on the organization People page so users with matching addresses automatically join your org. [Learn more](https://neon.com/docs/manage/orgs-add-members-by-domain).
 - **TimescaleDB on Postgres 18**: The timescaledb extension is now supported on Postgres 18. [Learn more](https://neon.com/docs/extensions/timescaledb).
-- **Claimable Postgres agent skill**: A new agent skill lets your AI assistant provision instant temporary databases via Claimable Postgres (neon.new) with no signup or credit card. [Learn more](https://neon.com/docs/reference/claimable-postgres).
+- **Claimable Neon**: Agents can provision a temporary Neon project with no signup or credit card, then a human claims it. [Learn more](https://neon.com/docs/reference/claimable-neon).
 - **Neon MCP Server documentation tools**: The MCP Server now includes `list_docs_resources` and `get_doc_resource` so your agent can fetch Neon docs on demand. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 - **Compute autoscaling report**: A published report compares Neon autoscaling to provisioned compute using real production workloads, with methodology and key findings. [Learn more](https://neon.com/autoscaling-report).
 - **Consumption history API**: The consumption history API is now available on all paid plans. You can use it with Neon's usage-based pricing plans to track usage programmatically: query compute, storage, and data transfer at hourly, daily, or monthly granularity for custom dashboards and alerts. [Learn more](https://neon.com/docs/guides/consumption-metrics).
 - **Simpler MCP Server setup**: Configure the Neon MCP Server for all detected AI agents and editors with a single command: `npx add-mcp https://mcp.neon.tech/mcp`. OAuth opens in your browser to authorize access. For full setup (MCP plus agent skills and VS Code extension), use `npx neon@latest init`. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
-- **Claimable Postgres REST API**: Claimable Postgres now offers a REST API for programmatic database provisioning, making it easy to integrate Postgres into platforms, CI/CD, and automation. [Learn more](https://neon.com/docs/reference/claimable-postgres).
+- **Claimable Neon REST API**: Claimable Neon offers an auth.md agent API for programmatic project provisioning. [Learn more](https://neon.com/docs/reference/claimable-neon).
 - **Managed Better Auth SDK simplified**: The server-side Managed Better Auth SDK for Next.js now uses a unified `createNeonAuth()` API, explicit configuration, and session caching that reduces Auth Server API calls by 95–99%. [Learn more](https://neon.com/docs/auth/migrate/from-auth-v0.1).
 - **Agent Skills**: Install [Agent Skills](https://github.com/neondatabase/agent-skills) to teach your AI assistant about Neon best practices. The Neon MCP Server can also provision the Data API with optional Managed Better Auth or external auth. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 - **Managed Better Auth on Vercel previews**: Both Vercel-managed and Neon-managed integrations now automatically provision Managed Better Auth on preview branches when enabled on production, so preview deployments get the right auth environment variables. [Learn more](https://neon.com/docs/auth/overview).
@@ -113106,7 +113498,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **TanStack integration & new open-source tools**: Neon is now the official database partner of TanStack, with new open-source tools including a Vite Plugin for Neon to streamline fullstack development with TanStack, Vite, and Postgres.
 - **Data API**: Neon's Data API feature, powered by PostgREST, is open to all Neon users. [Learn more](https://neon.com/docs/data-api/get-started).
 - **Monitoring platform support**: Neon supports exporting metrics and Postgres logs to any OpenTelemetry-compatible backend, like New Relic. For details, refer to our [OpenTelemetry docs](https://neon.com/docs/guides/opentelemetry).
-- **Claimable Postgres**: A new way for SaaS vendors to partner with Neon to offer instant Postgres databases. Let your users create Postgres databases with no registration required. [Learn more about Claimable Postgres](https://neon.com/docs/reference/claimable-postgres), and see our [Claimable database integration guide](https://neon.com/docs/workflows/claimable-database-integration).
+- **Claimable Neon**: A new way for SaaS vendors to partner with Neon to offer instant Neon projects. Let your users create a project with no registration required. [Learn more about Claimable Neon](https://neon.com/docs/reference/claimable-neon), and see our [Claimable database integration guide](https://neon.com/docs/workflows/claimable-database-integration).
 - **Neon on Azure GA**: We've announced our general availability release on Azure with deeper Azure integration. [Read the announcement](https://neon.com/blog/azure-native-integration-ga).
 - **Import Data Assistant**: The [Import Data Assistant](https://neon.com/docs/import/import-data-assistant) makes data import easier and faster.
 - **Neon serverless driver GA**: Our JavaScript/TypeScript serverless driver has reached version 1.0.0, bringing stronger SQL injection safeguards and better performance for serverless environments.
@@ -113126,7 +113518,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Query monitoring in the console**: Monitor your [active queries](https://neon.com/docs/introduction/monitor-active-queries) and [query performance](https://neon.com/docs/introduction/monitor-query-performance) in the Neon Console.
 - **Schema-only branches**: Create branches that include only your database schema, ideal for workflows involving sensitive data. [Learn more](https://neon.com/docs/guides/branching-schema-only).
 - Support for the [postgres_fdw](https://neon.com/docs/extensions/postgres_fdw), [dblink](https://neon.com/docs/extensions/dblink), and [pg_repack](https://neon.com/docs/extensions/pg_repack) Postgres extensions.
-- **Claimable Postgres: No signup, instant Postgres**: An app that lets you generate a Postgres database URL almost instantly, with no sign up required. Give it a try at [https://neon.new/](https://neon.new/) or by running `npx neon-new` in your terminal. See how fast Neon can spin up a Postgres database (AI agents love this).
+- **Claimable Neon: No signup, instant project**: Provision a temporary Neon project with no signup, then claim it. Start at [neon.com/claimable-neon](https://neon.com/claimable-neon) or [`auth.md`](https://neon.com/auth.md).
 - **Neon Chat for Visual Studio Code**: This AI-powered assistant lets you chat with the latest Neon documentation without leaving your IDE. You can find it here: [Neon VS Code Extension](https://marketplace.visualstudio.com/items?itemName=buildwithlayer.neon-integration-expert-15j6N).
 - **A GitHub Copilot extension**: This extension provides chat-based access to the latest Neon documentation directly from your repository. You can find it here: [Neon Copilot Extension](https://github.com/marketplace/neon-database)
 - **Schema Diff API**: Neon now supports schema checks in agentic systems and deployment pipelines with the new schema diff API endpoint. Learn more about [Schema Diff](https://neon.com/docs/guides/schema-diff), which is also available via the console and CLI.
@@ -123279,271 +123671,312 @@ These constraints apply when building automation with the Neon API:
 - Neon limits overlapping operations on a project. Requests that try to schedule new work while conflicting operations are still running return `423 Locked`. Retry with exponential backoff, or poll for completion first. See [Handle concurrent operation errors](https://neon.com/docs/manage/operations#handle-concurrent-operation-errors).
 - Operations older than 6 months may be removed from Neon's systems.
 
---- [Document source](https://neon.com/docs/reference/claimable-postgres.md) ---
+--- [Document source](https://neon.com/docs/reference/claimable-neon.md) ---
 
-> Summary: Claimable Postgres provisions an instant database via a single unauthenticated API call, CLI command, Node.js SDK, or Vite plugin with no account required. Unclaimed databases expire after 72 hours and are capped at 100 MB storage and 1 GB transfer. Claiming to a Neon account removes expiration and raises limits to the Free plan. Use this page for the REST API reference, neon-new CLI options, and SDK integration for building instant-database or launchpad experiences.
+> Summary: If an agent needs a Neon account and the user is not around, provision a project now; they claim it later. Agents fetch https://neon.com/auth.md from neon.com/docs/llms.txt.
 
-# Claimable Postgres by Neon
+# Claimable Neon
 
-Launch an instant Lakebase Postgres database on Neon with zero configuration
+CLI, claim, and HTTP reference
 
-Claimable Postgres gives you an instant Postgres database with a single API call. No account required.
+If an agent needs a Neon account and the user is not around, it provisions a project now. A human claims it later if they want to keep it. The agent receives credentials scoped to one project, builds with standard Postgres tools, and hands over a claim link. Unclaimed projects expire in 72 hours and are capped at 100 MB storage and 1 GB transfer.
 
-Your database expires after 72 hours unless you claim it to your Neon account. Databases are provisioned on AWS us-east-2 running Postgres 17.
-
-Access it at [neon.new](https://neon.new/).
+Start in the browser at [neon.com/claimable-neon](https://neon.com/claimable-neon), or give an agent [`auth.md`](https://neon.com/auth.md).
 
 ## Quick start
 
-**API**
+**Neon CLI**
+
+If `neon claim` is not a command, or `neon claim --help` does not list `create`, use the Agent API tab.
+
+Create a project and write its credentials to `.env`:
 
 ```bash
-curl -X POST https://neon.new/api/v1/database \
-  -H 'Content-Type: application/json' \
-  -d '{"ref": "your-app-name"}'
+neon claim create --env-pull
 ```
 
-Example response:
+Request Data API or Managed Better Auth when the app needs them:
+
+```bash
+neon claim create \
+  --service data-api \
+  --service auth \
+  --env-pull
+```
+
+The CLI saves the project's identity assertion in its secure credential store. Existing commands then use the claimable project automatically:
+
+```bash
+neon branches list
+neon psql --role-name neondb_owner
+```
+
+**Agent API**
+
+An agent starts with the protocol document:
+
+```bash
+curl https://neon.com/auth.md
+```
+
+Register an anonymous agent identity:
+
+```bash
+curl --request POST https://claimable.neon.tech/v1/agent/identity \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "anonymous",
+    "capabilities": ["postgres", "data_api"],
+    "source": "example-agent"
+  }'
+```
+
+The response contains an `identity_assertion`, project metadata, and one decision for every requested capability. Exchange the assertion for a short-lived access token before calling project endpoints.
+
+## Agent discovery
+
+If an agent needs a Neon account and the user is not around, [neon.com/docs/llms.txt](https://neon.com/docs/llms.txt) points at [`auth.md`](https://neon.com/auth.md).
+
+Claimable Neon implements [auth.md](https://workos.com/auth-md/docs/auth-md). Agents can discover the complete authentication and provisioning flow without a vendor-specific integration.
+
+| Document or endpoint                                                    | Purpose                                                                               |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `GET https://neon.com/auth.md`                                          | Protocol file (`agent_auth.skill`)                                                    |
+| `GET https://neon.com/.well-known/oauth-authorization-server/claimable` | Token, revocation, identity, and skill discovery. Issuer `https://neon.com/claimable` |
+| `GET https://claimable.neon.tech/.well-known/oauth-protected-resource`  | Resource server metadata                                                              |
+| `GET https://claimable.neon.tech/.well-known/jwks.json`                 | Public keys for verifying Claimable Neon tokens                                       |
+| `POST https://claimable.neon.tech/v1/agent/identity`                    | Provision a project and issue a durable identity assertion                            |
+| `POST https://claimable.neon.tech/v1/oauth2/token`                      | Exchange the assertion for a short-lived bearer access token                          |
+| `POST https://claimable.neon.tech/v1/oauth2/revoke`                     | Revoke an access token or identity assertion                                          |
+| `GET https://claimable.neon.tech/v1/projects/{project_id}/credentials`  | Read scoped project and service credentials                                           |
+| `POST https://claimable.neon.tech/v1/projects/{project_id}/claim`       | Create a short-lived human claim code                                                 |
+| `GET https://claimable.neon.tech/v1/projects/{project_id}/claim`        | Read claim and reconciliation status                                                  |
+| `DELETE https://claimable.neon.tech/v1/projects/{project_id}`           | Delete an unclaimed project                                                           |
+| `/v1/projects/{project_id}/...` on `claimable.neon.tech`                | Use supported Neon Management API operations before claiming                          |
+
+The identity assertion is a secret. Store it like an API key. There are no refresh tokens. Exchange the assertion again when an access token expires.
+
+## Register and provision
+
+```http
+POST /v1/agent/identity
+Content-Type: application/json
+```
 
 ```json
 {
-  "id": "01abc123-def4-5678-9abc-def012345678",
-  "status": "UNCLAIMED",
-  "neon_project_id": "cool-breeze-12345678",
-  "connection_string": "postgresql://neondb_owner:npg_xxxx@ep-cool-breeze-pooler...",
-  "claim_url": "https://neon.new/claim/01abc123-def4-5678-9abc-def012345678",
-  "expires_at": "2026-02-01T12:00:00.000Z",
-  "created_at": "2026-01-29T12:00:00.000Z",
-  "updated_at": "2026-01-29T12:00:00.000Z"
+  "type": "anonymous",
+  "capabilities": ["postgres", "data_api", "auth"],
+  "source": "example-agent"
 }
 ```
 
-See [API reference](https://neon.com/docs/reference/claimable-postgres#api) for details.
+`postgres` is always requested. Add `data_api` or `auth` only when the app needs them.
 
-**CLI**
+The response has this shape:
+
+```json
+{
+  "registration_id": "reg_...",
+  "identity_assertion": "eyJ...",
+  "project": {
+    "id": "quiet-fog-12345678",
+    "branch_id": "br-...",
+    "expires_at": "2026-08-14T12:00:00.000Z"
+  },
+  "capabilities": [
+    {
+      "capability": "postgres",
+      "granted": true,
+      "scopes": ["postgres.read", "postgres.write"]
+    },
+    {
+      "capability": "data_api",
+      "granted": true,
+      "scopes": ["data_api.query"]
+    }
+  ]
+}
+```
+
+Check every capability decision. A successful registration can contain denied optional capabilities.
+
+### Exchange the identity assertion
 
 ```bash
-npx neon-new --yes
+curl --request POST https://claimable.neon.tech/v1/oauth2/token \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer' \
+  --data-urlencode 'assertion=YOUR_IDENTITY_ASSERTION' \
+  --data-urlencode 'resource=https://claimable.neon.tech/'
 ```
 
-Writes to your `.env` file (partial output):
+The response contains a bearer `access_token`, its scope, and its expiration:
 
-```
-DATABASE_URL=postgresql://neondb_owner:npg_xxxxxxxxxxxx@ep-cool-breeze-a1b2c3d4-pooler.c-2.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require
-```
-
-See [CLI reference](https://neon.com/docs/reference/claimable-postgres#command-line-interface) for details.
-
-## Limits
-
-Unclaimed databases have stricter quotas. Claiming resets limits to your Neon plan.
-
-|            | Unclaimed | Claimed (Free plan) |
-| ---------- | --------- | ------------------- |
-| Storage    | 100 MB    | 512 MB              |
-| Transfer   | 1 GB      | \~5 GB              |
-| Branches   | No        | Yes                 |
-| Expiration | 72 hours  | None                |
-
-## Claiming a database
-
-Claiming is **optional**. Your database works immediately. Claim only if you want to keep it beyond 72 hours.
-
-**To claim:**
-
-1. Visit the `claim_url` from the API response
-2. Sign in to Neon (or create an account)
-3. Choose an organization for the database
-4. Complete the transfer
-
-After claiming, the database appears in your Neon console with expiration removed. The `status` changes to `CLAIMED` and `connection_string` becomes `null` in the API (use Neon console instead).
-
-## API
-
-The Claimable Postgres API provides programmatic database provisioning. No authentication required.
-
-**Base URL:** `https://neon.new/api/v1`
-
-### Create database
-
-```
-POST /api/v1/database
+```json
+{
+  "access_token": "eyJ...",
+  "token_type": "Bearer",
+  "expires_in": 900,
+  "scope": "postgres.read postgres.write data_api.query"
+}
 ```
 
-| Parameter                    | Required | Description                                 |
-| ---------------------------- | -------- | ------------------------------------------- |
-| `ref`                        | Yes      | Referrer identifier (for tracking)          |
-| `enable_logical_replication` | No       | Enable logical replication (default: false) |
-
-### Get database
-
-```
-GET /api/v1/database/:id
-```
-
-Returns the same response schema.
-
-### Response fields
-
-| Field               | Type           | Description                                                                                                            |
-| ------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `id`                | string         | Database identifier (UUID v7)                                                                                          |
-| `status`            | string         | `UNCLAIMED`, `CLAIMING`, or `CLAIMED`                                                                                  |
-| `neon_project_id`   | string         | Underlying Neon project ID                                                                                             |
-| `connection_string` | string \| null | Postgres connection URL with pooling (null after claimed). For direct connections, remove `-pooler` from the hostname. |
-| `claim_url`         | string         | URL to claim the database                                                                                              |
-| `expires_at`        | string         | ISO 8601 expiration timestamp                                                                                          |
-| `created_at`        | string         | ISO 8601 creation timestamp                                                                                            |
-| `updated_at`        | string         | ISO 8601 last update timestamp                                                                                         |
-
-<details>
-
-<summary>Error responses</summary>
-
-| Condition              | HTTP | Message                              |
-| ---------------------- | ---- | ------------------------------------ |
-| Missing or empty `ref` | 400  | `Missing referrer` (includes `hint`) |
-| Invalid database ID    | 400  | `Database not found`                 |
-| Invalid JSON body      | 500  | `Failed to create the database.`     |
-| Invalid parameter type | 500  | `Failed to create the database.`     |
-
-</details>
-
-## Command-line interface
-
-The `neon-new` CLI creates a database and writes credentials to your `.env` file:
-
-**npx**
+### Pull credentials
 
 ```bash
-npx neon-new
+curl https://claimable.neon.tech/v1/projects/quiet-fog-12345678/credentials \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
 ```
 
-**yarn**
+```json
+{
+  "project_id": "quiet-fog-12345678",
+  "branch_id": "br-...",
+  "database_url": "postgresql://neondb_owner:...@ep-...-pooler.../neondb?sslmode=require",
+  "expires_at": "2026-08-14T12:00:00.000Z",
+  "services": {
+    "data_api": {
+      "url": "https://ep-....apirest.c-2.us-east-2.aws.neon.tech/neondb/rest/v1"
+    },
+    "auth": {
+      "base_url": "https://ep-....neonauth.c-2.us-east-2.aws.neon.tech/api/auth",
+      "jwks_url": "https://ep-....neonauth.c-2.us-east-2.aws.neon.tech/.well-known/jwks.json"
+    }
+  }
+}
+```
+
+Only requested and granted services appear under `services`.
+
+## Capabilities
+
+| Capability          | Available before claim | Environment variable          |
+| ------------------- | ---------------------- | ----------------------------- |
+| Postgres            | Yes                    | `DATABASE_URL`                |
+| Data API            | When requested         | `NEON_DATA_API_URL`           |
+| Managed Better Auth | When requested         | `NEON_AUTH_BASE_URL`          |
+| Functions           | No                     | Requires claiming the project |
+| Object Storage      | No                     | Requires claiming the project |
+| AI Gateway          | No                     | Requires claiming the project |
+
+Registration records those as `{ granted: false, reason: "requires_claim" }`. A later protected operation returns `capability_requires_claim`. Preserve the denied capability and give the human a claim link; do not retry or drop it.
+
+## Use the Neon CLI
+
+`neon claim` and its `neon claimable` alias manage anonymous projects. If `neon claim` is not a command, or `neon claim --help` does not list `create`, use the HTTP flow in this page.
 
 ```bash
-yarn dlx neon-new
+neon claim create --env-pull
+
+neon claim create --service data-api --service auth --env-pull
+
+neon claim status
+
+neon claim accept --no-open
+
+neon claim list
+
+neon claim delete --yes
 ```
 
-**pnpm**
+`neon claim accept` opens a browser by default. `--no-open` prints the URL for a human to open.
 
-```bash
-pnpm dlx neon-new
-```
+After `claim create`, regular Neon CLI commands exchange the saved identity assertion and route supported management operations through Claimable Neon. Explicit Neon account credentials take precedence when you pass them.
 
-**bunx**
+If a `neon.ts` file is present, `claim create` requests its declared services automatically:
 
-```bash
-bunx neon-new
-```
-
-**deno**
-
-```bash
-deno run -A neon-new
-```
-
-**Options:**
-
-| Option                  | Alias | Description                           | Default        |
-| ----------------------- | ----- | ------------------------------------- | -------------- |
-| `--yes`                 | `-y`  | Skip prompts and use defaults         |                |
-| `--env <path>`          | `-e`  | Path to the .env file                 | `./.env`       |
-| `--key <string>`        | `-k`  | Env var for connection string         | `DATABASE_URL` |
-| `--prefix <string>`     | `-p`  | Prefix for generated public vars      | `PUBLIC_`      |
-| `--seed <path>`         | `-s`  | Path to SQL file to seed the database |                |
-| `--logical-replication` | `-L`  | Enable logical replication            | `false`        |
-| `--ref <string>`        | `-r`  | Referrer ID for affiliates program    |                |
-| `--help`                | `-h`  | Show help message                     |                |
-
-**Example output in `.env`:**
-
-```txt
-DATABASE_URL=postgresql://neondb_owner:npg_xxxxxxxxxxxx@ep-cool-breeze-a1b2c3d4-pooler.c-2.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require
-DATABASE_URL_DIRECT=postgresql://neondb_owner:npg_xxxxxxxxxxxx@ep-cool-breeze-a1b2c3d4.c-2.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require
-# Claimable DB expires at: Sat, 01 Feb 2026 12:00:00 GMT
-# Claim it now to your account using the link below:
-PUBLIC_POSTGRES_CLAIM_URL=https://neon.new/claim/01abc123-def4-5678-9abc-def012345678
-```
-
-- `DATABASE_URL` is a pooled connection (hostname contains `-pooler`). Use this for application queries.
-- `DATABASE_URL_DIRECT` is a direct connection (no pooler). Use this for migrations (e.g. Prisma).
-
-To claim, visit the URL in the comments above or run `npx neon-new claim` to open it in your browser.
-
-## SDK
-
-The `neon-new` package also exports an SDK for programmatic provisioning in Node.js scripts:
-
-```javascript
-import { instantPostgres } from 'neon-new';
-
-const { databaseUrl, databaseUrlDirect, claimUrl, claimExpiresAt } = await instantPostgres({
-  referrer: 'your-app-name',
-});
-```
-
-The `referrer` parameter is required. The function returns:
-
-| Field               | Type   | Description                                         |
-| ------------------- | ------ | --------------------------------------------------- |
-| `databaseUrl`       | string | Pooled connection URL (use for application queries) |
-| `databaseUrlDirect` | string | Direct connection URL (use for migrations)          |
-| `claimUrl`          | string | URL to claim the database to a Neon account         |
-| `claimExpiresAt`    | Date   | Expiration timestamp as a JavaScript Date object    |
-
-You can also pass a seed option to run SQL on creation:
-
-```javascript
-const result = await instantPostgres({
-  referrer: 'your-app-name',
-  seed: { type: 'sql-script', path: './schema.sql' },
-});
-```
-
-## Vite plugin
-
-Add automatic database provisioning to Vite projects with `vite-plugin-neon-new`:
-
-```bash
-npm install -D vite-plugin-neon-new
-```
-
-```js
-import { postgres } from 'vite-plugin-neon-new';
-import { defineConfig } from 'vite';
+```typescript filename="neon.ts"
+import { defineConfig } from '@neon/config/v1';
 
 export default defineConfig({
-  plugins: [
-    postgres({ referrer: 'your-app-name' }),
-  ],
+  auth: true,
+  dataApi: true,
 });
 ```
 
-The plugin provisions a database on first `vite dev` if `DATABASE_URL` is missing. It's inactive during `vite build`.
+Services that require human ownership still run through normal Config-as-Code planning. Claimable Neon returns `capability_requires_claim` for those operations, so the agent can ask for a claim instead of silently omitting part of the configuration.
 
-**Additional options:**
+## Claim a project
 
-```js
-// Inside defineConfig({ plugins: [...] })
-postgres({
-  referrer: 'your-app-name', // Required
-  dotEnvFile: '.env.local', // Default: .env
-  dotEnvKey: 'DATABASE_URL', // Default: DATABASE_URL
-  envPrefix: 'VITE_', // For public env vars
-  seed: {
-    type: 'sql-script',
-    path: './schema.sql',
-  },
-})
+Create a claim code with the API:
+
+```bash
+curl --request POST \
+  https://claimable.neon.tech/v1/projects/quiet-fog-12345678/claim \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
 ```
+
+```json
+{
+  "user_code": "ABCD-2345",
+  "verification_uri": "https://claimable.neon.tech/claim",
+  "verification_uri_complete": "https://claimable.neon.tech/claim?user_code=ABCD-2345",
+  "expires_in": 900,
+  "interval": 5
+}
+```
+
+Open `verification_uri_complete` and sign in to Neon. Opening the URL does not freeze access. Continuing to Neon starts the transfer: it revokes the project key, access tokens, and database password before the console transfer URL is shown. Auth and the Data API stay enabled and transfer with the project. Choose the destination organization. The project then moves through these states:
+
+1. `pending`: the claim code exists, but the transfer has not completed.
+2. `accepted`: the project has left the unclaimed-project organization.
+3. `reconciled`: the identity assertion is revoked and the ceremony is finished.
+
+Continuing to Neon revokes existing access tokens. Re-exchange the identity assertion, then poll claim status at the server-provided `interval`. The new token is only good for that poll until `reconciled`.
+
+```bash
+curl --request POST https://claimable.neon.tech/v1/oauth2/token \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer' \
+  --data-urlencode "assertion=$IDENTITY_ASSERTION" \
+  --data-urlencode 'resource=https://claimable.neon.tech/'
+
+curl https://claimable.neon.tech/v1/projects/quiet-fog-12345678/claim \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+Only `reconciled` means the assertion is dead. Use credentials from the destination Neon organization after that. Fetch a new `DATABASE_URL` there; Auth and the Data API keep working.
+
+## Errors
+
+Errors use one JSON shape across provisioning, token, credential, and management endpoints:
+
+```json
+{
+  "error": {
+    "code": "capability_requires_claim",
+    "origin": "proxy",
+    "message": "Functions require claiming this project.",
+    "retryable": false,
+    "request_id": "req_..."
+  }
+}
+```
+
+Use `error.code` for control flow and show `error.message` to the user. Retry only when `retryable` is `true`.
+
+Common codes include:
+
+| Code                        | Meaning                                                      |
+| --------------------------- | ------------------------------------------------------------ |
+| `invalid_request`           | The request body or parameter is invalid                     |
+| `invalid_grant`             | The identity assertion cannot be exchanged. Discard it       |
+| `unauthorized`              | No credential was presented, or it did not verify            |
+| `token_expired`             | The access token expired. Re-exchange the identity assertion |
+| `scope_insufficient`        | The access token does not permit the operation               |
+| `capability_requires_claim` | The requested service or operation requires human ownership  |
+| `claim_in_progress`         | Only claim-status polling remains available                  |
+| `project_claimed`           | The project transferred. Discard the identity assertion      |
+| `project_expired`           | The unclaimed window closed. Discard the identity assertion  |
+| `upstream_error`            | A Neon API or service dependency failed                      |
 
 ## Resources
 
-- [Claimable Postgres website](https://neon.new/)
-- [neon-new CLI on GitHub](https://github.com/neondatabase/neondb-cli/tree/main/packages/neon-new)
-- [Vite Plugin on GitHub](https://github.com/neondatabase/neondb-cli/tree/main/packages/vite-plugin-neon-new)
-- [Claimable database integration](https://neon.com/docs/workflows/claimable-database-integration) (build your own claimable Postgres experience)
+- [Create a project in the browser](https://neon.com/claimable-neon)
+- [Claimable Neon auth.md](https://neon.com/auth.md)
+- [Neon CLI reference](https://neon.com/docs/cli)
+- [Claimable database integration](https://neon.com/docs/workflows/claimable-database-integration)
 
 --- [Document source](https://neon.com/docs/reference/compatibility.md) ---
 
@@ -129632,11 +130065,13 @@ Upload your first file in minutes
 
 The **Neon Object Storage** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-To set up Neon Object Storage with an AI coding assistant, install the Neon Platform (`neon`) and Neon Object Storage skills:
+To set up Neon Object Storage with an AI coding assistant, install the Neon Platform (`neon`) and Neon Object Storage skills with the [Neon CLI](https://neon.com/docs/cli):
 
 ```bash
-npx skills add neondatabase/agent-skills -s neon -s neon-object-storage
+neon skills -s neon -s neon-object-storage
 ```
+
+Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s neon-object-storage` instead.
 
 To follow this guide, you need:
 
@@ -131005,7 +131440,7 @@ Without the `org_id` parameter, the project transfers to the user's personal acc
 - **Demo environments** - Create ready-to-use demo databases that prospects can claim
 - **Team environments** - Provision project databases for team members to claim into their organization
 
-For a working implementation of claimable databases, try [Claimable Postgres by Neon](https://neon.new/). This service demonstrates the complete flow: users receive a Postgres connection string immediately without creating an account, and databases remain active for 72 hours. To retain the database beyond this period, users claim it by creating a Neon account using the provided transfer URL. See the [Claimable Postgres documentation](https://neon.com/docs/reference/claimable-postgres) for implementation details. This same pattern enables SaaS providers to offer instant database provisioning while allowing users to take ownership when ready.
+For a working implementation, try [Claimable Neon](https://neon.com/claimable-neon). Agents fetch [`auth.md`](https://neon.com/auth.md), receive project-scoped credentials, and hand a claim link to a human. The registration response provides the project expiration time. See the [Claimable Neon reference](https://neon.com/docs/reference/claimable-neon) for CLI commands.
 
 ## Troubleshooting
 

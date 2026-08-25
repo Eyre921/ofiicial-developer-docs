@@ -14,7 +14,7 @@ Realtime speech-to-text transcription service. This WebSocket API enables stream
 
 ## Event Flow
 - Audio chunks are sent as `input_audio_chunk` messages
-- Transcription results are streamed back in various formats (partial, committed, with timestamps)
+- Transcription results are streamed back as `partial_transcript` (interim) and `committed_transcript` (stable/final for that segment)
 - Supports manual commit or VAD-based automatic commit strategies
 
 Authentication is done either by providing a valid API key in the `xi-api-key` header or by providing a valid token in the `token` query parameter. Tokens can be generated from the [single use token endpoint](/docs/api-reference/tokens/create). Use tokens if you want to transcribe audio from the client side.
@@ -38,8 +38,8 @@ info:
 
     - Audio chunks are sent as `input_audio_chunk` messages
 
-    - Transcription results are streamed back in various formats (partial,
-    committed, with timestamps)
+    - Transcription results are streamed back as `partial_transcript` (interim)
+    and `committed_transcript` (stable/final for that segment)
 
     - Supports manual commit or VAD-based automatic commit strategies
 
@@ -60,8 +60,8 @@ channels:
 
       - Audio chunks are sent as `input_audio_chunk` messages
 
-      - Transcription results are streamed back in various formats (partial,
-      committed, with timestamps)
+      - Transcription results are streamed back as `partial_transcript`
+      (interim) and `committed_transcript` (stable/final for that segment)
 
       - Supports manual commit or VAD-based automatic commit strategies
 
@@ -275,107 +275,6 @@ components:
         - text
       description: Payload for partial transcription results that may change.
       title: PartialTranscript
-    FinalTranscript:
-      type: object
-      properties:
-        message_type:
-          type: string
-          default: final_transcript
-        text:
-          type: string
-      required:
-        - text
-      title: FinalTranscript
-    FinalTranscriptWithTimestampsWordsItemsType:
-      type: string
-      enum:
-        - word
-        - spacing
-        - audio_event
-      description: >-
-        The type of the word or sound. 'audio_event' is used for non-word sounds
-        like laughter or footsteps.
-      title: FinalTranscriptWithTimestampsWordsItemsType
-    FinalTranscriptWithTimestampsWordsItemsCharactersItems:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The character that was transcribed.
-        start:
-          type: number
-          format: double
-          description: The start time of the character in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the character in seconds.
-      required:
-        - text
-      title: FinalTranscriptWithTimestampsWordsItemsCharactersItems
-    FinalTranscriptWithTimestampsWordsItems:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The word or sound that was transcribed.
-        start:
-          type: number
-          format: double
-          description: The start time of the word or sound in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the word or sound in seconds.
-        type:
-          $ref: '#/components/schemas/FinalTranscriptWithTimestampsWordsItemsType'
-          description: >-
-            The type of the word or sound. 'audio_event' is used for non-word
-            sounds like laughter or footsteps.
-        speaker_id:
-          type: string
-          description: Unique identifier for the speaker of this word.
-        logprob:
-          type: number
-          format: double
-          description: >-
-            The log of the probability with which this word was predicted.
-            Logprobs are in range [-infinity, 0], higher logprobs indicate a
-            higher confidence the model has in its predictions.
-        characters:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/FinalTranscriptWithTimestampsWordsItemsCharactersItems
-          description: The characters that make up the word and their timing information.
-        channel_index:
-          type: integer
-          description: >-
-            The channel this word was spoken on (for multichannel audio). Null
-            for single-channel transcriptions.
-      required:
-        - text
-        - type
-        - logprob
-      description: Word-level detail of the transcription with timing information.
-      title: FinalTranscriptWithTimestampsWordsItems
-    FinalTranscriptWithTimestamps:
-      type: object
-      properties:
-        message_type:
-          type: string
-          default: final_transcript_with_timestamps
-        text:
-          type: string
-        language_code:
-          type: string
-        words:
-          type: array
-          items:
-            $ref: '#/components/schemas/FinalTranscriptWithTimestampsWordsItems'
-      required:
-        - text
-      title: FinalTranscriptWithTimestamps
     CommittedTranscript:
       type: object
       properties:
@@ -740,8 +639,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SessionStarted'
         - $ref: '#/components/schemas/PartialTranscript'
-        - $ref: '#/components/schemas/FinalTranscript'
-        - $ref: '#/components/schemas/FinalTranscriptWithTimestamps'
         - $ref: '#/components/schemas/CommittedTranscript'
         - $ref: '#/components/schemas/CommittedTranscriptWithTimestamps'
         - $ref: '#/components/schemas/CommittedTranscriptEntities'

@@ -962,7 +962,7 @@ Select the installation method that best fits your technical requirements and in
 
   **Requirements:** Node.js installed on your system.
 
-  **Note:** This installation method is being deprecated in n8n 3.0. Consider using Docker Compose or one-line setup instead.
+  **Note:** npm installation is deprecated from n8n 3.0. Consider using Docker Compose or one-line setup instead.
 
   Installs n8n directly using Node Package Manager. Quick to set up but requires managing Node.js versions and dependencies yourself.
 
@@ -1626,7 +1626,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1861,7 +1861,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2225,7 +2225,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2315,7 +2315,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -2671,7 +2671,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2872,7 +2872,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3074,7 +3074,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3343,7 +3343,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -4611,7 +4611,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.35.7 Current `beta`: 2.36.6
+Current `stable`: 2.36.7 Current `beta`: 2.37.1
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -5021,16 +5021,16 @@ By default, n8n uses SQLite. n8n also supports PostgreSQL. n8n [deprecated suppo
 
 This page outlines environment variables to configure your chosen database for your self-hosted n8n instance.
 
-| Variable                                             | Type                                                                | Default  | Description                                                                                                                                                            |
-| ---------------------------------------------------- | ------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p><code>DB\_TYPE</code><br>/<code>\_FILE</code></p> | <p>Enum string:<br><code>sqlite</code>, <code>postgresdb</code></p> | `sqlite` | The database to use.                                                                                                                                                   |
-| `DB_TABLE_PREFIX`                                    | \*                                                                  | -        | Prefix to use for table names.                                                                                                                                         |
-| `DB_PING_INTERVAL_SECONDS`                           | Number                                                              | `2`      | How often, in seconds, n8n pings the database to check that the connection is still alive.                                                                             |
-| `DB_PING_TIMEOUT_MS`                                 | Number                                                              | `5000`   | How long, in milliseconds, n8n waits for a single ping to respond before counting it as a failure. Falls back to the deprecated `N8N_DB_PING_TIMEOUT` if that's set.   |
-| `DB_PING_MAX_FAILURES_BEFORE_RECOVERY`               | Number                                                              | `3`      | How many pings in a row must fail before n8n treats the connection as lost and starts recovery.                                                                        |
-| `DB_RECOVERY_BACKOFF_MIN_MS`                         | Number                                                              | `1000`   | How long, in milliseconds, n8n waits before its first recovery attempt. Each retry waits longer (exponential backoff).                                                 |
-| `DB_RECOVERY_BACKOFF_MAX_MS`                         | Number                                                              | `30000`  | The longest, in milliseconds, n8n waits between recovery attempts. This caps the backoff. Must be greater than or equal to `DB_RECOVERY_BACKOFF_MIN_MS`.               |
-| `DB_CONNECTION_ACQUISITION_TIMEOUT_MS`               | Number                                                              | `30000`  | How long, in milliseconds, a query waits while recovery is in progress before failing fast with an error. Set to `0` to wait indefinitely. Applies to PostgreSQL only. |
+| Variable                                             | Type                                                                | Default  | Description                                                                                                                                                                        |
+| ---------------------------------------------------- | ------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p><code>DB\_TYPE</code><br>/<code>\_FILE</code></p> | <p>Enum string:<br><code>sqlite</code>, <code>postgresdb</code></p> | `sqlite` | The database to use.                                                                                                                                                               |
+| `DB_TABLE_PREFIX`                                    | \*                                                                  | -        | Prefix to use for table names.                                                                                                                                                     |
+| `DB_PING_INTERVAL_SECONDS`                           | Number                                                              | `2`      | How often, in seconds, n8n pings the database to check that the connection is still alive.                                                                                         |
+| `DB_PING_TIMEOUT_MS`                                 | Number                                                              | `5000`   | How long, in milliseconds, n8n waits for a single ping to respond before counting it as a failure. Falls back to `N8N_DB_PING_TIMEOUT`, deprecated from n8n 2.35.0, if that's set. |
+| `DB_PING_MAX_FAILURES_BEFORE_RECOVERY`               | Number                                                              | `3`      | How many pings in a row must fail before n8n treats the connection as lost and starts recovery.                                                                                    |
+| `DB_RECOVERY_BACKOFF_MIN_MS`                         | Number                                                              | `1000`   | How long, in milliseconds, n8n waits before its first recovery attempt. Each retry waits longer (exponential backoff).                                                             |
+| `DB_RECOVERY_BACKOFF_MAX_MS`                         | Number                                                              | `30000`  | The longest, in milliseconds, n8n waits between recovery attempts. This caps the backoff. Must be greater than or equal to `DB_RECOVERY_BACKOFF_MIN_MS`.                           |
+| `DB_CONNECTION_ACQUISITION_TIMEOUT_MS`               | Number                                                              | `30000`  | How long, in milliseconds, a query waits while recovery is in progress before failing fast with an error. Set to `0` to wait indefinitely. Applies to PostgreSQL only.             |
 
 ## PostgreSQL <a href="#postgresql" id="postgresql"></a>
 
@@ -5195,7 +5195,7 @@ This page lists environment variables for customizing endpoints in n8n.
 | `N8N_ENDPOINT_WEBHOOK_WAIT`                     | String  | `webhook-waiting` | The path used for waiting-webhook endpoint.                                                                                                                                                                                                                                                                                                                                     |
 | `N8N_ENDPOINT_HEALTH`                           | String  | `healthz`         | The path used for health check endpoint.                                                                                                                                                                                                                                                                                                                                        |
 | `N8N_WEBHOOK_URL`                               | String  | -                 | Sets the base URL for both test and production webhooks when running n8n behind a reverse proxy. Use this instead of the `N8N_ENDPOINT_*` variables above, which set only the endpoint *path*, not a URL. See [Configure webhook URLs with reverse proxy](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-webhook-urls-with-reverse-proxy). |
-| `WEBHOOK_URL`                                   | String  | -                 | Deprecated alias of `N8N_WEBHOOK_URL`. Still works, but n8n logs a deprecation warning on startup.                                                                                                                                                                                                                                                                              |
+| `WEBHOOK_URL`                                   | String  | -                 | Deprecated from n8n 2.35.0; alias of `N8N_WEBHOOK_URL`. Still works, but n8n logs a deprecation warning on startup.                                                                                                                                                                                                                                                             |
 | `N8N_DISABLE_PRODUCTION_MAIN_PROCESS`           | Boolean | `false`           | Disable production webhooks from main process. This helps ensure no HTTP traffic load to main process when using webhook-specific processes.                                                                                                                                                                                                                                    |
 
 
@@ -5571,26 +5571,26 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 You can run n8n in different modes depending on your needs. Queue mode provides the best scalability. Refer to [Queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode) for more information.
 
-| Variable                                | Type    | Default     | Description                                                                                                                                                                                                                                                                                                                                       |
-| --------------------------------------- | ------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS`  | Boolean | `false`     | Set to `true` if you want manual executions to run on the worker rather than on main.                                                                                                                                                                                                                                                             |
-| `QUEUE_BULL_PREFIX`                     | String  | -           | Prefix to use for all queue keys.                                                                                                                                                                                                                                                                                                                 |
-| `QUEUE_BULL_REDIS_DB`                   | Number  | `0`         | The Redis database used.                                                                                                                                                                                                                                                                                                                          |
-| `QUEUE_BULL_REDIS_HOST`                 | String  | `localhost` | The Redis host.                                                                                                                                                                                                                                                                                                                                   |
-| `QUEUE_BULL_REDIS_PORT`                 | Number  | `6379`      | The Redis port used.                                                                                                                                                                                                                                                                                                                              |
-| `QUEUE_BULL_REDIS_USERNAME`             | String  | -           | The Redis username (needs Redis version 6 or above). Don't define it for Redis < 6 compatibility                                                                                                                                                                                                                                                  |
-| `QUEUE_BULL_REDIS_PASSWORD`             | String  | -           | The Redis password.                                                                                                                                                                                                                                                                                                                               |
-| `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD`    | Number  | `10000`     | The Redis timeout threshold (in ms).                                                                                                                                                                                                                                                                                                              |
-| `QUEUE_BULL_REDIS_CLUSTER_NODES`        | String  | -           | Expects a comma-separated list of Redis Cluster nodes in the format `host:port`, for the Redis client to initially connect to. If running in queue mode (`EXECUTIONS_MODE = queue`), setting this variable will create a Redis Cluster client instead of a Redis client, and n8n will ignore `QUEUE_BULL_REDIS_HOST` and `QUEUE_BULL_REDIS_PORT`. |
-| `QUEUE_BULL_REDIS_TLS`                  | Boolean | `false`     | Enable TLS on Redis connections.                                                                                                                                                                                                                                                                                                                  |
-| `QUEUE_BULL_REDIS_DUALSTACK`            | Boolean | `false`     | Enable dual-stack support (IPv4 and IPv6) on Redis connections.                                                                                                                                                                                                                                                                                   |
-| `QUEUE_WORKER_TIMEOUT` (**deprecated**) | Number  | `30`        | **Deprecated** Use `N8N_GRACEFUL_SHUTDOWN_TIMEOUT` instead. How long should n8n wait (seconds) for running executions before exiting worker process on shutdown.                                                                                                                                                                                  |
-| `QUEUE_HEALTH_CHECK_ACTIVE`             | Boolean | `false`     | Whether to enable health checks (true) or disable (false).                                                                                                                                                                                                                                                                                        |
-| `QUEUE_HEALTH_CHECK_PORT`               | Number  | `5678`      | The port to serve health checks on. If you experience a port conflict error when starting a worker server using its default port, change this.                                                                                                                                                                                                    |
-| `QUEUE_WORKER_LOCK_DURATION`            | Number  | `60000`     | How long (in ms) is the lease period for a worker to work on a message.                                                                                                                                                                                                                                                                           |
-| `QUEUE_WORKER_LOCK_RENEW_TIME`          | Number  | `10000`     | How frequently (in ms) should a worker renew the lease time.                                                                                                                                                                                                                                                                                      |
-| `QUEUE_WORKER_STALLED_INTERVAL`         | Number  | `30000`     | How often should a worker check for stalled jobs (use 0 for never).                                                                                                                                                                                                                                                                               |
-| `QUEUE_WORKER_MAX_STALLED_COUNT`        | Number  | `1`         | Maximum amount of times a stalled job will be re-processed.                                                                                                                                                                                                                                                                                       |
+| Variable                                          | Type    | Default     | Description                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------------- | ------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS`            | Boolean | `false`     | Set to `true` if you want manual executions to run on the worker rather than on main.                                                                                                                                                                                                                                                             |
+| `QUEUE_BULL_PREFIX`                               | String  | -           | Prefix to use for all queue keys.                                                                                                                                                                                                                                                                                                                 |
+| `QUEUE_BULL_REDIS_DB`                             | Number  | `0`         | The Redis database used.                                                                                                                                                                                                                                                                                                                          |
+| `QUEUE_BULL_REDIS_HOST`                           | String  | `localhost` | The Redis host.                                                                                                                                                                                                                                                                                                                                   |
+| `QUEUE_BULL_REDIS_PORT`                           | Number  | `6379`      | The Redis port used.                                                                                                                                                                                                                                                                                                                              |
+| `QUEUE_BULL_REDIS_USERNAME`                       | String  | -           | The Redis username (needs Redis version 6 or above). Don't define it for Redis < 6 compatibility                                                                                                                                                                                                                                                  |
+| `QUEUE_BULL_REDIS_PASSWORD`                       | String  | -           | The Redis password.                                                                                                                                                                                                                                                                                                                               |
+| `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD`              | Number  | `10000`     | The Redis timeout threshold (in ms).                                                                                                                                                                                                                                                                                                              |
+| `QUEUE_BULL_REDIS_CLUSTER_NODES`                  | String  | -           | Expects a comma-separated list of Redis Cluster nodes in the format `host:port`, for the Redis client to initially connect to. If running in queue mode (`EXECUTIONS_MODE = queue`), setting this variable will create a Redis Cluster client instead of a Redis client, and n8n will ignore `QUEUE_BULL_REDIS_HOST` and `QUEUE_BULL_REDIS_PORT`. |
+| `QUEUE_BULL_REDIS_TLS`                            | Boolean | `false`     | Enable TLS on Redis connections.                                                                                                                                                                                                                                                                                                                  |
+| `QUEUE_BULL_REDIS_DUALSTACK`                      | Boolean | `false`     | Enable dual-stack support (IPv4 and IPv6) on Redis connections.                                                                                                                                                                                                                                                                                   |
+| `QUEUE_WORKER_TIMEOUT` (**deprecated**)           | Number  | `30`        | Deprecated from n8n 1.22.0. Use `N8N_GRACEFUL_SHUTDOWN_TIMEOUT` instead. How long should n8n wait (seconds) for running executions before exiting worker process on shutdown.                                                                                                                                                                     |
+| `QUEUE_HEALTH_CHECK_ACTIVE`                       | Boolean | `false`     | Whether to enable health checks (true) or disable (false).                                                                                                                                                                                                                                                                                        |
+| `QUEUE_HEALTH_CHECK_PORT`                         | Number  | `5678`      | The port to serve health checks on. If you experience a port conflict error when starting a worker server using its default port, change this.                                                                                                                                                                                                    |
+| `QUEUE_WORKER_LOCK_DURATION`                      | Number  | `60000`     | How long (in ms) is the lease period for a worker to work on a message.                                                                                                                                                                                                                                                                           |
+| `QUEUE_WORKER_LOCK_RENEW_TIME`                    | Number  | `10000`     | How frequently (in ms) should a worker renew the lease time.                                                                                                                                                                                                                                                                                      |
+| `QUEUE_WORKER_STALLED_INTERVAL`                   | Number  | `30000`     | How often should a worker check for stalled jobs (use 0 for never).                                                                                                                                                                                                                                                                               |
+| `QUEUE_WORKER_MAX_STALLED_COUNT` (**deprecated**) | Number  | `1`         | **Deprecated** Removed in n8n 2.0. Setting this has no effect. See [Remove QUEUE\_WORKER\_MAX\_STALLED\_COUNT](/changelog/v20-breaking-changes#remove-queueworkermaxstalledcount) for migration details.                                                                                                                                          |
 
 ## Webhook responses
 
@@ -5640,11 +5640,12 @@ Poll trigger support isn't 100% stable yet. Keep `N8N_SCHEDULER_POLL_TRIGGERS_EN
 
 ## Poll triggers
 
-Controls how trigger nodes with a **Poll Times** parameter (such as Google Sheets Trigger or Airtable Trigger) store their cursor, the node's record of how far it has already read. To route these nodes through the durable scheduler, turn on `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED` (in the Enable the scheduler table). See [Poll triggers](/deploy/host-n8n/configure-n8n/durable-scheduler#poll-triggers).
+Controls trigger nodes with a **Poll Times** parameter (such as Google Sheets Trigger or Airtable Trigger): how they store their cursor, the node's record of how far it has already read, and how long a single poll may run. To route these nodes through the durable scheduler, turn on `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED` (in the Enable the scheduler table). See [Poll triggers](/deploy/host-n8n/configure-n8n/durable-scheduler#poll-triggers).
 
-| Variable                             | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ------------------------------------ | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `N8N_POLLER_DURABLE_CURSORS_ENABLED` | Boolean | `false` | Whether n8n stores a poll trigger node's cursor in a dedicated database table and commits it in the same transaction as the execution the poll produced, so a crash mid-poll can't drop or duplicate data. Available from n8n 2.36.0. From n8n 2.37.0, requires `N8N_SCHEDULER_ENABLED`, `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`, and `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`. See [Durable poll cursors](/deploy/host-n8n/configure-n8n/durable-scheduler#durable-poll-cursors). |
+| Variable                             | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------ | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `N8N_POLLER_DURABLE_CURSORS_ENABLED` | Boolean | `false` | Whether n8n stores a poll trigger node's cursor in a dedicated database table and commits it in the same transaction as the execution the poll produced, so a crash mid-poll can't drop or duplicate data. Available from n8n 2.36.0. From n8n 2.37.0, requires `N8N_SCHEDULER_ENABLED`, `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`, and `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`. See [Durable poll cursors](/deploy/host-n8n/configure-n8n/durable-scheduler#durable-poll-cursors).                                                                                                                                                 |
+| `N8N_SCHEDULER_POLL_TIMEOUT`         | Number  | `45`    | How long, in seconds, a single poll may run before n8n abandons it. An abandoned poll records nothing: the cursor stays put and the next poll covers the same ground, so no data goes missing. A poll that keeps timing out counts as failing, so n8n re-polls it at a widening interval. Keep the timeout below `N8N_SCHEDULER_LEASE_DURATION`: the timeout clock only starts once the poll itself does, so a poll allowed the full lease can still be running when another instance takes its run over. n8n warns at startup when the timeout reaches the lease duration. Must be greater than 0. Available from n8n 2.37.0. |
 
 ## Materialization <a href="#materialization-vars" id="materialization-vars"></a>
 
@@ -6326,7 +6327,7 @@ n8n creates the webhook URL by combining `N8N_PROTOCOL`, `N8N_HOST` and `N8N_POR
 
 When running n8n behind a reverse proxy, it's important to do the following:
 
-* set the webhook URL manually with the `N8N_WEBHOOK_URL` environment variable so that n8n can display it in the editor UI and register the correct webhook URLs with external services. (`N8N_WEBHOOK_URL` replaces the deprecated `WEBHOOK_URL`; n8n logs a deprecation warning if you still use `WEBHOOK_URL`.)
+* set the webhook URL manually with the `N8N_WEBHOOK_URL` environment variable so that n8n can display it in the editor UI and register the correct webhook URLs with external services. (`N8N_WEBHOOK_URL` replaces `WEBHOOK_URL`, which is deprecated from n8n 2.35.0; n8n logs a deprecation warning if you still use `WEBHOOK_URL`.)
 * Set the `N8N_PROXY_HOPS` environment variable to `1`.
 * On the last proxy on the request path, set the following headers to pass on information about the initial request:
   * [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Forwarded-For)
@@ -8976,10 +8977,11 @@ Under the durable scheduler, most Schedule Trigger schedules fire the same way t
 
 ## Poll triggers
 
-When [`N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`](#turn-on) is on, each of a poll trigger's poll times runs as its own durable schedule: polls survive restarts and spread across instances like any other run. Two behaviors are specific to poll triggers:
+When [`N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`](#turn-on) is on, each of a poll trigger's poll times runs as its own durable schedule: polls survive restarts and spread across instances like any other run. Three behaviors are specific to poll triggers:
 
 * **Missed polls are always skipped.** A poll fetches everything new since it last ran, so a catch-up poll would repeat the same fetch. See [Misfire policy](#misfire-policy).
 * **A poll can occasionally run twice.** The scheduler guarantees each dispatched poll runs at least once, not that it runs only once. A poll can repeat, for example when an instance stalls and another takes over. Turn on [durable poll cursors](#durable-poll-cursors) so a repeated poll can't drop or duplicate items.
+* **A poll that runs too long is abandoned.** From n8n 2.37.0, a poll that runs longer than [`N8N_SCHEDULER_POLL_TIMEOUT`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler#poll-triggers) (45 seconds by default) is abandoned. n8n stops waiting for it and records nothing: the cursor stays put, so the next poll covers the same ground and no data goes missing. This guards against a poll stuck on a service that never answers. A poll that keeps timing out counts as failing. n8n re-polls it at a widening interval instead of hammering a service that can't keep up. Keep the timeout below `N8N_SCHEDULER_LEASE_DURATION`, so an abandoned poll can't still be running when another instance takes its run over. n8n warns at startup when the timeout reaches the lease duration.
 
 ### Durable poll cursors
 
@@ -9064,13 +9066,14 @@ export N8N_METRICS_INCLUDE_POLL_TRIGGER_METRICS=true
 
 Only main instances emit them. They come from the poll engine itself, not the scheduler, so they work even when the durable scheduler doesn't dispatch your polls. Like the scheduler counters, they record each main's own polls: sum across mains for cluster totals. n8n publishes a [ready-made poll triggers dashboard](https://github.com/n8n-io/n8n-observability/tree/main/dashboards/grafana/n8n-poll-triggers) for them.
 
-| Metric                                            | Type      | What it tells you                                                                                                                                                                                                                                                                                             |
-| ------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `n8n_poll_trigger_duration_seconds`               | Histogram | How long each poll takes, split by `node_type` and `status`. A poll that grows slower over time is drifting toward its own interval. Once the duration crosses that interval, polls start overlapping.                                                                                                        |
-| `n8n_poll_trigger_errors_total`                   | Counter   | How many polls threw, split by `node_type` and a `kind` label of `auth`, `rate_limited`, or `thrown`. `auth` points at a broken credential, `rate_limited` at polling faster than the service allows.                                                                                                         |
-| `n8n_poll_trigger_overlapping_ticks_total`        | Counter   | How many polls started while the previous poll for the same node was still running in the same process. Overlap across instances shows up in `n8n_scheduler_tasks_lease_lost_total` instead.                                                                                                                  |
-| `n8n_poll_trigger_cursor_commits_total`           | Counter   | How many cursor saves settled, split by `operation` (`with_execution` or `cursor_only`) and `result`. A `result` of `fence_rejected` means a stale poll lost its claim and wasn't allowed to advance the cursor, which is the protection doing its job. A `result` of `failure` means the save itself failed. |
-| `n8n_poll_trigger_cursor_commit_duration_seconds` | Histogram | How long each cursor save takes, with the same `operation` and `result` labels.                                                                                                                                                                                                                               |
+| Metric                                            | Type      | What it tells you                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `n8n_poll_trigger_duration_seconds`               | Histogram | How long each poll takes, split by `node_type` and `status`. A poll that grows slower over time is drifting toward its own interval. Once the duration crosses that interval, polls start overlapping.                                                                                                                                                                                                     |
+| `n8n_poll_trigger_errors_total`                   | Counter   | How many polls threw, split by `node_type` and a `kind` label of `auth`, `rate_limited`, or `thrown`. `auth` points at a broken credential, `rate_limited` at polling faster than the service allows.                                                                                                                                                                                                      |
+| `n8n_poll_trigger_overlapping_ticks_total`        | Counter   | How many polls started while the previous poll for the same node was still running in the same process. Overlap across instances shows up in `n8n_scheduler_tasks_lease_lost_total` instead.                                                                                                                                                                                                               |
+| `n8n_poll_trigger_timeouts_total`                 | Counter   | How many polls the durable scheduler abandoned because they ran longer than `N8N_SCHEDULER_POLL_TIMEOUT`, split by `node_type`. An abandoned poll records nothing, and the next poll covers the same window. Steady growth means a polled service answers slower than the timeout. Only the durable scheduler abandons polls, so this stays at zero on the in-memory scheduler. Available from n8n 2.37.0. |
+| `n8n_poll_trigger_cursor_commits_total`           | Counter   | How many cursor saves settled, split by `operation` (`with_execution` or `cursor_only`) and `result`. A `result` of `fence_rejected` means a stale poll lost its claim and wasn't allowed to advance the cursor, which is the protection doing its job. A `result` of `failure` means the save itself failed.                                                                                              |
+| `n8n_poll_trigger_cursor_commit_duration_seconds` | Histogram | How long each cursor save takes, with the same `operation` and `result` labels.                                                                                                                                                                                                                                                                                                                            |
 
 The two cursor metrics track the dedicated cursor table. A node starts reporting them with its first poll after you turn on [durable poll cursors](#durable-poll-cursors). It keeps reporting them after you turn the setting off, because its cursor stays in the table.
 
@@ -9587,6 +9590,34 @@ When you disable publishing:
 
 * Currently published workflows remain published. The setting only affects new publish actions.
 * The number of currently published personal workflows is displayed below the toggle.
+
+## Workflow reviews <a href="#workflow-reviews" id="workflow-reviews"></a>
+
+{% hint style="info" %}
+**Preview status**
+
+Workflow reviews are in Preview and may change before general availability. Avoid relying on them in production workflows.
+{% endhint %}
+
+{% hint style="info" %}
+**Feature availability**
+
+Workflow reviews are available on:
+
+* **n8n Cloud:** Enterprise
+* **Self-hosted:** Enterprise
+
+Workflow reviews are available from n8n 2.37.0.
+{% endhint %}
+
+With workflow reviews, teams can submit a workflow version for approval before publishing. Instance admins enable the feature for the whole instance.
+
+To enable workflow reviews:
+
+1. Navigate to **Settings** > **Security & policies**.
+2. In the **Workflow reviews** section, turn on **Enable workflow reviews**.
+
+When the setting is off, users can't create or manage reviews. Turning the feature off also lifts the publish block for workflows that still have an open review. For how to submit, approve, and publish after you enable the feature, refer to [Workflow reviews](https://app.gitbook.com/s/rPN1zU5jaYNvwH7RzxqA/manage-workflows/workflow-reviews).
 
 ## Enforce execution data redaction <a href="#enforce-execution-data-redaction" id="enforce-execution-data-redaction"></a>
 

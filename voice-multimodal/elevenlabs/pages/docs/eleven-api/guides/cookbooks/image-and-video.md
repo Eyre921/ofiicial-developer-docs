@@ -371,7 +371,7 @@ A failed generation reports a `failure_reason` category alongside a human-readab
 | `model_error`        | The model provider returned an error or produced no output.         |
 | `moderated`          | The prompt or an input was rejected by content moderation.          |
 | `invalid_parameters` | The parameters were rejected once the generation reached the model. |
-| `dependency_failed`  | A referenced generation this one depends on did not complete.       |
+| `dependency_failed`  | A referenced generation this one depends on failed.                 |
 | `charging_failed`    | The workspace could not be charged for the generation.              |
 | `internal_error`     | An unexpected error occurred.                                       |
 
@@ -432,9 +432,9 @@ opaque: pass the exact value back and stop when `has_more` is `false`.
 The API exposes a subset of the models available in the ElevenLabs app. Each model accepts only the
 parameters listed for it — sending a field another model supports returns a validation error.
 
-The ByteDance models, Seedance and Seedream, are disabled by default and require explicit approval
-before you can generate with them. Until access is granted, a request naming one of them is
-rejected with a `model_access_denied` error. Contact support to request access.
+ByteDance models are disabled by default and require explicit approval before use. Until access is
+granted, a request naming one of them is rejected with a `model_access_denied` error. Enterprise
+customers can contact support to request access.
 
 ### Image models
 

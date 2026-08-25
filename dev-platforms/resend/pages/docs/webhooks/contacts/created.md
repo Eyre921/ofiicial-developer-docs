@@ -35,12 +35,12 @@ Event triggered whenever a **contact was successfully created**.
     Contact's email address
   </ParamField>
 
-  <ParamField type="string">
-    Contact's first name
+  <ParamField type="string | null">
+    Contact's first name. May be absent from the payload
   </ParamField>
 
-  <ParamField type="string">
-    Contact's last name
+  <ParamField type="string | null">
+    Contact's last name. May be absent from the payload
   </ParamField>
 
   <ParamField type="boolean">
@@ -60,8 +60,8 @@ Event triggered whenever a **contact was successfully created**.
       "created_at": "2026-11-17T19:32:22.980Z",
       "updated_at": "2026-11-17T19:32:22.980Z",
       "email": "steve.wozniak@gmail.com",
-      "first_name": "Steve",
-      "last_name": "Wozniak",
+      "first_name": null,
+      "last_name": null,
       "unsubscribed": false
     }
   }

@@ -14,6 +14,6 @@ To regenerate, either click on the paragraph to regenerate the whole paragraph, 
 
 If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says <strong>Regenerate</strong>, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.  
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/41237476632977" alt="" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f3af89ec341d3d0e493219796067b35ce8d129e6d51edc70178f6a1ea22d4977/assets/images/help-center/product/studio/does-it-cost-credits-to-regenerate-in-studio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260825%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260825T233713Z&X-Amz-Expires=604800&X-Amz-Signature=edb8b4696ed0a3a47d66a9bdf1cd773928e3df089aa9d0ebd121ef66ee78a43e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
 If your selection isn't eligible for a free regeneration, the button will say <strong>Generate</strong>, and you will be charged for the generation.

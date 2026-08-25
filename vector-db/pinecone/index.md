@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 576 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 577 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -66,8 +66,6 @@
 
 ## assistant-release-notes
 
-- `assistant-release-notes/2022` — [2022 releases](pages/assistant-release-notes/2022.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2022)
-- `assistant-release-notes/2023` — [2023 releases](pages/assistant-release-notes/2023.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2023)
 - `assistant-release-notes/2024` — [2024 releases](pages/assistant-release-notes/2024.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2024)
 - `assistant-release-notes/2025` — [2025 releases](pages/assistant-release-notes/2025.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2025)
 - `assistant-release-notes/2026` — [2026 releases](pages/assistant-release-notes/2026.md) · [原文](https://docs.pinecone.io/assistant-release-notes/2026)
@@ -132,6 +130,7 @@
 - `guides/index-data/implement-multitenancy` — [Implement multitenancy](pages/guides/index-data/implement-multitenancy.md) · [原文](https://docs.pinecone.io/guides/index-data/implement-multitenancy)
 - `guides/index-data/import-data` — [Import records](pages/guides/index-data/import-data.md) · [原文](https://docs.pinecone.io/guides/index-data/import-data)
 - `guides/index-data/indexing-overview` — [Indexing overview](pages/guides/index-data/indexing-overview.md) · [原文](https://docs.pinecone.io/guides/index-data/indexing-overview)
+- `guides/index-data/migrate-from-pgvector` — [Migrate from pgvector](pages/guides/index-data/migrate-from-pgvector.md) · [原文](https://docs.pinecone.io/guides/index-data/migrate-from-pgvector)
 - `guides/index-data/upsert-data` — [Upsert records](pages/guides/index-data/upsert-data.md) · [原文](https://docs.pinecone.io/guides/index-data/upsert-data)
 - `guides/indexes/pods/back-up-a-pod-based-index` — [Back up a pod-based index](pages/guides/indexes/pods/back-up-a-pod-based-index.md) · [原文](https://docs.pinecone.io/guides/indexes/pods/back-up-a-pod-based-index)
 - `guides/indexes/pods/choose-a-pod-type-and-size` — [Choose a pod type and size](pages/guides/indexes/pods/choose-a-pod-type-and-size.md) · [原文](https://docs.pinecone.io/guides/indexes/pods/choose-a-pod-type-and-size)
@@ -299,6 +298,11 @@
 - `integrations/voltagent` — [VoltAgent](pages/integrations/voltagent.md) · [原文](https://docs.pinecone.io/integrations/voltagent)
 - `integrations/voyage` — [Voyage AI](pages/integrations/voyage.md) · [原文](https://docs.pinecone.io/integrations/voyage)
 - `integrations/zapier` — [Zapier](pages/integrations/zapier.md) · [原文](https://docs.pinecone.io/integrations/zapier)
+
+## marketplace-release-notes
+
+- `marketplace-release-notes/2026` — [2026 releases](pages/marketplace-release-notes/2026.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/2026)
+- `marketplace-release-notes/feature-availability` — [Feature availability](pages/marketplace-release-notes/feature-availability.md) · [原文](https://docs.pinecone.io/marketplace-release-notes/feature-availability)
 
 ## models
 

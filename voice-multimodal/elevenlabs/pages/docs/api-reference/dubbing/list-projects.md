@@ -56,9 +56,8 @@ Successful Response
   - `language_ids` (list of string, optional, default: []) — Identifiers of the language targets created under this project.
   - `webhook_ids` (list of string, optional, default: []) — Workspace webhooks notified when this project becomes ready or fails, and when any of its languages completes or fails.
   - `error` (object, optional, nullable) — Why the project failed; null unless `status` is 'failed'. Also null for the few projects that failed before failure reporting was introduced.
-    - `code` (string, required) — Stable identifier for the failure, safe to branch on. New codes are added over time, so treat an unrecognized value as 'internal_error'.
-    - `message` (string, required) — Human-readable description of the failure, for display. The wording may change at any time; branch on `code` instead.
-    - `retryable` (boolean, required) — Whether resubmitting the same input could succeed. False means the failure describes the input or the account, so an identical retry will fail the same way.
+    - `message_type` ("error", required)
+    - `error` (string, required)
   - `warnings` (list of object, optional) — Non-fatal conditions raised while preparing the source, empty when there are none. Reflects the latest preparation. Conditions raised while dubbing a particular language are reported on that language instead.
     - `type` ("voices_not_permitted", required) — Identifies this warning; branch on it to read the fields below.
     - `speaker_ids` (list of string, required) — Speakers whose voices were not permitted for cloning. The dub used a replacement voice for each of them; the rest of the speakers are unaffected.

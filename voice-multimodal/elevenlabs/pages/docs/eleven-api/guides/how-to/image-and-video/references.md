@@ -18,38 +18,33 @@ edit, audio to lip-sync against. Every media-valued field on the API takes a ref
 than raw bytes in a fixed shape, and each reference is tagged with a `type` that says where the
 media comes from.
 
-| `type`          | Points at                                     | Fields                        |
-| --------------- | --------------------------------------------- | ----------------------------- |
-| `generation`    | The output of an earlier generation.          | `generation_id`               |
-| `asset`         | A file uploaded to the assets API.            | `asset_id`                    |
-| `inline_base64` | Media encoded directly into the request body. | `content_base64`, `mime_type` |
+| `type`          | Points at                                                    | Fields                        |
+| --------------- | ------------------------------------------------------------ | ----------------------------- |
+| `generation`    | The output of another generation, finished or still running. | `generation_id`               |
+| `asset`         | A file uploaded to the assets API.                           | `asset_id`                    |
+| `inline_base64` | Media encoded directly into the request body.                | `content_base64`, `mime_type` |
 
 The three kinds are interchangeable wherever a reference is accepted, so the same field can take a
 generation on one request and an uploaded asset on the next.
 
 ## Chain one generation into the next
 
-A `generation` reference is the cheapest way to build a pipeline: nothing is uploaded, and the
-output of the first generation is used directly as the input of the second. This example generates a
-still image, then animates it as the first frame of a video.
+A `generation` reference does not have to point at a generation that has finished. Submit the image,
+take the ID out of the response, and pass it straight into the video request without waiting: the
+API queues the video behind the image and starts it the moment the image completes. Nothing is
+uploaded between the two calls.
+
+Set `webhook` on the last generation in the chain and there is nothing to wait on at all. Both calls
+return as soon as their generation is queued, the whole graph runs server-side, and your endpoint is
+called once the final generation reaches a terminal status.
 
 ```python maxLines=0
-import time
-
 from elevenlabs import (
     ImageGenerationRequest_Gemini3ProImage,
     ImageReference_Generation,
     VideoGenerationRequest_Veo31FastGenerate001,
+    WebhookTarget_All,
 )
-
-
-def wait_for(client, generation_id):
-    while True:
-        result = client.flows.image.get(generation_id)
-        if result.status in ("completed", "failed"):
-            return result
-        time.sleep(2)
-
 
 still = elevenlabs.flows.image.create(
     request=ImageGenerationRequest_Gemini3ProImage(
@@ -57,44 +52,80 @@ still = elevenlabs.flows.image.create(
         aspect_ratio="16:9",
     )
 )
-wait_for(elevenlabs, still.id)
 
+# `still` is still pending here. Submitting now queues the video behind it.
 clip = elevenlabs.flows.video.create(
     request=VideoGenerationRequest_Veo31FastGenerate001(
         prompt="The fog thickens and the beam sweeps across the water",
         start_frame=ImageReference_Generation(generation_id=still.id),
         duration_secs=8,
+        webhook=WebhookTarget_All(),
     )
 )
+
+print(clip.id)
 ```
 
 ```typescript maxLines=0
-async function waitFor(generationId: string) {
-  let result = await elevenlabs.flows.image.get(generationId);
-  while (result.status === "pending" || result.status === "generating") {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    result = await elevenlabs.flows.image.get(generationId);
-  }
-  return result;
-}
-
 const still = await elevenlabs.flows.image.create({
   modelId: "gemini-3-pro-image",
   prompt: "A lighthouse on a cliff at dawn, heavy fog rolling in from the sea",
   aspectRatio: "16:9",
 });
-await waitFor(still.id);
 
+// `still` is still pending here. Submitting now queues the video behind it.
 const clip = await elevenlabs.flows.video.create({
   modelId: "veo-3.1-fast-generate-001",
   prompt: "The fog thickens and the beam sweeps across the water",
   startFrame: { type: "generation", generationId: still.id },
   durationSecs: 8,
+  webhook: { type: "all" },
 });
+
+console.log(clip.id);
 ```
 
-If the referenced generation has not completed, the dependent generation fails with a
-`dependency_failed` reason, so wait for the first generation before submitting the second.
+Only the last generation needs `webhook`. Setting it on the image as well delivers an event for the
+intermediate result too, which is useful for reporting progress but is not needed to drive the
+chain. As elsewhere, the field requires a webhook subscribed to generation events; see [Image &
+Video webhooks](/docs/eleven-api/guides/how-to/image-and-video/webhooks) to set one up.
+
+Without an endpoint to receive callbacks, drop `webhook` and poll the end of the chain instead. The
+intermediate image still needs no polling of its own — wait once, on the last generation, at the
+interval for its modality, which for video is no more than once every 10 seconds. See [Polling
+guidelines](/docs/eleven-api/guides/cookbooks/image-and-video#polling-guidelines).
+
+```python
+import time
+
+while True:
+    result = elevenlabs.flows.video.get(clip.id)
+    if result.status in ("completed", "failed"):
+        break
+    time.sleep(10)
+```
+
+```typescript
+let result = await elevenlabs.flows.video.get(clip.id);
+while (result.status === "pending" || result.status === "generating") {
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  result = await elevenlabs.flows.video.get(clip.id);
+}
+```
+
+A generation that references unfinished work is created immediately and sits in `pending` until
+everything it references has finished, with no further action needed from you to start it. Chains
+can be any depth and any width — a generation may wait on several references, each itself still
+waiting — so an entire graph can be submitted in one pass and collected only at its leaves. Time
+spent queued does not count against the generation's timeout.
+
+If a referenced generation fails, the dependent never runs: it fails with a `dependency_failed`
+reason and takes anything queued behind it with it. Nothing in the collapsed chain is charged — a
+generation that was already paid for is refunded, and one whose price depends on a referenced
+output that does not exist yet, such as a lip-sync priced by the duration of a pending audio
+generation, is only charged once it starts. A `generation_id` that does not exist in your workspace
+is rejected on the create call itself, so a typo surfaces immediately rather than as a failed
+generation.
 
 ## Upload media as an asset
 
@@ -306,8 +337,8 @@ reference transfers its visual style. Reference images cannot be combined with `
 
 ### Seedance
 
-The ByteDance models are disabled by default and require explicit approval before use. Contact
-support to request access.
+ByteDance models are disabled by default and require explicit approval before use. Enterprise
+customers can contact support to request access.
 
 The three Seedance 2.0 tiers accept `start_frame`, `end_frame`, up to 9 `images`, up to 3 `videos`,
 and up to 3 `audios`, subject to these constraints:

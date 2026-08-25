@@ -96757,6 +96757,10 @@ Browse a curated list of Partners who offer one-click integrations, guides or ot
 
 Create and manage your Supabase projects directly through Vercel. [Get started with Vercel](https://supabase.com/docs/guides/integrations/vercel-marketplace).
 
+## Stripe Projects
+
+Provision a Supabase project from the Stripe CLI, for use by a human or an AI agent. [Get started with Stripe Projects](https://supabase.com/docs/guides/integrations/stripe-projects).
+
 
 ---
 
@@ -97273,6 +97277,64 @@ Send Supabase the following so we can configure the **Install Integration** butt
 - The `aud` claim value you want Supabase to send in the signed JWT.
 
 Ask Supabase for the public keys and key IDs for the staging and production environments.
+
+
+---
+
+# Stripe Projects
+
+Provision a Supabase project from the Stripe CLI
+
+## Overview
+
+[Stripe Projects](https://docs.stripe.com/stripe-projects) is a workflow in the Stripe CLI that provisions real services and returns working credentials from a single command. Supabase is available in the catalog, so one command provisions a Postgres database along with the rest of Supabase (Auth, Storage, Edge Functions, and Realtime), without opening a dashboard.
+
+Stripe Projects is designed for both humans and AI agents. The provisioning steps are deterministic and repeatable whether you run them yourself or an agent runs them for you.
+
+Note: Stripe Projects is currently a developer preview. If you run into issues, [reach out on Discord](https://discord.supabase.com/) or open an issue on [GitHub](https://github.com/supabase/supabase/issues).
+
+## Quickstart
+
+[Install the Stripe CLI](https://docs.stripe.com/stripe-cli/install), then run:
+
+```bash
+stripe plugin install projects
+stripe projects init my-app
+stripe projects add supabase/project
+stripe projects env --sync
+```
+
+These commands create a new Supabase project in your account with a Postgres database ready to connect and write the project credentials to a local `.env` file. If you already have a Supabase account, the flow prompts you to link it instead of creating a new one.
+
+To open the Supabase dashboard directly:
+
+```bash
+stripe projects open supabase
+```
+
+To rotate your database credentials:
+
+```bash
+stripe projects rotate supabase/project
+```
+
+For the full command reference, see [Stripe's Stripe Projects docs](https://docs.stripe.com/stripe-projects).
+
+## Authorizing the request
+
+The first time you provision a project this way, Supabase shows an authorization screen so you can confirm the request before anything is created:
+
+- If you're not signed in to Supabase with the email Stripe has on file, you're asked to sign out and back in as that account.
+- If the Stripe account is already linked to a Supabase organization, you confirm the request.
+- Otherwise, confirming creates a new Supabase organization on your behalf.
+
+Your Supabase project and organization work exactly like ones you create directly: you keep full access to the dashboard, your connection strings, and your data. Nothing is proxied or white-labeled.
+
+## Limitations
+
+- Stripe Projects is in developer preview, so behavior may change.
+- Provisioning links to a Supabase organization by matching the email on the Stripe account to a Supabase account; there's no option in the CLI flow to choose a different existing organization.
+- To access the Supabase dashboard for a new organization provisioned through Stripe Projects, use the `open` command (`stripe projects open supabase`). To log in to the Supabase dashboard directly without the CLI, follow the reset password flow for this account.
 
 
 ---
@@ -169816,11 +169878,13 @@ for Supabase Edge Functions.
   (with permissive CORS, including the `OPTIONS` preflight, so browser-based clients can read it)
 - Enriches a `401` from the inner handler with `WWW-Authenticate: Bearer resource_metadata="..."`,
   unless the handler already set a `WWW-Authenticate` header (its value wins)
-- Returns `404` for any other path (Edge Functions are single-endpoint - the inner handler owns `/{fn}` only)
+- Passes any other path through to the inner handler unchanged (composition,
+  not routing, decides what happens to it)
 
-The returned handler's optional second parameter is the host's platform
-argument (a Workers `env`, a Deno `ServeHandlerInfo`) and is forwarded to
-the inner handler unchanged — required for `withSupabase` to capture it.
+Contributes `ctx.oauthProtectedResource` (the resolved metadata URL) to the
+downstream context. Nested under `withSupabase`, the key is typed on the
+handler's `ctx` when the outermost call is anchored with
+`satisfies FetchHandler` — see `withSupabase`'s type note.
 
 ### Examples
 

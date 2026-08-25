@@ -37,3 +37,7 @@ Built-in tools provided by the platform for common actions.
 #### [Tool Call Sounds](/docs/eleven-agents/customization/tools/tool-configuration/tool-call-sounds)
 
 Add ambient audio during tool execution to enhance user experience.
+
+#### [Tool Interruptions](/docs/eleven-agents/customization/tools/tool-configuration/tool-interruptions)
+
+Control whether users can interrupt the agent while a tool runs.

@@ -28,4 +28,4 @@ You can also [cancel a Broadcast via the API](/docs/api-reference/broadcasts/can
 ## Related pages
 
 * [Managing Broadcasts](/docs/dashboard/broadcasts/introduction)
-* [Broadcast statuses](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses)
+* [Broadcast statuses](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses)
